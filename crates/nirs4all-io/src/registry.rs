@@ -3,8 +3,8 @@ use std::path::Path;
 use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
 
 use crate::readers::{
-    AsdReader, AvantesAsciiReader, BrukerDptReader, CsvLikeReader, GalacticSpcReader, JcampReader,
-    SedReader, SvcSigReader,
+    AsdReader, AvantesAsciiReader, BrukerDptReader, BrukerOpusReader, CsvLikeReader,
+    GalacticSpcReader, JcampReader, SedReader, SvcSigReader,
 };
 
 /// Contract implemented by every native reader.
@@ -17,6 +17,7 @@ pub trait Reader: Send + Sync {
 fn readers() -> Vec<Box<dyn Reader>> {
     vec![
         Box::new(JcampReader),
+        Box::new(BrukerOpusReader),
         Box::new(GalacticSpcReader),
         Box::new(AsdReader),
         Box::new(CsvLikeReader),

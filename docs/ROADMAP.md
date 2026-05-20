@@ -87,13 +87,13 @@ Deliverables:
 
 ## Phase 5: Binary Reader Batch
 
-Status: in progress. Galactic SPC now has an experimental native reader for
-the main new little-endian layouts and a limited old little-endian path.
+Status: in progress. Galactic SPC and Bruker OPUS native now have
+experimental readers for their first high-value binary subsets.
 
 Deliverables:
 
 - Galactic SPC; experimental;
-- Bruker OPUS; next priority;
+- Bruker OPUS; experimental 1D data/status block pairs;
 - Avantes 6/7 and AvaSoft 8;
 - ENVI SLI sidecar handling;
 - performance dashboards for large file and many-small-file scenarios.

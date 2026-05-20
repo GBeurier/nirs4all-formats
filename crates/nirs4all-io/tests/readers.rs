@@ -70,6 +70,49 @@ fn reads_bruker_dpt_export() {
 }
 
 #[test]
+fn reads_bruker_opus_native_absorbance_multisignal_file() {
+    let records =
+        open_path(workspace_file("samples/bruker_opus/617262_1TP_C-1_A5.0")).expect("open opus");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "bruker-opus");
+    assert!(record.signals.contains_key("sample_spectrum"));
+    assert!(record.signals.contains_key("reference_spectrum"));
+    assert!(record.signals.contains_key("sample_interferogram"));
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 3_578);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.values[0] - 0.5524729490).abs() < 0.000001);
+}
+
+#[test]
+fn reads_bruker_opus_native_reflectance_file() {
+    let records =
+        open_path(workspace_file("samples/bruker_opus/test_spectra.0")).expect("open opus");
+
+    assert_eq!(records.len(), 1);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 4_819);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.values[0] - 0.5243431926).abs() < 0.000001);
+}
+
+#[test]
+fn reads_bruker_opus_duplicate_absorbance_blocks() {
+    let records =
+        open_path(workspace_file("samples/bruker_opus/BF_lo_01_soil_cal.1")).expect("open opus");
+
+    assert_eq!(records.len(), 1);
+    assert!(records[0].signals.contains_key("absorbance"));
+    assert!(records[0].signals.contains_key("absorbance_2"));
+    let newest = records[0].signals.get("absorbance").expect("absorbance");
+    assert!((newest.values[0] - 0.1239784658).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

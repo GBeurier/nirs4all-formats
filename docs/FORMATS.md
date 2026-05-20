@@ -14,6 +14,7 @@ fixtures:
 |---|---|---|---|
 | Plain delimited spectral tables | `.csv`, `.tsv`, numeric-header `.txt` | Experimental | One record per row, numeric header columns become the spectral axis, numeric non-spectral columns become targets. |
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
+| Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. Binary AvaSoft variants remain pending. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Plain AFFN `XYDATA=(X++(Y..Y))` only. DIF/DUP, SQZ/PAC and NTUPLES are pending. |
 | Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |

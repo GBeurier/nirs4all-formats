@@ -11,6 +11,14 @@ const CASES: &[(&str, &str)] = &[
     ("asd_v8_double", "samples/asd/v8sample00001.asd"),
     ("csv_synthetic", "samples/csv_tsv/synthetic_nirs.csv"),
     ("bruker_dpt_synthetic", "samples/bruker_dpt/synthetic.dpt"),
+    (
+        "bruker_opus_absorbance_multi",
+        "samples/bruker_opus/617262_1TP_C-1_A5.0",
+    ),
+    (
+        "bruker_opus_reflectance",
+        "samples/bruker_opus/test_spectra.0",
+    ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),

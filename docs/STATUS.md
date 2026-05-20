@@ -17,6 +17,7 @@ Experimental native readers:
 
 - delimited spectral tables (`.csv`, `.tsv`, headered `.txt`);
 - Bruker OPUS DPT ASCII export (`.dpt`);
+- Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
 - JCAMP-DX plain AFFN `XYDATA=(X++(Y..Y))`;
 - Spectral Evolution SED (`.sed`);
@@ -67,8 +68,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue the binary/open-reader-backed batch with Bruker OPUS native;
+1. continue the binary/open-reader-backed batch with Avantes binary 6/7 and ENVI SLI;
 2. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
-3. add direct external reference-reader conformance for SPC/JCAMP/SED/SIG where practical;
+3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
 5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
