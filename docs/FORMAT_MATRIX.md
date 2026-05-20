@@ -25,7 +25,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
 | SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA/laptop semantic tests + GER 3700 PDA + HR-1024i field reels; BAD fixtures flagged | partiel | spectrolab, specdal |
-| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only flagged | partiel | spectrolab, specdal |
+| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only semantic flag tested | partiel | spectrolab, specdal |
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo synthetique uniquement | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
@@ -85,7 +85,7 @@ passer le format a `fait`.
 | PP Systems UniSpec SC | partiel | Le `.SPT` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider headers, units et metadata UniSpec SC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
 | PP Systems UniSpec DC | partiel | Le `.SPU` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider les deux canaux et metadata UniSpec DC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
 | SVC / GER SIG | partiel | Les variantes SVC laptop, SVC PDA Acer clean, matched-overlap-corrected, BAD declares, GER 3700 PDA et BEO HR-1024i field sont couvertes par tests/goldens; restent les firmware HR-1024i >=3.0, la promotion GPS/date/unites et les comparaisons automatisees `spectrolab`/`specdal`. |
-| Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est qualifie sans reflectance; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
+| Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est teste comme deux signaux raw avec `sed_missing_reflectance_signal` / `missing_reflectance_signal`. Restent SR-3500 / SR-6500 firmware specifics, promotion GPS/date/unites et conformance `spectrolab`/`specdal`. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert, avec tests semantiques directs pour multi-subfile generated-X, directory-backed `TXYXYS`, old ordered-Z limite et NMR/FID adjacent. Restent new big-endian `0x4C`, vieux headers/logs complets et decision de scope finale pour NMR/FID. |

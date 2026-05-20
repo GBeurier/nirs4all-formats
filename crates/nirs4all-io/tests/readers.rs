@@ -1798,6 +1798,8 @@ fn flags_spectral_evolution_sed_without_reflectance() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "spectral-evolution-sed");
+    assert_eq!(records[0].signal_type, SignalType::RawCounts);
+    assert_eq!(records[0].signals.len(), 2);
     assert!(records[0]
         .provenance
         .warnings
@@ -1809,6 +1811,35 @@ fn flags_spectral_evolution_sed_without_reflectance() {
         .signals
         .values()
         .any(|signal| signal.signal_type == SignalType::Reflectance));
+
+    let reference = records[0]
+        .signals
+        .get("norm__dn_ref_")
+        .expect("DN reference");
+    assert_eq!(reference.axis.values.len(), 2_151);
+    assert_eq!(reference.axis.unit, "nm");
+    assert_eq!(reference.axis.kind, AxisKind::Wavelength);
+    assert_eq!(reference.signal_type, SignalType::RawCounts);
+    assert!((reference.axis.values[0] - 350.0).abs() < 0.000001);
+    assert!((reference.axis.values[2_150] - 2500.0).abs() < 0.000001);
+    assert!((reference.values[0] - 5.282287).abs() < 0.000001);
+    assert!((reference.values[2_150] - 16.15534).abs() < 0.000001);
+
+    let target = records[0]
+        .signals
+        .get("norm__dn_target")
+        .expect("DN target");
+    assert_eq!(target.signal_type, SignalType::RawCounts);
+    assert!((target.values[0] - 1.922703).abs() < 0.000001);
+    assert!((target.values[2_150] - 1.271258).abs() < 0.000001);
+
+    let vendor = &records[0].metadata["vendor"];
+    assert_eq!(
+        vendor["instrument"].as_str(),
+        Some("PSR+3500_SN1566060 [3]")
+    );
+    assert_eq!(vendor["measurement"].as_str(), Some("DIRECT_ENERGY"));
+    assert_eq!(vendor["radiometric_calibration"].as_str(), Some("DN"));
 }
 
 #[test]
