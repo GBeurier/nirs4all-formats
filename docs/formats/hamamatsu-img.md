@@ -6,7 +6,9 @@ Hamamatsu `.img` files from HPD-TA streak-camera systems are 2D
 time-resolved images, not point-sample NIR spectra. `nirs4all-io` still loads
 the committed fixtures because the core record model can represent a signal
 with dimensions `y,x`: `x` is wavelength or pixel position, while `y` is a
-secondary time or detector-position axis stored in metadata.
+secondary time or detector-position axis stored in metadata. Calibrated
+time-resolved Y axes are tagged as `time`; uncalibrated detector-position axes
+remain `index`.
 
 The reader covers:
 
@@ -22,9 +24,9 @@ The reader covers:
 | Fixture | Records | Signal Shape | Axis | Notes |
 |---|---:|---|---|---|
 | `samples/hamamatsu/focus_mode.img` | 1 | `512 x 672` | wavelength, `nm` | Y axis is vertical CCD position in pixels |
-| `samples/hamamatsu/operate_mode.img` | 1 | `512 x 672` | wavelength, `nm` | Y axis is time in `us` |
-| `samples/hamamatsu/photon_counting.img` | 1 | `512 x 672` | wavelength, `nm` | Photon-counting acquisition, Y axis in `ns` |
-| `samples/hamamatsu/shading_file.img` | 1 | `512 x 672` | wavelength, `nm` | Shading/reference style acquisition, Y axis in `ps` |
+| `samples/hamamatsu/operate_mode.img` | 1 | `512 x 672` | wavelength, `nm` | Y axis is time in `us`, typed `time` |
+| `samples/hamamatsu/photon_counting.img` | 1 | `512 x 672` | wavelength, `nm` | Photon-counting acquisition, Y axis in `ns`, typed `time` |
+| `samples/hamamatsu/shading_file.img` | 1 | `512 x 672` | wavelength, `nm` | Shading/reference style acquisition, Y axis in `ps`, typed `time` |
 | `samples/hamamatsu/xaxis_other.img` | 1 | `508 x 672` | pixel index, `px` | Uncalibrated X and Y axes |
 
 All files emit warnings identifying them as streak-camera 2D signals. Files
