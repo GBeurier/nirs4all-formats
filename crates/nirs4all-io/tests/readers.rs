@@ -656,6 +656,22 @@ fn reads_buchi_nircal_project_spectra() {
         records[0].metadata["target_property_count"].as_u64(),
         Some(20)
     );
+    assert_eq!(
+        records[0].metadata["project_file_version"].as_str(),
+        Some("2.23")
+    );
+    assert_eq!(
+        records[0].metadata["project_guid"].as_str(),
+        Some("56A081B2-5301-40A1-9194-93BB6CCA1C9F")
+    );
+    assert_eq!(
+        records[0].metadata["sample_replicate_index"].as_u64(),
+        Some(1)
+    );
+    assert_eq!(
+        records[0].metadata["sample_replicate_count"].as_u64(),
+        Some(1)
+    );
     assert_eq!(records[0].targets.len(), 20);
     let target_keys = records[0].targets.keys().cloned().collect::<Vec<_>>();
     for record in &records {
@@ -712,6 +728,26 @@ fn reads_local_buchi_nircal_non_null_targets_when_present() {
     assert_eq!(
         records[0].metadata["target_property_count"].as_u64(),
         Some(2)
+    );
+    assert_eq!(
+        records[0].metadata["project_guid"].as_str(),
+        Some("986677DA-714F-444E-88C8-EA6C0865C17D")
+    );
+    assert_eq!(
+        records[0].metadata["sample_replicate_index"].as_u64(),
+        Some(1)
+    );
+    assert_eq!(
+        records[0].metadata["sample_replicate_count"].as_u64(),
+        Some(3)
+    );
+    assert_eq!(
+        records[2].metadata["sample_replicate_index"].as_u64(),
+        Some(3)
+    );
+    assert_eq!(
+        records[3].metadata["sample_replicate_index"].as_u64(),
+        Some(1)
     );
     assert!(!records[0]
         .provenance

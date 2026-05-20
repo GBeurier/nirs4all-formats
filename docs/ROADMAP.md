@@ -71,8 +71,8 @@ Deliverables:
 - Perkin Elmer Spectrum / IR reader; experimental for single-spectrum `.sp`
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`
-  spectra, wavenumber and property-target sections, with a non-zero target
-  fixture still pending;
+  spectra, wavenumber, project identity, replicate metadata and property-target
+  sections, with a redistributable non-zero target fixture still pending;
 - JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   semantic channel labels inferred from metadata;

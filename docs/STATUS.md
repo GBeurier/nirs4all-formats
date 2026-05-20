@@ -113,9 +113,11 @@ Experimental native readers:
 - Perkin Elmer Spectrum / IR (`.sp`) single spectra via the `PEPE` block
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
-  for the committed foliar-transfer fixture, including property target schema
-  extraction with zero values mapped to null targets. A local-only cannabis
-  fixture validates non-null `CBDA` and `THCA` targets through the same path.
+  for the committed foliar-transfer fixture, including project GUID/version,
+  sample replicate counters and property target schema extraction with zero
+  values mapped to null targets. A local-only cannabis fixture validates
+  non-null `CBDA` and `THCA` targets plus 3 replicate spectra per sample through
+  the same path.
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   metadata-driven semantic channel labels.

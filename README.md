@@ -60,6 +60,9 @@ Current implementation highlights:
 - Generic HDF5 covers simple spectral schemas, multi-signal groups sharing one
   axis, nested groups, common dataset aliases (`spectra`, `absorbance`,
   `reflectance`, `data`) and unambiguous transposed matrices.
+- BUCHI NIRCal `.nir` files expose spectra, wavenumber axes, property targets,
+  project identity and replicate metadata, with local validation on non-null
+  cannabis `CBDA`/`THCA` targets.
 - Spectral Evolution `.sed` keeps DN-only files loadable while typing DN,
   percent/fraction reflectance and promoting instrument/GPS/acquisition
   metadata.

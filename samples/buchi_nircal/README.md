@@ -17,4 +17,6 @@ Proprietary binary that bundles spectra + metadata + reference properties (prote
   - Wavelength axis
   - Reference properties (protein, moisture, fat, ash, …) → these are training labels and must be exposed in `targets`, not metadata. The committed fixture has property names but zero numeric values, which `prospectr` treats as missing.
   - Free-text description / comments
+- nirs4all-io also exposes the project GUID, NIRCal project-file version and
+  per-sample replicate counters when the same sample id appears multiple times.
 - See `get_nircal_*()` helpers in `prospectr` for the field layout.

@@ -47,11 +47,18 @@ struct NircalSections {
     spectrum_starts: Vec<usize>,
     spectrum_len: usize,
     title: String,
+    project_guid: Option<String>,
+    project_file_version: Option<String>,
     targets: TargetMaps,
     warnings: Vec<String>,
 }
 
 type TargetMaps = Vec<BTreeMap<String, Value>>;
+
+struct SampleReplicate {
+    index: usize,
+    count: usize,
+}
 
 fn parse_nircal(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
     if !bytes.starts_with(NIRCAL_MAGIC) {
@@ -69,6 +76,7 @@ fn parse_nircal(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<Sp
     }
 
     let mut records = Vec::with_capacity(sections.sample_ids.len());
+    let replicate_info = sample_replicate_info(&sections.sample_ids);
     for (index, (sample_id, start)) in sections
         .sample_ids
         .iter()
@@ -81,8 +89,17 @@ fn parse_nircal(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<Sp
         metadata.insert("sample_id".to_string(), json!(sample_id));
         metadata.insert("record_index".to_string(), json!(index));
         metadata.insert("project_title".to_string(), json!(sections.title));
+        if let Some(project_guid) = &sections.project_guid {
+            metadata.insert("project_guid".to_string(), json!(project_guid));
+        }
+        if let Some(version) = &sections.project_file_version {
+            metadata.insert("project_file_version".to_string(), json!(version));
+        }
         metadata.insert("spectrum_offset".to_string(), json!(start));
         metadata.insert("target_property_count".to_string(), json!(targets.len()));
+        let replicate = &replicate_info[index];
+        metadata.insert("sample_replicate_index".to_string(), json!(replicate.index));
+        metadata.insert("sample_replicate_count".to_string(), json!(replicate.count));
         let mut warnings = vec!["buchi_nircal_reverse_engineered_sections".to_string()];
         warnings.extend(sections.warnings.clone());
         records.push(single_signal_record(
@@ -131,15 +148,56 @@ fn locate_sections(bytes: &[u8]) -> Result<NircalSections> {
     let spectrum_starts = spectrum_starts(bytes, spectrum_len, sample_ids.len())?;
     let (targets, warnings) = parse_property_targets(bytes, sample_ids.len())?;
     let title = first_line(bytes);
+    let project_guid = project_guid(bytes);
+    let project_file_version = project_file_version(&title);
     Ok(NircalSections {
         sample_ids,
         axis,
         spectrum_starts,
         spectrum_len,
         title,
+        project_guid,
+        project_file_version,
         targets,
         warnings,
     })
+}
+
+fn sample_replicate_info(sample_ids: &[String]) -> Vec<SampleReplicate> {
+    let mut counts = BTreeMap::new();
+    for sample_id in sample_ids {
+        *counts.entry(sample_id.clone()).or_insert(0_usize) += 1;
+    }
+
+    let mut seen = BTreeMap::new();
+    sample_ids
+        .iter()
+        .map(|sample_id| {
+            let index = seen.entry(sample_id.clone()).or_insert(0_usize);
+            *index += 1;
+            SampleReplicate {
+                index: *index,
+                count: counts.get(sample_id).copied().unwrap_or(1),
+            }
+        })
+        .collect()
+}
+
+fn project_guid(bytes: &[u8]) -> Option<String> {
+    let text = decode_text(&bytes[..bytes.len().min(2048)]);
+    text.lines().find_map(|line| {
+        line.strip_prefix("38/{")
+            .and_then(|value| value.strip_suffix('}'))
+            .map(|value| value.to_string())
+    })
+}
+
+fn project_file_version(title: &str) -> Option<String> {
+    let marker = "NIRCAL Project File Version ";
+    let tail = title.strip_prefix(marker)?;
+    let end = tail.find(" / ").unwrap_or(tail.len());
+    let version = tail[..end].trim();
+    (!version.is_empty()).then(|| version.to_string())
 }
 
 fn one_values_positions_before(positions: &[usize], cutoff: usize) -> usize {

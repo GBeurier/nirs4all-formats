@@ -4,9 +4,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -64,9 +68,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -124,9 +132,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -184,9 +196,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -244,9 +260,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -304,9 +324,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -364,9 +388,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -424,9 +452,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -484,9 +516,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -544,9 +580,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -604,9 +644,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -664,9 +708,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -724,9 +772,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -784,9 +836,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -844,9 +900,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -904,9 +964,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -964,9 +1028,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -1024,9 +1092,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -1084,9 +1156,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
@@ -1144,9 +1220,13 @@
     {
       "format": "buchi-nircal",
       "metadata_keys": [
+        "project_file_version",
+        "project_guid",
         "project_title",
         "record_index",
         "sample_id",
+        "sample_replicate_count",
+        "sample_replicate_index",
         "spectrum_offset",
         "target_property_count"
       ],
