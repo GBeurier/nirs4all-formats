@@ -51,3 +51,6 @@ and value comparison outside the runtime.
 Hamamatsu IMG fixtures come from GPL-3.0 RosettaSciIO test data. They are
 committed as conformance fixtures only; `rsciio.hamamatsu` is used for layout,
 axis and value comparison outside the runtime.
+
+mzML fixtures come from MIT-licensed `pymzML` test data. They are committed for
+format detection and non-NIRS refusal tests.

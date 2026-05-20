@@ -1009,6 +1009,23 @@ fn reads_hamamatsu_img_streak_camera_modes() {
 }
 
 #[test]
+fn refuses_mzml_mass_spectrometry_containers() {
+    for relative in [
+        "samples/mzml/example.mzML",
+        "samples/mzml/mini.chrom.mzML",
+        "samples/mzml/mini_numpress.chrom.mzML",
+    ] {
+        let err = open_path(workspace_file(relative)).expect_err("mzML should be refused");
+        let message = err.to_string();
+        assert!(
+            message.contains("mass-spectrometry data"),
+            "{relative}: {message}"
+        );
+        assert!(message.contains("pyteomics"), "{relative}: {message}");
+    }
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

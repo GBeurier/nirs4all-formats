@@ -89,6 +89,9 @@ Experimental native readers:
   The reader covers committed focus, operate, photon-counting, shading and
   uncalibrated-axis fixtures, preserving the secondary time/CCD axis in
   metadata and warning that the signal is not a point-sample NIR spectrum.
+- mzML mass-spectrometry XML is detected and refused with a pointer to
+  `pyteomics`, `pymzML` or `pyOpenMS`; committed mzML spectrum/chromatogram
+  fixtures cover the refusal path.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -132,7 +135,7 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue the open-reader-backed binary batch in this order: remaining
-   sample-backed adjacent formats such as mzML where they can be cleanly
+   sample-backed adjacent formats such as ANDI/MS where they can be cleanly
    mapped/refused, then remaining Nicolet OMNIC `.srs/.srsx` variants and a
    non-zero BUCHI NIRCal target fixture when available;
 2. add Excel multi-sheet templates, then continue WDF hardening with white-light

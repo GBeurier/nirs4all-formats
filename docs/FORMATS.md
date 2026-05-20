@@ -133,7 +133,7 @@ Legend for **Container**:
 | AnIML | `.animl` (xml) | xml | 🟡 | Py: `animl-python` (early), Schema validators | IUPAC + ASTM XML standard. Current native reader covers spectral `SeriesSet` fixtures only and refuses non-spectral AnIML results. |
 | Allotrope ASM | `.json` | json | 🟡 | [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-Source/allotropy) | JSON Simple Model. Current native reader covers plate-reader spectral data cubes and detector-wavelength endpoints after vendor-to-ASM conversion. |
 | Allotrope ADF | `.adf` | hdf5 + triplestore | 🟡 | Allotrope Foundation SDK | Pharma-grade standard, heavy stack. Not a v1 priority. |
-| mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. |
+| mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. Current registry detects XML mzML and refuses it as non-NIRS with a pointer to MS-specific libraries. |
 | Plain CSV / TSV / TXT | `.csv`, `.tsv`, `.txt` | ascii | ✅ | `pandas`, `nirs4all.data.loaders.CSVLoader` | Already supported in `nirs4all`. We extend it with header heuristics. |
 | Parquet | `.parquet` | columnar bin | ✅ | `pyarrow`, `fastparquet`, `nirs4all.data.loaders.ParquetLoader` | Already in `nirs4all`. Used as the internal cache format. |
 | HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables`; Rust: `hdf5-reader` | Current native reader covers root or nested `spectra` + `wavelengths` datasets and refuses non-spectral HDF5 containers. |

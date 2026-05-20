@@ -258,6 +258,14 @@ fn probes_hamamatsu_img_files() {
         .any(|probe| probe.format == "hamamatsu-img" && probe.confidence == Confidence::Definite));
 }
 
+#[test]
+fn probes_mzml_ms_files() {
+    let probes = probe_path(workspace_file("samples/mzml/example.mzML")).expect("probe mzML");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "mzml-ms" && probe.confidence == Confidence::Definite));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
