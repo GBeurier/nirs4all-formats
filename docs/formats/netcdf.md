@@ -21,6 +21,8 @@ emits one `SpectralRecord` per sample row.
 ## Dispatch Boundaries
 
 NetCDF is a container. The reader probes NetCDF classic and HDF5-backed
-containers, then validates the NIRS schema at read time. ANDI/MS and weather
-NetCDF samples are refused because they do not contain a `spectra` variable
-with a matching wavelength axis.
+containers, then validates the NIRS schema at read time. ANDI/MS containers are
+detected by their chromatography/MS variable set and refused with a dedicated
+message. Other non-NIRS NetCDF files, such as weather datasets, are refused
+because they do not contain a `spectra` variable with a matching wavelength
+axis.

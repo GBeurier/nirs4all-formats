@@ -11,5 +11,6 @@ ASTM E1947 ANDI MS — the chromatography-MS standard. Listed in `FORMATS.md` §
 ## Parser hints
 
 - File is **NetCDF-3 classic** (CDF magic `CDF\x01`). Open with `scipy.io.netcdf_file` or `netCDF4`.
-- ANDI MS-specific variables: `scan_acquisition_time`, `total_intensity`, `mass_values`, `intensity_values`, `point_count`. **Detect these names** and refuse with: "this is ANDI MS chromatography data — use pyteomics or pyopenms instead".
+- ANDI MS-specific variables: `scan_acquisition_time`, `total_intensity`, `mass_values`, `intensity_values`, `point_count`.
+- `nirs4all-io` detects these names and refuses the container as chromatography/MS data instead of coercing `m/z` arrays into the NIRS `SpectralRecord` model.
 - Reference readers: [`pyteomics.openms.ANDIMS`](https://pyteomics.readthedocs.io/), `pymzml`, [`PyMassSpec`](https://github.com/PyMassSpec/PyMassSpec).

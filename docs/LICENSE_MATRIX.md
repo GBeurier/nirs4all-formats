@@ -54,3 +54,7 @@ axis and value comparison outside the runtime.
 
 mzML fixtures come from MIT-licensed `pymzML` test data. They are committed for
 format detection and non-NIRS refusal tests.
+
+ANDI/MS NetCDF fixtures come from GPL-2.0 PyMassSpec test data. They are
+committed as format-detection and non-NIRS refusal fixtures only; PyMassSpec is
+not vendored or imported by runtime code.

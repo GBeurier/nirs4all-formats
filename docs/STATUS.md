@@ -30,7 +30,8 @@ Experimental native readers:
 - SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
   `measurement.absorbance` payloads with predictions mapped to targets;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
-  pure-Rust reader; ANDI/MS and weather NetCDF samples are refused as non-NIRS;
+  pure-Rust reader; ANDI/MS gets a dedicated refusal path and weather NetCDF
+  samples are schema-refused as non-NIRS;
 - generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
   and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
@@ -92,6 +93,9 @@ Experimental native readers:
 - mzML mass-spectrometry XML is detected and refused with a pointer to
   `pyteomics`, `pymzML` or `pyOpenMS`; committed mzML spectrum/chromatogram
   fixtures cover the refusal path.
+- ANDI/MS NetCDF chromatography containers are detected from standard
+  acquisition-time, mass and intensity variables and refused with a pointer to
+  `pyteomics.openms.ANDIMS`, `PyMassSpec` or `pyOpenMS`.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -135,9 +139,8 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue the open-reader-backed binary batch in this order: remaining
-   sample-backed adjacent formats such as ANDI/MS where they can be cleanly
-   mapped/refused, then remaining Nicolet OMNIC `.srs/.srsx` variants and a
-   non-zero BUCHI NIRCal target fixture when available;
+   Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
+   fixture when available;
 2. add Excel multi-sheet templates, then continue WDF hardening with white-light
    image metadata and `MAP ` block interpretation;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`

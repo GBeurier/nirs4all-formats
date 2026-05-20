@@ -113,6 +113,14 @@ fn probes_netcdf_containers() {
 }
 
 #[test]
+fn probes_andi_ms_netcdf_containers() {
+    let probes = probe_path(workspace_file("samples/andi_ms/gc01_0812_066.cdf")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "andi-ms-netcdf" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
 fn probes_hdf5_containers() {
     let probes = probe_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("probe");
     assert!(probes.iter().any(|probe| {

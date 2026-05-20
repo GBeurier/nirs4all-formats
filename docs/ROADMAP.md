@@ -49,7 +49,8 @@ Deliverables:
 - SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
   payloads;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
-  datasets and refusal of adjacent non-NIRS NetCDF containers;
+  datasets, dedicated ANDI/MS refusal and schema refusal of adjacent non-NIRS
+  NetCDF containers;
 - generic HDF5 NIRS reader; experimental for root and nested-group `spectra` +
   `wavelengths` datasets, including the committed synthetic FGI HDF5 payload;
 - MATLAB MAT reader; experimental for simple MAT v5 and MATLAB v7.3/HDF5
@@ -87,6 +88,9 @@ Deliverables:
 - mzML detector/refusal path; committed MS fixtures are recognized and rejected
   with explicit `pyteomics` / `pymzML` guidance instead of being coerced into
   optical spectra;
+- ANDI/MS NetCDF detector/refusal path; committed chromatography/MS fixture is
+  recognized from standard variables and rejected with explicit
+  `pyteomics.openms.ANDIMS` / `PyMassSpec` / `pyOpenMS` guidance;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
