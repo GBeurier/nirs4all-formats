@@ -24,6 +24,7 @@ formats/digitalsurf
 formats/envi-sli
 formats/erdas-lan
 formats/excel
+formats/fgi-hdf5-xml
 formats/foss-winisi
 formats/galactic-spc
 formats/hamamatsu-img
@@ -49,6 +50,7 @@ formats/spectral-matrix
 formats/sun-photometers
 formats/text-readers-001
 formats/trivista-tvf
+formats/usgs-speclib
 formats/viavi-micronir
 formats/witec-wip
 DATA_MODEL

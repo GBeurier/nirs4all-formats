@@ -86,15 +86,31 @@ impl Reader for SedReader {
             )?;
             signals.insert(name, signal);
         }
-        let record = record_from_signals(
+        let mut warnings = Vec::new();
+        if !signals
+            .values()
+            .any(|signal| signal.signal_type == SignalType::Reflectance)
+        {
+            warnings.push("sed_missing_reflectance_signal".to_string());
+        }
+        let mut record = record_from_signals(
             "spectral-evolution-sed",
             self.name(),
             source,
             signals,
             dominant,
             metadata_from_pairs(metadata_pairs),
-            Vec::new(),
+            warnings,
         )?;
+        if !record
+            .signals
+            .values()
+            .any(|signal| signal.signal_type == SignalType::Reflectance)
+        {
+            record
+                .quality_flags
+                .push("missing_reflectance_signal".to_string());
+        }
         Ok(vec![record])
     }
 }

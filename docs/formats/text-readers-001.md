@@ -19,7 +19,10 @@ Implemented readers:
 | `jcamp` | `samples/jcamp_dx/BRUKNTUP.DX`, `TESTFID.DX` | NMR `NTUPLES` real/imaginary pages decoded into two signals. |
 | `jcamp` | `samples/ocean_optics/OceanOptics_period.jdx` | `LINK`/`XYPOINTS` sample, dark and reference blocks plus computed transmittance. |
 | `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
+| `sed` | `samples/spectral_evolution/1566060_15025_not_working.sed` | Broken-but-valid DN-only fixture accepted with `missing_reflectance_signal` quality flag. |
 | `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
+| `svc_sig` | `samples/svc_ger/*_BAD.sig` | Deliberately malformed fixture filenames are accepted but flagged as `declared_bad_fixture`. |
+| `usgs_aref` | `samples/envi_sli/usgs_liba_AREF.txt` | Single-column USGS AREF reflectance dump with generated index axis and explicit warning. |
 | `spectral_table` | Si-Ware CSV, MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS `.spectrum.txt`, Shimadzu TXT, USGS SPECPR ASCII, WiTec TXT | Row-oriented axis-first spectral tables, one normalized signal per numeric column after the axis. |
 | `spectral_matrix` | Foss/WinISI text, Metrohm Vision Air CSV, VIAVI MicroNIR CSV | One spectrum per sample row, numeric headers or `Wavelengths:` block become the axis, property columns become targets. |
 | `sun_photometer` | MFR `.OUT`, Microtops `.TXT` | Channel columns become a short wavelength axis, one record per observation row. |
@@ -27,7 +30,9 @@ Implemented readers:
 Known limitations:
 
 - CSV parsing is intentionally narrow and expects numeric spectral headers.
-- Single-column text dumps without an embedded axis still need a sidecar axis.
+- Single-column text dumps without an embedded axis still need a sidecar axis,
+  except the dedicated USGS AREF single-column path, which emits an index axis
+  with a warning because no wavelength vector is present in the file.
 - Target-only reports without spectra are not loaded into `SpectralRecord`.
 - JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
   yet.

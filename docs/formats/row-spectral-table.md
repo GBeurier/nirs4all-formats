@@ -45,8 +45,10 @@ reader remains responsible for committed headerless Ocean Optics CSV exports.
 
 ## Limitations
 
-- Single-column spectral libraries such as legacy USGS `AREF` text dumps still
-  need a sidecar axis and are not parsed by this reader.
+- Single-column spectral libraries are not parsed by this reader. The legacy
+  USGS `AREF` one-column fixture is handled by the dedicated
+  `usgs-aref-single-column` reader with a generated index axis because the file
+  does not embed wavelengths.
 - Deleted-value sentinels are preserved numerically for now; masking policy is
   still pending in the shared data model.
 - Vendor-specific metadata is preserved under `metadata.vendor`, but it is not

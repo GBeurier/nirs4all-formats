@@ -11,7 +11,7 @@ The `psr_DN_brett` directory hosts Brett's PSR DN test pair — one workable and
 | File | Size | Notes |
 |---|---|---|
 | `1566060_09506_working.sed` | 95 KB | Working PSR (Spectral Evolution) spectrum. |
-| `1566060_15025_not_working.sed` | 76 KB | Companion broken-but-valid file for negative-path tests. |
+| `1566060_15025_not_working.sed` | 76 KB | Companion broken-but-valid DN-only file; parsed with `missing_reflectance_signal` quality flag. |
 
 ### From [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra/tree/master/inst/extdata) (GPL-3, R package)
 

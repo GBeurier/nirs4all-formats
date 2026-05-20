@@ -24,7 +24,7 @@ Not ENVI binaries, but reference spectra in plain ASCII used widely with ENVI. F
 
 | File | Source | Notes |
 |---|---|---|
-| `usgs_liba_AREF.txt` | USGS splib06a / spectralpython | ASD-band ASCII export from USGS Library A. |
+| `usgs_liba_AREF.txt` | USGS splib06a / spectralpython | Single-column AREF reflectance dump from USGS Library A; loaded with a generated index axis because no wavelength vector is embedded. |
 | `ecostress_a.spectrum.txt`, `ecostress_b.spectrum.txt` | ECOSTRESS (spectralpython mirror) | ECOSTRESS spectral library text output. |
 | `aster_granite.spectrum.txt` | ASTER / JHU Becknic | Granite reflectance reference. |
 | `92AV3C.spc` | spectralpython | AVIRIS hyperspectral cube (legacy `.spc` ENVI variant). Not Galactic SPC. |
