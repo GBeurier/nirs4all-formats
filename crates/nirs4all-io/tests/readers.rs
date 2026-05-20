@@ -2664,7 +2664,15 @@ fn reads_allotrope_asm_spectrum_cubes_and_endpoints() {
         Some("Fluorescence")
     );
     assert!(records[0].metadata.contains_key("asm_errors"));
-    let emission = records[0].signals.get("absorbance").expect("absorbance");
+    let emission = records[0]
+        .signals
+        .get("fluorescence")
+        .expect("fluorescence");
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("asm_signal_label_derived_from_cube_context")));
     assert_eq!(emission.axis.values, vec![300.0, 310.0, 320.0]);
     assert!((emission.values[0] - 0.123).abs() < 0.000001);
 
@@ -2687,7 +2695,9 @@ fn rejects_target_only_reports_without_spectra() {
         "samples/perten/synthetic_perten.csv",
     ] {
         let err = open_path(workspace_file(relative)).expect_err("report has no spectrum");
-        assert!(err.to_string().contains("unsupported format"));
+        assert!(err
+            .to_string()
+            .contains("no numeric spectral headers found"));
     }
 }
 
@@ -2989,8 +2999,9 @@ fn refuses_witec_wip_binary_projects() {
 
     match err {
         Error::InvalidRecord(message) => {
-            assert!(message.contains("WiTec WIP/WID binary project files are not supported yet"));
-            assert!(message.contains("Export spectra from WiTec Project/FIVE as ASCII text"));
+            assert!(message.contains("legacy WiTec WIP/WID WIT^ project layout"));
+            assert!(message.contains("current native subset is limited to the WIT_PR06 TDGraph"));
+            assert!(message.contains("export other WiTec projects from WiTec Project/FIVE"));
         }
         other => panic!("unexpected error: {other}"),
     }

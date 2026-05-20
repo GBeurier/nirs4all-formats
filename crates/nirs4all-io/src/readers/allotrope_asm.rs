@@ -142,12 +142,21 @@ fn cube_record(
         .pointer("/cube-structure/measures/0/unit")
         .and_then(Value::as_str)
         .map(str::to_string);
-    let signal_type = signal_type_from_label(measure_concept);
-    let signal_name = safe_signal_name(measure_concept, "signal");
+    let cube_label = cube.get("label").and_then(Value::as_str);
+    let signal_label = asm_signal_label(measure_concept, cube_key, cube_label);
+    let signal_type = signal_type_from_label(&signal_label);
+    let signal_name = safe_signal_name(&signal_label, "signal");
 
     metadata.insert("asm_cube".to_string(), json!(cube_key));
-    if let Some(label) = cube.get("label").and_then(Value::as_str) {
+    if let Some(label) = cube_label {
         metadata.insert("asm_cube_label".to_string(), json!(label));
+    }
+    let mut warnings = Vec::new();
+    if signal_label != measure_concept {
+        metadata.insert("asm_measure_concept".to_string(), json!(measure_concept));
+        warnings.push(format!(
+            "asm_signal_label_derived_from_cube_context:{signal_label}"
+        ));
     }
 
     single_signal_record(
@@ -162,13 +171,30 @@ fn cube_record(
             signal_name,
             signal_type,
             signal_unit,
-            role: safe_signal_name(measure_concept, "signal"),
+            role: safe_signal_name(&signal_label, "signal"),
         },
         BTreeMap::new(),
         metadata,
-        Vec::new(),
+        warnings,
     )
     .map(Some)
+}
+
+fn asm_signal_label(measure_concept: &str, cube_key: &str, cube_label: Option<&str>) -> String {
+    let combined = format!(
+        "{} {} {}",
+        measure_concept,
+        cube_key,
+        cube_label.unwrap_or_default()
+    )
+    .to_ascii_lowercase();
+    if combined.contains("fluorescence") {
+        "fluorescence".to_string()
+    } else if combined.contains("emission") {
+        "emission".to_string()
+    } else {
+        measure_concept.to_string()
+    }
 }
 
 fn endpoint_record(

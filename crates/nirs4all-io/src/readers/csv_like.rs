@@ -24,12 +24,36 @@ impl Reader for CsvLikeReader {
         }
         let text = String::from_utf8_lossy(head);
         let first = text.lines().find(|line| !line.trim().is_empty())?;
-        let delimiter = detect_delimiter(first);
-        if first.matches(delimiter).count() >= 2 {
+        let detected_delimiter = detect_delimiter(first);
+        let delimiters: &[char] = match ext.as_str() {
+            "csv" => &[',', ';', '\t'],
+            "tsv" => &['\t'],
+            _ => std::slice::from_ref(&detected_delimiter),
+        };
+        let minimum_delimiters = if matches!(ext.as_str(), "csv" | "tsv") {
+            1
+        } else {
+            2
+        };
+        let direct_header = first.matches(detected_delimiter).count() >= 2;
+        let fallback_delimited = text
+            .lines()
+            .filter(|line| !line.trim().is_empty())
+            .any(|line| {
+                delimiters
+                    .iter()
+                    .any(|delimiter| line.matches(*delimiter).count() >= minimum_delimiters)
+            });
+        if direct_header || fallback_delimited {
+            let confidence = if direct_header {
+                Confidence::Likely
+            } else {
+                Confidence::Possible
+            };
             Some(FormatProbe::new(
                 "delimited-text",
                 self.name(),
-                Confidence::Likely,
+                confidence,
                 "text file with delimited header",
             ))
         } else {

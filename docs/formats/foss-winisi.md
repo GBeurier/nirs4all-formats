@@ -15,6 +15,8 @@ or CSV spectral matrix.
 - preservation of `ID` as `metadata.sample_id`;
 - preservation of numeric properties such as `Moisture`, `Protein` and `Year`
   as targets.
+- explicit refusal of DS3/Inframatic-style property-only reports that have no
+  numeric spectral headers.
 
 ## Supported Fixtures
 
@@ -30,4 +32,3 @@ or CSV spectral matrix.
 - calibration/equation payload extraction;
 - comparison against a vendor or community native binary reader, because none
   is currently available.
-

@@ -8,6 +8,7 @@
         "asm_cube_label",
         "asm_errors",
         "asm_manifest",
+        "asm_measure_concept",
         "container_type",
         "data_system_asm_converter_name",
         "data_system_asm_converter_version",
@@ -43,7 +44,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::allotrope_asm",
-      "record_signal_type": "absorbance",
+      "record_signal_type": "unknown",
       "signal_count": 1,
       "signals": [
         {
@@ -53,9 +54,9 @@
           "axis_len": 3,
           "axis_order": "ascending",
           "axis_unit": "nm",
-          "name": "absorbance",
-          "role": "absorbance",
-          "signal_type": "absorbance",
+          "name": "fluorescence",
+          "role": "fluorescence",
+          "signal_type": "unknown",
           "unit": "mAU",
           "value_first": 0.123,
           "value_last": -0.0,
@@ -65,7 +66,9 @@
       ],
       "source_sha256": "7b1100d788302ce0d83e1d17a662993b808647f6ab35d1b6bd9dd88c4f06ea92",
       "target_keys": [],
-      "warnings": []
+      "warnings": [
+        "asm_signal_label_derived_from_cube_context:fluorescence"
+      ]
     }
   ]
 }

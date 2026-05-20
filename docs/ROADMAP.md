@@ -87,9 +87,9 @@ Deliverables:
 - Hamamatsu HPD-TA `.img` reader; experimental adjacent-format support for
   2D streak-camera `y,x` raw-count signals with time/CCD secondary-axis
   metadata;
-- WiTec WIP/WID detector/refusal path; signed `WIT^` binary project containers
-  are recognized and refused with explicit WiTec Project/FIVE ASCII-export
-  guidance while native parsing waits for a redistributable fixture;
+- WiTec WIP/WID detector/refusal path plus a narrow `WIT_PR06` TDGraph decoder
+  for the committed `Sa4.wip` fixture; legacy `WIT^` and unknown `WIT_PR06`
+  layouts are refused with explicit WiTec Project/FIVE ASCII-export guidance;
 - mzML detector/refusal path; committed MS fixtures are recognized and rejected
   with explicit `pyteomics` / `pymzML` guidance instead of being coerced into
   optical spectra;

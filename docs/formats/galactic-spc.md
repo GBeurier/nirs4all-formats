@@ -63,6 +63,9 @@ Committed smoke and golden coverage currently includes:
 | `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
 | `RAMAN.SPC`, `resolutionPro.spc` | new LSB variants | Golden summary coverage |
 | `cell01_c1.spc`, `cell01_c2.spc` | cell assay examples | Golden summary coverage |
+| `Ft-ir.spc`, `RUBY18.SPC`, `SINGLE_POLYMER_FILM.SPC`, `TOLUENE.SPC`, `MERC.SPC`, `NDR0002.SPC`, `SPECTRUM_WITH_BAD_BASELINE.SPC`, `test_input.spc` | additional new-LSB corpus | Golden summary coverage |
+| `s_evenx.spc`, `m_evenz.spc`, `m_ordz.spc`, `raman-sion.spc` | explicit/generated X and multi variants | Golden summary coverage |
+| `NMR_FID.SPC` | adjacent NMR/FID control | Golden summary coverage; final normalized-scope decision still pending |
 | `LC_DIODE_ARRAY.SPC` | old LSB | limited old-header smoke test |
 
 Reference comparisons were checked against the local `spc_spectra` Python

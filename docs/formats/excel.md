@@ -3,7 +3,8 @@
 Status: experimental.
 
 The Excel reader uses the pure-Rust `calamine` crate. It currently supports
-OOXML workbooks (`.xlsx` / `.xlsm`) whose selected worksheet contains:
+OOXML workbooks (`.xlsx`, with `.xlsm` covered by the same code path but still
+missing a dedicated fixture) whose selected worksheet contains:
 
 - one header row;
 - numeric wavelength headers for spectral columns;
@@ -33,7 +34,8 @@ record metadata, while numeric `references` columns are copied to targets.
 
 ## Dispatch Boundaries
 
-Legacy `.xls` OLE workbooks, caller-selected non-canonical sheet names and
+Legacy `.xls` OLE workbooks, fixture-backed `.xlsm` validation,
+caller-selected non-canonical sheet names and
 workbooks where Excel has coerced wavelengths into dates remain pending. The
 current reader is intentionally limited to numeric spectral headers so malformed
 lab transfers fail clearly instead of silently producing shifted axes. Probe

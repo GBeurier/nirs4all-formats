@@ -286,6 +286,12 @@ fn probes_horiba_labspec_files() {
     assert!(probes.iter().any(|probe| {
         probe.format == "horiba-labspec-text" && probe.confidence == Confidence::Definite
     }));
+
+    let probes =
+        probe_path(workspace_file("samples/raman_horiba/AlN_Gd2O3_indepth.l6m")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-labspec6-binary" && probe.confidence == Confidence::Definite
+    }));
 }
 
 #[test]
@@ -355,6 +361,11 @@ fn probes_aviris_erdas_lan_cube() {
 #[test]
 fn probes_witec_wip_magic() {
     let probes = builtin_probes(b"WIT^\0\0\0\0", Path::new("sample.wip"));
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "witec-wip" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file("samples/raman_witec/Sa4.wip")).expect("probe Sa4");
     assert!(probes
         .iter()
         .any(|probe| probe.format == "witec-wip" && probe.confidence == Confidence::Definite));

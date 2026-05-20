@@ -8,8 +8,14 @@ const CASES: &[(&str, &str)] = &[
     ("asd_legacy_float", "samples/asd/3L9257.000"),
     ("asd_v6_double", "samples/asd/v6sample00000.asd"),
     ("asd_v7_field_double", "samples/asd/v7_field_44231B009.asd"),
+    ("asd_v7_sample_double", "samples/asd/v7sample00000.asd"),
     ("asd_v8_double", "samples/asd/v8sample00001.asd"),
+    ("asd_soil_real", "samples/asd/soil.asd"),
     ("csv_synthetic", "samples/csv_tsv/synthetic_nirs.csv"),
+    (
+        "csv_auroranir_handheld_sensaifood",
+        "samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv",
+    ),
     ("bruker_dpt_synthetic", "samples/bruker_dpt/synthetic.dpt"),
     (
         "bruker_opus_absorbance_multi",
@@ -98,6 +104,10 @@ const CASES: &[(&str, &str)] = &[
     (
         "horiba_labspec_gd2o3_aln_map",
         "samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt",
+    ),
+    (
+        "horiba_labspec6_binary_gd2o3_aln_map",
+        "samples/raman_horiba/AlN_Gd2O3_indepth.l6m",
     ),
     (
         "renishaw_wdf_test_spectrum",
@@ -233,9 +243,20 @@ const CASES: &[(&str, &str)] = &[
         "samples/ocean_optics/whiteref.ProcSpec",
     ),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
+    (
+        "jcamp_nist_sucrose_multiblock",
+        "samples/jcamp_dx/nist_sucrose_ir.jdx",
+    ),
+    ("jcamp_bruker_affn", "samples/jcamp_dx/BRUKAFFN.DX"),
+    ("jcamp_bruker_pac", "samples/jcamp_dx/BRUKPAC.DX"),
+    ("jcamp_bruker_jcm", "samples/jcamp_dx/BRUKER1.JCM"),
     ("jcamp_bruker_sqz", "samples/jcamp_dx/BRUKSQZ.DX"),
     ("jcamp_bruker_dif", "samples/jcamp_dx/BRUKDIF.DX"),
+    ("jcamp_labcalc", "samples/jcamp_dx/LABCALC.DX"),
+    ("jcamp_pe1800", "samples/jcamp_dx/PE1800.DX"),
     ("jcamp_specfile_packed", "samples/jcamp_dx/SPECFILE.DX"),
+    ("jcamp_test32", "samples/jcamp_dx/TEST32.DX"),
+    ("jcamp_testspec", "samples/jcamp_dx/TESTSPEC.DX"),
     ("jcamp_bruker_ntuples", "samples/jcamp_dx/BRUKNTUP.DX"),
     ("jcamp_fid_ntuples", "samples/jcamp_dx/TESTFID.DX"),
     (
@@ -254,6 +275,20 @@ const CASES: &[(&str, &str)] = &[
         "msa_iso22029_y_ncolumns5",
         "samples/msa_iso22029/example2_NCOLUMNS5.msa",
     ),
+    (
+        "msa_iso22029_scientific_notation",
+        "samples/msa_iso22029/ISO_22029_2022_compliance_scientific_notation.msa",
+    ),
+    (
+        "msa_iso22029_multiline_title",
+        "samples/msa_iso22029/ISO_22029_2022_compliance_title_multiple_line.msa",
+    ),
+    ("msa_example1", "samples/msa_iso22029/example1.msa"),
+    (
+        "msa_example1_with_seconds",
+        "samples/msa_iso22029/example1_with_seconds.msa",
+    ),
+    ("msa_example2", "samples/msa_iso22029/example2.msa"),
     (
         "msa_iso22029_minimum",
         "samples/msa_iso22029/minimum_metadata.msa",
@@ -353,8 +388,40 @@ const CASES: &[(&str, &str)] = &[
         "samples/excel/synthetic_multisheet_nirs.xlsx",
     ),
     (
+        "excel_scio_forensic_p_avg",
+        "samples/excel/scio_forensic_P_avg.xlsx",
+    ),
+    (
+        "excel_nirone_forensic_t_avg",
+        "samples/excel/nirone_forensic_T_avg.xlsx",
+    ),
+    (
+        "excel_neospectra_forensic_k_avg",
+        "samples/siware_neospectra/neospectra_forensic_K_avg.xlsx",
+    ),
+    (
+        "excel_micronir_forensic_k_avg",
+        "samples/viavi_micronir/micronir_forensic_K_avg.xlsx",
+    ),
+    (
+        "excel_micronir_forensic_t_avg",
+        "samples/viavi_micronir/micronir_forensic_T_avg.xlsx",
+    ),
+    (
+        "csv_siware_neospectra_ossl_slice",
+        "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",
+    ),
+    (
         "spectral_matrix_foss_winisi",
         "samples/foss_winisi/synthetic_winisi_export.txt",
+    ),
+    (
+        "csv_foss_xds_barleyground_sensaifood",
+        "samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv",
+    ),
+    (
+        "csv_foss_xds_wheat2_sensaifood",
+        "samples/foss_winisi/foss_xds_wheat2_sensAIfood.csv",
     ),
     (
         "spectral_matrix_metrohm_visionair",
@@ -368,6 +435,10 @@ const CASES: &[(&str, &str)] = &[
     (
         "microtops_sun_photometer",
         "samples/microtops/synthetic_microtops.TXT",
+    ),
+    (
+        "microtops_man_netcdf_msm114",
+        "samples/microtops/microtops_arc_msm114_2.nc",
     ),
     ("animl_synthetic_nirs", "samples/animl/synthetic_nirs.animl"),
     (
@@ -410,6 +481,31 @@ const CASES: &[(&str, &str)] = &[
         "samples/galactic_spc/cell01_c2.spc",
     ),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
+    ("galactic_spc_s_evenx", "samples/galactic_spc/s_evenx.spc"),
+    ("galactic_spc_m_evenz", "samples/galactic_spc/m_evenz.spc"),
+    ("galactic_spc_m_ordz", "samples/galactic_spc/m_ordz.spc"),
+    ("galactic_spc_ft_ir", "samples/galactic_spc/Ft-ir.spc"),
+    ("galactic_spc_ruby18", "samples/galactic_spc/RUBY18.SPC"),
+    (
+        "galactic_spc_single_polymer_film",
+        "samples/galactic_spc/SINGLE_POLYMER_FILM.SPC",
+    ),
+    (
+        "galactic_spc_bad_baseline",
+        "samples/galactic_spc/SPECTRUM_WITH_BAD_BASELINE.SPC",
+    ),
+    ("galactic_spc_toluene", "samples/galactic_spc/TOLUENE.SPC"),
+    ("galactic_spc_mercury", "samples/galactic_spc/MERC.SPC"),
+    ("galactic_spc_ndr0002", "samples/galactic_spc/NDR0002.SPC"),
+    ("galactic_spc_nmr_fid", "samples/galactic_spc/NMR_FID.SPC"),
+    (
+        "galactic_spc_test_input",
+        "samples/galactic_spc/test_input.spc",
+    ),
+    (
+        "galactic_spc_raman_sion",
+        "samples/galactic_spc/raman-sion.spc",
+    ),
     (
         "galactic_spc_ocean_optics",
         "samples/ocean_optics/OceanOptics.spc",
@@ -424,10 +520,22 @@ const CASES: &[(&str, &str)] = &[
         "spectral_evolution_sed_dn_only",
         "samples/spectral_evolution/1566060_15025_not_working.sed",
     ),
+    (
+        "spectral_evolution_serbin_grape_leaf",
+        "samples/spectral_evolution/serbinsh_cvars_grape_leaf.sed",
+    ),
     ("svc_sig_moc", "samples/svc_ger/BNL13001_000_moc.sig"),
     (
         "svc_sig_declared_bad",
         "samples/svc_ger/ACPL_D2_P1_B_1_000_BAD.sig",
+    ),
+    (
+        "svc_sig_serbin_ger3700",
+        "samples/svc_ger/serbinsh_gr070214_003.sig",
+    ),
+    (
+        "svc_sig_serbin_beo_hr1024i",
+        "samples/svc_ger/serbinsh_BEO_CakeEater_Pheno_026_resamp.sig",
     ),
 ];
 

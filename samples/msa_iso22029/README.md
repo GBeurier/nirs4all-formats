@@ -14,7 +14,7 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/msa/`](https://github.co
 | `ISO_22029_2022_compliance_title_multiple_line.msa` | Multi-line `##TITLE` test. |
 | `example1.msa`, `example2.msa` | Generic examples. |
 | `example1_with_seconds.msa` | With sub-second timestamp. |
-| `example1_wrong_date.msa`, `example1_wrong_date_empty_field.msa` | Negative-path tests. |
+| `example1_wrong_date.msa`, `example1_wrong_date_empty_field.msa` | Invalid date metadata examples kept for future warning-level ISO validation. The current reader preserves the metadata instead of rejecting the spectrum. |
 | `example2_NCOLUMNS5.msa` | 5-column variant. |
 | `minimum_metadata.msa` | Minimum-required-metadata baseline. |
 

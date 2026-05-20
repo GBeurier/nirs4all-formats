@@ -13,7 +13,7 @@ All from [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-S
 
 | File | Source path | Notes |
 |---|---|---|
-| `spectrum_emission_data.json` | `tests/parsers/agilent_gen5/testdata/fluorescence/spectrum_emission_data.json` | Agilent Gen5 plate reader → ASM. Fluorescence emission spectrum. |
+| `spectrum_emission_data.json` | `tests/parsers/agilent_gen5/testdata/fluorescence/spectrum_emission_data.json` | Agilent Gen5 plate reader -> ASM. Fluorescence emission spectrum. The ASM measure concept is `absorbance`, but the cube key/label and source feature identify fluorescence, so the loader emits signal `fluorescence` and preserves the original concept in metadata. |
 | `ACSINS_absorbance_spectrum.json` | `tests/parsers/moldev_softmax_pro/testdata/ACSINS_absorbance_timeformat_spectrum.json` | Molecular Devices SoftMax Pro → ASM. Absorbance spectrum. |
 | `MD_SMP_absorbance_example.json` | `tests/parsers/moldev_softmax_pro/testdata/MD_SMP_absorbance_endpoint_example01.json` | SoftMax Pro absorbance endpoint readings → ASM. |
 | `LICENSE_benchling_open_source.txt` | `LICENSE.txt` | MIT license text from the Benchling allotropy repo. |
