@@ -21,6 +21,7 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
+    ("envi_sli_synthetic", "samples/envi_sli/synthetic_lib.hdr"),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),

@@ -12,6 +12,7 @@ STATUS
 FORMATS
 formats/asd
 formats/bruker-opus
+formats/envi-sli
 formats/galactic-spc
 formats/text-readers-001
 DATA_MODEL

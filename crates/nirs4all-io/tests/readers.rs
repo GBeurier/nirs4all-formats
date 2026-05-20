@@ -138,6 +138,44 @@ fn reads_avantes_irradiance_export() {
 }
 
 #[test]
+fn reads_envi_spectral_library_from_header() {
+    let records =
+        open_path(workspace_file("samples/envi_sli/synthetic_lib.hdr")).expect("open envi sli");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "envi-sli");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
+    let signal = records[0].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((signal.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((signal.values[0] - 0.0367427170).abs() < 0.000001);
+}
+
+#[test]
+fn reads_envi_spectral_library_from_binary_sidecar() {
+    let records =
+        open_path(workspace_file("samples/envi_sli/synthetic_lib.sli")).expect("open envi sli");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[49].metadata["sample_id"].as_str(), Some("S049"));
+    let signal = records[49].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert!((signal.values[199] - 0.0608757548).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_envi_standard_image_cube_for_v1() {
+    let err = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
+        .expect_err("cube should be out of scope");
+
+    assert!(err.to_string().contains("ENVI Standard"));
+}
+
+#[test]
 fn reads_spectral_evolution_sed() {
     let records = open_path(workspace_file(
         "samples/spectral_evolution/1566060_09506_working.sed",

@@ -88,14 +88,15 @@ Deliverables:
 ## Phase 5: Binary Reader Batch
 
 Status: in progress. Galactic SPC and Bruker OPUS native now have
-experimental readers for their first high-value binary subsets.
+experimental readers for their first high-value binary subsets. ENVI SLI now
+has a sidecar reader for spectral-library payloads.
 
 Deliverables:
 
 - Galactic SPC; experimental;
 - Bruker OPUS; experimental 1D data/status block pairs;
 - Avantes 6/7 and AvaSoft 8;
-- ENVI SLI sidecar handling;
+- ENVI SLI sidecar handling; experimental for one-band BSQ spectral libraries;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment
