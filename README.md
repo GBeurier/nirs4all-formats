@@ -63,6 +63,9 @@ Current implementation highlights:
 - Spectral Evolution `.sed` keeps DN-only files loadable while typing DN,
   percent/fraction reflectance and promoting instrument/GPS/acquisition
   metadata.
+- SVC/GER `.sig` covers the committed PDA, laptop, matched-overlap and
+  resampled field fixtures with promoted instrument, foreoptic, detector,
+  factor and overlap metadata.
 
 ## Development
 
