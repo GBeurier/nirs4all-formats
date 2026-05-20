@@ -37,7 +37,7 @@ fixtures:
 | BUCHI NIRCal | `.nir` | Experimental | `NIRCAL Project File` section reader for 20-sample foliar-transfer fixture; property names are mapped to targets, with the committed zero-valued properties emitted as nulls. |
 | JASCO JWS | `.jws` | Experimental | OLE2 `DataInfo` + `Y-Data` reader for committed FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with semantic labels inferred from JASCO metadata when available. |
 | Horiba LabSpec / JobinYvon | `.xml`, `.txt` LabSpec exports | Experimental | LSX XML single spectra, range exports, linescans and maps plus LabSpec two-column, series-row and map-row text exports. Energy axes currently fall back to `Index` with a warning. |
-| Renishaw WDF | `.wdf` | Experimental | `WDF1` chunk reader for spectral payloads via `DATA`, `XLST` and `YLST`; multi-spectrum maps, lines, depth profiles and interrupted acquisitions emit one record per stored spectrum, with `WMAP`/`ORGN` navigation axes still pending. |
+| Renishaw WDF | `.wdf` | Experimental | `WDF1` chunk reader for spectral payloads via `DATA`, `XLST` and `YLST`; `ORGN`/`WMAP` navigation metadata adds spatial X/Y/Z, FocusTrack Z, elapsed time, map dimensions and map indices for committed map, line, depth, time-series and interrupted acquisitions. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.

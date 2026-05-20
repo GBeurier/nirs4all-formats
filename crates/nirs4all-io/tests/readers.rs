@@ -607,8 +607,24 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
         records[0].metadata["measurement_type_label"].as_str(),
         Some("mapping")
     );
+    assert_eq!(
+        records[0].metadata["map_type_label"].as_str(),
+        Some("xyline")
+    );
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(5));
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-50.0));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-50.0));
+    assert_eq!(records[0].metadata["spatial_x_unit"].as_str(), Some("um"));
+    assert_eq!(records[0].metadata["map_x_index"].as_u64(), Some(0));
+    assert_eq!(records[0].metadata["map_y_index"].as_u64(), Some(0));
+    assert!((records[0].metadata["spatial_distance"].as_f64().unwrap() - 0.0).abs() < 0.000001);
     assert_eq!(records[4].metadata["spectrum_index"].as_u64(), Some(4));
-    assert!(records[0]
+    assert_eq!(records[4].metadata["map_x_index"].as_u64(), Some(4));
+    assert!(
+        (records[4].metadata["spatial_x"].as_f64().unwrap() - 34.85281374238569).abs() < 0.000001
+    );
+    assert!((records[4].metadata["spatial_distance"].as_f64().unwrap() - 120.0).abs() < 0.00001);
+    assert!(!records[0]
         .provenance
         .warnings
         .contains(&"renishaw_wdf_navigation_axes_pending".to_string()));
@@ -623,6 +639,15 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
     ))
     .expect("open interrupted WDF");
     assert_eq!(records.len(), 12);
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(4));
+    assert_eq!(records[11].metadata["map_x_index"].as_u64(), Some(3));
+    assert_eq!(records[11].metadata["map_y_index"].as_u64(), Some(2));
+    assert!(
+        (records[0].metadata["spatial_x"].as_f64().unwrap() - 9250.073496942934).abs() < 0.000001
+    );
+    assert!(
+        (records[11].metadata["spatial_y"].as_f64().unwrap() - 3354.234361049107).abs() < 0.000001
+    );
     assert!(records[0]
         .provenance
         .warnings
@@ -632,6 +657,48 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
     assert_eq!(signal.axis.unit, "cm-1");
     assert!((signal.values[0] - 73.42675018310547).abs() < 0.000001);
     assert!((signal.values.iter().sum::<f64>() - 168272.582141).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_map.wdf",
+    ))
+    .expect("open WDF map");
+    assert_eq!(records.len(), 9);
+    assert_eq!(
+        records[0].metadata["map_type_label"].as_str(),
+        Some("unspecified")
+    );
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(3));
+    assert_eq!(records[0].metadata["map_height"].as_u64(), Some(3));
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-100.0));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-100.0));
+    assert_eq!(records[8].metadata["spatial_x"].as_f64(), Some(100.0));
+    assert_eq!(records[8].metadata["spatial_y"].as_f64(), Some(100.0));
+    assert_eq!(records[8].metadata["map_x_index"].as_u64(), Some(2));
+    assert_eq!(records[8].metadata["map_y_index"].as_u64(), Some(2));
+
+    let records =
+        open_path(workspace_file("samples/raman_renishaw/wire_depth.wdf")).expect("open WDF depth");
+    assert_eq!(records.len(), 40);
+    assert_eq!(records[0].metadata["spatial_z"].as_f64(), Some(-10.0));
+    assert_eq!(records[39].metadata["spatial_z"].as_f64(), Some(9.5));
+    assert_eq!(
+        records[0].metadata["elapsed_time_seconds"].as_f64(),
+        Some(0.0)
+    );
+
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_focustrack.wdf",
+    ))
+    .expect("open WDF focustrack");
+    assert_eq!(records.len(), 3);
+    assert!(
+        (records[0].metadata["focus_track_z"].as_f64().unwrap() - 31.599992786938856).abs()
+            < 0.000001
+    );
+    assert_eq!(
+        records[0].metadata["focus_track_z_unit"].as_str(),
+        Some("um")
+    );
 }
 
 #[test]

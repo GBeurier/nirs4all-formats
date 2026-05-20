@@ -40,9 +40,9 @@ Real-world Renishaw acquisitions, larger and richer than the rsciio fixtures.
 - Magic: bytes 0-3 are `57 44 46 31` (`WDF1`).
 - Structure: chunk-based, similar in spirit to RIFF — each block has a 16-byte header + payload. Block types include `DATA`, `XLST`, `YLST`, `ORGN` (origin metadata), `WMAP` (map info), `WHTL` (white-light image), `WXIS` (X-axis info), `WXDA` (X-axis data), `WXDB`, etc.
 - Current native reader: spectral payload subset through `DATA`, `XLST` and
-  `YLST`. Map/line/depth/time-series fixtures are emitted one record per stored
-  spectrum with `spectrum_index`; `WMAP`/`ORGN` navigation axes are the next
-  reverse-engineering target.
+  `YLST`, plus `ORGN`/`WMAP` navigation metadata. Map/line/depth/time-series
+  fixtures are emitted one record per stored spectrum with `spectrum_index`,
+  spatial axes, elapsed time and map indices when present.
 - Reference reader:
   - Python: [`rsciio.renishaw`](https://hyperspy.org/rosettasciio/) (most active — supports all map modes), [`py-wdf-reader`](https://github.com/alchem0x2A/py-wdf-reader) / [`renishawWiRE`](https://pypi.org/project/renishawWiRE/) (older but documented).
 - Sample-count: a single `.wdf` from a map mode can contain tens of thousands of spectra — load lazily.

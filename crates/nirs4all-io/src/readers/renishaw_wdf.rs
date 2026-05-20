@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use nirs4all_io_core::{AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile};
-use serde_json::json;
+use serde_json::{json, Value};
 
 use crate::readers::util::{single_signal_record, SingleSignalSpec};
 use crate::Reader;
@@ -69,6 +69,41 @@ struct WdfHeader {
     title: String,
 }
 
+#[derive(Clone)]
+struct WdfOriginAxis {
+    data_type_code: u32,
+    data_type_label: &'static str,
+    high_bit_set: bool,
+    unit_code: u32,
+    unit: String,
+    annotation: String,
+    values: WdfOriginValues,
+}
+
+#[derive(Clone)]
+enum WdfOriginValues {
+    Float(Vec<f64>),
+    U64(Vec<u64>),
+}
+
+#[derive(Clone)]
+struct WdfMapInfo {
+    map_type_code: u32,
+    map_type_label: &'static str,
+    reserved: u32,
+    offset_xyz: [f64; 3],
+    scale_xyz: [f64; 3],
+    size_xyz: [u32; 3],
+    linefocus_size: u32,
+}
+
+#[derive(Default)]
+struct WdfNavigation {
+    origin_axes: Vec<WdfOriginAxis>,
+    map: Option<WdfMapInfo>,
+    warnings: Vec<String>,
+}
+
 fn parse_renishaw_wdf(
     bytes: &[u8],
     source: SourceFile,
@@ -120,6 +155,7 @@ fn parse_renishaw_wdf(
         (None, None)
     };
     let signal_unit = y_unit_code.and_then(wdf_signal_unit);
+    let navigation = parse_navigation(bytes, &blocks, &header, spectrum_count)?;
 
     let mut metadata = BTreeMap::new();
     metadata.insert("container".to_string(), json!("wdf1"));
@@ -179,10 +215,12 @@ fn parse_renishaw_wdf(
     if !header.title.is_empty() {
         metadata.insert("title".to_string(), json!(header.title));
     }
+    insert_navigation_metadata(&mut metadata, &navigation);
 
     let mut warnings = vec!["renishaw_wdf_reverse_engineered_chunks".to_string()];
-    if spectrum_count > 1 {
-        warnings.push("renishaw_wdf_navigation_axes_pending".to_string());
+    warnings.extend(navigation.warnings.iter().cloned());
+    if spectrum_count > 1 && navigation.origin_axes.is_empty() && navigation.map.is_none() {
+        warnings.push("renishaw_wdf_navigation_axes_missing".to_string());
     }
     if header.capacity > header.count && available_spectra > spectrum_count {
         warnings.push("renishaw_wdf_interrupted_acquisition_truncated_to_count".to_string());
@@ -194,6 +232,7 @@ fn parse_renishaw_wdf(
         let values = read_f32_values(bytes, offset, header.point_count)?;
         let mut record_metadata = metadata.clone();
         record_metadata.insert("spectrum_index".to_string(), json!(spectrum_index));
+        insert_record_navigation(&mut record_metadata, &navigation, spectrum_index);
         let record = single_signal_record(
             "renishaw-wdf",
             reader,
@@ -215,6 +254,371 @@ fn parse_renishaw_wdf(
         records.push(record);
     }
     Ok(records)
+}
+
+fn parse_navigation(
+    bytes: &[u8],
+    blocks: &[WdfBlock],
+    header: &WdfHeader,
+    spectrum_count: usize,
+) -> Result<WdfNavigation> {
+    let mut navigation = WdfNavigation::default();
+
+    if let Some(block) = blocks.iter().find(|block| block.name == "ORGN") {
+        let (origin_axes, warnings) = parse_origin_axes(bytes, block, header, spectrum_count)?;
+        navigation.origin_axes = origin_axes;
+        navigation.warnings.extend(warnings);
+    }
+
+    if let Some(block) = blocks.iter().find(|block| block.name == "WMAP") {
+        let map = parse_wmap(bytes, block)?;
+        if !matches!(map.map_type_code, 0 | 2 | 128) {
+            navigation
+                .warnings
+                .push("renishaw_wdf_map_type_not_fully_normalized".to_string());
+        }
+        navigation.map = Some(map);
+    } else if header.measurement_type == 3 && spectrum_count > 1 {
+        navigation
+            .warnings
+            .push("renishaw_wdf_mapping_wmap_missing".to_string());
+    }
+
+    Ok(navigation)
+}
+
+fn parse_origin_axes(
+    bytes: &[u8],
+    block: &WdfBlock,
+    header: &WdfHeader,
+    spectrum_count: usize,
+) -> Result<(Vec<WdfOriginAxis>, Vec<String>)> {
+    if block.payload_len < 4 {
+        return Err(Error::InvalidRecord(
+            "Renishaw WDF ORGN block is too short for axis count".to_string(),
+        ));
+    }
+
+    let origin_count = read_u32(bytes, block.payload_offset)? as usize;
+    let mut warnings = Vec::new();
+    if header.other_data_count != origin_count as u32 {
+        warnings.push("renishaw_wdf_origin_axis_count_mismatch".to_string());
+    }
+    if origin_count == 0 {
+        return Ok((Vec::new(), warnings));
+    }
+
+    let capacity_count = usize::try_from(header.capacity).map_err(|_| {
+        Error::InvalidRecord("Renishaw WDF ORGN capacity does not fit usize".to_string())
+    })?;
+    let capacity_stride = origin_axis_stride(capacity_count)?;
+    let capacity_expected_len = origin_block_len(origin_count, capacity_stride)?;
+    let value_slots = if capacity_expected_len <= block.payload_len {
+        capacity_count
+    } else {
+        let count_stride = origin_axis_stride(spectrum_count)?;
+        let count_expected_len = origin_block_len(origin_count, count_stride)?;
+        if count_expected_len <= block.payload_len {
+            warnings.push("renishaw_wdf_origin_axis_uses_count_stride".to_string());
+            spectrum_count
+        } else {
+            return Err(Error::InvalidRecord(format!(
+                "Renishaw WDF ORGN block length {} does not fit {origin_count} axes",
+                block.payload_len
+            )));
+        }
+    };
+    let stride = origin_axis_stride(value_slots)?;
+
+    let mut axes = Vec::with_capacity(origin_count);
+    for axis_index in 0..origin_count {
+        let offset = block.payload_offset + 4 + axis_index * stride;
+        let raw_data_type = read_u32(bytes, offset)?;
+        let data_type_code = raw_data_type & !(1u32 << 31);
+        let unit_code = read_u32(bytes, offset + 4)?;
+        let annotation = null_terminated_ascii(&bytes[offset + 8..offset + 24]);
+        let values_offset = offset + 24;
+        let values = if data_type_code == 11 {
+            WdfOriginValues::U64(read_u64_values(bytes, values_offset, spectrum_count)?)
+        } else {
+            WdfOriginValues::Float(read_f64_values(bytes, values_offset, spectrum_count)?)
+        };
+        axes.push(WdfOriginAxis {
+            data_type_code,
+            data_type_label: wdf_origin_data_type_label(data_type_code),
+            high_bit_set: (raw_data_type & (1u32 << 31)) != 0,
+            unit_code,
+            unit: wdf_unit_label(unit_code).to_string(),
+            annotation,
+            values,
+        });
+    }
+
+    Ok((axes, warnings))
+}
+
+fn origin_axis_stride(value_slots: usize) -> Result<usize> {
+    let data_len = value_slots.checked_mul(8).ok_or_else(|| {
+        Error::InvalidRecord("Renishaw WDF ORGN axis data length overflow".to_string())
+    })?;
+    24usize
+        .checked_add(data_len)
+        .ok_or_else(|| Error::InvalidRecord("Renishaw WDF ORGN axis stride overflow".to_string()))
+}
+
+fn origin_block_len(origin_count: usize, stride: usize) -> Result<usize> {
+    let axes_len = origin_count.checked_mul(stride).ok_or_else(|| {
+        Error::InvalidRecord("Renishaw WDF ORGN block length overflow".to_string())
+    })?;
+    4usize
+        .checked_add(axes_len)
+        .ok_or_else(|| Error::InvalidRecord("Renishaw WDF ORGN block length overflow".to_string()))
+}
+
+fn parse_wmap(bytes: &[u8], block: &WdfBlock) -> Result<WdfMapInfo> {
+    if block.payload_len < 48 {
+        return Err(Error::InvalidRecord(
+            "Renishaw WDF WMAP block is too short".to_string(),
+        ));
+    }
+    let offset = block.payload_offset;
+    let map_type_code = read_u32(bytes, offset)?;
+    let reserved = read_u32(bytes, offset + 4)?;
+    let offset_xyz = [
+        read_f32(bytes, offset + 8)? as f64,
+        read_f32(bytes, offset + 12)? as f64,
+        read_f32(bytes, offset + 16)? as f64,
+    ];
+    let scale_xyz = [
+        read_f32(bytes, offset + 20)? as f64,
+        read_f32(bytes, offset + 24)? as f64,
+        read_f32(bytes, offset + 28)? as f64,
+    ];
+    let size_xyz = [
+        read_u32(bytes, offset + 32)?,
+        read_u32(bytes, offset + 36)?,
+        read_u32(bytes, offset + 40)?,
+    ];
+    let linefocus_size = read_u32(bytes, offset + 44)?;
+    Ok(WdfMapInfo {
+        map_type_code,
+        map_type_label: wdf_map_type_label(map_type_code),
+        reserved,
+        offset_xyz,
+        scale_xyz,
+        size_xyz,
+        linefocus_size,
+    })
+}
+
+fn insert_navigation_metadata(metadata: &mut BTreeMap<String, Value>, navigation: &WdfNavigation) {
+    if !navigation.origin_axes.is_empty() {
+        metadata.insert(
+            "origin_axis_count".to_string(),
+            json!(navigation.origin_axes.len()),
+        );
+        metadata.insert(
+            "origin_axes".to_string(),
+            json!(navigation
+                .origin_axes
+                .iter()
+                .map(origin_axis_metadata)
+                .collect::<Vec<_>>()),
+        );
+    }
+
+    if let Some(map) = &navigation.map {
+        metadata.insert("map_type_code".to_string(), json!(map.map_type_code));
+        metadata.insert("map_type_label".to_string(), json!(map.map_type_label));
+        metadata.insert("map_width".to_string(), json!(map.size_xyz[0]));
+        metadata.insert("map_height".to_string(), json!(map.size_xyz[1]));
+        metadata.insert("map_depth".to_string(), json!(map.size_xyz[2]));
+        metadata.insert("map_linefocus_size".to_string(), json!(map.linefocus_size));
+        metadata.insert(
+            "wmap".to_string(),
+            json!({
+                "map_type": map.map_type_code,
+                "map_type_label": map.map_type_label,
+                "reserved": map.reserved,
+                "offset_xyz": map.offset_xyz,
+                "scale_xyz": map.scale_xyz,
+                "size_xyz": map.size_xyz,
+                "linefocus_size": map.linefocus_size,
+            }),
+        );
+    }
+}
+
+fn origin_axis_metadata(axis: &WdfOriginAxis) -> Value {
+    json!({
+        "data_type": axis.data_type_code,
+        "data_type_label": axis.data_type_label,
+        "high_bit_set": axis.high_bit_set,
+        "unit_code": axis.unit_code,
+        "unit": axis.unit.as_str(),
+        "annotation": axis.annotation.as_str(),
+        "record_count": axis.values.len(),
+    })
+}
+
+fn insert_record_navigation(
+    metadata: &mut BTreeMap<String, Value>,
+    navigation: &WdfNavigation,
+    spectrum_index: usize,
+) {
+    for axis in &navigation.origin_axes {
+        insert_origin_axis_value(metadata, axis, spectrum_index);
+    }
+    if let Some(map) = &navigation.map {
+        insert_map_indices(metadata, map, spectrum_index);
+    }
+}
+
+fn insert_origin_axis_value(
+    metadata: &mut BTreeMap<String, Value>,
+    axis: &WdfOriginAxis,
+    spectrum_index: usize,
+) {
+    match axis.data_type_code {
+        3 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                insert_spatial(metadata, "x", value, &axis.unit);
+            }
+        }
+        4 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                insert_spatial(metadata, "y", value, &axis.unit);
+            }
+        }
+        5 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                insert_spatial(metadata, "z", value, &axis.unit);
+            }
+        }
+        11 => {
+            if let Some(value) = axis.values.u64(spectrum_index) {
+                metadata.insert("time_filetime_100ns".to_string(), json!(value));
+                if let Some(first) = axis.values.u64(0) {
+                    metadata.insert(
+                        "elapsed_time_seconds".to_string(),
+                        json!((value as f64 - first as f64) / 10_000_000.0),
+                    );
+                    metadata.insert("elapsed_time_unit".to_string(), json!("s"));
+                }
+            }
+        }
+        14 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("focus_track_z".to_string(), json!(value));
+                metadata.insert("focus_track_z_unit".to_string(), json!(axis.unit.as_str()));
+            }
+        }
+        18 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("elapsed_time_interval".to_string(), json!(value));
+                metadata.insert(
+                    "elapsed_time_interval_unit".to_string(),
+                    json!(axis.unit.as_str()),
+                );
+            }
+        }
+        22 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("multiwell_spatial_x".to_string(), json!(value));
+                metadata.insert(
+                    "multiwell_spatial_x_unit".to_string(),
+                    json!(axis.unit.as_str()),
+                );
+            }
+        }
+        23 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("multiwell_spatial_y".to_string(), json!(value));
+                metadata.insert(
+                    "multiwell_spatial_y_unit".to_string(),
+                    json!(axis.unit.as_str()),
+                );
+            }
+        }
+        24 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("multiwell_location_index".to_string(), json!(value));
+            }
+        }
+        27 => {
+            if let Some(value) = axis.values.float(spectrum_index) {
+                metadata.insert("exposure_time".to_string(), json!(value));
+                metadata.insert("exposure_time_unit".to_string(), json!(axis.unit.as_str()));
+            }
+        }
+        _ => {}
+    }
+}
+
+fn insert_spatial(metadata: &mut BTreeMap<String, Value>, axis: &str, value: f64, unit: &str) {
+    metadata.insert(format!("spatial_{axis}"), json!(value));
+    metadata.insert(format!("spatial_{axis}_unit"), json!(unit));
+}
+
+fn insert_map_indices(metadata: &mut BTreeMap<String, Value>, map: &WdfMapInfo, index: usize) {
+    let size_x = map.size_xyz[0] as usize;
+    let size_y = map.size_xyz[1] as usize;
+    if size_x == 0 || size_y == 0 {
+        return;
+    }
+
+    let (map_x_index, map_y_index) = if map.map_type_code == 2 {
+        (index / size_y, index % size_y)
+    } else {
+        (index % size_x, index / size_x)
+    };
+    metadata.insert("map_x_index".to_string(), json!(map_x_index));
+    metadata.insert("map_y_index".to_string(), json!(map_y_index));
+
+    if map.map_type_code == 128 {
+        if let (Some(x), Some(y)) = (
+            metadata.get("spatial_x").and_then(Value::as_f64),
+            metadata.get("spatial_y").and_then(Value::as_f64),
+        ) {
+            let dx = x - map.offset_xyz[0];
+            let dy = y - map.offset_xyz[1];
+            metadata.insert(
+                "spatial_distance".to_string(),
+                json!((dx * dx + dy * dy).sqrt()),
+            );
+            let unit = metadata
+                .get("spatial_x_unit")
+                .and_then(Value::as_str)
+                .or_else(|| metadata.get("spatial_y_unit").and_then(Value::as_str))
+                .map(str::to_string);
+            if let Some(unit) = unit {
+                metadata.insert("spatial_distance_unit".to_string(), json!(unit));
+            }
+        }
+    }
+}
+
+impl WdfOriginValues {
+    fn len(&self) -> usize {
+        match self {
+            WdfOriginValues::Float(values) => values.len(),
+            WdfOriginValues::U64(values) => values.len(),
+        }
+    }
+
+    fn float(&self, index: usize) -> Option<f64> {
+        match self {
+            WdfOriginValues::Float(values) => values.get(index).copied(),
+            WdfOriginValues::U64(_) => None,
+        }
+    }
+
+    fn u64(&self, index: usize) -> Option<u64> {
+        match self {
+            WdfOriginValues::Float(_) => None,
+            WdfOriginValues::U64(values) => values.get(index).copied(),
+        }
+    }
 }
 
 fn parse_wdf_header(bytes: &[u8]) -> Result<WdfHeader> {
@@ -305,6 +709,38 @@ fn read_f32_values(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<f64>
     Ok(out)
 }
 
+fn read_f64_values(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<f64>> {
+    let byte_len = count
+        .checked_mul(8)
+        .ok_or_else(|| Error::InvalidRecord("Renishaw WDF vector length overflow".to_string()))?;
+    if offset + byte_len > bytes.len() {
+        return Err(Error::InvalidRecord(
+            "Renishaw WDF vector extends past end of file".to_string(),
+        ));
+    }
+    let mut out = Vec::with_capacity(count);
+    for index in 0..count {
+        out.push(read_f64(bytes, offset + index * 8)?);
+    }
+    Ok(out)
+}
+
+fn read_u64_values(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<u64>> {
+    let byte_len = count
+        .checked_mul(8)
+        .ok_or_else(|| Error::InvalidRecord("Renishaw WDF vector length overflow".to_string()))?;
+    if offset + byte_len > bytes.len() {
+        return Err(Error::InvalidRecord(
+            "Renishaw WDF vector extends past end of file".to_string(),
+        ));
+    }
+    let mut out = Vec::with_capacity(count);
+    for index in 0..count {
+        out.push(read_u64(bytes, offset + index * 8)?);
+    }
+    Ok(out)
+}
+
 fn wdf_axis_kind_unit(unit_code: u32) -> (AxisKind, String) {
     match unit_code {
         1 => (AxisKind::Wavenumber, "cm-1".to_string()),
@@ -317,6 +753,84 @@ fn wdf_signal_unit(unit_code: u32) -> Option<String> {
     match unit_code {
         16 => Some("counts".to_string()),
         _ => None,
+    }
+}
+
+fn wdf_unit_label(unit_code: u32) -> &'static str {
+    match unit_code {
+        0 => "",
+        1 => "cm-1",
+        2 | 3 => "nm",
+        4 => "eV",
+        5 => "um",
+        6 => "counts",
+        7 => "electrons",
+        8 => "mm",
+        9 => "m",
+        10 => "K",
+        11 => "Pa",
+        12 => "s",
+        13 => "ms",
+        14 => "h",
+        15 => "d",
+        16 => "px",
+        17 => "intensity",
+        18 => "relative_intensity",
+        19 => "deg",
+        20 => "rad",
+        21 => "degC",
+        22 => "degF",
+        23 => "K/min",
+        24 => "windows-filetime-100ns",
+        25 => "us",
+        _ => "unknown",
+    }
+}
+
+fn wdf_origin_data_type_label(data_type_code: u32) -> &'static str {
+    match data_type_code {
+        0 => "arbitrary",
+        1 => "spectral",
+        2 => "intensity",
+        3 => "x",
+        4 => "y",
+        5 => "z",
+        6 => "spatial_r",
+        7 => "spatial_theta",
+        8 => "spatial_phi",
+        9 => "temperature",
+        10 => "pressure",
+        11 => "time",
+        12 => "derivative",
+        13 => "polarization",
+        14 => "focus_track_z",
+        15 => "temperature_ramp_rate",
+        16 => "spectrum_data_checksum",
+        17 => "bit_flags",
+        18 => "elapsed_time_intervals",
+        19 => "frequency",
+        22 => "multiwell_spatial_x",
+        23 => "multiwell_spatial_y",
+        24 => "multiwell_location_index",
+        25 => "multiwell_reference",
+        26 => "end_marker",
+        27 => "exposure_time",
+        _ => "unknown",
+    }
+}
+
+fn wdf_map_type_label(map_type_code: u32) -> &'static str {
+    match map_type_code {
+        0 => "unspecified",
+        1 => "random_points",
+        2 => "column_major",
+        4 => "alternating",
+        8 => "linefocus_mapping",
+        16 => "inverted_rows",
+        32 => "inverted_columns",
+        64 => "surface_profile",
+        128 => "xyline",
+        _ => "unknown",
     }
 }
 
@@ -372,4 +886,13 @@ fn read_f32(bytes: &[u8], offset: usize) -> Result<f32> {
         Error::InvalidRecord("Renishaw WDF f32 read past end of file".to_string())
     })?;
     Ok(f32::from_le_bytes([value[0], value[1], value[2], value[3]]))
+}
+
+fn read_f64(bytes: &[u8], offset: usize) -> Result<f64> {
+    let value = bytes.get(offset..offset + 8).ok_or_else(|| {
+        Error::InvalidRecord("Renishaw WDF f64 read past end of file".to_string())
+    })?;
+    Ok(f64::from_le_bytes([
+        value[0], value[1], value[2], value[3], value[4], value[5], value[6], value[7],
+    ]))
 }
