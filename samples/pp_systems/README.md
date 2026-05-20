@@ -15,4 +15,4 @@
 - DC files contain two simultaneous channels (typically up- and down-looking radiometers).
 - Reference open-source reader: none known; SPECCHIO's parser is closed-source.
 - No publicly redistributable real raw `.SPT/.SPU` samples were found.
-- Local Arctic LTER UniSpec-DC CSV/XLSX files are derived vegetation-index products, not raw spectra.
+- Local Arctic LTER UniSpec-DC CSV/XLSX files are derived vegetation-index products, not raw spectra; they are refused explicitly until raw `.SPT/.SPU` files or the referenced wavelength-indexed reflectance scan table are available.
