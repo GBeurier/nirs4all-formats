@@ -196,6 +196,7 @@ fn reads_microtops_man_netcdf_and_refuses_pyrnet() {
     let aot = records[0].signals.get("aot").expect("aot");
     assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
     assert_eq!(aot.unit.as_deref(), Some("1"));
+    assert_eq!(aot.signal_type, SignalType::AerosolOpticalThickness);
     assert_close(aot.values[0], 0.262656);
     assert_close(aot.values[4], 0.195324);
     let aot_std = records[0].signals.get("aot_std").expect("aot_std");

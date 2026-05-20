@@ -15,5 +15,6 @@ pub enum SignalType {
     KubelkaMunk,
     Derivative,
     Preprocessed,
+    AerosolOpticalThickness,
     Unknown,
 }

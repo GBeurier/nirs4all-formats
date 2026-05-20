@@ -407,6 +407,7 @@ fn canonical_signal_name(label: &str, signal_type: &SignalType) -> String {
         SignalType::KubelkaMunk => "kubelka_munk".to_string(),
         SignalType::Derivative => "derivative".to_string(),
         SignalType::Preprocessed => "preprocessed".to_string(),
+        SignalType::AerosolOpticalThickness => "aot".to_string(),
         SignalType::Unknown => safe_signal_name(label, "signal"),
     }
 }

@@ -563,7 +563,7 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
                 axis.clone(),
                 aot_values,
                 vec!["x".to_string()],
-                SignalType::Unknown,
+                SignalType::AerosolOpticalThickness,
                 Some("1".to_string()),
                 "aot",
                 "file",
@@ -617,7 +617,7 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
 
         let record = SpectralRecord {
             signals,
-            signal_type: SignalType::Unknown,
+            signal_type: SignalType::AerosolOpticalThickness,
             targets: BTreeMap::new(),
             metadata,
             provenance: provenance(

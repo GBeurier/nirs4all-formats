@@ -20,7 +20,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -32,7 +32,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -63,7 +63,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -75,7 +75,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -106,7 +106,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -118,7 +118,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -149,7 +149,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -161,7 +161,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -192,7 +192,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -204,7 +204,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -235,7 +235,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -247,7 +247,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -278,7 +278,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -290,7 +290,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -321,7 +321,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -333,7 +333,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -364,7 +364,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -376,7 +376,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -407,7 +407,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -419,7 +419,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -450,7 +450,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -462,7 +462,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -493,7 +493,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -505,7 +505,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -536,7 +536,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -548,7 +548,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -579,7 +579,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -591,7 +591,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -622,7 +622,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -634,7 +634,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -665,7 +665,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -677,7 +677,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -708,7 +708,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -720,7 +720,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -751,7 +751,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -763,7 +763,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -794,7 +794,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -806,7 +806,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,
@@ -837,7 +837,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::sun_photometer",
-      "record_signal_type": "unknown",
+      "record_signal_type": "aerosol_optical_thickness",
       "signal_count": 1,
       "signals": [
         {
@@ -849,7 +849,7 @@
           "axis_unit": "nm",
           "name": "aot",
           "role": "aot",
-          "signal_type": "unknown",
+          "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
           "value_last": 0.211,

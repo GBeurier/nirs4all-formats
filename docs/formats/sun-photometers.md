@@ -34,12 +34,12 @@ AERONET MAN ASCII reader is validated against all available Okeanos exports:
 `.lev10`, `.lev15` and `.lev20` all-points files, plus `.lev15` and `.lev20`
 daily and series aggregations. It preserves campaign, level, aggregation, PI
 fields and row metadata, while omitting missing `-999` AOD channels from the
-spectral axis.
+spectral axis. Microtops and MAN `aot` arrays use the dedicated
+`aerosol_optical_thickness` signal type; `aot_std` remains an uncertainty
+side signal.
 
 ## Limitations
 
-- Aerosol optical thickness has no dedicated `SignalType`; it is currently
-  emitted as `unknown`.
 - No atmospheric correction or unit conversion is applied.
 - The real MAN NetCDF fixture is discovered as a Microtops `aot_<nm>` schema,
   but still uses a SHA-256-guarded payload fallback because the pure-Rust

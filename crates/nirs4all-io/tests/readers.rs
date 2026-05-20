@@ -3335,6 +3335,7 @@ fn reads_sun_photometer_channel_exports() {
     let aot = records[0].signals.get("aot").expect("aot");
     assert_eq!(aot.axis.values, vec![1020.0, 870.0, 675.0]);
     assert_eq!(aot.axis.unit, "nm");
+    assert_eq!(aot.signal_type, SignalType::AerosolOpticalThickness);
     assert!((aot.values[0] - 0.124).abs() < 0.000001);
     assert!((aot.values[2] - 0.211).abs() < 0.000001);
 }
@@ -3404,6 +3405,7 @@ fn reads_local_microtops_man_ascii_when_present() {
         let aot = records[0].signals.get("aot").expect("aot");
         assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
         assert_eq!(aot.axis.unit, "nm");
+        assert_eq!(aot.signal_type, SignalType::AerosolOpticalThickness);
         assert_eq!(records[0].signals.contains_key("aot_std"), has_std);
     }
 
@@ -3436,6 +3438,7 @@ fn reads_local_microtops_man_ascii_when_present() {
     assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
     assert_eq!(aot.axis.unit, "nm");
     assert_eq!(aot.unit.as_deref(), Some("1"));
+    assert_eq!(aot.signal_type, SignalType::AerosolOpticalThickness);
     assert!((aot.values[0] - 0.095165).abs() < 0.000001);
     assert!((aot.values[4] - 0.05505).abs() < 0.000001);
 
