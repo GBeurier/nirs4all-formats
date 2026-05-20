@@ -20,6 +20,7 @@ formats/digitalsurf
 formats/envi-sli
 formats/excel
 formats/galactic-spc
+formats/hamamatsu-img
 formats/hdf5
 formats/horiba-labspec
 formats/jasco-jws
