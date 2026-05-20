@@ -9,7 +9,8 @@ The Rust crates, Python package, R package and reverse-lab code are MIT.
 Runtime parser dependencies must remain permissive. Current container helpers
 include pure-Rust crates such as `calamine`, `hdf5-reader`, `matfile` and
 `cfb`; the added `cfb` OLE2 reader is MIT, with immediate transitive
-dependencies under MIT / Apache-2.0-compatible terms.
+dependencies under MIT / Apache-2.0-compatible terms. `flate2` is used for
+zlib-compressed MAT v5 blocks and is MIT / Apache-2.0-compatible.
 
 ## Reference Reader Rule
 

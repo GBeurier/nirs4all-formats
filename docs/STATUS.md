@@ -36,8 +36,9 @@ Experimental native readers:
   and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
   pending;
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
-  + optional `y` datasets; object/DSO `.mat` files and `.RData` are still
-  pending dedicated schema mappers;
+  + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
+  Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
+  fixtures; `.RData` still needs a dedicated R serialization mapper;
 - Excel workbooks: simple `.xlsx/.xlsm` spectral tables with numeric wavelength
   headers; legacy `.xls` and multi-sheet lab templates remain pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
@@ -111,8 +112,7 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. add dedicated MATLAB struct/DSO and `.RData` dataset mappers for Eigenvector
-   Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
+1. add a dedicated `.RData` mapper for prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets and
    JASCO `.jws` semantic channel labels;

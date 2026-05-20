@@ -11,6 +11,7 @@ repository.workspace = true
 nirs4all-io-core.workspace = true
 calamine = "0.35.0"
 cfb = "0.14.0"
+flate2 = "1.1.5"
 hdf5-reader = "0.5.0"
 matfile = "0.5.0"
 netcdf-reader = "0.5.0"

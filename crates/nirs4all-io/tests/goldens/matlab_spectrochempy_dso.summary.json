@@ -1,0 +1,705 @@
+{
+  "record_count": 20,
+  "records": [
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000091,
+          "value_last": 0.000645,
+          "value_sum": 2.566202,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.00005,
+          "value_last": 0.000521,
+          "value_sum": 2.253595,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000163,
+          "value_last": 0.000356,
+          "value_sum": 1.822495,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.00008,
+          "value_last": 0.000197,
+          "value_sum": 0.975644,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000271,
+          "value_last": 0.001241,
+          "value_sum": 6.818527,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000029,
+          "value_last": 0.001275,
+          "value_sum": 7.081364,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000309,
+          "value_last": 0.00132,
+          "value_sum": 6.076124,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000171,
+          "value_last": 0.001403,
+          "value_sum": 6.477208,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000146,
+          "value_last": 0.001155,
+          "value_sum": 3.994966,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000534,
+          "value_last": 0.000728,
+          "value_sum": 3.125457,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000172,
+          "value_last": 0.000561,
+          "value_sum": 3.574872,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000714,
+          "value_last": 0.001255,
+          "value_sum": 2.834123,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000284,
+          "value_last": 0.001116,
+          "value_sum": 8.669081,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000282,
+          "value_last": 0.001177,
+          "value_sum": 8.337258,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000133,
+          "value_last": 0.001082,
+          "value_sum": 8.029603,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000149,
+          "value_last": 0.001083,
+          "value_sum": 7.612786,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000191,
+          "value_last": 0.001165,
+          "value_sum": 4.48449,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000175,
+          "value_last": 0.001383,
+          "value_sum": 5.254444,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000179,
+          "value_last": 0.001281,
+          "value_sum": 4.89109,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "matlab-spectrochempy-dso",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "dso_name",
+        "pressure_bar",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2210.059238,
+          "axis_kind": "wavenumber",
+          "axis_last": 1800.253314,
+          "axis_len": 426,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000192,
+          "value_last": 0.001221,
+          "value_sum": 5.567082,
+          "values_len": 426
+        }
+      ],
+      "source_sha256": "9baa6ab51aa75cbc07802d677275506250a75b46bff872a809d6b9d8deed4c1a",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

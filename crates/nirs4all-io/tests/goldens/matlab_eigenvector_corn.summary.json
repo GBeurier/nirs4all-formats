@@ -1,0 +1,5605 @@
+{
+  "record_count": 80,
+  "records": [
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.044495,
+          "value_last": 0.730594,
+          "value_sum": 262.547642,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.01244,
+          "value_last": 0.684377,
+          "value_sum": 229.811973,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.022701,
+          "value_last": 0.674056,
+          "value_sum": 221.101652,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046504,
+          "value_last": 0.72703,
+          "value_sum": 261.560393,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014189,
+          "value_last": 0.691869,
+          "value_sum": 231.525333,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021921,
+          "value_last": 0.682164,
+          "value_sum": 223.690124,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046958,
+          "value_last": 0.705967,
+          "value_sum": 254.835603,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013373,
+          "value_last": 0.662983,
+          "value_sum": 221.71886,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02086,
+          "value_last": 0.651517,
+          "value_sum": 213.002083,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045461,
+          "value_last": 0.699682,
+          "value_sum": 248.687998,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.016487,
+          "value_last": 0.659695,
+          "value_sum": 217.365727,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.023631,
+          "value_last": 0.646694,
+          "value_sum": 208.877366,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.053948,
+          "value_last": 0.774116,
+          "value_sum": 287.893611,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008495,
+          "value_last": 0.727811,
+          "value_sum": 253.667835,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015174,
+          "value_last": 0.718106,
+          "value_sum": 246.282318,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.052083,
+          "value_last": 0.778555,
+          "value_sum": 286.070548,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008039,
+          "value_last": 0.748126,
+          "value_sum": 259.736706,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015738,
+          "value_last": 0.732495,
+          "value_sum": 249.466613,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.056716,
+          "value_last": 0.779583,
+          "value_sum": 287.900164,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006016,
+          "value_last": 0.731322,
+          "value_sum": 252.86202,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.012641,
+          "value_last": 0.720083,
+          "value_sum": 245.372712,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.056241,
+          "value_last": 0.784926,
+          "value_sum": 292.60707,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006107,
+          "value_last": 0.739312,
+          "value_sum": 258.137332,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013703,
+          "value_last": 0.729318,
+          "value_sum": 250.107943,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.048786,
+          "value_last": 0.708199,
+          "value_sum": 255.601345,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011135,
+          "value_last": 0.690021,
+          "value_sum": 234.411955,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017899,
+          "value_last": 0.676088,
+          "value_sum": 225.310116,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.049272,
+          "value_last": 0.731033,
+          "value_sum": 263.96815,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013503,
+          "value_last": 0.686068,
+          "value_sum": 230.808847,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020009,
+          "value_last": 0.675677,
+          "value_sum": 223.09289,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.054434,
+          "value_last": 0.840839,
+          "value_sum": 320.076134,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000252,
+          "value_last": 0.790569,
+          "value_sum": 284.238817,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.007409,
+          "value_last": 0.779375,
+          "value_sum": 275.458965,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.054668,
+          "value_last": 0.840538,
+          "value_sum": 314.370336,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.003155,
+          "value_last": 0.79116,
+          "value_sum": 278.587603,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.010314,
+          "value_last": 0.782748,
+          "value_sum": 271.840752,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.039546,
+          "value_last": 0.730474,
+          "value_sum": 260.384318,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013395,
+          "value_last": 0.694329,
+          "value_sum": 231.739679,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020386,
+          "value_last": 0.68274,
+          "value_sum": 223.456153,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040965,
+          "value_last": 0.740485,
+          "value_sum": 266.536604,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013035,
+          "value_last": 0.702093,
+          "value_sum": 237.612877,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.019605,
+          "value_last": 0.692312,
+          "value_sum": 230.415052,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.053086,
+          "value_last": 0.820497,
+          "value_sum": 306.003659,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000867,
+          "value_last": 0.785848,
+          "value_sum": 278.598391,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00747,
+          "value_last": 0.778396,
+          "value_sum": 272.23636,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.054238,
+          "value_last": 0.841374,
+          "value_sum": 316.328264,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.001301,
+          "value_last": 0.808455,
+          "value_sum": 287.05327,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.007647,
+          "value_last": 0.799614,
+          "value_sum": 280.264751,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046986,
+          "value_last": 0.754509,
+          "value_sum": 279.590148,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.007287,
+          "value_last": 0.718736,
+          "value_sum": 249.971484,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014076,
+          "value_last": 0.706761,
+          "value_sum": 241.66988,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045524,
+          "value_last": 0.788369,
+          "value_sum": 292.493983,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006993,
+          "value_last": 0.738174,
+          "value_sum": 258.691014,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013715,
+          "value_last": 0.72746,
+          "value_sum": 251.143357,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046162,
+          "value_last": 0.764113,
+          "value_sum": 284.203963,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00864,
+          "value_last": 0.722422,
+          "value_sum": 253.18817,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015403,
+          "value_last": 0.712116,
+          "value_sum": 245.669566,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.048773,
+          "value_last": 0.794528,
+          "value_sum": 294.507366,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006677,
+          "value_last": 0.754678,
+          "value_sum": 263.541588,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.012833,
+          "value_last": 0.745099,
+          "value_sum": 256.354825,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045741,
+          "value_last": 0.768439,
+          "value_sum": 280.292568,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009014,
+          "value_last": 0.735432,
+          "value_sum": 254.159008,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015345,
+          "value_last": 0.722658,
+          "value_sum": 245.841145,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.047766,
+          "value_last": 0.793721,
+          "value_sum": 294.399478,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008029,
+          "value_last": 0.756848,
+          "value_sum": 263.25011,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.01432,
+          "value_last": 0.747195,
+          "value_sum": 256.706127,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.049731,
+          "value_last": 0.793419,
+          "value_sum": 294.514914,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006707,
+          "value_last": 0.763292,
+          "value_sum": 266.125059,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013409,
+          "value_last": 0.75277,
+          "value_sum": 258.627083,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.048684,
+          "value_last": 0.794147,
+          "value_sum": 294.405775,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006848,
+          "value_last": 0.736082,
+          "value_sum": 255.065411,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.01423,
+          "value_last": 0.725241,
+          "value_sum": 246.882025,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.047567,
+          "value_last": 0.766507,
+          "value_sum": 287.278772,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.001819,
+          "value_last": 0.733231,
+          "value_sum": 258.658208,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009097,
+          "value_last": 0.721477,
+          "value_sum": 250.236698,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.043573,
+          "value_last": 0.75501,
+          "value_sum": 276.469706,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011742,
+          "value_last": 0.710719,
+          "value_sum": 244.913739,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018479,
+          "value_last": 0.700643,
+          "value_sum": 237.230039,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.053401,
+          "value_last": 0.829341,
+          "value_sum": 311.256035,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000857,
+          "value_last": 0.805153,
+          "value_sum": 286.62421,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.005092,
+          "value_last": 0.796062,
+          "value_sum": 279.773877,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.053283,
+          "value_last": 0.834403,
+          "value_sum": 310.932146,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.003486,
+          "value_last": 0.786043,
+          "value_sum": 276.284662,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009007,
+          "value_last": 0.779079,
+          "value_sum": 270.286597,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.053301,
+          "value_last": 0.820229,
+          "value_sum": 306.744997,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.003798,
+          "value_last": 0.771048,
+          "value_sum": 271.555377,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009682,
+          "value_last": 0.761726,
+          "value_sum": 264.558516,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.032015,
+          "value_last": 0.685781,
+          "value_sum": 241.437001,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020602,
+          "value_last": 0.662011,
+          "value_sum": 217.203623,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.027154,
+          "value_last": 0.648398,
+          "value_sum": 208.654378,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.032143,
+          "value_last": 0.693703,
+          "value_sum": 244.321565,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.022056,
+          "value_last": 0.659754,
+          "value_sum": 216.655649,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.027838,
+          "value_last": 0.647291,
+          "value_sum": 208.893426,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040973,
+          "value_last": 0.731489,
+          "value_sum": 265.040745,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017719,
+          "value_last": 0.676233,
+          "value_sum": 225.894677,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.023583,
+          "value_last": 0.66636,
+          "value_sum": 218.457343,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040032,
+          "value_last": 0.739626,
+          "value_sum": 268.758351,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013716,
+          "value_last": 0.714868,
+          "value_sum": 245.252176,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020366,
+          "value_last": 0.70464,
+          "value_sum": 237.42313,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045156,
+          "value_last": 0.790558,
+          "value_sum": 290.49481,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.012817,
+          "value_last": 0.748886,
+          "value_sum": 259.179452,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014575,
+          "value_last": 0.74457,
+          "value_sum": 255.467564,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.04903,
+          "value_last": 0.79494,
+          "value_sum": 295.385128,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009641,
+          "value_last": 0.74527,
+          "value_sum": 259.009592,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014773,
+          "value_last": 0.739172,
+          "value_sum": 253.719239,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03672,
+          "value_last": 0.695626,
+          "value_sum": 246.486493,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018936,
+          "value_last": 0.655846,
+          "value_sum": 216.083629,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.024443,
+          "value_last": 0.646159,
+          "value_sum": 208.943355,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.037727,
+          "value_last": 0.686371,
+          "value_sum": 243.438479,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018735,
+          "value_last": 0.648815,
+          "value_sum": 213.748778,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.024531,
+          "value_last": 0.639088,
+          "value_sum": 206.760144,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040578,
+          "value_last": 0.704639,
+          "value_sum": 252.390791,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.016405,
+          "value_last": 0.656632,
+          "value_sum": 216.829193,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021072,
+          "value_last": 0.649185,
+          "value_sum": 210.841634,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.038076,
+          "value_last": 0.69309,
+          "value_sum": 245.657159,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.016767,
+          "value_last": 0.66626,
+          "value_sum": 219.791275,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.022626,
+          "value_last": 0.656197,
+          "value_sum": 212.857395,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.034388,
+          "value_last": 0.679918,
+          "value_sum": 237.44298,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021543,
+          "value_last": 0.639024,
+          "value_sum": 205.990293,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.027404,
+          "value_last": 0.630199,
+          "value_sum": 199.134974,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.038644,
+          "value_last": 0.689244,
+          "value_sum": 240.928523,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018494,
+          "value_last": 0.641043,
+          "value_sum": 208.538373,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02995,
+          "value_last": 0.629849,
+          "value_sum": 199.256801,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.036815,
+          "value_last": 0.670786,
+          "value_sum": 237.467682,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018249,
+          "value_last": 0.634366,
+          "value_sum": 208.891981,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.030682,
+          "value_last": 0.623995,
+          "value_sum": 199.776536,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03781,
+          "value_last": 0.684685,
+          "value_sum": 239.59193,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020275,
+          "value_last": 0.63716,
+          "value_sum": 207.543028,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.032631,
+          "value_last": 0.625356,
+          "value_sum": 198.28182,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046227,
+          "value_last": 0.720583,
+          "value_sum": 260.835368,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011781,
+          "value_last": 0.68036,
+          "value_sum": 228.303464,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.024281,
+          "value_last": 0.669962,
+          "value_sum": 219.598924,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046194,
+          "value_last": 0.71042,
+          "value_sum": 255.626235,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.01254,
+          "value_last": 0.664244,
+          "value_sum": 221.50371,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.025312,
+          "value_last": 0.655306,
+          "value_sum": 212.965488,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.062052,
+          "value_last": 0.746613,
+          "value_sum": 273.218482,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.007183,
+          "value_last": 0.722775,
+          "value_sum": 251.498124,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006401,
+          "value_last": 0.709275,
+          "value_sum": 241.195773,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.062508,
+          "value_last": 0.778227,
+          "value_sum": 288.863807,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.00305,
+          "value_last": 0.731927,
+          "value_sum": 253.126219,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.010514,
+          "value_last": 0.721911,
+          "value_sum": 243.787101,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.047336,
+          "value_last": 0.727407,
+          "value_sum": 267.663288,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009989,
+          "value_last": 0.68035,
+          "value_sum": 233.3849,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.022683,
+          "value_last": 0.667952,
+          "value_sum": 223.840194,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045945,
+          "value_last": 0.725253,
+          "value_sum": 262.069323,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011464,
+          "value_last": 0.676183,
+          "value_sum": 228.763529,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02443,
+          "value_last": 0.664515,
+          "value_sum": 219.270771,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.042605,
+          "value_last": 0.719414,
+          "value_sum": 259.304696,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014746,
+          "value_last": 0.675378,
+          "value_sum": 227.650655,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.027838,
+          "value_last": 0.663165,
+          "value_sum": 217.680226,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046298,
+          "value_last": 0.742652,
+          "value_sum": 269.980126,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008035,
+          "value_last": 0.706863,
+          "value_sum": 241.947646,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020615,
+          "value_last": 0.694521,
+          "value_sum": 232.399903,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.044428,
+          "value_last": 0.739941,
+          "value_sum": 267.228312,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.007034,
+          "value_last": 0.707363,
+          "value_sum": 242.906571,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.020206,
+          "value_last": 0.694945,
+          "value_sum": 232.646892,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045851,
+          "value_last": 0.758394,
+          "value_sum": 277.630144,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008566,
+          "value_last": 0.720501,
+          "value_sum": 248.420915,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021864,
+          "value_last": 0.70581,
+          "value_sum": 237.785609,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.033803,
+          "value_last": 0.661099,
+          "value_sum": 231.689809,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018043,
+          "value_last": 0.625547,
+          "value_sum": 204.742346,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.031013,
+          "value_last": 0.612809,
+          "value_sum": 194.471633,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03327,
+          "value_last": 0.655875,
+          "value_sum": 229.501497,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017774,
+          "value_last": 0.623999,
+          "value_sum": 203.862606,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.030318,
+          "value_last": 0.612872,
+          "value_sum": 195.004248,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.033569,
+          "value_last": 0.722571,
+          "value_sum": 252.854019,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017004,
+          "value_last": 0.6786,
+          "value_sum": 223.09079,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.03379,
+          "value_last": 0.664469,
+          "value_sum": 211.192992,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.039351,
+          "value_last": 0.773586,
+          "value_sum": 277.179681,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.012841,
+          "value_last": 0.734512,
+          "value_sum": 246.290305,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02583,
+          "value_last": 0.724219,
+          "value_sum": 237.006758,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.039918,
+          "value_last": 0.752073,
+          "value_sum": 273.520961,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.010843,
+          "value_last": 0.717503,
+          "value_sum": 246.134161,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.023874,
+          "value_last": 0.701149,
+          "value_sum": 234.486416,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.039304,
+          "value_last": 0.752501,
+          "value_sum": 269.912378,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013464,
+          "value_last": 0.721139,
+          "value_sum": 244.907831,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.026043,
+          "value_last": 0.708954,
+          "value_sum": 235.430564,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.044356,
+          "value_last": 0.760483,
+          "value_sum": 275.468327,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.009394,
+          "value_last": 0.719414,
+          "value_sum": 245.076182,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021187,
+          "value_last": 0.709741,
+          "value_sum": 236.584048,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040966,
+          "value_last": 0.716965,
+          "value_sum": 257.139208,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011369,
+          "value_last": 0.670143,
+          "value_sum": 224.590794,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.023895,
+          "value_last": 0.665185,
+          "value_sum": 217.607304,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.04273,
+          "value_last": 0.741946,
+          "value_sum": 271.042432,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006465,
+          "value_last": 0.706727,
+          "value_sum": 245.171927,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.019526,
+          "value_last": 0.696657,
+          "value_sum": 235.82615,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.046549,
+          "value_last": 0.768185,
+          "value_sum": 282.368782,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.008927,
+          "value_last": 0.714091,
+          "value_sum": 246.14071,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.021477,
+          "value_last": 0.702551,
+          "value_sum": 236.619684,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.037811,
+          "value_last": 0.736502,
+          "value_sum": 262.479503,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015988,
+          "value_last": 0.687186,
+          "value_sum": 227.866056,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.028119,
+          "value_last": 0.676707,
+          "value_sum": 218.95855,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.040911,
+          "value_last": 0.739964,
+          "value_sum": 266.261598,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.014123,
+          "value_last": 0.691463,
+          "value_sum": 233.73747,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.026591,
+          "value_last": 0.680749,
+          "value_sum": 224.370778,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.034063,
+          "value_last": 0.689922,
+          "value_sum": 243.990981,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018059,
+          "value_last": 0.655031,
+          "value_sum": 215.590355,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.03096,
+          "value_last": 0.646464,
+          "value_sum": 206.742809,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.041837,
+          "value_last": 0.751907,
+          "value_sum": 272.547243,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013918,
+          "value_last": 0.700941,
+          "value_sum": 235.994732,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02662,
+          "value_last": 0.690547,
+          "value_sum": 226.763522,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03967,
+          "value_last": 0.714816,
+          "value_sum": 252.95939,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.012853,
+          "value_last": 0.677692,
+          "value_sum": 227.400606,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.025491,
+          "value_last": 0.666688,
+          "value_sum": 218.070541,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.042248,
+          "value_last": 0.75938,
+          "value_sum": 272.667051,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.013614,
+          "value_last": 0.698669,
+          "value_sum": 234.212044,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.025574,
+          "value_last": 0.690088,
+          "value_sum": 226.096574,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.042089,
+          "value_last": 0.71133,
+          "value_sum": 254.267894,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.011571,
+          "value_last": 0.678612,
+          "value_sum": 226.332197,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.024138,
+          "value_last": 0.665396,
+          "value_sum": 216.683162,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.044026,
+          "value_last": 0.760804,
+          "value_sum": 271.502417,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006786,
+          "value_last": 0.741027,
+          "value_sum": 250.770687,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.010382,
+          "value_last": 0.743123,
+          "value_sum": 249.400073,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.043795,
+          "value_last": 0.766833,
+          "value_sum": 273.542429,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.010698,
+          "value_last": 0.709993,
+          "value_sum": 237.393132,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.022869,
+          "value_last": 0.701656,
+          "value_sum": 228.708374,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.048573,
+          "value_last": 0.714259,
+          "value_sum": 257.926703,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006687,
+          "value_last": 0.654959,
+          "value_sum": 218.838871,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.018925,
+          "value_last": 0.645592,
+          "value_sum": 210.363406,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.045197,
+          "value_last": 0.67382,
+          "value_sum": 240.387001,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00788,
+          "value_last": 0.642468,
+          "value_sum": 213.633559,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.019575,
+          "value_last": 0.627809,
+          "value_sum": 203.773361,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.069101,
+          "value_last": 0.876996,
+          "value_sum": 345.868471,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.010202,
+          "value_last": 0.795608,
+          "value_sum": 294.664226,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.001688,
+          "value_last": 0.792083,
+          "value_sum": 289.624119,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.049494,
+          "value_last": 0.735887,
+          "value_sum": 269.822526,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.005033,
+          "value_last": 0.691873,
+          "value_sum": 240.897164,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017375,
+          "value_last": 0.677734,
+          "value_sum": 230.381004,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.071578,
+          "value_last": 0.845185,
+          "value_sum": 331.904722,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.015558,
+          "value_last": 0.80443,
+          "value_sum": 300.214661,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.000436,
+          "value_last": 0.795361,
+          "value_sum": 290.479672,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.049717,
+          "value_last": 0.747532,
+          "value_sum": 277.308935,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.007136,
+          "value_last": 0.697466,
+          "value_sum": 242.686195,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.017865,
+          "value_last": 0.694381,
+          "value_sum": 237.347977,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.059438,
+          "value_last": 0.735732,
+          "value_sum": 275.410723,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.005116,
+          "value_last": 0.69755,
+          "value_sum": 245.965532,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.006796,
+          "value_last": 0.689125,
+          "value_sum": 237.329553,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "matlab-eigenvector-corn",
+      "metadata_keys": [
+        "container",
+        "dataset",
+        "sample_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::matlab",
+      "record_signal_type": "absorbance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "m5spec",
+          "role": "m5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.050085,
+          "value_last": 0.728245,
+          "value_sum": 271.127793,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp5spec",
+          "role": "mp5spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.003701,
+          "value_last": 0.712129,
+          "value_sum": 250.73775,
+          "values_len": 700
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "mp6spec",
+          "role": "mp6spec",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.015261,
+          "value_last": 0.702071,
+          "value_sum": 242.711138,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e28fd4be274a54ca57b1f2c67ef5a8bf4981f8314bcc73e4c64836fe658c46b5",
+      "target_keys": [
+        "moisture",
+        "oil",
+        "protein",
+        "starch"
+      ],
+      "warnings": []
+    }
+  ]
+}
