@@ -152,7 +152,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `scio/` | Consumer Physics SCiO handheld CSV | ✅ | 3 | kebasaa/SCIO-read developer-app exports (GPL-3) |
 | `animl/` | AnIML XML | ✅ | 2 | KE-UniLiv/animl-ontology Example3 + synthetic |
 | `allotrope_asm/` | Allotrope ASM JSON | ✅ | 4 | Benchling-Open-Source/allotropy |
-| `allotrope_adf/` | Allotrope ADF binary | ❌ | 0 | **No public sample found** — see directory README |
+| `allotrope_adf/` | Allotrope ADF binary | 🟡 | 0 committed | Local-only `adfsee` sample in `samples_local/allotrope_adf/`; not redistributable in `samples/` |
 | `hyperspectral_cubes/` | AVIRIS / generic hyperspectral cubes | ✅ | 4 | spectralpython/sample-data (academic use) |
 | `raman_renishaw/` | Renishaw `.wdf` (Raman) | ✅ | 17 | rosettasciio + spectrochempy_data |
 | `raman_horiba/` | Horiba LabSpec / JobinYvon (XML + text + `.l6m` binary) | ✅ | 14 | rosettasciio + spectrochempy_data + ccoverstreet/horiba-raman (including `.l6m`) |
@@ -167,7 +167,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 **Totals (2026-05-20 sweep, second pass)**: 48 directories · ~305 fixture
 files · **43 directories** with at least one real open-source sample ·
 **4 directories** synthetic-only (`fgi/`, `mfr/`, `modtran/`, `pp_systems/`)
-· 1 directory with no available sample (`allotrope_adf/`).
+· 1 directory with only a local non-redistributable sample (`allotrope_adf/`).
 
 A `samples_local/` directory (gitignored via `/samples_local/` in
 `.gitignore`) holds non-redistributable fixtures the developer fetched
@@ -196,7 +196,7 @@ verify; they all carry a synthetic placeholder for shape testing.
 | Perten DA / Inframatic real CSV | No GitHub fixture found. | Synthetic in `perten/`. |
 | MODTRAN5 albedo `.dat` real | Distributed with MODTRAN license. | Synthetic in `modtran/`. |
 | FGI HDF5 + XML real | Schema is FGI-owned; no public fixture. | Synthetic in `fgi/`. |
-| Allotrope ADF `.adf` | Heavy SDK stack; pharma-specific. **Not even attempted — listed in FORMATS.md but explicitly *not a v1 priority*.** | Document as "requires Allotrope SDK". |
+| Allotrope ADF `.adf` | Local-only `adfsee` sample now validates HDF5 ADF data-cube detection and numeric measure extraction; pharma vendor ADFs and RDF semantics remain unresolved. | Keep local until redistribution terms and SDK conformance are clear. |
 | Perkin Elmer `.fsm` (imaging) | Real fixture exists (50 MB in `specio`) but **explicitly out of scope for v1** per FORMATS.md. | Skip. |
 | Hyperspectral imaging cubes (Specim/HySpex/Headwall/AVIRIS-NG/NEON AOP) | Broad imaging workflows remain partial per FORMATS.md §4. | Small ENVI Standard cube and AVIRIS 92AV3C ERDAS LAN are parsed as point spectra; large vendor/HDF5 scenes still need ROI extraction. |
 | Remaining Raman / UV-Vis look-alikes | Adjacent to NIRS; accepted when sample-backed and useful for dispatch/conformance. Renishaw WDF, Horiba LabSpec (now including a real `.l6m` binary), TriVista TVF, DigitalSurf, Hamamatsu IMG and **WiTec `.wip`** (Zenodo 7907659, ODbL v1.0) all have fixtures and experimental readers. | Use committed adjacent fixtures for reader tests; remaining vendor-locked binaries (e.g. Horiba `.l6s` calibration files) still wait on redistributable samples. |

@@ -111,6 +111,19 @@ fn probes_animl_and_allotrope_asm_documents() {
 }
 
 #[test]
+fn probes_local_allotrope_adf_when_present() {
+    let path = workspace_file("samples_local/allotrope_adf/adfsee_example.adf");
+    if !path.exists() {
+        return;
+    }
+
+    let probes = probe_path(path).expect("probe local ADF");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "allotrope-adf" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
 fn probes_siware_json_and_comment_header_text_exports() {
     let probes = probe_path(workspace_file(
         "samples/siware_api/synthetic_siware_api.json",

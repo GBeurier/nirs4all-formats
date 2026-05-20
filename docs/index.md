@@ -14,6 +14,7 @@ FORMAT_MATRIX
 FORMAT_GAPS
 MISSING_SAMPLES
 formats/avantes
+formats/allotrope-adf
 formats/allotrope-asm
 formats/andi-ms
 formats/animl

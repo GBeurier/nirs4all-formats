@@ -19,11 +19,11 @@ unknown layouts and deliberate refusal paths, see
 
 ---
 
-## ❌ No sample of any kind
+## 🟡 Local-only sample, no redistributable fixture
 
 | # | Format | Instrument | Vendor | Version / variant | Status | Why missing | Where it might come from |
 |---|---|---|---|---|---|---|---|
-| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | 🟡 (local) | **Resolved 2026-05-20 round 4, kept local** — `adfsee` GitLab `src/main/resources/instances/example.adf` (3.6 MB HDF5) lives in `samples_local/allotrope_adf/`. Vendor-specific variants (Waters Empower, Sciex OS, Agilent OpenLab) still customer-only. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device. |
+| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | 🟡 (local) | **Resolved 2026-05-20 round 4, kept local** — `adfsee` GitLab `src/main/resources/instances/example.adf` (3.6 MB HDF5) lives in `samples_local/allotrope_adf/`; the native reader now decodes the numeric `/data-cubes` subset locally. RDF semantics, SDK conformance and vendor-specific variants (Waters Empower, Sciex OS, Agilent OpenLab) still remain. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device. |
 
 ---
 
@@ -70,7 +70,7 @@ These have at least one real sample, but specific instrument or firmware revisio
 | 18 | ASD `.asd` | v6, v7 (lab + field spectroscopy variants), v8 | **No v3/v4/v5 (legacy FieldSpec 1/FS3 firmware)** — those revisions still circulate in archival data | Legacy archives are private; revisions 3-5 dates back to 2003-2010 deployments. |
 | 19 | Bruker OPUS native | OPUS 7.x / 8.x / new-data (post-2020) `.0` / `.0000` / `.001` / `.1` across **four independent reader projects** (opusreader2 GPL-3, opusreader GPL-3, brukeropus MIT, cran/soil.spec AfSIS Bruker MPA) | **No OPUS 5.x or 6.x files** — older infrared archives from 2000s. **No Bruker Tango (FT-NIR) demo file specifically** — same OPUS binary, but Tango-specific blocks. | Older OPUS archives are private; Tango owners are typically pharma/agro customers. AfSIS Bruker MPA samples (Africa Soil Information Services, 2014) now ship — these confirm the MPA family parses with the same code path. |
 | 20 | Galactic `.spc` | Old + new header, LSB/MSB byte order, -XY/-XYY/-XYXY layouts, NIR/FTIR/Raman/NMR/MS/UV-Vis flavours | **No Thermo GRAMS .spc multi-channel (≥3 channels)** — covered analytically by `m_xyxy.spc` but not by a real instrument fixture. | Multi-channel instruments are niche. |
-| 21 | Thermo Nicolet OMNIC | `.spa` single, `.spg` group (4.7 MB nh4y), `.srs` time-series (GC_Demo 5.7 MB + TGAIR 2.6 MB) | **No `.srsx`** (extended series, newer OMNIC ≥9.7) | `.srsx` files are larger; no small fixture available. SpectroChemPy notes this format is "tricky". |
+| 21 | Thermo Nicolet OMNIC | `.spa` single, `.spg` group (4.7 MB nh4y), committed `.srs` TGA/GC time-series, plus local-only `TGA_demo` and rapid-scan/reprocessed `.srs` files | **No `.srsx`** (extended series, newer OMNIC ≥9.7) | `.srsx` files are larger; no small fixture available. SpectroChemPy notes this format is "tricky". |
 | 22 | Perkin Elmer | `.sp` (single spectrum) | **`.fsm` Spotlight imaging** (50 MB available in `specio` but explicitly skipped). No PE Lambda 1050 NIR-specific blocks. | `.fsm` is 50 MB — too large for fixture; explicitly out of scope for v1 anyway per FORMATS.md §2. |
 | 23 | JASCO `.jws` | UV-Vis fluorescence (V-series), CD/HT/Abs (CD spectrometer), IR (V-770) | **No JASCO V-780 NIR-specific blocks**, **no JASCO NRS-series Raman binary** | JASCO V-780 has slightly different binary layout; Raman is a separate `.jws` flavour. |
 | 24 | Foss WinISI / DA / DS3 | Text exports (WinISI / DS3 CSV — synthetic) + **real Foss XDS Monochromator XM-1000 and NIRSYSTEM-5000 CSV exports** (sensAIfood Cordoba, CC-BY-4.0, **added 2026-05-20**) | **No real WinISI II `.NIR` text export** specifically — covered formats are the XDS / NIRSYSTEM-5000 wide CSV variant. Native `.NIR` binary remains pure-binary and unavailable. | The WinISI text export is the same wide-CSV layout (different metadata header); a real WinISI II export would round out the directory but is functionally equivalent. |
@@ -99,9 +99,8 @@ These have at least one real sample, but specific instrument or firmware revisio
   Raman). Every one of them is a closed-vendor format where the *documented
   text/CSV export* is the v1 path anyway (so the parser will work as soon as a
   user contributes a real export).
-- **1** directory (`allotrope_adf/`) has nothing at all — no realistic open
-  fixture exists, and the Allotrope ADF binary is not even a v1 priority per
-  `FORMATS.md` §3.
+- **1** directory (`allotrope_adf/`) has no redistributable fixture, but a
+  local `adfsee` ADF now validates detection and numeric data-cube decoding.
 - **Critical missing pieces without a documented text fallback**: ASD `.ILL` /
   `.REF` / `.RAW` calibration triplet, Foss `.NIR/.DA` natifs, Perten DA /
   Inframatic native, Metrohm Vision Air native, VIAVI `.pri` project, Horiba

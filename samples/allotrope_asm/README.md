@@ -2,7 +2,7 @@
 
 The Allotrope Foundation defines two formats:
 
-1. **ADF** — binary HDF5 + RDF triplestore. **No public sample exists** (see `allotrope_adf/` for the documented gap).
+1. **ADF** — binary HDF5 + RDF triplestore. A local-only `adfsee` fixture is documented in `allotrope_adf/`; no redistributable ADF is committed.
 2. **ASM** — JSON-Schema-based "Simple Model", which is what most third-party tooling actually targets in production. This is the format ingested by [Benchling/allotropy](https://github.com/Benchling-Open-Source/allotropy).
 
 This directory contains **ASM JSON** instances, since they're the practical Allotrope path.

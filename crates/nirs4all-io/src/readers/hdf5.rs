@@ -270,7 +270,7 @@ fn base_metadata(
     metadata
 }
 
-fn read_numeric_vec(dataset: &Dataset, context: &str) -> Result<Vec<f64>> {
+pub(crate) fn read_numeric_vec(dataset: &Dataset, context: &str) -> Result<Vec<f64>> {
     match dataset.dtype() {
         Datatype::FloatingPoint { size: 4, .. } => read_array_as_f64::<f32>(dataset, context),
         Datatype::FloatingPoint { size: 8, .. } => read_array_as_f64::<f64>(dataset, context),

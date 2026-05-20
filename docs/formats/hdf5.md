@@ -25,5 +25,5 @@ It emits one `SpectralRecord` per sample row.
 Generic HDF5 is intentionally conservative. HDF5 files without a `spectra`
 dataset and matching spectral axis are refused. FGI XML sidecars are handled by
 the dedicated `fgi-hdf5-xml` reader, while MATLAB v7.3 `.mat` files and
-Allotrope ADF remain separate schema mappers even when their payloads are
+Allotrope ADF use separate schema mappers even when their payloads are
 HDF5-backed.

@@ -3,9 +3,9 @@ use std::path::Path;
 use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
 
 use crate::readers::{
-    AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
-    BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
-    EnviSliReader, ErdasLanReader, ExcelReader, FgiXmlReader, GalacticSpcReader,
+    AllotropeAdfReader, AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader,
+    AvantesBinaryReader, BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader,
+    DigitalSurfReader, EnviSliReader, ErdasLanReader, ExcelReader, FgiXmlReader, GalacticSpcReader,
     HamamatsuImgReader, Hdf5Reader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader,
     MsaReader, MzmlReader, NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader,
     ParquetReader, PerkinElmerReader, RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader,
@@ -44,6 +44,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(MzmlReader),
         Box::new(NetcdfReader),
         Box::new(FgiXmlReader),
+        Box::new(AllotropeAdfReader),
         Box::new(Hdf5Reader),
         Box::new(MatlabReader),
         Box::new(NumpyReader),

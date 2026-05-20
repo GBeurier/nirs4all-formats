@@ -30,6 +30,9 @@ Experimental native readers:
   refused;
 - Allotrope ASM JSON: plate-reader spectral data cubes and detector-wavelength
   endpoint readings from committed Benchling allotropy fixtures;
+- Allotrope ADF: local-only `adfsee` HDF5 fixture with numeric `/data-cubes`
+  extracted as an experimental subset; RDF semantics and SDK validation remain
+  pending;
 - SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
   `measurement.absorbance` payloads with predictions mapped to targets;
 - Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped
@@ -83,10 +86,9 @@ Experimental native readers:
   explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian
   support is limited.
 - Thermo Nicolet OMNIC (`.SPA`, `.spg`, `.srs`) single spectra and grouped
-  spectra via the reverse-engineered key table, plus TGA/GC `.srs` time-series
-  matrices as 2D `y,x` records; non-TGA/GC `.srs/.srsx` series variants are
-  classified and refused explicitly until a real fixture/reference export is
-  available;
+  spectra via the reverse-engineered key table, plus TGA/GC and local
+  rapid-scan `.srs` matrices as 2D `y,x` records; unsupported `.srs` anchor
+  patterns and `.srsx` remain explicit pending variants;
 - Perkin Elmer Spectrum / IR (`.sp`) single spectra via the `PEPE` block
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
@@ -184,9 +186,9 @@ Immediate next work:
    keep the EHU MATLAB cube path local-only unless redistribution terms change;
 2. add ROI/mask extraction for hyperspectral cubes so large NEON/Specim/HySpex/
    Headwall scenes do not require whole-cube expansion;
-3. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants, redistributable BUCHI NIRCal non-null
-   target fixtures and `.cal`/NIRMaster variants;
+3. continue the open-reader-backed binary batch in this order: OMNIC `.srsx`
+   and high-speed variants beyond local SpectroChemPy samples, redistributable
+   BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
 5. replace Python/R subprocess transport with native PyO3/C ABI paths;
 6. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
