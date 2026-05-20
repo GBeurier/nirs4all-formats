@@ -41,6 +41,7 @@ formats/nicolet-omnic
 formats/ocean-optics
 formats/parquet
 formats/perkin-elmer
+formats/pp-systems-unispec
 formats/numpy
 formats/renishaw-wdf
 formats/row-spectral-table
