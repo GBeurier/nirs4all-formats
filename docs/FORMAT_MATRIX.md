@@ -8,79 +8,99 @@ Colonnes de pilotage:
   conformance, axes ou cibles incomplets).
 - `Planifiés`: variant identifié et actionnable, mais pas encore codé.
 - `Bloqués`: variant identifié mais bloqué par sample/spec/licence/référence.
-- `Diffusion`: `oui` si les variants principaux en activité sont couverts,
-  `sous-ensemble` si on peut diffuser seulement une partie claire, `non` si le
-  format doit encore être sourcé/codé, `hors-scope` si le domaine est exclu.
-- `Action`: prochaine action principale: `diffuser`, `coder`, `compléter`,
-  `sourcer`, `surveiller` ou `hors-scope`.
+- `Couverture NIRS`: lecture produit de la ligne. `diffusable` signifie que les
+  variants principaux en activité sont couverts; `diffusable ciblé` signifie
+  diffusable si le périmètre est annoncé explicitement; `utile incomplet`
+  demande encore du code avant communication forte; `non viable` demande
+  d'abord des samples/specs ou un parser significatif.
+- `Impact manque`: gravité métier du manque restant. `aucun` ou `mineur`
+  n'empêche pas de diffuser si le périmètre est clair; `moyen` demande un
+  complément utile mais les spectres principaux sont conservés; `grave`
+  signifie qu'un variant actif, une calibration essentielle ou une partie
+  significative des spectres manque; `bloquant` signifie qu'on ne peut pas
+  revendiquer le format; `hors périmètre` signifie volontairement adjacent ou
+  hors cible.
+- `Popularité`: fréquence attendue en NIRS terrain/industrie/recherche, pas
+  seulement le nombre de samples disponibles.
+- `Priorité`: effort projet conseillé. `P0` conditionne la valeur NIRS
+  industrielle ou terrain; `P1` ajoute une couverture forte; `P2` est utile ou
+  adjacent; `P3` peut attendre.
+- `Manque critique`: ce qui empêche de considérer la ligne comme pleinement
+  couverte ou ce qu'il faut faire ensuite.
 
-| Nom | Vendeur | Extensions | Variants | Validés | Partiels | Planifiés | Bloqués | Diffusion | Action | Lib référence |
-|---|---|---|---:|---:|---:|---:|---:|---|---|---|
-| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | pandas, read.table, nirs4all CSVLoader |
-| Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | 8 | 8 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
-| Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
-| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | calamine, openpyxl, pandas, readxl |
-| ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | 8 | 4 | 0 | 3 | 1 | oui | sourcer | asdreader, prospectr, spectrolab, specdal, pyASDReader |
-| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | 3 | 0 | 0 | 0 | 3 | non | sourcer | SPECCHIO, asdreader |
-| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | 5 | 4 | 0 | 0 | 1 | sous-ensemble | sourcer | lightr |
-| Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | 9 | 1 | 1 | 0 | 7 | sous-ensemble | sourcer | lightr, manuel AvaSoft |
-| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | 6 | 6 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
-| Bruker OPUS DPT | Bruker | `.dpt` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pandas, read.table, lightr |
-| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | 5 | 2 | 1 | 0 | 2 | oui | diffuser | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
-| Bruker Tango / MPA / Matrix | Bruker | OPUS natif | 3 | 1 | 0 | 2 | 0 | sous-ensemble | sourcer | opusreader2, SpectroChemPy |
-| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | 3 | 2 | 0 | 0 | 1 | oui | diffuser | spectral, RStoolbox, pysptools |
-| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | 7 | 3 | 1 | 1 | 2 | sous-ensemble | sourcer | spectral, rasterio, scipy |
-| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | 2 | 1 | 0 | 0 | 1 | sous-ensemble | sourcer | h5py, hdf5r, rhdf5, lxml |
-| MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | 3 | 2 | 0 | 0 | 1 | sous-ensemble | sourcer | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
-| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc`, `.lev10/.lev15/.lev20` | 4 | 2 | 1 | 0 | 1 | sous-ensemble | sourcer | parseurs ad hoc, xarray |
-| Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.jdx`, `.spc` | 11 | 8 | 0 | 3 | 0 | oui | diffuser | lightr, pavo |
-| PP Systems UniSpec SC | PP Systems | `.SPT` | 1 | 0 | 1 | 0 | 0 | non | sourcer | SPECCHIO, parseurs ad hoc |
-| PP Systems UniSpec DC | PP Systems | `.SPU` | 1 | 0 | 1 | 0 | 0 | non | sourcer | SPECCHIO, parseurs ad hoc |
-| SVC / GER SIG | Spectra Vista / GER | `.sig` | 6 | 5 | 1 | 0 | 0 | oui | compléter | spectrolab, specdal |
-| Spectral Evolution / PSR | Spectral Evolution | `.sed` | 4 | 3 | 1 | 0 | 0 | oui | compléter | spectrolab, specdal |
-| MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | 1 | 0 | 1 | 0 | 0 | non | sourcer | parseur texte |
-| IDL / ENVI texte | IDL / ENVI | `.txt` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | parseur texte |
-| USGS SPECPR / PRISM / ECOSTRESS text | USGS / JHU / ECOSTRESS | `SPECPR`, `.asc`, `.txt`, `.spectrum.txt` | 4 | 3 | 0 | 0 | 1 | oui | sourcer | convertisseur USGS |
-| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | 6 | 3 | 1 | 1 | 1 | oui | compléter | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
-| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | 5 | 3 | 1 | 0 | 1 | oui | compléter | SpectroChemPy, spa-on-python |
-| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | 2 | 1 | 0 | 0 | 1 | oui | sourcer | specio |
-| Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | 4 | 0 | 0 | 0 | 4 | non | sourcer | aucune fiable |
-| Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | 2 | 2 | 0 | 0 | 0 | oui | diffuser | parseur texte |
-| Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | 3 | 1 | 0 | 1 | 1 | sous-ensemble | sourcer | parseur texte, pandas, readxl |
-| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | 4 | 1 | 1 | 1 | 1 | sous-ensemble | sourcer | prospectr::read_nircal |
-| Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | 2 | 0 | 0 | 0 | 2 | non | sourcer | export CSV/Excel vendeur |
-| JASCO JWS | JASCO | `.jws`, `.txt` | 7 | 4 | 0 | 0 | 3 | oui | sourcer | jws2txt, jwsProcessor |
-| Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | 2 | 1 | 0 | 0 | 1 | sous-ensemble | sourcer | pyfasma-spc, convertisseur Shimadzu |
-| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | parseur texte, openpyxl |
-| Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | parseur texte, openpyxl |
-| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | 3 | 2 | 0 | 0 | 1 | sous-ensemble | sourcer | JSON/CSV standard |
-| JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | 5 | 3 | 1 | 1 | 0 | sous-ensemble | coder | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
-| ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pyteomics, PyMassSpec, pyOpenMS |
-| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | 5 | 3 | 1 | 1 | 0 | sous-ensemble | compléter | netcdf-reader, xarray, netcdf, ARM ACT |
-| AnIML | IUPAC / ASTM | `.animl` | 5 | 2 | 0 | 2 | 1 | sous-ensemble | sourcer | animl-python, validateurs XML |
-| Allotrope ASM | Allotrope / Benchling | `.json` | 3 | 2 | 0 | 1 | 0 | sous-ensemble | sourcer | Benchling allotropy |
-| Allotrope ADF | Allotrope Foundation | `.adf` | 4 | 0 | 2 | 0 | 2 | non | compléter | Allotrope SDK, adfsee |
-| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | 2 | 1 | 0 | 0 | 1 | oui | surveiller | pyteomics, pymzML, pyOpenMS |
-| HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | 3 | 1 | 0 | 2 | 0 | sous-ensemble | coder | h5py, hdf5-reader, tables |
-| Parquet | Apache / generique | `.parquet` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pyarrow, fastparquet, nirs4all ParquetLoader |
-| MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | 6 | 5 | 1 | 0 | 0 | oui | compléter | scipy, hdf5-reader, R serialization, prospectr |
-| NumPy | Python / NumPy | `.npy`, `.npz` | 2 | 2 | 0 | 0 | 0 | oui | diffuser | numpy |
-| Renishaw WDF | Renishaw | `.wdf` | 12 | 9 | 1 | 0 | 2 | oui | compléter | RosettaSciIO, SpectroChemPy |
-| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | 5 | 2 | 1 | 0 | 2 | sous-ensemble | sourcer | RosettaSciIO, SpectroChemPy, horiba-raman |
-| Princeton TriVista TVF | Princeton Instruments | `.tvf` | 8 | 8 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
-| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | 5 | 5 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
-| Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | 2 | 2 | 0 | 0 | 0 | sous-ensemble | surveiller | RosettaSciIO |
-| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | 5 | 1 | 1 | 1 | 2 | sous-ensemble | coder | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
-| EMSA/MAS MSA | ISO / EMSA | `.msa` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
-| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors-scope | MNE-NIRS, SNIRF |
-| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 3 | 3 | 0 | 0 | 0 | oui | diffuser | kebasaa/SCIO-read |
+Règle de lecture: `Popularité` élevée + `Impact manque` `grave`/`bloquant` +
+`Priorité` P0/P1 indique où chercher des fichiers originaux ou coder en premier.
+`Couverture NIRS = diffusable` avec impact `aucun`/`mineur`/`moyen` indique un
+périmètre publiable si les limites sont annoncées.
+
+| Nom | Vendeur | Extensions | Variants | Validés | Partiels | Planifiés | Bloqués | Couverture NIRS | Impact manque | Popularité | Priorité | Manque critique | Lib référence |
+|---|---|---|---:|---:|---:|---:|---:|---|---|---|---|---|---|
+| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | 3 | 3 | 0 | 0 | 0 | diffusable | aucun | tres courant | P3 diffuser | Aucun; base utile pour imports externes. | pandas, read.table, nirs4all CSVLoader |
+| Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | 8 | 8 | 0 | 0 | 0 | diffusable | aucun | tres courant | P3 diffuser | Aucun; couvre beaucoup d'exports vendors. | pandas, read.table |
+| Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | 3 | 3 | 0 | 0 | 0 | diffusable | aucun | courant | P3 diffuser | Aucun; utile pour ML et exports wide. | pandas, read.table |
+| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | 3 | 2 | 0 | 0 | 1 | diffusable | mineur | courant | P2 sourcer | `.xls` legacy OLE manque; non bloquant pour diffusion moderne. | calamine, openpyxl, pandas, readxl |
+| ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | 8 | 4 | 0 | 3 | 1 | diffusable | moyen | courant terrain | P1 sourcer | Revisions principales ok; chercher v3-v5 et blocs calibration internes. | asdreader, prospectr, spectrolab, specdal, pyASDReader |
+| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | 3 | 0 | 0 | 0 | 3 | non viable | bloquant | specialise | P1 sourcer | Samples compagnons absents; utile mais pas indispensable au reader `.asd`. | SPECCHIO, asdreader |
+| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | 5 | 4 | 0 | 0 | 1 | diffusable ciblé | moyen | courant | P1 sourcer | `.ABS` binaire manque; périmètre actuel assez utile. | lightr |
+| Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | 9 | 1 | 1 | 0 | 7 | diffusable ciblé | grave | courant | P1 sourcer | Beaucoup de suffixes AVS8 sans fixture; `.IRR8` reste calibration partielle. | lightr, manuel AvaSoft |
+| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | 6 | 6 | 0 | 0 | 0 | diffusable | aucun | courant | P3 diffuser | Aucun; bon chemin recommandé quand export disponible. | pandas, read.table |
+| Bruker OPUS DPT | Bruker | `.dpt` | 1 | 1 | 0 | 0 | 0 | diffusable | aucun | courant | P3 diffuser | Aucun; export ASCII seulement. | pandas, read.table, lightr |
+| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | 5 | 2 | 1 | 0 | 2 | diffusable | moyen | tres courant | P2 compléter | OPUS 7/8 et MPA ok; OPUS 5/6 legacy et imaging restent secondaires. | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
+| Bruker Tango / MPA / Matrix | Bruker | OPUS natif | 3 | 1 | 0 | 2 | 0 | diffusable ciblé | moyen | courant | P2 sourcer | MPA couvert; chercher Tango/Matrix dédiés pour marketing vendor. | opusreader2, SpectroChemPy |
+| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | 3 | 2 | 0 | 0 | 1 | diffusable | mineur | specialise | P3 diffuser | `.slb` non fixture; faible impact NIRS. | spectral, RStoolbox, pysptools |
+| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | 7 | 3 | 1 | 1 | 2 | diffusable ciblé | moyen | courant HSI | P2 sourcer | Cubes ENVI/AVIRIS ok; Specim/HySpex/NEON/HDF5 restent à sourcer. | spectral, rasterio, scipy |
+| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | 2 | 1 | 0 | 0 | 1 | diffusable ciblé | grave | niche | P2 sourcer | Paire réelle FGI absente; synthetic uniquement. | h5py, hdf5r, rhdf5, lxml |
+| MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | 3 | 2 | 0 | 0 | 1 | diffusable ciblé | moyen | niche | P2 sourcer | `.OUT` réel redistribuable absent; NetCDF ARM local seulement. | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
+| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc`, `.lev10/.lev15/.lev20` | 4 | 2 | 1 | 0 | 1 | diffusable ciblé | moyen | niche | P2 sourcer | MAN NetCDF/ASCII ok; `.TXT` legacy réel et NetCDF générique restent incomplets. | parseurs ad hoc, xarray |
+| Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.jdx`, `.spc` | 11 | 8 | 0 | 3 | 0 | diffusable | moyen | tres courant | P2 compléter | Large couverture active; ajouter QE Pro/Maya/Apex si samples. | lightr, pavo |
+| PP Systems UniSpec SC | PP Systems | `.SPT` | 1 | 0 | 1 | 0 | 0 | non viable | bloquant | specialise terrain | P1 sourcer | Parser synthetic seulement; acquisition terrain réelle nécessaire. | SPECCHIO, parseurs ad hoc |
+| PP Systems UniSpec DC | PP Systems | `.SPU` | 1 | 0 | 1 | 0 | 0 | non viable | bloquant | specialise terrain | P1 sourcer | Parser synthetic seulement; acquisition terrain deux canaux nécessaire. | SPECCHIO, parseurs ad hoc |
+| SVC / GER SIG | Spectra Vista / GER | `.sig` | 6 | 5 | 1 | 0 | 0 | diffusable | mineur | courant terrain | P1 compléter | Très utile terrain; compléter radiance/conformance spectrolab/specdal. | spectrolab, specdal |
+| Spectral Evolution / PSR | Spectral Evolution | `.sed` | 4 | 3 | 1 | 0 | 0 | diffusable | mineur | courant terrain | P1 compléter | Couverture terrain utile; compléter unités/conformance SR variants. | spectrolab, specdal |
+| MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | 1 | 0 | 1 | 0 | 0 | non viable | hors périmètre | niche | P3 sourcer | Non coeur NIRS; sample réel redistribuable absent. | parseur texte |
+| IDL / ENVI texte | IDL / ENVI | `.txt` | 1 | 1 | 0 | 0 | 0 | diffusable | aucun | specialise | P3 diffuser | Aucun. | parseur texte |
+| USGS SPECPR / PRISM / ECOSTRESS text | USGS / JHU / ECOSTRESS | `SPECPR`, `.asc`, `.txt`, `.spectrum.txt` | 4 | 3 | 0 | 0 | 1 | diffusable | mineur | courant datasets | P2 sourcer | Textes ok; binaire SPECPR manque mais peu bloquant v1. | convertisseur USGS |
+| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | 6 | 3 | 1 | 1 | 1 | diffusable | moyen | tres courant | P2 compléter | New/old LSB utiles; BE et vieux logs restent secondaires. | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
+| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | 5 | 3 | 1 | 0 | 1 | diffusable | moyen | tres courant | P2 compléter | SPA/SPG/SRS utiles; `.srsx` absent, axe secondaire SRS à enrichir. | SpectroChemPy, spa-on-python |
+| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | 2 | 1 | 0 | 0 | 1 | diffusable ciblé | moyen | courant | P2 sourcer | `.sp` ok; `.fsm` imaging hors périmètre v1. | specio |
+| Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | 4 | 0 | 0 | 0 | 4 | non viable | bloquant | tres courant industrie | P0 sourcer | Format industriel clé, aucune fixture native fiable. | aucune fiable |
+| Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | 2 | 2 | 0 | 0 | 0 | diffusable | aucun | tres courant industrie | P3 diffuser | Aucun; ne remplace pas le natif Foss. | parseur texte |
+| Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | 3 | 1 | 0 | 1 | 1 | diffusable ciblé | grave | courant industrie | P1 sourcer | CSV ok; base native/exports réels client à obtenir. | parseur texte, pandas, readxl |
+| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | 4 | 1 | 1 | 1 | 1 | diffusable ciblé | moyen | courant industrie | P1 sourcer | `.nir` utile; cibles non nulles redistribuables et variantes NIRMaster manquent. | prospectr::read_nircal |
+| Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | 2 | 0 | 0 | 0 | 2 | non viable | bloquant | tres courant industrie | P0 sourcer | Format industriel clé, aucun sample spectral natif/export exploitable. | export CSV/Excel vendeur |
+| JASCO JWS | JASCO | `.jws`, `.txt` | 7 | 4 | 0 | 0 | 3 | diffusable | moyen | courant lab | P2 sourcer | Variants NIR/Raman JWS absents; principaux streams publics couverts. | jws2txt, jwsProcessor |
+| Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | 2 | 1 | 0 | 0 | 1 | diffusable ciblé | moyen | courant lab | P2 sourcer | `.txt` ok; `.spc` natif manquant. | pyfasma-spc, convertisseur Shimadzu |
+| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | 3 | 2 | 0 | 0 | 1 | diffusable | mineur | courant handheld | P1 sourcer | Exports réels ok; `.pri` natif customer-only. | parseur texte, openpyxl |
+| Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | 3 | 2 | 0 | 0 | 1 | diffusable | mineur | courant handheld | P1 sourcer | Matrices réelles ok; single-measurement Scanner absent. | parseur texte, openpyxl |
+| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | 3 | 2 | 0 | 0 | 1 | utile incomplet | grave | specialise | P1 sourcer | Fixtures synthétiques; réponse API réelle nécessaire avant forte diffusion. | JSON/CSV standard |
+| JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | 5 | 3 | 1 | 1 | 0 | diffusable ciblé | moyen | courant échange | P1 coder | XYDATA/NTUPLES ok; LINK général et PEAK TABLE à coder. | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
+| ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | 1 | 1 | 0 | 0 | 0 | adjacent | hors périmètre | adjacent | P3 surveiller | Refus non-NIRS utile pour disambiguation. | pyteomics, PyMassSpec, pyOpenMS |
+| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | 5 | 3 | 1 | 1 | 0 | diffusable ciblé | moyen | specialise recherche | P2 compléter | Schémas dédiés ok; generic NetCDF spectral réel à élargir. | netcdf-reader, xarray, netcdf, ARM ACT |
+| AnIML | IUPAC / ASTM | `.animl` | 5 | 2 | 0 | 2 | 1 | utile incomplet | grave | emergent/niche | P2 sourcer | Vrais AnIML spectraux/XSD/conformance manquent. | animl-python, validateurs XML |
+| Allotrope ASM | Allotrope / Benchling | `.json` | 3 | 2 | 0 | 1 | 0 | diffusable ciblé | moyen | emergent industrie | P2 sourcer | Benchling ok; conversions vendeurs à obtenir. | Benchling allotropy |
+| Allotrope ADF | Allotrope Foundation | `.adf` | 4 | 0 | 2 | 0 | 2 | non viable | bloquant | emergent industrie | P2 compléter | ADF local partiel; SDK/ontologie/fixtures vendeurs manquent. | Allotrope SDK, adfsee |
+| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | 2 | 1 | 0 | 0 | 1 | adjacent | hors périmètre | adjacent | P3 surveiller | Refus non-NIRS; `.mzMLb` seulement documenté. | pyteomics, pymzML, pyOpenMS |
+| HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | 3 | 1 | 0 | 2 | 0 | diffusable ciblé | grave | specialise recherche | P1 coder | Schéma canonique ok; HDF5 spectraux réels hétérogènes à coder. | h5py, hdf5-reader, tables |
+| Parquet | Apache / generique | `.parquet` | 1 | 1 | 0 | 0 | 0 | diffusable | aucun | courant data | P3 diffuser | Aucun; format de distribution interne utile. | pyarrow, fastparquet, nirs4all ParquetLoader |
+| MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | 6 | 5 | 1 | 0 | 0 | diffusable | moyen | courant recherche | P2 compléter | Couverture utile ML; structures arbitraires à élargir. | scipy, hdf5-reader, R serialization, prospectr |
+| NumPy | Python / NumPy | `.npy`, `.npz` | 2 | 2 | 0 | 0 | 0 | diffusable | aucun | courant data | P3 diffuser | Aucun; utile bindings Python. | numpy |
+| Renishaw WDF | Renishaw | `.wdf` | 12 | 9 | 1 | 0 | 2 | adjacent diffusable | moyen | courant Raman | P2 compléter | Raman adjacent très couvert; compléter MAP layouts/conformance. | RosettaSciIO, SpectroChemPy |
+| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | 5 | 2 | 1 | 0 | 2 | adjacent ciblé | grave | courant Raman | P2 sourcer | XML/TXT ok; `.l6m` expérimental, `.l6s`/layouts LabSpec6 absents. | RosettaSciIO, SpectroChemPy, horiba-raman |
+| Princeton TriVista TVF | Princeton Instruments | `.tvf` | 8 | 8 | 0 | 0 | 0 | adjacent diffusable | mineur | niche Raman | P3 diffuser | Aucun sample bloquant connu; Raman adjacent. | RosettaSciIO |
+| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | 5 | 5 | 0 | 0 | 0 | adjacent diffusable | mineur | niche adjacent | P3 diffuser | Aucun sample bloquant connu; AFM/Raman adjacent. | RosettaSciIO |
+| Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | 2 | 2 | 0 | 0 | 0 | adjacent | hors périmètre | niche adjacent | P3 surveiller | Hors point-spectra NIRS; garder comme disambiguation. | RosettaSciIO |
+| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | 5 | 1 | 1 | 1 | 2 | adjacent ciblé | grave | courant Raman | P2 coder | Un layout WIP ok; Raman-shift/coordonnées/layouts généraux à coder/sourcer. | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
+| EMSA/MAS MSA | ISO / EMSA | `.msa` | 3 | 3 | 0 | 0 | 0 | adjacent diffusable | aucun | adjacent | P3 diffuser | Aucun; surtout microscopie/spectro adjacent. | RosettaSciIO |
+| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors périmètre | hors-scope | P3 hors-scope | Physiologie non ciblée par nirs4all-io spectroscopy. | MNE-NIRS, SNIRF |
+| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 3 | 3 | 0 | 0 | 0 | diffusable | aucun | courant handheld | P3 diffuser | Aucun; handheld NIR utile. | kebasaa/SCIO-read |
 
 ## Notes pour les lignes non finalisées
 
-Les lignes `Diffusion = oui` peuvent rester listees quand il existe encore des
-variants secondaires a sourcer, coder ou completer. La note indique le manque
-concret: sample, metadata, calibration, conformance, variant non code ou scope
-hors NIRS.
+Les lignes `Couverture NIRS = diffusable` peuvent rester listees quand il
+existe encore des variants secondaires a sourcer, coder ou completer, tant que
+l'`Impact manque` reste `mineur` ou `moyen`. La note indique le manque concret:
+sample, metadata, calibration, conformance, variant non code ou périmètre hors
+NIRS.
 
 | Nom | Suivi actuel | Note / manque |
 |---|---|---|
@@ -102,9 +122,9 @@ hors NIRS.
 | Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est teste comme deux signaux raw avec `sed_missing_reflectance_signal` / `missing_reflectance_signal`, et les champs GPS/date/time parseables sont promus en metadata canonique. Restent SR-3500 / SR-6500 firmware specifics, typage plus fin des unites et conformance `spectrolab`/`specdal`. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM / ECOSTRESS text | partiel | ASCII `.asc`, ECOSTRESS/ASTER `.spectrum.txt` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
-| Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert, avec tests semantiques directs pour multi-subfile generated-X, directory-backed `TXYXYS`, old ordered-Z limite et axes SPC minute/seconde types `time` sur `s_xy.spc` et `NMR_FID.SPC`. Restent new big-endian `0x4C`, vieux headers/logs complets et decision de scope finale pour NMR/FID. |
+| Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert, avec tests semantiques directs pour multi-subfile generated-X, directory-backed `TXYXYS`, old ordered-Z limite et axes SPC minute/seconde types `time` sur `s_xy.spc` et `NMR_FID.SPC`. Restent new big-endian `0x4C`, vieux headers/logs complets et decision de périmètre finale pour NMR/FID. |
 | Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/tests semantiques sur le corpus committe, y compris matrice 2D, offsets et metadata `series_y_*`; les trois `.srs` locaux SpectroChemPy couvrent `tg_gc`, `rapid_scan_raw` et `rapid_scan_reprocessed`. Reste `.srsx` et davantage de variantes high-speed. |
-| Perkin Elmer Spectrum / IR | partiel | Le `.sp` PEPE mono-spectre reel `specio` est golden-backed et teste semantiquement. Le statut reste partiel parce que la ligne inclut `.fsm` Spotlight imaging, detecte/refuse comme hors v1, et parce qu'il manque des variantes PE NIR/Lambda; une separation future `.sp` vs `.fsm` permettrait de promouvoir le sous-ensemble `.sp`. |
+| Perkin Elmer Spectrum / IR | partiel | Le `.sp` PEPE mono-spectre reel `specio` est golden-backed et teste semantiquement. Le statut reste partiel parce que la ligne inclut `.fsm` Spotlight imaging, detecte/refuse comme hors v1, et parce qu'il manque des variantes PE NIR/Lambda; une separation future `.sp` vs `.fsm` permettrait de promouvoir le périmètre `.sp`. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference; les samples Foss actuels sont des exports CSV/texte et les `.nir` presents sont BUCHI NIRCal, donc ne debloquent pas `.NIR/.DA/.cal/.eqa`. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est verrouille par golden et test semantique sur 50 records, axe `nm`, signal absorbance et cibles `protein`/`moisture`/`fat`. Il manque un export client reel, une comparaison reference et la base projet native reste fermee. |
 | BUCHI NIRCal | partiel | Le chemin `.nir` lit spectra/wavenumbers/proprietes; les cibles non nulles sont validees localement sur `transpec_DEMO_cannabis.nir`, et les zeros restent numeriques des qu'une table de proprietes contient de vraies valeurs. Restent une fixture redistribuable avec cibles non nulles, `.cal` calibration-only et variantes NIRMaster. |
@@ -123,8 +143,8 @@ hors NIRS.
 | MATLAB MAT / RData | partiel | MAT v5/v7.3 simples, DSO academiques, prospectr `NIRsoil.RData` et cube Indian Pines local-only sont couverts; restent structures MAT/RData generiques, cubes MAT v7.3 et metadata/targets heterogenes. |
 | Renishaw WDF | partiel | Les 15 fixtures spectrales versionnees couvrent single, map, line, depth/zscan, FocusTrack, time-series, StreamLine et interrupted; les deux fixtures `measurement_type=0` sont des refus attendus. Les `MAP ` PSET observes exposent maintenant inventaire + `dataRange` derive par record quand la longueur matche le nombre de spectres, et les fixtures map/depth `dataRange` sont golden-backed. Restent autres layouts `MAP `, unites/algorithmes derives autoritaires, conformance full-array et fixtures par modele InVia Qontor/Apollo. |
 | Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et compare integralement contre l'export texte (intensites + coordonnees); les axes XML `eV` sont types `energy`, et les branches XML range/linescan sont verrouillees par tests semantiques. Restent `.l6s`, autres layouts LabSpec6 et metadata complete. |
-| Princeton TriVista TVF | partiel | Corpus RosettaSciIO couvert et golden-backed, y compris single/multi-frame, time series, line/map, multi-spectrometer et Step-and-Glue. L'axe spectral est derive de `xDim/Calibration`, `xDim@Length` et `Frame@xDim` sont valides, les metadata detector/spectrometer numerotees sont promues, et les unites spatiales absentes restent explicites (`unknown`) au lieu d'etre inventees. Aucun sample bloquant connu; restent conformance full-array automatisee contre `rsciio.trivista`, objective/hardware-branch metadata plus riche et decision de scope pour variantes hors corpus. |
-| DigitalSurf MountainsMap | partiel | Fixtures RosettaSciIO spectre, multi-spectres, hyperspectral maps, surface et zlib compresse/non compresse golden-backed. Les maps exposent maintenant `map_x_index`/`map_y_index` et `map_axis_order`; les surfaces exposent `spatial_y_index`, unites X/Y et `surface_axis_order`. Aucun sample bloquant connu; restent conformance full-array contre `rsciio.digitalsurf`, metadata objet/commentaire plus riche et decision de scope pour variantes MountainsMap hors corpus/branded AFM-Raman. |
+| Princeton TriVista TVF | partiel | Corpus RosettaSciIO couvert et golden-backed, y compris single/multi-frame, time series, line/map, multi-spectrometer et Step-and-Glue. L'axe spectral est derive de `xDim/Calibration`, `xDim@Length` et `Frame@xDim` sont valides, les metadata detector/spectrometer numerotees sont promues, et les unites spatiales absentes restent explicites (`unknown`) au lieu d'etre inventees. Aucun sample bloquant connu; restent conformance full-array automatisee contre `rsciio.trivista`, objective/hardware-branch metadata plus riche et decision de périmètre pour variantes hors corpus. |
+| DigitalSurf MountainsMap | partiel | Fixtures RosettaSciIO spectre, multi-spectres, hyperspectral maps, surface et zlib compresse/non compresse golden-backed. Les maps exposent maintenant `map_x_index`/`map_y_index` et `map_axis_order`; les surfaces exposent `spatial_y_index`, unites X/Y et `surface_axis_order`. Aucun sample bloquant connu; restent conformance full-array contre `rsciio.digitalsurf`, metadata objet/commentaire plus riche et decision de périmètre pour variantes MountainsMap hors corpus/branded AFM-Raman. |
 | Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes, avec axes Y calibres temporels exposes en metadata `time` et axes detecteur non calibres conserves en `index`. Rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
 | WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`, avec validation stricte `LineValid` booleenne et metadata diagnostique: 4950 slots physiques, 49 lignes valides, 6 lignes invalides, index physique et calibration `FreePolynom`. Restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
 | fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. Aucun sample fNIRS n'est present; les `.hdr` actuels sont ENVI et ne doivent pas etre routes par extension seule. |
