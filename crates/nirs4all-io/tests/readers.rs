@@ -2856,14 +2856,73 @@ fn reads_sun_photometer_channel_exports() {
 
 #[test]
 fn reads_local_microtops_man_ascii_when_present() {
-    let all_points =
-        workspace_file("samples_local/microtops/aeronet_man_Okeanos_19_2_all_points.lev20");
-    if !all_points.exists() {
+    let all_points = "samples_local/microtops/aeronet_man_Okeanos_19_2_all_points.lev20";
+    let all_points_path = workspace_file(all_points);
+    if !all_points_path.exists() {
         eprintln!("skipping local-only Microtops MAN ASCII samples");
         return;
     }
 
-    let records = open_path(all_points).expect("open local Microtops MAN all-points export");
+    for (relative, expected_len, expected_level, expected_aggregation, has_std) in [
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_all_points.lev10",
+            35,
+            "1.0",
+            "All Points",
+            false,
+        ),
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_all_points.lev15",
+            25,
+            "1.5",
+            "All Points",
+            false,
+        ),
+        (all_points, 25, "2.0", "All Points", false),
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_daily.lev15",
+            5,
+            "1.5",
+            "Daily Averages",
+            true,
+        ),
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_daily.lev20",
+            5,
+            "2.0",
+            "Daily Averages",
+            true,
+        ),
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_series.lev15",
+            6,
+            "1.5",
+            "Series",
+            true,
+        ),
+        (
+            "samples_local/microtops/aeronet_man_Okeanos_19_2_series.lev20",
+            6,
+            "2.0",
+            "Series",
+            true,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open local Microtops MAN export");
+        assert_eq!(records.len(), expected_len, "{relative}");
+        assert_eq!(records[0].provenance.format, "microtops-man-ascii");
+        assert_eq!(records[0].metadata["level"].as_str(), Some(expected_level));
+        assert_eq!(
+            records[0].metadata["aggregation"].as_str(),
+            Some(expected_aggregation)
+        );
+        let aot = records[0].signals.get("aot").expect("aot");
+        assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
+        assert_eq!(aot.axis.unit, "nm");
+        assert_eq!(records[0].signals.contains_key("aot_std"), has_std);
+    }
+
+    let records = open_path(all_points_path).expect("open local Microtops MAN all-points export");
 
     assert_eq!(records.len(), 25);
     assert_eq!(records[0].provenance.format, "microtops-man-ascii");
@@ -2914,6 +2973,16 @@ fn reads_local_microtops_man_ascii_when_present() {
         vec![380.0, 440.0, 500.0, 675.0, 870.0]
     );
     assert_eq!(daily_std.values, vec![0.0, 0.0, 0.0, 0.0, 0.0]);
+
+    let series = open_path(workspace_file(
+        "samples_local/microtops/aeronet_man_Okeanos_19_2_series.lev20",
+    ))
+    .expect("open local Microtops MAN series export");
+    let series_std = series[0].signals.get("aot_std").expect("aot_std");
+    assert_eq!(
+        series_std.values,
+        vec![0.003836, 0.003214, 0.003314, 0.006083, 0.00387]
+    );
 }
 
 #[test]
