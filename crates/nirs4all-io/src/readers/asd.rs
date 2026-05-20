@@ -107,6 +107,12 @@ fn parse_asd_bytes(bytes: &[u8]) -> Result<ParsedAsd> {
             )));
         }
     };
+    let consumed = match data_format {
+        0 | 1 => ASD_HEADER_LEN + channels * 4,
+        2 => ASD_HEADER_LEN + channels * 8,
+        _ => ASD_HEADER_LEN,
+    };
+    let trailing_block_bytes = bytes.len().saturating_sub(consumed);
 
     let mut metadata = BTreeMap::new();
     metadata.insert(
@@ -121,19 +127,14 @@ fn parse_asd_bytes(bytes: &[u8]) -> Result<ParsedAsd> {
             "instrument": instrument,
             "integration_time_ms_code": integration_time_ms,
             "comments": comments,
+            "trailing_block_bytes": trailing_block_bytes,
         }),
     );
 
     let mut warnings = Vec::new();
-    let consumed = match data_format {
-        0 | 1 => ASD_HEADER_LEN + channels * 4,
-        2 => ASD_HEADER_LEN + channels * 8,
-        _ => ASD_HEADER_LEN,
-    };
-    if bytes.len() > consumed {
+    if trailing_block_bytes > 0 {
         warnings.push(format!(
-            "trailing_asd_blocks_not_decoded: {} bytes",
-            bytes.len() - consumed
+            "trailing_asd_blocks_not_decoded: {trailing_block_bytes} bytes"
         ));
     }
 

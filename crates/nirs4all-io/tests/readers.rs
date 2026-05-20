@@ -2,30 +2,75 @@ use nirs4all_io::{open_path, AxisKind, AxisOrder, Error, SignalType};
 
 #[test]
 fn reads_asd_fieldspec_revisions() {
-    for (relative, signal_name, signal_type, first_value) in [
+    for (
+        relative,
+        version,
+        data_format,
+        data_type,
+        signal_name,
+        signal_type,
+        first_value,
+        trailing_block_bytes,
+    ) in [
         (
             "samples/asd/3L9257.000",
+            1,
+            "float32",
+            "reflectance",
             "reflectance",
             SignalType::Reflectance,
             0.026823,
+            0,
         ),
         (
             "samples/asd/v6sample00000.asd",
+            6,
+            "float64",
+            "raw",
             "raw",
             SignalType::RawCounts,
             29.311738,
+            17_274,
         ),
         (
             "samples/asd/v7_field_44231B009.asd",
+            7,
+            "float64",
+            "reflectance",
             "reflectance",
             SignalType::Reflectance,
             18.622284,
+            34_523,
+        ),
+        (
+            "samples/asd/v7sample00000.asd",
+            7,
+            "float64",
+            "radiance",
+            "radiance",
+            SignalType::Radiance,
+            30.425934,
+            68_994,
+        ),
+        (
+            "samples/asd/soil.asd",
+            8,
+            "float64",
+            "raw",
+            "raw",
+            SignalType::RawCounts,
+            15.700499,
+            17_440,
         ),
         (
             "samples/asd/v8sample00001.asd",
+            8,
+            "float64",
+            "raw",
             "raw",
             SignalType::RawCounts,
             153.995245,
+            18_699,
         ),
     ] {
         let records = open_path(workspace_file(relative)).expect("open asd");
@@ -34,10 +79,27 @@ fn reads_asd_fieldspec_revisions() {
         assert_eq!(records[0].provenance.format, "asd-fieldspec");
         let signal = records[0].signals.get(signal_name).expect(signal_name);
         assert_eq!(signal.axis.values.len(), 2_151);
+        assert!((signal.axis.values[0] - 350.0).abs() < 0.000001);
+        assert!((signal.axis.values[2_150] - 2500.0).abs() < 0.000001);
         assert_eq!(signal.axis.unit, "nm");
         assert_eq!(signal.axis.kind, AxisKind::Wavelength);
         assert_eq!(signal.signal_type, signal_type);
         assert!((signal.values[0] - first_value).abs() < 0.000001);
+        let asd = &records[0].metadata["asd"];
+        assert_eq!(asd["version"].as_u64(), Some(version));
+        assert_eq!(asd["channels"].as_u64(), Some(2_151));
+        assert_eq!(asd["data_format"].as_str(), Some(data_format));
+        assert_eq!(asd["data_type"].as_str(), Some(data_type));
+        assert_eq!(
+            asd["trailing_block_bytes"].as_u64(),
+            Some(trailing_block_bytes)
+        );
+        assert_eq!(
+            records[0].provenance.warnings.iter().any(|warning| {
+                warning == &format!("trailing_asd_blocks_not_decoded: {trailing_block_bytes} bytes")
+            }),
+            trailing_block_bytes > 0
+        );
     }
 }
 

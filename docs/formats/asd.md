@@ -11,6 +11,7 @@ Implemented scope:
 - support for ASD files without `.asd` extension, such as `.000`;
 - fixed header fields needed for primary loading: channel count, first
   wavelength, wavelength step, data type and data format;
+- explicit `trailing_block_bytes` metadata for undecoded internal ASD blocks;
 - primary spectrum payload in `float32`, `int32` and `float64` encodings;
 - normalized output as one `SpectralRecord` with a wavelength axis in `nm`.
 
@@ -44,4 +45,5 @@ Known limitations:
 
 The reader emits a `trailing_asd_blocks_not_decoded` warning when bytes remain
 after the primary spectrum. That is expected for newer ASD revisions until the
-secondary block parsers are implemented.
+secondary block parsers are implemented; the same byte count is exposed in
+`metadata.asd.trailing_block_bytes` for downstream auditing.
