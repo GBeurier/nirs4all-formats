@@ -597,6 +597,62 @@ fn rejects_non_nirs_hdf5_containers() {
 }
 
 #[test]
+fn reads_synthetic_matlab_v5_dataset() {
+    let records =
+        open_path(workspace_file("samples/matlab/synthetic_nirs_v5.mat")).expect("open matlab v5");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "matlab-mat-v5");
+    assert_eq!(records[0].metadata["container"].as_str(), Some("matlab_v5"));
+    assert_eq!(
+        records[0].metadata["matrix_orientation"].as_str(),
+        Some("samples_by_bands")
+    );
+    assert_eq!(records[0].metadata["sample_index"].as_u64(), Some(0));
+    assert_eq!(records[0].targets["y"].as_f64(), Some(10.53211185428271));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.03674271524932157).abs() < 0.000001);
+    assert!((absorbance.values[199] + 0.1465858247257086).abs() < 0.000001);
+}
+
+#[test]
+fn reads_synthetic_matlab_v73_dataset() {
+    let records = open_path(workspace_file("samples/matlab/synthetic_nirs_v73.mat"))
+        .expect("open matlab v73");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "matlab-mat-v73");
+    assert_eq!(
+        records[0].metadata["container"].as_str(),
+        Some("matlab_v73_hdf5")
+    );
+    assert_eq!(
+        records[0].metadata["matrix_orientation"].as_str(),
+        Some("bands_by_samples")
+    );
+    assert_eq!(records[0].targets["y"].as_f64(), Some(10.53211185428271));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.values[0] - 0.03674271524932157).abs() < 0.000001);
+    assert!((absorbance.values[199] + 0.1465858247257086).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_matlab_struct_only_dataset_until_dso_mapping_exists() {
+    let err =
+        open_path(workspace_file("samples/matlab/scpdata_dso.mat")).expect_err("unsupported DSO");
+    assert!(err.to_string().contains("no X matrix"));
+}
+
+#[test]
 fn reads_pp_systems_row_tables_with_multiple_signals() {
     let records =
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");

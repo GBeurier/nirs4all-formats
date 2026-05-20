@@ -35,6 +35,9 @@ Experimental native readers:
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
   and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
   pending;
+- MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
+  + optional `y` datasets; object/DSO `.mat` files and `.RData` are still
+  pending dedicated schema mappers;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -94,8 +97,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. add MATLAB `.mat` v5/v7.3 and `.RData` dataset readers next, with v7.3
-   transposition rules documented against the HDF5-backed fixture;
+1. add dedicated MATLAB struct/DSO and `.RData` dataset mappers for Eigenvector
+   Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: Nicolet OMNIC
    `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
 3. add lab-transfer containers: Excel `.xlsx`, then Renishaw WDF and Horiba /

@@ -52,6 +52,8 @@ Deliverables:
   datasets and refusal of adjacent non-NIRS NetCDF containers;
 - generic HDF5 NIRS reader; experimental for root and nested-group `spectra` +
   `wavelengths` datasets, including the committed synthetic FGI HDF5 payload;
+- MATLAB MAT reader; experimental for simple MAT v5 and MATLAB v7.3/HDF5
+  `X` + `wavelengths` + optional `y` datasets;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -147,7 +149,8 @@ Deliverables:
 
 Add one family at a time:
 
-- MATLAB `.mat` v5/v7.3 and `.RData` academic datasets;
+- MATLAB struct/DSO and `.RData` academic dataset mappers after the simple
+  MAT v5/v7.3 matrix path;
 - Nicolet OMNIC `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir` and
   JASCO `.jws`, each validated against an open reference reader when possible;
 - Excel `.xlsx`, Renishaw WDF and Horiba / JobinYvon LabSpec XML/text for
