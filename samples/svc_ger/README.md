@@ -48,4 +48,17 @@ Sugar maple leaf spectra collected with an SVC HR-1024(i).
 - The two `*_BAD.sig` fixtures are accepted as parseable text but are marked
   with `declared_bad_fixture` / `svc_sig_declared_bad_fixture` so validation
   reports can separate them from clean acquisitions.
+- The reader splits the SVC `factors=` bracket into `overlap_policy`,
+  `matching_type` and (when overlap is removed) `overlap_break_wavelengths_nm`.
+  Raw exports keep an explicit `detector_overlap_preserved` quality flag; the
+  matched-overlap-corrected and resampled exports advertise
+  `overlap_removed` / `matched_overlap_corrected` / `resampled_export`.
+- White-reference captures are tagged with the `white_reference` quality
+  flag when the filename stem contains `_WR_` (the convention used by
+  `spectrolab` field campaigns).
+- Per-detector acquisition metadata (integration time, coadds, detector
+  temperatures, battery voltage, error codes, memory slots, radiometric
+  factors) is promoted to canonical top-level keys alongside the
+  `vendor.*` blob, matching the columns surfaced by `spectrolab` and
+  `specdal`.
 - Reference readers: [`spectrolab`](https://github.com/meireles/spectrolab), [`specdal`](https://github.com/EnSpec/SpecDAL).

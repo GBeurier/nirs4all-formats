@@ -2576,6 +2576,24 @@ fn reads_svc_sig_with_overlap_quality_flag() {
     assert!(records[0]
         .quality_flags
         .contains(&"overlap_removed".to_string()));
+    // overlap_removed and detector_overlap_preserved are mutually exclusive.
+    assert!(!records[0]
+        .quality_flags
+        .contains(&"detector_overlap_preserved".to_string()));
+    assert_eq!(
+        records[0].metadata["overlap_policy"].as_str(),
+        Some("remove")
+    );
+    let breakpoints = records[0].metadata["overlap_break_wavelengths_nm"]
+        .as_array()
+        .expect("overlap_break_wavelengths_nm");
+    assert_eq!(breakpoints.len(), 2);
+    assert!((breakpoints[0].as_f64().unwrap() - 970.0).abs() < 0.000001);
+    assert!((breakpoints[1].as_f64().unwrap() - 1901.0).abs() < 0.000001);
+    let matching_type = records[0].metadata["matching_type"]
+        .as_str()
+        .expect("matching_type");
+    assert_eq!(matching_type, "Radiance @ 976 - 1010 / NIR-SWIR On");
 }
 
 #[test]
@@ -2585,7 +2603,10 @@ fn reads_svc_sig_laptop_firmware_variant() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "svc-ger-sig");
-    assert!(records[0].quality_flags.is_empty());
+    assert_eq!(
+        records[0].quality_flags,
+        vec!["detector_overlap_preserved".to_string()]
+    );
     assert_eq!(records[0].signals.len(), 3);
     for name in ["reference", "target", "reflectance"] {
         assert!(records[0].signals.contains_key(name), "missing {name}");
@@ -2604,6 +2625,22 @@ fn reads_svc_sig_laptop_firmware_variant() {
         Some("01:55:32")
     );
     assert!(!records[0].metadata.contains_key("gps_latitude"));
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("HR-1024i")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_serial"].as_str(),
+        Some("6142041")
+    );
+    assert_eq!(
+        records[0].metadata["overlap_policy"].as_str(),
+        Some("preserve")
+    );
+    assert_eq!(records[0].metadata["matching_type"].as_str(), Some("None"));
+    assert!(!records[0]
+        .metadata
+        .contains_key("overlap_break_wavelengths_nm"));
 
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 1_024);
@@ -2630,7 +2667,7 @@ fn reads_svc_sig_second_laptop_firmware_variant() {
         .expect("open second laptop sig");
 
     assert_eq!(records.len(), 1);
-    assert_svc_sig_triplet_record(&records[0], 338.2, 2517.2);
+    assert_svc_sig_triplet_record(&records[0], 338.2, 2517.2, &["detector_overlap_preserved"]);
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert!((reflectance.values[0] - 13.44).abs() < 0.000001);
     assert!((reflectance.values[1_023] - 5.61).abs() < 0.000001);
@@ -2648,7 +2685,10 @@ fn reads_svc_sig_clean_acer_pda_variant() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "svc-ger-sig");
-    assert!(records[0].quality_flags.is_empty());
+    assert_eq!(
+        records[0].quality_flags,
+        vec!["detector_overlap_preserved".to_string()]
+    );
     assert!(records[0].provenance.warnings.is_empty());
     assert_svc_signal_units(&records[0]);
     assert_eq!(
@@ -2669,6 +2709,63 @@ fn reads_svc_sig_clean_acer_pda_variant() {
         (records[0].metadata["gps_longitude"].as_f64().unwrap() + 92.51937833333333).abs()
             < 0.000001
     );
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("HR-1024i")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_serial"].as_str(),
+        Some("1152050")
+    );
+    let foreoptic = records[0].metadata["foreoptic"]
+        .as_array()
+        .expect("foreoptic array");
+    assert_eq!(foreoptic.len(), 2);
+    assert_eq!(foreoptic[0].as_str(), Some("FIBER1(2)"));
+    assert_eq!(foreoptic[1].as_str(), Some("FIBER1(2)"));
+    let factors = records[0].metadata["radiometric_factors"]
+        .as_array()
+        .expect("radiometric_factors array");
+    assert_eq!(factors.len(), 3);
+    assert!((factors[0].as_f64().unwrap() - 1.080).abs() < 0.000001);
+    assert!((factors[1].as_f64().unwrap() - 1.133).abs() < 0.000001);
+    assert!((factors[2].as_f64().unwrap() - 1.000).abs() < 0.000001);
+    assert_eq!(
+        records[0].metadata["overlap_policy"].as_str(),
+        Some("preserve")
+    );
+    assert_eq!(records[0].metadata["matching_type"].as_str(), Some("None"));
+    let ref_int = records[0].metadata["integration_time_reference_ms"]
+        .as_array()
+        .expect("integration_time_reference_ms");
+    assert_eq!(ref_int.len(), 3);
+    assert!((ref_int[0].as_f64().unwrap() - 70.0).abs() < 0.000001);
+    let tgt_int = records[0].metadata["integration_time_target_ms"]
+        .as_array()
+        .expect("integration_time_target_ms");
+    assert_eq!(tgt_int.len(), 3);
+    assert!((tgt_int[0].as_f64().unwrap() - 200.0).abs() < 0.000001);
+    let ref_temp = records[0].metadata["detector_temperatures_reference_celsius"]
+        .as_array()
+        .expect("detector_temperatures_reference_celsius");
+    assert!((ref_temp[0].as_f64().unwrap() - 33.1).abs() < 0.000001);
+    let ref_coadds = records[0].metadata["coadds_reference"]
+        .as_array()
+        .expect("coadds_reference");
+    assert_eq!(ref_coadds[0].as_i64(), Some(28));
+    let battery = records[0].metadata["battery_voltages_volts"]
+        .as_array()
+        .expect("battery_voltages_volts");
+    assert_eq!(battery.len(), 2);
+    assert!((battery[0].as_f64().unwrap() - 7.81).abs() < 0.000001);
+    let errors = records[0].metadata["error_codes"]
+        .as_array()
+        .expect("error_codes");
+    assert_eq!(errors, &vec![serde_json::json!(7), serde_json::json!(3)]);
+    let slots = records[0].metadata["memory_slots"]
+        .as_array()
+        .expect("memory_slots");
+    assert_eq!(slots, &vec![serde_json::json!(0), serde_json::json!(0)]);
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 1_024);
     assert_eq!(reflectance.axis.unit, "nm");
@@ -2723,7 +2820,7 @@ fn reads_svc_sig_clean_acer_fixture_set() {
         let records = open_path(workspace_file(relative)).expect("open clean Acer sig");
 
         assert_eq!(records.len(), 1, "{relative}");
-        assert_svc_sig_triplet_record(&records[0], 340.5, 2522.8);
+        assert_svc_sig_triplet_record(&records[0], 340.5, 2522.8, &["detector_overlap_preserved"]);
         let reflectance = records[0].signals.get("reflectance").expect("reflectance");
         assert!(
             (reflectance.values[0] - first).abs() < 0.000001,
@@ -2746,7 +2843,12 @@ fn reads_svc_sig_acer_white_reference_fixture() {
         .expect("open Acer white reference sig");
 
     assert_eq!(records.len(), 1);
-    assert_svc_sig_triplet_record(&records[0], 340.5, 2522.8);
+    assert_svc_sig_triplet_record(
+        &records[0],
+        340.5,
+        2522.8,
+        &["detector_overlap_preserved", "white_reference"],
+    );
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert!((reflectance.values[0] - 97.5).abs() < 0.000001);
     assert!((reflectance.values[1_023] - 100.5).abs() < 0.000001);
@@ -2755,15 +2857,26 @@ fn reads_svc_sig_acer_white_reference_fixture() {
     assert!((reference.values[0] - 1323.43).abs() < 0.000001);
     let target = records[0].signals.get("target").expect("target");
     assert!((target.values[0] - 1290.34).abs() < 0.000001);
+    // Mean reflectance close to 100% confirms this is a white-reference capture.
+    let mean_reflectance = reflectance.values.iter().sum::<f64>() / reflectance.values.len() as f64;
+    assert!(
+        (mean_reflectance - 100.0).abs() < 2.0,
+        "mean reflectance {mean_reflectance}"
+    );
 }
 
 fn assert_svc_sig_triplet_record(
     record: &nirs4all_io::SpectralRecord,
     first_axis: f64,
     last_axis: f64,
+    expected_quality_flags: &[&str],
 ) {
     assert_eq!(record.provenance.format, "svc-ger-sig");
-    assert!(record.quality_flags.is_empty());
+    let expected = expected_quality_flags
+        .iter()
+        .map(|flag| flag.to_string())
+        .collect::<Vec<_>>();
+    assert_eq!(record.quality_flags, expected);
     assert!(record.provenance.warnings.is_empty());
     assert_eq!(record.signals.len(), 3);
     for (name, signal_type) in [
@@ -2810,6 +2923,82 @@ fn flags_declared_bad_svc_sig_fixtures() {
             .warnings
             .contains(&"svc_sig_declared_bad_fixture".to_string()));
     }
+}
+
+#[test]
+fn promotes_svc_sig_factors_metadata_for_resampled_export() {
+    let records = open_path(workspace_file(
+        "samples/svc_ger/serbinsh_BEO_CakeEater_Pheno_026_resamp.sig",
+    ))
+    .expect("open BEO resampled sig");
+
+    assert_eq!(records.len(), 1);
+    // Resampled spectra are overlap-removed exports and cannot keep raw overlap.
+    assert!(records[0]
+        .quality_flags
+        .contains(&"resampled_export".to_string()));
+    assert!(records[0]
+        .quality_flags
+        .contains(&"overlap_removed".to_string()));
+    assert!(!records[0]
+        .quality_flags
+        .contains(&"detector_overlap_preserved".to_string()));
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("HR-1024i")
+    );
+    assert_eq!(
+        records[0].metadata["overlap_policy"].as_str(),
+        Some("remove")
+    );
+    let breakpoints = records[0].metadata["overlap_break_wavelengths_nm"]
+        .as_array()
+        .expect("overlap_break_wavelengths_nm");
+    assert_eq!(breakpoints.len(), 2);
+    assert!((breakpoints[0].as_f64().unwrap() - 997.0).abs() < 0.000001);
+    assert!((breakpoints[1].as_f64().unwrap() - 1901.0).abs() < 0.000001);
+    let matching = records[0].metadata["matching_type"]
+        .as_str()
+        .expect("matching_type");
+    assert!(matching.contains("987 - 1002"), "{matching}");
+    let foreoptic = records[0].metadata["foreoptic"]
+        .as_array()
+        .expect("foreoptic array");
+    assert_eq!(foreoptic[0].as_str(), Some("LENS 4(1)"));
+    // Resampled exports always land on the canonical ASD 350-2500 nm grid at 1 nm step.
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 2_151);
+    let step = reflectance.axis.values[1] - reflectance.axis.values[0];
+    assert!((step - 1.0).abs() < 0.000001, "step={step}");
+}
+
+#[test]
+fn promotes_svc_sig_metadata_for_ger3700_pda() {
+    let records = open_path(workspace_file("samples/svc_ger/serbinsh_gr070214_003.sig"))
+        .expect("open GER 3700 sig");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("HR-1024i")
+    );
+    assert_eq!(
+        records[0].metadata["overlap_policy"].as_str(),
+        Some("remove")
+    );
+    // GER 3700 raw export still passes through the SVC-style overlap policy.
+    let factors = records[0].metadata["radiometric_factors"]
+        .as_array()
+        .expect("radiometric_factors");
+    assert_eq!(factors.len(), 3);
+    assert!((factors[0].as_f64().unwrap() - 0.993).abs() < 0.000001);
+    assert!((factors[1].as_f64().unwrap() - 0.990).abs() < 0.000001);
+    assert!((factors[2].as_f64().unwrap() - 1.000).abs() < 0.000001);
+    let ref_int = records[0].metadata["integration_time_reference_ms"]
+        .as_array()
+        .expect("integration_time_reference_ms");
+    assert_eq!(ref_int.len(), 3);
+    assert!((ref_int[0].as_f64().unwrap() - 500.0).abs() < 0.000001);
 }
 
 #[test]

@@ -42,38 +42,44 @@ impl Reader for SvcSigReader {
             })?;
         let mut metadata_pairs = Vec::new();
         let mut is_moc = false;
-        let mut overlap_removed = false;
         let mut is_resampled = false;
         for line in &lines[..data_idx] {
             if let Some((key, value)) = line.split_once('=') {
                 let normalized_key = normalize_key(key);
                 let lower_value = value.to_ascii_lowercase();
-                match normalized_key.as_str() {
-                    "comm" => {
-                        if lower_value.contains("overlap") {
-                            is_moc = true;
-                        }
-                        if lower_value.contains("resampled") {
-                            is_resampled = true;
-                        }
-                    }
-                    "factors" if lower_value.contains("overlap: remove") => {
+                if normalized_key == "comm" {
+                    if lower_value.contains("overlap") {
                         is_moc = true;
-                        overlap_removed = true;
                     }
-                    _ => {}
+                    if lower_value.contains("resampled") {
+                        is_resampled = true;
+                    }
                 }
                 metadata_pairs.push((key.to_string(), value.trim().to_string()));
             }
         }
-        if path
+        let stem_lower = path
             .file_stem()
             .and_then(|value| value.to_str())
-            .is_some_and(|stem| stem.to_ascii_lowercase().contains("_resamp"))
+            .map(|stem| stem.to_ascii_lowercase());
+        if stem_lower
+            .as_deref()
+            .is_some_and(|stem| stem.contains("_resamp"))
         {
             is_resampled = true;
         }
+        let is_white_reference = stem_lower
+            .as_deref()
+            .is_some_and(|stem| stem.contains("_wr_") || stem.ends_with("_wr"));
         let metadata = svc_metadata(metadata_pairs);
+        let overlap_policy = metadata
+            .get("overlap_policy")
+            .and_then(|value| value.as_str());
+        let overlap_removed = overlap_policy == Some("remove");
+        let overlap_preserved = overlap_policy == Some("preserve");
+        if overlap_removed {
+            is_moc = true;
+        }
         let source_signal_units = source_signal_units(&metadata);
         let mut axis = Vec::new();
         let mut reference = Vec::new();
@@ -141,13 +147,20 @@ impl Reader for SvcSigReader {
         if overlap_removed {
             record.quality_flags.push("overlap_removed".to_string());
         }
+        if overlap_preserved && !overlap_removed {
+            record
+                .quality_flags
+                .push("detector_overlap_preserved".to_string());
+        }
         if is_resampled {
             record.quality_flags.push("resampled_export".to_string());
         }
-        if path
-            .file_stem()
-            .and_then(|value| value.to_str())
-            .is_some_and(|stem| stem.to_ascii_lowercase().contains("_bad"))
+        if is_white_reference {
+            record.quality_flags.push("white_reference".to_string());
+        }
+        if stem_lower
+            .as_deref()
+            .is_some_and(|stem| stem.contains("_bad"))
         {
             record
                 .quality_flags
@@ -213,6 +226,39 @@ fn svc_metadata(pairs: Vec<(String, String)>) -> BTreeMap<String, serde_json::Va
             metadata.insert("source_signal_units".to_string(), serde_json::json!(units));
         }
     }
+
+    promote_instrument(&mut metadata, &normalized);
+    promote_string_pair(&mut metadata, &normalized, "optic", "foreoptic");
+    promote_detector_triplets_pair(
+        &mut metadata,
+        &normalized,
+        "integration",
+        "integration_time_reference_ms",
+        "integration_time_target_ms",
+    );
+    promote_detector_int_triplets_pair(
+        &mut metadata,
+        &normalized,
+        "scan_coadds",
+        "coadds_reference",
+        "coadds_target",
+    );
+    promote_detector_triplets_pair(
+        &mut metadata,
+        &normalized,
+        "temp",
+        "detector_temperatures_reference_celsius",
+        "detector_temperatures_target_celsius",
+    );
+    promote_pair_floats(
+        &mut metadata,
+        &normalized,
+        "battery",
+        "battery_voltages_volts",
+    );
+    promote_pair_ints(&mut metadata, &normalized, "error", "error_codes");
+    promote_pair_ints(&mut metadata, &normalized, "memory_slot", "memory_slots");
+    promote_factors(&mut metadata, &normalized);
 
     metadata
 }
@@ -341,6 +387,232 @@ fn normalize_svc_gps_time(value: &str) -> Option<String> {
         return None;
     }
     Some(format!("{hour:02}:{minute:02}:{second:02}"))
+}
+
+fn promote_instrument(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some(value) = header_value(pairs, "instrument") else {
+        return;
+    };
+    let Some((serial, model)) = parse_svc_instrument(value) else {
+        return;
+    };
+    metadata.insert("instrument_serial".to_string(), serde_json::json!(serial));
+    metadata.insert("instrument_model".to_string(), serde_json::json!(model));
+}
+
+/// SVC firmware writes `HI: <serial> (<model>)`.
+fn parse_svc_instrument(value: &str) -> Option<(String, String)> {
+    let trimmed = value.trim();
+    let body = trimmed.strip_prefix("HI:").unwrap_or(trimmed).trim();
+    let (serial_part, rest) = body.split_once('(')?;
+    let serial = serial_part.trim().to_string();
+    let model = rest.trim_end_matches(')').trim().to_string();
+    if serial.is_empty() || model.is_empty() {
+        return None;
+    }
+    Some((serial, model))
+}
+
+fn promote_string_pair(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let entries = split_header_values(value);
+    if entries.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(entries));
+    }
+}
+
+fn promote_detector_triplets_pair(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    reference_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_float_values(value) else {
+        return;
+    };
+    if values.len() != 6 {
+        return;
+    }
+    metadata.insert(
+        reference_key.to_string(),
+        serde_json::json!(values[..3].to_vec()),
+    );
+    metadata.insert(
+        target_key.to_string(),
+        serde_json::json!(values[3..].to_vec()),
+    );
+}
+
+fn promote_detector_int_triplets_pair(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    reference_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_int_values(value) else {
+        return;
+    };
+    if values.len() != 6 {
+        return;
+    }
+    metadata.insert(
+        reference_key.to_string(),
+        serde_json::json!(values[..3].to_vec()),
+    );
+    metadata.insert(
+        target_key.to_string(),
+        serde_json::json!(values[3..].to_vec()),
+    );
+}
+
+fn promote_pair_floats(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_float_values(value) else {
+        return;
+    };
+    if values.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_pair_ints(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_int_values(value) else {
+        return;
+    };
+    if values.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_factors(metadata: &mut BTreeMap<String, serde_json::Value>, pairs: &[(String, String)]) {
+    let Some(value) = header_value(pairs, "factors") else {
+        return;
+    };
+    let (numeric_part, bracket) = split_first_factor_block(value);
+    let factors: Vec<f64> = numeric_part
+        .split(',')
+        .map(str::trim)
+        .filter(|item| !item.is_empty())
+        .map(parse_number)
+        .collect::<Option<Vec<_>>>()
+        .unwrap_or_default();
+    if factors.len() == 3 {
+        metadata.insert(
+            "radiometric_factors".to_string(),
+            serde_json::json!(factors),
+        );
+    }
+    let Some(bracket) = bracket else {
+        return;
+    };
+    if let Some(policy) = parse_factor_field(bracket, "Overlap:") {
+        let policy_value = policy.trim();
+        let lower = policy_value.to_ascii_lowercase();
+        let canonical = if lower.starts_with("remove") {
+            "remove"
+        } else if lower.starts_with("preserve") {
+            "preserve"
+        } else {
+            policy_value
+        };
+        metadata.insert("overlap_policy".to_string(), serde_json::json!(canonical));
+        if canonical == "remove" {
+            // Parse "Remove @ 997,1901" into overlap breakpoints in nm.
+            if let Some(at_part) = policy_value.split_once('@').map(|(_, tail)| tail) {
+                let breakpoints: Vec<f64> = at_part
+                    .split(',')
+                    .map(str::trim)
+                    .map(parse_number)
+                    .collect::<Option<Vec<_>>>()
+                    .unwrap_or_default();
+                if !breakpoints.is_empty() {
+                    metadata.insert(
+                        "overlap_break_wavelengths_nm".to_string(),
+                        serde_json::json!(breakpoints),
+                    );
+                }
+            }
+        }
+    }
+    if let Some(matching) = parse_factor_field(bracket, "Matching Type:") {
+        metadata.insert(
+            "matching_type".to_string(),
+            serde_json::json!(matching.trim()),
+        );
+    }
+}
+
+fn parse_float_values(value: &str) -> Option<Vec<f64>> {
+    split_header_values(value)
+        .iter()
+        .map(|item| parse_number(item))
+        .collect()
+}
+
+fn parse_int_values(value: &str) -> Option<Vec<i64>> {
+    split_header_values(value)
+        .iter()
+        .map(|item| item.parse::<i64>().ok())
+        .collect()
+}
+
+fn split_first_factor_block(value: &str) -> (&str, Option<&str>) {
+    let Some((head, rest)) = value.split_once('[') else {
+        return (value, None);
+    };
+    let bracket = rest
+        .split_once(']')
+        .map(|(inside, _tail)| inside)
+        .unwrap_or(rest);
+    (head, Some(bracket))
+}
+
+/// Read a value associated with `key` (e.g. `Overlap:`) inside a `factors=` bracket.
+/// Values can themselves contain commas (e.g. `Remove @ 997,1901`), so we slice up
+/// to the next known field marker instead of splitting on commas.
+fn parse_factor_field(bracket: &str, key: &str) -> Option<String> {
+    let start = bracket.find(key)? + key.len();
+    let tail = &bracket[start..];
+    const NEXT_FIELDS: &[&str] = &[", Matching Type:", ", Overlap:"];
+    let end = NEXT_FIELDS
+        .iter()
+        .filter_map(|marker| tail.find(marker))
+        .min()
+        .unwrap_or(tail.len());
+    Some(tail[..end].to_string())
 }
 
 fn normalize_svc_coordinate(value: &str) -> Option<f64> {
