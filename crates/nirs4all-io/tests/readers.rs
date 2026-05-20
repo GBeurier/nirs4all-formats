@@ -302,12 +302,36 @@ fn reads_jasco_jws_single_channel_files() {
     assert_eq!(record.provenance.format, "jasco-jws");
     assert_eq!(record.metadata["channel_count"].as_u64(), Some(1));
     assert_eq!(record.metadata["point_count"].as_u64(), Some(7_729));
-    let signal = record.signals.get("signal").expect("signal");
+    assert_eq!(
+        record.metadata["channel_labels"]
+            .as_array()
+            .expect("channel labels")[0]
+            .as_str(),
+        Some("transmittance")
+    );
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("FT/IR-4100typeA")
+    );
+    assert_eq!(
+        record.metadata["measurement_mode"].as_str(),
+        Some("ftir_transmittance")
+    );
+    assert_eq!(
+        record.metadata["source_path"].as_str(),
+        Some(r"Z:\Instruments\IR\YCD\243.jws")
+    );
+    assert!(record
+        .provenance
+        .warnings
+        .contains(&"jasco_jws_semantic_channels_inferred".to_string()));
+    let signal = record.signals.get("transmittance").expect("transmittance");
     assert_eq!(signal.axis.values.len(), 7_729);
     assert_eq!(signal.axis.unit, "cm-1");
     assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
     assert_eq!(signal.axis.order, AxisOrder::Ascending);
-    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert_eq!(signal.signal_type, SignalType::Transmittance);
+    assert_eq!(signal.unit.as_deref(), Some("%T"));
     assert!((signal.axis.values[0] - 349.0525166555562).abs() < 0.000001);
     assert!((signal.axis.values[7_728] - 7800.6487838216835).abs() < 0.000001);
     assert!((signal.values[0] - 38.420169830322266).abs() < 0.000001);
@@ -317,7 +341,29 @@ fn reads_jasco_jws_single_channel_files() {
     let records =
         open_path(workspace_file("samples/jasco/sample_fluorescence.jws")).expect("open jws");
     assert_eq!(records.len(), 1);
-    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(
+        records[0].metadata["channel_labels"]
+            .as_array()
+            .expect("channel labels")[0]
+            .as_str(),
+        Some("fluorescence")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("FP-8300")
+    );
+    assert_eq!(
+        records[0].metadata["measurement_mode"].as_str(),
+        Some("fluorescence")
+    );
+    assert_eq!(
+        records[0].metadata["sample_label"].as_str(),
+        Some("photonic wire")
+    );
+    let signal = records[0]
+        .signals
+        .get("fluorescence")
+        .expect("fluorescence");
     assert_eq!(signal.axis.values.len(), 301);
     assert_eq!(signal.axis.unit, "nm");
     assert_eq!(signal.axis.kind, AxisKind::Wavelength);
@@ -339,29 +385,52 @@ fn reads_jasco_jws_multichannel_file() {
     assert_eq!(record.provenance.format, "jasco-jws");
     assert_eq!(record.metadata["channel_count"].as_u64(), Some(3));
     assert_eq!(record.metadata["point_count"].as_u64(), Some(1_501));
+    let channel_labels = record.metadata["channel_labels"]
+        .as_array()
+        .expect("channel labels")
+        .iter()
+        .map(|value| value.as_str().expect("channel label"))
+        .collect::<Vec<_>>();
+    assert_eq!(channel_labels, vec!["cd", "ht", "absorbance"]);
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("CD-1500")
+    );
+    assert_eq!(
+        record.metadata["measurement_mode"].as_str(),
+        Some("circular_dichroism")
+    );
+    assert_eq!(
+        record.metadata["source_path"].as_str(),
+        Some(r"F:\CD1500\1A-1.jws")
+    );
     assert_eq!(record.signal_type, SignalType::Unknown);
 
-    let channel_1 = record.signals.get("channel_1").expect("channel_1");
-    assert_eq!(channel_1.axis.values.len(), 1_501);
-    assert_eq!(channel_1.axis.unit, "nm");
-    assert_eq!(channel_1.axis.kind, AxisKind::Wavelength);
-    assert_eq!(channel_1.axis.order, AxisOrder::Descending);
-    assert_eq!(channel_1.signal_type, SignalType::Unknown);
-    assert!((channel_1.axis.values[0] - 350.0).abs() < 0.000001);
-    assert!((channel_1.axis.values[1_500] - 200.0).abs() < 0.000001);
-    assert!((channel_1.values[0] - 0.3416369557380676).abs() < 0.000001);
-    assert!((channel_1.values[1_500] - 6.220218658447266).abs() < 0.000001);
-    assert!((channel_1.values.iter().sum::<f64>() - 3706.048405816895).abs() < 0.000001);
+    let cd = record.signals.get("cd").expect("cd");
+    assert_eq!(cd.axis.values.len(), 1_501);
+    assert_eq!(cd.axis.unit, "nm");
+    assert_eq!(cd.axis.kind, AxisKind::Wavelength);
+    assert_eq!(cd.axis.order, AxisOrder::Descending);
+    assert_eq!(cd.signal_type, SignalType::Unknown);
+    assert_eq!(cd.unit.as_deref(), Some("mdeg"));
+    assert!((cd.axis.values[0] - 350.0).abs() < 0.000001);
+    assert!((cd.axis.values[1_500] - 200.0).abs() < 0.000001);
+    assert!((cd.values[0] - 0.3416369557380676).abs() < 0.000001);
+    assert!((cd.values[1_500] - 6.220218658447266).abs() < 0.000001);
+    assert!((cd.values.iter().sum::<f64>() - 3706.048405816895).abs() < 0.000001);
 
-    let channel_2 = record.signals.get("channel_2").expect("channel_2");
-    assert!((channel_2.values[0] - 250.94847106933594).abs() < 0.000001);
-    assert!((channel_2.values[1_500] - 364.5225830078125).abs() < 0.000001);
-    assert!((channel_2.values.iter().sum::<f64>() - 401_403.0902252197).abs() < 0.000001);
+    let ht = record.signals.get("ht").expect("ht");
+    assert_eq!(ht.unit.as_deref(), Some("V"));
+    assert!((ht.values[0] - 250.94847106933594).abs() < 0.000001);
+    assert!((ht.values[1_500] - 364.5225830078125).abs() < 0.000001);
+    assert!((ht.values.iter().sum::<f64>() - 401_403.0902252197).abs() < 0.000001);
 
-    let channel_3 = record.signals.get("channel_3").expect("channel_3");
-    assert!((channel_3.values[0] - 0.7128385901451111).abs() < 0.000001);
-    assert!((channel_3.values[1_500] - 1.899193286895752).abs() < 0.000001);
-    assert!((channel_3.values.iter().sum::<f64>() - 1356.2173843979836).abs() < 0.000001);
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.unit.as_deref(), Some("dOD"));
+    assert!((absorbance.values[0] - 0.7128385901451111).abs() < 0.000001);
+    assert!((absorbance.values[1_500] - 1.899193286895752).abs() < 0.000001);
+    assert!((absorbance.values.iter().sum::<f64>() - 1356.2173843979836).abs() < 0.000001);
 }
 
 #[test]

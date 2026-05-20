@@ -25,8 +25,16 @@ OLE2 compound-document binary (Microsoft compound file format). Reverse-engineer
 
 ## Parser hints
 
-- `.jws` is OLE2 — open with `olefile` (Python) or `compoundfiles` (Rust).
-- Streams of interest: `Data`, `Header`, `XdataValue`, etc. (varies by JASCO firmware).
+- `.jws` is OLE2 — open with `olefile` (Python) or `cfb` (Rust).
+- Streams of interest in committed fixtures: `DataInfo`, `Y-Data`, `BaseInfo`,
+  `ModuleInfo`, `SampleInfo`, `UserInfo` and `MeasParam`.
+- Current native labels:
+  - `243.jws`: `transmittance` (`%T`) from FT/IR metadata and ordinate scale.
+  - `sample_fluorescence.jws`: `fluorescence` from `FP-8300` metadata.
+  - `sample_CD_HT_Abs.jws`: `cd` (`mdeg`), `ht` (`V`) and `absorbance`
+    (`dOD`) from `CD-1500` / `J-1500` metadata.
+- Other JASCO variants may use streams such as `Data`, `Header`, `XdataValue`,
+  etc. (varies by JASCO firmware).
 - Reference readers:
   - Python: [`jws2txt`](https://pypi.org/project/jws2txt/), [`odoluca/jasco_jws_reader`](https://github.com/odoluca/jasco_jws_reader). Coverage is partial.
 - ASCII text export is the safe fallback for any JASCO instrument.

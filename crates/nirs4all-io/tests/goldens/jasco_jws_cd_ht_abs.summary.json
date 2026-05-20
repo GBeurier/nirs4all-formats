@@ -5,7 +5,15 @@
       "format": "jasco-jws",
       "metadata_keys": [
         "channel_count",
-        "point_count"
+        "channel_labels",
+        "instrument_model",
+        "instrument_modules",
+        "measurement_mode",
+        "measurement_parameters",
+        "operator_organization",
+        "point_count",
+        "sample_label",
+        "source_path"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::jasco_jws",
@@ -19,10 +27,26 @@
           "axis_len": 1501,
           "axis_order": "descending",
           "axis_unit": "nm",
-          "name": "channel_1",
-          "role": "channel_1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "dOD",
+          "value_first": 0.712839,
+          "value_last": 1.899193,
+          "value_sum": 1356.217384,
+          "values_len": 1501
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 200.0,
+          "axis_len": 1501,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "name": "cd",
+          "role": "cd",
           "signal_type": "unknown",
-          "unit": null,
+          "unit": "mdeg",
           "value_first": 0.341637,
           "value_last": 6.220219,
           "value_sum": 3706.048406,
@@ -35,36 +59,21 @@
           "axis_len": 1501,
           "axis_order": "descending",
           "axis_unit": "nm",
-          "name": "channel_2",
-          "role": "channel_2",
+          "name": "ht",
+          "role": "ht",
           "signal_type": "unknown",
-          "unit": null,
+          "unit": "V",
           "value_first": 250.948471,
           "value_last": 364.522583,
           "value_sum": 401403.090225,
-          "values_len": 1501
-        },
-        {
-          "axis_first": 350.0,
-          "axis_kind": "wavelength",
-          "axis_last": 200.0,
-          "axis_len": 1501,
-          "axis_order": "descending",
-          "axis_unit": "nm",
-          "name": "channel_3",
-          "role": "channel_3",
-          "signal_type": "unknown",
-          "unit": null,
-          "value_first": 0.712839,
-          "value_last": 1.899193,
-          "value_sum": 1356.217384,
           "values_len": 1501
         }
       ],
       "source_sha256": "f2dccea9faf8fc4f96b7b9c0030f3b3117b4858b15ae7d1925d18dc5b1d718bf",
       "target_keys": [],
       "warnings": [
-        "jasco_jws_reverse_engineered_data_info"
+        "jasco_jws_reverse_engineered_data_info",
+        "jasco_jws_semantic_channels_inferred"
       ]
     }
   ]

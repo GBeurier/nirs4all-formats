@@ -67,8 +67,8 @@ Deliverables:
   spectra, wavenumber and property-target sections, with a non-zero target
   fixture still pending;
 - JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
-  single-channel and multi-channel fixtures, with semantic channel labels still
-  pending;
+  FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
+  semantic channel labels inferred from metadata;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -164,9 +164,8 @@ Deliverables:
 
 Add one family at a time:
 
-- remaining Nicolet OMNIC `.srs/.srsx` variants, a non-zero BUCHI NIRCal target
-  fixture and JASCO `.jws` semantic channel labels, each validated against an
-  open reference reader when possible;
+- remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
+  target fixture, each validated against an open reference reader when possible;
 - Excel multi-sheet lab templates, Renishaw WDF and Horiba / JobinYvon
   LabSpec XML/text for lab-transfer and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;

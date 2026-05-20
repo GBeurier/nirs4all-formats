@@ -68,8 +68,8 @@ Experimental native readers:
   for the committed foliar-transfer fixture, including property target schema
   extraction with zero values mapped to null targets.
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
-  single-channel and multi-channel fixtures; semantic channel labels are still
-  pending.
+  FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
+  metadata-driven semantic channel labels.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -113,8 +113,8 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants, a non-zero BUCHI NIRCal target fixture
-   when available, and JASCO `.jws` semantic channel labels;
+   Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
+   fixture when available;
 2. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;
