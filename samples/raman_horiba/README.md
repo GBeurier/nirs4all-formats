@@ -39,8 +39,15 @@ The native binary formats `.l6s` (single) / `.l6m` (map) are **not openly readab
 
 ## Parser hints
 
-- JobinYvon XML: well-formed XML, `<XAxis>`, `<YAxis>`, `<DataValues>` nodes; unit attributes carry physical units.
-- LabSpec text: leading `#`-comment lines (Title, Acq. time, Laser, Grating, Date, …), then either `wavelength\tabsorbance` 2-column or wide format `X\tY1\tY2\t…` for maps. Locale: `.` decimal in EN, sometimes `,` decimal in FR/DE LabSpec.
+- JobinYvon XML: well-formed LSX XML with `<LSX_Data>`, `<LSX_Tree>`, axis
+  descriptors under ID `0x7B697861`, and ordinate rows under
+  `<LSX_Matrix>/<LSX_Row>`. Axis labels include `Intens`, `Spectr`, `X` and
+  `Y`; unit nodes carry `Cnt`, `Cnt/sec`, `nm`, `1/cm`, `eV` or spatial
+  micrometre units.
+- LabSpec text: leading `#`-comment lines (Title, Acq. time, Laser, Grating,
+  Date, `AxisType[n]`, `AxisUnit[n]`, ...), then either two columns, a first
+  axis row followed by series rows, or an axis row followed by `X Y values...`
+  map rows. Locale: `.` decimal in EN, sometimes `,` decimal in FR/DE LabSpec.
 - Reference readers:
   - Python: `rsciio.jobinyvon` (production-quality XML), `spectrochempy.read_labspec()` (text), [`ccoverstreet/horiba-raman`](https://github.com/ccoverstreet/horiba-raman) (mapping text).
 - Native `.l6s` / `.l6m`: **no open reader** — treat as "vendor SDK only".

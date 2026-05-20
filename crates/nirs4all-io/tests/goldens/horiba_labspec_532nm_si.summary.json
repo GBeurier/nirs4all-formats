@@ -1,0 +1,58 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "horiba-labspec-text",
+      "metadata_keys": [
+        "acquired",
+        "axis_layout",
+        "container",
+        "date",
+        "detector",
+        "grating",
+        "instrument",
+        "laser",
+        "objective",
+        "sample",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spatial_z",
+        "spatial_z_unit",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index",
+        "title",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 46.6417,
+          "axis_kind": "wavenumber",
+          "axis_last": 1754.52,
+          "axis_len": 1024,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 37.0,
+          "value_last": 19.0,
+          "value_sum": 127584.0,
+          "values_len": 1024
+        }
+      ],
+      "source_sha256": "02792117f53da06b6b6eca0ba30fd56b03063af779cb62f7c2cc176b8a006f6b",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec_text_axis_unit_inferred"
+      ]
+    }
+  ]
+}

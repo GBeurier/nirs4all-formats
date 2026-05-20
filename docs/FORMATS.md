@@ -36,6 +36,7 @@ fixtures:
 | Perkin Elmer Spectrum / IR | `.sp` | Experimental | `PEPE` block reader for single-spectrum `.sp` files; `.fsm` imaging is detected but out of scope for v1. |
 | BUCHI NIRCal | `.nir` | Experimental | `NIRCAL Project File` section reader for 20-sample foliar-transfer fixture; property names are mapped to targets, with the committed zero-valued properties emitted as nulls. |
 | JASCO JWS | `.jws` | Experimental | OLE2 `DataInfo` + `Y-Data` reader for committed FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with semantic labels inferred from JASCO metadata when available. |
+| Horiba LabSpec / JobinYvon | `.xml`, `.txt` LabSpec exports | Experimental | LSX XML single spectra, range exports, linescans and maps plus LabSpec two-column, series-row and map-row text exports. Energy axes currently fall back to `Index` with a warning. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.
@@ -162,7 +163,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 | `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables; multi-sheet lab templates remain pending. |
-| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
+| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Horiba LabSpec XML/text and JASCO JWS now load experimentally; Renishaw WDF and WiTec WIP remain adjacent-format work items. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
 
 ---
 

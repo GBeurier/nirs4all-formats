@@ -195,6 +195,23 @@ fn probes_jasco_jws_files() {
         .any(|probe| probe.format == "jasco-jws" && probe.confidence == Confidence::Likely));
 }
 
+#[test]
+fn probes_horiba_labspec_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_horiba/jobinyvon_test_spec.xml",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-jobinyvon-xml" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes =
+        probe_path(workspace_file("samples/raman_horiba/labspec_532nm_Si.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-labspec-text" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

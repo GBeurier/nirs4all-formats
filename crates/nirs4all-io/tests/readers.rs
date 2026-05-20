@@ -434,6 +434,123 @@ fn reads_jasco_jws_multichannel_file() {
 }
 
 #[test]
+fn reads_horiba_jobinyvon_xml_exports() {
+    let records = open_path(workspace_file(
+        "samples/raman_horiba/jobinyvon_test_spec.xml",
+    ))
+    .expect("open xml");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "horiba-jobinyvon-xml");
+    assert_eq!(record.metadata["dataset_type"].as_str(), Some("Spectrum"));
+    assert_eq!(
+        record.metadata["instrument"].as_str(),
+        Some("LabRAM HR Evol")
+    );
+    let signal = record.signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 34);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.order, AxisOrder::Descending);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert_eq!(signal.unit.as_deref(), Some("Cnt/sec"));
+    assert!((signal.axis.values[0] - 537.361).abs() < 0.000001);
+    assert!((signal.axis.values[33] - 522.574).abs() < 0.000001);
+    assert!((signal.values[0] - 1496.0).abs() < 0.000001);
+    assert!((signal.values[33] - 760.0).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 28624.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/raman_horiba/jobinyvon_test_map_x3-y2.xml",
+    ))
+    .expect("open map xml");
+    assert_eq!(records.len(), 6);
+    assert_eq!(records[0].metadata["dataset_type"].as_str(), Some("SpIm"));
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-2.0));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-1.0));
+    assert_eq!(records[5].metadata["spatial_x"].as_f64(), Some(2.0));
+    assert_eq!(records[5].metadata["spatial_y"].as_f64(), Some(1.0));
+    let first = records[0].signals.get("intensity").expect("intensity");
+    assert!((first.values[0] - 275.5).abs() < 0.000001);
+    let all_sum = records
+        .iter()
+        .map(|record| record.signals["intensity"].values.iter().sum::<f64>())
+        .sum::<f64>();
+    assert!((all_sum - 30224.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/raman_horiba/jobinyvon_test_spec_3s_eV.xml",
+    ))
+    .expect("open eV xml");
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.unit, "eV");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"horiba_unsupported_axis_kind_energy".to_string()));
+}
+
+#[test]
+fn reads_horiba_labspec_text_exports() {
+    let records =
+        open_path(workspace_file("samples/raman_horiba/labspec_532nm_Si.txt")).expect("open text");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "horiba-labspec-text");
+    assert_eq!(record.metadata["axis_layout"].as_str(), Some("two_column"));
+    let signal = record.signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 1024);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert!((signal.axis.values[0] - 46.6417).abs() < 0.000001);
+    assert!((signal.axis.values[1023] - 1754.52).abs() < 0.000001);
+    assert!((signal.values[0] - 37.0).abs() < 0.000001);
+    assert!((signal.values[1023] - 19.0).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 127584.0).abs() < 0.000001);
+    assert!(record
+        .provenance
+        .warnings
+        .contains(&"horiba_labspec_text_axis_unit_inferred".to_string()));
+
+    let records = open_path(workspace_file(
+        "samples/raman_horiba/labspec_lasertest1.txt",
+    ))
+    .expect("open series text");
+    assert_eq!(records.len(), 3);
+    assert_eq!(
+        records[0].metadata["axis_layout"].as_str(),
+        Some("series_rows")
+    );
+    assert_eq!(records[0].metadata["point_index"].as_f64(), Some(1.0));
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 1024);
+    assert!((signal.values[0] + 4.05818).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 31010.572498).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt",
+    ))
+    .expect("open map text");
+    assert_eq!(records.len(), 72);
+    assert_eq!(
+        records[0].metadata["axis_layout"].as_str(),
+        Some("map_rows")
+    );
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-209.871));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-204.081));
+    assert_eq!(records[71].metadata["spatial_x"].as_f64(), Some(183.819));
+    assert_eq!(records[71].metadata["spatial_y"].as_f64(), Some(204.317));
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 498);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.unit.as_deref(), Some("Cnt"));
+    assert!((signal.values.iter().sum::<f64>() - 72757.0).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

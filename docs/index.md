@@ -20,6 +20,7 @@ formats/envi-sli
 formats/excel
 formats/galactic-spc
 formats/hdf5
+formats/horiba-labspec
 formats/jasco-jws
 formats/jcamp-dx
 formats/matlab
