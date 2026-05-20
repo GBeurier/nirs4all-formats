@@ -21,6 +21,22 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
+    ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),
+    (
+        "avantes_legacy_trm_alt",
+        "samples/avantes/avantes_trans.TRM",
+    ),
+    (
+        "avantes_legacy_scope",
+        "samples/avantes/avantes_reflect.ROH",
+    ),
+    ("avantes_legacy_dark", "samples/avantes/1305084U1.DRK"),
+    ("avantes_legacy_white", "samples/avantes/1305084U1.REF"),
+    (
+        "avantes_avasoft8_raw",
+        "samples/avantes/1904090M1_0003.Raw8",
+    ),
+    ("avantes_avasoft8_irr8", "samples/avantes/eg.IRR8"),
     ("envi_sli_synthetic", "samples/envi_sli/synthetic_lib.hdr"),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),

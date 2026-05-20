@@ -1,5 +1,6 @@
 pub mod asd;
 pub mod avantes_ascii;
+pub mod avantes_binary;
 pub mod bruker_dpt;
 pub mod bruker_opus;
 pub mod csv_like;
@@ -13,6 +14,7 @@ mod util;
 
 pub use asd::AsdReader;
 pub use avantes_ascii::AvantesAsciiReader;
+pub use avantes_binary::AvantesBinaryReader;
 pub use bruker_dpt::BrukerDptReader;
 pub use bruker_opus::BrukerOpusReader;
 pub use csv_like::CsvLikeReader;

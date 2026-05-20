@@ -138,6 +138,85 @@ fn reads_avantes_irradiance_export() {
 }
 
 #[test]
+fn reads_avantes_legacy_transmittance_binary() {
+    let records =
+        open_path(workspace_file("samples/avantes/avantes2.TRM")).expect("open avantes trm");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-legacy-binary");
+    assert!(records[0].signals.contains_key("sample"));
+    assert!(records[0].signals.contains_key("white_reference"));
+    assert!(records[0].signals.contains_key("dark_reference"));
+    let transmittance = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 1_442);
+    assert_eq!(transmittance.axis.unit, "nm");
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.axis.values[0] - 275.271759).abs() < 0.000001);
+    assert!((transmittance.axis.values[1_441] - 1100.133307).abs() < 0.000001);
+    assert!((transmittance.values[0] - 11.840215).abs() < 0.000001);
+    assert!((transmittance.values[1_441] + 127.179425).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_legacy_raw_reference_binaries() {
+    for (relative, signal_name, first_value) in [
+        ("samples/avantes/avantes_reflect.ROH", "scope", 805.0),
+        (
+            "samples/avantes/1305084U1.DRK",
+            "dark_reference",
+            785.900024,
+        ),
+        ("samples/avantes/1305084U1.REF", "white_reference", 856.0),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open avantes legacy raw");
+        assert_eq!(records.len(), 1);
+        let signal = records[0].signals.get(signal_name).expect(signal_name);
+        assert_eq!(signal.axis.values.len(), 1_442);
+        assert_eq!(signal.signal_type, SignalType::RawCounts);
+        assert!((signal.values[0] - first_value).abs() < 0.000001);
+    }
+}
+
+#[test]
+fn reads_avantes_avasoft8_raw_binary() {
+    let records =
+        open_path(workspace_file("samples/avantes/1904090M1_0003.Raw8")).expect("open raw8");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-avasoft8-binary");
+    assert!(records[0].signals.contains_key("dark_reference"));
+    assert!(records[0].signals.contains_key("white_reference"));
+    let scope = records[0].signals.get("scope").expect("scope");
+    assert_eq!(scope.axis.values.len(), 1_019);
+    assert_eq!(scope.signal_type, SignalType::RawCounts);
+    assert!((scope.axis.values[0] - 300.013855).abs() < 0.000001);
+    assert!((scope.axis.values[1_018] - 899.874878).abs() < 0.000001);
+    assert!((scope.values[0] - 267.155243).abs() < 0.000001);
+    assert!((scope.values[1_018] - 360.127502).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_avasoft8_irradiance_binary() {
+    let records = open_path(workspace_file("samples/avantes/eg.IRR8")).expect("open irr8");
+
+    assert_eq!(records.len(), 1);
+    let irradiance = records[0].signals.get("irradiance").expect("irradiance");
+    assert_eq!(irradiance.axis.values.len(), 1_620);
+    assert_eq!(irradiance.signal_type, SignalType::Irradiance);
+    assert!((irradiance.axis.values[0] - 144.942429).abs() < 0.000001);
+    assert!((irradiance.axis.values[1_619] - 1100.441406).abs() < 0.000001);
+    assert!((irradiance.values[0] - 1096.812012).abs() < 0.000001);
+    assert!((irradiance.values[1_619] - 2009.875).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"avantes_irr8_irradiance_calibration_not_applied".to_string()));
+}
+
+#[test]
 fn reads_envi_spectral_library_from_header() {
     let records =
         open_path(workspace_file("samples/envi_sli/synthetic_lib.hdr")).expect("open envi sli");

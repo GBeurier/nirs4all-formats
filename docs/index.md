@@ -10,6 +10,7 @@ DIRECTIONS
 ROADMAP
 STATUS
 FORMATS
+formats/avantes
 formats/asd
 formats/bruker-opus
 formats/envi-sli
