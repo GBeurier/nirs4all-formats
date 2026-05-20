@@ -41,14 +41,21 @@ spectral axis. Microtops and MAN `aot` arrays use the dedicated
 ## Limitations
 
 - No atmospheric correction or unit conversion is applied.
-- The real MAN NetCDF fixture is discovered as a Microtops `aot_<nm>` schema,
-  but still uses a SHA-256-guarded payload fallback because the pure-Rust
-  NetCDF/HDF5 stack cannot yet read the MSM114/2 datasets generically.
+- The real MAN NetCDF fixture is discovered as a Microtops `aot_<nm>` schema.
+  When the high-level `hdf5-reader` 0.5 API fails to resolve this layout's
+  shared attribute heap (true for the AOT, `lat`, `lon`, `cwv` and
+  `angstrom_exp` variables), the reader falls back to a *generic*
+  contiguous-layout decoder that reads `DataLayout::Contiguous` blocks via
+  fractal-heap link records and `Hdf5File::get_or_parse_header(addr)`. No
+  SHA-256 fixture or byte-offset table is involved. Records emit
+  `microtops_man_netcdf_contiguous_layout_fallback`, and global string
+  attributes recovered via the parallel byte-scan path also emit
+  `microtops_man_netcdf_global_attributes_byte_scan`.
 - AERONET MAN `.lev10/.lev15/.lev20` ASCII support is validated on local
   Okeanos samples only; the files are not redistributed because of AERONET MAN
   data-policy constraints.
 - Microtops support remains partial: no redistributable legacy `.TXT` field
-  export has been found, and generic MAN NetCDF reading still needs to work
-  without the MSM114/2 SHA-256-guarded fallback.
+  export has been found, and the contiguous-layout fallback should disappear
+  once `hdf5-reader` resolves NetCDF4 shared attribute heaps cleanly.
 - ARM MFRSR NetCDF support is validated on one local b1 fixture only; broader
   ARM ACT/xarray conformance and more datastream variants are still pending.

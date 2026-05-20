@@ -1,6 +1,10 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
+use hdf5_reader::error::ByteOrder;
+use hdf5_reader::messages::datatype::Datatype as HdfDatatype;
+use hdf5_reader::messages::layout::DataLayout;
+use hdf5_reader::messages::HdfMessage;
 use hdf5_reader::{Attribute, Dataset, H5Type, Hdf5File};
 use netcdf_reader::{NcAttrValue, NcAttribute, NcFile, NcMetadataMode, NcOpenOptions, NcVariable};
 use nirs4all_io_core::{
@@ -31,32 +35,16 @@ const MICROTOPS_METADATA_FLOATS: &[&str] = &[
     "angstrom_exp_std",
 ];
 const MICROTOPS_METADATA_INTS: &[&str] = &["time", "section", "number_obs"];
-const MICROTOPS_MSM114_SHA256: &str =
-    "717b65bdc1f5eeb9fad1e7bdcd8d7dbb7d428ca5786db3036293fff4b56ebbcc";
-const MICROTOPS_MSM114_SAMPLE_COUNT: usize = 378;
-const MICROTOPS_MSM114_F64_OFFSETS: &[(&str, usize)] = &[
-    ("air_mass", 9_257),
-    ("lat", 12_281),
-    ("lon", 15_810),
-    ("aot_380", 19_673),
-    ("aot_440", 23_552),
-    ("aot_500", 27_447),
-    ("aot_675", 31_358),
-    ("aot_870", 38_070),
-    ("cwv", 41_094),
-    ("angstrom_exp", 44_384),
-    ("aot_380_std", 48_279),
-    ("aot_440_std", 52_190),
-    ("aot_500_std", 55_528),
-    ("aot_675_std", 58_882),
-    ("aot_870_std", 62_586),
-    ("cwv_std", 66_267),
-    ("angstrom_exp_std", 69_969),
-];
-const MICROTOPS_MSM114_I64_OFFSETS: &[(&str, usize)] = &[
-    ("number_obs", 75_658),
-    ("time", 98_494),
-    ("section", 101_952),
+const MICROTOPS_GLOBAL_STRING_ATTRS: &[&str] = &[
+    "title",
+    "source",
+    "instrument",
+    "platform",
+    "doi",
+    "conventions",
+    "version",
+    "comment",
+    "_NCProperties",
 ];
 const ARM_MFRSR_FILTER_COUNT: usize = 7;
 const ARM_MFRSR_FALLBACK_WAVELENGTHS: [f64; ARM_MFRSR_FILTER_COUNT] =
@@ -222,9 +210,6 @@ fn read_netcdf4_hdf5_records(
     if has_arm_surfspecalb_hdf5(&hdf5_file) {
         return read_arm_surfspecalb_hdf5_records(&hdf5_file, source.clone(), reader);
     }
-    if source.sha256 == MICROTOPS_MSM114_SHA256 {
-        return read_microtops_msm114_fixture(path, source, reader);
-    }
 
     let file = NcFile::open_with_options(
         path,
@@ -271,119 +256,20 @@ fn is_hdf5_container(path: &Path) -> Result<bool> {
     Ok(bytes.starts_with(HDF5_MAGIC))
 }
 
-fn read_microtops_msm114_fixture(
-    path: &Path,
-    source: SourceFile,
-    reader: &str,
-) -> Result<Vec<SpectralRecord>> {
-    let bytes = std::fs::read(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    let mut float_series = BTreeMap::new();
-    for (name, offset) in MICROTOPS_MSM114_F64_OFFSETS {
-        float_series.insert(
-            (*name).to_string(),
-            read_le_f64_series(&bytes, *offset, MICROTOPS_MSM114_SAMPLE_COUNT)?,
-        );
-    }
-    let mut int_series = BTreeMap::new();
-    for (name, offset) in MICROTOPS_MSM114_I64_OFFSETS {
-        int_series.insert(
-            (*name).to_string(),
-            read_le_i64_series(&bytes, *offset, MICROTOPS_MSM114_SAMPLE_COUNT)?,
-        );
-    }
-
-    let channels = sorted_microtops_channels(
-        MICROTOPS_MSM114_F64_OFFSETS
-            .iter()
-            .filter_map(|(name, _)| parse_microtops_aot_channel_name(name)),
-    );
-    let channel_values = channels
-        .iter()
-        .map(|channel| {
-            float_series.get(&channel.name).cloned().ok_or_else(|| {
-                Error::InvalidRecord(format!("Microtops fixture missing {}", channel.name))
-            })
-        })
-        .collect::<Result<Vec<_>>>()?;
-    let std_values = channels
-        .iter()
-        .map(|channel| {
-            let std_name = format!("{}_std", channel.name);
-            float_series.get(&std_name).cloned().ok_or_else(|| {
-                Error::InvalidRecord(format!("Microtops fixture missing {std_name}"))
-            })
-        })
-        .collect::<Result<Vec<_>>>()?;
-    let metadata_floats = MICROTOPS_METADATA_FLOATS
-        .iter()
-        .filter_map(|name| {
-            float_series
-                .get(*name)
-                .cloned()
-                .map(|values| ((*name).to_string(), values))
-        })
-        .collect::<Vec<_>>();
-    let metadata_ints = MICROTOPS_METADATA_INTS
-        .iter()
-        .filter_map(|name| {
-            int_series
-                .get(*name)
-                .cloned()
-                .map(|values| ((*name).to_string(), values))
-        })
-        .collect::<Vec<_>>();
-    let axis = channels
-        .iter()
-        .map(|channel| channel.wavelength_nm)
-        .collect::<Vec<_>>();
-    let global_attributes = BTreeMap::from([
-        (
-            "title".to_string(),
-            json!("MSM114/2 (ARC) campaign Microtops level 2 data"),
-        ),
-        ("instrument".to_string(), json!("Microtops")),
-        ("platform".to_string(), json!("RV Maria S. Merian")),
-        ("conventions".to_string(), json!("CF-1.7")),
-        (
-            "doi".to_string(),
-            json!("https://doi.org/10.1594/PANGAEA.966645"),
-        ),
-    ]);
-
-    let mut records = build_microtops_records(MicrotopsBuildInput {
-        source,
-        reader,
-        channel_values,
-        std_values: Some(std_values),
-        metadata_floats,
-        metadata_ints,
-        axis_values: axis,
-        global_attributes,
-        time_units: Some("seconds since 2023-01-17T12:19:00".to_string()),
-        time_calendar: Some("proleptic_gregorian".to_string()),
-    })?;
-    for record in &mut records {
-        record
-            .provenance
-            .warnings
-            .push("microtops_man_netcdf_known_fixture_layout".to_string());
-    }
-    Ok(records)
-}
-
 fn read_microtops_man_hdf5_records(
     file: &Hdf5File,
     channels: &[MicrotopsAotChannel],
     source: SourceFile,
     reader: &str,
 ) -> Result<Vec<SpectralRecord>> {
+    let layout = Hdf5LayoutFallback::new(file)?;
+    let mut layout_fallback_used = false;
     let mut channel_values = Vec::new();
     let mut axis = Vec::new();
     for channel in channels {
-        channel_values.push(read_hdf5_1d_f64(file, &channel.name)?);
+        let read = read_hdf5_1d_f64_with_layout_fallback(file, &layout, &channel.name)?;
+        layout_fallback_used |= read.layout_fallback_used;
+        channel_values.push(read.values);
         axis.push(channel.wavelength_nm);
     }
     let sample_count = channel_values.first().map(Vec::len).ok_or_else(|| {
@@ -403,18 +289,38 @@ fn read_microtops_man_hdf5_records(
         }
     }
 
-    let std_values = read_microtops_hdf5_std_channels(file, channels, sample_count)?;
-    let metadata_floats = validate_float_series_lengths(
-        read_optional_hdf5_float_series(file, MICROTOPS_METADATA_FLOATS),
+    let std_values = read_microtops_hdf5_std_channels_with_fallback(
+        file,
+        &layout,
+        channels,
         sample_count,
-        "Microtops NetCDF/HDF5",
+        &mut layout_fallback_used,
     )?;
-    let metadata_ints = validate_int_series_lengths(
-        read_optional_hdf5_int_series(file, MICROTOPS_METADATA_INTS),
-        sample_count,
-        "Microtops NetCDF/HDF5",
-    )?;
-    let global_attributes = hdf5_global_attributes(file)?;
+    let raw_metadata_floats = read_optional_hdf5_float_series_with_fallback(
+        file,
+        &layout,
+        MICROTOPS_METADATA_FLOATS,
+        &mut layout_fallback_used,
+    );
+    let metadata_floats =
+        validate_float_series_lengths(raw_metadata_floats, sample_count, "Microtops NetCDF/HDF5")?;
+    let raw_metadata_ints = read_optional_hdf5_int_series_with_fallback(
+        file,
+        &layout,
+        MICROTOPS_METADATA_INTS,
+        &mut layout_fallback_used,
+    );
+    let metadata_ints =
+        validate_int_series_lengths(raw_metadata_ints, sample_count, "Microtops NetCDF/HDF5")?;
+    let mut extra_warnings: Vec<String> = Vec::new();
+    let (global_attributes, global_attr_scan_used) =
+        read_microtops_hdf5_global_attributes(file, &layout)?;
+    if global_attr_scan_used {
+        extra_warnings.push("microtops_man_netcdf_global_attributes_byte_scan".to_string());
+    }
+    if layout_fallback_used {
+        extra_warnings.push("microtops_man_netcdf_contiguous_layout_fallback".to_string());
+    }
     let time_units = hdf5_dataset_attr_string(file, "time", "units");
     let time_calendar = hdf5_dataset_attr_string(file, "time", "calendar");
 
@@ -429,6 +335,7 @@ fn read_microtops_man_hdf5_records(
         global_attributes,
         time_units,
         time_calendar,
+        extra_warnings,
     })
 }
 
@@ -496,39 +403,8 @@ fn read_microtops_man_netcdf4_records(
         global_attributes,
         time_units,
         time_calendar,
+        extra_warnings: Vec::new(),
     })
-}
-
-fn read_le_f64_series(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<f64>> {
-    let byte_len = count.checked_mul(8).ok_or_else(|| {
-        Error::InvalidRecord("Microtops fixture byte length overflow".to_string())
-    })?;
-    let end = offset
-        .checked_add(byte_len)
-        .ok_or_else(|| Error::InvalidRecord("Microtops fixture offset overflow".to_string()))?;
-    let raw = bytes.get(offset..end).ok_or_else(|| {
-        Error::InvalidRecord("Microtops fixture raw f64 series exceeds file size".to_string())
-    })?;
-    Ok(raw
-        .chunks_exact(8)
-        .map(|chunk| f64::from_le_bytes(chunk.try_into().expect("chunk length")))
-        .collect())
-}
-
-fn read_le_i64_series(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<i64>> {
-    let byte_len = count.checked_mul(8).ok_or_else(|| {
-        Error::InvalidRecord("Microtops fixture byte length overflow".to_string())
-    })?;
-    let end = offset
-        .checked_add(byte_len)
-        .ok_or_else(|| Error::InvalidRecord("Microtops fixture offset overflow".to_string()))?;
-    let raw = bytes.get(offset..end).ok_or_else(|| {
-        Error::InvalidRecord("Microtops fixture raw i64 series exceeds file size".to_string())
-    })?;
-    Ok(raw
-        .chunks_exact(8)
-        .map(|chunk| i64::from_le_bytes(chunk.try_into().expect("chunk length")))
-        .collect())
 }
 
 struct MicrotopsBuildInput<'a> {
@@ -542,6 +418,7 @@ struct MicrotopsBuildInput<'a> {
     global_attributes: BTreeMap<String, Value>,
     time_units: Option<String>,
     time_calendar: Option<String>,
+    extra_warnings: Vec<String>,
 }
 
 fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<SpectralRecord>> {
@@ -615,6 +492,8 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
             metadata.insert(name.clone(), json!(values[row_index]));
         }
 
+        let mut warnings = vec!["microtops_man_netcdf_experimental".to_string()];
+        warnings.extend(input.extra_warnings.iter().cloned());
         let record = SpectralRecord {
             signals,
             signal_type: SignalType::AerosolOpticalThickness,
@@ -624,7 +503,7 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
                 "microtops-man-netcdf",
                 input.reader,
                 input.source.clone(),
-                vec!["microtops_man_netcdf_experimental".to_string()],
+                warnings,
             ),
             quality_flags: Vec::new(),
         };
@@ -750,48 +629,489 @@ fn read_microtops_std_channels(
     Ok(Some(std_channels))
 }
 
-fn read_microtops_hdf5_std_channels(
+/// Result of reading a 1-D HDF5 primitive dataset.
+///
+/// `layout_fallback_used` is `true` when the high-level `hdf5-reader` API
+/// failed and we resolved the dataset via the [`Hdf5LayoutFallback`] scan
+/// instead. That signals the caller to emit a warning so consumers know the
+/// values came from a bytewise contiguous-layout reader rather than the full
+/// group/attribute resolution path.
+struct Hdf5Read1D<T> {
+    values: Vec<T>,
+    layout_fallback_used: bool,
+}
+
+/// Generic layout-based fallback for NetCDF4/HDF5 files where `hdf5-reader`'s
+/// shared-message resolution chokes on the variable's attribute set.
+///
+/// We do *not* hard-code per-file SHA-256 fixtures or byte offset tables.
+/// The fallback works for any HDF5 file whose root group uses v2 dense links
+/// and whose datasets use a contiguous data layout — the standard NetCDF4
+/// shape produced by `nc-4`. It is keyed on:
+///
+/// 1. Scanning the file bytes for link records of the form
+///    `<name_len:u8> <name:UTF-8> <hard_link_addr:u64_LE>` where
+///    `<hard_link_addr>` points to an `OHDR` object header signature.
+/// 2. Using `Hdf5File::get_or_parse_header(addr)` (which works in 0.5.0 even
+///    when group/attribute iteration fails for this file) to retrieve the
+///    `DataLayout::Contiguous { address, size }` and `Datatype` messages.
+/// 3. Reading the raw contiguous block from the file storage and decoding it
+///    according to the on-disk byte order and primitive datatype.
+///
+/// Strings, VLENs, compound types, chunked layouts, and non-primitive types
+/// are intentionally rejected — this fallback is only meant to recover
+/// numeric 1-D dataset payloads.
+struct Hdf5LayoutFallback {
+    bytes: Vec<u8>,
+    addresses: BTreeMap<String, u64>,
+}
+
+impl Hdf5LayoutFallback {
+    fn new(file: &Hdf5File) -> Result<Self> {
+        let total = usize::try_from(file.storage().len()).map_err(|_| {
+            Error::InvalidRecord(
+                "NetCDF4/HDF5 file is larger than the platform's usize".to_string(),
+            )
+        })?;
+        let buffer = file.storage().read_range(0, total).map_err(|error| {
+            Error::InvalidRecord(format!(
+                "NetCDF4/HDF5 layout fallback could not read file bytes: {error}"
+            ))
+        })?;
+        let bytes = buffer.as_ref().to_vec();
+        let addresses = scan_hdf5_link_records(&bytes);
+        Ok(Self { bytes, addresses })
+    }
+
+    fn dataset_address(&self, name: &str) -> Option<u64> {
+        self.addresses.get(name).copied()
+    }
+
+    fn header(
+        &self,
+        file: &Hdf5File,
+        name: &str,
+    ) -> Result<std::sync::Arc<hdf5_reader::object_header::ObjectHeader>> {
+        let address = self.dataset_address(name).ok_or_else(|| {
+            Error::InvalidRecord(format!(
+                "NetCDF4/HDF5 layout fallback: no link record found for {name}"
+            ))
+        })?;
+        file.get_or_parse_header(address).map_err(|error| {
+            Error::InvalidRecord(format!(
+                "NetCDF4/HDF5 layout fallback: failed to parse object header for {name} at {address:#x}: {error}"
+            ))
+        })
+    }
+}
+
+/// Scan an HDF5 fractal-heap direct block for hard-link records.
+///
+/// HDF5 1.10+ NetCDF4 files store the root group's variable links in a
+/// fractal heap referenced by the `LinkInfo` message. Each managed link
+/// record begins with a 1-byte version (=1), a 1-byte flags field, optional
+/// creation-order + character-set fields, a name-length field, the UTF-8
+/// name, and (for hard links) an 8-byte object-header address. The name and
+/// address are positionally adjacent regardless of the optional fields, so
+/// we scan for the pattern `<name_len:u8> <name_bytes> <addr:u64>` and
+/// accept matches whose `addr` points to an `OHDR` signature elsewhere in
+/// the file.
+///
+/// This is robust against `hdf5-reader` 0.5.x iteration bugs because it
+/// never invokes the high-level fractal-heap traversal. It still produces
+/// false positives in pathological files (random bytes that happen to look
+/// like a valid record); the caller validates each address via
+/// `Hdf5File::get_or_parse_header` before using it.
+fn scan_hdf5_link_records(bytes: &[u8]) -> BTreeMap<String, u64> {
+    const MIN_NAME_LEN: usize = 2;
+    const MAX_NAME_LEN: usize = 64;
+    let mut map: BTreeMap<String, u64> = BTreeMap::new();
+    if bytes.len() < 1 + MIN_NAME_LEN + 8 {
+        return map;
+    }
+    let last = bytes.len() - (1 + MIN_NAME_LEN + 8);
+    for i in 0..=last {
+        let name_len = bytes[i] as usize;
+        if !(MIN_NAME_LEN..=MAX_NAME_LEN).contains(&name_len) {
+            continue;
+        }
+        let name_end = i + 1 + name_len;
+        if name_end + 8 > bytes.len() {
+            continue;
+        }
+        let name_bytes = &bytes[i + 1..name_end];
+        if !name_bytes
+            .iter()
+            .all(|byte| byte.is_ascii_alphanumeric() || *byte == b'_')
+        {
+            continue;
+        }
+        let Ok(name) = std::str::from_utf8(name_bytes) else {
+            continue;
+        };
+        let addr_bytes: [u8; 8] = bytes[name_end..name_end + 8].try_into().unwrap();
+        let addr = u64::from_le_bytes(addr_bytes);
+        let Ok(addr_usize) = usize::try_from(addr) else {
+            continue;
+        };
+        if addr_usize + 4 > bytes.len() {
+            continue;
+        }
+        if &bytes[addr_usize..addr_usize + 4] != b"OHDR" {
+            continue;
+        }
+        // First write wins — link records appear in fractal-heap iteration
+        // order, so the first match is the canonical (lowest-address) one.
+        map.entry(name.to_string()).or_insert(addr);
+    }
+    map
+}
+
+/// Read a 1-D `f64` dataset, falling back to layout-based decoding on failure.
+fn read_hdf5_1d_f64_with_layout_fallback(
     file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    name: &str,
+) -> Result<Hdf5Read1D<f64>> {
+    match read_hdf5_1d_f64(file, name) {
+        Ok(values) => Ok(Hdf5Read1D {
+            values,
+            layout_fallback_used: false,
+        }),
+        Err(_) => {
+            let values = read_hdf5_1d_f64_via_layout(file, layout, name)?;
+            Ok(Hdf5Read1D {
+                values,
+                layout_fallback_used: true,
+            })
+        }
+    }
+}
+
+/// Read a 1-D `i64` dataset, falling back to layout-based decoding on failure.
+fn read_hdf5_1d_i64_with_layout_fallback(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    name: &str,
+) -> Result<Hdf5Read1D<i64>> {
+    match read_hdf5_1d_i64(file, name) {
+        Ok(values) => Ok(Hdf5Read1D {
+            values,
+            layout_fallback_used: false,
+        }),
+        Err(_) => {
+            let values = read_hdf5_1d_i64_via_layout(file, layout, name)?;
+            Ok(Hdf5Read1D {
+                values,
+                layout_fallback_used: true,
+            })
+        }
+    }
+}
+
+fn read_hdf5_1d_f64_via_layout(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    name: &str,
+) -> Result<Vec<f64>> {
+    let (dataspace, datatype, contiguous) = layout_dataset_messages(file, layout, name)?;
+    let (size, byte_order) = match datatype {
+        HdfDatatype::FloatingPoint { size, byte_order } => (size, byte_order),
+        other => {
+            return Err(Error::InvalidRecord(format!(
+                "NetCDF4/HDF5 layout fallback: {name} datatype is {other:?}, expected 8-byte float"
+            )));
+        }
+    };
+    if size != 8 {
+        return Err(Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} float size is {size}, expected 8"
+        )));
+    }
+    let element_count = expected_element_count(name, &dataspace)?;
+    let raw = read_contiguous_bytes(file, name, contiguous, element_count, size as usize)?;
+    let mut values = Vec::with_capacity(element_count);
+    for chunk in raw.chunks_exact(8) {
+        let bytes: [u8; 8] = chunk.try_into().unwrap();
+        let value = match byte_order {
+            ByteOrder::LittleEndian => f64::from_le_bytes(bytes),
+            ByteOrder::BigEndian => f64::from_be_bytes(bytes),
+        };
+        values.push(value);
+    }
+    Ok(values)
+}
+
+fn read_hdf5_1d_i64_via_layout(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    name: &str,
+) -> Result<Vec<i64>> {
+    let (dataspace, datatype, contiguous) = layout_dataset_messages(file, layout, name)?;
+    let (size, signed, byte_order) = match datatype {
+        HdfDatatype::FixedPoint {
+            size,
+            signed,
+            byte_order,
+        } => (size, signed, byte_order),
+        other => {
+            return Err(Error::InvalidRecord(format!(
+                "NetCDF4/HDF5 layout fallback: {name} datatype is {other:?}, expected 8-byte int"
+            )));
+        }
+    };
+    if size != 8 || !signed {
+        return Err(Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} integer must be signed 8-byte (got size={size}, signed={signed})"
+        )));
+    }
+    let element_count = expected_element_count(name, &dataspace)?;
+    let raw = read_contiguous_bytes(file, name, contiguous, element_count, size as usize)?;
+    let mut values = Vec::with_capacity(element_count);
+    for chunk in raw.chunks_exact(8) {
+        let bytes: [u8; 8] = chunk.try_into().unwrap();
+        let value = match byte_order {
+            ByteOrder::LittleEndian => i64::from_le_bytes(bytes),
+            ByteOrder::BigEndian => i64::from_be_bytes(bytes),
+        };
+        values.push(value);
+    }
+    Ok(values)
+}
+
+fn layout_dataset_messages(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    name: &str,
+) -> Result<(
+    hdf5_reader::messages::dataspace::DataspaceMessage,
+    HdfDatatype,
+    (u64, u64),
+)> {
+    let header = layout.header(file, name)?;
+    let mut dataspace = None;
+    let mut datatype = None;
+    let mut contiguous = None;
+    for message in &header.messages {
+        match message {
+            HdfMessage::Dataspace(d) => dataspace = Some(d.clone()),
+            HdfMessage::Datatype(d) => datatype = Some(d.datatype.clone()),
+            HdfMessage::DataLayout(l) => match &l.layout {
+                DataLayout::Contiguous { address, size } => contiguous = Some((*address, *size)),
+                DataLayout::Compact { .. } | DataLayout::Chunked { .. } => {
+                    return Err(Error::InvalidRecord(format!(
+                        "NetCDF4/HDF5 layout fallback: {name} layout is not contiguous"
+                    )));
+                }
+            },
+            _ => {}
+        }
+    }
+    let dataspace = dataspace.ok_or_else(|| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} has no Dataspace message"
+        ))
+    })?;
+    let datatype = datatype.ok_or_else(|| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} has no Datatype message"
+        ))
+    })?;
+    let contiguous = contiguous.ok_or_else(|| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} has no contiguous DataLayout message"
+        ))
+    })?;
+    Ok((dataspace, datatype, contiguous))
+}
+
+fn expected_element_count(
+    name: &str,
+    dataspace: &hdf5_reader::messages::dataspace::DataspaceMessage,
+) -> Result<usize> {
+    if dataspace.dims.len() != 1 {
+        return Err(Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} is {}-D, expected 1-D",
+            dataspace.dims.len()
+        )));
+    }
+    usize::try_from(dataspace.num_elements()).map_err(|_| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} element count overflows usize"
+        ))
+    })
+}
+
+fn read_contiguous_bytes(
+    file: &Hdf5File,
+    name: &str,
+    contiguous: (u64, u64),
+    element_count: usize,
+    element_size: usize,
+) -> Result<Vec<u8>> {
+    let (address, size) = contiguous;
+    let expected_bytes = element_count.checked_mul(element_size).ok_or_else(|| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} byte length overflows usize"
+        ))
+    })?;
+    let on_disk_bytes = usize::try_from(size).map_err(|_| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} contiguous size overflows usize"
+        ))
+    })?;
+    if on_disk_bytes < expected_bytes {
+        return Err(Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} contiguous size {on_disk_bytes} is smaller than {expected_bytes} required"
+        )));
+    }
+    let buffer = file
+        .storage()
+        .read_range(address, expected_bytes)
+        .map_err(|error| {
+            Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: failed to read {name} payload at {address:#x}: {error}"
+        ))
+        })?;
+    Ok(buffer.as_ref().to_vec())
+}
+
+fn read_microtops_hdf5_std_channels_with_fallback(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
     channels: &[MicrotopsAotChannel],
     sample_count: usize,
+    layout_fallback_used: &mut bool,
 ) -> Result<Option<Vec<Vec<f64>>>> {
     let mut std_channels = Vec::new();
     for channel in channels {
         let std_name = format!("{}_std", channel.name);
-        let values = match read_hdf5_1d_f64(file, &std_name) {
-            Ok(values) => values,
+        let read = match read_hdf5_1d_f64_with_layout_fallback(file, layout, &std_name) {
+            Ok(read) => read,
             Err(_) => return Ok(None),
         };
-        if values.len() != sample_count {
+        *layout_fallback_used |= read.layout_fallback_used;
+        if read.values.len() != sample_count {
             return Err(Error::InvalidRecord(format!(
                 "Microtops NetCDF channel {std_name} length does not match AOT channels"
             )));
         }
-        std_channels.push(values);
+        std_channels.push(read.values);
     }
     Ok(Some(std_channels))
 }
 
-fn read_optional_hdf5_float_series(file: &Hdf5File, names: &[&str]) -> Vec<(String, Vec<f64>)> {
-    names
-        .iter()
-        .filter_map(|name| {
-            read_hdf5_1d_f64(file, name)
-                .ok()
-                .map(|values| ((*name).to_string(), values))
-        })
-        .collect()
+fn read_optional_hdf5_float_series_with_fallback(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    names: &[&str],
+    layout_fallback_used: &mut bool,
+) -> Vec<(String, Vec<f64>)> {
+    let mut series = Vec::new();
+    for name in names {
+        if let Ok(read) = read_hdf5_1d_f64_with_layout_fallback(file, layout, name) {
+            *layout_fallback_used |= read.layout_fallback_used;
+            series.push(((*name).to_string(), read.values));
+        }
+    }
+    series
 }
 
-fn read_optional_hdf5_int_series(file: &Hdf5File, names: &[&str]) -> Vec<(String, Vec<i64>)> {
-    names
-        .iter()
-        .filter_map(|name| {
-            read_hdf5_1d_i64(file, name)
-                .ok()
-                .map(|values| ((*name).to_string(), values))
-        })
-        .collect()
+fn read_optional_hdf5_int_series_with_fallback(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+    names: &[&str],
+    layout_fallback_used: &mut bool,
+) -> Vec<(String, Vec<i64>)> {
+    let mut series = Vec::new();
+    for name in names {
+        if let Ok(read) = read_hdf5_1d_i64_with_layout_fallback(file, layout, name) {
+            *layout_fallback_used |= read.layout_fallback_used;
+            series.push(((*name).to_string(), read.values));
+        }
+    }
+    series
+}
+
+/// Read the root group's global attributes, falling back to a byte-scan of
+/// the known string attribute names when the high-level resolution fails.
+///
+/// Returns `(attributes, byte_scan_used)`. When `byte_scan_used` is true, the
+/// caller should emit a warning so downstream consumers know the attribute
+/// map comes from a positional decoder rather than the full HDF5 attribute
+/// resolver, which is less robust to non-standard attribute storage.
+fn read_microtops_hdf5_global_attributes(
+    file: &Hdf5File,
+    layout: &Hdf5LayoutFallback,
+) -> Result<(BTreeMap<String, Value>, bool)> {
+    if let Ok(attributes) = hdf5_global_attributes(file) {
+        return Ok((attributes, false));
+    }
+    let attributes =
+        scan_hdf5_global_string_attributes(&layout.bytes, MICROTOPS_GLOBAL_STRING_ATTRS);
+    Ok((attributes, true))
+}
+
+/// Byte-scan known NetCDF4 v3 global string attribute records.
+///
+/// Each v3 attribute encodes its value inline immediately after the
+/// `<name>\0` bytes as `<class_word:u32_LE><size:u32_LE><dataspace:4>
+/// <data:size bytes>`. We only recover fixed-length ASCII strings written
+/// with class word `0x13` (string class 3, version 1) and a scalar
+/// dataspace (`0x02000000`). VLEN strings (global heap references) and
+/// other non-trivial attribute types are intentionally skipped.
+fn scan_hdf5_global_string_attributes(bytes: &[u8], names: &[&str]) -> BTreeMap<String, Value> {
+    const STRING_CLASS_WORD: u32 = 0x0000_0013;
+    const SCALAR_DATASPACE_WORD: u32 = 0x0000_0002;
+    let mut out = BTreeMap::new();
+    for name in names {
+        let needle = format!("{name}\0").into_bytes();
+        let mut search_start = 0;
+        while let Some(found) = find_subslice(bytes, &needle, search_start) {
+            search_start = found + 1;
+            let mut cursor = found + needle.len();
+            if cursor + 12 > bytes.len() {
+                continue;
+            }
+            let class_word = u32::from_le_bytes(bytes[cursor..cursor + 4].try_into().unwrap());
+            if class_word != STRING_CLASS_WORD {
+                continue;
+            }
+            cursor += 4;
+            let size = u32::from_le_bytes(bytes[cursor..cursor + 4].try_into().unwrap()) as usize;
+            cursor += 4;
+            let dataspace_word = u32::from_le_bytes(bytes[cursor..cursor + 4].try_into().unwrap());
+            if dataspace_word != SCALAR_DATASPACE_WORD {
+                continue;
+            }
+            cursor += 4;
+            if cursor + size > bytes.len() || size == 0 {
+                continue;
+            }
+            let raw = &bytes[cursor..cursor + size];
+            let trimmed_end = raw
+                .iter()
+                .rposition(|byte| *byte != 0)
+                .map(|i| i + 1)
+                .unwrap_or(0);
+            let trimmed = &raw[..trimmed_end];
+            if let Ok(value) = std::str::from_utf8(trimmed) {
+                out.entry((*name).to_string()).or_insert(json!(value));
+                break;
+            }
+        }
+    }
+    out
+}
+
+fn find_subslice(haystack: &[u8], needle: &[u8], start: usize) -> Option<usize> {
+    if needle.is_empty() || start >= haystack.len() {
+        return None;
+    }
+    haystack[start..]
+        .windows(needle.len())
+        .position(|window| window == needle)
+        .map(|relative| start + relative)
 }
 
 fn read_optional_netcdf_float_series(file: &NcFile, names: &[&str]) -> Vec<(String, Vec<f64>)> {
