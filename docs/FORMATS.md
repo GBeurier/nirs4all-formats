@@ -16,6 +16,7 @@ fixtures:
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. Binary AvaSoft variants remain pending. |
+| ENVI Spectral Library | `.sli` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads. Image cubes are detected but refused for v1. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Plain AFFN `XYDATA=(X++(Y..Y))` only. DIF/DUP, SQZ/PAC and NTUPLES are pending. |
 | Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |
 | SVC/GER SIG | `.sig` | Experimental | Spectra Vista SIG text fixtures with reference, target and reflectance channels. |
