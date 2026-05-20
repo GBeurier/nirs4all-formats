@@ -880,10 +880,130 @@ fn reads_synthetic_matlab_v73_dataset() {
 }
 
 #[test]
-fn rejects_matlab_struct_only_dataset_until_dso_mapping_exists() {
-    let err =
-        open_path(workspace_file("samples/matlab/scpdata_dso.mat")).expect_err("unsupported DSO");
-    assert!(err.to_string().contains("no X matrix"));
+fn reads_eigenvector_corn_matlab_dso_dataset() {
+    let records =
+        open_path(workspace_file("samples/matlab/eigenvector_corn.mat")).expect("open corn mat");
+
+    assert_eq!(records.len(), 80);
+    assert_eq!(records[0].provenance.format, "matlab-eigenvector-corn");
+    assert_eq!(
+        records[0].metadata["dataset"].as_str(),
+        Some("eigenvector_corn")
+    );
+    assert_eq!(records[0].targets["moisture"].as_f64(), Some(10.448));
+    assert_eq!(records[0].targets["oil"].as_f64(), Some(3.687));
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(8.746));
+    assert_eq!(records[0].targets["starch"].as_f64(), Some(64.838));
+    let m5 = records[0].signals.get("m5spec").expect("m5spec");
+    assert_eq!(m5.axis.values.len(), 700);
+    assert_eq!(m5.axis.unit, "nm");
+    assert_eq!(m5.axis.kind, AxisKind::Wavelength);
+    assert_eq!(m5.signal_type, SignalType::Absorbance);
+    assert!((m5.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((m5.axis.values[699] - 2498.0).abs() < 0.000001);
+    assert!((m5.values[0] - 0.0444948).abs() < 0.000001);
+    assert!((m5.values[699] - 0.730594).abs() < 0.000001);
+    assert!((records[79].signals["m5spec"].values[699] - 0.728245).abs() < 0.000001);
+    assert_eq!(records[79].targets["starch"].as_f64(), Some(64.853));
+}
+
+#[test]
+fn reads_eigenvector_nir_shootout_matlab_dso_dataset() {
+    let records = open_path(workspace_file(
+        "samples/matlab/eigenvector_nir_shootout_2002.mat",
+    ))
+    .expect("open shootout mat");
+
+    assert_eq!(records.len(), 655);
+    assert_eq!(
+        records[0].provenance.format,
+        "matlab-eigenvector-nir-shootout"
+    );
+    assert_eq!(records[0].metadata["split"].as_str(), Some("calibrate"));
+    assert_eq!(
+        records[0].targets["weight"].as_f64(),
+        Some(378.0199890136719)
+    );
+    assert_eq!(
+        records[0].targets["hardness"].as_f64(),
+        Some(20.899999618530273)
+    );
+    assert_eq!(
+        records[0].targets["assay"].as_f64(),
+        Some(200.10000610351562)
+    );
+    let instrument_1 = records[0]
+        .signals
+        .get("instrument_1")
+        .expect("instrument_1");
+    assert_eq!(instrument_1.axis.values.len(), 650);
+    assert_eq!(instrument_1.axis.unit, "nm");
+    assert_eq!(instrument_1.axis.kind, AxisKind::Wavelength);
+    assert!((instrument_1.axis.values[0] - 600.0).abs() < 0.000001);
+    assert!((instrument_1.axis.values[649] - 1898.0).abs() < 0.000001);
+    assert!((instrument_1.values[0] - 3.222009).abs() < 0.000001);
+    assert!((instrument_1.values[649] - 4.131819).abs() < 0.000001);
+    assert_eq!(records[654].metadata["split"].as_str(), Some("validate"));
+    assert!((records[654].signals["instrument_1"].values[649] - 4.089232).abs() < 0.000001);
+    assert_eq!(records[654].targets["assay"].as_f64(), Some(197.5));
+}
+
+#[test]
+fn reads_spectrochempy_dso_matlab_dataset() {
+    let records =
+        open_path(workspace_file("samples/matlab/scpdata_dso.mat")).expect("open DSO mat");
+
+    assert_eq!(records.len(), 20);
+    assert_eq!(records[0].provenance.format, "matlab-spectrochempy-dso");
+    assert_eq!(
+        records[0].metadata["dso_name"].as_str(),
+        Some("Group sust_base line withoutEQU.SPG")
+    );
+    assert!(
+        (records[0].metadata["pressure_bar"]
+            .as_f64()
+            .expect("pressure")
+            - 7.3072899386666675e-06)
+            .abs()
+            < 1e-12
+    );
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 426);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert!((absorbance.axis.values[0] - 2210.059237650298).abs() < 0.000001);
+    assert!((absorbance.axis.values[425] - 1800.2533144385284).abs() < 0.000001);
+    assert!((absorbance.values[0] - 9.120255708694458e-05).abs() < 0.000001);
+    assert!((absorbance.values[425] - 0.0006451588124036789).abs() < 0.000001);
+    assert!(
+        (records[19].signals["absorbance"].values[425] - 0.0012210346758365631).abs() < 0.000001
+    );
+}
+
+#[test]
+fn reads_spectrochempy_als2004_matlab_dataset() {
+    let records = open_path(workspace_file("samples/matlab/scpdata_als2004dataset.MAT"))
+        .expect("open ALS mat");
+
+    assert_eq!(records.len(), 204);
+    assert_eq!(records[0].provenance.format, "matlab-als2004");
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 96);
+    assert_eq!(signal.axis.unit, "index");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.values[0] - 0.015245458206131416).abs() < 0.000001);
+    assert!((signal.values[95] + 0.00026308635228991425).abs() < 0.000001);
+    assert_eq!(
+        records[0].targets["component_3"].as_f64(),
+        Some(0.027500394939256604)
+    );
+    assert!((records[203].signals["signal"].values[0] - 0.001698897211274964).abs() < 0.000001);
+    assert_eq!(
+        records[203].targets["component_4"].as_f64(),
+        Some(0.008705362013575775)
+    );
 }
 
 #[test]

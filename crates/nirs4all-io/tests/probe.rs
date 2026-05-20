@@ -132,6 +132,12 @@ fn probes_matlab_containers() {
     assert!(probes.iter().any(|probe| {
         probe.format == "matlab-v73-hdf5" && probe.confidence == Confidence::Likely
     }));
+
+    let probes = probe_path(workspace_file("samples/matlab/scpdata_als2004dataset.MAT"))
+        .expect("probe uppercase mat");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "matlab-v5" && probe.confidence == Confidence::Definite));
 }
 
 #[test]

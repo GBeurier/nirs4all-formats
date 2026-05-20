@@ -601,6 +601,7 @@ version = "0.1.0-alpha.0"
 dependencies = [
  "calamine",
  "cfb",
+ "flate2",
  "hdf5-reader",
  "matfile",
  "netcdf-reader",
