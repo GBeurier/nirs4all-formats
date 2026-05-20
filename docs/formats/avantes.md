@@ -97,21 +97,47 @@ the merge-group trailer observed in the fixtures.
 
 `IRR8` calibration is not applied yet. The primary signal is exposed as
 `irradiance` for discoverability, but provenance contains
-`avantes_irr8_irradiance_calibration_not_applied`.
+`avantes_irr8_irradiance_calibration_not_applied`. In IRR8 mode the fourth
+payload vector is exposed as `irradiance_calibration` (signal type
+`unknown`) rather than misnamed `white_reference`: the values span a huge
+dynamic range (about 1e10 down to about 1e0) and are per-pixel calibration factors,
+not a raw white scan.
 
 ## Record Mapping
 
 - one `SpectralRecord` per file or AvaSoft 8 subfile;
 - axis: wavelength in `nm`;
-- metadata: `metadata.avantes` with version/magic, spectrometer id, user name,
-  pixels, acquisition parameters, decoded AvaSoft 8 SPC date/time and comments
-  where present;
+- metadata harmonized at the top level: `measurement_mode` (one of
+  `transmittance`, `absorbance`, `reflectance`, `irradiance`, `raw_scope`,
+  `dark_reference`, `white_reference`), `point_count`, `first_pixel`,
+  `last_pixel`, `integration_time_ms`, `averages_count`,
+  `integration_delay`; legacy adds `detector_temperature_c` and
+  `version_id`; AvaSoft 8 adds `magic`, `acquisition_start_date`,
+  `acquisition_start_time` and (when the C-string field is populated)
+  `instrument_serial`, `operator`, `comment`;
+- raw vendor block under `metadata.avantes` is preserved for byte-level
+  provenance (`spec_id`, `user_name`, wavelength coefficients, raw measure
+  mode, decoded SPC date, etc.);
 - legacy `.TRM`: `transmittance`, `sample`, `white_reference`,
   `dark_reference`;
-- legacy `.ROH/.DRK/.REF`: `scope`, `dark_reference` or `white_reference`;
+- legacy `.ROH/.DRK/.REF`: `scope`, `dark_reference` or `white_reference`,
+  with the provenance warning
+  `avantes_legacy_single_channel:<mode>:companion_files_required` to flag
+  that downstream consumers need the companion files to recompute processed
+  signals;
 - AvaSoft 8 `.Raw8`: `scope`, `sample`, `dark_reference`, `white_reference`;
 - AvaSoft 8 `.IRR8`: `irradiance`, `sample`, `dark_reference`,
-  `white_reference`.
+  `irradiance_calibration`.
+
+When the file extension would imply a specific AvaSoft 8 mode (for example
+`.IRR8` -> irradiance, `.Raw8` -> raw scope), a mismatch with the observed
+`measure_mode` byte raises
+`avantes_avasoft8_extension_mode_mismatch:expected=<mode>:observed=<mode>`.
+
+Fixed-length C strings in AvaSoft 8 headers (spectrometer id, user name,
+comment) are now stopped at their first NUL byte. Earlier parsers leaked
+binary trailers when fixture buffers contained uninitialised ASCII-range
+bytes past the terminator.
 
 ## Fixtures and Reference Checks
 

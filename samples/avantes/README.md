@@ -24,7 +24,14 @@ All files are from [`ropensci/lightr@main/inst/testdata`](https://github.com/rop
 | `eg.IRR8` | Irradiance | `.IRR8` |
 
 The Rust reader decodes the packed AvaSoft 8 SPC collection date/time for
-these fixtures while preserving the raw integer under `metadata.avantes`.
+these fixtures while preserving the raw integer under `metadata.avantes`. It
+also promotes harmonized top-level metadata: `measurement_mode`,
+`point_count`, `first_pixel`/`last_pixel`, `integration_time_ms`,
+`averages_count`, `integration_delay`, `magic` plus `instrument_serial`,
+`operator` and `comment` when those C-string slots are populated. In
+IRR8 mode the fourth payload vector is exposed as `irradiance_calibration`
+(values in the about 1e10 to 1e0 range) instead of being mislabeled as
+`white_reference`.
 
 ### ASCII exports
 
