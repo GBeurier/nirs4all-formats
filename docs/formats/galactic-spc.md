@@ -54,10 +54,15 @@ Committed smoke and golden coverage currently includes:
 | Fixture | Variant | Expected shape |
 |---|---|---|
 | `BENZENE.SPC` | new LSB, generated X | 1 record, 1842 absorbance points |
+| `BARBITUATES.SPC` | new LSB, generated X | Golden summary coverage |
+| `DRUG_SAMPLE.SPC` | new LSB, generated X | Golden summary coverage |
+| `HCL.SPC` | new LSB, generated X | Golden summary coverage |
 | `s_xy.spc` | new LSB, explicit global X | 1 record, 512 points |
 | `OceanOptics.spc` | new LSB, explicit global X, Ocean Optics export | 1 record, 3648 transmittance points |
 | `nir.spc` | new LSB, multi common-X | 20 records, 700 points each |
 | `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
+| `RAMAN.SPC`, `resolutionPro.spc` | new LSB variants | Golden summary coverage |
+| `cell01_c1.spc`, `cell01_c2.spc` | cell assay examples | Golden summary coverage |
 | `LC_DIODE_ARRAY.SPC` | old LSB | limited old-header smoke test |
 
 Reference comparisons were checked against the local `spc_spectra` Python

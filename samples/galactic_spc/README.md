@@ -26,6 +26,9 @@ De-facto interchange format. Multiple binary variants — **old vs. new header**
 | `resolutionPro.spc` | ? | ResolutionPro variant | (test) |
 | `NDR0002.SPC` | ? | (test) | (test) |
 
+`NMR_FID.SPC` is kept as a collision/adjacent-domain fixture but is not part of
+the NIRS golden-conformance set.
+
 ### From [`spectrochempy/spectrochempy_data`](https://github.com/spectrochempy/spectrochempy_data) — CeCILL-B
 
 | File | Size | Notes |
