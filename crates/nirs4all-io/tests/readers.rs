@@ -939,6 +939,73 @@ fn opens_supported_renishaw_wdf_acquisition_counts() {
 }
 
 #[test]
+fn reads_additional_renishaw_wdf_navigation_modes() {
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_timeseries.wdf",
+    ))
+    .expect("open WDF time series");
+    assert_eq!(records.len(), 3);
+    assert_eq!(
+        records[0].metadata["elapsed_time_seconds"].as_f64(),
+        Some(0.0)
+    );
+    assert!(
+        (records[1].metadata["elapsed_time_seconds"]
+            .as_f64()
+            .unwrap()
+            - 3.0884593)
+            .abs()
+            < 0.000001
+    );
+    assert!(
+        (records[2].metadata["elapsed_time_seconds"]
+            .as_f64()
+            .unwrap()
+            - 6.133009)
+            .abs()
+            < 0.000001
+    );
+
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_zscan.wdf",
+    ))
+    .expect("open WDF z scan");
+    assert_eq!(records.len(), 40);
+    assert_eq!(records[0].metadata["spatial_z"].as_f64(), Some(-10.0));
+    assert_eq!(records[39].metadata["spatial_z"].as_f64(), Some(9.5));
+    assert!(
+        (records[39].metadata["elapsed_time_seconds"]
+            .as_f64()
+            .unwrap()
+            - 40.5323183)
+            .abs()
+            < 0.000001
+    );
+
+    let records =
+        open_path(workspace_file("samples/raman_renishaw/wire_line.wdf")).expect("open wire line");
+    assert_eq!(records.len(), 235);
+    assert_eq!(
+        records[0].metadata["map_type_label"].as_str(),
+        Some("xyline")
+    );
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(235));
+    assert_eq!(records[234].metadata["map_x_index"].as_u64(), Some(234));
+    assert!(
+        (records[234].metadata["spatial_distance"].as_f64().unwrap() - 58.499996748737075).abs()
+            < 0.000001
+    );
+    assert!(
+        (records[234].metadata["spatial_x"].as_f64().unwrap() - 134.21802758544098).abs()
+            < 0.000001
+    );
+    assert!(
+        (records[234].metadata["spatial_y"].as_f64().unwrap() + 140.44237383913503).abs()
+            < 0.000001
+    );
+}
+
+#[test]
 fn rejects_renishaw_wdf_undefined_modes_for_now() {
     for relative in [
         "samples/raman_renishaw/renishaw_test_undefined.wdf",

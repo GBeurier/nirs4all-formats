@@ -42,7 +42,9 @@ Real-world Renishaw acquisitions, larger and richer than the rsciio fixtures.
 - Current native reader: spectral payload subset through `DATA`, `XLST` and
   `YLST`, plus `ORGN`/`WMAP` navigation metadata. Map/line/depth/time-series
   fixtures are emitted one record per stored spectrum with `spectrum_index`,
-  spatial axes, elapsed time and map indices when present.
+  spatial axes, elapsed time and map indices when present. The committed
+  regression suite now checks single spectra, regular maps, `xyline`, depth
+  and z-scan, FocusTrack, time-series, StreamLine and interrupted acquisitions.
 - Reference reader:
   - Python: [`rsciio.renishaw`](https://hyperspy.org/rosettasciio/) (most active — supports all map modes), [`py-wdf-reader`](https://github.com/alchem0x2A/py-wdf-reader) / [`renishawWiRE`](https://pypi.org/project/renishawWiRE/) (older but documented).
 - Sample-count: a single `.wdf` from a map mode can contain tens of thousands of spectra — load lazily.

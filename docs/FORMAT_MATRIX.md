@@ -30,7 +30,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi; old limite; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
-| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg/TGA-GC srs OK; srsx manquant | partiel | SpectroChemPy, spa-on-python |
+| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + TGA-GC srs OK; srsx manquant | partiel | SpectroChemPy, spa-on-python |
 | Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | sp OK; fsm imaging refuse | partiel | specio |
 | Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
 | Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | exports matrices WinISI/Foss XDS reels | fait | parseur texte |
@@ -53,7 +53,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Parquet | Apache / generique | `.parquet` | table NIRS canonique | fait | pyarrow, fastparquet, nirs4all ParquetLoader |
 | MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | MAT v5/v7.3 + RData prospectr + local Indian Pines cube | partiel | scipy, hdf5-reader, R serialization, prospectr |
 | NumPy | Python / NumPy | `.npy`, `.npz` | `.npy` matrice, `.npz` canonique | fait | numpy |
-| Renishaw WDF | Renishaw | `.wdf` | spectra + metadata maps/images | partiel | RosettaSciIO, SpectroChemPy |
+| Renishaw WDF | Renishaw | `.wdf` | WDF1 spectra + maps/lines/depth/zscan/focustrack/timeseries/streamline/interrupted; `MAP ` inventory only | partiel | RosettaSciIO, SpectroChemPy |
 | Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; `.l6m` Gd₂O₃/AlN map decode experimental; `.l6s` manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
 | Princeton TriVista TVF | Princeton Instruments | `.tvf` | corpus XML Frame complet OK; refs externes a durcir | partiel | RosettaSciIO |
 | DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus spectra/maps/surfaces OK; variantes hors corpus | partiel | RosettaSciIO |
@@ -89,7 +89,7 @@ passer le format a `fait`.
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert; restent big-endian, vieux headers complets et decision de scope finale pour NMR/FID. |
-| Thermo Nicolet OMNIC | partiel | Decoder `.srsx` et variantes rapid-scan/high-speed. |
+| Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/smoke sur le corpus committe; restent `.srsx` et variantes rapid-scan/high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est lu; il manque un export client reel et la base projet native reste fermee. |
@@ -107,7 +107,7 @@ passer le format a `fait`.
 | Allotrope ADF | bloqué | Pas de sample public ni SDK librement utilisable; seul un stub de detection/refus serait possible sans valider un vrai loader. |
 | HDF5 NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique et les refus non-spectraux sont couverts; il manque schemas reels avec metadata, axes complexes et groupes multi-signaux. |
 | MATLAB MAT / RData | partiel | MAT v5/v7.3 simples, DSO academiques, prospectr `NIRsoil.RData` et cube Indian Pines local-only sont couverts; restent structures MAT/RData generiques, cubes MAT v7.3 et metadata/targets heterogenes. |
-| Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
+| Renishaw WDF | partiel | Les 15 fixtures spectrales versionnees couvrent single, map, line, depth/zscan, FocusTrack, time-series, StreamLine et interrupted; les deux fixtures `measurement_type=0` sont des refus attendus. Reste le decodage complet des payloads derives `MAP ` / `dataRange` et des fixtures par modele InVia Qontor/Apollo. |
 | Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et compare integralement contre l'export texte (intensites + coordonnees); restent `.l6s`, autres layouts LabSpec6, metadata complete et axes energy mieux types. |
 | Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |
 | DigitalSurf MountainsMap | partiel | Fixtures spectres, maps, surface et zlib compresse/non compresse couverts; restent variantes MountainsMap hors corpus et metadata surfaces plus riche. |
