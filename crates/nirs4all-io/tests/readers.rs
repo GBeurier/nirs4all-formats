@@ -2779,6 +2779,34 @@ fn reads_one_spectrum_per_row_matrix_exports() {
 }
 
 #[test]
+fn reads_metrohm_vision_air_csv_matrix_targets() {
+    let records = open_path(workspace_file("samples/metrohm/synthetic_visionair.csv"))
+        .expect("open Metrohm Vision Air CSV");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "spectral-matrix");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
+    assert_eq!(records[0].metadata["row_index"].as_u64(), Some(0));
+    assert_eq!(
+        records[0].metadata["vendor"]["title"].as_str(),
+        Some("Vision Air Export")
+    );
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(10.53));
+    assert_eq!(records[0].targets["moisture"].as_f64(), Some(7.94));
+    assert_eq!(records[0].targets["fat"].as_f64(), Some(1.83));
+
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.03674).abs() < 0.000001);
+    assert!((absorbance.values[199] + 0.14659).abs() < 0.000001);
+}
+
+#[test]
 fn reads_sun_photometer_channel_exports() {
     let records = open_path(workspace_file("samples/mfr/synthetic_mfr.OUT")).expect("open mfr");
 

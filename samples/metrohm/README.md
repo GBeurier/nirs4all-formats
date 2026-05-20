@@ -4,9 +4,9 @@ Native [Vision project DB](https://www.metrohm.com/cs_cz/service/software-center
 
 ## Samples
 
-| File | Source | License |
-|---|---|---|
-| `synthetic_visionair.csv` | Generated locally | CC-0 | Mock Vision Air export with `;` separator, sample/protein/moisture/fat columns + spectral block. Matches the layout reported by users. |
+| File | Source | License | Notes |
+|---|---|---|---|
+| `synthetic_visionair.csv` | Generated locally | CC-0 | Mock Vision Air export with `;` separator, sample/protein/moisture/fat columns + spectral block. Covered by semantic tests and golden summary. |
 
 ## Parser hints
 
