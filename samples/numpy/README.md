@@ -1,6 +1,8 @@
 # NumPy `.npy` / `.npz`
 
-Common in ML workflows. Already supported in `nirs4all`.
+Common in ML workflows. Supported in `nirs4all` and by the native Rust
+`nirs4all-io` reader for bare numeric `.npy` matrices and canonical `.npz`
+datasets.
 
 ## Samples
 
@@ -14,5 +16,6 @@ All generated locally (CC-0):
 ## Parser hints
 
 - Reference readers: `numpy.load`.
-- `.npy` is a single array — the loader cannot infer wavelengths / sample IDs, so it should accept companion args or refuse.
-- `.npz` is a dict of arrays — look for the canonical keys (`X`, `wavelengths`, `y`).
+- `.npy` is a single array; the native reader emits a generated index axis.
+- `.npz` is a dict of arrays; the native reader looks for canonical keys
+  (`X`, `wavelengths`, `y`, `sample_ids`).

@@ -131,6 +131,28 @@ fn probes_hdf5_containers() {
 }
 
 #[test]
+fn probes_numpy_containers() {
+    let probes = probe_path(workspace_file("samples/numpy/synthetic_nirs_X.npy")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "numpy-npy" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file("samples/numpy/synthetic_nirs.npz")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "numpy-npz" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_parquet_container() {
+    let probes =
+        probe_path(workspace_file("samples/parquet/synthetic_nirs.parquet")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "parquet-container" && probe.confidence == Confidence::Likely
+    }));
+}
+
+#[test]
 fn probes_matlab_containers() {
     let probes = probe_path(workspace_file("samples/matlab/synthetic_nirs_v5.mat")).expect("probe");
     assert!(probes
@@ -266,6 +288,15 @@ fn probes_hamamatsu_img_files() {
     assert!(probes
         .iter()
         .any(|probe| probe.format == "hamamatsu-img" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_envi_standard_cube_sidecar() {
+    let probes =
+        probe_path(workspace_file("samples/envi_sli/cubescope-mini-cube.img")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "envi-standard-cube" && probe.confidence == Confidence::Definite
+    }));
 }
 
 #[test]

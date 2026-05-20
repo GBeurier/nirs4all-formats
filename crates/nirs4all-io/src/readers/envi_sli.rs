@@ -23,7 +23,7 @@ impl Reader for EnviSliReader {
             let text = String::from_utf8_lossy(head);
             return sniff_header(self.name(), &text);
         }
-        if ext == "sli" {
+        if matches!(ext.as_str(), "sli" | "img" | "dat") {
             let header_path = path.with_extension("hdr");
             let text = std::fs::read_to_string(header_path).ok()?;
             return sniff_header(self.name(), &text);
@@ -43,9 +43,18 @@ impl Reader for EnviSliReader {
 
         let file_type = header_value(&header, "file type")
             .ok_or_else(|| Error::InvalidRecord("ENVI header missing file type".to_string()))?;
+        if file_type.eq_ignore_ascii_case("ENVI Standard") {
+            return read_standard_cube(
+                self.name(),
+                &header_path,
+                data_hint,
+                header_source,
+                &header,
+            );
+        }
         if !file_type.eq_ignore_ascii_case("ENVI Spectral Library") {
             return Err(Error::InvalidRecord(format!(
-                "unsupported ENVI file type '{file_type}'; only ENVI Spectral Library .sli is supported"
+                "unsupported ENVI file type '{file_type}'; only ENVI Spectral Library or ENVI Standard are supported"
             )));
         }
 
@@ -67,7 +76,7 @@ impl Reader for EnviSliReader {
         let data_type = parse_usize(&header, "data type")?;
         let byte_order = parse_usize(&header, "byte order")?;
         let header_offset = parse_optional_usize(&header, "header offset").unwrap_or(0);
-        let data_path = resolve_data_path(&header_path, data_hint, &header)?;
+        let data_path = resolve_data_path(&header_path, data_hint, &header, &["sli", "SLI"])?;
         let data_bytes = std::fs::read(&data_path).map_err(|source| Error::Io {
             path: data_path.clone(),
             source,
@@ -148,8 +157,8 @@ fn sniff_header(reader: &'static str, text: &str) -> Option<FormatProbe> {
         Some(FormatProbe::new(
             "envi-standard-cube",
             reader,
-            Confidence::Possible,
-            "ENVI image cube header detected; cube loading is out of scope for v1",
+            Confidence::Definite,
+            "ENVI Standard image cube header detected",
         ))
     } else {
         None
@@ -164,7 +173,7 @@ fn paired_paths(path: &Path) -> Result<(PathBuf, Option<PathBuf>)> {
         .to_ascii_lowercase();
     match ext.as_str() {
         "hdr" => Ok((path.to_path_buf(), None)),
-        "sli" => Ok((path.with_extension("hdr"), Some(path.to_path_buf()))),
+        "sli" | "img" | "dat" => Ok((path.with_extension("hdr"), Some(path.to_path_buf()))),
         _ => Err(Error::UnsupportedFormat {
             path: path.to_path_buf(),
         }),
@@ -245,6 +254,7 @@ fn resolve_data_path(
     header_path: &Path,
     data_hint: Option<PathBuf>,
     header: &BTreeMap<String, String>,
+    fallback_extensions: &[&str],
 ) -> Result<PathBuf> {
     if let Some(path) = data_hint {
         return Ok(path);
@@ -261,25 +271,31 @@ fn resolve_data_path(
         });
     }
 
-    for extension in ["sli", "SLI"] {
+    for extension in fallback_extensions {
         let candidate = header_path.with_extension(extension);
         if candidate.exists() {
             return Ok(candidate);
         }
     }
     Err(Error::InvalidRecord(format!(
-        "missing ENVI SLI binary next to {}",
+        "missing ENVI binary next to {}",
         header_path.display()
     )))
 }
 
 fn decode_numeric_payload(payload: &[u8], data_type: usize, byte_order: usize) -> Result<Vec<f64>> {
     let width = match data_type {
+        1 => 1,
+        2 => 2,
+        3 => 4,
         4 => 4,
         5 => 8,
+        12 => 2,
+        13 => 4,
+        14 | 15 => 8,
         _ => {
             return Err(Error::InvalidRecord(format!(
-                "ENVI data type {data_type} is not supported for SLI yet"
+                "ENVI data type {data_type} is not supported yet"
             )))
         }
     };
@@ -301,6 +317,29 @@ fn decode_numeric_payload(payload: &[u8], data_type: usize, byte_order: usize) -
 
     let mut values = Vec::with_capacity(payload.len() / width);
     match (data_type, big_endian) {
+        (1, _) => {
+            values.extend(payload.iter().map(|value| *value as f64));
+        }
+        (2, false) => {
+            for chunk in payload.chunks_exact(2) {
+                values.push(i16::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (2, true) => {
+            for chunk in payload.chunks_exact(2) {
+                values.push(i16::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (3, false) => {
+            for chunk in payload.chunks_exact(4) {
+                values.push(i32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (3, true) => {
+            for chunk in payload.chunks_exact(4) {
+                values.push(i32::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
         (4, false) => {
             for chunk in payload.chunks_exact(4) {
                 values.push(f32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
@@ -319,6 +358,46 @@ fn decode_numeric_payload(payload: &[u8], data_type: usize, byte_order: usize) -
         (5, true) => {
             for chunk in payload.chunks_exact(8) {
                 values.push(f64::from_be_bytes(chunk.try_into().expect("chunk width")));
+            }
+        }
+        (12, false) => {
+            for chunk in payload.chunks_exact(2) {
+                values.push(u16::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (12, true) => {
+            for chunk in payload.chunks_exact(2) {
+                values.push(u16::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (13, false) => {
+            for chunk in payload.chunks_exact(4) {
+                values.push(u32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (13, true) => {
+            for chunk in payload.chunks_exact(4) {
+                values.push(u32::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (14, false) => {
+            for chunk in payload.chunks_exact(8) {
+                values.push(i64::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (14, true) => {
+            for chunk in payload.chunks_exact(8) {
+                values.push(i64::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (15, false) => {
+            for chunk in payload.chunks_exact(8) {
+                values.push(u64::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
+            }
+        }
+        (15, true) => {
+            for chunk in payload.chunks_exact(8) {
+                values.push(u64::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         _ => unreachable!("data type checked above"),
@@ -359,7 +438,9 @@ fn axis_from_header(
 
 fn axis_unit_kind(value: Option<&str>) -> (String, AxisKind) {
     let normalized = value.unwrap_or_default().trim().to_ascii_lowercase();
-    if normalized.contains("nanometer") || normalized == "nm" {
+    if normalized.is_empty() {
+        ("unknown".to_string(), AxisKind::Wavelength)
+    } else if normalized.contains("nanometer") || normalized == "nm" {
         ("nm".to_string(), AxisKind::Wavelength)
     } else if normalized.contains("micrometer") || normalized.contains("um") {
         ("um".to_string(), AxisKind::Wavelength)
@@ -380,6 +461,227 @@ fn parse_list(value: &str) -> Vec<String> {
         .map(|item| item.trim().trim_matches('"').to_string())
         .filter(|item| !item.is_empty())
         .collect()
+}
+
+fn read_standard_cube(
+    reader: &str,
+    header_path: &Path,
+    data_hint: Option<PathBuf>,
+    header_source: SourceFile,
+    header: &BTreeMap<String, String>,
+) -> Result<Vec<SpectralRecord>> {
+    let samples = parse_usize(header, "samples")?;
+    let lines = parse_usize(header, "lines")?;
+    let bands = parse_usize(header, "bands")?;
+    let interleave = header_value(header, "interleave").unwrap_or("bsq");
+    let interleave = interleave.trim().to_ascii_lowercase();
+    if !matches!(interleave.as_str(), "bsq" | "bil" | "bip") {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI Standard interleave '{interleave}' is not supported"
+        )));
+    }
+
+    let data_type = parse_usize(header, "data type")?;
+    let byte_order = parse_usize(header, "byte order")?;
+    let header_offset = parse_optional_usize(header, "header offset").unwrap_or(0);
+    let data_path = resolve_data_path(
+        header_path,
+        data_hint,
+        header,
+        &["img", "IMG", "dat", "DAT"],
+    )?;
+    let data_bytes = std::fs::read(&data_path).map_err(|source| Error::Io {
+        path: data_path.clone(),
+        source,
+    })?;
+    let data_source = SourceFile::from_bytes(&data_path, &data_bytes, "binary");
+    if data_bytes.len() < header_offset {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI Standard header offset {header_offset} exceeds payload length {}",
+            data_bytes.len()
+        )));
+    }
+
+    let expected_values = samples
+        .checked_mul(lines)
+        .and_then(|value| value.checked_mul(bands))
+        .ok_or_else(|| Error::InvalidRecord("ENVI Standard dimensions overflow".to_string()))?;
+    let values = decode_numeric_payload(&data_bytes[header_offset..], data_type, byte_order)?;
+    if values.len() < expected_values {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI Standard payload has {} values; expected {expected_values}",
+            values.len()
+        )));
+    }
+
+    let mut warnings = Vec::new();
+    if values.len() > expected_values {
+        warnings.push(format!(
+            "envi_standard_payload_trailing_values:{}",
+            values.len() - expected_values
+        ));
+    }
+    let (axis_values, axis_unit, axis_kind) = axis_from_header(header, bands, &mut warnings)?;
+
+    let mut records = Vec::with_capacity(samples * lines);
+    for row in 0..lines {
+        for col in 0..samples {
+            let spectrum = (0..bands)
+                .map(|band| {
+                    let index = cube_value_index(
+                        interleave.as_str(),
+                        samples,
+                        lines,
+                        bands,
+                        row,
+                        col,
+                        band,
+                    );
+                    values[index]
+                })
+                .collect::<Vec<_>>();
+            records.push(make_cube_record(
+                reader,
+                header_source.clone(),
+                data_source.clone(),
+                records.len(),
+                row,
+                col,
+                samples,
+                lines,
+                bands,
+                header,
+                &axis_values,
+                &axis_unit,
+                axis_kind.clone(),
+                spectrum,
+                warnings.clone(),
+            )?);
+        }
+    }
+    Ok(records)
+}
+
+#[allow(clippy::too_many_arguments)]
+fn cube_value_index(
+    interleave: &str,
+    samples: usize,
+    lines: usize,
+    bands: usize,
+    row: usize,
+    col: usize,
+    band: usize,
+) -> usize {
+    match interleave {
+        "bsq" => band * lines * samples + row * samples + col,
+        "bil" => row * bands * samples + band * samples + col,
+        "bip" => row * samples * bands + col * bands + band,
+        _ => unreachable!("interleave checked above"),
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn make_cube_record(
+    reader: &str,
+    header_source: SourceFile,
+    data_source: SourceFile,
+    record_index: usize,
+    row: usize,
+    col: usize,
+    samples: usize,
+    lines: usize,
+    bands: usize,
+    header: &BTreeMap<String, String>,
+    axis_values: &[f64],
+    axis_unit: &str,
+    axis_kind: AxisKind,
+    values: Vec<f64>,
+    warnings: Vec<String>,
+) -> Result<SpectralRecord> {
+    let axis = SpectralAxis::new(axis_values.to_vec(), axis_unit, axis_kind)?;
+    let signal = SpectralArray::new(
+        axis,
+        values,
+        vec!["x".to_string()],
+        SignalType::Unknown,
+        None,
+        "spectrum",
+        "file",
+    )?;
+    let mut signals = BTreeMap::new();
+    signals.insert("spectrum".to_string(), signal);
+
+    let sample_id = format!("pixel_y{row}_x{col}");
+    let mut metadata = BTreeMap::new();
+    metadata.insert("sample_id".to_string(), json!(sample_id));
+    metadata.insert("pixel_x".to_string(), json!(col));
+    metadata.insert("pixel_y".to_string(), json!(row));
+    if let Some((spatial_x, spatial_y, spatial_unit)) = map_coordinates(header, col, row) {
+        metadata.insert("spatial_x".to_string(), json!(spatial_x));
+        metadata.insert("spatial_y".to_string(), json!(spatial_y));
+        metadata.insert("spatial_unit".to_string(), json!(spatial_unit));
+    }
+    metadata.insert(
+        "envi".to_string(),
+        json!({
+            "record_index": record_index,
+            "description": header_value(header, "description"),
+            "file_type": header_value(header, "file type"),
+            "samples": samples,
+            "lines": lines,
+            "bands": bands,
+            "interleave": header_value(header, "interleave"),
+            "data_type": header_value(header, "data type").and_then(|value| value.parse::<usize>().ok()),
+            "byte_order": header_value(header, "byte order").and_then(|value| value.parse::<usize>().ok()),
+            "wavelength_units": header_value(header, "wavelength units"),
+            "sensor_type": header_value(header, "sensor type"),
+            "map_info": header_value(header, "map info"),
+        }),
+    );
+
+    let record = SpectralRecord {
+        signals,
+        signal_type: SignalType::Unknown,
+        targets: BTreeMap::new(),
+        metadata,
+        provenance: Provenance {
+            format: "envi-standard-cube".to_string(),
+            reader: reader.to_string(),
+            reader_version: env!("CARGO_PKG_VERSION").to_string(),
+            sources: vec![header_source, data_source],
+            parsed_at_utc: None,
+            record_schema_version: "0.1.0".to_string(),
+            warnings,
+        },
+        quality_flags: Vec::new(),
+    };
+    record.validate()?;
+    Ok(record)
+}
+
+fn map_coordinates(
+    header: &BTreeMap<String, String>,
+    col: usize,
+    row: usize,
+) -> Option<(f64, f64, String)> {
+    let values = parse_list(header_value(header, "map info")?);
+    if values.len() < 7 {
+        return None;
+    }
+    let ref_pixel_x = values.get(1)?.parse::<f64>().ok()?;
+    let ref_pixel_y = values.get(2)?.parse::<f64>().ok()?;
+    let ref_map_x = values.get(3)?.parse::<f64>().ok()?;
+    let ref_map_y = values.get(4)?.parse::<f64>().ok()?;
+    let pixel_size_x = values.get(5)?.parse::<f64>().ok()?;
+    let pixel_size_y = values.get(6)?.parse::<f64>().ok()?;
+    let spatial_x = ref_map_x + (col as f64 + 1.0 - ref_pixel_x) * pixel_size_x;
+    let spatial_y = ref_map_y - (row as f64 + 1.0 - ref_pixel_y) * pixel_size_y;
+    let unit = values
+        .iter()
+        .find_map(|value| value.strip_prefix("units="))
+        .unwrap_or("unknown")
+        .to_string();
+    Some((spatial_x, spatial_y, unit))
 }
 
 #[allow(clippy::too_many_arguments)]

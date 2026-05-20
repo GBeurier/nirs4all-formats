@@ -24,11 +24,13 @@ fixtures:
 | Allotrope ASM plate-reader JSON | `.json` with `$asm.manifest` | Experimental | Plate-reader ASM spectral data cubes and detector-wavelength endpoint readings. Covers committed Benchling allotropy fluorescence/absorbance ASM fixtures. |
 | SiWare API JSON | `.json` with `measurement.wavelengths` / `measurement.absorbance` | Experimental | One-measurement NeoSpectra-style JSON payloads; predictions become targets. |
 | NetCDF NIRS datasets | `.nc`, `.cdf` with `spectra` + `wavelengths` variables | Experimental | Pure-Rust NetCDF reader for simple sample-by-wavelength datasets; ANDI/MS gets a dedicated non-NIRS refusal path and other adjacent NetCDF files are schema-refused. |
+| Parquet NIRS tables | `.parquet` | Experimental | Arrow-backed reader for canonical NIRS tables whose spectral columns are numeric wavelength names; generic non-spectral Parquet files are schema-refused. |
+| NumPy datasets | `.npy`, `.npz` | Experimental | NPY matrix reader with generated index axis and NPZ canonical `X`/`wavelengths`/`y`/`sample_ids` reader for ML datasets. |
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
 | Avantes AvaSoft binary | `.TRM`, `.ROH`, `.DRK`, `.REF`, `.ABS`, `.Raw8`, `.IRR8` | Experimental | Legacy AvaSoft 7 float32 headers and AVS82/AVS84 subfiles. `.ABS` and additional AVS8 modes are implemented by layout but still need fixtures. |
-| ENVI Spectral Library | `.sli` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads. Image cubes are detected but refused for v1. |
+| ENVI Spectral Library / Standard cubes | `.sli` + `.hdr`, `.img`/`.dat` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads, plus ENVI Standard BSQ/BIL/BIP cube expansion to one point spectrum per pixel. |
 | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | Experimental | SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV text exports, plus OceanView `.ProcSpec` ZIP/XML archives with SHA-512 signature validation. The committed Ocean Optics `.spc` fixture is a Galactic/Thermo new-LSB explicit-X SPC file and is routed through that reader. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Single-block `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF ordinate decoding, NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks. `PEAK TABLE` is explicitly refused until the shared model can represent sparse peak lists; broader `LINK` variants are pending. |
 | EMSA/MAS MSA (ISO 22029) | `.msa` | Experimental | Standards-track single-spectrum text format. `XY` and `Y` payloads are supported with axis reconstruction from `OFFSET`, `XPERCHAN` and `CHOFFSET`. Reference reader: `rsciio.msa`. |
@@ -139,12 +141,12 @@ Legend for **Container**:
 | Allotrope ADF | `.adf` | hdf5 + triplestore | 🟡 | Allotrope Foundation SDK | Pharma-grade standard, heavy stack. Not a v1 priority. |
 | mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. Current registry detects XML mzML and refuses it as non-NIRS with a pointer to MS-specific libraries. |
 | Plain CSV / TSV / TXT | `.csv`, `.tsv`, `.txt` | ascii | ✅ | `pandas`, `nirs4all.data.loaders.CSVLoader` | Already supported in `nirs4all`. We extend it with header heuristics. |
-| Parquet | `.parquet` | columnar bin | ✅ | `pyarrow`, `fastparquet`, `nirs4all.data.loaders.ParquetLoader` | Already in `nirs4all`. Used as the internal cache format. |
+| Parquet | `.parquet` | columnar bin | ✅ | `pyarrow`, `fastparquet`, `nirs4all.data.loaders.ParquetLoader` | Current native reader covers canonical NIRS tables with numeric wavelength columns and refuses generic Parquet tables. Used as the internal cache format in `nirs4all`. |
 | HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables`; Rust: `hdf5-reader` | Current native reader covers root or nested `spectra` + `wavelengths` datasets and refuses non-spectral HDF5 containers. |
 
 ---
 
-## 4. Hyperspectral imaging (out-of-scope for v1, listed for completeness)
+## 4. Hyperspectral imaging (partial, listed for completeness)
 
 These are explicitly not the primary target (we focus on point spectra), but
 their formats reuse many of the same containers and several
@@ -156,11 +158,11 @@ hyperspectral-imaging users may want to extract pixel spectra:
 - BIL/BIP/BSQ raw with sidecar header.
 - HDF5-based imaging (NEON AOP, AVIRIS-NG).
 
-v1 policy: detect these as "imaging" and refuse to load, with a clear pointer
-to `spectral` / `rasterio`. A future `extract_point_spectra(cube, mask)` helper
-is a credible v2 feature — many agro / pharma users do own Specim or HySpex
-data and would benefit from a single pipeline that pulls pixel spectra into
-the same `SpectralRecord` schema as point spectroradiometers.
+Current policy: accept ENVI Standard sidecars by expanding each pixel to a
+point spectrum when the wavelength axis is present, while keeping broader
+imaging workflows partial. A future `extract_point_spectra(cube, mask)` helper
+is still needed for ROI/mask workflows and for larger NEON, Specim, HySpex,
+Headwall and AVIRIS-NG payloads where whole-cube expansion is not practical.
 
 ---
 
@@ -169,7 +171,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 | Format | Why it matters | Decision |
 |---|---|---|
 | `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
-| `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
+| `.npy` / `.npz` | Common in ML workflows | Current native reader covers bare numeric NPY matrices and canonical NPZ `X`/`wavelengths`/`y`/`sample_ids` datasets. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables and canonical multi-sheet lab templates joined by `sample_id`. |
 | Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, TriVista TVF, DigitalSurf, Hamamatsu IMG, WiTec WIP, JASCO) | Same `.spc`/`.jws` or spectral-map/time-resolved workflows, often confused with NIR | Horiba LabSpec XML/text, Renishaw WDF spectral payloads, TriVista TVF XML, DigitalSurf `.sur/.pro`, Hamamatsu `.img` and JASCO JWS now load experimentally; WiTec WIP/WID is detected and refused with explicit ASCII-export guidance until a real binary fixture is available. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
 

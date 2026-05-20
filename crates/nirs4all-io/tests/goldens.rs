@@ -306,6 +306,18 @@ const CASES: &[(&str, &str)] = &[
     ("hdf5_synthetic_nirs", "samples/hdf5/synthetic_nirs.h5"),
     ("hdf5_synthetic_fgi", "samples/fgi/synthetic_fgi.h5"),
     (
+        "numpy_npy_synthetic_nirs",
+        "samples/numpy/synthetic_nirs_X.npy",
+    ),
+    (
+        "numpy_npz_synthetic_nirs",
+        "samples/numpy/synthetic_nirs.npz",
+    ),
+    (
+        "parquet_synthetic_nirs",
+        "samples/parquet/synthetic_nirs.parquet",
+    ),
+    (
         "matlab_synthetic_v5",
         "samples/matlab/synthetic_nirs_v5.mat",
     ),

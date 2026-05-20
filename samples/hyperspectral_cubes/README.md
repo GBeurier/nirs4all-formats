@@ -1,6 +1,10 @@
 # Hyperspectral imaging cubes
 
-Explicitly **out of scope for v1** per `FORMATS.md` §4 (we focus on point spectra). Sample fixtures here exist so the loader can detect cubes and refuse cleanly with a pointer to `spectral` / `rasterio`. A future `extract_point_spectra(cube, mask)` helper could turn these into useful inputs (cf. `FORMATS.md` §4 future-work note).
+Partially supported per `FORMATS.md` §4. The native reader currently expands
+small ENVI Standard `.img/.dat + .hdr` cubes to one point spectrum per pixel.
+Larger hyperspectral workflows still need an explicit
+`extract_point_spectra(cube, mask)` helper and reference checks against
+`spectral` / `rasterio`.
 
 ## Samples
 

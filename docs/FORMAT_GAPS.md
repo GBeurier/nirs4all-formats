@@ -73,7 +73,7 @@ variants remain untreated until a sample or reference comparison is available.
 | BUCHI NIRCal | One `.nir` transfer file with spectra/wavenumbers/property schema. | Non-zero property targets, `.cal` calibration-only files, NIRMaster variants. |
 | Avantes AvaSoft | Legacy `.TRM/.ROH/.DRK/.REF/.ABS`, AvaSoft 8 `.Raw8/.IRR8`, ASCII exports. | Legacy `.IRR/.RMN`, AvaSoft 8 `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8` fixtures. |
 | Ocean Optics / Ocean Insight | SpectraSuite/OceanView/Jaz/CRAIC text, `.ProcSpec`, Ocean Optics-flavoured SPC. | QE Pro, Maya and Apex firmware-specific exports. |
-| ENVI / hyperspectral | ENVI SLI and selected refusal paths. | Real vendor `.sli`, NEON/Specim/HySpex/Headwall cubes as point-extraction workflows. |
+| ENVI / hyperspectral | ENVI SLI and ENVI Standard `.img/.dat + .hdr` cubes expanded to one spectrum per pixel. | Real vendor `.sli`, NEON/Specim/HySpex/Headwall cubes and mask/ROI extraction workflows. |
 | JASCO JWS | FT/IR, fluorescence and CD/HT/Abs OLE2 payloads. | NIR-specific V-780 blocks and NRS-series Raman binary flavor. |
 | Renishaw WDF | Spectra, maps/lines/depth/time metadata, WHTL JPEG metadata, MAP inventory. | Full derived `MAP ` dataRange decoding and per-model fixtures. |
 
@@ -86,7 +86,7 @@ point-spectroscopy loaders.
 |---|---|---|
 | mzML / mzMLb | mzML XML is detected and refused with MS-library guidance. | Mass spectrometry container, not NIRS molecular spectroscopy. |
 | ANDI/MS NetCDF `.cdf` | Detected from standard chromatography/MS variables and refused. | Chromatography/MS standard, not NIRS. |
-| Hyperspectral image cubes | ENVI image cubes are refused for v1; point extraction is future work. | Primary payload is an image cube, not a point-spectrometer record. |
+| Hyperspectral image cubes outside ENVI Standard sidecars | Refused or unsupported until a schema-specific reader exists. | Primary payload is an image cube; large ROI/mask workflows need an explicit extraction API. |
 | Perkin Elmer `.fsm` | Detected/refused as imaging. | Spotlight imaging format; large fixtures and different data model. |
 | fNIRS neuroscience files (`SNIRF`, NIRx `.nirs/.wl1/.wl2/.hdr`) | Out of scope. | Physiological time-series domain; use MNE-NIRS/SNIRF tools. |
 | Non-spectral HDF5/NetCDF/AnIML | Schema-refused. | Standard container does not imply NIRS spectra. |

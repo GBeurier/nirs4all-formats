@@ -12,6 +12,7 @@ STATUS
 FORMATS
 FORMAT_MATRIX
 FORMAT_GAPS
+MISSING_SAMPLES
 formats/avantes
 formats/allotrope-asm
 formats/andi-ms
@@ -34,7 +35,9 @@ formats/mzml
 formats/netcdf
 formats/nicolet-omnic
 formats/ocean-optics
+formats/parquet
 formats/perkin-elmer
+formats/numpy
 formats/renishaw-wdf
 formats/row-spectral-table
 formats/siware-api

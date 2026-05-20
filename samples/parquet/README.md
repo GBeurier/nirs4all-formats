@@ -1,6 +1,8 @@
 # Parquet (`.parquet`)
 
-Columnar binary format. Used as the internal cache format by `nirs4all`. Already supported (`nirs4all.data.loaders.ParquetLoader`).
+Columnar binary format. Used as the internal cache format by `nirs4all`.
+Supported by `nirs4all.data.loaders.ParquetLoader` and by the native Rust
+`nirs4all-io` Parquet reader for canonical NIRS tables.
 
 ## Samples
 
@@ -12,4 +14,4 @@ Columnar binary format. Used as the internal cache format by `nirs4all`. Already
 ## Parser hints
 
 - Reference readers: `pyarrow.parquet`, `fastparquet`, `pandas.read_parquet`.
-- The loader should detect "this is a NIRS table" vs "this is some other Parquet file" by inspecting column names and dtypes.
+- The loader detects "this is a NIRS table" vs "this is some other Parquet file" by inspecting column names and dtypes.

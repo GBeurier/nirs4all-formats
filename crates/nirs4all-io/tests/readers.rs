@@ -1341,11 +1341,106 @@ fn reads_ocean_optics_windows_and_reference_procspec_archives() {
 }
 
 #[test]
-fn rejects_envi_standard_image_cube_for_v1() {
-    let err = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
-        .expect_err("cube should be out of scope");
+fn reads_envi_standard_image_cube_as_pixel_spectra() {
+    let records = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
+        .expect("open envi cube");
 
-    assert!(err.to_string().contains("ENVI Standard"));
+    assert_eq!(records.len(), 2_304);
+    assert_eq!(records[0].provenance.format, "envi-standard-cube");
+    assert_eq!(
+        records[0].metadata["sample_id"].as_str(),
+        Some("pixel_y0_x0")
+    );
+    assert_eq!(records[0].metadata["pixel_x"].as_u64(), Some(0));
+    assert_eq!(records[0].metadata["pixel_y"].as_u64(), Some(0));
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(500000.0));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(4100000.0));
+    let signal = records[0].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.axis.values.len(), 32);
+    assert_eq!(signal.axis.unit, "unknown");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.axis.values[0] - 400.0).abs() < 0.000001);
+    assert!((signal.axis.values[31] - 710.0).abs() < 0.000001);
+    assert!((signal.values[0] - 100.0).abs() < 0.000001);
+    assert!((signal.values[31] - 3223.0).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 54_138.0).abs() < 0.000001);
+
+    let last = &records[2_303];
+    assert_eq!(last.metadata["sample_id"].as_str(), Some("pixel_y47_x47"));
+    let signal = last.signals.get("spectrum").expect("spectrum");
+    assert!((signal.values[0] - 152.0).abs() < 0.000001);
+    assert!((signal.values[31] - 3275.0).abs() < 0.000001);
+}
+
+#[test]
+fn reads_numpy_npy_matrix_with_generated_axis() {
+    let records =
+        open_path(workspace_file("samples/numpy/synthetic_nirs_X.npy")).expect("open npy");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "numpy-npy");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("row_0"));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"numpy_npy_axis_generated_index".to_string()));
+    let signal = records[0].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert_eq!(signal.axis.unit, "index");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert!((signal.values[0] - 0.0367427170).abs() < 0.000001);
+    assert!((signal.values[199] + 0.1465858221).abs() < 0.000001);
+    let last = records[49].signals.get("spectrum").expect("spectrum");
+    assert!((last.values[199] - 0.0608757548).abs() < 0.000001);
+}
+
+#[test]
+fn reads_numpy_npz_canonical_dataset() {
+    let records = open_path(workspace_file("samples/numpy/synthetic_nirs.npz")).expect("open npz");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "numpy-npz");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
+    assert!((records[0].targets["y"].as_f64().expect("target") - 10.53211185).abs() < 0.000001);
+    let signal = records[0].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert!((signal.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((signal.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((signal.values[0] - 0.0367427170).abs() < 0.000001);
+    assert!((signal.values[199] + 0.1465858221).abs() < 0.000001);
+}
+
+#[test]
+fn reads_parquet_spectral_matrix() {
+    let records =
+        open_path(workspace_file("samples/parquet/synthetic_nirs.parquet")).expect("open parquet");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "parquet-nirs-table");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
+    assert!(
+        (records[0].targets["protein"].as_f64().expect("protein") - 10.5321118543).abs() < 0.000001
+    );
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert!((signal.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((signal.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((signal.values[0] - 0.0367427152).abs() < 0.000001);
+    assert!((signal.values[199] + 0.1465858247).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_non_spectral_parquet_table() {
+    let err = open_path(workspace_file("samples/parquet/alltypes_plain.parquet"))
+        .expect_err("non-spectral parquet should fail");
+
+    assert!(err.to_string().contains("not a NIRS spectral table"));
 }
 
 #[test]

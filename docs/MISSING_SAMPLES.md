@@ -13,7 +13,7 @@ If the row is ✅ with nothing in "Still missing", the format is fully covered f
 
 For the decision-level explanation of untreated formats, sample blockers,
 unknown layouts and deliberate refusal paths, see
-[`docs/FORMAT_GAPS.md`](docs/FORMAT_GAPS.md).
+[`FORMAT_GAPS.md`](FORMAT_GAPS.md).
 
 ---
 
