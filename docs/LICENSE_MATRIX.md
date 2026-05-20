@@ -47,3 +47,7 @@ comparison outside the runtime.
 DigitalSurf SUR/PRO fixtures come from GPL-3.0 RosettaSciIO test data. They are
 committed as conformance fixtures only; `rsciio.digitalsurf` is used for layout
 and value comparison outside the runtime.
+
+Hamamatsu IMG fixtures come from GPL-3.0 RosettaSciIO test data. They are
+committed as conformance fixtures only; `rsciio.hamamatsu` is used for layout,
+axis and value comparison outside the runtime.

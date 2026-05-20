@@ -1,0 +1,77 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "hamamatsu-img",
+      "metadata_keys": [
+        "acquisition_mode_code",
+        "acquisition_mode_label",
+        "binning",
+        "channel_number",
+        "comment_length",
+        "container",
+        "date",
+        "exposure_count",
+        "exposure_time",
+        "file_type_code",
+        "file_type_label",
+        "image_height",
+        "image_width",
+        "mcp_gain",
+        "num_additional_channels",
+        "num_images_in_channel",
+        "offset_x",
+        "offset_y",
+        "software",
+        "software_version",
+        "streak_camera_mode",
+        "streak_camera_model",
+        "time",
+        "time_range",
+        "timestamp",
+        "x_axis_first",
+        "x_axis_kind",
+        "x_axis_last",
+        "x_axis_len",
+        "x_axis_name",
+        "x_axis_unit",
+        "y_axis_first",
+        "y_axis_kind",
+        "y_axis_last",
+        "y_axis_len",
+        "y_axis_name",
+        "y_axis_unit",
+        "y_axis_values"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::hamamatsu_img",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 671.0,
+          "axis_len": 672,
+          "axis_order": "ascending",
+          "axis_unit": "px",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Counts",
+          "value_first": 406.0,
+          "value_last": 407.0,
+          "value_sum": 137039886.0,
+          "values_len": 341376
+        }
+      ],
+      "source_sha256": "63a72b7f14cb6523aa7121947e8b2aebd7b4f69d27d84d6d820058b203d62051",
+      "target_keys": [],
+      "warnings": [
+        "hamamatsu_img_streak_camera_2d_signal",
+        "hamamatsu_img_uncalibrated_x_axis",
+        "hamamatsu_img_y_axis_is_detector_position"
+      ]
+    }
+  ]
+}

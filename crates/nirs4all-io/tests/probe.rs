@@ -249,6 +249,15 @@ fn probes_digitalsurf_sur_pro_files() {
     }));
 }
 
+#[test]
+fn probes_hamamatsu_img_files() {
+    let probes = probe_path(workspace_file("samples/hamamatsu/operate_mode.img"))
+        .expect("probe Hamamatsu IMG");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "hamamatsu-img" && probe.confidence == Confidence::Definite));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

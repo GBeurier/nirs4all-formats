@@ -81,6 +81,9 @@ Deliverables:
 - DigitalSurf MountainsMap reader; experimental for fixed-header `.sur/.pro`
   spectra, multi-spectrum profiles, hyperspectral maps, surface profiles and
   `DSCOMPRESSED` zlib payloads;
+- Hamamatsu HPD-TA `.img` reader; experimental adjacent-format support for
+  2D streak-camera `y,x` raw-count signals with time/CCD secondary-axis
+  metadata;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;

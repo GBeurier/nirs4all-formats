@@ -924,6 +924,91 @@ fn reads_digitalsurf_sur_pro_modes() {
 }
 
 #[test]
+fn reads_hamamatsu_img_streak_camera_modes() {
+    let records = open_path(workspace_file("samples/hamamatsu/operate_mode.img"))
+        .expect("open Hamamatsu operate");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "hamamatsu-img");
+    assert_eq!(
+        records[0].metadata["acquisition_mode_label"].as_str(),
+        Some("analog_integration")
+    );
+    assert_eq!(records[0].metadata["image_width"].as_u64(), Some(672));
+    assert_eq!(records[0].metadata["image_height"].as_u64(), Some(512));
+    assert_eq!(records[0].metadata["y_axis_name"].as_str(), Some("Time"));
+    assert_eq!(records[0].metadata["y_axis_unit"].as_str(), Some("us"));
+    assert!((records[0].metadata["y_axis_first"].as_f64().unwrap() - 0.0).abs() < 0.000001);
+    assert!(
+        (records[0].metadata["y_axis_last"].as_f64().unwrap() - 16.009395599365234).abs()
+            < 0.000001
+    );
+    let y_values = records[0].metadata["y_axis_values"].as_array().unwrap();
+    assert!((y_values[1].as_f64().unwrap() - 0.031080815941095352).abs() < 0.000001);
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 672);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.dims, vec!["y".to_string(), "x".to_string()]);
+    assert_eq!(signal.values.len(), 512 * 672);
+    assert_eq!(signal.values[0], 0.0);
+    assert_eq!(signal.values[2], 715.0);
+    assert_eq!(signal.values[672], 246.0);
+    assert!((signal.axis.values[0] - 472.25201416015625).abs() < 0.000001);
+    assert!((signal.axis.values[671] - 526.844482421875).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 7061710453.0).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"hamamatsu_img_secondary_time_axis_in_metadata".to_string()));
+
+    let records = open_path(workspace_file("samples/hamamatsu/focus_mode.img"))
+        .expect("open Hamamatsu focus");
+    assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["y_axis_name"].as_str(),
+        Some("Vertical CCD Position")
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.values[signal.values.len() - 3], 21.0);
+    assert!((signal.values.iter().sum::<f64>() - 59743889.0).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"hamamatsu_img_y_axis_is_detector_position".to_string()));
+
+    let records = open_path(workspace_file("samples/hamamatsu/photon_counting.img"))
+        .expect("open Hamamatsu photon counting");
+    assert_eq!(
+        records[0].metadata["acquisition_mode_label"].as_str(),
+        Some("photon_counting")
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 672);
+    assert_eq!(signal.values.len(), 512 * 672);
+    assert!((signal.values.iter().sum::<f64>() - 110996.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file("samples/hamamatsu/shading_file.img"))
+        .expect("open Hamamatsu shading");
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.values[0], 9385.0);
+    assert_eq!(signal.values[1], 8354.0);
+    assert!((signal.values.iter().sum::<f64>() - 182917341484.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file("samples/hamamatsu/xaxis_other.img"))
+        .expect("open Hamamatsu uncalibrated");
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.axis.unit, "px");
+    assert_eq!(signal.values.len(), 508 * 672);
+    assert_eq!(signal.values[0], 406.0);
+    assert!((signal.values.iter().sum::<f64>() - 137039886.0).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"hamamatsu_img_uncalibrated_x_axis".to_string()));
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

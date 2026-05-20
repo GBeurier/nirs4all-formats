@@ -165,6 +165,20 @@ const CASES: &[(&str, &str)] = &[
         "digitalsurf_surface",
         "samples/digitalsurf/test_surface.sur",
     ),
+    ("hamamatsu_focus_mode", "samples/hamamatsu/focus_mode.img"),
+    (
+        "hamamatsu_operate_mode",
+        "samples/hamamatsu/operate_mode.img",
+    ),
+    (
+        "hamamatsu_photon_counting",
+        "samples/hamamatsu/photon_counting.img",
+    ),
+    (
+        "hamamatsu_shading_file",
+        "samples/hamamatsu/shading_file.img",
+    ),
+    ("hamamatsu_xaxis_other", "samples/hamamatsu/xaxis_other.img"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

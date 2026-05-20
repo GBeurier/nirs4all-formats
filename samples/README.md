@@ -150,7 +150,7 @@ verify; they all carry a synthetic placeholder for shape testing.
 | Allotrope ADF `.adf` | Heavy SDK stack; pharma-specific. **Not even attempted — listed in FORMATS.md but explicitly *not a v1 priority*.** | Document as "requires Allotrope SDK". |
 | Perkin Elmer `.fsm` (imaging) | Real fixture exists (50 MB in `specio`) but **explicitly out of scope for v1** per FORMATS.md. | Skip. |
 | Hyperspectral imaging cubes (Specim/HySpex/Headwall/AVIRIS-NG/NEON AOP) | Out of scope per FORMATS.md §4. | Two reference cubes (`cubescope-mini-cube`, `92AV3C.spc`) live in `envi_sli/` for refusal-path tests. |
-| Remaining Raman / UV-Vis look-alikes | Adjacent to NIRS; accepted when sample-backed and useful for dispatch/conformance. Renishaw WDF, Horiba LabSpec, TriVista TVF and DigitalSurf now have fixtures and experimental readers; WiTec WIP native remains pending. | Use committed adjacent fixtures for reader tests, skip vendor-locked native files until redistributable samples exist. |
+| Remaining Raman / UV-Vis look-alikes | Adjacent to NIRS; accepted when sample-backed and useful for dispatch/conformance. Renishaw WDF, Horiba LabSpec, TriVista TVF, DigitalSurf and Hamamatsu IMG now have fixtures and experimental readers; WiTec WIP native remains pending. | Use committed adjacent fixtures for reader tests, skip vendor-locked native files until redistributable samples exist. |
 
 **Gaps that are not blockers**: every truly proprietary format above already
 has the *vendor's documented text/CSV export* as the v1 path (FORMATS.md
