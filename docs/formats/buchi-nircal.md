@@ -12,6 +12,9 @@ by the committed `prospectr::read_nircal()` fixture:
 - one double64 spectrum per sample from fixed-size `begin` / `end` blocks.
 
 It emits one `SpectralRecord` per sample. The sample id is stored in metadata.
+Project GUID, project-file version and per-sample replicate counters are also
+promoted when present, so repeated sample identifiers remain distinguishable in
+dataset exports.
 The committed fixture carries property names but its numeric property values are
 all zero; those values are exposed as `null` targets to preserve the target
 schema while matching `prospectr::read_nircal()` missing-value semantics. A
@@ -24,7 +27,7 @@ targets are preserved as real values instead of being collapsed to `null`.
 | Fixture | Records | Axis | Signal | Notes |
 |---|---:|---|---|---|
 | `samples/buchi_nircal/muestras-tejido-foliar_transfer.nir` | 20 | wavenumber, `cm-1`, 1501 points | `absorbance` | Real `prospectr` fixture; 20 property targets are present but null |
-| `samples_local/buchi_nircal/transpec_DEMO_cannabis.nir` | 105 | wavenumber, `cm-1`, 1501 points | `absorbance` | Local-only transfer fixture; non-null `CBDA` and `THCA` targets validate the target path |
+| `samples_local/buchi_nircal/transpec_DEMO_cannabis.nir` | 105 | wavenumber, `cm-1`, 1501 points | `absorbance` | Local-only transfer fixture; non-null `CBDA` and `THCA` targets plus 3 replicate spectra per sample validate the target and replicate metadata paths |
 
 ## Dispatch Boundaries
 
