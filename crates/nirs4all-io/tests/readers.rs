@@ -573,6 +573,82 @@ fn reads_sun_photometer_channel_exports() {
 }
 
 #[test]
+fn reads_animl_synthetic_nirs_spectrum() {
+    let records =
+        open_path(workspace_file("samples/animl/synthetic_nirs.animl")).expect("open animl");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "animl");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S001"));
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(10.53));
+
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.03674).abs() < 0.000001);
+    assert!((absorbance.values[199] + 0.14659).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_non_spectral_animl_result_documents() {
+    let err = open_path(workspace_file("samples/animl/Example3.animl"))
+        .expect_err("non-spectral AnIML has no axis series");
+
+    assert!(err.to_string().contains("no supported axis series"));
+}
+
+#[test]
+fn reads_allotrope_asm_spectrum_cubes_and_endpoints() {
+    let records = open_path(workspace_file(
+        "samples/allotrope_asm/ACSINS_absorbance_spectrum.json",
+    ))
+    .expect("open ASM absorbance spectrum");
+
+    assert_eq!(records.len(), 360);
+    assert_eq!(records[0].provenance.format, "allotrope-asm-json");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("plate A1"));
+    assert_eq!(records[0].metadata["location_id"].as_str(), Some("A1"));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 51);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.unit.as_deref(), Some("mAU"));
+    assert!((absorbance.axis.values[0] - 520.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[50] - 570.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 2.672).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/allotrope_asm/spectrum_emission_data.json",
+    ))
+    .expect("open ASM emission spectrum");
+    assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["detection_type"].as_str(),
+        Some("Fluorescence")
+    );
+    assert!(records[0].metadata.contains_key("asm_errors"));
+    let emission = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(emission.axis.values, vec![300.0, 310.0, 320.0]);
+    assert!((emission.values[0] - 0.123).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/allotrope_asm/MD_SMP_absorbance_example.json",
+    ))
+    .expect("open ASM endpoint absorbance");
+    assert_eq!(records.len(), 192);
+    assert_eq!(records[0].metadata["group_id"].as_str(), Some("Standards"));
+    let endpoint = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(endpoint.axis.values, vec![450.0]);
+    assert_eq!(endpoint.unit.as_deref(), Some("mAU"));
+    assert!((endpoint.values[0] - 3.41797666666667).abs() < 0.000001);
+}
+
+#[test]
 fn rejects_target_only_reports_without_spectra() {
     for relative in [
         "samples/foss_winisi/synthetic_ds3_report.csv",

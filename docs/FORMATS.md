@@ -16,6 +16,8 @@ fixtures:
 | Row-oriented spectral tables | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` with axis-first content | Experimental | One record per file, first numeric column is the spectral axis, following numeric columns become named signals. Covers committed Si-Ware, MODTRAN, PP Systems, ENVI/ECOSTRESS text, Shimadzu text, USGS SPECPR ASCII and WiTec ASCII fixtures. |
 | Spectral matrix exports | `.csv`, `.txt` with one spectrum per sample row | Experimental | Numeric spectral headers or a `Wavelengths:` block become the axis. Covers committed Foss/WinISI text, Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures. Target-only reports are detected as unsupported. |
 | Sun photometer text exports | `.OUT`, `.TXT` | Experimental | MFR and Microtops channel columns become short wavelength axes, one observation per record. |
+| AnIML spectral XML | `.animl` | Experimental | Spectral `SeriesSet` documents with wavelength/wavenumber axis series and same-length signal series. Non-spectral AnIML result documents are refused. |
+| Allotrope ASM plate-reader JSON | `.json` with `$asm.manifest` | Experimental | Plate-reader ASM spectral data cubes and detector-wavelength endpoint readings. Covers committed Benchling allotropy fluorescence/absorbance ASM fixtures. |
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
@@ -117,7 +119,8 @@ Legend for **Container**:
 |---|---|---|---|---|---|
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm`, `.jcamp` | ascii | ✅ (with caveats) | Py: [`jcamp`](https://pypi.org/project/jcamp/), [`spectrochempy.read_jcamp()`](https://www.spectrochempy.fr/reference/generated/spectrochempy.read_jcamp.html), `nmrglue`; R: `ChemoSpec`, `hyperSpec` | [IUPAC standard](https://iupac.org/what-we-do/digital-standards/jcamp-dx/). The `.dx`/`.jdx` payload can use `AFFN`, `XYDATA`, `DIF/DUP`, or `NTUPLES` encoding — each existing reader covers a subset. Test fixtures must exercise every encoding. v1 priority. |
 | ANDI / NetCDF | `.cdf`, `.nc` | nc | ✅ | Py: `netCDF4`, `xarray` | [ASTM E1947](https://store.astm.org/e1947-98r22.html) is the **chromatography-MS** ANDI standard, *not* a NIR/FTIR standard. Listed as adjacent inspiration; cite a specific FTIR vendor before treating it as a target. |
-| AnIML | `.animl` (xml) | xml | 🟡 | Py: `animl-python` (early), Schema validators | IUPAC + ASTM XML standard. Good long-term target. |
+| AnIML | `.animl` (xml) | xml | 🟡 | Py: `animl-python` (early), Schema validators | IUPAC + ASTM XML standard. Current native reader covers spectral `SeriesSet` fixtures only and refuses non-spectral AnIML results. |
+| Allotrope ASM | `.json` | json | 🟡 | [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-Source/allotropy) | JSON Simple Model. Current native reader covers plate-reader spectral data cubes and detector-wavelength endpoints after vendor-to-ASM conversion. |
 | Allotrope ADF | `.adf` | hdf5 + triplestore | 🟡 | Allotrope Foundation SDK | Pharma-grade standard, heavy stack. Not a v1 priority. |
 | mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. |
 | Plain CSV / TSV / TXT | `.csv`, `.tsv`, `.txt` | ascii | ✅ | `pandas`, `nirs4all.data.loaders.CSVLoader` | Already supported in `nirs4all`. We extend it with header heuristics. |
@@ -163,7 +166,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 |---|---|---|
 | **A — must-have** | `.asd`, `.sig`, `.sed`, OPUS native, `.spc` (Galactic, all sub-variants), JCAMP-DX (`AFFN`/`XYDATA`/`DIF/DUP`/`NTUPLES`), ENVI SLI, Avantes AvaSoft 6/7 (`.TRM`/`.ABS`/`.ROH`/`.DRK`/`.REF`) and AvaSoft 8 (`.RAW8`/`.RFL8`/`.ABS8`/`.TRM8`/`.IRR8`), Avantes ASCII exports, CSV/TSV variants, Excel | Cover the majority of academic and industrial NIR field/benchtop deployments. |
 | **B — high value** | `.spa`/`.spg`/`.srs` (Nicolet OMNIC), `.sp` (PE), Foss/Metrohm/Buchi CSV/JCAMP exports, BUCHI NIRCal `.nir` (via `prospectr` port), ASD `.ILL`/`.REF`/`.RAW`, OceanView `.ProcSpec`, JASCO `.jws`, Shimadzu UVProbe `.spc` | High-impact but partial open support; budget reverse-engineering or R-port work. |
-| **C — opportunistic** | FGI HDF5+XML, Foss `.NIR` native, Perten native, AnIML, Allotrope ADF, USGS SPECPR | Either niche, vendor-locked, or covered by export workflows. |
+| **C — opportunistic** | FGI HDF5+XML, Foss `.NIR` native, Perten native, AnIML hardening, Allotrope ASM/ADF hardening, USGS SPECPR | Either niche, vendor-locked, or covered by export workflows. |
 
 > **Performance / availability assumption (important).** A *must-have* tag
 > means the format must work in v1, *not* that we promise native speed for

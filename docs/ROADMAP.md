@@ -41,6 +41,10 @@ Deliverables:
 - spectral matrix reader; experimental for Foss/WinISI, Metrohm Vision Air and
   VIAVI MicroNIR exports;
 - sun photometer reader; experimental for MFR and Microtops text exports;
+- AnIML spectral XML reader; experimental for explicit spectral `SeriesSet`
+  fixtures and refusal of non-spectral AnIML results;
+- Allotrope ASM JSON bridge; experimental for plate-reader spectral data cubes
+  and detector-wavelength endpoint readings;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -117,6 +121,8 @@ Deliverables:
   fixtures where the first column is the spectral axis;
 - one-spectrum-per-row matrix exports and sun photometer channel tables;
   experimental for committed text fixtures;
+- AnIML XML and Allotrope ASM JSON structured exports; experimental for
+  committed spectroscopy-like fixtures;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment
@@ -132,8 +138,8 @@ Deliverables:
 
 Add one family at a time:
 
-- AnIML XML and Allotrope JSON examples, then Nicolet OMNIC, Perkin Elmer,
-  BUCHI NIRCal and JASCO;
+- harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures,
+  then Nicolet OMNIC, Perkin Elmer, BUCHI NIRCal and JASCO;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;
 - adjacent formats only when they help disambiguation or user workflows.
