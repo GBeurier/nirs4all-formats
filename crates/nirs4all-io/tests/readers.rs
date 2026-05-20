@@ -1007,6 +1007,41 @@ fn reads_spectrochempy_als2004_matlab_dataset() {
 }
 
 #[test]
+fn reads_prospectr_nirsoil_rdata_dataset() {
+    let records = open_path(workspace_file("samples/matlab/prospectr_NIRsoil.RData"))
+        .expect("open NIRsoil RData");
+
+    assert_eq!(records.len(), 825);
+    assert_eq!(records[0].provenance.format, "rdata-prospectr-nirsoil");
+    assert_eq!(
+        records[0].metadata["dataset"].as_str(),
+        Some("prospectr_NIRsoil")
+    );
+    assert_eq!(records[0].metadata["split"].as_str(), Some("train"));
+    assert_eq!(records[0].metadata["train"].as_bool(), Some(true));
+    assert_eq!(records[0].targets["Nt"].as_f64(), Some(0.3));
+    assert_eq!(records[0].targets["Ciso"].as_f64(), Some(0.22));
+    assert!(records[0].targets["CEC"].is_null());
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 700);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[699] - 2498.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.3386885).abs() < 0.000001);
+    assert!((absorbance.values[699] - 0.3725677).abs() < 0.000001);
+
+    assert_eq!(records[824].metadata["split"].as_str(), Some("test"));
+    assert_eq!(records[824].metadata["train"].as_bool(), Some(false));
+    assert_eq!(records[824].targets["Nt"].as_f64(), Some(8.0));
+    assert!((records[824].targets["Ciso"].as_f64().expect("Ciso") - 7.7599998).abs() < 0.000001);
+    assert!((records[824].targets["CEC"].as_f64().expect("CEC") - 46.2999992).abs() < 0.000001);
+    assert!((records[824].signals["absorbance"].values[0] - 0.5835323).abs() < 0.000001);
+    assert!((records[824].signals["absorbance"].values[699] - 0.7344803).abs() < 0.000001);
+}
+
+#[test]
 fn reads_synthetic_excel_workbook() {
     let records =
         open_path(workspace_file("samples/excel/synthetic_nirs.xlsx")).expect("open xlsx");

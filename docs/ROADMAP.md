@@ -55,7 +55,7 @@ Deliverables:
 - MATLAB MAT reader; experimental for simple MAT v5 and MATLAB v7.3/HDF5
   `X` + `wavelengths` + optional `y` datasets, plus committed Eigenvector
   Corn, Eigenvector NIR Shootout 2002, SpectroChemPy DSO and SpectroChemPy
-  ALS2004 structured MAT fixtures;
+  ALS2004 structured MAT fixtures and prospectr `NIRsoil.RData`;
 - Excel workbook reader; experimental for simple `.xlsx/.xlsm` spectral tables
   with numeric wavelength headers;
 - Thermo Nicolet OMNIC reader; experimental for `.SPA` single spectra and
@@ -163,8 +163,6 @@ Deliverables:
 
 Add one family at a time:
 
-- `.RData` academic dataset mapper for prospectr NIRsoil after the MATLAB
-  struct/DSO fixtures;
 - remaining Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets
   and JASCO `.jws` semantic channel labels, each validated against an open
   reference reader when possible;

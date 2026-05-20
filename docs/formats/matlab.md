@@ -10,6 +10,8 @@ NIRS datasets in Rust:
   parser for numeric arrays, char arrays, cells, structs/objects, zlib
   compression and little/big endian payloads;
 - MATLAB v7.3 HDF5 files via `hdf5-reader`;
+- prospectr `NIRsoil.RData` RDX3/XZ workspace files via `rds2rust`, mapped
+  from the `NIRsoil` data.frame and its `spc` matrix;
 - an `X` matrix, a wavelength axis named `wavelengths`, `wavelength`,
   `wavelength_nm` or `x`, and an optional numeric `y` target vector.
 
@@ -27,6 +29,7 @@ emits one `SpectralRecord` per sample.
 | `samples/matlab/eigenvector_nir_shootout_2002.mat` | 655 | wavelength, `nm`, 650 points | `instrument_1`, `instrument_2` | `weight`, `hardness`, `assay` |
 | `samples/matlab/scpdata_dso.mat` | 20 | wavenumber, `cm-1`, 426 points | `absorbance` | none |
 | `samples/matlab/scpdata_als2004dataset.MAT` | 204 | index axis, 96 points | `signal` | `component_1` ... `component_4` |
+| `samples/matlab/prospectr_NIRsoil.RData` | 825 | wavelength, `nm`, 700 points | `absorbance` | `Nt`, `Ciso`, `CEC`; `train` is metadata |
 
 ## Dispatch Boundaries
 
@@ -35,5 +38,6 @@ Unknown MATLAB structs/objects are not treated as generic numeric arrays,
 because their spectral matrix, labels, axis scales and target columns live
 inside nested objects rather than top-level `X`/`wavelengths` arrays.
 
-`.RData` files remain outside this reader and need a dedicated R serialization
-mapper.
+R workspace support is intentionally schema-mapped rather than generic. The
+current `.RData` path accepts the prospectr `NIRsoil` fixture and validates the
+expected `NIRsoil` data.frame columns before emitting records.

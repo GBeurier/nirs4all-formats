@@ -10,12 +10,16 @@ use nirs4all_io_core::{
     AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
     SpectralAxis, SpectralRecord,
 };
+use rds2rust::{DataFrameData, ParseConfig, RObject, VectorData};
 use serde_json::{json, Value};
+use xz2::read::XzDecoder;
 
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
 use crate::Reader;
 
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
+const XZ_MAGIC: &[u8] = b"\xfd7zXZ\0";
+const RDATA_XDR_MAGIC: &[u8] = b"RDX3\n";
 
 pub struct MatlabReader;
 
@@ -30,6 +34,25 @@ impl Reader for MatlabReader {
             .and_then(|value| value.to_str())
             .unwrap_or_default()
             .to_ascii_lowercase();
+        if matches!(ext.as_str(), "rdata" | "rda") {
+            if head.starts_with(XZ_MAGIC) {
+                return Some(FormatProbe::new(
+                    "rdata-rdx3-xz",
+                    self.name(),
+                    Confidence::Likely,
+                    "R workspace extension with XZ compression detected; supported datasets will be validated on read",
+                ));
+            }
+            if head.starts_with(RDATA_XDR_MAGIC) {
+                return Some(FormatProbe::new(
+                    "rdata-rdx3",
+                    self.name(),
+                    Confidence::Definite,
+                    "R workspace RDX3 stream detected; supported datasets will be validated on read",
+                ));
+            }
+            return None;
+        }
         if ext != "mat" {
             return None;
         }
@@ -54,7 +77,14 @@ impl Reader for MatlabReader {
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
         let source = SourceFile::from_path(path, "primary")?;
-        if has_hdf5_magic(path)? {
+        let ext = path
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if matches!(ext.as_str(), "rdata" | "rda") {
+            read_rdata(path, source, self.name())
+        } else if has_hdf5_magic(path)? {
             read_matlab_v73(path, source, self.name())
         } else {
             read_matlab_v5(path, source, self.name())
@@ -73,6 +103,231 @@ fn has_hdf5_magic(path: &Path) -> Result<bool> {
         source,
     })?;
     Ok(read == HDF5_MAGIC.len() && head == HDF5_MAGIC)
+}
+
+fn read_rdata(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
+    let bytes = std::fs::read(path).map_err(|source| Error::Io {
+        path: path.to_path_buf(),
+        source,
+    })?;
+    let (decompressed, container) = if bytes.starts_with(XZ_MAGIC) {
+        let mut decoder = XzDecoder::new(bytes.as_slice());
+        let mut out = Vec::new();
+        decoder
+            .read_to_end(&mut out)
+            .map_err(|error| Error::InvalidRecord(format!("RData XZ decode error: {error}")))?;
+        (out, "rdata_rdx3_xz")
+    } else {
+        (bytes, "rdata_rdx3")
+    };
+
+    let payload = if decompressed.starts_with(RDATA_XDR_MAGIC) {
+        &decompressed[RDATA_XDR_MAGIC.len()..]
+    } else if decompressed.starts_with(b"X\n") {
+        decompressed.as_slice()
+    } else {
+        return Err(Error::InvalidRecord(
+            "RData file is not an RDX3/XDR workspace stream".to_string(),
+        ));
+    };
+    let object = rds2rust::read_rds_with_config(payload, ParseConfig::large_data())
+        .map_err(|error| Error::InvalidRecord(format!("RData parse error: {error}")))?
+        .object
+        .into_concrete_deep();
+
+    if let Some(records) = records_from_prospectr_nirsoil(&object, reader, source, container)? {
+        return Ok(records);
+    }
+
+    Err(Error::InvalidRecord(
+        "RData file contains no supported NIRS dataset".to_string(),
+    ))
+}
+
+fn records_from_prospectr_nirsoil(
+    object: &RObject,
+    reader: &str,
+    source: SourceFile,
+    container: &str,
+) -> Result<Option<Vec<SpectralRecord>>> {
+    let Some(nirsoil) = rdata_binding(object, "NIRsoil") else {
+        return Ok(None);
+    };
+    let RObject::DataFrame(df) = nirsoil else {
+        return Err(Error::InvalidRecord(
+            "prospectr NIRsoil binding is not an R data.frame".to_string(),
+        ));
+    };
+
+    let nt = rdata_real_column(df, "Nt")?;
+    let ciso = rdata_real_column(df, "Ciso")?;
+    let cec = rdata_real_column(df, "CEC")?;
+    let train = rdata_real_column(df, "train")?;
+    let (spc, sample_count, band_count, axis) = rdata_real_matrix_column(df, "spc")?;
+
+    if sample_count != 825 || band_count != 700 {
+        return Err(Error::InvalidRecord(
+            "prospectr NIRsoil spc matrix has unexpected dimensions".to_string(),
+        ));
+    }
+    for (name, column) in [("Nt", nt), ("Ciso", ciso), ("CEC", cec), ("train", train)] {
+        if column.len() != sample_count {
+            return Err(Error::InvalidRecord(format!(
+                "prospectr NIRsoil {name} length does not match spc rows"
+            )));
+        }
+    }
+
+    let mut records = Vec::with_capacity(sample_count);
+    for sample_index in 0..sample_count {
+        let mut targets = BTreeMap::new();
+        targets.insert("Nt".to_string(), finite_json_or_null(nt[sample_index]));
+        targets.insert("Ciso".to_string(), finite_json_or_null(ciso[sample_index]));
+        targets.insert("CEC".to_string(), finite_json_or_null(cec[sample_index]));
+
+        let is_train = train[sample_index].is_finite() && train[sample_index] != 0.0;
+        let mut metadata = BTreeMap::new();
+        metadata.insert("container".to_string(), json!(container));
+        metadata.insert("dataset".to_string(), json!("prospectr_NIRsoil"));
+        metadata.insert("sample_index".to_string(), json!(sample_index));
+        metadata.insert("train".to_string(), json!(is_train));
+        metadata.insert(
+            "split".to_string(),
+            json!(if is_train { "train" } else { "test" }),
+        );
+
+        records.push(single_signal_record(
+            "rdata-prospectr-nirsoil",
+            reader,
+            source.clone(),
+            SingleSignalSpec {
+                axis_values: axis.clone(),
+                axis_unit: "nm".to_string(),
+                axis_kind: AxisKind::Wavelength,
+                values: rdata_matrix_row(spc, sample_count, band_count, sample_index),
+                signal_name: "absorbance".to_string(),
+                signal_type: SignalType::Absorbance,
+                signal_unit: None,
+                role: "absorbance".to_string(),
+            },
+            targets,
+            metadata,
+            Vec::new(),
+        )?);
+    }
+
+    Ok(Some(records))
+}
+
+fn rdata_binding<'a>(object: &'a RObject, name: &str) -> Option<&'a RObject> {
+    match object {
+        RObject::Pairlist(elements) => elements
+            .iter()
+            .find(|element| element.tag.as_deref() == Some(name))
+            .map(|element| &element.value),
+        _ => None,
+    }
+}
+
+fn rdata_real_column<'a>(df: &'a DataFrameData, name: &str) -> Result<&'a [f64]> {
+    let column = df.columns.get(name).ok_or_else(|| {
+        Error::InvalidRecord(format!("prospectr NIRsoil data.frame has no {name} column"))
+    })?;
+    match column {
+        RObject::Real(VectorData::Owned(values)) => Ok(values),
+        other => Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {name} column is {}, not a numeric vector",
+            other.variant_name()
+        ))),
+    }
+}
+
+fn rdata_real_matrix_column<'a>(
+    df: &'a DataFrameData,
+    name: &str,
+) -> Result<(&'a [f64], usize, usize, Vec<f64>)> {
+    let column = df.columns.get(name).ok_or_else(|| {
+        Error::InvalidRecord(format!("prospectr NIRsoil data.frame has no {name} matrix"))
+    })?;
+    let RObject::WithAttributes { object, attributes } = column else {
+        return Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {name} column is not an attributed matrix"
+        )));
+    };
+    let values = match object.as_ref() {
+        RObject::Real(VectorData::Owned(values)) => values.as_slice(),
+        other => {
+            return Err(Error::InvalidRecord(format!(
+                "prospectr NIRsoil {name} matrix payload is {}, not numeric",
+                other.variant_name()
+            )))
+        }
+    };
+    let dim = match attributes.get("dim") {
+        Some(RObject::Integer(VectorData::Owned(dim))) if dim.len() == 2 => dim,
+        _ => {
+            return Err(Error::InvalidRecord(format!(
+                "prospectr NIRsoil {name} matrix has no 2-D dim attribute"
+            )))
+        }
+    };
+    let rows = usize::try_from(dim[0]).map_err(|_| {
+        Error::InvalidRecord(format!("prospectr NIRsoil {name} row count is negative"))
+    })?;
+    let cols = usize::try_from(dim[1]).map_err(|_| {
+        Error::InvalidRecord(format!("prospectr NIRsoil {name} column count is negative"))
+    })?;
+    if values.len() != rows * cols {
+        return Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {name} matrix payload length does not match dimensions"
+        )));
+    }
+    let axis = rdata_matrix_axis(attributes.get("dimnames"), cols, name)?;
+    Ok((values, rows, cols, axis))
+}
+
+fn rdata_matrix_axis(
+    dimnames: Option<&RObject>,
+    expected_len: usize,
+    context: &str,
+) -> Result<Vec<f64>> {
+    let Some(RObject::List(dimnames)) = dimnames else {
+        return Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {context} matrix has no dimnames axis"
+        )));
+    };
+    let Some(RObject::Character(VectorData::Owned(columns))) = dimnames.get(1) else {
+        return Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {context} matrix has no column dimnames axis"
+        )));
+    };
+    if columns.len() != expected_len {
+        return Err(Error::InvalidRecord(format!(
+            "prospectr NIRsoil {context} column dimnames length does not match dimensions"
+        )));
+    }
+    columns
+        .iter()
+        .map(|value| {
+            value.as_ref().parse::<f64>().map_err(|error| {
+                Error::InvalidRecord(format!(
+                    "prospectr NIRsoil wavelength label {value:?} is not numeric: {error}"
+                ))
+            })
+        })
+        .collect()
+}
+
+fn rdata_matrix_row(values: &[f64], rows: usize, cols: usize, row: usize) -> Vec<f64> {
+    (0..cols).map(|col| values[row + col * rows]).collect()
+}
+
+fn finite_json_or_null(value: f64) -> Value {
+    if value.is_finite() {
+        json!(value)
+    } else {
+        Value::Null
+    }
 }
 
 fn read_matlab_v5(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {

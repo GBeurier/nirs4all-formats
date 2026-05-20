@@ -138,6 +138,12 @@ fn probes_matlab_containers() {
     assert!(probes
         .iter()
         .any(|probe| probe.format == "matlab-v5" && probe.confidence == Confidence::Definite));
+
+    let probes =
+        probe_path(workspace_file("samples/matlab/prospectr_NIRsoil.RData")).expect("probe RData");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "rdata-rdx3-xz" && probe.confidence == Confidence::Likely));
 }
 
 #[test]
