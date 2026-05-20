@@ -1,6 +1,8 @@
 # ASD FieldSpec
 
-Status: Experimental.
+Status: Experimental. The primary-spectrum subset for revisions 1/6/7/8 is
+golden-backed; calibration/dependent companion workflows keep the wider ASD
+family partial in `FORMAT_MATRIX.md`.
 
 Implemented scope:
 

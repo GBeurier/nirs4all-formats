@@ -171,7 +171,7 @@ uv run sphinx-build -W -b html docs docs/_build/html
 git diff --check
 ```
 
-Local-only sample sweep (not in CI): `samples_local/` now has 11 successful
+Local-only sample sweep (not in CI): `samples_local/` now has 15 successful
 reads, 5 expected refusals and 0 unexpected refusals.
 
 ## Next Agent Prompt

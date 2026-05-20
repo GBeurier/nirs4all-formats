@@ -1,6 +1,8 @@
 # Excel Spectral Tables
 
-Status: experimental.
+Status: experimental. The `.xlsx` OOXML spectral-table subset is
+fixture-backed by synthetic, multi-sheet and real handheld exports; `.xlsm`
+still lacks a dedicated fixture and legacy `.xls` remains pending.
 
 The Excel reader uses the pure-Rust `calamine` crate. It currently supports
 OOXML workbooks (`.xlsx`, with `.xlsm` covered by the same code path but still

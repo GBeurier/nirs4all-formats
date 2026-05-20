@@ -9,14 +9,14 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | un spectre par ligne | fait | pandas, read.table |
 | Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` code-path sans fixture; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
 | ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | revisions 1, 6, 7, 8 | partiel | asdreader, prospectr, spectrolab, specdal, pyASDReader |
-| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | compagnons calibration | bloqué | SPECCHIO, asdreader |
-| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7 | partiel | lightr |
+| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | compagnons calibration; aucun sample ASD compagnon | bloqué | SPECCHIO, asdreader |
+| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7; `.IRR` present est ASCII | partiel | lightr |
 | Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | AVS8 | partiel | lightr, manuel AvaSoft |
-| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | exports texte | fait | pandas, read.table |
+| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | exports texte dont AvaSoft 8 text | fait | pandas, read.table |
 | Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS | fait | pandas, read.table |
 | Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | OPUS 7/8 (4 lecteurs) + Bruker MPA AfSIS soils; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
-| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid) | fait | spectral, RStoolbox, pysptools |
+| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid); `.slb` non fixture | fait | spectral, RStoolbox, pysptools |
 | ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN + local Indian Pines MAT point extraction | partiel | spectral, rasterio, scipy |
 | FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | paire HDF5+XML synthetique mappee | partiel | h5py, hdf5r, rhdf5, lxml |
 | MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | MFR-7 `.OUT` synthetique + ARM MFRSR b1 NetCDF local decode | partiel | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
@@ -48,7 +48,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | AnIML | IUPAC / ASTM | `.animl` | spectral SeriesSet synthetique | partiel | animl-python, validateurs XML |
 | Allotrope ASM | Allotrope / Benchling | `.json` | fixtures Benchling cubes/endpoints spectraux | partiel | Benchling allotropy |
 | Allotrope ADF | Allotrope Foundation | `.adf` | HDF5/RDF; `adfsee` GitLab `example.adf` local data-cube subset | partiel | Allotrope SDK, adfsee |
-| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | detection + refus non-NIRS | fait | pyteomics, pymzML, pyOpenMS |
+| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | `.mzML` detection + refus non-NIRS; `.mzMLb` documente sans fixture | fait | pyteomics, pymzML, pyOpenMS |
 | HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | schema spectra+wavelengths synthetique + refus non-spectral | partiel | h5py, hdf5-reader, tables |
 | Parquet | Apache / generique | `.parquet` | table NIRS canonique | fait | pyarrow, fastparquet, nirs4all ParquetLoader |
 | MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | MAT v5/v7.3 + RData prospectr + local Indian Pines cube | partiel | scipy, hdf5-reader, R serialization, prospectr |
@@ -72,8 +72,8 @@ passer le format a `fait`.
 |---|---|---|
 | Excel spectral | partiel | Ajouter `.xls` legacy, une fixture `.xlsm` dediee et plus de fixtures multi-feuilles reelles; XLSX axis/data descriptor et handheld UvA sont couverts. |
 | ASD FieldSpec | partiel | Decoder les blocs reference/calibration et couvrir les revisions legacy. |
-| ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`. |
-| Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS/.IRR/.RMN` et comparaison `lightr`. |
+| ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`; les samples `.asd` actuels ne contiennent pas les compagnons calibration, et le `.REF` present dans `samples/avantes/` est Avantes, pas ASD. |
+| Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS` et autres modes binaires legacy puis comparaison `lightr`; le `.IRR` present est un export ASCII couvert par Avantes ASCII, pas une preuve du binaire legacy. |
 | Avantes AvaSoft 8 binaire | partiel | Ajouter fixtures pour chaque suffixe AVS8 et valider les modes. |
 | Bruker OPUS natif | partiel | OPUS 7/8 desormais teste via 4 lecteurs independants (spectral-cockpit, pierreroudier, brukeropus MIT, cran soil.spec AfSIS). OPUS 5/6 legacy archives + blocs 2D/imaging restent. |
 | Bruker Tango / MPA / Matrix | partiel | AfSIS Bruker MPA `icr_*.0` reels committes (cran/soil.spec). Reste Bruker Tango FT-NIR dedie et metadata MPA/Matrix complete. |
@@ -91,17 +91,17 @@ passer le format a `fait`.
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert; restent big-endian, vieux headers complets et decision de scope finale pour NMR/FID. |
 | Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/smoke sur le corpus committe; les trois `.srs` locaux SpectroChemPy couvrent les variantes `tg_gc`, `rapid_scan_raw` et `rapid_scan_reprocessed` avec metadata normalisee. Reste `.srsx` et davantage de variantes high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
-| Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
+| Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference; les samples Foss actuels sont des exports CSV/texte et les `.nir` presents sont BUCHI NIRCal, donc ne debloquent pas `.NIR/.DA/.cal/.eqa`. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est lu; il manque un export client reel et la base projet native reste fermee. |
 | BUCHI NIRCal | partiel | Le chemin `.nir` lit spectra/wavenumbers/proprietes; les cibles non nulles sont validees localement sur `transpec_DEMO_cannabis.nir`. Restent une fixture redistribuable avec cibles non nulles, `.cal` calibration-only et variantes NIRMaster. |
-| Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; CSV actuel sans axe spectral. |
+| Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; le CSV actuel est un rapport cible-seule sans axe spectral. Un export CSV/Excel avec colonnes de longueurs d'onde serait traitable par les readers tabulaires. |
 | JASCO JWS | partiel | Ajouter blocs V-series NIR et variantes Raman NRS. |
 | Shimadzu UVProbe | partiel | Obtenir vrai `.spc` Shimadzu et comparaison convertisseur. |
 | VIAVI MicroNIR | partiel | Reels CSV/XLSX MicroNIR 1700 committes et verrouilles par tests de lecture + probe (UvA forensic). `.pri` natif reste hors atteinte. |
 | Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX committes et verrouilles par tests de lecture + probe; le descripteur OSSL non spectral est refuse explicitement. Reste a couvrir un export NeoSpectra Scanner natif single-measurement. |
 | Spectro Inc. SiWare API | partiel | Les fixtures JSON/CSV sont synthetiques; il manque une reponse API reelle et des variantes de schema. |
 | JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts par goldens elargis, y compris fichiers top-level multi-blocs (`nist_sucrose_ir.jdx` -> 2 records). Restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
-| NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; AOSMET est un refus attendu non spectral. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
+| NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; PyrNet et AOSMET sont des refus attendus non spectraux. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
 | AnIML | partiel | Le `SeriesSet` spectral synthetique est couvert et les resultats non-spectraux sont refuses; restent schemas spectraux reels, `AutoIncrementedValueSet` et validation XSD. |
 | Allotrope ASM | partiel | Les trois fixtures Benchling spectrales/endpoints sont couvertes; restent conversions vendeurs multiples, cas ASM hors plate-reader et validation contre tooling Allotrope. |
 | Allotrope ADF | partiel | `samples_local/allotrope_adf/adfsee_example.adf` valide la detection ADF et un decodage experimental des `/data-cubes` numeriques; les semantiques RDF, unites, ontologies Allotrope et exports vendeurs restent non resolus, et aucun fixture redistribuable n'est committe. |
@@ -113,11 +113,14 @@ passer le format a `fait`.
 | DigitalSurf MountainsMap | partiel | Fixtures spectres, maps, surface et zlib compresse/non compresse couverts; restent variantes MountainsMap hors corpus et metadata surfaces plus riche. |
 | Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes; rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
 | WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`; restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
-| fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. |
+| fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. Aucun sample fNIRS n'est present; les `.hdr` actuels sont ENVI et ne doivent pas etre routes par extension seule. |
 
 ## Verification locale du corpus (2026-05-20)
 
-Dernier sweep CLI apres mise a jour de la matrice:
+Dernier sweep CLI apres mise a jour de la matrice. Les compteurs ci-dessous
+portent sur les fichiers evaluables par le CLI: les `README`, licences, PDF,
+archives brutes, sidecars de documentation et YAML de QC sont exclus du
+denominateur.
 
 | Corpus | OK | Refus attendus | Refus inattendus | Notes |
 |---|---:|---:|---:|---|

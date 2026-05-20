@@ -219,6 +219,7 @@ const CASES: &[(&str, &str)] = &[
         "samples/avantes/1904090M1_0003.Raw8",
     ),
     ("avantes_avasoft8_irr8", "samples/avantes/eg.IRR8"),
+    ("avantes_avasoft8_ascii", "samples/avantes/avasoft8.txt"),
     ("envi_sli_synthetic", "samples/envi_sli/synthetic_lib.hdr"),
     (
         "ocean_optics_spectrasuite",
@@ -258,6 +259,25 @@ const CASES: &[(&str, &str)] = &[
     (
         "jcamp_nist_sucrose_multiblock",
         "samples/jcamp_dx/nist_sucrose_ir.jdx",
+    ),
+    ("jcamp_nist_acetone", "samples/jcamp_dx/acetone_ir.jdx"),
+    (
+        "jcamp_nist_carbon_dioxide",
+        "samples/jcamp_dx/carbon_dioxide_ir.jdx",
+    ),
+    ("jcamp_nist_ethanol", "samples/jcamp_dx/ethanol_ir.jdx"),
+    (
+        "jcamp_nist_ethanol_webbook",
+        "samples/jcamp_dx/nist_ethanol_nist_ir.jdx",
+    ),
+    (
+        "jcamp_nist_glycerol",
+        "samples/jcamp_dx/nist_glycerol_ir.jdx",
+    ),
+    ("jcamp_nist_methane", "samples/jcamp_dx/nist_methane_ir.jdx"),
+    (
+        "jcamp_nist_methanol",
+        "samples/jcamp_dx/nist_methanol_ir.jdx",
     ),
     ("jcamp_bruker_affn", "samples/jcamp_dx/BRUKAFFN.DX"),
     ("jcamp_bruker_pac", "samples/jcamp_dx/BRUKPAC.DX"),

@@ -1,0 +1,84 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-ascii",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_ascii",
+      "record_signal_type": "reflectance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 401,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark",
+          "role": "dark",
+          "signal_type": "unknown",
+          "unit": "counts",
+          "value_first": -10.335,
+          "value_last": -41.841,
+          "value_sum": -10471.982,
+          "values_len": 401
+        },
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 401,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "reference",
+          "role": "reference",
+          "signal_type": "unknown",
+          "unit": "counts",
+          "value_first": -9.339,
+          "value_last": 67.747,
+          "value_sum": 139202.724,
+          "values_len": 401
+        },
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 401,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "reflectance",
+          "role": "reflectance",
+          "signal_type": "reflectance",
+          "unit": "%",
+          "value_first": 252.16336,
+          "value_last": 96.33834,
+          "value_sum": 13936.03164,
+          "values_len": 401
+        },
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 401,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": -6.893,
+          "value_last": 63.696,
+          "value_sum": 23670.426,
+          "values_len": 401
+        }
+      ],
+      "source_sha256": "1ce0447ddb3377910f59f093c1effdb35d66528ed09edfca40e7783efbdb1d36",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

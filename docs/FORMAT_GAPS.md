@@ -32,9 +32,9 @@ undocumented to test safely.
 
 | Format | Current behavior | Why blocked | Preferred interim path |
 |---|---|---|---|
-| ASD `.ILL` / `.REF` / `.RAW` calibration companions | Not decoded. `.asd` primary spectra are supported. | Vendor/SDK-distributed companions; no open fixture. | Use `.asd` primary spectra; add calibration decoding only with a complete `.asd + .ILL/.REF/.RAW` set. |
-| Foss NIRSystems / WinISI `.NIR`, `.DA`, `.cal`, `.eqa` | Native binary not decoded. WinISI text matrix exports are supported. | Closed binary format; no reliable open reader. | Export WinISI/DS/Vision data to text or CSV. |
-| Perten DA / Inframatic native binaries | Not decoded. Target-only CSV reports are intentionally refused as spectra. | Customer-only binary files; no spectral-axis fixture. | Export spectral CSV/Excel from vendor software. |
+| ASD `.ILL` / `.REF` / `.RAW` calibration companions | Not decoded. `.asd` primary spectra are supported for revisions 1/6/7/8. | Vendor/SDK-distributed companions; no open fixture. The `.REF` fixture in `samples/avantes/` is Avantes, not ASD. | Use `.asd` primary spectra; add calibration decoding only with a complete `.asd + .ILL/.REF/.RAW` set. |
+| Foss NIRSystems / WinISI `.NIR`, `.DA`, `.cal`, `.eqa` | Native binary not decoded. WinISI/Foss text and CSV matrix exports are supported. | Closed binary format; no reliable open reader. The `.nir` samples currently present are BUCHI NIRCal and are sniffed by signature, not by extension. | Export WinISI/DS/Vision data to text or CSV. |
+| Perten DA / Inframatic native binaries | Not decoded. Target-only CSV reports are intentionally refused as spectra. | Customer-only binary files; no spectral-axis fixture. The current CSV has only target/report columns. | Export spectral CSV/Excel from vendor software with wavelength columns. |
 | Metrohm Vision / Vision Air project database | Native project DB not decoded. Vision Air CSV spectral matrices are supported. | Closed project format; public workflows use CSV/Excel export. | Export spectral matrices or lab templates. |
 | Shimadzu UVProbe proprietary `.spc` | Native binary not decoded; Shimadzu text export is covered. | Same extension as Galactic SPC but different magic/layout; no real fixture. | Use UVProbe TXT export until a real `.spc` is contributed. |
 | VIAVI MicroNIR `.pri` project container | Not decoded; MicroNIR CSV matrices are supported. | Customer-only project format. | Export CSV. |
@@ -52,7 +52,7 @@ format can be promoted.
 | NeoSpectra Scanner CSV | Synthetic NeoSpectra-style CSV is parsed by row/table readers. | Real customer export with instrument metadata. |
 | SiWare / Spectro Inc. API JSON or CSV stream | Synthetic one-measurement JSON is parsed. | Real credentialed API response. |
 | Solar Light MFR `.OUT` and Microtops legacy `.TXT` | Synthetic channel exports are parsed by `sun_photometer`; local ARM MFRSR b1 NetCDF is parsed as 7-filter multispectral irradiance/ratio records; committed Microtops MAN NetCDF is parsed through a guarded fixture path; local AERONET MAN ASCII `.lev10/.lev15/.lev20` exports are parsed for AOD/AOD-STD. | Real legacy Microtops `.TXT` export, a redistributable MFR/MFRSR field export, broader ARM MFRSR validation and a generic MAN NetCDF/HDF5 metadata path. |
-| PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. Local Arctic LTER CSV/XLSX files are vegetation-index products, not raw spectra. | Real field acquisition. |
+| PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. Local Arctic LTER CSV/XLSX files are vegetation-index products, not raw spectra. | Real raw field acquisition, not derived NDVI/EVI/PRI product tables. |
 | MODTRAN albedo `.dat` | Synthetic albedo table is parsed. | Redistributable licensed MODTRAN output. |
 | FGI HDF5 + XML pairing | Synthetic nested HDF5 payload and XML sidecar are parsed; real schema coverage is unknown. | Real FGI HDF5/XML pair. |
 | Shimadzu UVProbe `.txt` | Synthetic UVProbe text export is parsed. | Real customer text export. |
@@ -85,7 +85,7 @@ point-spectroscopy loaders.
 
 | Format | Current behavior | Reason |
 |---|---|---|
-| mzML / mzMLb | mzML XML is detected and refused with MS-library guidance. | Mass spectrometry container, not NIRS molecular spectroscopy. |
+| mzML / mzMLb | mzML XML is detected and refused with MS-library guidance; `.mzMLb` remains documented but has no fixture. | Mass spectrometry container, not NIRS molecular spectroscopy. |
 | ANDI/MS NetCDF `.cdf` | Detected from standard chromatography/MS variables and refused. | Chromatography/MS standard, not NIRS. |
 | Hyperspectral image cubes outside ENVI Standard sidecars | Refused or unsupported until a schema-specific reader exists. | Primary payload is an image cube; large ROI/mask workflows need an explicit extraction API. |
 | Perkin Elmer `.fsm` | Detected/refused as imaging. | Spotlight imaging format; large fixtures and different data model. |

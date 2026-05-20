@@ -10,6 +10,8 @@ ASCII exports:
 - AvaSoft wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) with `Wave;...`
   columns;
 - two-column irradiance exports (`.IRR`) such as `irr_820_1941.IRR`.
+- text exports from AvaSoft 8 such as `avasoft8.txt`; these are ASCII fixtures
+  and do not close the binary AvaSoft 8 suffix gaps.
 
 Legacy AvaSoft binaries:
 
@@ -120,6 +122,14 @@ Current binary fixtures:
 | `1305084U1.REF` | 1442 | `275.271759 -> 1100.133307 nm` | white `856.000000 -> 802.200012` |
 | `1904090M1_0003.Raw8` | 1019 | `300.013855 -> 899.874878 nm` | scope `267.155243 -> 360.127502` |
 | `eg.IRR8` | 1620 | `144.942429 -> 1100.441406 nm` | scope `1096.812012 -> 2009.875000` |
+
+Current ASCII fixtures:
+
+| File | Points | Axis | Primary control |
+|---|---:|---|---|
+| `avantes_export.ttt` / `avantes_export2.trt` / `avantes_export_long.ttt` | wave table | wavelength `nm` | text Wave table parser |
+| `irr_820_1941.IRR` | 2048 | wavelength `nm` | two-column irradiance parser |
+| `avasoft8.txt` | 401 | `300.000000 -> 700.000000 nm` | AvaSoft 8 text export parser |
 
 Reference behavior was compared against the documented `lightr` parser layout
 and its known formulas. `lightr` is GPL, so it remains a conformance reference
