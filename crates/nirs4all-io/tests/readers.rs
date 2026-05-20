@@ -3403,7 +3403,23 @@ fn reads_synthetic_nirs_hdf5_dataset() {
     assert_eq!(records[0].metadata["container"].as_str(), Some("hdf5"));
     assert_eq!(records[0].metadata["group_path"].as_str(), Some("/"));
     assert_eq!(records[0].metadata["sample_index"].as_u64(), Some(0));
+    assert_eq!(
+        records[0].metadata["signal_datasets"].as_array().unwrap(),
+        &vec![
+            serde_json::json!("spectra"),
+            serde_json::json!("reflectance")
+        ]
+    );
+    assert_eq!(
+        records[0].metadata["signal_units"]["absorbance"].as_str(),
+        Some("absorbance")
+    );
+    assert_eq!(
+        records[0].metadata["signal_units"]["reflectance"].as_str(),
+        Some("reflectance")
+    );
     assert!(records[0].targets.contains_key("protein"));
+    assert_eq!(records[0].signals.len(), 2);
     let absorbance = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 200);
     assert_eq!(absorbance.axis.unit, "nm");
@@ -3412,6 +3428,13 @@ fn reads_synthetic_nirs_hdf5_dataset() {
     assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
     assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
     assert!((absorbance.values[0] - 0.036742717027664185).abs() < 0.000001);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 200);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.values[0] - 0.91887677).abs() < 0.000001);
+    assert!((reflectance.values[199] - 1.4014765).abs() < 0.000001);
 }
 
 #[test]

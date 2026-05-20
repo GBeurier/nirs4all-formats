@@ -146,7 +146,7 @@ Legend for **Container**:
 | mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. Current registry detects XML mzML and refuses it as non-NIRS with a pointer to MS-specific libraries; `.mzMLb` is documented but not fixture-backed yet. |
 | Plain CSV / TSV / TXT | `.csv`, `.tsv`, `.txt` | ascii | ✅ | `pandas`, `nirs4all.data.loaders.CSVLoader` | Already supported in `nirs4all`. We extend it with header heuristics. |
 | Parquet | `.parquet` | columnar bin | ✅ | `pyarrow`, `fastparquet`, `nirs4all.data.loaders.ParquetLoader` | Current native reader covers canonical NIRS tables with numeric wavelength columns and refuses generic Parquet tables. Used as the internal cache format in `nirs4all`. |
-| HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables`; Rust: `hdf5-reader` | Current native reader covers root/nested spectral groups, common spectra/axis aliases and unambiguous sample-by-band or band-by-sample matrices, while refusing non-spectral HDF5 containers. |
+| HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables`; Rust: `hdf5-reader` | Current native reader covers root/nested spectral groups, multi-signal groups sharing one spectral axis, common spectra/axis aliases and unambiguous sample-by-band or band-by-sample matrices, while refusing non-spectral HDF5 containers. |
 
 ---
 

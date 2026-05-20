@@ -56,11 +56,14 @@ with h5py.File(f"{OUT}/matlab/synthetic_nirs_v73.mat", "w") as f:
     f.create_dataset("y", data=y_protein)
 
 # 6. HDF5 generic
+reflectance = np.clip(np.power(10.0, -X), 0.0, 1.5)
 with h5py.File(f"{OUT}/hdf5/synthetic_nirs.h5", "w") as f:
     f.create_dataset("spectra", data=X.astype("float32"), compression="gzip")
+    f.create_dataset("reflectance", data=reflectance.astype("float32"), compression="gzip")
     f.create_dataset("wavelengths", data=wl)
     f.create_dataset("protein", data=y_protein)
     f["spectra"].attrs["units"] = "absorbance"
+    f["reflectance"].attrs["units"] = "reflectance"
     f["wavelengths"].attrs["units"] = "nm"
     f.attrs["instrument"] = "synthetic"
     f.attrs["n_samples"] = n_samples
