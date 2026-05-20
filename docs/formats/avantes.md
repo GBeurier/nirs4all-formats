@@ -127,7 +127,9 @@ Current ASCII fixtures:
 
 | File | Points | Axis | Primary control |
 |---|---:|---|---|
-| `avantes_export.ttt` / `avantes_export2.trt` / `avantes_export_long.ttt` | wave table | wavelength `nm` | text Wave table parser |
+| `avantes_export.ttt` | 401 | `300.000000 -> 700.000000 nm` | transmittance `3.148700 -> 31.491200` |
+| `avantes_export2.trt` | 1442 | `275.270000 -> 1100.130000 nm` | sample counts `805.000000 -> 774.300000` |
+| `avantes_export_long.ttt` | 1442 | `275.270000 -> 1100.130000 nm` | `Dark`, `Ref`, `Sample`, `Transmittance` columns |
 | `irr_820_1941.IRR` | 2048 | wavelength `nm` | two-column irradiance parser |
 | `avasoft8.txt` | 401 | `300.000000 -> 700.000000 nm` | AvaSoft 8 text export parser |
 

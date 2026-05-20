@@ -202,6 +202,14 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("hamamatsu_xaxis_other", "samples/hamamatsu/xaxis_other.img"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
+    (
+        "avantes_wave_table_sample_counts",
+        "samples/avantes/avantes_export2.trt",
+    ),
+    (
+        "avantes_wave_table_long_multi",
+        "samples/avantes/avantes_export_long.ttt",
+    ),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),
     (

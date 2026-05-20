@@ -29,8 +29,8 @@ All files are from [`ropensci/lightr@main/inst/testdata`](https://github.com/rop
 | File | Format | Notes |
 |---|---|---|
 | `avantes_export.ttt` | Transmittance text export | `.ttt` |
-| `avantes_export2.trt` | Reflectance text export | `.trt` |
-| `avantes_export_long.ttt` | Long-format transmittance export | Multi-spectrum |
+| `avantes_export2.trt` | Sample-count text export | `.trt`; one `Sample` counts column |
+| `avantes_export_long.ttt` | Multi-signal transmittance text export | `Dark`, `Ref`, `Sample` and `Transmittance` columns |
 | `avasoft8.txt` | AvaSoft 8 ASCII export | Tab-separated |
 
 ## Parser hints
