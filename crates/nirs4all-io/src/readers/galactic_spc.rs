@@ -976,14 +976,34 @@ fn axis_kind_and_unit(label: &str) -> (AxisKind, String) {
         (AxisKind::Wavelength, "um".to_string())
     } else if lower.contains("hertz") || lower.contains("hz") {
         (AxisKind::Frequency, unit_from_label(label))
-    } else if lower.contains("minute") {
-        (AxisKind::Index, "min".to_string())
-    } else if lower.contains("second") {
-        (AxisKind::Index, "s".to_string())
+    } else if let Some(unit) = time_unit_from_label(&lower) {
+        (AxisKind::Time, unit.to_string())
     } else if lower.contains("ev") {
         (AxisKind::Energy, "eV".to_string())
     } else {
         (AxisKind::Index, unit_from_label(label))
+    }
+}
+
+fn time_unit_from_label(lower: &str) -> Option<&'static str> {
+    if lower.contains("millisecond") || lower.contains("msec") {
+        Some("ms")
+    } else if lower.contains("microsecond") || lower.contains("usec") {
+        Some("us")
+    } else if lower.contains("nanosecond") || lower.contains("nsec") {
+        Some("ns")
+    } else if lower.contains("second") {
+        Some("s")
+    } else if lower.contains("minute") {
+        Some("min")
+    } else if lower.contains("hour") {
+        Some("h")
+    } else if lower.contains("day") {
+        Some("d")
+    } else if lower.contains("year") {
+        Some("year")
+    } else {
+        None
     }
 }
 

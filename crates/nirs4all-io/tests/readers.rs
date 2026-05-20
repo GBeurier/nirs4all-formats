@@ -4087,6 +4087,7 @@ fn reads_galactic_spc_explicit_x_axis() {
         .expect("arbitrary intensity");
     assert_eq!(signal.axis.values.len(), 512);
     assert_eq!(signal.axis.unit, "min");
+    assert_eq!(signal.axis.kind, AxisKind::Time);
     assert!((signal.axis.values[0] - 1.0866667032).abs() < 0.000001);
     assert_eq!(signal.values[0], 45_333.0);
 }
@@ -4242,6 +4243,7 @@ fn reads_galactic_spc_adjacent_nmr_fid_without_promoting_scope() {
         .expect("fid intensity");
     assert_eq!(signal.axis.values.len(), 16_384);
     assert_eq!(signal.axis.unit, "s");
+    assert_eq!(signal.axis.kind, AxisKind::Time);
     assert_eq!(signal.signal_type, SignalType::RawCounts);
     assert!((signal.axis.values[16_383] - 0.3268608).abs() < 0.000001);
     assert_eq!(signal.values[0], 0.0);

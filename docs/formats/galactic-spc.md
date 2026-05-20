@@ -20,6 +20,8 @@ Implemented:
   IEEE float32 Y arrays (`fexp` or `subexp` equal to `0x80`);
 - axis and signal labels from SPC enumerations, with `TALABS` custom labels
   overriding the enum labels when present;
+- SPC time-axis labels mapped to `AxisKind::Time` (`Seconds`, `Minutes`,
+  hours, days, years and sub-second units);
 - log-text key/value parsing when the SPC log block is present.
 
 Limited support:
@@ -57,7 +59,7 @@ Committed smoke and golden coverage currently includes:
 | `BARBITUATES.SPC` | new LSB, generated X | Golden summary coverage |
 | `DRUG_SAMPLE.SPC` | new LSB, generated X | Golden summary coverage |
 | `HCL.SPC` | new LSB, generated X | Golden summary coverage |
-| `s_xy.spc` | new LSB, explicit global X | 1 record, 512 points |
+| `s_xy.spc` | new LSB, explicit global X | 1 record, 512 points over a minute time axis |
 | `OceanOptics.spc` | new LSB, explicit global X, Ocean Optics export | 1 record, 3648 transmittance points |
 | `nir.spc` | new LSB, multi common-X | 20 records, 700 points each |
 | `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
@@ -66,14 +68,15 @@ Committed smoke and golden coverage currently includes:
 | `cell01_c1.spc`, `cell01_c2.spc` | cell assay examples | Golden summary coverage |
 | `Ft-ir.spc`, `RUBY18.SPC`, `SINGLE_POLYMER_FILM.SPC`, `TOLUENE.SPC`, `MERC.SPC`, `NDR0002.SPC`, `SPECTRUM_WITH_BAD_BASELINE.SPC`, `test_input.spc` | additional new-LSB corpus | Golden summary coverage |
 | `s_evenx.spc`, `m_evenz.spc`, `m_ordz.spc`, `raman-sion.spc` | explicit/generated X and multi variants | Golden summary coverage |
-| `NMR_FID.SPC` | adjacent NMR/FID control | Golden summary coverage; final normalized-scope decision still pending |
+| `NMR_FID.SPC` | adjacent NMR/FID control | Golden summary coverage over a seconds time axis; final normalized-scope decision still pending |
 | `LC_DIODE_ARRAY.SPC` | old LSB | limited old-header smoke test |
 
 Reference comparisons were checked against the local `spc_spectra` Python
 reader for the new-LSB fixtures. Important controls:
 
 - `BENZENE.SPC`: first Y `0.1015599817`, sum `189.390214`.
-- `s_xy.spc`: first X `1.0866667032`, first Y `45333`, sum `30065112`.
+- `s_xy.spc`: minute axis typed as `time`, first X `1.0866667032`, first Y
+  `45333`, sum `30065112`.
 - `OceanOptics.spc`: first X `176.3604126`, last X `893.6943359`,
   first Y `0`, last Y `119.4251709`.
 - `nir.spc`: 20 records, first record first Y `0.0002004839`, sum `238.526`.
@@ -85,8 +88,9 @@ reader for the new-LSB fixtures. Important controls:
   with the old-header warning retained.
 - `DRUG_SAMPLE.SPC`: 400 directory-backed `TXYXYS` records; first record uses a
   descending `m/z` axis and sums to `245071`.
-- `NMR_FID.SPC`: adjacent FID control is readable as raw counts over seconds,
-  but it is not promoted as a core NIRS scope guarantee.
+- `NMR_FID.SPC`: adjacent FID control is readable as raw counts over a
+  seconds axis typed as `time`, but it is not promoted as a core NIRS scope
+  guarantee.
 
 `spc_spectra` does not implement new big-endian SPC and is unreliable for at
 least one old ordered-Z fixture, so old-format promotion requires an additional

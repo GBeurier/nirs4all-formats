@@ -15,6 +15,7 @@ Implemented:
 - 1D data block parsing for float32 and int32 payloads;
 - appairing data blocks with matching data-status parameter blocks;
 - `CSF` scaling, `NPT` trimming, and generated X axes from `FXV`, `LXV`;
+- OPUS `DXU=MIN` axes typed as `AxisKind::Time`;
 - duplicate data block names with stable suffixes such as `absorbance_2`;
 - multi-signal records containing absorbance, reflectance, sample/reference
   spectra, sample/reference interferograms and phase blocks when present.

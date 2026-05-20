@@ -16,7 +16,7 @@
       "signals": [
         {
           "axis_first": 0.0,
-          "axis_kind": "index",
+          "axis_kind": "time",
           "axis_last": 0.326861,
           "axis_len": 16384,
           "axis_order": "ascending",
