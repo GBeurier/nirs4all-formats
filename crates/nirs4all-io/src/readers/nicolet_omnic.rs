@@ -2,11 +2,12 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
+    SpectralAxis, SpectralRecord,
 };
 use serde_json::json;
 
-use crate::readers::util::{safe_signal_name, single_signal_record, SingleSignalSpec};
+use crate::readers::util::{provenance, safe_signal_name, single_signal_record, SingleSignalSpec};
 use crate::Reader;
 
 const OMNIC_DATA_MAGIC: &[u8] = b"Spectral Data File";
@@ -14,6 +15,7 @@ const OMNIC_SERIES_MAGIC: &[u8] = b"Spectral Exte File";
 const KEY_TABLE_COUNT_OFFSET: usize = 294;
 const KEY_TABLE_OFFSET: usize = 304;
 const KEY_TABLE_ENTRY_LEN: usize = 16;
+const SRS_TG_SIGNATURE: &[u8] = b"\x02\x00\x00\x00\x18\x00\x00\x00\x00\x00";
 
 pub struct NicoletOmnicReader;
 
@@ -49,7 +51,7 @@ impl Reader for NicoletOmnicReader {
                 "nicolet-omnic-srs",
                 self.name(),
                 Confidence::Possible,
-                "Thermo Nicolet OMNIC series file header; series decoding is pending",
+                "Thermo Nicolet OMNIC series file header; TGA/GC series layout is decoded on read",
             ));
         }
         None
@@ -62,9 +64,7 @@ impl Reader for NicoletOmnicReader {
         })?;
         let source = SourceFile::from_bytes(path, &bytes, "primary");
         if bytes.starts_with(OMNIC_SERIES_MAGIC) {
-            return Err(Error::InvalidRecord(
-                "Nicolet OMNIC .srs series are recognized but not implemented yet".to_string(),
-            ));
+            return read_srs(&bytes, source, self.name());
         }
         if !bytes.starts_with(OMNIC_DATA_MAGIC) {
             return Err(Error::InvalidRecord(
@@ -144,6 +144,122 @@ struct SpectrumDescriptor {
     timestamp: Option<u32>,
 }
 
+#[derive(Clone, Debug)]
+struct SrsLayout {
+    data_header_offset: usize,
+    background_header_offset: usize,
+    data_offset: usize,
+}
+
+#[derive(Clone, Debug)]
+struct SrsHeader {
+    base: OmnicHeader,
+    name: String,
+    collection_length_seconds: f32,
+    first_y: f32,
+    last_y: f32,
+    ny: usize,
+}
+
+struct SrsSpectra {
+    labels: Vec<String>,
+    values: Vec<f64>,
+}
+
+fn read_srs(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
+    let layout = find_srs_tg_layout(bytes)?;
+    let header = read_srs_header(bytes, layout.data_header_offset)?;
+    let spectra = read_srs_spectra(bytes, layout.data_offset, header.ny, header.base.nx)?;
+    let axis = SpectralAxis::new(
+        linspace(header.base.first_x, header.base.last_x, header.base.nx),
+        header.base.axis_unit.clone(),
+        header.base.axis_kind.clone(),
+    )?;
+    let signal = SpectralArray::new(
+        axis,
+        spectra.values,
+        vec!["y".to_string(), "x".to_string()],
+        header.base.signal_type.clone(),
+        header.base.signal_unit.clone(),
+        safe_signal_name(&header.base.signal_title, "signal"),
+        "file",
+    )?;
+    let signal_name = safe_signal_name(&header.base.signal_title, "signal");
+    let mut signals = BTreeMap::new();
+    signals.insert(signal_name, signal);
+
+    let mut metadata = BTreeMap::new();
+    metadata.insert("series_variant".to_string(), json!("tg_gc"));
+    metadata.insert("series_name".to_string(), json!(header.name));
+    metadata.insert("series_y_len".to_string(), json!(header.ny));
+    metadata.insert("series_y_first_min".to_string(), json!(header.first_y));
+    metadata.insert("series_y_last_min".to_string(), json!(header.last_y));
+    if header.ny > 1 {
+        metadata.insert(
+            "series_y_step_min".to_string(),
+            json!((header.last_y - header.first_y) / (header.ny - 1) as f32),
+        );
+    }
+    metadata.insert(
+        "collection_length_seconds".to_string(),
+        json!(header.collection_length_seconds),
+    );
+    metadata.insert(
+        "omnic_srs_data_header_offset".to_string(),
+        json!(layout.data_header_offset),
+    );
+    metadata.insert(
+        "omnic_srs_background_header_offset".to_string(),
+        json!(layout.background_header_offset),
+    );
+    metadata.insert(
+        "omnic_srs_data_offset".to_string(),
+        json!(layout.data_offset),
+    );
+    metadata.insert("axis_title".to_string(), json!(header.base.axis_title));
+    metadata.insert("signal_title".to_string(), json!(header.base.signal_title));
+    metadata.insert("scan_points".to_string(), json!(header.base.scan_points));
+    metadata.insert(
+        "zero_path_difference".to_string(),
+        json!(header.base.zero_path_difference),
+    );
+    metadata.insert("scan_count".to_string(), json!(header.base.scan_count));
+    metadata.insert(
+        "background_scan_count".to_string(),
+        json!(header.base.background_scan_count),
+    );
+    metadata.insert(
+        "reference_frequency_cm-1".to_string(),
+        json!(header.base.reference_frequency),
+    );
+    metadata.insert(
+        "optical_velocity".to_string(),
+        json!(header.base.optical_velocity),
+    );
+    if let Some(first) = spectra.labels.first().filter(|value| !value.is_empty()) {
+        metadata.insert("first_spectrum_label".to_string(), json!(first));
+    }
+    if let Some(last) = spectra.labels.last().filter(|value| !value.is_empty()) {
+        metadata.insert("last_spectrum_label".to_string(), json!(last));
+    }
+
+    let record = SpectralRecord {
+        signals,
+        signal_type: header.base.signal_type,
+        targets: BTreeMap::new(),
+        metadata,
+        provenance: provenance(
+            "nicolet-omnic-srs",
+            reader,
+            source,
+            vec!["nicolet_omnic_srs_tg_gc_reverse_engineered".to_string()],
+        ),
+        quality_flags: Vec::new(),
+    };
+    record.validate()?;
+    Ok(vec![record])
+}
+
 fn read_spa(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
     let entries = parse_key_table(bytes)?;
     let header_entry = first_entry(&entries, OmnicKey::Header)?;
@@ -211,6 +327,95 @@ fn read_spg(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<Spectr
         )?);
     }
     Ok(records)
+}
+
+fn find_srs_tg_layout(bytes: &[u8]) -> Result<SrsLayout> {
+    let occurrences = find_all(bytes, SRS_TG_SIGNATURE);
+    if occurrences.len() != 3 {
+        return Err(Error::InvalidRecord(format!(
+            "Nicolet OMNIC .srs TGA/GC signature count is {}, expected 3",
+            occurrences.len()
+        )));
+    }
+    let data_header_offset = occurrences[0].checked_sub(152).ok_or_else(|| {
+        Error::InvalidRecord("Nicolet OMNIC .srs data header offset underflow".to_string())
+    })?;
+    let background_header_offset = occurrences[1].checked_sub(152).ok_or_else(|| {
+        Error::InvalidRecord("Nicolet OMNIC .srs background header offset underflow".to_string())
+    })?;
+    let data_offset = occurrences[2] + 60;
+    Ok(SrsLayout {
+        data_header_offset,
+        background_header_offset,
+        data_offset,
+    })
+}
+
+fn read_srs_header(bytes: &[u8], offset: usize) -> Result<SrsHeader> {
+    let base = read_header(bytes, offset)?;
+    let ny = read_u32(bytes, offset + 1026)? as usize;
+    if ny == 0 {
+        return Err(Error::InvalidRecord(
+            "Nicolet OMNIC .srs series has zero y points".to_string(),
+        ));
+    }
+    Ok(SrsHeader {
+        base,
+        name: read_fixed_text(bytes, offset + 938, 256),
+        collection_length_seconds: read_f32(bytes, offset + 1002)? * 60.0,
+        first_y: read_f32(bytes, offset + 1010)?,
+        last_y: read_f32(bytes, offset + 1006)?,
+        ny,
+    })
+}
+
+fn read_srs_spectra(bytes: &[u8], data_offset: usize, ny: usize, nx: usize) -> Result<SrsSpectra> {
+    let mut labels = Vec::with_capacity(ny);
+    let mut values = Vec::with_capacity(nx.saturating_mul(ny));
+    let mut cursor = data_offset;
+    for index in 0..ny {
+        if index > 0 {
+            cursor += 16;
+        }
+        if cursor + 84 > bytes.len() {
+            return Err(Error::InvalidRecord(
+                "Nicolet OMNIC .srs spectrum label extends past end of file".to_string(),
+            ));
+        }
+        labels.push(read_fixed_text(bytes, cursor, 84));
+        let values_offset = cursor + 84;
+        let values_end = values_offset + nx * 4;
+        if values_end > bytes.len() {
+            return Err(Error::InvalidRecord(
+                "Nicolet OMNIC .srs spectrum data extends past end of file".to_string(),
+            ));
+        }
+        for point in 0..nx {
+            values.push(read_f32(bytes, values_offset + point * 4)? as f64);
+        }
+        cursor = values_end;
+    }
+    Ok(SrsSpectra { labels, values })
+}
+
+fn find_all(bytes: &[u8], needle: &[u8]) -> Vec<usize> {
+    if needle.is_empty() || bytes.len() < needle.len() {
+        return Vec::new();
+    }
+    let mut positions = Vec::new();
+    let mut start = 0;
+    while start + needle.len() <= bytes.len() {
+        let Some(relative) = bytes[start..]
+            .windows(needle.len())
+            .position(|window| window == needle)
+        else {
+            break;
+        };
+        let absolute = start + relative;
+        positions.push(absolute);
+        start = absolute + 1;
+    }
+    positions
 }
 
 fn build_record(

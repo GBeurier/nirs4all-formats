@@ -157,6 +157,73 @@ fn reads_nicolet_omnic_spg_group_spectra() {
 }
 
 #[test]
+fn reads_nicolet_omnic_srs_tg_gc_series() {
+    let records = open_path(workspace_file("samples/nicolet_omnic/GC_Demo.srs")).expect("open srs");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "nicolet-omnic-srs");
+    assert_eq!(record.metadata["series_variant"].as_str(), Some("tg_gc"));
+    assert_eq!(record.metadata["series_y_len"].as_u64(), Some(788));
+    assert_eq!(
+        record.metadata["omnic_srs_data_header_offset"].as_u64(),
+        Some(5_584)
+    );
+    assert_eq!(
+        record.metadata["omnic_srs_background_header_offset"].as_u64(),
+        Some(7_044)
+    );
+    assert_eq!(
+        record.metadata["omnic_srs_data_offset"].as_u64(),
+        Some(20_616)
+    );
+    let transmittance = record.signals.get("transmittance").expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 1_738);
+    assert_eq!(transmittance.values.len(), 1_369_544);
+    assert_eq!(transmittance.dims, vec!["y".to_string(), "x".to_string()]);
+    assert_eq!(transmittance.axis.unit, "cm-1");
+    assert_eq!(transmittance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(transmittance.axis.order, AxisOrder::Descending);
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.axis.values[0] - 3999.704346).abs() < 0.000001);
+    assert!((transmittance.axis.values[1_737] - 649.903809).abs() < 0.000001);
+    assert!((transmittance.values[0] - 99.701584).abs() < 0.000001);
+    assert!((transmittance.values[1_369_543] - 100.124908).abs() < 0.000001);
+    assert!((transmittance.values.iter().sum::<f64>() - 136_739_704.182004).abs() < 0.01);
+}
+
+#[test]
+fn reads_nicolet_omnic_srs_tgair_series() {
+    let records = open_path(workspace_file("samples/nicolet_omnic/TGAIR.srs")).expect("open srs");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "nicolet-omnic-srs");
+    assert_eq!(record.metadata["series_y_len"].as_u64(), Some(335));
+    assert_eq!(
+        record.metadata["omnic_srs_data_header_offset"].as_u64(),
+        Some(14_032)
+    );
+    assert_eq!(
+        record.metadata["omnic_srs_background_header_offset"].as_u64(),
+        Some(20_836)
+    );
+    assert_eq!(
+        record.metadata["omnic_srs_data_offset"].as_u64(),
+        Some(30_888)
+    );
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 1_868);
+    assert_eq!(absorbance.values.len(), 625_780);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 3999.706055).abs() < 0.000001);
+    assert!((absorbance.axis.values[1_867] - 399.199188).abs() < 0.000001);
+    assert!((absorbance.values[0] + 0.007524).abs() < 0.000001);
+    assert!((absorbance.values[625_779] - 0.002916).abs() < 0.000001);
+    assert!((absorbance.values.iter().sum::<f64>() - 4699.720344).abs() < 0.001);
+}
+
+#[test]
 fn reads_perkin_elmer_sp_single_spectrum() {
     let records = open_path(workspace_file("samples/perkin_elmer/spectra.sp")).expect("open sp");
 
