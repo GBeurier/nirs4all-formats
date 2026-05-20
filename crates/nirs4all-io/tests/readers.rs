@@ -2642,20 +2642,67 @@ fn reads_pp_systems_row_tables_with_multiple_signals() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "row-spectral-table");
-    assert!(records[0].signals.contains_key("dn_white"));
-    assert!(records[0].signals.contains_key("dn_target"));
+    assert_eq!(
+        records[0].metadata["vendor"]["file"].as_str(),
+        Some("synthetic_unispec.SPT")
+    );
+    assert_eq!(
+        records[0].metadata["vendor"]["notes"].as_str(),
+        Some("synthetic test fixture for nirs_loader")
+    );
+    let dn_white = records[0].signals.get("dn_white").expect("dn white");
+    assert_eq!(dn_white.signal_type, SignalType::RawCounts);
+    assert_eq!(dn_white.axis.values.len(), 200);
+    assert_eq!(dn_white.axis.unit, "nm");
+    assert_eq!(dn_white.axis.kind, AxisKind::Wavelength);
+    assert!((dn_white.values[0] - 1500.0).abs() < 0.000001);
+    assert!((dn_white.values[199] - 1500.0).abs() < 0.000001);
+    let dn_target = records[0].signals.get("dn_target").expect("dn target");
+    assert_eq!(dn_target.signal_type, SignalType::RawCounts);
+    assert!((dn_target.values[0] - 1018.0).abs() < 0.000001);
+    assert!((dn_target.values[199] - 927.0).abs() < 0.000001);
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 200);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.axis.kind, AxisKind::Wavelength);
+    assert!((reflectance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((reflectance.axis.values[199] - 2500.0).abs() < 0.000001);
     assert_eq!(reflectance.signal_type, SignalType::Reflectance);
     assert!((reflectance.values[0] - 0.6787).abs() < 0.000001);
+    assert!((reflectance.values[199] - 0.6180).abs() < 0.000001);
 
     let records = open_path(workspace_file(
         "samples/pp_systems/synthetic_unispec_dc.SPU",
     ))
     .expect("open spu");
-    assert!(records[0].signals.contains_key("channel_a_dn"));
-    assert!(records[0].signals.contains_key("channel_b_dn"));
-    assert!((records[0].signals["reflectance"].values[0] - 1.2646).abs() < 0.000001);
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert_eq!(
+        records[0].metadata["vendor"]["file"].as_str(),
+        Some("synthetic_unispec_dc.SPU")
+    );
+    let channel_a = records[0]
+        .signals
+        .get("channel_a_dn")
+        .expect("channel a dn");
+    let channel_b = records[0]
+        .signals
+        .get("channel_b_dn")
+        .expect("channel b dn");
+    assert_eq!(channel_a.signal_type, SignalType::RawCounts);
+    assert_eq!(channel_b.signal_type, SignalType::RawCounts);
+    assert_eq!(channel_a.axis.values.len(), 200);
+    assert_eq!(channel_a.axis.unit, "nm");
+    assert_eq!(channel_a.axis.kind, AxisKind::Wavelength);
+    assert!((channel_a.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((channel_a.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((channel_a.values[0] - 1018.0).abs() < 0.000001);
+    assert!((channel_b.values[0] - 804.0).abs() < 0.000001);
+    assert!((channel_b.values[199] - 838.0).abs() < 0.000001);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.values[0] - 1.2646).abs() < 0.000001);
+    assert!((reflectance.values[199] - 1.1049).abs() < 0.000001);
 }
 
 #[test]
