@@ -1,0 +1,84 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-legacy-binary",
+      "metadata_keys": [
+        "avantes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_binary",
+      "record_signal_type": "transmittance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 179.100616,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.34788,
+          "axis_len": 1623,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 2.4,
+          "value_last": -88.900002,
+          "value_sum": -100549.950067,
+          "values_len": 1623
+        },
+        {
+          "axis_first": 179.100616,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.34788,
+          "axis_len": 1623,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 23.65,
+          "value_last": -93.900002,
+          "value_sum": 1142990.84912,
+          "values_len": 1623
+        },
+        {
+          "axis_first": 179.100616,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.34788,
+          "axis_len": 1623,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "transmittance",
+          "role": "transmittance",
+          "signal_type": "transmittance",
+          "unit": "%",
+          "value_first": 30.313837,
+          "value_last": 54.054054,
+          "value_sum": 43024.22945,
+          "values_len": 1623
+        },
+        {
+          "axis_first": 179.100616,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.34788,
+          "axis_len": 1623,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "white_reference",
+          "role": "white_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 72.5,
+          "value_last": -98.150002,
+          "value_sum": 11575128.791849,
+          "values_len": 1623
+        }
+      ],
+      "source_sha256": "21e488fb1204bd9d525f309cccc016432db5dbe8ad8c787c59fa368d39ccd7e1",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

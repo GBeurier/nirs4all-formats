@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-legacy-binary",
+      "metadata_keys": [
+        "avantes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_binary",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "scope",
+          "role": "scope",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 805.0,
+          "value_last": 774.299988,
+          "value_sum": 2607205.514099,
+          "values_len": 1442
+        }
+      ],
+      "source_sha256": "274f459e576e186fd8e54dd1da592701f007a139b7f6e93f298052669a10b491",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

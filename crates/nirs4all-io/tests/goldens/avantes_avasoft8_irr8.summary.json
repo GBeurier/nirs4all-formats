@@ -1,0 +1,86 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-avasoft8-binary",
+      "metadata_keys": [
+        "avantes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_binary",
+      "record_signal_type": "irradiance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 144.942429,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.441406,
+          "axis_len": 1620,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 1112.383301,
+          "value_last": 2234.199951,
+          "value_sum": 3551549.045776,
+          "values_len": 1620
+        },
+        {
+          "axis_first": 144.942429,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.441406,
+          "axis_len": 1620,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "irradiance",
+          "role": "irradiance",
+          "signal_type": "irradiance",
+          "unit": null,
+          "value_first": 1096.812012,
+          "value_last": 2009.875,
+          "value_sum": 15671251.253174,
+          "values_len": 1620
+        },
+        {
+          "axis_first": 144.942429,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.441406,
+          "axis_len": 1620,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 1096.812012,
+          "value_last": 2009.875,
+          "value_sum": 15671251.253174,
+          "values_len": 1620
+        },
+        {
+          "axis_first": 144.942429,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.441406,
+          "axis_len": 1620,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "white_reference",
+          "role": "white_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 10000000000.0,
+          "value_last": 4.844249,
+          "value_sum": 900000391703.1201,
+          "values_len": 1620
+        }
+      ],
+      "source_sha256": "3f2b6071ed8ae5b1d0a686fa5cce7b4b7794daf6e8a314d3876a1ebf2301c03e",
+      "target_keys": [],
+      "warnings": [
+        "avantes_irr8_irradiance_calibration_not_applied"
+      ]
+    }
+  ]
+}

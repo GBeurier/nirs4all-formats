@@ -1,0 +1,84 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-avasoft8-binary",
+      "metadata_keys": [
+        "avantes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_binary",
+      "record_signal_type": "raw_counts",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 300.013855,
+          "axis_kind": "wavelength",
+          "axis_last": 899.874878,
+          "axis_len": 1019,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 259.585449,
+          "value_last": 294.303741,
+          "value_sum": 264572.26857,
+          "values_len": 1019
+        },
+        {
+          "axis_first": 300.013855,
+          "axis_kind": "wavelength",
+          "axis_last": 899.874878,
+          "axis_len": 1019,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 267.155243,
+          "value_last": 360.127502,
+          "value_sum": 446014.08786,
+          "values_len": 1019
+        },
+        {
+          "axis_first": 300.013855,
+          "axis_kind": "wavelength",
+          "axis_last": 899.874878,
+          "axis_len": 1019,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "scope",
+          "role": "scope",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 267.155243,
+          "value_last": 360.127502,
+          "value_sum": 446014.08786,
+          "values_len": 1019
+        },
+        {
+          "axis_first": 300.013855,
+          "axis_kind": "wavelength",
+          "axis_last": 899.874878,
+          "axis_len": 1019,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "white_reference",
+          "role": "white_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 3031.831299,
+          "value_last": 837.543762,
+          "value_sum": 3742748.198425,
+          "values_len": 1019
+        }
+      ],
+      "source_sha256": "43984cf8cfceefa0d8be3c48a7a2c983c3e219f63df78765711442edc79ad3e7",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

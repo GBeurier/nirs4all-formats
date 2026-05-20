@@ -19,6 +19,7 @@ Experimental native readers:
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
+- Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64 payloads;
 - JCAMP-DX plain AFFN `XYDATA=(X++(Y..Y))`;
 - Spectral Evolution SED (`.sed`);
@@ -69,7 +70,7 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue the binary/open-reader-backed batch with Avantes binary 6/7 and AvaSoft 8;
+1. continue the binary/open-reader-backed batch with JCAMP packed encodings and Ocean Optics text/ProcSpec;
 2. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
 3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
