@@ -16,6 +16,22 @@ fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
             "not a supported NIRS spectroscopy schema",
         ),
         (
+            "samples/netcdf/air_temperature.nc",
+            "NetCDF contains no spectra variable",
+        ),
+        (
+            "samples/netcdf/pyrnet_to_l1a_output.nc",
+            "no Microtops aot_* channel set",
+        ),
+        (
+            "samples/hdf5/vlen_string_dset.h5",
+            "HDF5 contains no spectra dataset with matching wavelength axis",
+        ),
+        (
+            "samples/animl/Example3.animl",
+            "AnIML contains no supported axis series",
+        ),
+        (
             "samples/hyperspectral_cubes/92AV3C.spc",
             "unsupported format",
         ),

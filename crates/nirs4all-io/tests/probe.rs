@@ -141,10 +141,20 @@ fn probes_siware_json_and_comment_header_text_exports() {
 
 #[test]
 fn probes_netcdf_containers() {
-    let probes = probe_path(workspace_file("samples/netcdf/synthetic_nirs.nc")).expect("probe");
-    assert!(probes.iter().any(|probe| {
-        probe.format == "netcdf-container" && probe.confidence == Confidence::Likely
-    }));
+    for relative in [
+        "samples/netcdf/synthetic_nirs.nc",
+        "samples/microtops/microtops_arc_msm114_2.nc",
+        "samples/netcdf/air_temperature.nc",
+        "samples/netcdf/pyrnet_to_l1a_output.nc",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe NetCDF container");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "netcdf-container" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
 }
 
 #[test]
@@ -157,10 +167,18 @@ fn probes_andi_ms_netcdf_containers() {
 
 #[test]
 fn probes_hdf5_containers() {
-    let probes = probe_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("probe");
-    assert!(probes.iter().any(|probe| {
-        probe.format == "hdf5-nirs-container" && probe.confidence == Confidence::Likely
-    }));
+    for relative in [
+        "samples/hdf5/synthetic_nirs.h5",
+        "samples/hdf5/vlen_string_dset.h5",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe HDF5 container");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "hdf5-nirs-container" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
 
     let probes = probe_path(workspace_file("samples/fgi/synthetic_fgi.xml")).expect("probe");
     assert!(probes.iter().any(|probe| {
