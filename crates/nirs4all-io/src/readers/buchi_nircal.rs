@@ -266,27 +266,45 @@ fn parse_property_targets(bytes: &[u8], n_samples: usize) -> Result<(TargetMaps,
     let raw_names = parse_property_name_lines(bytes, property_start, property_count)?;
     let (names, mut warnings) = normalized_property_names(&raw_names);
     let value_starts = property_value_starts(bytes, &raw_names, property_count, n_samples)?;
-    let mut targets = Vec::with_capacity(n_samples);
-    let mut nonzero_values = 0_usize;
+    let mut value_rows = Vec::with_capacity(n_samples);
+    let mut has_nonzero_value = false;
 
     for start in value_starts {
         let values = read_f64_values(bytes, start, property_count, "BUCHI NIRCal property block")?;
-        let mut sample_targets = BTreeMap::new();
-        for (name, value) in names.iter().zip(values.iter()) {
-            if value.is_finite() && *value != 0.0 {
-                nonzero_values += 1;
-                sample_targets.insert(name.clone(), json!(value));
-            } else {
-                sample_targets.insert(name.clone(), Value::Null);
-            }
+        if values.iter().any(|value| value.is_finite() && *value != 0.0) {
+            has_nonzero_value = true;
         }
-        targets.push(sample_targets);
+        value_rows.push(values);
     }
 
-    if nonzero_values == 0 {
+    let zero_values_are_missing = !has_nonzero_value;
+    if zero_values_are_missing {
         warnings.push("buchi_nircal_zero_property_values_as_missing".to_string());
     }
+    let targets = value_rows
+        .iter()
+        .map(|values| property_targets_from_values(&names, values, zero_values_are_missing))
+        .collect::<Vec<_>>();
     Ok((targets, warnings))
+}
+
+fn property_targets_from_values(
+    names: &[String],
+    values: &[f64],
+    zero_values_are_missing: bool,
+) -> BTreeMap<String, Value> {
+    names
+        .iter()
+        .zip(values.iter())
+        .map(|(name, value)| {
+            let value = if value.is_finite() && !(zero_values_are_missing && *value == 0.0) {
+                json!(value)
+            } else {
+                Value::Null
+            };
+            (name.clone(), value)
+        })
+        .collect()
 }
 
 fn parse_property_count(section: &[u8]) -> Result<usize> {
@@ -472,4 +490,22 @@ fn decode_text(bytes: &[u8]) -> String {
     std::str::from_utf8(bytes)
         .map(|value| value.to_string())
         .unwrap_or_else(|_| bytes.iter().map(|byte| *byte as char).collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn buchi_targets_preserve_zero_when_property_table_has_values() {
+        let names = vec!["zero".to_string(), "positive".to_string()];
+
+        let targets = property_targets_from_values(&names, &[0.0, 1.5], false);
+        assert_eq!(targets["zero"].as_f64(), Some(0.0));
+        assert_eq!(targets["positive"].as_f64(), Some(1.5));
+
+        let missing = property_targets_from_values(&names, &[0.0, f64::NAN], true);
+        assert!(missing["zero"].is_null());
+        assert!(missing["positive"].is_null());
+    }
 }

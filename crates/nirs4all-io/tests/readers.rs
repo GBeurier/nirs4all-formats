@@ -648,6 +648,10 @@ fn reads_local_buchi_nircal_non_null_targets_when_present() {
         records[0].metadata["target_property_count"].as_u64(),
         Some(2)
     );
+    assert!(!records[0]
+        .provenance
+        .warnings
+        .contains(&"buchi_nircal_zero_property_values_as_missing".to_string()));
     assert!((records[0].targets["CBDA"].as_f64().expect("CBDA") - 5.958436124).abs() < 1e-9);
     assert!((records[0].targets["THCA"].as_f64().expect("THCA") - 0.174373006).abs() < 1e-9);
     assert!((records[104].targets["CBDA"].as_f64().expect("CBDA") - 14.35).abs() < 1e-9);
