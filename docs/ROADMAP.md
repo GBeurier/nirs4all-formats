@@ -42,8 +42,9 @@ Deliverables:
 - spectral matrix reader; experimental for Foss/WinISI, Metrohm Vision Air and
   VIAVI MicroNIR exports;
 - sun photometer reader; experimental for MFR and Microtops text exports;
-- AnIML spectral XML reader; experimental for explicit spectral `SeriesSet`
-  fixtures and refusal of non-spectral AnIML results;
+- AnIML spectral XML reader; experimental for spectral `SeriesSet` fixtures
+  with explicit values or uniform `AutoIncrementedValueSet` axes, plus refusal
+  of non-spectral AnIML results;
 - Allotrope ASM JSON bridge; experimental for plate-reader spectral data cubes
   and detector-wavelength endpoint readings;
 - Allotrope ADF reader; experimental local-only subset for numeric HDF5

@@ -2934,6 +2934,30 @@ fn reads_animl_synthetic_nirs_spectrum() {
 }
 
 #[test]
+fn reads_animl_synthetic_nirs_autoincrement_axis() {
+    let records = open_path(workspace_file(
+        "samples/animl/synthetic_nirs_autoincrement.animl",
+    ))
+    .expect("open animl autoincrement");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "animl");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S002"));
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(11.25));
+
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(
+        absorbance.axis.values,
+        vec![1100.0, 1125.0, 1150.0, 1175.0, 1200.0]
+    );
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.unit.as_deref(), Some("AU"));
+    assert_eq!(absorbance.values, vec![0.10, 0.12, 0.15, 0.14, 0.11]);
+}
+
+#[test]
 fn rejects_non_spectral_animl_result_documents() {
     let err = open_path(workspace_file("samples/animl/Example3.animl"))
         .expect_err("non-spectral AnIML has no axis series");
