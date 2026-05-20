@@ -134,6 +134,14 @@ fn probes_matlab_containers() {
     }));
 }
 
+#[test]
+fn probes_excel_workbook() {
+    let probes = probe_path(workspace_file("samples/excel/synthetic_nirs.xlsx")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "excel-workbook" && probe.confidence == Confidence::Likely));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

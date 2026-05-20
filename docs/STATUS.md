@@ -38,6 +38,8 @@ Experimental native readers:
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets; object/DSO `.mat` files and `.RData` are still
   pending dedicated schema mappers;
+- Excel workbooks: simple `.xlsx/.xlsm` spectral tables with numeric wavelength
+  headers; legacy `.xls` and multi-sheet lab templates remain pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -101,8 +103,9 @@ Immediate next work:
    Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: Nicolet OMNIC
    `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
-3. add lab-transfer containers: Excel `.xlsx`, then Renishaw WDF and Horiba /
-   JobinYvon LabSpec XML/text as adjacent spectroscopy readers;
+3. add remaining lab-transfer containers and adjacent spectroscopy readers:
+   Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
+   XML/text;
 4. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
 5. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;

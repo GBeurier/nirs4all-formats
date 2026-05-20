@@ -4,9 +4,10 @@ use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
 
 use crate::readers::{
     AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
-    BrukerDptReader, BrukerOpusReader, CsvLikeReader, EnviSliReader, GalacticSpcReader, Hdf5Reader,
-    JcampReader, MatlabReader, MsaReader, NetcdfReader, OceanOpticsReader, SedReader,
-    SiwareApiReader, SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
+    BrukerDptReader, BrukerOpusReader, CsvLikeReader, EnviSliReader, ExcelReader,
+    GalacticSpcReader, Hdf5Reader, JcampReader, MatlabReader, MsaReader, NetcdfReader,
+    OceanOpticsReader, SedReader, SiwareApiReader, SpectralMatrixReader, SpectralTableReader,
+    SunPhotometerReader, SvcSigReader,
 };
 
 /// Contract implemented by every native reader.
@@ -32,6 +33,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(AnimlReader),
         Box::new(SiwareApiReader),
         Box::new(AllotropeAsmReader),
+        Box::new(ExcelReader),
         Box::new(SpectralTableReader),
         Box::new(SpectralMatrixReader),
         Box::new(SunPhotometerReader),
