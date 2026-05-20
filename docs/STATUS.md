@@ -38,7 +38,7 @@ Experimental native readers:
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
-  fixtures; `.RData` still needs a dedicated R serialization mapper;
+  fixtures, and prospectr `NIRsoil.RData` RDX3/XZ workspace mapping;
 - Excel workbooks: simple `.xlsx/.xlsm` spectral tables with numeric wavelength
   headers; legacy `.xls` and multi-sheet lab templates remain pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
@@ -112,15 +112,14 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. add a dedicated `.RData` mapper for prospectr NIRsoil;
-2. continue the open-reader-backed binary batch in this order: remaining
+1. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets and
    JASCO `.jws` semantic channel labels;
-3. add remaining lab-transfer containers and adjacent spectroscopy readers:
+2. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;
-4. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
+3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
-5. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-6. replace Python/R subprocess transport with native PyO3/C ABI paths;
-7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+5. replace Python/R subprocess transport with native PyO3/C ABI paths;
+6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

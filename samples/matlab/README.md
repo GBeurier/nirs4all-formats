@@ -12,7 +12,7 @@ Already supported by `nirs4all` via `MatlabLoader`. Many academic NIR datasets a
 | `eigenvector_nir_shootout_2002.mat` | 6.9 MB | [Eigenvector data archive — NIR Shootout 2002](https://eigenvector.com/data/tablets/nir_shootout_2002.mat) | (Eigenvector public dataset) | **NIR Shootout 2002** pharma tablet dataset — two instruments, calibration / validation / test splits, three property values. |
 | `scpdata_dso.mat` | 44 KB | [`spectrochempy/spectrochempy_data@master/testdata/matlabdata/dso.mat`](https://github.com/spectrochempy/spectrochempy_data/blob/master/testdata/matlabdata/dso.mat) | CeCILL-B | Eigenvector "Data Set Object" container — round-trip test. |
 | `scpdata_als2004dataset.MAT` | 207 KB | [`spectrochempy/spectrochempy_data@master/testdata/matlabdata/als2004dataset.MAT`](https://github.com/spectrochempy/spectrochempy_data/blob/master/testdata/matlabdata/als2004dataset.MAT) | CeCILL-B | ALS 2004 dataset (Multivariate Curve Resolution benchmark). |
-| `prospectr_NIRsoil.RData` | 2.0 MB | [`l-ramirez-lopez/prospectr@master/data/NIRsoil.RData`](https://github.com/l-ramirez-lopez/prospectr/blob/master/data/NIRsoil.RData) | MIT | Classic `NIRsoil` reference dataset shipped with `prospectr`. Not strictly MATLAB but a serialized R dataframe — exposed here for cross-language tests. Read with `pyreadr.read_r()`. |
+| `prospectr_NIRsoil.RData` | 2.0 MB | [`l-ramirez-lopez/prospectr@master/data/NIRsoil.RData`](https://github.com/l-ramirez-lopez/prospectr/blob/master/data/NIRsoil.RData) | MIT | Classic `NIRsoil` reference dataset shipped with `prospectr`. Not strictly MATLAB but a serialized R dataframe — exposed here for cross-language tests and mapped natively by `nirs4all-io`. |
 
 ## Parser hints
 

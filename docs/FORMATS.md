@@ -159,7 +159,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 
 | Format | Why it matters | Decision |
 |---|---|---|
-| `.mat` (MATLAB) | Many academic NIR datasets are shared as MATLAB files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, plus committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures. `.RData` remains pending. |
+| `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables; multi-sheet lab templates remain pending. |
 | Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |

@@ -194,6 +194,10 @@ const CASES: &[(&str, &str)] = &[
         "matlab_spectrochempy_als2004",
         "samples/matlab/scpdata_als2004dataset.MAT",
     ),
+    (
+        "rdata_prospectr_nirsoil",
+        "samples/matlab/prospectr_NIRsoil.RData",
+    ),
     ("excel_synthetic_nirs", "samples/excel/synthetic_nirs.xlsx"),
     (
         "spectral_matrix_foss_winisi",
