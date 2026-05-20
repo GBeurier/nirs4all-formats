@@ -76,16 +76,15 @@ impl Reader for WitecWipReader {
 fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<SpectralRecord>> {
     let graph = find_supported_graph(bytes)?;
     let line_valid = read_line_valid(bytes, &graph.entry)?;
-    let valid_lines = line_valid.iter().filter(|valid| **valid).count();
-    if valid_lines == 0 {
+    if line_valid.valid_count == 0 {
         return Err(Error::InvalidRecord(
             "unsupported WiTec WIP layout: TDGraph LineValid has no valid lines".to_string(),
         ));
     }
 
-    let coeffs = read_free_polynom(bytes, graph.size_graph)?;
+    let axis_calibration = read_free_polynom(bytes, graph.size_graph)?;
     let axis_values: Vec<f64> = (0..graph.size_graph)
-        .map(|bin| eval_polynom(&coeffs, f64::from(bin)))
+        .map(|bin| eval_polynom(&axis_calibration.coeffs, f64::from(bin)))
         .collect();
 
     let source = SourceFile::from_bytes(path, bytes, "primary");
@@ -97,9 +96,11 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
     let size_x = graph.size_x as usize;
     let size_graph = graph.size_graph as usize;
     let bytes_per_spectrum = size_graph * 2;
-    let mut records = Vec::with_capacity(valid_lines * size_x);
+    let valid_spectrum_count = line_valid.valid_count * size_x;
+    let physical_grid_slots = size_x * graph.size_y as usize;
+    let mut records = Vec::with_capacity(valid_spectrum_count);
 
-    for (y_index, valid) in line_valid.iter().enumerate() {
+    for (y_index, valid) in line_valid.values.iter().enumerate() {
         if !valid {
             continue;
         }
@@ -123,12 +124,50 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
             signals.insert("raw_counts".to_string(), signal);
 
             let mut metadata = BTreeMap::new();
+            metadata.insert(
+                "witec_layout".to_string(),
+                json!("WIT_PR06_TDGraph_u16_Sa4"),
+            );
             metadata.insert("x_index".to_string(), json!(x_index));
             metadata.insert("y_index".to_string(), json!(y_index));
+            metadata.insert("physical_spectrum_index".to_string(), json!(spectrum_index));
             metadata.insert("size_x".to_string(), json!(graph.size_x));
             metadata.insert("size_y".to_string(), json!(graph.size_y));
             metadata.insert("size_graph".to_string(), json!(graph.size_graph));
+            metadata.insert("dimension".to_string(), json!(graph.dimension));
             metadata.insert("data_type".to_string(), json!(graph.data_type));
+            metadata.insert("data_byte_length".to_string(), json!(graph.data_len));
+            metadata.insert(
+                "physical_grid_slots".to_string(),
+                json!(physical_grid_slots),
+            );
+            metadata.insert("line_valid_encoding".to_string(), json!("u8_boolean"));
+            metadata.insert("line_valid_y_index".to_string(), json!(y_index));
+            metadata.insert(
+                "valid_line_count".to_string(),
+                json!(line_valid.valid_count),
+            );
+            metadata.insert(
+                "invalid_line_count".to_string(),
+                json!(line_valid.invalid_count),
+            );
+            metadata.insert(
+                "valid_spectrum_count".to_string(),
+                json!(valid_spectrum_count),
+            );
+            metadata.insert("axis_calibration".to_string(), json!("FreePolynom"));
+            metadata.insert(
+                "free_polynom_order".to_string(),
+                json!(axis_calibration.order),
+            );
+            metadata.insert(
+                "free_polynom_start_bin".to_string(),
+                json!(axis_calibration.start_bin),
+            );
+            metadata.insert(
+                "free_polynom_stop_bin".to_string(),
+                json!(axis_calibration.stop_bin),
+            );
 
             let record = SpectralRecord {
                 signals,
@@ -190,7 +229,9 @@ fn find_supported_graph(bytes: &[u8]) -> Result<GraphLayout> {
             size_x,
             size_y,
             size_graph,
+            dimension,
             data_type,
+            data_len: data.len(),
             data_start: data.data_start,
         });
     }
@@ -200,7 +241,7 @@ fn find_supported_graph(bytes: &[u8]) -> Result<GraphLayout> {
     ))
 }
 
-fn read_line_valid(bytes: &[u8], graph: &WipEntry) -> Result<Vec<bool>> {
+fn read_line_valid(bytes: &[u8], graph: &WipEntry) -> Result<LineValid> {
     let line_valid = required_entry(bytes, graph.range(), "LineValid")?;
     require_type(&line_valid, 8, "TDGraph LineValid")?;
     if line_valid.len() != SUPPORTED_SIZE_Y as usize {
@@ -209,13 +250,27 @@ fn read_line_valid(bytes: &[u8], graph: &WipEntry) -> Result<Vec<bool>> {
             line_valid.len()
         )));
     }
-    Ok(bytes[line_valid.range()]
-        .iter()
-        .map(|value| *value != 0)
-        .collect())
+    let mut values = Vec::with_capacity(line_valid.len());
+    for (index, value) in bytes[line_valid.range()].iter().enumerate() {
+        match value {
+            0 => values.push(false),
+            1 => values.push(true),
+            _ => {
+                return Err(Error::InvalidRecord(format!(
+                    "unsupported WiTec WIP TDGraph layout: LineValid byte {index} has value {value}, expected 0 or 1"
+                )));
+            }
+        }
+    }
+    let valid_count = values.iter().filter(|valid| **valid).count();
+    Ok(LineValid {
+        invalid_count: values.len() - valid_count,
+        values,
+        valid_count,
+    })
 }
 
-fn read_free_polynom(bytes: &[u8], size_graph: u32) -> Result<Vec<f64>> {
+fn read_free_polynom(bytes: &[u8], size_graph: u32) -> Result<AxisCalibration> {
     let file = 0..bytes.len();
     let order = read_u32_named(bytes, file.clone(), "FreePolynomOrder")?;
     let start_bin = read_f64_named(bytes, file.clone(), "FreePolynomStartBin")?;
@@ -235,7 +290,12 @@ fn read_free_polynom(bytes: &[u8], size_graph: u32) -> Result<Vec<f64>> {
             free_polynom.len()
         )));
     }
-    read_f64_values(bytes, free_polynom.range())
+    Ok(AxisCalibration {
+        coeffs: read_f64_values(bytes, free_polynom.range())?,
+        order,
+        start_bin,
+        stop_bin,
+    })
 }
 
 fn read_u32_named(bytes: &[u8], range: Range<usize>, name: &str) -> Result<u32> {
@@ -472,6 +532,21 @@ struct GraphLayout {
     size_x: u32,
     size_y: u32,
     size_graph: u32,
+    dimension: u32,
     data_type: u32,
+    data_len: usize,
     data_start: usize,
+}
+
+struct AxisCalibration {
+    coeffs: Vec<f64>,
+    order: u32,
+    start_bin: f64,
+    stop_bin: f64,
+}
+
+struct LineValid {
+    values: Vec<bool>,
+    valid_count: usize,
+    invalid_count: usize,
 }
