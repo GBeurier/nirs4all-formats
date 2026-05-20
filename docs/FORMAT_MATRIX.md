@@ -61,3 +61,59 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | binaire detecte/refuse; ASCII OK | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
 | EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
+
+## Notes pour les statuts non finis
+
+Les lignes `fait` ne sont pas repetees ici. La note indique ce qui manque pour
+passer le format a `fait`.
+
+| Nom | Status nirs4allio | Note / manque |
+|---|---|---|
+| Excel spectral | partiel | Ajouter `.xls` legacy et plus de fixtures multi-feuilles reelles. |
+| ASD FieldSpec | partiel | Decoder les blocs reference/calibration et couvrir les revisions legacy. |
+| ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`. |
+| Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS/.IRR/.RMN` et comparaison `lightr`. |
+| Avantes AvaSoft 8 binaire | partiel | Ajouter fixtures pour chaque suffixe AVS8 et valider les modes. |
+| Bruker OPUS natif | partiel | Couvrir OPUS 5/6, metadata Tango et blocs 2D/imaging. |
+| Bruker Tango / MPA / Matrix | partiel | Ajouter fixtures instrument NIR et verifier les metadata propres Tango/MPA. |
+| ENVI Spectral Library | partiel | Ajouter vraies `.sli/.hdr` vendeur et tests de variantes header. |
+| ENVI / hyperspectral cubes | pas fait | Future extraction point-spectra; data model image cube encore hors v1. |
+| FGI HDF5 + XML | partiel | Ajouter paire HDF5/XML reelle et mapper le sidecar XML. |
+| MFR Sun Photometer | partiel | Remplacer/complete par dumps instrument reels. |
+| Microtops Sun Photometer | partiel | Ajouter exports Microtops reels avec metadata. |
+| Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
+| PP Systems UniSpec SC | partiel | Ajouter acquisitions terrain reelles. |
+| PP Systems UniSpec DC | partiel | Ajouter acquisitions terrain reelles. |
+| SVC / GER SIG | partiel | Ajouter variantes firmware et verifier GPS/date/unites. |
+| Spectral Evolution / PSR | partiel | Ajouter plus de fixtures instrument et comparaisons `specdal`. |
+| MODTRAN albedo | partiel | Ajouter sortie MODTRAN redistribuable sous licence claire. |
+| USGS SPECPR / PRISM | partiel | Implementer/valider le binaire SPECPR ou un flux de conversion stable. |
+| Thermo / Galactic GRAMS SPC | partiel | Couvrir big-endian, vieux headers et fixtures multi-canaux. |
+| Thermo Nicolet OMNIC | partiel | Decoder `.srsx` et variantes rapid-scan/high-speed. |
+| Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
+| Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
+| Foss / WinISI / DS exports | partiel | Ajouter exports reels DS/WinISI avec cibles et metadata. |
+| Metrohm Vision / Vision Air | partiel | Decoder DB native ou documenter uniquement le chemin export. |
+| BUCHI NIRCal | partiel | Obtenir fixtures avec cibles non nulles et variantes NIRMaster/calibration. |
+| Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; CSV actuel sans axe spectral. |
+| JASCO JWS | partiel | Ajouter blocs V-series NIR et variantes Raman NRS. |
+| Shimadzu UVProbe | partiel | Obtenir vrai `.spc` Shimadzu et comparaison convertisseur. |
+| VIAVI MicroNIR | partiel | Decoder `.pri` ou obtenir specification/sample; CSV seulement aujourd'hui. |
+| Si-Ware NeoSpectra | partiel | Remplacer fixture synthetique par export client reel. |
+| Spectro Inc. SiWare API | partiel | Ajouter reponse API reelle et tests de schemas variantes. |
+| JCAMP-DX | partiel | Couvrir plus de `LINK`, `PEAK TABLE` et variantes NTUPLES. |
+| NetCDF NIRS generique | partiel | Ajouter schemas NIRS reels au-dela de `spectra+wavelengths`. |
+| AnIML | partiel | Couvrir plus de schemas spectraux et valider contre XSD. |
+| Allotrope ASM | partiel | Ajouter conversions vendeurs multiples et cas ASM hors plate-reader. |
+| Allotrope ADF | bloqué | Pas de sample public ni SDK librement utilisable. |
+| HDF5 NIRS generique | partiel | Ajouter schemas reels et metadata/axes complexes. |
+| Parquet | pas fait | Present dans `nirs4all`, pas encore dans le coeur Rust `nirs4all-io`. |
+| MATLAB MAT / RData | partiel | Couvrir plus de structures MAT/RData et metadata/targets heterogenes. |
+| NumPy | pas fait | Present cote Python/nirs4all; pas encore loader Rust natif. |
+| Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
+| Horiba LabSpec / JobinYvon | partiel | Ajouter binaires `.l6s/.l6m` et axes energy mieux typés. |
+| Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |
+| DigitalSurf MountainsMap | partiel | Ajouter variantes compressees/non compressees et metadata surfaces. |
+| Hamamatsu HPD-TA IMG | partiel | Clarifier si le format reste adjacent ou devient export spectral supporte. |
+| WiTec WIP / WID | partiel | Obtenir `.wip/.wid` reel avec export ASCII equivalent. |
+| fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. |
