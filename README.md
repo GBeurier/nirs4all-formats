@@ -50,10 +50,30 @@ core validation and reverse-engineering workflow is stable.
 The operational status lives in
 [`docs/FORMAT_MATRIX.md`](docs/FORMAT_MATRIX.md): it tracks variant counts,
 validated/partial/planned/blocked states, NIRS coverage, missing impact,
-popularity and the exact files still needed from instrument networks.
+popularity and the exact files still needed from instrument networks. A compact
+visual summary is maintained in
+[`docs/IMPLEMENTATION_DASHBOARD.md`](docs/IMPLEMENTATION_DASHBOARD.md).
+
+Current matrix snapshot, from the 2026-05-20 documentation gate:
+
+| Scope | Count |
+|---|---:|
+| Format families tracked | 58 |
+| Known variants tracked | 238 |
+| Validated variants | 145 |
+| Partial variants | 19 |
+| Planned variants | 16 |
+| Blocked variants | 58 |
+| Broadly diffusable format families | 25 |
+| Targeted diffusable format families | 14 |
+| Non-viable format families until samples/specs arrive | 7 |
 
 Current implementation highlights:
 
+- ASD FieldSpec `.asd` covers revisions 1/6/7/8 for primary spectra and now
+  inventories embedded reference, classifier, dependent-variable, calibration,
+  audit/signature, footer and padding blocks so remaining reverse-engineering
+  work is explicit.
 - JCAMP-DX now covers dense `XYDATA`/ASDF, NMR `NTUPLES`, top-level
   multi-block records, Ocean Optics `LINK`/`XYPOINTS`, and top-level sparse
   `PEAK TABLE` / `PEAK ASSIGNMENTS` records, with `XYDATA` line-start X
@@ -62,8 +82,13 @@ Current implementation highlights:
   axis, nested groups, common dataset aliases (`spectra`, `absorbance`,
   `reflectance`, `data`) and unambiguous transposed matrices.
 - BUCHI NIRCal `.nir` files expose spectra, wavenumber axes, property targets,
-  project identity and replicate metadata, with local validation on non-null
+  project identity, replicate metadata and per-spectrum `Spectra Info`
+  metadata (GUID, scans/resolution, timestamps, device/serials, cell/option and
+  gain/temperature diagnostics when present), with local validation on non-null
   cannabis `CBDA`/`THCA` targets.
+- Microtops MAN NetCDF reads the real PANGAEA MSM114/2 AOT fixture through
+  schema discovery plus a generic `DataLayout::Contiguous` fallback when the
+  current pure-Rust HDF5 stack cannot resolve NetCDF4 shared attributes.
 - Spectral Evolution `.sed` keeps DN-only files loadable while typing DN,
   percent/fraction reflectance and promoting instrument/GPS/acquisition
   metadata.
@@ -83,6 +108,20 @@ Current implementation highlights:
   `metadata.avantes`; IRR8 mode now exposes the per-pixel calibration vector
   as `irradiance_calibration` and a mode/extension mismatch warning is raised
   when a `.IRR8`/`.Raw8` file disagrees with its `measure_mode`.
+
+## Adding Or Validating A Format
+
+Each new reader or fixture should update the same public trail:
+
+1. add or place the sample under `samples/` when redistributable, or
+   `samples_local/` when private/local-only;
+2. document source, license and parser hints in the relevant sample README;
+3. add or update the format page under `docs/formats/`;
+4. update `docs/FORMAT_MATRIX.md` and, when the status changes materially,
+   `docs/IMPLEMENTATION_DASHBOARD.md`;
+5. add probe/read/golden tests and any reference-reader comparison that is
+   legally usable;
+6. run the green gate listed in `docs/STATUS.md` before committing.
 
 ## Development
 

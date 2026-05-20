@@ -53,8 +53,9 @@ Deliverables:
 - SiWare API JSON reader and CSV companion coverage; experimental for
   one-measurement NeoSpectra-style JSON payloads and axis-first CSV streams;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
-  datasets, dedicated ANDI/MS refusal and schema refusal of adjacent non-NIRS
-  NetCDF containers;
+  datasets, Microtops MAN NetCDF AOT with generic contiguous-layout fallback,
+  dedicated ANDI/MS refusal and schema refusal of adjacent non-NIRS NetCDF
+  containers;
 - generic HDF5 NIRS reader; experimental for root and nested-group `spectra` +
   `wavelengths` datasets, including the committed synthetic FGI HDF5 payload;
 - MATLAB MAT reader; experimental for simple MAT v5 and MATLAB v7.3/HDF5
@@ -72,7 +73,8 @@ Deliverables:
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`
   spectra, wavenumber, project identity, replicate metadata and property-target
-  sections, with a redistributable non-zero target fixture still pending;
+  sections, plus per-spectrum `Spectra Info` metadata, with a redistributable
+  non-zero target fixture still pending;
 - JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   semantic channel labels inferred from metadata;
@@ -221,10 +223,11 @@ Every new format repeats the same lifecycle: Experimental -> Beta -> Done.
 Keep these items at the bottom of the roadmap until they are scheduled and
 closed:
 
-- rewrite the root `README.md` so it states the Rust-first architecture,
-  binding strategy, current maturity and contribution path clearly;
-- add implementation visualizations for format coverage, probe confidence,
-  maturity level and missing fixture/reference-reader gaps;
+- keep the refreshed root `README.md` current so it states the Rust-first
+  architecture, binding strategy, current maturity and contribution path
+  clearly;
+- keep `docs/IMPLEMENTATION_DASHBOARD.md` current for format coverage, probe
+  confidence, maturity level and missing fixture/reference-reader gaps;
 - keep `docs/FORMAT_GAPS.md` current whenever an unsupported, sample-blocked,
   unknown or deliberately refused format is discovered;
 - audit every format page under `docs/formats/` so each one describes the file
