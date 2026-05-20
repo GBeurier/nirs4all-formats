@@ -1,6 +1,27 @@
 """Python binding surface for nirs4all-io."""
 
-from ._compat import NirsDataset, to_numpy_matrix, to_pandas_frame
+from ._compat import (
+    NirsDataset,
+    SklearnDatasetProvider,
+    TorchSpectralDataset,
+    open_dataset,
+    open_records,
+    to_nirs4all_spectrodataset,
+    to_numpy_matrix,
+    to_pandas_frame,
+    to_sklearn_bunch,
+)
 from ._version import __version__
 
-__all__ = ["NirsDataset", "__version__", "to_numpy_matrix", "to_pandas_frame"]
+__all__ = [
+    "NirsDataset",
+    "SklearnDatasetProvider",
+    "TorchSpectralDataset",
+    "__version__",
+    "open_dataset",
+    "open_records",
+    "to_nirs4all_spectrodataset",
+    "to_numpy_matrix",
+    "to_pandas_frame",
+    "to_sklearn_bunch",
+]

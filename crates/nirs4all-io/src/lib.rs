@@ -3,6 +3,7 @@
 //! The crate currently exposes the dispatch and probing contract. Full readers
 //! are added format-by-format behind this stable surface.
 
+mod readers;
 mod registry;
 
 pub use nirs4all_io_core::{

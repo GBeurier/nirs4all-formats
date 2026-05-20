@@ -1,1 +1,7 @@
+S3method(as.data.frame,nirs4allio_dataset)
+S3method(as.matrix,nirs4allio_dataset)
+export(nirs4allio_as_tibble)
+export(nirs4allio_open_dataset)
+export(nirs4allio_open_records)
 export(nirs4allio_version)
+importFrom(jsonlite,fromJSON)

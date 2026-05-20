@@ -5,7 +5,7 @@ documentation and review notes behind.
 
 ## Phase 0: Foundation
 
-Status: in progress.
+Status: done.
 
 Deliverables:
 
@@ -27,13 +27,16 @@ python -m pytest tools/reverse-lab/tests bindings/python/tests
 
 ## Phase 1: Reader Contract and Simple Text Readers
 
+Status: in progress. The registry now dispatches real native readers and the
+first simple text readers are covered by sample tests.
+
 Deliverables:
 
-- strict `Reader` trait and registry behavior;
+- strict `Reader` trait and registry behavior; done;
 - bounded readers and archive policy;
-- delimited text reader;
-- Bruker DPT reader;
-- Avantes ASCII exports;
+- delimited text reader; experimental;
+- Bruker DPT reader; experimental;
+- Avantes ASCII exports; experimental;
 - golden JSON writer/validator;
 - docs for accepted fixture metadata.
 
@@ -45,34 +48,41 @@ Gate:
 
 ## Phase 2: JCAMP-DX
 
+Status: in progress for plain AFFN `XYDATA`; compressed encodings are pending.
+
 Deliverables:
 
-- JCAMP AFFN and XYDATA;
+- JCAMP AFFN and XYDATA; plain rows experimental;
 - then DIF/DUP and NTUPLES;
 - conformance against open JCAMP readers where possible;
 - adversarial tests for malformed label-data records and compressed archives.
 
 ## Phase 3: Field Spectrometers
 
+Status: in progress for SED and SVC/GER SIG ASCII fixtures.
+
 Deliverables:
 
-- Spectral Evolution `.sed`;
-- SVC/GER `.sig`;
+- Spectral Evolution `.sed`; experimental;
+- SVC/GER `.sig`; experimental;
 - ASD `.asd`;
 - first full metadata/PII redaction policy implementation.
 
 ## Phase 4: First Bindings
 
-Starts after three readers reach `Done`.
+Starts after three readers reach `Done`. A temporary Python bridge already
+routes through the Rust CLI so downstream integration work can start without
+duplicating parsers.
 
 Deliverables:
 
-- native Python binding backed by Rust;
-- numpy and pandas exports;
-- sklearn-compatible dataset provider;
-- torch dataset adapter;
-- R package backed by Rust/C ABI;
-- R matrix/data.frame/tibble-compatible exports;
+- native Python binding backed by Rust; CLI bridge experimental, native extension pending;
+- numpy and pandas exports; experimental;
+- sklearn-compatible dataset provider; experimental;
+- torch dataset adapter; experimental;
+- nirs4all `SpectroDataset` adapter; experimental;
+- R package backed by Rust/C ABI; CLI bridge experimental, C ABI pending;
+- R matrix/data.frame/tibble-compatible exports; experimental;
 - cross-binding fixtures for every `Done` reader.
 
 ## Phase 5: Binary Reader Batch

@@ -33,12 +33,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: dtolnay/rust-toolchain@stable
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e tools/reverse-lab -e bindings/python pytest
+          python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]" pytest
       - name: Test
         run: python -m pytest tools/reverse-lab/tests bindings/python/tests
+
+  r:
+    name: R binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install dependencies
+        run: |
+          Rscript -e 'install.packages(c("jsonlite", "testthat", "tibble"), repos = "https://cloud.r-project.org")'
+      - name: Install package
+        run: R CMD INSTALL bindings/r/nirs4allio
+      - name: Test
+        run: |
+          Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
 
   docs:
     name: Docs
