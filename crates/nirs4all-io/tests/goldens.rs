@@ -38,6 +38,28 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("avantes_avasoft8_irr8", "samples/avantes/eg.IRR8"),
     ("envi_sli_synthetic", "samples/envi_sli/synthetic_lib.hdr"),
+    (
+        "ocean_optics_spectrasuite",
+        "samples/ocean_optics/OOusb4000.txt",
+    ),
+    (
+        "ocean_optics_oceanview",
+        "samples/ocean_optics/OceanView.txt",
+    ),
+    (
+        "ocean_optics_craic",
+        "samples/ocean_optics/CRAIC_export.txt",
+    ),
+    (
+        "ocean_optics_master_transmission",
+        "samples/ocean_optics/FMNH6834.00000001.Master.Transmission",
+    ),
+    ("ocean_optics_csv", "samples/ocean_optics/spec.csv"),
+    ("ocean_optics_jaz", "samples/ocean_optics/jazspec.jaz"),
+    (
+        "ocean_optics_jaz_irradiance",
+        "samples/ocean_optics/irrad.JazIrrad",
+    ),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
