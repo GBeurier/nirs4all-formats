@@ -9,5 +9,8 @@ repository.workspace = true
 
 [dependencies]
 nirs4all-io-core.workspace = true
+quick-xml = "0.40.1"
 serde.workspace = true
 serde_json.workspace = true
+sha2.workspace = true
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }

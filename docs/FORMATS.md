@@ -18,7 +18,7 @@ fixtures:
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
 | Avantes AvaSoft binary | `.TRM`, `.ROH`, `.DRK`, `.REF`, `.ABS`, `.Raw8`, `.IRR8` | Experimental | Legacy AvaSoft 7 float32 headers and AVS82/AVS84 subfiles. `.ABS` and additional AVS8 modes are implemented by layout but still need fixtures. |
 | ENVI Spectral Library | `.sli` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads. Image cubes are detected but refused for v1. |
-| Ocean Optics / Ocean Insight ASCII | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission` | Experimental | SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV text exports. `.ProcSpec` and Ocean Optics `.spc` remain pending. |
+| Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` | Experimental | SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV text exports, plus OceanView `.ProcSpec` ZIP/XML archives with SHA-512 signature validation. Ocean Optics `.spc` remains pending. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Single-block `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF ordinate decoding, plus NMR `NTUPLES` real/imaginary pages. `XYPOINTS` and multi-block `LINK` are pending. |
 | Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |
 | SVC/GER SIG | `.sig` | Experimental | Spectra Vista SIG text fixtures with reference, target and reflectance channels. |
