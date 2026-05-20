@@ -267,6 +267,19 @@ fn reads_buchi_nircal_project_spectra() {
         Some(20)
     );
     assert_eq!(records[0].targets.len(), 20);
+    let target_keys = records[0].targets.keys().cloned().collect::<Vec<_>>();
+    for record in &records {
+        assert_eq!(
+            record.targets.keys().cloned().collect::<Vec<_>>(),
+            target_keys
+        );
+        assert_eq!(record.targets.len(), 20);
+        assert!(record.targets.values().all(|value| value.is_null()));
+        assert!(record
+            .provenance
+            .warnings
+            .contains(&"buchi_nircal_zero_property_values_as_missing".to_string()));
+    }
     assert!(records[0].targets["K"].is_null());
     assert!(records[0].targets["S_1"].is_null());
     assert!(records[0].targets["S_2"].is_null());
