@@ -31,7 +31,7 @@
       "source_sha256": "6b4585e82a80af7198653f73a4cffab2d381e5afc53ab48bc16e95b91c9299e1",
       "target_keys": [],
       "warnings": [
-        "trailing_asd_blocks_not_decoded: 34523 bytes"
+        "asd_secondary_spectra_not_emitted: reference_spectrum=1, calibration_spectrum=1"
       ]
     }
   ]
