@@ -14,18 +14,18 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | AVS8 | partiel | lightr, manuel AvaSoft |
 | Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | exports texte | fait | pandas, read.table |
 | Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS | fait | pandas, read.table |
-| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | OPUS moderne; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
+| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | OPUS 7/8 (4 lecteurs) + Bruker MPA AfSIS soils; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
-| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64 | partiel | spectral, RStoolbox, pysptools |
-| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan` | ENVI Standard BSQ/BIL/BIP point extraction; AVIRIS LAN fixture present non lu | partiel | spectral, rasterio |
+| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid) | fait | spectral, RStoolbox, pysptools |
+| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN point extraction | partiel | spectral, rasterio |
 | FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | schema FGI | partiel | h5py, hdf5r, rhdf5, lxml |
 | MFR Sun Photometer | Solar Light | `.OUT` | MFR-7 | partiel | SPECCHIO, parseurs ad hoc |
-| Microtops Sun Photometer | Solar Light | `.TXT` | export texte | partiel | parseurs ad hoc |
+| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export) | ASCII export + MAN NetCDF reel (PANGAEA MSM114/2 cruise) | partiel | parseurs ad hoc, xarray |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | plusieurs familles texte + ProcSpec | partiel | lightr, pavo |
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte | partiel | SPECCHIO, parseurs ad hoc |
-| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA / laptop | partiel | spectrolab, specdal |
-| Spectral Evolution / PSR | Spectral Evolution | `.sed` | export texte | partiel | spectrolab, specdal |
+| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA + laptop + GER 3700 PDA + HR-1024i field reels | partiel | spectrolab, specdal |
+| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels | partiel | spectrolab, specdal |
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc` | ASCII seulement | partiel | convertisseur USGS |
@@ -61,6 +61,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
 | EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
+| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; CSV reel committe (`R`/`S`/`C` sections) | fait | kebasaa/SCIO-read |
 
 ## Notes pour les statuts non finis
 
@@ -74,18 +75,18 @@ passer le format a `fait`.
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS/.IRR/.RMN` et comparaison `lightr`. |
 | Avantes AvaSoft 8 binaire | partiel | Ajouter fixtures pour chaque suffixe AVS8 et valider les modes. |
-| Bruker OPUS natif | partiel | Couvrir OPUS 5/6, metadata Tango et blocs 2D/imaging. |
-| Bruker Tango / MPA / Matrix | partiel | Ajouter fixtures instrument NIR et verifier les metadata propres Tango/MPA. |
-| ENVI Spectral Library | partiel | Ajouter vraies `.sli/.hdr` vendeur et tests de variantes header. |
-| ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr` est charge en spectres par pixel; fixture AVIRIS/Indian Pines `.lan/.spc/.GIS` present mais lecteur ERDAS LAN absent; restent NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
+| Bruker OPUS natif | partiel | OPUS 7/8 desormais teste via 4 lecteurs independants (spectral-cockpit, pierreroudier, brukeropus MIT, cran soil.spec AfSIS). OPUS 5/6 legacy archives + blocs 2D/imaging restent. |
+| Bruker Tango / MPA / Matrix | partiel | AfSIS Bruker MPA `icr_*.0` reels committes (cran/soil.spec). Reste Bruker Tango FT-NIR dedie et metadata MPA/Matrix complete. |
+| ENVI Spectral Library | fait | USGS splib06a + splib07 reels (AVIRIS-1995 sensor grid, ENVI BSQ float32) committs via pycoal. |
+| ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr` et AVIRIS/Indian Pines `.lan/.spc/.GIS` sont charges en spectres par pixel; restent ERDAS LAN generique, NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
 | FGI HDF5 + XML | partiel | Ajouter paire HDF5/XML reelle et mapper le sidecar XML. |
 | MFR Sun Photometer | partiel | Remplacer/complete par dumps instrument reels. |
-| Microtops Sun Photometer | partiel | Ajouter exports Microtops reels avec metadata. |
+| Microtops Sun Photometer | partiel | MAN NetCDF reel committe (PANGAEA MSM114/2, CC-BY-4.0). Resterait a obtenir un vrai `.TXT` legacy export pour couvrir le chemin ASCII tabulaire. |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
 | PP Systems UniSpec SC | partiel | Ajouter acquisitions terrain reelles. |
 | PP Systems UniSpec DC | partiel | Ajouter acquisitions terrain reelles. |
-| SVC / GER SIG | partiel | Ajouter variantes firmware et verifier GPS/date/unites. |
-| Spectral Evolution / PSR | partiel | Ajouter plus de fixtures instrument et comparaisons `specdal`. |
+| SVC / GER SIG | partiel | GER 3700 PDA + BEO HR-1024i field exports reels desormais committes; restent les firmware HR-1024i ≥3.0 et la verification GPS/date/unites systematique. |
+| Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
 | MODTRAN albedo | partiel | Ajouter sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | Implementer/valider le binaire SPECPR ou un flux de conversion stable. |
 | Thermo / Galactic GRAMS SPC | partiel | Couvrir big-endian, vieux headers et fixtures multi-canaux. |
@@ -132,7 +133,34 @@ Recherche en ligne de fixtures redistribuables pour les formats `bloqué` /
 | WiTec WIP / WID | `samples/raman_witec/Sa4.wip` | [Zenodo 7907659](https://zenodo.org/records/7907659) — analyse Raman ZrO₂ | ODbL v1.0 | `partiel` (ASCII seul) → `partiel` (`WIT_PR06` TDGraph decode experimental) |
 | Excel spectral | `samples/excel/scio_forensic_P_avg.xlsx`, `nirone_forensic_T_avg.xlsx` | [Figshare 21252300](https://doi.org/10.21942/uva.21252300) — Consumer Physics SCiO + Spectral Engines NIRone 2.0 | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (vrais XLSX vendeurs handheld) |
 | Tables spectrales delimitees (handheld) | `samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv` (+metadata) | [Zenodo 15838272](https://zenodo.org/records/15838272) — sensAIfood Grainit (AuroraNIR 950-1650 nm) | CC-BY-4.0 | bonus handheld miniaturise |
-| AVIRIS / hyperspectral cubes | `samples/hyperspectral_cubes/92AV3C.lan`, `92AV3C.spc`, `92AV3GT.GIS` | Public Indian Pines / AVIRIS fixture already mirrored locally | dataset terms to confirm before release | fixture present; lecteur ERDAS LAN absent |
+| AVIRIS / hyperspectral cubes | `samples/hyperspectral_cubes/92AV3C.lan`, `92AV3C.spc`, `92AV3GT.GIS` | Public Indian Pines / AVIRIS fixture already mirrored locally | dataset terms to confirm before release | `partiel` (`92AV3C` ERDAS LAN decode experimental) |
+
+### Sweep d'echantillons publics (2026-05-20 — second passage)
+
+Apres le premier passage, recherche etendue sur PANGAEA, GitLab Allotrope,
+github.com/pierreroudier/opusreader, github.com/joshduran/brukeropus,
+github.com/cran/soil.spec, github.com/serbinsh/R-FieldSpectra,
+github.com/capstone-coal/pycoal, github.com/hdeneke/PyrNet,
+github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
+
+#### Nouveaux fixtures committes (second passage)
+
+| Format | Fichier ajoute | Source | Licence | Effet matrice |
+|---|---|---|---|---|
+| ENVI Spectral Library | `samples/envi_sli/usgs_splib06a_aviris95_envi.sli|hdr` + `usgs_splib07_aviris95_envi.sli|hdr` | [`capstone-coal/pycoal`](https://github.com/capstone-coal/pycoal) | GPL-2 (wrapper) + USGS public domain (data) | `partiel` → `fait` |
+| Bruker OPUS natif (cross-reader) | `samples/bruker_opus/brukeropus_file.0`, `opusreader_test_spectra.0`, `icr_087266_B2.0`, `icr_087273_G3.0` | [`joshduran/brukeropus`](https://github.com/joshduran/brukeropus) (MIT), [`pierreroudier/opusreader`](https://github.com/pierreroudier/opusreader) (GPL-3), [`cran/soil.spec`](https://github.com/cran/soil.spec) AfSIS (GPL-2/3) | mixte (MIT + GPL) | reste `partiel` mais couverture cross-vendor elargie |
+| Spectral Evolution / PSR | `samples/spectral_evolution/serbinsh_cvars_grape_leaf.sed` | [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra) | GPL-3 | reste `partiel`, PSR-3500 firmware variant ajoute |
+| SVC / GER SIG | `samples/svc_ger/serbinsh_gr070214_003.sig`, `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra) | GPL-3 | GER 3700 PDA + HR-1024i Barrow firmware variants ajoutees |
+| Microtops Sun Photometer | `samples/microtops/microtops_arc_msm114_2.nc` + `_header.txt` | [PANGAEA 966645](https://doi.pangaea.de/10.1594/PANGAEA.966645) (republished from AERONET MAN) | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (NetCDF MAN reel); legacy `.TXT` toujours absent |
+| NetCDF NIRS-adjacent | `samples/netcdf/pyrnet_to_l1a_output.nc` | [`hdeneke/PyrNet`](https://github.com/hdeneke/PyrNet) | academic share | fixture supplementaire pour le path "non-NIRS NetCDF refusal" |
+| **Nouvelle ligne** Consumer Physics SCiO | `samples/scio/scio_app_scan.csv`, `scio_calibration_plate_Polypen.csv`, `scio_scans_from_tech_support.csv` | [`kebasaa/SCIO-read`](https://github.com/kebasaa/SCIO-read) | GPL-3 | nouvelle entree de matrice (`fait`); ajoute aussi `excel/scio_forensic_*.xlsx` UvA Figshare en complement |
+
+#### Fixtures non-redistribuables (uniquement en local — `samples_local/`, gitignore)
+
+| Format | Fichier | Source | Licence / raison non-commit | Effet |
+|---|---|---|---|---|
+| Hyperspectral cube (AVIRIS Indian Pines) | `samples_local/hyperspectral_cubes/indian_pines_corrected.mat` + `_gt.mat` | [EHU/Grupo de Inteligencia Computacional](http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes) | "academic use" sans SPDX clair → en local seulement | tests cube AVIRIS complet en local (la version `92AV3C.lan` plus petite reste committee) |
+| Microtops `.lev2` disambiguation | `samples_local/microtops/noaa_lauder_sonde_la20170315.lev2` | [NOAA GML Lauder](https://gml.noaa.gov/aftp/data/ozwv/WaterVapor/Lauder_LEV/) | US Gov public domain MAIS le fichier est en realite un radiosonde water vapour/ozone, pas un sun-photometer Microtops | aide locale a la disambiguation `.lev2`; non commit pour eviter confusion |
 
 ### Formats restant fermes (sweep sans resultat exploitable)
 

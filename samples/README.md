@@ -72,6 +72,27 @@ Every sample is either:
      UvA 2022) — illicit-drug forensic NIR dataset across **5 portable spectrometers**
      (ASD LabSpec 4, VIAVI MicroNIR 1700, Si-Ware NeoSpectra, Consumer Physics SCiO,
      Spectral Engines NIRone 2.0) as `.xlsx` (**CC-BY-4.0**).
+   - [`capstone-coal/pycoal`](https://github.com/capstone-coal/pycoal) — Real
+     **USGS Digital Spectral Library splib06a & splib07** convolved to the
+     AVIRIS-1995 sensor (ENVI `.sli/.hdr`, GPL-2 wrapper / USGS data is U.S.
+     Government public domain).
+   - [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra) —
+     Additional Spectral Evolution PSR + SVC / GER `.sig` fixtures from BNL
+     and Barrow Environmental Observatory field campaigns (**GPL-3**).
+   - [`joshduran/brukeropus`](https://github.com/joshduran/brukeropus) — extra
+     Bruker OPUS `.0` fixture (**MIT**).
+   - [`pierreroudier/opusreader`](https://github.com/pierreroudier/opusreader) —
+     additional Bruker OPUS test spectrum (**GPL-3**).
+   - [`cran/soil.spec`](https://github.com/cran/soil.spec) — Two **Bruker MPA**
+     OPUS files from the AfSIS African soils project (CRAN R package, GPL-2/3).
+   - [PANGAEA `966645`](https://doi.pangaea.de/10.1594/PANGAEA.966645) — Real
+     **Microtops II** AOD measurements from the MSM114/2 (ARC) cruise of *RV
+     Maria S. Merian*, republished from AERONET MAN (**CC-BY-4.0**).
+   - [`hdeneke/PyrNet`](https://github.com/hdeneke/PyrNet) — Sample TROPOS
+     PyrNet pyranometer NetCDF (academic share; used as non-NIRS NetCDF
+     refusal-path fixture).
+   - [`kebasaa/SCIO-read`](https://github.com/kebasaa/SCIO-read) — Real
+     **Consumer Physics SCiO** developer-app CSV exports (**GPL-3**).
 2. **Generated locally** with [`scripts/gen_synthetic.py`](#) (CC-0) for the
    handful of formats where no permissively-licensed open fixture could be
    located. After the 2026-05-20 sample sweep, this list has shrunk: real
@@ -97,10 +118,10 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `asd/` | ASD `.asd` (multiple revisions) | ✅ | 6 | asdreader, prospectr, pyASDReader (v6/v7/v8 + v7 field) |
 | `avantes/` | Avantes AvaSoft 6/7 binaries, AvaSoft 8 binaries, ASCII exports | ✅ | 12 | lightr |
 | `bruker_dpt/` | Bruker OPUS `.dpt` text export | ✅ | 2 | lightr + synthetic |
-| `bruker_opus/` | Bruker OPUS native | ✅ | 7 | opusreader2, brukeropus, spectrochempy_data |
+| `bruker_opus/` | Bruker OPUS native | ✅ | 11 | opusreader2, brukeropus, pierreroudier/opusreader, cran/soil.spec (AfSIS Bruker MPA), spectrochempy_data |
 | `buchi_nircal/` | BUCHI NIRCal `.nir` | ✅ | 1 | prospectr |
 | `csv_tsv/` | CSV / TSV / IDL-ENVI text + real handheld CSV | 🟡 | 6 | synthetic + AuroraNIR handheld (sensAIfood) |
-| `envi_sli/` | ENVI Spectral Library + cube + USGS/ECOSTRESS/ASTER ASCII | 🟡 | 9 | synthetic SLI + CubeScope-demo cube + spectralpython USGS/ECOSTRESS + ASTER-Spectral-Library |
+| `envi_sli/` | ENVI Spectral Library + cube + USGS/ECOSTRESS/ASTER ASCII | ✅ | 13 | synthetic SLI + CubeScope-demo cube + spectralpython USGS/ECOSTRESS + ASTER-Spectral-Library + **real USGS splib06a/07 ENVI libraries (pycoal)** |
 | `excel/` | Excel `.xlsx` | 🟡 | 4 | synthetic + real SCiO / NIRone Excel exports (forensic NIR Figshare) |
 | `fgi/` | FGI HDF5 + XML | ⚪ | 2 | synthetic |
 | `foss_winisi/` | Foss WinISI text export / DS3 CSV report | ✅ | 5 | synthetic + real Foss XDS / NIRSYSTEM-5000 CSV exports (sensAIfood Cordoba) |
@@ -110,9 +131,9 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `jcamp_dx/` | JCAMP-DX (all encodings) | ✅ | 21 | nzhagen/jcamp (IUPAC official suite + IR library) + NIST WebBook |
 | `matlab/` | MATLAB `.mat` / `.RData` | ✅ | 7 | Eigenvector Corn + NIR Shootout 2002, spectrochempy_data, prospectr + synthetic |
 | `metrohm/` | Metrohm Vision Air CSV export | ⚪ | 1 | synthetic |
-| `microtops/` | Microtops sun photometer `.TXT` | ⚪ | 1 | synthetic |
+| `microtops/` | Microtops sun photometer `.TXT` / MAN NetCDF | ✅ | 3 | synthetic + real PANGAEA AERONET MAN cruise NetCDF (MSM114/2) |
 | `modtran/` | MODTRAN5 albedo `.dat` | ⚪ | 1 | synthetic |
-| `netcdf/` | NetCDF (ANDI-adjacent) | ✅ | 3 | netcdf-c, xarray-data + synthetic |
+| `netcdf/` | NetCDF (ANDI-adjacent) | ✅ | 4 | netcdf-c, xarray-data, hdeneke/PyrNet (pyranometer net) + synthetic |
 | `nicolet_omnic/` | Thermo Nicolet OMNIC `.spa` / `.spg` / `.srs` | ✅ | 3 | spectrochempy, spectrochempy_data |
 | `mfr/` | MFR Sun Photometer `.OUT` | ⚪ | 1 | synthetic |
 | `perten/` | Perten DA / Inframatic CSV report | ⚪ | 1 | synthetic |
@@ -125,9 +146,10 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `shimadzu/` | Shimadzu UVProbe text export | ⚪ | 1 | synthetic |
 | `siware_neospectra/` | Si-Ware NeoSpectra CSV / XLSX | ✅ | 4 | synthetic + Open Soil Spectral Library (OSSL Woodwell+KSSL) + UvA forensic NeoSpectra |
 | `specpr/` | USGS SPECPR | ✅ | 1 | ns-bak/splib06.library (USGS public domain) |
-| `spectral_evolution/` | Spectral Evolution PSR `.sed` | ✅ | 2 | spectrolab |
-| `svc_ger/` | SVC HR-1024 / GER 3700 `.sig` | ✅ | 13 | spectrolab |
+| `spectral_evolution/` | Spectral Evolution PSR `.sed` | ✅ | 3 | spectrolab + serbinsh/R-FieldSpectra (PSR-3500 grape leaf) |
+| `svc_ger/` | SVC HR-1024 / GER 3700 `.sig` | ✅ | 15 | spectrolab + serbinsh/R-FieldSpectra (raw GER 3700 PDA + BEO HR-1024i field) |
 | `viavi_micronir/` | VIAVI MicroNIR CSV / XLSX | ✅ | 3 | synthetic + real UvA forensic MicroNIR 1700 Excel exports |
+| `scio/` | Consumer Physics SCiO handheld CSV | ✅ | 3 | kebasaa/SCIO-read developer-app exports (GPL-3) |
 | `animl/` | AnIML XML | ✅ | 2 | KE-UniLiv/animl-ontology Example3 + synthetic |
 | `allotrope_asm/` | Allotrope ASM JSON | ✅ | 4 | Benchling-Open-Source/allotropy |
 | `allotrope_adf/` | Allotrope ADF binary | ❌ | 0 | **No public sample found** — see directory README |
@@ -142,10 +164,14 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `mzml/` | mzML / mzMLb (MS) | ✅ | 3 | pymzml |
 | `andi_ms/` | ANDI MS `.cdf` (chromatography) | ✅ | 1 | PyMassSpec |
 
-**Totals (2026-05-20 sweep)**: 47 directories · 284 fixture files ·
-**38 directories** with at least one real open-source sample · **8
-directories** synthetic-only · 1 directory with no available sample
-(`allotrope_adf/`).
+**Totals (2026-05-20 sweep, second pass)**: 48 directories · ~305 fixture
+files · **43 directories** with at least one real open-source sample ·
+**4 directories** synthetic-only (`fgi/`, `mfr/`, `modtran/`, `pp_systems/`)
+· 1 directory with no available sample (`allotrope_adf/`).
+
+A `samples_local/` directory (gitignored via `/samples_local/` in
+`.gitignore`) holds non-redistributable fixtures the developer fetched
+locally — see `samples_local/INDEX.md` on a working tree for the entries.
 
 ## Known gaps (no permissively-licensed fixture exists)
 
@@ -157,7 +183,7 @@ verify; they all carry a synthetic placeholder for shape testing.
 | ASD `.ILL` / `.REF` / `.RAW` companion files | Vendor SDK distribution only; SPECCHIO has partial support behind login. | Reverse-engineer from the SDK once a real workflow needs them; otherwise route to "vendor SDK only" with a clear error. |
 | Foss NIRSystems / WinISI `.NIR` / `.DA` / `.cal` / `.eqa` native | Pure-binary vendor format; no open reader exists. | Ingest WinISI / DA1650 / DS2500 / DS3 text exports only. Real Foss XDS / NIRSYSTEM-5000 CSV exports now ship in `foss_winisi/` (sensAIfood Cordoba, CC-BY-4.0). |
 | Metrohm Vision Air native (`.viscv`, project DB) | Closed; only the CSV export workflow is public. | Synthetic Vision Air CSV in `metrohm/`. |
-| Microtops `.TXT` real samples | AERONET hosts the data behind login; no GitHub mirror found. | Synthetic in `microtops/`. |
+| Microtops `.TXT` real samples (legacy ASCII export) | AERONET hosts ASCII data behind login; no GitHub mirror found. | The real MAN NetCDF re-export from PANGAEA now ships in `microtops/` and exercises the same AOD payload. |
 | PP Systems UniSpec `.SPT` / `.SPU` real | No GitHub fixture found. | Synthetic in `pp_systems/`. |
 | Shimadzu UVProbe native `.spc` (different from Galactic) | Proprietary; experimental readers only. | Synthetic ASCII export in `shimadzu/`. |
 | VIAVI MicroNIR `.pri` project | Customer-only. | Real CSV/XLSX exports now ship in `viavi_micronir/` (UvA forensic Figshare); native `.pri` remains unavailable. |
@@ -169,7 +195,7 @@ verify; they all carry a synthetic placeholder for shape testing.
 | FGI HDF5 + XML real | Schema is FGI-owned; no public fixture. | Synthetic in `fgi/`. |
 | Allotrope ADF `.adf` | Heavy SDK stack; pharma-specific. **Not even attempted — listed in FORMATS.md but explicitly *not a v1 priority*.** | Document as "requires Allotrope SDK". |
 | Perkin Elmer `.fsm` (imaging) | Real fixture exists (50 MB in `specio`) but **explicitly out of scope for v1** per FORMATS.md. | Skip. |
-| Hyperspectral imaging cubes (Specim/HySpex/Headwall/AVIRIS-NG/NEON AOP) | Out of scope per FORMATS.md §4. | Two reference cubes (`cubescope-mini-cube`, `92AV3C.spc`) live in `envi_sli/` for refusal-path tests. |
+| Hyperspectral imaging cubes (Specim/HySpex/Headwall/AVIRIS-NG/NEON AOP) | Broad imaging workflows remain partial per FORMATS.md §4. | Small ENVI Standard cube and AVIRIS 92AV3C ERDAS LAN are parsed as point spectra; large vendor/HDF5 scenes still need ROI extraction. |
 | Remaining Raman / UV-Vis look-alikes | Adjacent to NIRS; accepted when sample-backed and useful for dispatch/conformance. Renishaw WDF, Horiba LabSpec (now including a real `.l6m` binary), TriVista TVF, DigitalSurf, Hamamatsu IMG and **WiTec `.wip`** (Zenodo 7907659, ODbL v1.0) all have fixtures and experimental readers. | Use committed adjacent fixtures for reader tests; remaining vendor-locked binaries (e.g. Horiba `.l6s` calibration files) still wait on redistributable samples. |
 
 **Gaps that are not blockers**: every truly proprietary format above already
@@ -186,7 +212,7 @@ no documented text fallback.
 | §1 Field / portable spectroradiometers | `asd/`, `avantes/`, `bruker_dpt/`, `bruker_opus/`, `envi_sli/`, `fgi/`, `excel/`, `microtops/`, `ocean_optics/`, `pp_systems/`, `spectral_evolution/`, `svc_ger/`, `modtran/`, `csv_tsv/`, `specpr/` |
 | §2 Benchtop / industrial / FT-NIR | `bruker_opus/`, `galactic_spc/`, `nicolet_omnic/`, `perkin_elmer/`, `foss_winisi/`, `metrohm/`, `buchi_nircal/`, `avantes/`, `jasco/`, `shimadzu/`, `viavi_micronir/`, `siware_neospectra/` |
 | §3 Standardized / vendor-neutral | `jcamp_dx/`, `netcdf/`, `animl/`, `csv_tsv/`, `parquet/`, `hdf5/` |
-| §4 Hyperspectral imaging (out-of-scope) | `envi_sli/cubescope-mini-cube.{hdr,img}`, `envi_sli/92AV3C.spc` |
+| §4 Hyperspectral imaging (partial) | `envi_sli/cubescope-mini-cube.{hdr,img}`, `hyperspectral_cubes/92AV3C.{lan,spc}`, `hyperspectral_cubes/92AV3GT.GIS` |
 | §5 Adjacent useful formats | `matlab/`, `numpy/`, `excel/` |
 
 ## Maintenance
