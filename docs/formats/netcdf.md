@@ -41,6 +41,9 @@ SHA-256-guarded fallback and emits `microtops_man_netcdf_known_fixture_layout`.
 The ARM MFRSR path is validated locally only. It maps filter variables
 `*_filter1..7` onto a wavelength axis from `centroid_wavelength` attributes,
 emits one record per `time` row, and preserves per-signal QC arrays in metadata.
+When a sibling ARM QC YAML sidecar is present, the reader adds it as a
+`qc_sidecar` provenance source and maps suspect/incorrect time ranges to
+per-record `arm_mfrsr_sidecar_*` quality flags.
 The ARM SURFSPECALB path is also local-only and adjacent: it maps the derived
 `surface_albedo_mfr_narrowband_10m(time, filter)` product, drops rows where all
 filters are missing (`-9999`), and emits a reflectance-like `surface_albedo`

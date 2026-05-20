@@ -26,6 +26,8 @@ each observation row becomes one `SpectralRecord`.
 MFR metadata such as record number, time and air mass is preserved per record.
 The local ARM MFRSR NetCDF reader preserves ARM datastream metadata, filter
 centroid wavelengths/FWHM, time and solar geometry, and per-signal QC bit rows.
+If the local ARM QC YAML sidecar is present, it is attached as a `qc_sidecar`
+source and its visual-inspection ranges become per-record quality flags.
 Microtops location, pressure, solar geometry, water columns and MAN cruise
 section metadata are preserved as per-record metadata when present. The local
 AERONET MAN ASCII reader is validated against all available Okeanos exports:

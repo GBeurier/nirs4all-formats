@@ -22,8 +22,9 @@ Experimental native readers:
 - spectral matrix exports with one spectrum per row: Foss/WinISI text, real
   Foss XDS CSV, AuroraNIR handheld CSV, OSSL NeoSpectra wide CSV, Metrohm Vision
   Air CSV and VIAVI MicroNIR CSV fixtures;
-- sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF,
-  Microtops `.TXT`, the committed Microtops MAN NetCDF AOT fixture, and
+- sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF with
+  optional ARM QC YAML sidecar ranges, Microtops `.TXT`, the committed
+  Microtops MAN NetCDF AOT fixture, and
   local-only AERONET MAN ASCII `.lev10/.lev15/.lev20` exports;
 - AnIML spectral XML: spectral `SeriesSet` fixtures with explicit values or
   uniform `AutoIncrementedValueSet` wavelength axes, absorbance signal and
@@ -41,7 +42,8 @@ Experimental native readers:
 - Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped
   `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
-  pure-Rust reader, a local ARM MFRSR b1 7-filter time-series path, local ARM
+  pure-Rust reader, a local ARM MFRSR b1 7-filter time-series path with
+  optional QC YAML sidecar mapping, local ARM
   SURFSPECALB derived albedo, plus Microtops MAN NetCDF `aot_<nm>` discovery
   with a SHA-256-guarded MSM114/2 payload fallback; ANDI/MS gets a dedicated
   refusal path and weather/PyrNet/AOSMET NetCDF samples are schema-refused as

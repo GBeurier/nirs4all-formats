@@ -1266,6 +1266,7 @@ fn read_arm_mfrsr_records(
     let sample_count = arm_mfrsr_sample_count(file)?;
     let axis_values = arm_mfrsr_axis_values(file)?;
     let filter_fwhm = arm_mfrsr_filter_fwhm(file);
+    let qc_sidecar = load_arm_mfrsr_qc_sidecar(&source.path)?;
     let metadata_floats = read_optional_netcdf_float_series(file, ARM_MFRSR_METADATA_FLOATS)
         .into_iter()
         .filter(|(_, values)| values.len() == sample_count)
@@ -1351,18 +1352,42 @@ fn read_arm_mfrsr_records(
                 json!(group.prefix.clone()),
             );
         }
+        if let Some(sidecar) = &qc_sidecar {
+            if let Some(time_seconds) = metadata.get("time").and_then(Value::as_f64) {
+                let matching_rules = sidecar
+                    .rules
+                    .iter()
+                    .filter(|rule| rule.matches(time_seconds))
+                    .collect::<Vec<_>>();
+                if !matching_rules.is_empty() {
+                    metadata.insert(
+                        "arm_mfrsr_qc_sidecar_flags".to_string(),
+                        json!(matching_rules
+                            .iter()
+                            .map(|rule| rule.metadata_value(&sidecar.source.path))
+                            .collect::<Vec<_>>()),
+                    );
+                    for rule in matching_rules {
+                        quality_flags.push(rule.quality_flag());
+                    }
+                }
+            }
+        }
 
+        let mut warnings = vec!["arm_mfrsr_netcdf_experimental".to_string()];
+        if qc_sidecar.is_some() {
+            warnings.push("arm_mfrsr_qc_sidecar_loaded".to_string());
+        }
+        let mut provenance = provenance("arm-mfrsr-netcdf", reader, source.clone(), warnings);
+        if let Some(sidecar) = &qc_sidecar {
+            provenance.sources.push(sidecar.source.clone());
+        }
         let record = SpectralRecord {
             signals,
             signal_type: SignalType::Irradiance,
             targets: BTreeMap::new(),
             metadata,
-            provenance: provenance(
-                "arm-mfrsr-netcdf",
-                reader,
-                source.clone(),
-                vec!["arm_mfrsr_netcdf_experimental".to_string()],
-            ),
+            provenance,
             quality_flags,
         };
         record.validate()?;
@@ -1378,6 +1403,199 @@ struct ArmMfrsrSignalGroup {
     unit: String,
     values: Vec<Vec<f64>>,
     qc_values: Option<Vec<Vec<i64>>>,
+}
+
+#[derive(Clone, Debug)]
+struct ArmMfrsrQcSidecar {
+    source: SourceFile,
+    rules: Vec<ArmMfrsrQcRule>,
+}
+
+#[derive(Clone, Debug)]
+struct ArmMfrsrQcRule {
+    variable: String,
+    signal_name: String,
+    filter: usize,
+    severity: String,
+    reason: String,
+    start_seconds: f64,
+    end_seconds: f64,
+}
+
+impl ArmMfrsrQcRule {
+    fn matches(&self, time_seconds: f64) -> bool {
+        time_seconds >= self.start_seconds && time_seconds <= self.end_seconds
+    }
+
+    fn quality_flag(&self) -> String {
+        format!(
+            "arm_mfrsr_sidecar_{}_filter{}_{}",
+            self.signal_name,
+            self.filter,
+            normalize_qc_token(&self.severity)
+        )
+    }
+
+    fn metadata_value(&self, sidecar_path: &str) -> Value {
+        json!({
+            "sidecar_path": sidecar_path,
+            "variable": self.variable,
+            "signal": self.signal_name,
+            "filter": self.filter,
+            "severity": self.severity,
+            "reason": self.reason,
+            "start_seconds": self.start_seconds,
+            "end_seconds": self.end_seconds,
+        })
+    }
+}
+
+fn load_arm_mfrsr_qc_sidecar(primary_path: &str) -> Result<Option<ArmMfrsrQcSidecar>> {
+    let Some(path) = arm_mfrsr_qc_sidecar_path(Path::new(primary_path)) else {
+        return Ok(None);
+    };
+    let text = std::fs::read_to_string(&path).map_err(|source| Error::Io {
+        path: path.clone(),
+        source,
+    })?;
+    let rules = parse_arm_mfrsr_qc_sidecar(&text)?;
+    if rules.is_empty() {
+        return Ok(None);
+    }
+    let source = SourceFile::from_path(&path, "qc_sidecar")?;
+    Ok(Some(ArmMfrsrQcSidecar { source, rules }))
+}
+
+fn arm_mfrsr_qc_sidecar_path(primary_path: &Path) -> Option<std::path::PathBuf> {
+    let direct = primary_path.with_extension("yaml");
+    if direct.exists() {
+        return Some(direct);
+    }
+    let stem = primary_path.file_stem()?.to_string_lossy();
+    let (prefix, suffix) = stem.rsplit_once('_')?;
+    if suffix.len() == 8 && suffix.chars().all(|ch| ch.is_ascii_digit()) {
+        let dated = primary_path.with_file_name(format!("{prefix}.yaml"));
+        if dated.exists() {
+            return Some(dated);
+        }
+    }
+    None
+}
+
+fn parse_arm_mfrsr_qc_sidecar(text: &str) -> Result<Vec<ArmMfrsrQcRule>> {
+    let mut rules = Vec::new();
+    let mut variable = None::<String>;
+    let mut severity = None::<String>;
+    let mut reason = None::<String>;
+    for line in text.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') {
+            continue;
+        }
+        let indent = line.chars().take_while(|ch| *ch == ' ').count();
+        match indent {
+            0 if trimmed.ends_with(':') => {
+                variable = Some(trimmed.trim_end_matches(':').to_string());
+                severity = None;
+                reason = None;
+            }
+            2 if trimmed.ends_with(':') => {
+                severity = Some(trimmed.trim_end_matches(':').to_string());
+                reason = None;
+            }
+            4 if trimmed.ends_with(':') => {
+                reason = Some(trimmed.trim_end_matches(':').to_string());
+            }
+            _ if trimmed.starts_with("- ") => {
+                let variable = variable.clone().ok_or_else(|| {
+                    Error::InvalidRecord("ARM MFRSR QC sidecar range without variable".to_string())
+                })?;
+                let severity = severity.clone().ok_or_else(|| {
+                    Error::InvalidRecord("ARM MFRSR QC sidecar range without severity".to_string())
+                })?;
+                let reason = reason.clone().unwrap_or_default();
+                let (start, end) = trimmed[2..].split_once(',').ok_or_else(|| {
+                    Error::InvalidRecord("ARM MFRSR QC sidecar range is not start,end".to_string())
+                })?;
+                let (signal_name, filter) = parse_arm_mfrsr_qc_variable(&variable)?;
+                rules.push(ArmMfrsrQcRule {
+                    variable,
+                    signal_name,
+                    filter,
+                    severity,
+                    reason,
+                    start_seconds: parse_qc_timestamp_seconds(start)?,
+                    end_seconds: parse_qc_timestamp_seconds(end)?,
+                });
+            }
+            _ => {}
+        }
+    }
+    Ok(rules)
+}
+
+fn parse_arm_mfrsr_qc_variable(variable: &str) -> Result<(String, usize)> {
+    let (prefix, filter) = variable.rsplit_once("_filter").ok_or_else(|| {
+        Error::InvalidRecord(format!(
+            "ARM MFRSR QC sidecar variable {variable} has no filter"
+        ))
+    })?;
+    let filter = filter.parse::<usize>().map_err(|_| {
+        Error::InvalidRecord(format!(
+            "ARM MFRSR QC sidecar variable {variable} has invalid filter"
+        ))
+    })?;
+    let signal_name = ARM_MFRSR_SIGNALS
+        .iter()
+        .find(|(candidate, _, _, _)| *candidate == prefix)
+        .map(|(_, name, _, _)| (*name).to_string())
+        .ok_or_else(|| {
+            Error::InvalidRecord(format!(
+                "ARM MFRSR QC sidecar variable {variable} is not a known signal"
+            ))
+        })?;
+    Ok((signal_name, filter))
+}
+
+fn parse_qc_timestamp_seconds(value: &str) -> Result<f64> {
+    let (_, time) = value.trim().rsplit_once(' ').ok_or_else(|| {
+        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has no time"))
+    })?;
+    let parts = time.split(':').collect::<Vec<_>>();
+    if !(2..=3).contains(&parts.len()) {
+        return Err(Error::InvalidRecord(format!(
+            "ARM MFRSR QC timestamp {value} has unsupported time"
+        )));
+    }
+    let hours = parts[0].parse::<u32>().map_err(|_| {
+        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid hour"))
+    })?;
+    let minutes = parts[1].parse::<u32>().map_err(|_| {
+        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid minute"))
+    })?;
+    let seconds = parts
+        .get(2)
+        .map(|raw| {
+            raw.parse::<u32>().map_err(|_| {
+                Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid second"))
+            })
+        })
+        .transpose()?
+        .unwrap_or(0);
+    Ok(f64::from(hours * 3600 + minutes * 60 + seconds))
+}
+
+fn normalize_qc_token(value: &str) -> String {
+    value
+        .chars()
+        .map(|ch| {
+            if ch.is_ascii_alphanumeric() {
+                ch.to_ascii_lowercase()
+            } else {
+                '_'
+            }
+        })
+        .collect()
 }
 
 fn arm_mfrsr_sample_count(file: &NcFile) -> Result<usize> {

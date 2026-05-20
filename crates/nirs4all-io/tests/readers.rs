@@ -3513,6 +3513,43 @@ fn reads_local_arm_mfrsr_netcdf_when_present() {
             .len(),
         7
     );
+
+    let sidecar_sources = records[0]
+        .provenance
+        .sources
+        .iter()
+        .filter(|source| source.role == "qc_sidecar")
+        .count();
+    assert_eq!(sidecar_sources, 1);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "arm_mfrsr_qc_sidecar_loaded"));
+
+    let incorrect = records
+        .iter()
+        .find(|record| record.metadata["time"].as_f64() == Some(62_800.0))
+        .expect("incorrect sidecar time");
+    assert!(incorrect.quality_flags.contains(
+        &"arm_mfrsr_sidecar_diffuse_hemispheric_irradiance_filter4_incorrect".to_string()
+    ));
+    assert_eq!(
+        incorrect.metadata["arm_mfrsr_qc_sidecar_flags"][0]["severity"].as_str(),
+        Some("Incorrect")
+    );
+    assert_eq!(
+        incorrect.metadata["arm_mfrsr_qc_sidecar_flags"][0]["reason"].as_str(),
+        Some("Values are incorrect by visual inspection")
+    );
+
+    let suspect = records
+        .iter()
+        .find(|record| record.metadata["time"].as_f64() == Some(66_880.0))
+        .expect("suspect sidecar time");
+    assert!(suspect
+        .quality_flags
+        .contains(&"arm_mfrsr_sidecar_diffuse_hemispheric_irradiance_filter4_suspect".to_string()));
 }
 
 #[test]
