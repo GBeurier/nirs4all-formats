@@ -748,6 +748,76 @@ fn reads_buchi_nircal_project_spectra() {
         Some("56A081B2-5301-40A1-9194-93BB6CCA1C9F")
     );
     assert_eq!(
+        records[0].metadata["sample_guid"].as_str(),
+        Some("BEA5FE92-4DBA-46DA-93D5-41C4DE159811")
+    );
+    assert_eq!(records[0].metadata["scans"].as_u64(), Some(32));
+    assert_eq!(records[0].metadata["resolution"].as_u64(), Some(8));
+    assert_eq!(
+        records[0].metadata["declared_wavenumber_count"].as_u64(),
+        Some(1_501)
+    );
+    assert_eq!(
+        records[0].metadata["declared_wavenumber_step"].as_f64(),
+        Some(4.0)
+    );
+    assert_eq!(
+        records[0].metadata["declared_wavenumber_start"].as_f64(),
+        Some(4_000.0)
+    );
+    assert_eq!(records[0].metadata["device"].as_str(), Some("NIRFlex N500"));
+    assert_eq!(
+        records[0].metadata["software_version"].as_str(),
+        Some("5.6")
+    );
+    assert_eq!(
+        records[0].metadata["created"].as_str(),
+        Some("2023/10/10 22:43:58")
+    );
+    assert_eq!(
+        records[0].metadata["modified"].as_str(),
+        Some("2023/10/10 22:43:58")
+    );
+    assert_eq!(
+        records[0].metadata["creator"].as_str(),
+        Some("Customer System Maintenance")
+    );
+    assert_eq!(
+        records[0].metadata["creator_login"].as_str(),
+        Some("Customer System Maintenance")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_serial"].as_str(),
+        Some("1000074244")
+    );
+    assert_eq!(
+        records[0].metadata["measurement_cell"].as_str(),
+        Some("NIRMaster")
+    );
+    assert_eq!(
+        records[0].metadata["option_serial"].as_str(),
+        Some("1000073234")
+    );
+    assert_eq!(
+        records[0].metadata["description"].as_str(),
+        Some("Reflectance")
+    );
+    assert!(!records[0].metadata.contains_key("comment"));
+    assert!((records[0].metadata["gain_factor"].as_f64().unwrap() - 18.7143).abs() < 1e-9);
+    assert_eq!(records[0].metadata["gain"].as_f64(), Some(3.0));
+    assert!(
+        (records[0].metadata["instrument_temperature_c"]
+            .as_f64()
+            .unwrap()
+            - 29.812)
+            .abs()
+            < 1e-9
+    );
+    assert_eq!(
+        records[0].metadata["sample_temperature_c"].as_f64(),
+        Some(0.0)
+    );
+    assert_eq!(
         records[0].metadata["sample_replicate_index"].as_u64(),
         Some(1)
     );
@@ -816,6 +886,57 @@ fn reads_local_buchi_nircal_non_null_targets_when_present() {
         records[0].metadata["project_guid"].as_str(),
         Some("986677DA-714F-444E-88C8-EA6C0865C17D")
     );
+    assert_eq!(
+        records[0].metadata["sample_guid"].as_str(),
+        Some("F8A6EBC3-CE55-4942-BAA0-983777C5C285")
+    );
+    assert_eq!(records[0].metadata["scans"].as_u64(), Some(32));
+    assert_eq!(records[0].metadata["resolution"].as_u64(), Some(8));
+    assert_eq!(records[0].metadata["device"].as_str(), Some("NIRFlex N500"));
+    assert_eq!(
+        records[0].metadata["software_version"].as_str(),
+        Some("R version 3.6.0 (2019-04-26)")
+    );
+    assert_eq!(
+        records[0].metadata["created"].as_str(),
+        Some("2018/10/29 14:31:16")
+    );
+    assert_eq!(
+        records[0].metadata["modified"].as_str(),
+        Some("2019/07/17 15:27:11")
+    );
+    assert_eq!(records[0].metadata["creator"].as_str(), Some("BUCHI"));
+    assert_eq!(
+        records[0].metadata["creator_login"].as_str(),
+        Some("Exported from R")
+    );
+    assert_eq!(
+        records[0].metadata["modified_by"].as_str(),
+        Some("Administrator")
+    );
+    assert_eq!(
+        records[0].metadata["modifier_login"].as_str(),
+        Some("Administrator")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_serial"].as_str(),
+        Some("1000283339")
+    );
+    assert_eq!(
+        records[0].metadata["measurement_cell"].as_str(),
+        Some("Solids, XL")
+    );
+    assert_eq!(
+        records[0].metadata["option_serial"].as_str(),
+        Some("1000288264")
+    );
+    assert_eq!(records[0].metadata["comment"].as_str(), Some("DEMO"));
+    assert_eq!(
+        records[0].metadata["description"].as_str(),
+        Some("Reflectance")
+    );
+    assert!(!records[0].metadata.contains_key("gain_factor"));
+    assert!(!records[0].metadata.contains_key("instrument_temperature_c"));
     assert_eq!(
         records[0].metadata["sample_replicate_index"].as_u64(),
         Some(1)
