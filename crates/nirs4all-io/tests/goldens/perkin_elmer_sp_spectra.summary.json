@@ -1,0 +1,58 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "perkin-elmer-sp",
+      "metadata_keys": [
+        "accessory",
+        "apodization",
+        "beam_splitter",
+        "data_max",
+        "data_min",
+        "description",
+        "detector",
+        "image_name",
+        "instrument",
+        "instrument_serial",
+        "measurement_mode",
+        "ordinate_mode",
+        "point_count",
+        "processing_mode",
+        "ratio_mode",
+        "sample_id",
+        "scan_date",
+        "software",
+        "source_path",
+        "source_type",
+        "x_step"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::perkin_elmer",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 4000.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 700.0,
+          "axis_len": 3301,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "A",
+          "value_first": 0.037239,
+          "value_last": 0.004176,
+          "value_sum": 117.162189,
+          "values_len": 3301
+        }
+      ],
+      "source_sha256": "6a244e8d5aab752eb5a436348ddb51ed605665c0dd3345bb3e7833c92f02c745",
+      "target_keys": [],
+      "warnings": [
+        "perkin_elmer_reverse_engineered_blocks"
+      ]
+    }
+  ]
+}

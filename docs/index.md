@@ -25,6 +25,7 @@ formats/msa-iso22029
 formats/netcdf
 formats/nicolet-omnic
 formats/ocean-optics
+formats/perkin-elmer
 formats/row-spectral-table
 formats/siware-api
 formats/spectral-matrix

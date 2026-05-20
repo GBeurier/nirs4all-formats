@@ -31,6 +31,7 @@ const CASES: &[(&str, &str)] = &[
         "nicolet_omnic_spa_not_opus",
         "samples/nicolet_omnic/not_opus.spa",
     ),
+    ("perkin_elmer_sp_spectra", "samples/perkin_elmer/spectra.sp"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),
