@@ -1,0 +1,127 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "trivista-tvf",
+      "metadata_keys": [
+        "accumulation_count",
+        "calc_average",
+        "center_wavelength_nm",
+        "child_document_count",
+        "container",
+        "data_label",
+        "declared_frame_count",
+        "detector_temperature",
+        "document_depth",
+        "document_frame_count",
+        "document_index",
+        "document_label",
+        "document_role",
+        "document_type",
+        "elapsed_time_seconds",
+        "elapsed_time_unit",
+        "exposure_time_ms",
+        "file_datetime",
+        "file_version",
+        "frame_index",
+        "frame_x_dim",
+        "laser_wavelength_nm",
+        "record_time",
+        "source_filename",
+        "spectral_point_count",
+        "spectrum_index",
+        "time_filetime_100ns",
+        "time_index",
+        "used_setup"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::trivista_tvf",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 933.846924,
+          "axis_kind": "wavelength",
+          "axis_last": 966.019531,
+          "axis_len": 1024,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 27381.0,
+          "value_last": 45898.0,
+          "value_sum": 28397720.5,
+          "values_len": 1024
+        }
+      ],
+      "source_sha256": "f324d97f160a0b04338efe796005643ca64b239c325e1c32efff1fb48d064335",
+      "target_keys": [],
+      "warnings": [
+        "trivista_tvf_xml_reverse_engineered"
+      ]
+    },
+    {
+      "format": "trivista-tvf",
+      "metadata_keys": [
+        "accumulation_count",
+        "calc_average",
+        "center_wavelength_nm",
+        "child_document_count",
+        "container",
+        "data_label",
+        "declared_frame_count",
+        "detector_temperature",
+        "document_depth",
+        "document_frame_count",
+        "document_index",
+        "document_label",
+        "document_role",
+        "document_type",
+        "elapsed_time_seconds",
+        "elapsed_time_unit",
+        "exposure_time_ms",
+        "file_datetime",
+        "file_version",
+        "frame_index",
+        "frame_x_dim",
+        "laser_wavelength_nm",
+        "record_time",
+        "source_filename",
+        "spectral_point_count",
+        "spectrum_index",
+        "time_filetime_100ns",
+        "time_index",
+        "used_setup"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::trivista_tvf",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 933.846924,
+          "axis_kind": "wavelength",
+          "axis_last": 966.019531,
+          "axis_len": 1024,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 27449.5,
+          "value_last": 45803.0,
+          "value_sum": 28394697.0,
+          "values_len": 1024
+        }
+      ],
+      "source_sha256": "f324d97f160a0b04338efe796005643ca64b239c325e1c32efff1fb48d064335",
+      "target_keys": [],
+      "warnings": [
+        "trivista_tvf_xml_reverse_engineered"
+      ]
+    }
+  ]
+}

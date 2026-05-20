@@ -39,3 +39,7 @@ runtime.
 Renishaw WDF fixtures are split across GPL-3.0 RosettaSciIO samples and MIT
 SpectroChemPy data samples. They are test fixtures only; reference readers stay
 outside the runtime.
+
+Princeton TriVista TVF fixtures come from GPL-3.0 RosettaSciIO test data. They
+are committed as conformance fixtures only; `rsciio.trivista` is used for layout
+comparison outside the runtime.
