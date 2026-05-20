@@ -171,7 +171,10 @@ files · **43 directories** with at least one real open-source sample ·
 
 A `samples_local/` directory (gitignored via `/samples_local/` in
 `.gitignore`) holds non-redistributable fixtures the developer fetched
-locally — see `samples_local/INDEX.md` on a working tree for the entries.
+locally — see `samples_local/INDEX.md` on a working tree for the entries. The
+current local validation set includes the EHU Indian Pines MATLAB v5 cube and
+ground-truth sidecar, which are exercised by a Rust test that skips when the
+local files are absent.
 
 ## Known gaps (no permissively-licensed fixture exists)
 

@@ -160,13 +160,16 @@ hyperspectral-imaging users may want to extract pixel spectra:
 - ENVI Spectral Library (`.sli`) — already in section 1.
 - Legacy AVIRIS/Indian Pines ERDAS LAN (`.lan` + `.spc` + `.GIS`) — a
   sample-backed subset is loaded experimentally.
+- EHU Indian Pines MATLAB v5 cube (`indian_pines_corrected.mat` plus optional
+  `_gt.mat`) — supported only from `samples_local/` because redistribution
+  terms are academic-use without a clear SPDX-compatible license.
 - Specim / HySpex / Headwall raw cubes (often ENVI-compatible).
 - BIL/BIP/BSQ raw with sidecar header.
 - HDF5-based imaging (NEON AOP, AVIRIS-NG).
 
-Current policy: accept small ENVI Standard and AVIRIS LAN sidecars by expanding
-each pixel to a point spectrum when the wavelength axis is present, while
-keeping broader imaging workflows partial. A future
+Current policy: accept small ENVI Standard, AVIRIS LAN and local-only MATLAB
+cube fixtures by expanding each pixel to a point spectrum when enough axis or
+band metadata is present, while keeping broader imaging workflows partial. A future
 `extract_point_spectra(cube, mask)` helper is still needed for ROI/mask
 workflows and for larger NEON, Specim, HySpex, Headwall and AVIRIS-NG payloads
 where whole-cube expansion is not practical.
@@ -177,7 +180,7 @@ where whole-cube expansion is not practical.
 
 | Format | Why it matters | Decision |
 |---|---|---|
-| `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
+| `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, prospectr `NIRsoil.RData`, and the local-only Indian Pines MATLAB v5 hyperspectral cube with optional ground-truth sidecar. |
 | `.npy` / `.npz` | Common in ML workflows | Current native reader covers bare numeric NPY matrices and canonical NPZ `X`/`wavelengths`/`y`/`sample_ids` datasets. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables and canonical multi-sheet lab templates joined by `sample_id`. |
 | Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, TriVista TVF, DigitalSurf, Hamamatsu IMG, WiTec WIP, JASCO) | Same `.spc`/`.jws` or spectral-map/time-resolved workflows, often confused with NIR | Horiba LabSpec XML/text and one LabSpec6 `.l6m` binary map, Renishaw WDF spectral payloads, TriVista TVF XML, DigitalSurf `.sur/.pro`, Hamamatsu `.img` and JASCO JWS now load experimentally; WiTec WIP/WID has a real `WIT_PR06` fixture and is being kept experimental. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
