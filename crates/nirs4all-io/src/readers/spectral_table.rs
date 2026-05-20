@@ -331,7 +331,8 @@ fn is_metadata_assignment(line: &str) -> bool {
     let key = cleaned[..separator_index].trim();
     !key.is_empty()
         && key.chars().all(|character| {
-            character.is_ascii_alphanumeric() || matches!(character, ' ' | '_' | '-' | '.')
+            character.is_ascii_alphanumeric()
+                || matches!(character, ' ' | '_' | '-' | '.' | '(' | ')')
         })
 }
 

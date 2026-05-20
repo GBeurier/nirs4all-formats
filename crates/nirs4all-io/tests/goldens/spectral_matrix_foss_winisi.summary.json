@@ -1,0 +1,1755 @@
+{
+  "record_count": 50,
+  "records": [
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03674,
+          "value_last": -0.14659,
+          "value_sum": 41.35044,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.01188,
+          "value_last": 0.09672,
+          "value_sum": 41.26692,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.16376,
+          "value_last": 0.00773,
+          "value_sum": 36.17397,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.12919,
+          "value_last": -0.05321,
+          "value_sum": 38.10474,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0524,
+          "value_last": 0.00063,
+          "value_sum": 49.63045,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.12873,
+          "value_last": 0.19333,
+          "value_sum": 40.85804,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00513,
+          "value_last": -0.10135,
+          "value_sum": 42.75503,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.13185,
+          "value_last": -0.07435,
+          "value_sum": 53.66128,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.05722,
+          "value_last": -0.04662,
+          "value_sum": 44.77328,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.22855,
+          "value_last": -0.07953,
+          "value_sum": 50.71498,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.07238,
+          "value_last": 0.05396,
+          "value_sum": 50.47835,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.21292,
+          "value_last": -0.02538,
+          "value_sum": 41.51909,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.1036,
+          "value_last": -0.05921,
+          "value_sum": 51.40157,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.19941,
+          "value_last": -0.02822,
+          "value_sum": 52.24597,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0325,
+          "value_last": -0.03978,
+          "value_sum": 43.89234,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.10385,
+          "value_last": 0.00491,
+          "value_sum": 39.68893,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.03979,
+          "value_last": -0.04357,
+          "value_sum": 48.37521,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.05231,
+          "value_last": -0.04269,
+          "value_sum": 55.30277,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.15802,
+          "value_last": -0.09648,
+          "value_sum": 49.35701,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.13162,
+          "value_last": 0.00674,
+          "value_sum": 39.52986,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.02162,
+          "value_last": 0.04811,
+          "value_sum": 48.15735,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.0629,
+          "value_last": 0.12303,
+          "value_sum": 42.76771,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.10499,
+          "value_last": 0.1423,
+          "value_sum": 47.83078,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.12075,
+          "value_last": 0.08518,
+          "value_sum": 49.62717,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.11991,
+          "value_last": -0.15043,
+          "value_sum": 47.91437,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.12704,
+          "value_last": 0.1421,
+          "value_sum": 52.20244,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00343,
+          "value_last": 0.01182,
+          "value_sum": 48.72626,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.04177,
+          "value_last": 0.06989,
+          "value_sum": 47.85017,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.04607,
+          "value_last": -0.10758,
+          "value_sum": 38.07608,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00386,
+          "value_last": -0.06537,
+          "value_sum": 52.06309,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.15565,
+          "value_last": -0.04104,
+          "value_sum": 55.42917,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.06212,
+          "value_last": -0.07659,
+          "value_sum": 38.70128,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.05073,
+          "value_last": 0.19046,
+          "value_sum": 45.31876,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.11755,
+          "value_last": 0.17301,
+          "value_sum": 41.70864,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.16998,
+          "value_last": 0.04847,
+          "value_sum": 50.00225,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.06448,
+          "value_last": -0.13988,
+          "value_sum": 50.83461,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.00447,
+          "value_last": 0.07644,
+          "value_sum": 41.53276,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.06841,
+          "value_last": 0.00842,
+          "value_sum": 52.24728,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.01046,
+          "value_last": -0.20324,
+          "value_sum": 41.24663,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.11255,
+          "value_last": 0.09355,
+          "value_sum": 53.1596,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.0693,
+          "value_last": -0.02686,
+          "value_sum": 45.66143,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.38725,
+          "value_last": 0.02084,
+          "value_sum": 43.99427,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.00041,
+          "value_last": 0.07719,
+          "value_sum": 40.19797,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.04669,
+          "value_last": 0.11338,
+          "value_sum": 41.95635,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.0086,
+          "value_last": 0.01082,
+          "value_sum": 48.36916,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03575,
+          "value_last": -0.01112,
+          "value_sum": 48.73589,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.09535,
+          "value_last": 0.05585,
+          "value_sum": 38.40622,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.10876,
+          "value_last": -0.13049,
+          "value_sum": 39.50393,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": -0.29711,
+          "value_last": -0.07265,
+          "value_sum": 38.3716,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "spectral-matrix",
+      "metadata_keys": [
+        "row_index",
+        "sample_id",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_matrix",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.14099,
+          "value_last": 0.06088,
+          "value_sum": 50.14149,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "77a27ed72447026c25163a2baf4440d1bc7fb48c58ff7c739a127e13dab71598",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    }
+  ]
+}

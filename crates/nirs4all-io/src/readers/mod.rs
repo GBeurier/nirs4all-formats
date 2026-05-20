@@ -10,7 +10,9 @@ pub mod jcamp;
 pub mod msa;
 pub mod ocean_optics;
 pub mod sed;
+pub mod spectral_matrix;
 pub mod spectral_table;
+pub mod sun_photometer;
 pub mod svc_sig;
 
 mod util;
@@ -27,5 +29,7 @@ pub use jcamp::JcampReader;
 pub use msa::MsaReader;
 pub use ocean_optics::OceanOpticsReader;
 pub use sed::SedReader;
+pub use spectral_matrix::SpectralMatrixReader;
 pub use spectral_table::SpectralTableReader;
+pub use sun_photometer::SunPhotometerReader;
 pub use svc_sig::SvcSigReader;

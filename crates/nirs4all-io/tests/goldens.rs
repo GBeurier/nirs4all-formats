@@ -130,6 +130,23 @@ const CASES: &[(&str, &str)] = &[
         "row_spectral_table_witec_ascii",
         "samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt",
     ),
+    (
+        "spectral_matrix_foss_winisi",
+        "samples/foss_winisi/synthetic_winisi_export.txt",
+    ),
+    (
+        "spectral_matrix_metrohm_visionair",
+        "samples/metrohm/synthetic_visionair.csv",
+    ),
+    (
+        "spectral_matrix_viavi_micronir",
+        "samples/viavi_micronir/synthetic_micronir.csv",
+    ),
+    ("mfr_sun_photometer", "samples/mfr/synthetic_mfr.OUT"),
+    (
+        "microtops_sun_photometer",
+        "samples/microtops/synthetic_microtops.TXT",
+    ),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
     (

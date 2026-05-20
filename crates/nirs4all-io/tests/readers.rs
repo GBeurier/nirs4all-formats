@@ -513,6 +513,77 @@ fn reads_usgs_specpr_ascii_spectrum() {
 }
 
 #[test]
+fn reads_one_spectrum_per_row_matrix_exports() {
+    for (relative, records_len, first_target) in [
+        (
+            "samples/foss_winisi/synthetic_winisi_export.txt",
+            50,
+            Some("protein"),
+        ),
+        (
+            "samples/metrohm/synthetic_visionair.csv",
+            50,
+            Some("protein"),
+        ),
+        ("samples/viavi_micronir/synthetic_micronir.csv", 20, None),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open spectral matrix");
+
+        assert_eq!(records.len(), records_len);
+        assert_eq!(records[0].provenance.format, "spectral-matrix");
+        assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
+        if let Some(target) = first_target {
+            assert!(records[0].targets.contains_key(target));
+        }
+        let signal = records[0].signals.get("absorbance").expect("absorbance");
+        assert_eq!(signal.axis.values.len(), 200);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(signal.signal_type, SignalType::Absorbance);
+        assert!((signal.axis.values[0] - 1100.0).abs() < 0.000001);
+        assert!((signal.axis.values[199] - 2500.0).abs() < 0.000001);
+        assert!((signal.values[0] - 0.03674).abs() < 0.00001);
+    }
+}
+
+#[test]
+fn reads_sun_photometer_channel_exports() {
+    let records = open_path(workspace_file("samples/mfr/synthetic_mfr.OUT")).expect("open mfr");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "mfr-sun-photometer");
+    let channels = records[0].signals.get("channels").expect("channels");
+    assert_eq!(
+        channels.axis.values,
+        vec![415.0, 500.0, 614.0, 673.0, 870.0, 940.0]
+    );
+    assert_eq!(channels.signal_type, SignalType::RawCounts);
+    assert_eq!(channels.values[0], 500.0);
+    assert_eq!(channels.values[5], 620.0);
+
+    let records = open_path(workspace_file("samples/microtops/synthetic_microtops.TXT"))
+        .expect("open microtops");
+    assert_eq!(records.len(), 20);
+    assert_eq!(records[0].provenance.format, "microtops-sun-photometer");
+    let aot = records[0].signals.get("aot").expect("aot");
+    assert_eq!(aot.axis.values, vec![1020.0, 870.0, 675.0]);
+    assert_eq!(aot.axis.unit, "nm");
+    assert!((aot.values[0] - 0.124).abs() < 0.000001);
+    assert!((aot.values[2] - 0.211).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_target_only_reports_without_spectra() {
+    for relative in [
+        "samples/foss_winisi/synthetic_ds3_report.csv",
+        "samples/perten/synthetic_perten.csv",
+    ] {
+        let err = open_path(workspace_file(relative)).expect_err("report has no spectrum");
+        assert!(err.to_string().contains("unsupported format"));
+    }
+}
+
+#[test]
 fn reads_msa_iso22029_xy_variants() {
     let records = open_path(workspace_file(
         "samples/msa_iso22029/ISO_22029_2022_compliance.msa",

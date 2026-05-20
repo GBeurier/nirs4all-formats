@@ -19,6 +19,9 @@ Experimental native readers:
 - row-oriented spectral tables with an axis in the first column: Si-Ware CSV,
   MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS spectrum text,
   Shimadzu TXT, USGS SPECPR ASCII and WiTec TXT fixtures;
+- spectral matrix exports with one spectrum per row: Foss/WinISI text,
+  Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures;
+- sun photometer channel exports: MFR `.OUT` and Microtops `.TXT` fixtures;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -78,8 +81,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. add the remaining easy text/export families that need dedicated row-to-record
-   mapping: Foss/WinISI matrix exports, MFR `.OUT` and Microtops `.TXT`;
+1. continue with remaining text/export samples that need new containers:
+   AnIML XML, Allotrope JSON examples and MATLAB/HDF5/NetCDF adjacency;
 2. continue the binary/open-reader-backed batch with remaining SPC/JCAMP variants;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK` files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
