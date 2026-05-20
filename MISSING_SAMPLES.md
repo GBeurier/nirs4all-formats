@@ -11,6 +11,10 @@ For every format listed in `FORMATS.md`, this file states:
 
 If the row is ✅ with nothing in "Still missing", the format is fully covered for v1.
 
+For the decision-level explanation of untreated formats, sample blockers,
+unknown layouts and deliberate refusal paths, see
+[`docs/FORMAT_GAPS.md`](docs/FORMAT_GAPS.md).
+
 ---
 
 ## ❌ No sample of any kind

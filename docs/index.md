@@ -10,6 +10,7 @@ DIRECTIONS
 ROADMAP
 STATUS
 FORMATS
+FORMAT_GAPS
 formats/avantes
 formats/allotrope-asm
 formats/andi-ms

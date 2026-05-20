@@ -5,6 +5,10 @@ state of open-source support and the parser strategy we plan to use. Sections
 1–3 capture the formats provided in the original spec; sections 4–6 add formats
 discovered during the web research phase (cf. `DIRECTIONS.md`, Annex A).
 
+Formats that are listed but not decoded yet because of missing samples, unknown
+binary layouts or deliberate scope decisions are tracked in
+[`FORMAT_GAPS.md`](FORMAT_GAPS.md).
+
 ## Current Native Coverage
 
 Experimental readers currently implemented in Rust and tested on committed
