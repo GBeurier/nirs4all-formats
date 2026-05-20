@@ -31,8 +31,9 @@ Experimental native readers:
 - Allotrope ASM JSON: plate-reader spectral data cubes and detector-wavelength
   endpoint readings from committed Benchling allotropy fixtures;
 - Allotrope ADF: local-only `adfsee` HDF5 fixture with numeric `/data-cubes`
-  extracted as an experimental subset; RDF semantics and SDK validation remain
-  pending;
+  extracted as an experimental subset, plus minimal RDF component mapping for
+  cube titles, seconds axes, secondary nm scales and absorbance units; full
+  ontology resolution and SDK validation remain pending;
 - SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
   `measurement.absorbance` payloads with predictions mapped to targets;
 - Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped

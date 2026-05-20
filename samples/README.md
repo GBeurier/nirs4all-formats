@@ -125,7 +125,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `excel/` | Excel `.xlsx` | 🟡 | 4 | synthetic + real SCiO / NIRone Excel exports (forensic NIR Figshare) |
 | `fgi/` | FGI HDF5 + XML | ⚪ | 2 | synthetic |
 | `foss_winisi/` | Foss WinISI text export / DS3 CSV report | ✅ | 5 | synthetic + real Foss XDS / NIRSYSTEM-5000 CSV exports (sensAIfood Cordoba) |
-| `galactic_spc/` | Thermo / Galactic GRAMS `.spc` | ✅ | 16 + spec PDF | cheminfo/spc-parser, spectrochempy_data |
+| `galactic_spc/` | Thermo / Galactic GRAMS `.spc` | ✅ | 25 + spec PDF | cheminfo/spc-parser, spectrochempy_data |
 | `hdf5/` | Generic HDF5 | ✅ | 2 | h5py + synthetic |
 | `jasco/` | JASCO `.jws` + text export | ✅ | 4 | jasco_jws_reader, gnezd/Jasco_jws + synthetic |
 | `jcamp_dx/` | JCAMP-DX (all encodings) | ✅ | 21 | nzhagen/jcamp (IUPAC official suite + IR library) + NIST WebBook |
@@ -134,7 +134,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `microtops/` | Microtops sun photometer `.TXT` / MAN NetCDF | ✅ | 3 | synthetic + real PANGAEA AERONET MAN cruise NetCDF (MSM114/2) |
 | `modtran/` | MODTRAN5 albedo `.dat` | ⚪ | 1 | synthetic |
 | `netcdf/` | NetCDF (ANDI-adjacent) | ✅ | 4 | netcdf-c, xarray-data, hdeneke/PyrNet (pyranometer net) + synthetic |
-| `nicolet_omnic/` | Thermo Nicolet OMNIC `.spa` / `.spg` / `.srs` | ✅ | 3 | spectrochempy, spectrochempy_data |
+| `nicolet_omnic/` | Thermo Nicolet OMNIC `.spa` / `.spg` / `.srs` | ✅ | 8 | spectrochempy, spectrochempy_data |
 | `mfr/` | MFR Sun Photometer `.OUT` | ⚪ | 1 | synthetic |
 | `perten/` | Perten DA / Inframatic CSV report | ⚪ | 1 | synthetic |
 | `siware_api/` | Spectro Inc. SiWare API JSON / CSV | ⚪ | 2 | synthetic |
