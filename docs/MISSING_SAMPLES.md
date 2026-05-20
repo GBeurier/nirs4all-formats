@@ -23,7 +23,7 @@ unknown layouts and deliberate refusal paths, see
 
 | # | Format | Instrument | Vendor | Version / variant | Status | Why missing | Where it might come from |
 |---|---|---|---|---|---|---|---|
-| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | ❌ | Membership-gated. Real ADFs ship with Allotrope-conformant pharma instruments. No GitHub mirror, no public-archive sample. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device (Waters Empower, Sciex OS, etc.). |
+| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | 🟡 (local) | **Resolved 2026-05-20 round 4, kept local** — `adfsee` GitLab `src/main/resources/instances/example.adf` (3.6 MB HDF5) lives in `samples_local/allotrope_adf/`. Vendor-specific variants (Waters Empower, Sciex OS, Agilent OpenLab) still customer-only. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device. |
 
 ---
 
