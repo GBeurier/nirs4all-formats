@@ -48,6 +48,7 @@ formats/scio-csv
 formats/siware-neospectra
 formats/siware-api
 formats/spectral-matrix
+formats/svc-ger-sig
 formats/sun-photometers
 formats/text-readers-001
 formats/trivista-tvf

@@ -1826,6 +1826,58 @@ fn reads_svc_sig_with_overlap_quality_flag() {
 }
 
 #[test]
+fn reads_svc_sig_laptop_firmware_variant() {
+    let records = open_path(workspace_file("samples/svc_ger/BNL13001_000_laptop.sig"))
+        .expect("open laptop sig");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "svc-ger-sig");
+    assert!(records[0].quality_flags.is_empty());
+    assert_eq!(records[0].signals.len(), 3);
+    for name in ["reference", "target", "reflectance"] {
+        assert!(records[0].signals.contains_key(name), "missing {name}");
+    }
+
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 1_024);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert_eq!(reflectance.unit.as_deref(), Some("%"));
+    assert!((reflectance.axis.values[0] - 338.2).abs() < 0.000001);
+    assert!((reflectance.axis.values[1_023] - 2517.2).abs() < 0.000001);
+    assert!((reflectance.values[0] - 8.56).abs() < 0.000001);
+    assert!((reflectance.values[1_023] - 2.55).abs() < 0.000001);
+
+    let reference = records[0].signals.get("reference").expect("reference");
+    assert_eq!(reference.signal_type, SignalType::Radiance);
+    assert!((reference.values[0] - 469.43).abs() < 0.000001);
+    let target = records[0].signals.get("target").expect("target");
+    assert_eq!(target.signal_type, SignalType::Radiance);
+    assert!((target.values[0] - 40.16).abs() < 0.000001);
+}
+
+#[test]
+fn reads_svc_sig_clean_acer_pda_variant() {
+    let records = open_path(workspace_file("samples/svc_ger/ACPL_D2_P1_B_1_001.sig"))
+        .expect("open Acer PDA sig");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "svc-ger-sig");
+    assert!(records[0].quality_flags.is_empty());
+    assert!(records[0].provenance.warnings.is_empty());
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 1_024);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.axis.values[0] - 340.5).abs() < 0.000001);
+    assert!((reflectance.axis.values[1_023] - 2522.8).abs() < 0.000001);
+    assert!((reflectance.values[0] - 6.13).abs() < 0.000001);
+    assert!((reflectance.values[1_023] - 10.28).abs() < 0.000001);
+}
+
+#[test]
 fn flags_declared_bad_svc_sig_fixtures() {
     for relative in [
         "samples/svc_ger/ACPL_D2_P1_B_1_000_BAD.sig",

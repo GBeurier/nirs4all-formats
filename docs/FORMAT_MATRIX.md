@@ -24,7 +24,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | plusieurs familles texte + ProcSpec | partiel | lightr, pavo |
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
-| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA + laptop + GER 3700 PDA + HR-1024i field reels; BAD fixtures flagged | partiel | spectrolab, specdal |
+| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA/laptop semantic tests + GER 3700 PDA + HR-1024i field reels; BAD fixtures flagged | partiel | spectrolab, specdal |
 | Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only flagged | partiel | spectrolab, specdal |
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo synthetique uniquement | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
@@ -84,7 +84,7 @@ passer le format a `fait`.
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
 | PP Systems UniSpec SC | partiel | Le `.SPT` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider headers, units et metadata UniSpec SC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
 | PP Systems UniSpec DC | partiel | Le `.SPU` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider les deux canaux et metadata UniSpec DC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
-| SVC / GER SIG | partiel | GER 3700 PDA + BEO HR-1024i field exports reels desormais committes; les fixtures declarees BAD sont qualifiees; restent les firmware HR-1024i ≥3.0 et la verification GPS/date/unites systematique. |
+| SVC / GER SIG | partiel | Les variantes SVC laptop, SVC PDA Acer clean, matched-overlap-corrected, BAD declares, GER 3700 PDA et BEO HR-1024i field sont couvertes par tests/goldens; restent les firmware HR-1024i >=3.0, la promotion GPS/date/unites et les comparaisons automatisees `spectrolab`/`specdal`. |
 | Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est qualifie sans reflectance; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
