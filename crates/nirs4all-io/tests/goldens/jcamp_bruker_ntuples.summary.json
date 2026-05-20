@@ -1,0 +1,55 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::jcamp",
+      "record_signal_type": "unknown",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 24038.5,
+          "axis_kind": "frequency",
+          "axis_last": 0.0,
+          "axis_len": 16384,
+          "axis_order": "descending",
+          "axis_unit": "hz",
+          "name": "imaginary",
+          "role": "imaginary",
+          "signal_type": "unknown",
+          "unit": "ARBITRARY UNITS",
+          "value_first": -6966283.0,
+          "value_last": -7303022.0,
+          "value_sum": 288037962.0,
+          "values_len": 16384
+        },
+        {
+          "axis_first": 24038.5,
+          "axis_kind": "frequency",
+          "axis_last": 0.0,
+          "axis_len": 16384,
+          "axis_order": "descending",
+          "axis_unit": "hz",
+          "name": "real",
+          "role": "real",
+          "signal_type": "unknown",
+          "unit": "ARBITRARY UNITS",
+          "value_first": 2254931.0,
+          "value_last": 1513177.0,
+          "value_sum": 616961840.0,
+          "values_len": 16384
+        }
+      ],
+      "source_sha256": "8014dd1d3221a0985c1e62048a04a4a6e21b82c586043c2174b6cd800c943194",
+      "target_keys": [],
+      "warnings": [
+        "jcamp_ntuples_npoints_truncated: page R declared 16384, decoded 16393",
+        "jcamp_ntuples_npoints_truncated: page I declared 16384, decoded 16393"
+      ]
+    }
+  ]
+}

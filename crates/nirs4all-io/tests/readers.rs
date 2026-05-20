@@ -421,6 +421,49 @@ fn reads_jcamp_mixed_squeeze_difference_file() {
 }
 
 #[test]
+fn reads_jcamp_ntuples_spectrum_real_imag_pages() {
+    let records = open_path(workspace_file("samples/jcamp_dx/BRUKNTUP.DX")).expect("open ntuples");
+
+    assert_eq!(records.len(), 1);
+    let real = records[0].signals.get("real").expect("real");
+    let imaginary = records[0].signals.get("imaginary").expect("imaginary");
+    assert_eq!(real.axis.values.len(), 16_384);
+    assert_eq!(imaginary.axis.values.len(), 16_384);
+    assert_eq!(real.axis.unit, "hz");
+    assert_eq!(real.axis.kind, AxisKind::Frequency);
+    assert!((real.axis.values[0] - 24_038.5).abs() < 0.000001);
+    assert!((real.axis.values[16_383] - 0.0).abs() < 0.000001);
+    assert_eq!(real.values[0], 2_254_931.0);
+    assert_eq!(real.values[16_383], 1_513_177.0);
+    assert_eq!(imaginary.values[0], -6_966_283.0);
+    assert_eq!(imaginary.values[16_383], -7_303_022.0);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("jcamp_ntuples_npoints_truncated")));
+}
+
+#[test]
+fn reads_jcamp_ntuples_fid_real_imag_pages() {
+    let records = open_path(workspace_file("samples/jcamp_dx/TESTFID.DX")).expect("open fid");
+
+    assert_eq!(records.len(), 1);
+    let real = records[0].signals.get("real").expect("real");
+    let imaginary = records[0].signals.get("imaginary").expect("imaginary");
+    assert_eq!(real.axis.values.len(), 16_384);
+    assert_eq!(imaginary.axis.values.len(), 16_384);
+    assert_eq!(real.axis.unit, "s");
+    assert_eq!(real.axis.kind, AxisKind::Index);
+    assert!((real.axis.values[0] - 0.0).abs() < 0.000001);
+    assert!((real.axis.values[16_383] - 0.6815317).abs() < 0.000001);
+    assert!((real.values[0] - 2_979.837824796).abs() < 0.000001);
+    assert!((real.values[16_383] + 60_241.607962368005).abs() < 0.000001);
+    assert!((imaginary.values[0] - 6_214.555863824).abs() < 0.000001);
+    assert!((imaginary.values[16_383] + 6_063.227393114).abs() < 0.000001);
+}
+
+#[test]
 fn reads_galactic_spc_single_even_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/BENZENE.SPC")).expect("open spc");
 

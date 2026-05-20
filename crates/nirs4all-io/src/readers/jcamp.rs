@@ -1,11 +1,13 @@
 use std::collections::BTreeMap;
 use std::path::Path;
 
-use nirs4all_io_core::{AxisKind, Confidence, FormatProbe, Result, SignalType};
+use nirs4all_io_core::{
+    AxisKind, Confidence, FormatProbe, Result, SignalType, SpectralArray, SpectralAxis,
+};
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    normalize_key, parse_number, read_text_lossy, single_signal_record, SingleSignalSpec,
+    normalize_key, parse_number, read_text_lossy, record_from_signals, safe_signal_name,
 };
 use crate::Reader;
 
@@ -31,22 +33,35 @@ impl Reader for JcampReader {
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
         let (text, source) = read_text_lossy(path)?;
         let parsed = parse_jcamp_text(&text)?;
+        let mut signals = BTreeMap::new();
+        let mut dominant = SignalType::Unknown;
+        for signal in parsed.signals {
+            if dominant == SignalType::Unknown {
+                dominant = signal.signal_type.clone();
+            }
+            let axis = SpectralAxis::new(
+                parsed.axis.clone(),
+                parsed.axis_unit.clone(),
+                parsed.axis_kind.clone(),
+            )?;
+            let array = SpectralArray::new(
+                axis,
+                signal.values,
+                vec!["x".to_string()],
+                signal.signal_type,
+                signal.signal_unit,
+                signal.role,
+                "file",
+            )?;
+            signals.insert(signal.name, array);
+        }
         let metadata = parsed.metadata;
-        let record = single_signal_record(
+        let record = record_from_signals(
             "jcamp-dx",
             self.name(),
             source,
-            SingleSignalSpec {
-                axis_values: parsed.axis,
-                axis_unit: parsed.axis_unit,
-                axis_kind: parsed.axis_kind,
-                values: parsed.values,
-                signal_name: "signal".to_string(),
-                signal_type: parsed.signal_type,
-                signal_unit: parsed.signal_unit,
-                role: "signal".to_string(),
-            },
-            BTreeMap::new(),
+            signals,
+            dominant,
             metadata,
             parsed.warnings,
         )?;
@@ -56,16 +71,30 @@ impl Reader for JcampReader {
 
 struct ParsedJcamp {
     axis: Vec<f64>,
-    values: Vec<f64>,
     axis_unit: String,
     axis_kind: AxisKind,
-    signal_type: SignalType,
-    signal_unit: Option<String>,
+    signals: Vec<ParsedJcampSignal>,
     metadata: BTreeMap<String, Value>,
     warnings: Vec<String>,
 }
 
+struct ParsedJcampSignal {
+    name: String,
+    values: Vec<f64>,
+    signal_type: SignalType,
+    signal_unit: Option<String>,
+    role: String,
+}
+
 fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    if text.lines().any(|line| {
+        line.trim().strip_prefix("##").is_some_and(|body| {
+            normalize_key(body.split_once('=').map_or(body, |(key, _)| key)) == "ntuples"
+        })
+    }) {
+        return parse_ntuples_jcamp_text(text);
+    }
+
     let mut ldr = BTreeMap::<String, String>::new();
     let mut xy_lines = Vec::new();
     let mut in_xy = false;
@@ -105,28 +134,8 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         }
     });
 
-    let mut values = Vec::new();
     let mut warnings = Vec::new();
-    let mut last_raw_y: Option<f64> = None;
-    for line in xy_lines {
-        let has_dif = xy_line_has_dif(&line);
-        let mut line_values = values_from_xy_line(&line);
-        if has_dif && last_raw_y.is_some() && !line_values.is_empty() {
-            let checkpoint = line_values.remove(0);
-            if let Some(previous) = last_raw_y {
-                let tolerance = previous.abs().max(1.0) * 1e-6;
-                if (checkpoint - previous).abs() > tolerance {
-                    warnings.push(format!(
-                        "jcamp_dif_checkpoint_mismatch: previous {previous}, checkpoint {checkpoint}"
-                    ));
-                }
-            }
-        }
-        for raw_y in line_values {
-            last_raw_y = Some(raw_y);
-            values.push(raw_y * yfactor);
-        }
-    }
+    let mut values = decode_xy_lines(&xy_lines, yfactor, "signal", &mut warnings);
     if values.is_empty() {
         return Err(nirs4all_io_core::Error::InvalidRecord(
             "JCAMP XYDATA contains no plain AFFN values; packed DIF/DUP support is pending"
@@ -160,18 +169,317 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     metadata.insert("jcamp".to_string(), json!(ldr));
     Ok(ParsedJcamp {
         axis,
-        values,
         axis_unit,
         axis_kind,
-        signal_type,
-        signal_unit: (!yunits.is_empty()).then(|| yunits.to_string()),
+        signals: vec![ParsedJcampSignal {
+            name: "signal".to_string(),
+            values,
+            signal_type,
+            signal_unit: (!yunits.is_empty()).then(|| yunits.to_string()),
+            role: "signal".to_string(),
+        }],
         metadata,
         warnings,
     })
 }
 
+struct NtuplePage {
+    descriptor: String,
+    data_symbol: Option<String>,
+    lines: Vec<String>,
+}
+
+fn parse_ntuples_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    let mut ldr = BTreeMap::<String, String>::new();
+    let mut pages = Vec::<NtuplePage>::new();
+    let mut current_page: Option<NtuplePage> = None;
+    let mut in_data = false;
+
+    for raw in text.lines() {
+        let line = raw.trim();
+        if line.starts_with("$$") || line.is_empty() {
+            continue;
+        }
+        if let Some(body) = line.strip_prefix("##") {
+            let upper = body.to_ascii_uppercase();
+            if upper.starts_with("END") {
+                if let Some(page) = current_page.take() {
+                    if !page.lines.is_empty() {
+                        pages.push(page);
+                    }
+                }
+                if upper.starts_with("END=") {
+                    break;
+                }
+                in_data = false;
+                continue;
+            }
+
+            in_data = false;
+            if let Some((key, value)) = body.split_once('=') {
+                let normalized = normalize_key(key);
+                let value = strip_inline_comment(value).trim().to_string();
+                if normalized == "page" {
+                    if let Some(page) = current_page.take() {
+                        if !page.lines.is_empty() {
+                            pages.push(page);
+                        }
+                    }
+                    current_page = Some(NtuplePage {
+                        descriptor: value.clone(),
+                        data_symbol: None,
+                        lines: Vec::new(),
+                    });
+                } else if normalized == "data_table" {
+                    if current_page.is_none() {
+                        current_page = Some(NtuplePage {
+                            descriptor: String::new(),
+                            data_symbol: None,
+                            lines: Vec::new(),
+                        });
+                    }
+                    if let Some(page) = current_page.as_mut() {
+                        page.data_symbol = data_symbol_from_table(&value);
+                    }
+                    in_data = true;
+                }
+                ldr.insert(normalized, value);
+            }
+        } else if in_data {
+            if let Some(page) = current_page.as_mut() {
+                page.lines.push(line.to_string());
+            }
+        }
+    }
+    if let Some(page) = current_page.take() {
+        if !page.lines.is_empty() {
+            pages.push(page);
+        }
+    }
+
+    if pages.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP NTUPLES contains no DATA TABLE pages".to_string(),
+        ));
+    }
+
+    let var_names = ldr_list(&ldr, "var_name");
+    let symbols = ldr_list(&ldr, "symbol");
+    let var_types = ldr_list(&ldr, "var_type");
+    let var_dims = ldr_list(&ldr, "var_dim");
+    let units = ldr_list(&ldr, "units");
+    let first = ldr_list(&ldr, "first");
+    let last = ldr_list(&ldr, "last");
+    let factors = ldr_list(&ldr, "factor");
+
+    let x_index = var_types
+        .iter()
+        .position(|value| value.to_ascii_uppercase().contains("INDEPENDENT"))
+        .or_else(|| {
+            symbols
+                .iter()
+                .position(|symbol| symbol.eq_ignore_ascii_case("X"))
+        })
+        .unwrap_or(0);
+
+    let npoints = parse_list_number(&var_dims, x_index)
+        .map(|value| value as usize)
+        .unwrap_or_else(|| {
+            pages
+                .iter()
+                .map(|page| page.lines.len())
+                .max()
+                .unwrap_or(1)
+                .max(1)
+        });
+    let firstx = parse_list_number(&first, x_index).ok_or_else(|| {
+        nirs4all_io_core::Error::InvalidRecord("JCAMP NTUPLES missing FIRST axis".to_string())
+    })?;
+    let lastx = parse_list_number(&last, x_index).unwrap_or(firstx + npoints as f64 - 1.0);
+    let step = if npoints <= 1 {
+        1.0
+    } else {
+        (lastx - firstx) / (npoints - 1) as f64
+    };
+    let axis: Vec<f64> = (0..npoints).map(|idx| firstx + step * idx as f64).collect();
+
+    let xunit_raw = units.get(x_index).map(String::as_str).unwrap_or("index");
+    let (axis_kind, axis_unit) = axis_kind_unit(xunit_raw);
+
+    let mut warnings = Vec::new();
+    let mut parsed_signals = Vec::new();
+    for (page_index, page) in pages.iter().enumerate() {
+        let Some(signal_index) = ntuple_page_signal_index(page, &symbols, &var_types, page_index)
+        else {
+            warnings.push(format!("jcamp_ntuples_unmapped_page: {}", page.descriptor));
+            continue;
+        };
+        let yfactor = parse_list_number(&factors, signal_index).unwrap_or(1.0);
+        let mut values = decode_xy_lines(
+            &page.lines,
+            yfactor,
+            page.data_symbol.as_deref().unwrap_or("page"),
+            &mut warnings,
+        );
+        if values.len() > npoints {
+            warnings.push(format!(
+                "jcamp_ntuples_npoints_truncated: page {} declared {npoints}, decoded {}",
+                page.data_symbol.as_deref().unwrap_or("?"),
+                values.len()
+            ));
+            values.truncate(npoints);
+        } else if values.len() < npoints {
+            warnings.push(format!(
+                "jcamp_ntuples_npoints_mismatch: page {} declared {npoints}, parsed {}",
+                page.data_symbol.as_deref().unwrap_or("?"),
+                values.len()
+            ));
+        }
+        if values.is_empty() {
+            continue;
+        }
+
+        let signal_name = var_names
+            .get(signal_index)
+            .map(|name| ntuple_signal_name(name, symbols.get(signal_index).map(String::as_str)))
+            .unwrap_or_else(|| format!("signal_{}", page_index + 1));
+        let signal_unit = units
+            .get(signal_index)
+            .map(String::as_str)
+            .filter(|unit| !unit.trim().is_empty())
+            .map(|unit| unit.to_string());
+        parsed_signals.push(ParsedJcampSignal {
+            name: signal_name.clone(),
+            values,
+            signal_type: signal_type_from_yunits(
+                units
+                    .get(signal_index)
+                    .map(String::as_str)
+                    .unwrap_or(signal_name.as_str()),
+            ),
+            signal_unit,
+            role: signal_name,
+        });
+    }
+
+    if parsed_signals.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP NTUPLES contains no decoded signal pages".to_string(),
+        ));
+    }
+
+    let mut metadata = BTreeMap::new();
+    metadata.insert("jcamp".to_string(), json!(ldr));
+    Ok(ParsedJcamp {
+        axis,
+        axis_unit,
+        axis_kind,
+        signals: parsed_signals,
+        metadata,
+        warnings,
+    })
+}
+
+fn decode_xy_lines(
+    xy_lines: &[String],
+    yfactor: f64,
+    context: &str,
+    warnings: &mut Vec<String>,
+) -> Vec<f64> {
+    let mut values = Vec::new();
+    let mut last_raw_y: Option<f64> = None;
+    for line in xy_lines {
+        let has_dif = xy_line_has_dif(line);
+        let mut line_values = values_from_xy_line(line);
+        if has_dif && last_raw_y.is_some() && !line_values.is_empty() {
+            let checkpoint = line_values.remove(0);
+            if let Some(previous) = last_raw_y {
+                let tolerance = previous.abs().max(1.0) * 1e-6;
+                if (checkpoint - previous).abs() > tolerance {
+                    warnings.push(format!(
+                        "jcamp_dif_checkpoint_mismatch: {context} previous {previous}, checkpoint {checkpoint}"
+                    ));
+                }
+            }
+        }
+        for raw_y in line_values {
+            last_raw_y = Some(raw_y);
+            values.push(raw_y * yfactor);
+        }
+    }
+    values
+}
+
 fn get_f64(map: &BTreeMap<String, String>, key: &str) -> Option<f64> {
     map.get(key).and_then(|value| parse_number(value))
+}
+
+fn ldr_list(map: &BTreeMap<String, String>, key: &str) -> Vec<String> {
+    map.get(key)
+        .map(|value| {
+            value
+                .split(',')
+                .map(|part| part.trim().trim_matches('"').to_string())
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
+fn parse_list_number(values: &[String], index: usize) -> Option<f64> {
+    values.get(index).and_then(|value| parse_number(value))
+}
+
+fn strip_inline_comment(value: &str) -> &str {
+    value.split_once("$$").map_or(value, |(head, _)| head)
+}
+
+fn data_symbol_from_table(value: &str) -> Option<String> {
+    let start = value.find("++(")? + 3;
+    let mut symbol = String::new();
+    for ch in value[start..].chars() {
+        if ch.is_ascii_alphanumeric() || ch == '_' {
+            symbol.push(ch);
+        } else if !symbol.is_empty() {
+            break;
+        }
+    }
+    (!symbol.is_empty()).then_some(symbol)
+}
+
+fn ntuple_page_signal_index(
+    page: &NtuplePage,
+    symbols: &[String],
+    var_types: &[String],
+    page_index: usize,
+) -> Option<usize> {
+    if let Some(symbol) = page.data_symbol.as_deref() {
+        if let Some(index) = symbols
+            .iter()
+            .position(|candidate| candidate.eq_ignore_ascii_case(symbol))
+        {
+            return Some(index);
+        }
+    }
+    var_types
+        .iter()
+        .enumerate()
+        .filter(|(_, var_type)| {
+            let upper = var_type.to_ascii_uppercase();
+            !upper.contains("INDEPENDENT") && !upper.contains("PAGE")
+        })
+        .map(|(index, _)| index)
+        .nth(page_index)
+}
+
+fn ntuple_signal_name(var_name: &str, symbol: Option<&str>) -> String {
+    let lower = var_name.to_ascii_lowercase();
+    if lower.contains("real") {
+        "real".to_string()
+    } else if lower.contains("imag") {
+        "imaginary".to_string()
+    } else {
+        safe_signal_name(var_name, symbol.unwrap_or("signal"))
+    }
 }
 
 fn values_from_xy_line(line: &str) -> Vec<f64> {
@@ -379,6 +687,8 @@ fn axis_kind_unit(raw: &str) -> (AxisKind, String) {
         (AxisKind::Wavelength, "nm".to_string())
     } else if upper.contains("HZ") {
         (AxisKind::Frequency, "hz".to_string())
+    } else if upper.contains("SECOND") || upper == "S" {
+        (AxisKind::Index, "s".to_string())
     } else {
         (AxisKind::Index, "index".to_string())
     }

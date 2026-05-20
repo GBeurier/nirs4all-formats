@@ -22,7 +22,8 @@ Experimental native readers:
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64 payloads;
 - Ocean Optics / Ocean Insight ASCII exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`);
-- JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding;
+- JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
+  and NMR `NTUPLES` real/imaginary pages;
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
@@ -71,8 +72,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue the binary/open-reader-backed batch with JCAMP `NTUPLES` and Ocean Optics `.ProcSpec`;
-2. harden JCAMP beyond single-block `XYDATA`: `NTUPLES`, `XYPOINTS` and multi-block `LINK`;
+1. continue the binary/open-reader-backed batch with Ocean Optics `.ProcSpec`;
+2. harden JCAMP beyond single-block `XYDATA`: `XYPOINTS`, `PEAK TABLE` and multi-block `LINK`;
 3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
 5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
