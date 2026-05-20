@@ -51,8 +51,8 @@ format can be promoted.
 |---|---|---|
 | NeoSpectra Scanner CSV | Synthetic NeoSpectra-style CSV is parsed by row/table readers. | Real customer export with instrument metadata. |
 | SiWare / Spectro Inc. API JSON or CSV stream | Synthetic one-measurement JSON is parsed. | Real credentialed API response. |
-| Solar Light MFR `.OUT` and Microtops legacy `.TXT` | Synthetic channel exports are parsed by `sun_photometer`; committed Microtops MAN NetCDF is parsed through a guarded fixture path. | Real legacy Microtops `.TXT` export and a generic MAN NetCDF/HDF5 metadata path. |
-| PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. | Real field acquisition. |
+| Solar Light MFR `.OUT` and Microtops legacy `.TXT` | Synthetic channel exports are parsed by `sun_photometer`; local ARM MFRSR b1 NetCDF is parsed as 7-filter multispectral irradiance/ratio records; committed Microtops MAN NetCDF is parsed through a guarded fixture path; local AERONET MAN ASCII `.lev10/.lev15/.lev20` exports are parsed for AOD/AOD-STD. | Real legacy Microtops `.TXT` export, a redistributable MFR/MFRSR field export, broader ARM MFRSR validation and a generic MAN NetCDF/HDF5 metadata path. |
+| PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. Local Arctic LTER CSV/XLSX files are vegetation-index products, not raw spectra. | Real field acquisition. |
 | MODTRAN albedo `.dat` | Synthetic albedo table is parsed. | Redistributable licensed MODTRAN output. |
 | FGI HDF5 + XML pairing | Synthetic nested HDF5 payload and XML sidecar are parsed; real schema coverage is unknown. | Real FGI HDF5/XML pair. |
 | Shimadzu UVProbe `.txt` | Synthetic UVProbe text export is parsed. | Real customer text export. |
@@ -70,7 +70,7 @@ variants remain untreated until a sample or reference comparison is available.
 | Galactic / Thermo SPC | New little-endian generated-X, explicit-X, common-X multi and `-XYXY`; old LSB limited. | New big-endian `0x4C`, more old-header layouts, real multi-channel instrument fixtures. |
 | Thermo Nicolet OMNIC | `.spa`, `.spg`, TGA/GC `.srs` time-series matrices. | `.srsx`, rapid-scan/high-speed `.srs`, additional OMNIC release layouts. |
 | Perkin Elmer | `.sp` single spectra. | `.fsm` Spotlight imaging is intentionally out of v1; PE Lambda NIR-specific variants need fixtures. |
-| BUCHI NIRCal | One `.nir` transfer file with spectra/wavenumbers/property schema. | Non-zero property targets, `.cal` calibration-only files, NIRMaster variants. |
+| BUCHI NIRCal | One committed `.nir` transfer file with spectra/wavenumbers/property schema, plus a local-only cannabis `.nir` validating non-zero `CBDA`/`THCA` targets. | Redistributable non-zero target fixture, `.cal` calibration-only files, NIRMaster variants. |
 | Avantes AvaSoft | Legacy `.TRM/.ROH/.DRK/.REF/.ABS`, AvaSoft 8 `.Raw8/.IRR8`, ASCII exports. | Legacy `.IRR/.RMN`, AvaSoft 8 `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8` fixtures. |
 | Ocean Optics / Ocean Insight | SpectraSuite/OceanView/Jaz/CRAIC text, `.ProcSpec`, Ocean Optics-flavoured SPC. | QE Pro, Maya and Apex firmware-specific exports. |
 | ENVI / hyperspectral | ENVI SLI including USGS splib06a/splib07, ENVI Standard `.img/.dat + .hdr` cubes, AVIRIS 92AV3C ERDAS `.lan/.spc/.GIS`, and the local-only Indian Pines MATLAB v5 cube expanded to one spectrum per pixel. | Generic ERDAS LAN, NEON/Specim/HySpex/Headwall/HDF5 cubes and mask/ROI extraction workflows. |

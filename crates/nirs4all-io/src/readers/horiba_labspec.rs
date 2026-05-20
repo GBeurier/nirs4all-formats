@@ -202,11 +202,15 @@ fn read_labspec6_binary(
         let mut metadata = base_metadata.clone();
         metadata.insert("spectrum_index".to_string(), json!(index));
         if let Some(spatial) = &spatial {
-            let x_index = index % spatial.x_values.len();
-            let y_index = index / spatial.x_values.len();
+            let x_index = index / spatial.y_values.len();
+            let y_index = index % spatial.y_values.len();
             insert_spatial(&mut metadata, "x", spatial.x_values[x_index], &spatial.unit);
             insert_spatial(&mut metadata, "y", spatial.y_values[y_index], &spatial.unit);
             metadata.insert("spatial_axis_source".to_string(), json!(spatial.source));
+            metadata.insert(
+                "spatial_axis_order".to_string(),
+                json!("x_slowest_y_fastest"),
+            );
         }
         out.push(build_intensity_record(IntensityRecordInput {
             format: BINARY_FORMAT,
