@@ -169,6 +169,11 @@ pub fn signal_type_from_label(label: &str) -> SignalType {
         || lower.contains("aod")
     {
         SignalType::AerosolOpticalThickness
+    } else if lower.contains("uncertainty")
+        || lower.contains("standard deviation")
+        || lower.contains("stddev")
+    {
+        SignalType::Uncertainty
     } else if lower.contains("raw")
         || lower.contains("count")
         || lower.contains("sample")

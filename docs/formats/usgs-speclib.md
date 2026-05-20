@@ -7,7 +7,8 @@ used as an interchange path. The current Rust support is intentionally text
 first:
 
 - USGS splib06 `.asc` files with wavelength, reflectance and standard deviation
-  columns are parsed by `row-spectral-table`;
+  columns are parsed by `row-spectral-table`; standard deviation is typed as
+  `uncertainty`;
 - ECOSTRESS / ASTER `.spectrum.txt` exports with metadata-described X/Y
   columns are parsed by `row-spectral-table`;
 - legacy single-column `AREF` dumps are parsed by `usgs-aref-single-column`.

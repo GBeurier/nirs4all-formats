@@ -16,5 +16,6 @@ pub enum SignalType {
     Derivative,
     Preprocessed,
     AerosolOpticalThickness,
+    Uncertainty,
     Unknown,
 }

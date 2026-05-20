@@ -369,6 +369,7 @@ fn signal_priority(signal_type: &SignalType) -> u8 {
         | SignalType::AerosolOpticalThickness => 4,
         SignalType::KubelkaMunk | SignalType::Derivative | SignalType::Preprocessed => 3,
         SignalType::RawCounts | SignalType::SingleBeam | SignalType::Interferogram => 2,
+        SignalType::Uncertainty => 1,
         SignalType::Unknown => 0,
     }
 }
