@@ -615,6 +615,21 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
     assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-50.0));
     assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-50.0));
     assert_eq!(records[0].metadata["spatial_x_unit"].as_str(), Some("um"));
+    let white_light = &records[0].metadata["white_light_image"];
+    assert_eq!(white_light["format"].as_str(), Some("jpeg"));
+    assert_eq!(white_light["mime_type"].as_str(), Some("image/jpeg"));
+    assert_eq!(white_light["width_px"].as_u64(), Some(752));
+    assert_eq!(white_light["height_px"].as_u64(), Some(480));
+    assert_eq!(white_light["precision_bits"].as_u64(), Some(8));
+    assert_eq!(white_light["components"].as_u64(), Some(3));
+    assert_eq!(white_light["jfif_x_density"].as_u64(), Some(96));
+    assert_eq!(white_light["jfif_y_density"].as_u64(), Some(96));
+    assert_eq!(
+        white_light["exif_description"].as_str(),
+        Some("white-light image")
+    );
+    assert_eq!(white_light["exif_make"].as_str(), Some("Renishaw"));
+    assert_eq!(white_light["byte_len"].as_u64(), Some(8797));
     assert_eq!(records[0].metadata["map_x_index"].as_u64(), Some(0));
     assert_eq!(records[0].metadata["map_y_index"].as_u64(), Some(0));
     assert!((records[0].metadata["spatial_distance"].as_f64().unwrap() - 0.0).abs() < 0.000001);
@@ -652,6 +667,9 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
         .provenance
         .warnings
         .contains(&"renishaw_wdf_interrupted_acquisition_truncated_to_count".to_string()));
+    let white_light = &records[0].metadata["white_light_image"];
+    assert_eq!(white_light["width_px"].as_u64(), Some(479));
+    assert_eq!(white_light["height_px"].as_u64(), Some(445));
     let signal = records[0].signals.get("raw_counts").expect("raw counts");
     assert_eq!(signal.axis.values.len(), 1010);
     assert_eq!(signal.axis.unit, "cm-1");
@@ -676,6 +694,26 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
     assert_eq!(records[8].metadata["map_x_index"].as_u64(), Some(2));
     assert_eq!(records[8].metadata["map_y_index"].as_u64(), Some(2));
 
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_map2.wdf",
+    ))
+    .expect("open WDF map2");
+    assert_eq!(records.len(), 400);
+    assert_eq!(
+        records[0].metadata["map_analysis_block_count"].as_u64(),
+        Some(2)
+    );
+    let map_blocks = records[0].metadata["map_analysis_blocks"]
+        .as_array()
+        .expect("map analysis blocks");
+    assert_eq!(map_blocks[0]["payload_kind"].as_str(), Some("pset"));
+    assert_eq!(map_blocks[0]["pset_declared_len"].as_u64(), Some(272));
+    assert!(map_blocks[0]["ascii_preview"]
+        .as_array()
+        .expect("ascii preview")
+        .iter()
+        .any(|value| value.as_str() == Some("Intensity At Point 357u")));
+
     let records =
         open_path(workspace_file("samples/raman_renishaw/wire_depth.wdf")).expect("open WDF depth");
     assert_eq!(records.len(), 40);
@@ -685,6 +723,17 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
         records[0].metadata["elapsed_time_seconds"].as_f64(),
         Some(0.0)
     );
+    let map_blocks = records[0].metadata["map_analysis_blocks"]
+        .as_array()
+        .expect("map analysis blocks");
+    assert_eq!(map_blocks.len(), 2);
+    assert!(map_blocks[0]["ascii_preview"]
+        .as_array()
+        .expect("ascii preview")
+        .iter()
+        .any(|value| value
+            .as_str()
+            .is_some_and(|text| text.contains("Signal To Baseline from 1550.00"))));
 
     let records = open_path(workspace_file(
         "samples/raman_renishaw/renishaw_test_focustrack.wdf",

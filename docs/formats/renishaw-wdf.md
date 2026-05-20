@@ -11,6 +11,9 @@ files:
 - `YLST` unit metadata when present;
 - `ORGN` navigation axes for spatial X/Y/Z, FocusTrack Z and acquisition time;
 - `WMAP` map dimensions, map type, offsets and scales;
+- `WHTL` white-light image metadata without embedding the image payload;
+- `MAP ` analysis-block inventory without treating derived PSET payloads as
+  spectra;
 - fixed-header metadata such as point count, scan type, measurement type,
   accumulation count, application version, laser wavenumber, user and title.
 
@@ -20,7 +23,13 @@ spectrum. `ORGN` values are copied to normalized per-record metadata such as
 `spatial_x`, `spatial_y`, `spatial_z`, `focus_track_z`,
 `time_filetime_100ns` and `elapsed_time_seconds`. `WMAP` adds `map_width`,
 `map_height`, `map_x_index`, `map_y_index` and line-scan
-`spatial_distance` when the map type is `xyline`. Undefined
+`spatial_distance` when the map type is `xyline`. `WHTL` adds a
+`white_light_image` metadata object with JPEG MIME type, byte length, SHA-256,
+image dimensions, precision/component count, JFIF density and basic EXIF
+make/description fields. `MAP ` blocks add `map_analysis_blocks` entries with
+block UID, byte length, SHA-256, PSET length and a short printable-string
+preview so derived analysis payloads are discoverable without silently
+promoting them to spectra. Undefined
 `measurement_type=0` containers are still refused.
 
 ## Supported Fixtures
@@ -73,6 +82,16 @@ acquisitions require advancing by `capacity` while only emitting the first
 sizes and `linefocus_size`. Current normalization covers observed map type
 values `0` (unspecified regular grid), `2` (column-major StreamLine) and `128`
 (`xyline`).
+
+`WHTL` payloads in committed fixtures are JPEG blobs. The reader records their
+container metadata only; it does not store or decode pixels into
+`SpectralRecord`.
+
+`MAP ` payloads in committed fixtures start with `PSET` and describe WiRE
+derived analysis maps, such as intensity-at-point and signal-to-baseline
+windows. The reader records an inventory only. Decoding `dataRange` into a
+derived non-spectral signal remains a separate decision because the payload is
+analysis output, not primary spectral acquisition data.
 
 ## Reference Readers
 

@@ -77,7 +77,8 @@ Deliverables:
 - Renishaw WDF reader; experimental for `WDF1` spectral payloads using `DATA`,
   `XLST`, `YLST`, `ORGN` and `WMAP`; maps/lines/depth/time-series records are
   emitted one stored spectrum at a time with spatial, elapsed-time and map-index
-  metadata;
+  metadata, plus conservative `WHTL` JPEG image metadata and `MAP ` PSET
+  analysis-block inventories;
 - Princeton TriVista TVF reader; experimental for XML frame payloads, X/Y
   navigation axes, time-series timestamps and Step-and-Glue child windows;
 - DigitalSurf MountainsMap reader; experimental for fixed-header `.sur/.pro`
@@ -189,10 +190,10 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- WiTec WIP for lab-transfer and adjacent spectroscopy workflows, DigitalSurf
-  richer comment/metadata parsing, TriVista richer hardware metadata and
-  Renishaw WDF hardening for white-light image metadata plus `MAP ` block
-  interpretation;
+- WiTec WIP detection/refusal for lab-transfer and adjacent spectroscopy
+  workflows, DigitalSurf richer comment/metadata parsing, TriVista richer
+  hardware metadata and later Renishaw WDF `MAP ` dataRange decoding if derived
+  analysis maps become part of the export model;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;
