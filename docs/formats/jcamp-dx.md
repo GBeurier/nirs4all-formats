@@ -62,8 +62,7 @@ layout used by the committed IUPAC fixtures:
 `FIRST`/`LAST` are treated as physical axis endpoints. `FACTOR` is applied to
 dependent ASDF ordinates and preserved in metadata for axis checkpoint work.
 Time-domain axes with `UNITS=SECONDS` are represented as unit `s` with the
-current generic `index` axis kind because the core schema does not yet expose a
-dedicated time-axis enum value.
+dedicated `time` axis kind.
 
 ## LINK / XYPOINTS Notes
 

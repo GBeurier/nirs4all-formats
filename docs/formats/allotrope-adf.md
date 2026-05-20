@@ -23,8 +23,7 @@ component types, primary scale component types and secondary scale component
 types into metadata. The local `adfsee` fixture maps:
 
 - `AbsorbanceUnitValue` measures to an absorbance signal with `mAU` units;
-- `SecondTimeValue` scales to a seconds axis, still typed as `index` because it
-  is a time axis rather than a spectral wavelength/wavenumber axis;
+- `SecondTimeValue` scales to a seconds axis typed as `time`;
 - `NanometerValue` secondary scales to `nm` wavelength metadata for split 2-D
   records.
 

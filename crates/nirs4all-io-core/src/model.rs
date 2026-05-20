@@ -14,6 +14,7 @@ pub enum AxisKind {
     Wavelength,
     Wavenumber,
     Frequency,
+    Time,
     Index,
 }
 

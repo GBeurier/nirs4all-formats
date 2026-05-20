@@ -34,7 +34,7 @@ Experimental native readers:
   endpoint readings from committed Benchling allotropy fixtures;
 - Allotrope ADF: local-only `adfsee` HDF5 fixture with numeric `/data-cubes`
   extracted as an experimental subset, plus minimal RDF component mapping for
-  cube titles, seconds axes, secondary nm scales and absorbance units; full
+  cube titles, typed seconds axes, secondary nm scales and absorbance units; full
   ontology resolution and SDK validation remain pending;
 - SiWare API JSON / CSV companion: NeoSpectra-style
   `measurement.wavelengths` and `measurement.absorbance` JSON payloads with
@@ -81,7 +81,8 @@ Experimental native readers:
   Optics `.spc` sample is covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
   top-level multi-block XYDATA files as multiple records, NMR `NTUPLES`
-  real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
+  real/imaginary pages with frequency/time axes, and Ocean Optics
+  `LINK`/`XYPOINTS` blocks;
   `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
   are rejected and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
