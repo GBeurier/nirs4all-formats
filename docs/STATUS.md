@@ -31,6 +31,10 @@ Experimental native readers:
   `measurement.absorbance` payloads with predictions mapped to targets;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
   pure-Rust reader; ANDI/MS and weather NetCDF samples are refused as non-NIRS;
+- generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
+  containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
+  and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
+  pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -90,10 +94,14 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue with remaining structured-container samples and adjacency:
-   MATLAB/HDF5, then additional JSON/XML exports as fixtures appear;
-2. continue the binary/open-reader-backed batch with remaining SPC/JCAMP variants;
-3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK` files and stricter checkpoint validation;
-4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM where practical;
-5. replace Python/R subprocess transport with native PyO3/C ABI paths;
-6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+1. add MATLAB `.mat` v5/v7.3 and `.RData` dataset readers next, with v7.3
+   transposition rules documented against the HDF5-backed fixture;
+2. continue the open-reader-backed binary batch in this order: Nicolet OMNIC
+   `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
+3. add lab-transfer containers: Excel `.xlsx`, then Renishaw WDF and Horiba /
+   JobinYvon LabSpec XML/text as adjacent spectroscopy readers;
+4. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
+   files and stricter checkpoint validation;
+5. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+6. replace Python/R subprocess transport with native PyO3/C ABI paths;
+7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

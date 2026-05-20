@@ -74,7 +74,7 @@ Legend for **Container**:
 | Bruker FTIR / OPUS export | `.dpt` | ascii | ✅ | Any text loader (`pandas`, `read.table()`) | Two-column ASCII export from OPUS. Trivial. |
 | Bruker OPUS native | no fixed ext. (often `.0`, `.0000`, …) | bin | ✅ | R: `opusreader2`, `hyperSpec.utils::read_opus()`; Py: `brukeropusreader`, `brukeropus`, `opusFC`, `spectrochempy.read_opus()` | Proprietary, reverse-engineered. Block-based file with parameter blocks + spectral blocks. Several Python readers diverge in completeness. |
 | ENVI Spectral Library | `.sli` + `.hdr` (sometimes `.slb`) | mixed (hdr ascii + sli bin) | ✅ | R: `RStoolbox::readSLI()`; Py: `spectral` (Spectral Python), `pysptools` | Well documented. Reference for our internal representation: paired metadata + binary block. |
-| FGI HDF5 + XML | `.h5`, `.hdf5`, `.xml` | hdf5 + xml | 🟡 | R: `rhdf5`, `hdf5r`, `xml2`; Py: `h5py`, `lxml` | Standards-based container, but schema is FGI-specific → needs a dedicated mapper. |
+| FGI HDF5 + XML | `.h5`, `.hdf5`, `.xml` | hdf5 + xml | 🟡 | R: `rhdf5`, `hdf5r`, `xml2`; Py: `h5py`, `lxml` | Generic HDF5 payload is covered for committed nested `spectra` + `wavelengths` fixture; XML sidecar mapping remains pending. |
 | Excel spectral tables | `.xls`, `.xlsx` | tabular | ✅ | `readxl`, `openpyxl`, `pandas.read_excel()` | `.xlsx` is ZIP/XML, `.xls` is OLE/CFB. Trivial if header convention is documented. |
 | MFR Sun Photometer | `.OUT` | ascii | 🟠 | Ad-hoc parser; SPECCHIO | Regular fixed-width text; committed MFR fixture is covered by `sun_photometer`. |
 | Ocean Optics SpectraSuite | `.csv` (non-comma) | ascii | ✅ | R: `lightr`, `pavo::getspec()`; Py: ad-hoc | Variant CSV with `;` or tab separator + multi-line header. |
@@ -127,7 +127,7 @@ Legend for **Container**:
 | mzML / mzMLb | `.mzML`, `.mzMLb` | xml / hdf5 | ✅ | `pyteomics`, `pymzml` | MS-oriented but cited as design inspiration for our internal schema. |
 | Plain CSV / TSV / TXT | `.csv`, `.tsv`, `.txt` | ascii | ✅ | `pandas`, `nirs4all.data.loaders.CSVLoader` | Already supported in `nirs4all`. We extend it with header heuristics. |
 | Parquet | `.parquet` | columnar bin | ✅ | `pyarrow`, `fastparquet`, `nirs4all.data.loaders.ParquetLoader` | Already in `nirs4all`. Used as the internal cache format. |
-| HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables` | Generic loader + schema mapping per vendor. |
+| HDF5 (generic) | `.h5`, `.hdf5` | hdf5 | ✅ | `h5py`, `tables`; Rust: `hdf5-reader` | Current native reader covers root or nested `spectra` + `wavelengths` datasets and refuses non-spectral HDF5 containers. |
 
 ---
 
@@ -168,7 +168,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 |---|---|---|
 | **A — must-have** | `.asd`, `.sig`, `.sed`, OPUS native, `.spc` (Galactic, all sub-variants), JCAMP-DX (`AFFN`/`XYDATA`/`DIF/DUP`/`NTUPLES`), ENVI SLI, Avantes AvaSoft 6/7 (`.TRM`/`.ABS`/`.ROH`/`.DRK`/`.REF`) and AvaSoft 8 (`.RAW8`/`.RFL8`/`.ABS8`/`.TRM8`/`.IRR8`), Avantes ASCII exports, CSV/TSV variants, Excel | Cover the majority of academic and industrial NIR field/benchtop deployments. |
 | **B — high value** | `.spa`/`.spg`/`.srs` (Nicolet OMNIC), `.sp` (PE), Foss/Metrohm/Buchi CSV/JCAMP exports, BUCHI NIRCal `.nir` (via `prospectr` port), ASD `.ILL`/`.REF`/`.RAW`, OceanView `.ProcSpec`, JASCO `.jws`, Shimadzu UVProbe `.spc` | High-impact but partial open support; budget reverse-engineering or R-port work. |
-| **C — opportunistic** | FGI HDF5+XML, Foss `.NIR` native, Perten native, AnIML hardening, Allotrope ASM/ADF hardening, USGS SPECPR | Either niche, vendor-locked, or covered by export workflows. |
+| **C — opportunistic** | FGI XML sidecars, Foss `.NIR` native, Perten native, AnIML hardening, Allotrope ASM/ADF hardening, USGS SPECPR | Either niche, vendor-locked, or covered by export workflows. |
 
 > **Performance / availability assumption (important).** A *must-have* tag
 > means the format must work in v1, *not* that we promise native speed for

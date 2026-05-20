@@ -50,6 +50,8 @@ Deliverables:
   payloads;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
   datasets and refusal of adjacent non-NIRS NetCDF containers;
+- generic HDF5 NIRS reader; experimental for root and nested-group `spectra` +
+  `wavelengths` datasets, including the committed synthetic FGI HDF5 payload;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -128,6 +130,8 @@ Deliverables:
   experimental for committed text fixtures;
 - AnIML XML and Allotrope ASM JSON structured exports; experimental for
   committed spectroscopy-like fixtures;
+- generic HDF5 structured containers; experimental for simple NIRS datasets
+  and nested FGI-style groups, with XML sidecar mapping still pending;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment
@@ -143,8 +147,12 @@ Deliverables:
 
 Add one family at a time:
 
-- harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures,
-  then Nicolet OMNIC, Perkin Elmer, BUCHI NIRCal and JASCO;
+- MATLAB `.mat` v5/v7.3 and `.RData` academic datasets;
+- Nicolet OMNIC `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir` and
+  JASCO `.jws`, each validated against an open reference reader when possible;
+- Excel `.xlsx`, Renishaw WDF and Horiba / JobinYvon LabSpec XML/text for
+  lab-transfer and adjacent spectroscopy workflows;
+- harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;
 - adjacent formats only when they help disambiguation or user workflows.
