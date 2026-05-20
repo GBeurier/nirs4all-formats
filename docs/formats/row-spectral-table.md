@@ -29,7 +29,7 @@ axis. The native axis order is preserved.
 | `samples/modtran/synthetic_albedo.dat` | `albedo` | Whitespace text, wavelength in `um`, albedo mapped to reflectance. |
 | `samples/pp_systems/synthetic_unispec.SPT` | `dn_white`, `dn_target`, `reflectance` | UniSpec SC style export. |
 | `samples/pp_systems/synthetic_unispec_dc.SPU` | `channel_a_dn`, `channel_b_dn`, `reflectance` | UniSpec DC style export. |
-| `samples/envi_sli/ecostress_b.spectrum.txt` | `reflectance` | ECOSTRESS / ENVI text spectrum with metadata-described columns. |
+| `samples/envi_sli/ecostress_b.spectrum.txt`, `ecostress_a.spectrum.txt`, `aster_granite.spectrum.txt` | `reflectance` | ECOSTRESS / ASTER / ENVI text spectra with metadata-described columns. |
 | `samples/csv_tsv/idl_envi_output.txt` | `s000` ... `s004` | IDL/ENVI comment-prefixed header. |
 | `samples/shimadzu/synthetic_uvprobe.txt` | `sample_s000` | UVProbe-style quoted CSV export; signal type remains unknown because the header only says sample. |
 | `samples/jasco/synthetic_jws_export.txt` | `absorbance` | JASCO text export with `XYDATA`. |

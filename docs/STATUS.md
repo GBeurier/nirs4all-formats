@@ -61,7 +61,8 @@ Experimental native readers:
   `axis: ... / data: ...` descriptors used by UvA handheld XLSX exports, and
   canonical `spectra`/`metadata`/`references` multi-sheet lab templates with
   numeric wavelength headers; legacy `.xls` remains pending;
-- Bruker OPUS DPT ASCII export (`.dpt`);
+- Bruker OPUS DPT ASCII export (`.dpt`), including the real `RS-1.dpt`
+  fixture from `lightr`;
 - Bruker OPUS native binaries, 1D data/status block pairs and cross-reader
   fixtures with semantic tests over the committed OPUS corpus;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -86,7 +87,8 @@ Experimental native readers:
 - SVC/GER SIG (`.sig`), including declared bad fixtures flagged in quality
   metadata.
 - USGS spectral-library text: SPECPR-style `.asc` wavelength/reflectance
-  tables and single-column AREF dumps with generated index axes.
+  tables, ECOSTRESS/ASTER `.spectrum.txt` exports and single-column AREF dumps
+  with generated index axes.
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
 - Thermo / Galactic GRAMS SPC (`.spc`, `.SPC`), new little-endian generated-X,
   explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian
