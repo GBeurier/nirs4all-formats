@@ -137,7 +137,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `nicolet_omnic/` | Thermo Nicolet OMNIC `.spa` / `.spg` / `.srs` | ✅ | 8 | spectrochempy, spectrochempy_data |
 | `mfr/` | MFR Sun Photometer `.OUT` | ⚪ | 1 | synthetic |
 | `perten/` | Perten DA / Inframatic CSV report | ⚪ | 1 | synthetic |
-| `siware_api/` | Spectro Inc. SiWare API JSON / CSV | ⚪ | 2 | synthetic |
+| `siware_api/` | Spectro Inc. SiWare API JSON / CSV | ⚪ | 2 | synthetic, both golden-backed |
 | `numpy/` | NumPy `.npy` / `.npz` | ⚪ | 2 | synthetic |
 | `ocean_optics/` | Ocean Optics SpectraSuite / OceanView / ProcSpec / Jaz | ✅ | 12 | lightr |
 | `parquet/` | Parquet | ✅ | 2 | apache/parquet-testing + synthetic |
@@ -191,7 +191,7 @@ verify; they all carry a synthetic placeholder for shape testing.
 | Shimadzu UVProbe native `.spc` (different from Galactic) | Proprietary; experimental readers only. | Synthetic ASCII export in `shimadzu/`. |
 | VIAVI MicroNIR `.pri` project | Customer-only. | Real CSV/XLSX exports now ship in `viavi_micronir/` (UvA forensic Figshare); native `.pri` remains unavailable. |
 | Si-Ware NeoSpectra Scanner CSV (real) | Customer-only. | Real OSSL Woodwell+KSSL and UvA forensic exports now ship in `siware_neospectra/` (CC-BY-4.0). |
-| Spectro Inc. SiWare API JSON (real) | Cloud API behind credentials. | Synthetic in `siware_api/`. |
+| Spectro Inc. SiWare API JSON / CSV (real) | Cloud API behind credentials. | Synthetic JSON and CSV in `siware_api/`, both golden-backed. |
 | MFR Sun Photometer real `.OUT` | AERONET-archived behind login. | Synthetic in `mfr/`. |
 | Perten DA / Inframatic real CSV | No GitHub fixture found. | Synthetic in `perten/`. |
 | MODTRAN5 albedo `.dat` real | Distributed with MODTRAN license. | Synthetic in `modtran/`. |

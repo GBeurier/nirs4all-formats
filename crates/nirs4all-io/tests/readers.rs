@@ -2107,6 +2107,34 @@ fn reads_siware_api_json_measurement() {
 }
 
 #[test]
+fn reads_siware_api_csv_stream_as_row_table() {
+    let records = open_path(workspace_file(
+        "samples/siware_api/synthetic_siware_api.csv",
+    ))
+    .expect("open siware csv");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert_eq!(
+        records[0].metadata["notes"][0].as_str(),
+        Some("Spectro Inc. SiWare API CSV stream")
+    );
+    assert_eq!(
+        records[0].metadata["notes"][1].as_str(),
+        Some("measurement_id,meas-2026-05-18-001")
+    );
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.024871).abs() < 0.000001);
+    assert!((absorbance.values[199] + 0.057148).abs() < 0.000001);
+}
+
+#[test]
 fn reads_real_neospectra_ossl_wide_csv_slice() {
     let records = open_path(workspace_file(
         "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",

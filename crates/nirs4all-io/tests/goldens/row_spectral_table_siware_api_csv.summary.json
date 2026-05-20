@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "notes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_table",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.024871,
+          "value_last": -0.057148,
+          "value_sum": 38.785143,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "4beb76bc6f929a180c5e3e716049f3b1fb3b912bd510976cb216871eef30de42",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

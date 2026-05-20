@@ -417,6 +417,10 @@ const CASES: &[(&str, &str)] = &[
         "siware_api_json",
         "samples/siware_api/synthetic_siware_api.json",
     ),
+    (
+        "row_spectral_table_siware_api_csv",
+        "samples/siware_api/synthetic_siware_api.csv",
+    ),
     ("netcdf_synthetic_nirs", "samples/netcdf/synthetic_nirs.nc"),
     ("hdf5_synthetic_nirs", "samples/hdf5/synthetic_nirs.h5"),
     ("hdf5_synthetic_fgi", "samples/fgi/synthetic_fgi.h5"),

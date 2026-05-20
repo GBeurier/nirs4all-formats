@@ -41,7 +41,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | `.txt` synthetique teste semantiquement; `.spc` proprietaire manquant | partiel | pyfasma-spc, convertisseur Shimadzu |
 | VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | CSV/XLSX (UvA forensic 1700) OK; pri manquant | partiel | parseur texte, openpyxl |
 | Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | OSSL Woodwell + UvA forensic XLSX OK | partiel | parseur texte, openpyxl |
-| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | JSON/CSV synthetiques | partiel | JSON/CSV standard |
+| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | JSON natif + CSV axis-first synthetiques golden-backed | partiel | JSON/CSV standard |
 | JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | XYDATA mono/multi-blocs, ASDF, NTUPLES, LINK partiel | partiel | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
 | ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | detection + refus non-NIRS | fait | pyteomics, PyMassSpec, pyOpenMS |
 | NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | schema spectra+wavelengths synthetique + lecteurs dedies Microtops MAN / ARM MFRSR / ARM SURFSPECALB locaux + refus adjacents | partiel | netcdf-reader, xarray, netcdf, ARM ACT |
@@ -99,7 +99,7 @@ passer le format a `fait`.
 | Shimadzu UVProbe | partiel | Le `.txt` UVProbe synthetique est verrouille par golden/test semantique sur axe `nm`, signal `sample_s000` et titre `Spectrum Data`; la registry teste aussi que `.spc` n'est pas revendique par extension seule. Restent vrai `.txt`, vrai `.spc` Shimadzu et comparaison convertisseur/`pyfasma-spc`. |
 | VIAVI MicroNIR | partiel | Reels CSV/XLSX MicroNIR 1700 committes et verrouilles par tests de lecture + probe (UvA forensic). `.pri` natif reste hors atteinte. |
 | Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX committes et verrouilles par tests de lecture + probe; le descripteur OSSL non spectral est refuse explicitement. Reste a couvrir un export NeoSpectra Scanner natif single-measurement. |
-| Spectro Inc. SiWare API | partiel | Les fixtures JSON/CSV sont synthetiques; il manque une reponse API reelle et des variantes de schema. |
+| Spectro Inc. SiWare API | partiel | JSON natif `measurement.wavelengths`/`measurement.absorbance` et CSV axis-first sont verrouilles par goldens/tests semantiques. Les fixtures restent synthetiques; il manque une reponse API reelle, des variantes de schema et une comparaison reference sur les predictions, unites et metadata optionnelles. |
 | JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts par goldens elargis, y compris fichiers top-level multi-blocs (`nist_sucrose_ir.jdx` -> 2 records). Restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
 | NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; PyrNet et AOSMET sont des refus attendus non spectraux. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
 | AnIML | partiel | Les `SeriesSet` spectraux synthetiques sont couverts avec valeurs explicites et axe uniforme `AutoIncrementedValueSet`; `Example3.animl` est un sample AnIML reel non spectral refuse comme attendu. Restent vrais AnIML spectraux, indices segmentes non-zero, validation XSD et conformance avec tooling AnIML. |
