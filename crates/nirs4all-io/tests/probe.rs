@@ -104,6 +104,14 @@ fn probes_siware_json_and_comment_header_text_exports() {
     }));
 }
 
+#[test]
+fn probes_netcdf_containers() {
+    let probes = probe_path(workspace_file("samples/netcdf/synthetic_nirs.nc")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "netcdf-container" && probe.confidence == Confidence::Likely
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

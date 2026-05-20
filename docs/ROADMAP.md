@@ -48,6 +48,8 @@ Deliverables:
   and detector-wavelength endpoint readings;
 - SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
   payloads;
+- NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
+  datasets and refusal of adjacent non-NIRS NetCDF containers;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;

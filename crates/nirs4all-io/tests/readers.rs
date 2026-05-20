@@ -520,6 +520,36 @@ fn reads_siware_api_json_measurement() {
 }
 
 #[test]
+fn reads_synthetic_nirs_netcdf_dataset() {
+    let records =
+        open_path(workspace_file("samples/netcdf/synthetic_nirs.nc")).expect("open netcdf");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "netcdf-nirs");
+    assert_eq!(records[0].metadata["sample_index"].as_u64(), Some(0));
+    assert!(records[0].targets.contains_key("protein"));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.036742717027664185).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_non_nirs_netcdf_containers() {
+    for relative in [
+        "samples/andi_ms/gc01_0812_066.cdf",
+        "samples/netcdf/air_temperature.nc",
+    ] {
+        let err = open_path(workspace_file(relative)).expect_err("non-NIRS NetCDF");
+        assert!(err.to_string().contains("no spectra variable"));
+    }
+}
+
+#[test]
 fn reads_pp_systems_row_tables_with_multiple_signals() {
     let records =
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");
