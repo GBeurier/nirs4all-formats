@@ -35,7 +35,7 @@ Known limitations:
   with a warning because no wavelength vector is present in the file.
 - Target-only reports without spectra are not loaded into `SpectralRecord`.
 - JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
-  yet.
+  yet; top-level multi-block `XYDATA` files are covered.
 - The Python bridge uses `nirs4all-io read-json` as temporary transport; native
   PyO3/C ABI transport is still planned.
 

@@ -2,7 +2,8 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use nirs4all_io_core::{
-    AxisKind, Confidence, FormatProbe, Result, SignalType, SpectralArray, SpectralAxis,
+    AxisKind, Confidence, FormatProbe, Result, SignalType, SourceFile, SpectralArray, SpectralAxis,
+    SpectralRecord,
 };
 use serde_json::{json, Value};
 
@@ -32,37 +33,32 @@ impl Reader for JcampReader {
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
         let (text, source) = read_text_lossy(path)?;
-        let parsed = parse_jcamp_text(&text)?;
-        let mut signals = BTreeMap::new();
-        for signal in parsed.signals {
-            let axis = SpectralAxis::new(
-                parsed.axis.clone(),
-                parsed.axis_unit.clone(),
-                parsed.axis_kind.clone(),
-            )?;
-            let array = SpectralArray::new(
-                axis,
-                signal.values,
-                vec!["x".to_string()],
-                signal.signal_type,
-                signal.signal_unit,
-                signal.role,
-                "file",
-            )?;
-            signals.insert(signal.name, array);
+        if is_link_jcamp(&text) {
+            return Ok(vec![jcamp_record_from_parsed(
+                parse_jcamp_text(&text)?,
+                source,
+                self.name(),
+            )?]);
         }
-        let dominant = dominant_signal_type(&signals);
-        let metadata = parsed.metadata;
-        let record = record_from_signals(
-            "jcamp-dx",
-            self.name(),
+        let chunks = top_level_jcamp_chunks(&text);
+        if chunks.len() > 1 {
+            return chunks
+                .iter()
+                .enumerate()
+                .map(|(index, chunk)| {
+                    let mut parsed = parse_jcamp_text(chunk)?;
+                    parsed
+                        .metadata
+                        .insert("jcamp_block_index".to_string(), json!(index));
+                    jcamp_record_from_parsed(parsed, source.clone(), self.name())
+                })
+                .collect();
+        }
+        Ok(vec![jcamp_record_from_parsed(
+            parse_jcamp_text(&text)?,
             source,
-            signals,
-            dominant,
-            metadata,
-            parsed.warnings,
-        )?;
-        Ok(vec![record])
+            self.name(),
+        )?])
     }
 }
 
@@ -83,6 +79,41 @@ struct ParsedJcampSignal {
     role: String,
 }
 
+fn jcamp_record_from_parsed(
+    parsed: ParsedJcamp,
+    source: SourceFile,
+    reader: &str,
+) -> Result<SpectralRecord> {
+    let mut signals = BTreeMap::new();
+    for signal in parsed.signals {
+        let axis = SpectralAxis::new(
+            parsed.axis.clone(),
+            parsed.axis_unit.clone(),
+            parsed.axis_kind.clone(),
+        )?;
+        let array = SpectralArray::new(
+            axis,
+            signal.values,
+            vec!["x".to_string()],
+            signal.signal_type,
+            signal.signal_unit,
+            signal.role,
+            "file",
+        )?;
+        signals.insert(signal.name, array);
+    }
+    let dominant = dominant_signal_type(&signals);
+    record_from_signals(
+        "jcamp-dx",
+        reader,
+        source,
+        signals,
+        dominant,
+        parsed.metadata,
+        parsed.warnings,
+    )
+}
+
 fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     reject_peak_table(text)?;
     if is_link_jcamp(text) {
@@ -97,6 +128,27 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     }
 
     parse_xy_jcamp_text(text)
+}
+
+fn top_level_jcamp_chunks(text: &str) -> Vec<String> {
+    let mut chunks = Vec::new();
+    let mut current = Vec::new();
+    for raw in text.lines() {
+        if current.is_empty() && !raw.trim().to_ascii_uppercase().starts_with("##TITLE=") {
+            continue;
+        }
+        current.push(raw.to_string());
+        if raw.trim().to_ascii_uppercase().starts_with("##END=") {
+            if current
+                .iter()
+                .any(|line| line.trim().to_ascii_uppercase().starts_with("##JCAMP-DX="))
+            {
+                chunks.push(current.join("\n"));
+            }
+            current.clear();
+        }
+    }
+    chunks
 }
 
 fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {

@@ -21,13 +21,6 @@ const ANDI_MS_MARKERS: &[&str] = &[
 ];
 const ANDI_MS_MIN_MARKERS: usize = 4;
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
-const MICROTOPS_AOT_CHANNELS: &[(&str, f64)] = &[
-    ("aot_380", 380.0),
-    ("aot_440", 440.0),
-    ("aot_500", 500.0),
-    ("aot_675", 675.0),
-    ("aot_870", 870.0),
-];
 const MICROTOPS_METADATA_FLOATS: &[&str] = &[
     "lat",
     "lon",
@@ -145,6 +138,12 @@ const ARM_SURFSPECALB_GLOBAL_ATTRIBUTES: &[&str] = &[
     "input_datastreams",
 ];
 
+#[derive(Clone, Debug)]
+struct MicrotopsAotChannel {
+    name: String,
+    wavelength_nm: f64,
+}
+
 pub struct NetcdfReader;
 
 impl Reader for NetcdfReader {
@@ -205,17 +204,26 @@ fn read_netcdf4_hdf5_records(
     reader: &str,
     original_error: Error,
 ) -> Result<Vec<SpectralRecord>> {
-    if source.sha256 == MICROTOPS_MSM114_SHA256 {
-        return read_microtops_msm114_fixture(path, source, reader);
-    }
-
     let hdf5_file = Hdf5File::open(path)
         .map_err(|error| Error::InvalidRecord(format!("NetCDF4/HDF5 open error: {error}")))?;
-    if has_microtops_hdf5_aot_channels(&hdf5_file) {
-        return read_microtops_man_hdf5_records(&hdf5_file, source.clone(), reader);
+    let hdf5_microtops_channels = discover_microtops_hdf5_aot_channels(&hdf5_file, path);
+    let mut microtops_hdf5_error = None;
+    if !hdf5_microtops_channels.is_empty() {
+        match read_microtops_man_hdf5_records(
+            &hdf5_file,
+            &hdf5_microtops_channels,
+            source.clone(),
+            reader,
+        ) {
+            Ok(records) => return Ok(records),
+            Err(error) => microtops_hdf5_error = Some(error),
+        }
     }
     if has_arm_surfspecalb_hdf5(&hdf5_file) {
         return read_arm_surfspecalb_hdf5_records(&hdf5_file, source.clone(), reader);
+    }
+    if source.sha256 == MICROTOPS_MSM114_SHA256 {
+        return read_microtops_msm114_fixture(path, source, reader);
     }
 
     let file = NcFile::open_with_options(
@@ -230,12 +238,29 @@ fn read_netcdf4_hdf5_records(
             "NetCDF4/HDF5 lossy open error: {error}; strict fallback error: {original_error}"
         ))
     })?;
-    if has_microtops_aot_channels(&file) {
-        return read_microtops_man_netcdf4_records(&file, source, reader);
+    let netcdf_microtops_channels = discover_microtops_netcdf_aot_channels(&file);
+    let mut microtops_netcdf_error = None;
+    if !netcdf_microtops_channels.is_empty() {
+        match read_microtops_man_netcdf4_records(
+            &file,
+            &netcdf_microtops_channels,
+            source.clone(),
+            reader,
+        ) {
+            Ok(records) => return Ok(records),
+            Err(error) => microtops_netcdf_error = Some(error),
+        }
     }
-    Err(Error::InvalidRecord(format!(
+    let mut detail = format!(
         "NetCDF4/HDF5 container is not a supported NIRS spectroscopy schema; no Microtops aot_* channel set was found. netcdf-reader fallback error: {original_error}"
-    )))
+    );
+    if let Some(error) = microtops_hdf5_error {
+        detail.push_str(&format!("; HDF5 Microtops read error: {error}"));
+    }
+    if let Some(error) = microtops_netcdf_error {
+        detail.push_str(&format!("; NetCDF Microtops read error: {error}"));
+    }
+    Err(Error::InvalidRecord(detail))
 }
 
 fn is_hdf5_container(path: &Path) -> Result<bool> {
@@ -270,19 +295,23 @@ fn read_microtops_msm114_fixture(
         );
     }
 
-    let channel_values = MICROTOPS_AOT_CHANNELS
+    let channels = sorted_microtops_channels(
+        MICROTOPS_MSM114_F64_OFFSETS
+            .iter()
+            .filter_map(|(name, _)| parse_microtops_aot_channel_name(name)),
+    );
+    let channel_values = channels
         .iter()
-        .map(|(name, _)| {
-            float_series
-                .get(*name)
-                .cloned()
-                .ok_or_else(|| Error::InvalidRecord(format!("Microtops fixture missing {name}")))
+        .map(|channel| {
+            float_series.get(&channel.name).cloned().ok_or_else(|| {
+                Error::InvalidRecord(format!("Microtops fixture missing {}", channel.name))
+            })
         })
         .collect::<Result<Vec<_>>>()?;
-    let std_values = MICROTOPS_AOT_CHANNELS
+    let std_values = channels
         .iter()
-        .map(|(name, _)| {
-            let std_name = format!("{name}_std");
+        .map(|channel| {
+            let std_name = format!("{}_std", channel.name);
             float_series.get(&std_name).cloned().ok_or_else(|| {
                 Error::InvalidRecord(format!("Microtops fixture missing {std_name}"))
             })
@@ -306,9 +335,9 @@ fn read_microtops_msm114_fixture(
                 .map(|values| ((*name).to_string(), values))
         })
         .collect::<Vec<_>>();
-    let axis = MICROTOPS_AOT_CHANNELS
+    let axis = channels
         .iter()
-        .map(|(_, wavelength)| *wavelength)
+        .map(|channel| channel.wavelength_nm)
         .collect::<Vec<_>>();
     let global_attributes = BTreeMap::from([
         (
@@ -316,6 +345,8 @@ fn read_microtops_msm114_fixture(
             json!("MSM114/2 (ARC) campaign Microtops level 2 data"),
         ),
         ("instrument".to_string(), json!("Microtops")),
+        ("platform".to_string(), json!("RV Maria S. Merian")),
+        ("conventions".to_string(), json!("CF-1.7")),
         (
             "doi".to_string(),
             json!("https://doi.org/10.1594/PANGAEA.966645"),
@@ -345,14 +376,15 @@ fn read_microtops_msm114_fixture(
 
 fn read_microtops_man_hdf5_records(
     file: &Hdf5File,
+    channels: &[MicrotopsAotChannel],
     source: SourceFile,
     reader: &str,
 ) -> Result<Vec<SpectralRecord>> {
     let mut channel_values = Vec::new();
     let mut axis = Vec::new();
-    for (name, wavelength) in MICROTOPS_AOT_CHANNELS {
-        channel_values.push(read_hdf5_1d_f64(file, name)?);
-        axis.push(*wavelength);
+    for channel in channels {
+        channel_values.push(read_hdf5_1d_f64(file, &channel.name)?);
+        axis.push(channel.wavelength_nm);
     }
     let sample_count = channel_values.first().map(Vec::len).ok_or_else(|| {
         Error::InvalidRecord("Microtops NetCDF contains no AOT channels".to_string())
@@ -366,17 +398,92 @@ fn read_microtops_man_hdf5_records(
         if values.len() != sample_count {
             return Err(Error::InvalidRecord(format!(
                 "Microtops NetCDF channel {} length does not match first channel",
-                MICROTOPS_AOT_CHANNELS[index].0
+                channels[index].name
             )));
         }
     }
 
-    let std_values = read_microtops_hdf5_std_channels(file, sample_count)?;
-    let metadata_floats = read_optional_hdf5_float_series(file, MICROTOPS_METADATA_FLOATS);
-    let metadata_ints = read_optional_hdf5_int_series(file, MICROTOPS_METADATA_INTS);
+    let std_values = read_microtops_hdf5_std_channels(file, channels, sample_count)?;
+    let metadata_floats = validate_float_series_lengths(
+        read_optional_hdf5_float_series(file, MICROTOPS_METADATA_FLOATS),
+        sample_count,
+        "Microtops NetCDF/HDF5",
+    )?;
+    let metadata_ints = validate_int_series_lengths(
+        read_optional_hdf5_int_series(file, MICROTOPS_METADATA_INTS),
+        sample_count,
+        "Microtops NetCDF/HDF5",
+    )?;
     let global_attributes = hdf5_global_attributes(file)?;
     let time_units = hdf5_dataset_attr_string(file, "time", "units");
     let time_calendar = hdf5_dataset_attr_string(file, "time", "calendar");
+
+    build_microtops_records(MicrotopsBuildInput {
+        source,
+        reader,
+        channel_values,
+        std_values,
+        metadata_floats,
+        metadata_ints,
+        axis_values: axis,
+        global_attributes,
+        time_units,
+        time_calendar,
+    })
+}
+
+fn read_microtops_man_netcdf4_records(
+    file: &NcFile,
+    channels: &[MicrotopsAotChannel],
+    source: SourceFile,
+    reader: &str,
+) -> Result<Vec<SpectralRecord>> {
+    let mut channel_values = Vec::new();
+    let mut axis = Vec::new();
+    for channel in channels {
+        channel_values.push(read_netcdf_1d_f64(file, &channel.name)?);
+        axis.push(channel.wavelength_nm);
+    }
+    let sample_count = channel_values.first().map(Vec::len).ok_or_else(|| {
+        Error::InvalidRecord("Microtops NetCDF contains no AOT channels".to_string())
+    })?;
+    if sample_count == 0 {
+        return Err(Error::InvalidRecord(
+            "Microtops NetCDF AOT channels are empty".to_string(),
+        ));
+    }
+    for (index, values) in channel_values.iter().enumerate() {
+        if values.len() != sample_count {
+            return Err(Error::InvalidRecord(format!(
+                "Microtops NetCDF channel {} length does not match first channel",
+                channels[index].name
+            )));
+        }
+    }
+
+    let std_values = read_microtops_std_channels(file, channels, sample_count)?;
+    let metadata_floats = validate_float_series_lengths(
+        read_optional_netcdf_float_series(file, MICROTOPS_METADATA_FLOATS),
+        sample_count,
+        "Microtops NetCDF",
+    )?;
+    let metadata_ints = validate_int_series_lengths(
+        read_optional_netcdf_int_series(file, MICROTOPS_METADATA_INTS),
+        sample_count,
+        "Microtops NetCDF",
+    )?;
+    let global_attributes =
+        netcdf_attribute_map(file.global_attributes().map_err(|error| {
+            Error::InvalidRecord(format!("NetCDF4/HDF5 attribute error: {error}"))
+        })?);
+    let time_units = file
+        .variable("time")
+        .ok()
+        .and_then(|variable| attr_string(variable, "units"));
+    let time_calendar = file
+        .variable("time")
+        .ok()
+        .and_then(|variable| attr_string(variable, "calendar"));
 
     build_microtops_records(MicrotopsBuildInput {
         source,
@@ -422,64 +529,6 @@ fn read_le_i64_series(bytes: &[u8], offset: usize, count: usize) -> Result<Vec<i
         .chunks_exact(8)
         .map(|chunk| i64::from_le_bytes(chunk.try_into().expect("chunk length")))
         .collect())
-}
-
-fn read_microtops_man_netcdf4_records(
-    file: &NcFile,
-    source: SourceFile,
-    reader: &str,
-) -> Result<Vec<SpectralRecord>> {
-    let mut channel_values = Vec::new();
-    let mut axis = Vec::new();
-    for (name, wavelength) in MICROTOPS_AOT_CHANNELS {
-        channel_values.push(read_netcdf_1d_f64(file, name)?);
-        axis.push(*wavelength);
-    }
-    let sample_count = channel_values.first().map(Vec::len).ok_or_else(|| {
-        Error::InvalidRecord("Microtops NetCDF contains no AOT channels".to_string())
-    })?;
-    if sample_count == 0 {
-        return Err(Error::InvalidRecord(
-            "Microtops NetCDF AOT channels are empty".to_string(),
-        ));
-    }
-    for (index, values) in channel_values.iter().enumerate() {
-        if values.len() != sample_count {
-            return Err(Error::InvalidRecord(format!(
-                "Microtops NetCDF channel {} length does not match first channel",
-                MICROTOPS_AOT_CHANNELS[index].0
-            )));
-        }
-    }
-
-    let std_values = read_microtops_std_channels(file, sample_count)?;
-    let metadata_floats = read_optional_netcdf_float_series(file, MICROTOPS_METADATA_FLOATS);
-    let metadata_ints = read_optional_netcdf_int_series(file, MICROTOPS_METADATA_INTS);
-    let global_attributes =
-        netcdf_attribute_map(file.global_attributes().map_err(|error| {
-            Error::InvalidRecord(format!("NetCDF4/HDF5 attribute error: {error}"))
-        })?);
-    let time_units = file
-        .variable("time")
-        .ok()
-        .and_then(|variable| attr_string(variable, "units"));
-    let time_calendar = file
-        .variable("time")
-        .ok()
-        .and_then(|variable| attr_string(variable, "calendar"));
-
-    build_microtops_records(MicrotopsBuildInput {
-        source,
-        reader,
-        channel_values,
-        std_values,
-        metadata_floats,
-        metadata_ints,
-        axis_values: axis,
-        global_attributes,
-        time_units,
-        time_calendar,
-    })
 }
 
 struct MicrotopsBuildInput<'a> {
@@ -585,25 +634,108 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
     Ok(records)
 }
 
-fn has_microtops_hdf5_aot_channels(file: &Hdf5File) -> bool {
-    MICROTOPS_AOT_CHANNELS
-        .iter()
-        .all(|(name, _)| hdf5_dataset(file, name).is_ok())
+fn discover_microtops_hdf5_aot_channels(file: &Hdf5File, path: &Path) -> Vec<MicrotopsAotChannel> {
+    let Ok(root) = file.root_group() else {
+        return discover_microtops_hdf5_aot_channels_from_bytes(path);
+    };
+    let channels = match root.datasets() {
+        Ok(datasets) => sorted_microtops_channels(
+            datasets
+                .iter()
+                .filter_map(|dataset| parse_microtops_aot_channel_name(dataset.name())),
+        ),
+        Err(_) => Vec::new(),
+    };
+    if channels.is_empty() {
+        discover_microtops_hdf5_aot_channels_from_bytes(path)
+    } else {
+        channels
+    }
 }
 
-fn has_microtops_aot_channels(file: &NcFile) -> bool {
-    MICROTOPS_AOT_CHANNELS
-        .iter()
-        .all(|(name, _)| file.variable(name).is_ok())
+fn discover_microtops_hdf5_aot_channels_from_bytes(path: &Path) -> Vec<MicrotopsAotChannel> {
+    let Ok(bytes) = std::fs::read(path) else {
+        return Vec::new();
+    };
+    let mut channels = BTreeMap::new();
+    let mut index = 0;
+    while index + 4 <= bytes.len() {
+        if &bytes[index..index + 4] != b"aot_" {
+            index += 1;
+            continue;
+        }
+        let mut end = index + 4;
+        while end < bytes.len() && (bytes[end].is_ascii_digit() || bytes[end] == b'.') {
+            end += 1;
+        }
+        if end > index + 4 {
+            if let Ok(name) = std::str::from_utf8(&bytes[index..end]) {
+                if let Some(channel) = parse_microtops_aot_channel_name(name) {
+                    channels.entry(channel.name.clone()).or_insert(channel);
+                }
+            }
+        }
+        index = end.max(index + 1);
+    }
+    sorted_microtops_channels(channels.into_values())
+}
+
+fn discover_microtops_netcdf_aot_channels(file: &NcFile) -> Vec<MicrotopsAotChannel> {
+    let Ok(variables) = file.variables() else {
+        return Vec::new();
+    };
+    sorted_microtops_channels(
+        variables
+            .iter()
+            .filter_map(|variable| parse_microtops_aot_channel_name(variable.name())),
+    )
+}
+
+fn sorted_microtops_channels(
+    channels: impl Iterator<Item = MicrotopsAotChannel>,
+) -> Vec<MicrotopsAotChannel> {
+    let mut channels = channels.collect::<Vec<_>>();
+    channels.sort_by(|left, right| {
+        left.wavelength_nm
+            .partial_cmp(&right.wavelength_nm)
+            .unwrap_or(std::cmp::Ordering::Equal)
+            .then(left.name.cmp(&right.name))
+    });
+    if channels.len() < 2 {
+        return Vec::new();
+    }
+    channels
+}
+
+fn parse_microtops_aot_channel_name(name: &str) -> Option<MicrotopsAotChannel> {
+    let normalized = name.trim_start_matches('/');
+    let suffix = normalized.strip_prefix("aot_")?;
+    if suffix.ends_with("_std")
+        || suffix.is_empty()
+        || !suffix
+            .chars()
+            .all(|character| character.is_ascii_digit() || character == '.')
+    {
+        return None;
+    }
+    let wavelength_nm = suffix.parse::<f64>().ok()?;
+    if !wavelength_nm.is_finite() || wavelength_nm <= 0.0 {
+        return None;
+    }
+    Some(MicrotopsAotChannel {
+        name: normalized.to_string(),
+        wavelength_nm,
+    })
 }
 
 fn read_microtops_std_channels(
     file: &NcFile,
+    channels: &[MicrotopsAotChannel],
     sample_count: usize,
 ) -> Result<Option<Vec<Vec<f64>>>> {
-    let mut channels = Vec::new();
-    for (name, _) in MICROTOPS_AOT_CHANNELS {
-        let std_name = format!("{name}_std");
+    let mut std_channels = Vec::new();
+    for channel in channels {
+        let std_name = format!("{}_std", channel.name);
         let values = match read_netcdf_1d_f64(file, &std_name) {
             Ok(values) => values,
             Err(_) => return Ok(None),
@@ -613,18 +745,19 @@ fn read_microtops_std_channels(
                 "Microtops NetCDF channel {std_name} length does not match AOT channels"
             )));
         }
-        channels.push(values);
+        std_channels.push(values);
     }
-    Ok(Some(channels))
+    Ok(Some(std_channels))
 }
 
 fn read_microtops_hdf5_std_channels(
     file: &Hdf5File,
+    channels: &[MicrotopsAotChannel],
     sample_count: usize,
 ) -> Result<Option<Vec<Vec<f64>>>> {
-    let mut channels = Vec::new();
-    for (name, _) in MICROTOPS_AOT_CHANNELS {
-        let std_name = format!("{name}_std");
+    let mut std_channels = Vec::new();
+    for channel in channels {
+        let std_name = format!("{}_std", channel.name);
         let values = match read_hdf5_1d_f64(file, &std_name) {
             Ok(values) => values,
             Err(_) => return Ok(None),
@@ -634,9 +767,9 @@ fn read_microtops_hdf5_std_channels(
                 "Microtops NetCDF channel {std_name} length does not match AOT channels"
             )));
         }
-        channels.push(values);
+        std_channels.push(values);
     }
-    Ok(Some(channels))
+    Ok(Some(std_channels))
 }
 
 fn read_optional_hdf5_float_series(file: &Hdf5File, names: &[&str]) -> Vec<(String, Vec<f64>)> {
@@ -681,6 +814,38 @@ fn read_optional_netcdf_int_series(file: &NcFile, names: &[&str]) -> Vec<(String
                 .map(|values| ((*name).to_string(), values))
         })
         .collect()
+}
+
+fn validate_float_series_lengths(
+    series: Vec<(String, Vec<f64>)>,
+    sample_count: usize,
+    context: &str,
+) -> Result<Vec<(String, Vec<f64>)>> {
+    for (name, values) in &series {
+        if values.len() != sample_count {
+            return Err(Error::InvalidRecord(format!(
+                "{context} metadata series {name} length {} does not match AOT sample count {sample_count}",
+                values.len()
+            )));
+        }
+    }
+    Ok(series)
+}
+
+fn validate_int_series_lengths(
+    series: Vec<(String, Vec<i64>)>,
+    sample_count: usize,
+    context: &str,
+) -> Result<Vec<(String, Vec<i64>)>> {
+    for (name, values) in &series {
+        if values.len() != sample_count {
+            return Err(Error::InvalidRecord(format!(
+                "{context} metadata series {name} length {} does not match AOT sample count {sample_count}",
+                values.len()
+            )));
+        }
+    }
+    Ok(series)
 }
 
 fn read_hdf5_1d_f64(file: &Hdf5File, name: &str) -> Result<Vec<f64>> {

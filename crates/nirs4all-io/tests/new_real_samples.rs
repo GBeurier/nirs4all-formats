@@ -140,14 +140,40 @@ fn reads_microtops_man_netcdf_and_refuses_pyrnet() {
         .provenance
         .warnings
         .iter()
+        .any(|warning| warning == "microtops_man_netcdf_experimental"));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
         .any(|warning| warning == "microtops_man_netcdf_known_fixture_layout"));
     let aot = records[0].signals.get("aot").expect("aot");
     assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
     assert_eq!(aot.unit.as_deref(), Some("1"));
     assert_close(aot.values[0], 0.262656);
     assert_close(aot.values[4], 0.195324);
+    let aot_std = records[0].signals.get("aot_std").expect("aot_std");
+    assert_eq!(aot_std.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
+    assert_eq!(aot_std.unit.as_deref(), Some("1"));
+    assert_close(aot_std.values[0], 0.004276);
+    assert_close(aot_std.values[4], 0.005922);
     assert_close(records[0].metadata["lat"].as_f64().unwrap(), 10.836353);
     assert_eq!(records[0].metadata["number_obs"].as_i64(), Some(11));
+    assert_eq!(
+        records[0].metadata["global_attributes"]["platform"].as_str(),
+        Some("RV Maria S. Merian")
+    );
+    assert_eq!(
+        records[0].metadata["global_attributes"]["conventions"].as_str(),
+        Some("CF-1.7")
+    );
+    assert_eq!(
+        records[0].metadata["time_units"].as_str(),
+        Some("seconds since 2023-01-17T12:19:00")
+    );
+    assert_eq!(
+        records[0].metadata["time_calendar"].as_str(),
+        Some("proleptic_gregorian")
+    );
 
     let last = records.last().expect("last");
     let last_aot = last.signals.get("aot").expect("aot");

@@ -1804,6 +1804,18 @@ fn reads_real_neospectra_ossl_wide_csv_slice() {
 }
 
 #[test]
+fn refuses_neospectra_ossl_schema_descriptor_as_non_spectral() {
+    let err = open_path(workspace_file(
+        "samples/siware_neospectra/neospectra_ossl_column_names.csv",
+    ))
+    .expect_err("OSSL column descriptor is not a spectrum");
+
+    assert!(err
+        .to_string()
+        .contains("no numeric spectral headers found"));
+}
+
+#[test]
 fn reads_synthetic_nirs_netcdf_dataset() {
     let records =
         open_path(workspace_file("samples/netcdf/synthetic_nirs.nc")).expect("open netcdf");
@@ -2736,6 +2748,29 @@ fn reads_plain_affn_jcamp_dx() {
     assert_eq!(signal.axis.values.len(), 3_917);
     assert_eq!(signal.axis.unit, "cm-1");
     assert_eq!(signal.signal_type, SignalType::Transmittance);
+}
+
+#[test]
+fn reads_top_level_multi_block_jcamp_dx_as_multiple_records() {
+    let records =
+        open_path(workspace_file("samples/jcamp_dx/nist_sucrose_ir.jdx")).expect("open sucrose");
+
+    assert_eq!(records.len(), 2);
+    for (index, record) in records.iter().enumerate() {
+        assert_eq!(record.provenance.format, "jcamp-dx");
+        assert_eq!(
+            record.metadata["jcamp_block_index"].as_u64(),
+            Some(index as u64)
+        );
+        let signal = record.signals.get("signal").expect("signal");
+        assert_eq!(signal.axis.values.len(), 7_153);
+        assert_eq!(signal.axis.unit, "cm-1");
+        assert_eq!(signal.signal_type, SignalType::Reflectance);
+        assert!((signal.axis.values[0] - 7_498.994).abs() < 0.000001);
+        assert!((signal.axis.values[7_152] - 600.883992).abs() < 0.000001);
+    }
+    assert!((records[0].signals["signal"].values[0] - 0.422011).abs() < 0.000001);
+    assert!((records[1].signals["signal"].values[0] - 0.471453).abs() < 0.000001);
 }
 
 #[test]

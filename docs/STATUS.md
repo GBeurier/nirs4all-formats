@@ -36,9 +36,10 @@ Experimental native readers:
   `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
   pure-Rust reader, a local ARM MFRSR b1 7-filter time-series path, local ARM
-  SURFSPECALB derived albedo, plus a SHA-256-guarded Microtops MAN NetCDF
-  fixture path; ANDI/MS gets a dedicated refusal path and weather/PyrNet/AOSMET
-  NetCDF samples are schema-refused as non-NIRS;
+  SURFSPECALB derived albedo, plus Microtops MAN NetCDF `aot_<nm>` discovery
+  with a SHA-256-guarded MSM114/2 payload fallback; ANDI/MS gets a dedicated
+  refusal path and weather/PyrNet/AOSMET NetCDF samples are schema-refused as
+  non-NIRS;
 - generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
   and the committed FGI HDF5+XML synthetic pair is mapped with both payload and
@@ -65,7 +66,8 @@ Experimental native readers:
   and `.ProcSpec` ZIP/XML archives; the committed Ocean Optics `.spc` sample is
   covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
-  NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
+  top-level multi-block XYDATA files as multiple records, NMR `NTUPLES`
+  real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
   `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
   are rejected and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;

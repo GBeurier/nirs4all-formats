@@ -17,6 +17,8 @@ readers:
 - synthetic NeoSpectra-style CSV export;
 - real OSSL Woodwell/KSSL wide CSV slice with `id.layer_uuid_txt` promoted to
   `metadata.sample_id`;
+- explicit refusal of the OSSL column-name descriptor because it documents the
+  schema but contains no spectral axis;
 - real UvA forensic NeoSpectra `.xlsx` export with `axis: wavelength (nm) /
   data: absorbance (a.u.)`;
 - preservation of soil/site laboratory properties as targets when cells are
@@ -35,4 +37,3 @@ readers:
 - a native single-measurement NeoSpectra Scanner export fixture;
 - broader validation across all OSSL scanner/replicate blocks;
 - typed normalization of soil chemistry target names.
-
