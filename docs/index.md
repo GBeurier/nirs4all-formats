@@ -15,6 +15,7 @@ formats/allotrope-asm
 formats/animl
 formats/asd
 formats/bruker-opus
+formats/buchi-nircal
 formats/envi-sli
 formats/excel
 formats/galactic-spc

@@ -37,6 +37,10 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("nicolet_omnic_srs_tgair", "samples/nicolet_omnic/TGAIR.srs"),
     ("perkin_elmer_sp_spectra", "samples/perkin_elmer/spectra.sp"),
+    (
+        "buchi_nircal_foliar_transfer",
+        "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
+    ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

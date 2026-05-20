@@ -164,6 +164,17 @@ fn probes_perkin_elmer_sp_files() {
     }));
 }
 
+#[test]
+fn probes_buchi_nircal_files() {
+    let probes = probe_path(workspace_file(
+        "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
+    ))
+    .expect("probe nircal");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "buchi-nircal" && probe.confidence == Confidence::Definite));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
