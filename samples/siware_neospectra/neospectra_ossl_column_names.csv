@@ -1,0 +1,60 @@
+file,column,type,example,description
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,kssl_id,numeric,30747,sample id (smp.id) from the KSSL database
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lay_id,numeric,3548,layer id (lay.id) from the KSSL database
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,Lab,string,Woodwell,Laboratory of scanning
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,WOODWELL_ID,string,NEO1_00007,Woodwell sample id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,Lab_ID,string,NEO1_030747,Sample id composed by instrument number and kssl_id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,country,string,United States,Country of soil sample
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,scanner_name,string,NEO1,Scanner number
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,scanner_SerialNo,numeric,21020033,Scanner serial number
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,saucer,string,n,Yes or No for scanning accessory
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lay.type,string,horizon,Type of soil sampling
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,proj.id,numeric,197,KSSL project id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lims.site.id,numeric,1381,KSSL site id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lims.pedon.id,numeric,1379,KSSL pedon id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lay.depth.to.top,numeric,0,Upper depth of sampling layer
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lay.depth.to.bottom,numeric,20,Lower depth of sampling layer
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,horizon.designation,string,A,Horizon designation
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,texture.description,string,Silty clay,Soil texture description
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,fiscal.year,numeric,2002,Fiscal year of KSSL project
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,submit.proj.name,string,MLRA  75,Project code
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,taxonomic.classification.name,string,"Fine, mixed, active, mesic Xeric Haplohumult",Soil taxonomical classification
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,lat.ycntr,numeric,39.48011,Centroid latitude of county
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,long.xcntr,numeric,-97.65023,Centroid longitude of county
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,fips.code,numeric,20029,FIPS code
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.id_country,numeric,244,KSSL country id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.id_county,numeric,5220,KSSL county id
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.name_country,string,United States,KSSL country name
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.name_county,string,Riley,KSSL county name
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.code_country,string,US,KSSL country abbreviation
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,area.code_county,string,KS029,KSSL county code
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,horizontal.datum.name,string,WGS84,Datum
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,latitude.std.decimal.degrees,numeric,39.13658,Pedon latitude
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,longitude.std.decimal.degrees,numeric,-96.62066,Pedon longitude
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,eoc_tot_c,numeric,0.8956,"Estimated organic carbon, weight percent ()"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,c_tot_ncs,numeric,0.90996,"Carbon, total, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,n_tot_ncs,numeric,0.09325,"Nitrogen, total, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,s_tot_ncs,numeric,0.01742,"Sulfur, total, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,ph_h2o,numeric,5.56,"pH, 1:1 Soil-Water suspension, unitless"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,db_13b,numeric,1.22,"Bulk density, <2mm fraction, 1/3 Bar, grams per cubic centimeter"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,clay_tot_psa,numeric,35.9,"Clay, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,silt_tot_psa,numeric,48.6,"Silt, total, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,sand_tot_psa,numeric,98.3,"Sand, total, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,caco3,numeric,0.33169,"Carbonate, <2mm fraction, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,efferv_1nhcl,string,slight,"Effervescence, 1N HCl, fizz category"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,cecd_nh4,numeric,11.81383,"CEC, NH4OAc, pH 7.0, 2M KCl displacement, centimoles of charge per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,ca_nh4d,numeric,8.93247,"Calcium, NH4OAc Extractable, 2M KCl displacement, centimoles of charge per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,mg_nh4d,numeric,3.64782,"Magnesium, NH4OAc Extractable, 2M KCl displacement, centimoles of charge per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,k_nh4d,numeric,0.30398,"Potassium, NH4OAc Extractable, 2M KCl displacement, centimoles of charge per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,na_nh4d,numeric,0.18707,"Sodium, NH4OAc Extractable, 2M KCl displacement, centimoles of charge per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,w32l2,numeric,1.0032,"Water Retention, 1/3 Bar, <2mm Sieve, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,w15l2,numeric,11.38298,"Water Retention, 15 Bar, <2mm,  Air-dry, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,al_dith,numeric,0.20859,"Aluminum, Dithionite Citrate Extractable, weight percent"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,p_mehlich3,numeric,0.96831,"Phosphorus, Mehlich3 Extractable, miligrams per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,p_el_meh3,numeric,0.9534,"Phosphorus, Element Mehlich3 Extractable, miligrams per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,k_el_meh3,numeric,0.5631,"Potassium, Element Mehlich3 Extractable, miligrams per kilogram of soil"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,ec_12pre,numeric,0.257,"Electrical Conductivity, Predict, 1:2 (w/w), decisiemens per metre"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,1350.000323,numeric,24.98769,"Near-infrared spectra from 1350 to 2500 nm, reflectance in percent units"
+Neospectra_WoodwellKSSL_soil+site_NIR.csv,2549.999982,numeric,12.78934,"Near-infrared spectra from 1350 to 2500 nm, reflectance in percent units"
+Neospectra_WoodwellKSSL_MIR.csv,600,numeric,1.543,"Middle-infrared spectra from 600 to 4000 cm-1, pseudo absorbance in log units"
+Neospectra_WoodwellKSSL_MIR.csv,4000,numeric,0.8443,"Middle-infrared spectra from 600 to 4000 cm-1, pseud absorbance is log units"

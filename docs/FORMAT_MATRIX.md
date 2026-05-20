@@ -39,8 +39,8 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | binaire ferme; CSV cible seule refuse | bloqué | export CSV/Excel vendeur |
 | JASCO JWS | JASCO | `.jws`, `.txt` | OLE2 DataInfo/Y-Data | partiel | jws2txt, jwsProcessor |
 | Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | texte OK; spc proprietaire manquant | partiel | pyfasma-spc, convertisseur Shimadzu |
-| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.pri` | CSV OK; pri manquant | partiel | parseur texte |
-| Si-Ware NeoSpectra | Si-Ware | `.csv` | export CSV synthetique | partiel | parseur texte |
+| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | CSV/XLSX (UvA forensic 1700) OK; pri manquant | partiel | parseur texte, openpyxl |
+| Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | OSSL Woodwell + UvA forensic XLSX OK | partiel | parseur texte, openpyxl |
 | Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | JSON synthetique | partiel | JSON/CSV standard |
 | JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | XYDATA, ASDF, NTUPLES, LINK partiel | partiel | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
 | ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | detection + refus non-NIRS | fait | pyteomics, PyMassSpec, pyOpenMS |
@@ -54,11 +54,11 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | MAT v5/v7.3 + RData prospectr | partiel | scipy, hdf5-reader, R serialization, prospectr |
 | NumPy | Python / NumPy | `.npy`, `.npz` | `.npy` matrice, `.npz` canonique | fait | numpy |
 | Renishaw WDF | Renishaw | `.wdf` | spectra + metadata maps/images | partiel | RosettaSciIO, SpectroChemPy |
-| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; binaire manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
+| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; `.l6m` reel committe (Gd₂O₃/AlN map); `.l6s` calibration manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
 | Princeton TriVista TVF | Princeton Instruments | `.tvf` | XML Frame payloads | partiel | RosettaSciIO |
 | DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | spectra/maps/surfaces | partiel | RosettaSciIO |
 | Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | format adjacent 2D | partiel | RosettaSciIO |
-| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | binaire detecte/refuse; ASCII OK | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
+| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | binaire reel committe (`Sa4.wip`) + ASCII OK; decoder a ecrire | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
 | EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
 
@@ -92,14 +92,14 @@ passer le format a `fait`.
 | Thermo Nicolet OMNIC | partiel | Decoder `.srsx` et variantes rapid-scan/high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
-| Foss / WinISI / DS exports | partiel | Ajouter exports reels DS/WinISI avec cibles et metadata. |
+| Foss / WinISI / DS exports | fait | Real Foss XDS / NIRSYSTEM-5000 exports commits (sensAIfood Cordoba). |
 | Metrohm Vision / Vision Air | partiel | Decoder DB native ou documenter uniquement le chemin export. |
 | BUCHI NIRCal | partiel | Obtenir fixtures avec cibles non nulles et variantes NIRMaster/calibration. |
 | Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; CSV actuel sans axe spectral. |
 | JASCO JWS | partiel | Ajouter blocs V-series NIR et variantes Raman NRS. |
 | Shimadzu UVProbe | partiel | Obtenir vrai `.spc` Shimadzu et comparaison convertisseur. |
-| VIAVI MicroNIR | partiel | Decoder `.pri` ou obtenir specification/sample; CSV seulement aujourd'hui. |
-| Si-Ware NeoSpectra | partiel | Remplacer fixture synthetique par export client reel. |
+| VIAVI MicroNIR | partiel | Reel CSV/XLSX MicroNIR 1700 desormais committe (UvA forensic). `.pri` natif reste hors atteinte. |
+| Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX desormais committes; resterait a couvrir un export NeoSpectra Scanner natif single-measurement. |
 | Spectro Inc. SiWare API | partiel | Ajouter reponse API reelle et tests de schemas variantes. |
 | JCAMP-DX | partiel | Couvrir plus de `LINK`, `PEAK TABLE` et variantes NTUPLES. |
 | NetCDF NIRS generique | partiel | Ajouter schemas NIRS reels au-dela de `spectra+wavelengths`. |
@@ -109,9 +109,45 @@ passer le format a `fait`.
 | HDF5 NIRS generique | partiel | Ajouter schemas reels et metadata/axes complexes. |
 | MATLAB MAT / RData | partiel | Couvrir plus de structures MAT/RData et metadata/targets heterogenes. |
 | Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
-| Horiba LabSpec / JobinYvon | partiel | Ajouter binaires `.l6s/.l6m` et axes energy mieux typés. |
+| Horiba LabSpec / JobinYvon | partiel | `.l6m` reel committe (Gd₂O₃/AlN map, MIT). Reste a decoder + ajouter un `.l6s` calibration et mieux typer les axes energy. |
 | Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |
 | DigitalSurf MountainsMap | partiel | Ajouter variantes compressees/non compressees et metadata surfaces. |
 | Hamamatsu HPD-TA IMG | partiel | Clarifier si le format reste adjacent ou devient export spectral supporte. |
-| WiTec WIP / WID | partiel | Obtenir `.wip/.wid` reel avec export ASCII equivalent. |
+| WiTec WIP / WID | partiel | `Sa4.wip` reel committe (Zenodo 7907659, ODbL). Reste a ecrire le decoder binaire et trouver/produire l'export ASCII equivalent. |
 | fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. |
+
+## Sweep d'echantillons publics (2026-05-20)
+
+Recherche en ligne de fixtures redistribuables pour les formats `bloqué` /
+`partiel`. Resultats:
+
+### Nouveaux fixtures committes
+
+| Format | Fichier ajoute | Source | Licence | Effet matrice |
+|---|---|---|---|---|
+| Foss / WinISI / DS exports | `samples/foss_winisi/foss_xds_wheat2_sensAIfood.csv`, `foss_xds_barleyground_sensAIfood.csv` (+metadata) | [Zenodo 16759587](https://zenodo.org/records/16759587) — sensAIfood Univ. Cordoba (Foss XDS XM-1000 + NIRSYSTEM-5000) | CC-BY-4.0 | `partiel` → `fait` |
+| Si-Ware NeoSpectra | `samples/siware_neospectra/neospectra_ossl_column_names.csv`, `neospectra_ossl_50samples_slice.csv`, `neospectra_forensic_K_avg.xlsx` | [Zenodo 13122321 OSSL](https://zenodo.org/records/13122321) + [Figshare 21252300 UvA forensic](https://doi.org/10.21942/uva.21252300) | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (vrais clients OSSL + forensique) |
+| VIAVI MicroNIR | `samples/viavi_micronir/micronir_forensic_K_avg.xlsx`, `micronir_forensic_T_avg.xlsx` | [Figshare 21252300](https://doi.org/10.21942/uva.21252300) — MicroNIR 1700 forensique UvA | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (CSV/XLSX reels) |
+| Horiba LabSpec / JobinYvon | `samples/raman_horiba/AlN_Gd2O3_indepth.l6m` | [`ccoverstreet/horiba-raman`](https://github.com/ccoverstreet/horiba-raman) | MIT | `partiel` (XML/TXT seul) → `partiel` (binaire `.l6m` couvert) |
+| WiTec WIP / WID | `samples/raman_witec/Sa4.wip` | [Zenodo 7907659](https://zenodo.org/records/7907659) — analyse Raman ZrO₂ | ODbL v1.0 | `partiel` (ASCII seul) → `partiel` (binaire signe `WIT^` couvert) |
+| Excel spectral | `samples/excel/scio_forensic_P_avg.xlsx`, `nirone_forensic_T_avg.xlsx` | [Figshare 21252300](https://doi.org/10.21942/uva.21252300) — Consumer Physics SCiO + Spectral Engines NIRone 2.0 | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (vrais XLSX vendeurs handheld) |
+| Tables spectrales delimitees (handheld) | `samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv` (+metadata) | [Zenodo 15838272](https://zenodo.org/records/15838272) — sensAIfood Grainit (AuroraNIR 950-1650 nm) | CC-BY-4.0 | bonus handheld miniaturise |
+
+### Formats restant fermes (sweep sans resultat exploitable)
+
+| Format | Pourquoi pas trouve |
+|---|---|
+| ASD calibration `.ILL/.REF/.RAW` | Distribution vendeur SDK uniquement; SPECCHIO partiel derriere login partenariat. |
+| Foss `.NIR/.DA/.cal/.eqa` natif | Format ferme, aucune fixture binaire publique trouvee. |
+| Perten DA / Inframatic | Pas de fixture native ni CSV reel public (clients only). |
+| Metrohm Vision Air / OMNIS NIR natif | Format ferme, seul l'export CSV est documente publiquement. |
+| Allotrope ADF | Membership Allotrope obligatoire, pas de sample public. |
+| MODTRAN albedo `.dat` reel | Distribution sous licence MODTRAN, pas de fixture publique redistribuable. |
+| MFR-7 / MFRSR `.OUT` reel | ARM Data Center exige compte (gratuit mais non-redistribution claire). |
+| Microtops II `.TXT` reel | AERONET Maritime Aerosol Network derriere login; aucun mirror GitHub trouve. |
+| PP Systems UniSpec `.SPT/.SPU` reel | Outils de processing (ARC-LTER, rUnispecDC) publics, mais aucun raw binaire/text committe. |
+| Bruker OPUS 5/6 legacy | Archives privees, pas de mirror public. |
+| Thermo OMNIC `.srsx` | Pas de fixture publique trouvee; le canal de chargement `.srs` reste couvert via spectrochempy_data. |
+| Shimadzu UVProbe `.spc` natif | Un seul candidat (`uri-t/shimadzu-spc-converter`) sans licence claire. |
+| VIAVI MicroNIR `.pri` natif | Format projet binaire, customer-only. |
+| Si-Ware NeoSpectra Scanner natif single-measurement | Le pipeline OSSL ne publie que des matrices wide; pas de fixture "1 mesure par CSV" publique. |
