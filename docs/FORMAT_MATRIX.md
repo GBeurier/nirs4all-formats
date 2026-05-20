@@ -1,74 +1,88 @@
 # Matrice compacte des formats
 
-Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
+Colonnes de pilotage:
 
-| Nom | Vendeur | Extension | Version (si applicable) | Status nirs4allio | Lib référence |
-|---|---|---|---|---|---|
-| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | en-tetes numeriques; CSV virgule, CSV point-virgule et TSV golden-backed | fait | pandas, read.table, nirs4all CSVLoader |
-| Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | une colonne axe + signaux | fait | pandas, read.table |
-| Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | un spectre par ligne | fait | pandas, read.table |
-| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` fixture-backed; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
-| ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | revisions 1, 6, 7, 8 | partiel | asdreader, prospectr, spectrolab, specdal, pyASDReader |
-| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | compagnons calibration; aucun sample ASD compagnon | bloqué | SPECCHIO, asdreader |
-| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7; 2 `.TRM` + `.ROH/.DRK/.REF` testes semantiquement et par probe; `.IRR` present est ASCII | partiel | lightr |
-| Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | AVS8 `.Raw8/.IRR8` fixture-backed + probe verrouille + date SPC decodee | partiel | lightr, manuel AvaSoft |
-| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | wave-table mono/multi-colonnes, irradiance deux-colonnes, AvaSoft 8 text, `Dark/Ref/Sample` raw-counts | fait | pandas, read.table |
-| Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS synthetique + RS-1 `lightr` reel | fait | pandas, read.table, lightr |
-| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | corpus OPUS 7/8 complet golden-backed + tests semantiques cross-reader (4 lecteurs) + Bruker MPA AfSIS soils; axes `MIN` types `time`; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
-| Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
-| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid) via `.hdr` ou `.sli`; `.slb` non fixture | fait | spectral, RStoolbox, pysptools |
-| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | ENVI Standard `.hdr` ou `.img` avec `map info` normalise + AVIRIS 92AV3C ERDAS LAN + local Indian Pines MAT point extraction | partiel | spectral, rasterio, scipy |
-| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | paire HDF5+XML synthetique mappee | partiel | h5py, hdf5r, rhdf5, lxml |
-| MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | MFR-7 `.OUT` synthetique + ARM MFRSR b1 NetCDF local decode + sidecar QC YAML local | partiel | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
-| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export), `.lev10/.lev15/.lev20` local | CSV synthetique + MAN NetCDF PANGAEA avec fallback fixture + MAN ASCII AERONET local Okeanos; AOT type `aerosol_optical_thickness`, AOT-STD type `uncertainty` | partiel | parseurs ad hoc, xarray |
-| Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.jdx`, `.spc` | textes SpectraSuite/OceanView/Jaz/CRAIC + CSV + ProcSpec transmittance/reflectance type; `.jdx` via JCAMP; `.spc` Galactic route | partiel | lightr, pavo |
-| PP Systems UniSpec SC | PP Systems | `.SPT` | export texte synthetique teste semantiquement | partiel | SPECCHIO, parseurs ad hoc |
-| PP Systems UniSpec DC | PP Systems | `.SPU` | export texte synthetique teste semantiquement | partiel | SPECCHIO, parseurs ad hoc |
-| SVC / GER SIG | Spectra Vista / GER | `.sig` | 15-fixture corpus golden-backed + semantic assertions PDA/laptop/WR/moc + GER 3700 + HR-1024i field; GPS/date/time/unit promotion + overlap/resampling flags | partiel | spectrolab, specdal |
-| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only semantic flag + GPS/date/time promotion testes | partiel | spectrolab, specdal |
-| MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo synthetique uniquement | partiel | parseur texte |
-| IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
-| USGS SPECPR / PRISM / ECOSTRESS text | USGS / JHU / ECOSTRESS | `SPECPR`, `.asc`, `.txt`, `.spectrum.txt` | ASCII `.asc` + ECOSTRESS/ASTER `.spectrum.txt` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
-| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi + axes temps SPC types `time`; old LSB partiel; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
-| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + `.srs` `tg_gc`, `rapid_scan_raw`, `rapid_scan_reprocessed`; srsx manquant | partiel | SpectroChemPy, spa-on-python |
-| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | `.sp` PEPE mono golden-backed; `.fsm` imaging refuse/out of scope | partiel | specio |
-| Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
-| Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | exports matrices WinISI/Foss XDS reels | fait | parseur texte |
-| Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | CSV export synthetique teste semantiquement; DB native manquante | partiel | parseur texte, pandas, readxl |
-| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | fixture NIRCal avec cibles nulles + cannabis local avec cibles non nulles; zeros conserves quand la table cible est non nulle | partiel | prospectr::read_nircal |
-| Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | binaire ferme; CSV cible seule refuse | bloqué | export CSV/Excel vendeur |
-| JASCO JWS | JASCO | `.jws`, `.txt` | OLE2 DataInfo/Y-Data FT/IR + fluorescence + CD/HT/Abs; texte export | partiel | jws2txt, jwsProcessor |
-| Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | `.txt` synthetique teste semantiquement; `.spc` proprietaire manquant | partiel | pyfasma-spc, convertisseur Shimadzu |
-| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | CSV/XLSX (UvA forensic 1700) OK; pri manquant | partiel | parseur texte, openpyxl |
-| Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | OSSL Woodwell + UvA forensic XLSX OK | partiel | parseur texte, openpyxl |
-| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | JSON natif + CSV axis-first synthetiques golden-backed | partiel | JSON/CSV standard |
-| JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | XYDATA mono/multi-blocs, ASDF, NTUPLES avec axes frequence/temps, LINK partiel | partiel | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
-| ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | detection + refus non-NIRS | fait | pyteomics, PyMassSpec, pyOpenMS |
-| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | schema spectra+wavelengths synthetique + lecteurs dedies Microtops MAN / ARM MFRSR / ARM SURFSPECALB locaux + refus adjacents | partiel | netcdf-reader, xarray, netcdf, ARM ACT |
-| AnIML | IUPAC / ASTM | `.animl` | spectral SeriesSet synthetique explicite + `AutoIncrementedValueSet` uniforme | partiel | animl-python, validateurs XML |
-| Allotrope ASM | Allotrope / Benchling | `.json` | fixtures Benchling cubes/endpoints spectraux | partiel | Benchling allotropy |
-| Allotrope ADF | Allotrope Foundation | `.adf` | HDF5/RDF; `adfsee` GitLab `example.adf` local data-cube subset + RDF component mapping minimal avec axe temps type | partiel | Allotrope SDK, adfsee |
-| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | `.mzML` detection + refus non-NIRS; `.mzMLb` documente sans fixture | fait | pyteomics, pymzML, pyOpenMS |
-| HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | schema spectra+wavelengths synthetique + refus non-spectral | partiel | h5py, hdf5-reader, tables |
-| Parquet | Apache / generique | `.parquet` | table NIRS canonique | fait | pyarrow, fastparquet, nirs4all ParquetLoader |
-| MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | MAT v5/v7.3 + RData prospectr + local Indian Pines cube | partiel | scipy, hdf5-reader, R serialization, prospectr |
-| NumPy | Python / NumPy | `.npy`, `.npz` | `.npy` matrice, `.npz` canonique | fait | numpy |
-| Renishaw WDF | Renishaw | `.wdf` | WDF1 spectra + maps/lines/depth/zscan/focustrack/timeseries/streamline/interrupted; `MAP ` PSET inventory + `dataRange` map/depth golden-backed | partiel | RosettaSciIO, SpectroChemPy |
-| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; `.l6m` Gd₂O₃/AlN map decode experimental; `.l6s` manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
-| Princeton TriVista TVF | Princeton Instruments | `.tvf` | corpus RosettaSciIO XML Frame golden-backed; axe xDim/Calibration valide + metadata detector/spectrometer/spatial-unit promus | partiel | RosettaSciIO |
-| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus RosettaSciIO spectra/maps/surfaces/zlib golden-backed; metadata spatiales map/surface normalisees | partiel | RosettaSciIO |
-| Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | corpus adjacent 2D OK; axes Y calibres temps en metadata `time`; hors point-spectra NIRS | partiel | RosettaSciIO |
-| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + metadata LineValid/FreePolynom; ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
-| EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y avec axes `eV` types `energy`, notation scientifique, titres multi-lignes, metadata non conformes preservees | fait | RosettaSciIO |
-| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
-| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; `band*`, `spectrum`/`wr_raw`/`sample_raw` et calibration axis-first golden-backed | fait | kebasaa/SCIO-read |
+- `Variants`: sous-formats, versions, layouts ou modes explicitement suivis.
+- `Validés`: parsing et metadata suffisants pour le variant, avec sample/test/doc.
+- `Partiels`: parser utile mais incomplet pour ce variant (metadata, calibration,
+  conformance, axes ou cibles incomplets).
+- `Planifiés`: variant identifié et actionnable, mais pas encore codé.
+- `Bloqués`: variant identifié mais bloqué par sample/spec/licence/référence.
+- `Diffusion`: `oui` si les variants principaux en activité sont couverts,
+  `sous-ensemble` si on peut diffuser seulement une partie claire, `non` si le
+  format doit encore être sourcé/codé, `hors-scope` si le domaine est exclu.
+- `Action`: prochaine action principale: `diffuser`, `coder`, `compléter`,
+  `sourcer`, `surveiller` ou `hors-scope`.
 
-## Notes pour les statuts non finis
+| Nom | Vendeur | Extensions | Variants | Validés | Partiels | Planifiés | Bloqués | Diffusion | Action | Lib référence |
+|---|---|---|---:|---:|---:|---:|---:|---|---|---|
+| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | pandas, read.table, nirs4all CSVLoader |
+| Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | 8 | 8 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
+| Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
+| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | calamine, openpyxl, pandas, readxl |
+| ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | 8 | 4 | 0 | 3 | 1 | oui | sourcer | asdreader, prospectr, spectrolab, specdal, pyASDReader |
+| ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | 3 | 0 | 0 | 0 | 3 | non | sourcer | SPECCHIO, asdreader |
+| Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | 5 | 4 | 0 | 0 | 1 | sous-ensemble | sourcer | lightr |
+| Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | 9 | 1 | 1 | 0 | 7 | sous-ensemble | sourcer | lightr, manuel AvaSoft |
+| Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | 6 | 6 | 0 | 0 | 0 | oui | diffuser | pandas, read.table |
+| Bruker OPUS DPT | Bruker | `.dpt` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pandas, read.table, lightr |
+| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | 5 | 2 | 1 | 0 | 2 | oui | diffuser | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
+| Bruker Tango / MPA / Matrix | Bruker | OPUS natif | 3 | 1 | 0 | 2 | 0 | sous-ensemble | sourcer | opusreader2, SpectroChemPy |
+| ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | 3 | 2 | 0 | 0 | 1 | oui | diffuser | spectral, RStoolbox, pysptools |
+| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | 7 | 3 | 1 | 1 | 2 | sous-ensemble | sourcer | spectral, rasterio, scipy |
+| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | 2 | 1 | 0 | 0 | 1 | sous-ensemble | sourcer | h5py, hdf5r, rhdf5, lxml |
+| MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | 3 | 2 | 0 | 0 | 1 | sous-ensemble | sourcer | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
+| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc`, `.lev10/.lev15/.lev20` | 4 | 2 | 1 | 0 | 1 | sous-ensemble | sourcer | parseurs ad hoc, xarray |
+| Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.jdx`, `.spc` | 11 | 8 | 0 | 3 | 0 | oui | diffuser | lightr, pavo |
+| PP Systems UniSpec SC | PP Systems | `.SPT` | 1 | 0 | 1 | 0 | 0 | non | sourcer | SPECCHIO, parseurs ad hoc |
+| PP Systems UniSpec DC | PP Systems | `.SPU` | 1 | 0 | 1 | 0 | 0 | non | sourcer | SPECCHIO, parseurs ad hoc |
+| SVC / GER SIG | Spectra Vista / GER | `.sig` | 6 | 5 | 1 | 0 | 0 | oui | compléter | spectrolab, specdal |
+| Spectral Evolution / PSR | Spectral Evolution | `.sed` | 4 | 3 | 1 | 0 | 0 | oui | compléter | spectrolab, specdal |
+| MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | 1 | 0 | 1 | 0 | 0 | non | sourcer | parseur texte |
+| IDL / ENVI texte | IDL / ENVI | `.txt` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | parseur texte |
+| USGS SPECPR / PRISM / ECOSTRESS text | USGS / JHU / ECOSTRESS | `SPECPR`, `.asc`, `.txt`, `.spectrum.txt` | 4 | 3 | 0 | 0 | 1 | oui | sourcer | convertisseur USGS |
+| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | 6 | 3 | 1 | 1 | 1 | oui | compléter | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
+| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | 5 | 3 | 1 | 0 | 1 | oui | compléter | SpectroChemPy, spa-on-python |
+| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | 2 | 1 | 0 | 0 | 1 | oui | sourcer | specio |
+| Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | 4 | 0 | 0 | 0 | 4 | non | sourcer | aucune fiable |
+| Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | 2 | 2 | 0 | 0 | 0 | oui | diffuser | parseur texte |
+| Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | 3 | 1 | 0 | 1 | 1 | sous-ensemble | sourcer | parseur texte, pandas, readxl |
+| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | 4 | 1 | 1 | 1 | 1 | sous-ensemble | sourcer | prospectr::read_nircal |
+| Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | 2 | 0 | 0 | 0 | 2 | non | sourcer | export CSV/Excel vendeur |
+| JASCO JWS | JASCO | `.jws`, `.txt` | 7 | 4 | 0 | 0 | 3 | oui | sourcer | jws2txt, jwsProcessor |
+| Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | 2 | 1 | 0 | 0 | 1 | sous-ensemble | sourcer | pyfasma-spc, convertisseur Shimadzu |
+| VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | parseur texte, openpyxl |
+| Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | 3 | 2 | 0 | 0 | 1 | oui | sourcer | parseur texte, openpyxl |
+| Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | 3 | 2 | 0 | 0 | 1 | sous-ensemble | sourcer | JSON/CSV standard |
+| JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | 5 | 3 | 1 | 1 | 0 | sous-ensemble | coder | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
+| ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pyteomics, PyMassSpec, pyOpenMS |
+| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | 5 | 3 | 1 | 1 | 0 | sous-ensemble | compléter | netcdf-reader, xarray, netcdf, ARM ACT |
+| AnIML | IUPAC / ASTM | `.animl` | 5 | 2 | 0 | 2 | 1 | sous-ensemble | sourcer | animl-python, validateurs XML |
+| Allotrope ASM | Allotrope / Benchling | `.json` | 3 | 2 | 0 | 1 | 0 | sous-ensemble | sourcer | Benchling allotropy |
+| Allotrope ADF | Allotrope Foundation | `.adf` | 4 | 0 | 2 | 0 | 2 | non | compléter | Allotrope SDK, adfsee |
+| mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | 2 | 1 | 0 | 0 | 1 | oui | surveiller | pyteomics, pymzML, pyOpenMS |
+| HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | 3 | 1 | 0 | 2 | 0 | sous-ensemble | coder | h5py, hdf5-reader, tables |
+| Parquet | Apache / generique | `.parquet` | 1 | 1 | 0 | 0 | 0 | oui | diffuser | pyarrow, fastparquet, nirs4all ParquetLoader |
+| MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | 6 | 5 | 1 | 0 | 0 | oui | compléter | scipy, hdf5-reader, R serialization, prospectr |
+| NumPy | Python / NumPy | `.npy`, `.npz` | 2 | 2 | 0 | 0 | 0 | oui | diffuser | numpy |
+| Renishaw WDF | Renishaw | `.wdf` | 12 | 9 | 1 | 0 | 2 | oui | compléter | RosettaSciIO, SpectroChemPy |
+| Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | 5 | 2 | 1 | 0 | 2 | sous-ensemble | sourcer | RosettaSciIO, SpectroChemPy, horiba-raman |
+| Princeton TriVista TVF | Princeton Instruments | `.tvf` | 8 | 8 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
+| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | 5 | 5 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
+| Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | 2 | 2 | 0 | 0 | 0 | sous-ensemble | surveiller | RosettaSciIO |
+| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | 5 | 1 | 1 | 1 | 2 | sous-ensemble | coder | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
+| EMSA/MAS MSA | ISO / EMSA | `.msa` | 3 | 3 | 0 | 0 | 0 | oui | diffuser | RosettaSciIO |
+| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors-scope | MNE-NIRS, SNIRF |
+| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 3 | 3 | 0 | 0 | 0 | oui | diffuser | kebasaa/SCIO-read |
 
-Les lignes `fait` ne sont pas repetees ici. La note indique ce qui manque pour
-passer le format a `fait`.
+## Notes pour les lignes non finalisées
 
-| Nom | Status nirs4allio | Note / manque |
+Les lignes `Diffusion = oui` peuvent rester listees quand il existe encore des
+variants secondaires a sourcer, coder ou completer. La note indique le manque
+concret: sample, metadata, calibration, conformance, variant non code ou scope
+hors NIRS.
+
+| Nom | Suivi actuel | Note / manque |
 |---|---|---|
 | Excel spectral | partiel | `.xlsx` synthetique/multi-feuilles/reels UvA et `.xlsm` OOXML macro-compatible sont golden-backed; workbooks metadata-only AuroraNIR/Foss XDS refuses explicitement. Restent `.xls` legacy OLE, un vrai `.xlsm` avec macros si besoin de metadata VBA, plus de fixtures multi-feuilles reelles et les cas ou Excel convertit les longueurs d'onde en dates. |
 | ASD FieldSpec | partiel | Revisions 1/6/7/8 primary spectra couvertes; restent v3/v4/v5 eventuelles, blocs internes secondary/dependent/reference/calibration, audit/signatures et compagnons calibration `.ILL/.REF/.RAW` separes. |
