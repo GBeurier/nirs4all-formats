@@ -271,7 +271,10 @@ fn parse_property_targets(bytes: &[u8], n_samples: usize) -> Result<(TargetMaps,
 
     for start in value_starts {
         let values = read_f64_values(bytes, start, property_count, "BUCHI NIRCal property block")?;
-        if values.iter().any(|value| value.is_finite() && *value != 0.0) {
+        if values
+            .iter()
+            .any(|value| value.is_finite() && *value != 0.0)
+        {
             has_nonzero_value = true;
         }
         value_rows.push(values);
