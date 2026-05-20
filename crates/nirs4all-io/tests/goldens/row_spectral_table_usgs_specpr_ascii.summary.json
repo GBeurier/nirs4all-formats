@@ -1,0 +1,53 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "notes",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_table",
+      "record_signal_type": "reflectance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 0.35,
+          "axis_kind": "wavelength",
+          "axis_last": 2.5,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "um",
+          "name": "reflectance",
+          "role": "reflectance",
+          "signal_type": "reflectance",
+          "unit": null,
+          "value_first": 0.042736,
+          "value_last": 0.098695,
+          "value_sum": 256.424613,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 0.35,
+          "axis_kind": "wavelength",
+          "axis_last": 2.5,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "um",
+          "name": "standard_deviation",
+          "role": "standard_deviation",
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 0.0,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "8631095b81a13f70fdde9c63e0e0b210588c44db50e361c15dd91cced6556bc7",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

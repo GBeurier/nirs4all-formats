@@ -408,6 +408,111 @@ fn reads_svc_sig_with_overlap_quality_flag() {
 }
 
 #[test]
+fn reads_row_oriented_spectral_tables() {
+    for (relative, signal_name, axis_unit, axis_len, signal_type, first_x, first_y) in [
+        (
+            "samples/siware_neospectra/synthetic_neospectra.csv",
+            "absorbance",
+            "nm",
+            200,
+            SignalType::Absorbance,
+            1100.0,
+            0.036743,
+        ),
+        (
+            "samples/modtran/synthetic_albedo.dat",
+            "albedo",
+            "um",
+            200,
+            SignalType::Reflectance,
+            1.1,
+            0.3891,
+        ),
+        (
+            "samples/envi_sli/ecostress_b.spectrum.txt",
+            "reflectance",
+            "um",
+            2_151,
+            SignalType::Reflectance,
+            0.35,
+            1.471,
+        ),
+        (
+            "samples/shimadzu/synthetic_uvprobe.txt",
+            "sample_s000",
+            "nm",
+            200,
+            SignalType::Unknown,
+            1100.0,
+            0.036743,
+        ),
+        (
+            "samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt",
+            "spectrum__000__spec_data_1",
+            "nm",
+            1_600,
+            SignalType::RawCounts,
+            530.7816803,
+            356.8500061,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open row spectral table");
+
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].provenance.format, "row-spectral-table");
+        let signal = records[0].signals.get(signal_name).expect(signal_name);
+        assert_eq!(signal.axis.unit, axis_unit);
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(signal.axis.values.len(), axis_len);
+        assert_eq!(signal.signal_type, signal_type);
+        assert!((signal.axis.values[0] - first_x).abs() < 0.000001);
+        assert!((signal.values[0] - first_y).abs() < 0.000001);
+    }
+}
+
+#[test]
+fn reads_pp_systems_row_tables_with_multiple_signals() {
+    let records =
+        open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert!(records[0].signals.contains_key("dn_white"));
+    assert!(records[0].signals.contains_key("dn_target"));
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 200);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.values[0] - 0.6787).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/pp_systems/synthetic_unispec_dc.SPU",
+    ))
+    .expect("open spu");
+    assert!(records[0].signals.contains_key("channel_a_dn"));
+    assert!(records[0].signals.contains_key("channel_b_dn"));
+    assert!((records[0].signals["reflectance"].values[0] - 1.2646).abs() < 0.000001);
+}
+
+#[test]
+fn reads_usgs_specpr_ascii_spectrum() {
+    let records = open_path(workspace_file("samples/specpr/asphalt_gds366.27407.asc"))
+        .expect("open usgs asc");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    let stddev = records[0]
+        .signals
+        .get("standard_deviation")
+        .expect("standard deviation");
+    assert_eq!(reflectance.axis.unit, "um");
+    assert_eq!(reflectance.axis.values.len(), 2_151);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert_eq!(stddev.signal_type, SignalType::Unknown);
+    assert!((reflectance.values[0] - 0.042736).abs() < 0.000001);
+}
+
+#[test]
 fn reads_msa_iso22029_xy_variants() {
     let records = open_path(workspace_file(
         "samples/msa_iso22029/ISO_22029_2022_compliance.msa",

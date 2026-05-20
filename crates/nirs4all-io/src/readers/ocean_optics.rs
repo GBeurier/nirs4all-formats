@@ -63,6 +63,10 @@ impl Reader for OceanOpticsReader {
         if ext == "csv"
             && normalized
                 .lines()
+                .find(|line| !line.trim().is_empty())
+                .is_some_and(is_numeric_pair_line)
+            && normalized
+                .lines()
                 .take(10)
                 .filter(|line| is_numeric_pair_line(line))
                 .count()

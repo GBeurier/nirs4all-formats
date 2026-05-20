@@ -20,11 +20,12 @@ Implemented readers:
 | `jcamp` | `samples/ocean_optics/OceanOptics_period.jdx` | `LINK`/`XYPOINTS` sample, dark and reference blocks plus computed transmittance. |
 | `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
 | `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
+| `spectral_table` | Si-Ware CSV, MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS `.spectrum.txt`, Shimadzu TXT, USGS SPECPR ASCII, WiTec TXT | Row-oriented axis-first spectral tables, one normalized signal per numeric column after the axis. |
 
 Known limitations:
 
 - CSV parsing is intentionally narrow and expects numeric spectral headers.
-- IDL/ENVI transposed text exports are not parsed yet.
+- Single-column text dumps without an embedded axis still need a sidecar axis.
 - JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
   yet.
 - The Python bridge uses `nirs4all-io read-json` as temporary transport; native

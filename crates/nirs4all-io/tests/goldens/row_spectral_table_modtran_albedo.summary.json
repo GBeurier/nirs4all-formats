@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "notes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_table",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1.1,
+          "axis_kind": "wavelength",
+          "axis_last": 2.5,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "um",
+          "name": "albedo",
+          "role": "albedo",
+          "signal_type": "reflectance",
+          "unit": null,
+          "value_first": 0.3891,
+          "value_last": 0.3598,
+          "value_sum": 77.9097,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "ebbb25448ef6fc27757e8f72505a5e6c1d281b09c178fb525c30479663792d3d",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}
