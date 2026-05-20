@@ -21,11 +21,14 @@ Implemented readers:
 | `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
 | `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
 | `spectral_table` | Si-Ware CSV, MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS `.spectrum.txt`, Shimadzu TXT, USGS SPECPR ASCII, WiTec TXT | Row-oriented axis-first spectral tables, one normalized signal per numeric column after the axis. |
+| `spectral_matrix` | Foss/WinISI text, Metrohm Vision Air CSV, VIAVI MicroNIR CSV | One spectrum per sample row, numeric headers or `Wavelengths:` block become the axis, property columns become targets. |
+| `sun_photometer` | MFR `.OUT`, Microtops `.TXT` | Channel columns become a short wavelength axis, one record per observation row. |
 
 Known limitations:
 
 - CSV parsing is intentionally narrow and expects numeric spectral headers.
 - Single-column text dumps without an embedded axis still need a sidecar axis.
+- Target-only reports without spectra are not loaded into `SpectralRecord`.
 - JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
   yet.
 - The Python bridge uses `nirs4all-io read-json` as temporary transport; native

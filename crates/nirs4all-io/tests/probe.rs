@@ -53,6 +53,25 @@ fn probes_row_spectral_table_fixture() {
         .any(|probe| probe.format == "ocean-optics-two-column-csv"));
 }
 
+#[test]
+fn probes_matrix_and_sun_photometer_exports() {
+    let probes = probe_path(workspace_file(
+        "samples/foss_winisi/synthetic_winisi_export.txt",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "spectral-matrix" && probe.confidence == Confidence::Likely
+    }));
+    assert!(!probes
+        .iter()
+        .any(|probe| probe.format == "row-spectral-table"));
+
+    let probes =
+        probe_path(workspace_file("samples/microtops/synthetic_microtops.TXT")).expect("probe");
+    assert_eq!(probes[0].format, "microtops-sun-photometer");
+    assert_eq!(probes[0].confidence, Confidence::Definite);
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

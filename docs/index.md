@@ -19,6 +19,8 @@ formats/jcamp-dx
 formats/msa-iso22029
 formats/ocean-optics
 formats/row-spectral-table
+formats/spectral-matrix
+formats/sun-photometers
 formats/text-readers-001
 DATA_MODEL
 CONFORMANCE
