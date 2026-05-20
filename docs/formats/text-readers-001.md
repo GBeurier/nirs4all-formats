@@ -37,3 +37,10 @@ cargo clippy --workspace --all-targets -- -D warnings
 python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]"
 python -m pytest tools/reverse-lab/tests bindings/python/tests
 ```
+
+Golden summaries:
+
+- stored in `crates/nirs4all-io/tests/goldens/`;
+- checked by `cargo test --workspace`;
+- intentionally cover stable normalized-output summaries before full
+  reference-reader array comparisons are wired in.
