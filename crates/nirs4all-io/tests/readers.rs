@@ -2020,6 +2020,56 @@ fn reads_spectrochempy_als2004_matlab_dataset() {
 }
 
 #[test]
+fn reads_local_indian_pines_matlab_cube_when_present() {
+    let path = workspace_file("samples_local/hyperspectral_cubes/indian_pines_corrected.mat");
+    if !path.exists() {
+        eprintln!("skipping local-only Indian Pines MATLAB sample");
+        return;
+    }
+
+    let records = open_path(path).expect("open local Indian Pines MAT cube");
+
+    assert_eq!(records.len(), 145 * 145);
+    assert_eq!(records[0].provenance.format, "matlab-indian-pines-cube");
+    assert_eq!(
+        records[0].metadata["container"].as_str(),
+        Some("matlab_v5_hyperspectral_cube")
+    );
+    assert_eq!(
+        records[0].metadata["dataset"].as_str(),
+        Some("indian_pines_corrected")
+    );
+    assert_eq!(records[0].metadata["pixel_x"].as_u64(), Some(0));
+    assert_eq!(records[0].metadata["pixel_y"].as_u64(), Some(0));
+    assert_eq!(records[0].targets["land_cover_class"].as_u64(), Some(3));
+    assert_eq!(records[0].provenance.sources.len(), 2);
+    assert_eq!(records[0].provenance.sources[1].role, "target_sidecar");
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "matlab_hyperspectral_cube_axis_generated_index"));
+
+    let signal = records[0].signals.get("raw_counts").expect("raw_counts");
+    assert_eq!(signal.axis.values.len(), 200);
+    assert_eq!(signal.axis.unit, "index");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert_eq!(signal.unit.as_deref(), Some("counts"));
+    assert_eq!(signal.values[0], 3172.0);
+    assert_eq!(signal.values[1], 4142.0);
+    assert_eq!(signal.values[199], 1020.0);
+    assert_eq!(signal.values.iter().sum::<f64>(), 533_141.0);
+
+    let last = records.last().expect("last record");
+    assert_eq!(last.metadata["pixel_x"].as_u64(), Some(144));
+    assert_eq!(last.metadata["pixel_y"].as_u64(), Some(144));
+    assert_eq!(last.targets["land_cover_class"].as_u64(), Some(0));
+    assert_eq!(last.signals["raw_counts"].values[0], 3323.0);
+    assert_eq!(last.signals["raw_counts"].values[199], 1000.0);
+}
+
+#[test]
 fn reads_prospectr_nirsoil_rdata_dataset() {
     let records = open_path(workspace_file("samples/matlab/prospectr_NIRsoil.RData"))
         .expect("open NIRsoil RData");

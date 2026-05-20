@@ -38,8 +38,8 @@ undocumented to test safely.
 | Metrohm Vision / Vision Air project database | Native project DB not decoded. Vision Air CSV spectral matrices are supported. | Closed project format; public workflows use CSV/Excel export. | Export spectral matrices or lab templates. |
 | Shimadzu UVProbe proprietary `.spc` | Native binary not decoded; Shimadzu text export is covered. | Same extension as Galactic SPC but different magic/layout; no real fixture. | Use UVProbe TXT export until a real `.spc` is contributed. |
 | VIAVI MicroNIR `.pri` project container | Not decoded; MicroNIR CSV matrices are supported. | Customer-only project format. | Export CSV. |
-| WiTec `.wip` / `.wid` | Signed `WIT^` files are detected and refused. WiTec ASCII export is supported. | No redistributable binary project fixture. | Export from WiTec Project/FIVE as ASCII text; native decode needs matching `.wip` plus ASCII export. |
-| Horiba LabSpec `.l6s` / `.l6m` binary | Not decoded; LabSpec XML/text exports are supported. | No open binary reader or fixture. | Export XML/text spectrum, line scan or map. |
+| WiTec `.wip` / `.wid` variants outside `WIT_PR06` TDGraph | The committed `Sa4.wip` layout decodes experimentally; signed `WIT^` and unknown `WIT_PR06` layouts are refused. WiTec ASCII export is supported. | Only one redistributable binary map layout is available. | Export from WiTec Project/FIVE as ASCII text; broaden native decode only with matching `.wip` plus reference export. |
+| Horiba LabSpec `.l6s` / `.l6m` binary variants | One LabSpec6 `.l6m` Gd2O3/AlN map layout decodes experimentally; `.l6s` and other binary layouts are not decoded. LabSpec XML/text exports are supported. | Only one open `.l6m` map fixture is available. | Export XML/text spectrum, line scan or map; broaden native decode with matching binary and text/reference export. |
 
 ## Export Path Exists But Real Samples Are Missing
 
@@ -73,7 +73,7 @@ variants remain untreated until a sample or reference comparison is available.
 | BUCHI NIRCal | One `.nir` transfer file with spectra/wavenumbers/property schema. | Non-zero property targets, `.cal` calibration-only files, NIRMaster variants. |
 | Avantes AvaSoft | Legacy `.TRM/.ROH/.DRK/.REF/.ABS`, AvaSoft 8 `.Raw8/.IRR8`, ASCII exports. | Legacy `.IRR/.RMN`, AvaSoft 8 `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8` fixtures. |
 | Ocean Optics / Ocean Insight | SpectraSuite/OceanView/Jaz/CRAIC text, `.ProcSpec`, Ocean Optics-flavoured SPC. | QE Pro, Maya and Apex firmware-specific exports. |
-| ENVI / hyperspectral | ENVI SLI including USGS splib06a/splib07, ENVI Standard `.img/.dat + .hdr` cubes and AVIRIS 92AV3C ERDAS `.lan/.spc/.GIS` expanded to one spectrum per pixel. | Generic ERDAS LAN, NEON/Specim/HySpex/Headwall cubes and mask/ROI extraction workflows. |
+| ENVI / hyperspectral | ENVI SLI including USGS splib06a/splib07, ENVI Standard `.img/.dat + .hdr` cubes, AVIRIS 92AV3C ERDAS `.lan/.spc/.GIS`, and the local-only Indian Pines MATLAB v5 cube expanded to one spectrum per pixel. | Generic ERDAS LAN, NEON/Specim/HySpex/Headwall/HDF5 cubes and mask/ROI extraction workflows. |
 | Consumer Physics SCiO CSV | Developer-app `band*`, grouped spectrum/raw CSV and axis-first calibration CSV fixtures. | Native/mobile project containers and additional firmware exports. |
 | JASCO JWS | FT/IR, fluorescence and CD/HT/Abs OLE2 payloads. | NIR-specific V-780 blocks and NRS-series Raman binary flavor. |
 | Renishaw WDF | Spectra, maps/lines/depth/time metadata, WHTL JPEG metadata, MAP inventory. | Full derived `MAP ` dataRange decoding and per-model fixtures. |

@@ -44,7 +44,9 @@ Experimental native readers:
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
-  fixtures, and prospectr `NIRsoil.RData` RDX3/XZ workspace mapping;
+  fixtures, prospectr `NIRsoil.RData` RDX3/XZ workspace mapping, and the
+  local-only Indian Pines MATLAB v5 cube mapped to one raw-count spectrum per
+  pixel with optional `_gt.mat` class targets;
 - Excel workbooks: simple `.xlsx/.xlsm` spectral tables, first-cell
   `axis: ... / data: ...` descriptors used by UvA handheld XLSX exports, and
   canonical `spectra`/`metadata`/`references` multi-sheet lab templates with
@@ -168,7 +170,8 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. decide whether AVIRIS/Indian Pines sample redistribution terms allow keeping
-   the committed `.lan/.spc/.GIS` fixtures in public release artifacts;
+   the committed `.lan/.spc/.GIS` fixtures in public release artifacts, and
+   keep the EHU MATLAB cube path local-only unless redistribution terms change;
 2. add ROI/mask extraction for hyperspectral cubes so large NEON/Specim/HySpex/
    Headwall scenes do not require whole-cube expansion;
 3. continue the open-reader-backed binary batch in this order: remaining

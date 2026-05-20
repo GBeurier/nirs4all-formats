@@ -443,7 +443,10 @@ fn read_matlab_v5_structured(
     if let Some(records) = records_from_spectrochempy_dso(&mat, reader, source.clone())? {
         return Ok(records);
     }
-    if let Some(records) = records_from_als2004(&mat, reader, source)? {
+    if let Some(records) = records_from_als2004(&mat, reader, source.clone())? {
+        return Ok(records);
+    }
+    if let Some(records) = records_from_indian_pines(&mat, reader, source, path)? {
         return Ok(records);
     }
 
@@ -699,6 +702,149 @@ fn records_from_als2004(
         )?);
     }
     Ok(Some(records))
+}
+
+fn records_from_indian_pines(
+    mat: &Mat5Document,
+    reader: &str,
+    source: SourceFile,
+    path: &Path,
+) -> Result<Option<Vec<SpectralRecord>>> {
+    let Some(cube) = mat
+        .values
+        .get("indian_pines_corrected")
+        .and_then(Mat5Value::as_numeric)
+    else {
+        return Ok(None);
+    };
+    if cube.dims.as_slice() != [145, 145, 200] {
+        return Err(Error::InvalidRecord(
+            "Indian Pines corrected cube has unexpected dimensions".to_string(),
+        ));
+    }
+    let (rows, cols, bands) = (cube.dims[0], cube.dims[1], cube.dims[2]);
+    if cube.values.len() != rows * cols * bands {
+        return Err(Error::InvalidRecord(
+            "Indian Pines corrected cube payload length does not match dimensions".to_string(),
+        ));
+    }
+
+    let gt = read_indian_pines_gt(path, rows, cols)?;
+    let axis = (0..bands).map(|value| value as f64).collect::<Vec<_>>();
+    let mut records = Vec::with_capacity(rows * cols);
+    for y in 0..rows {
+        for x in 0..cols {
+            let sample_index = y * cols + x;
+            let mut targets = BTreeMap::new();
+            if let Some((gt_values, _gt_source)) = &gt {
+                targets.insert(
+                    "land_cover_class".to_string(),
+                    json!(gt_values[y + x * rows] as u64),
+                );
+            }
+
+            let mut metadata = BTreeMap::new();
+            metadata.insert(
+                "container".to_string(),
+                json!("matlab_v5_hyperspectral_cube"),
+            );
+            metadata.insert("dataset".to_string(), json!("indian_pines_corrected"));
+            metadata.insert("sample_index".to_string(), json!(sample_index));
+            metadata.insert("pixel_x".to_string(), json!(x));
+            metadata.insert("pixel_y".to_string(), json!(y));
+            metadata.insert("cube_rows".to_string(), json!(rows));
+            metadata.insert("cube_cols".to_string(), json!(cols));
+            metadata.insert("cube_bands".to_string(), json!(bands));
+
+            let mut record = single_signal_record(
+                "matlab-indian-pines-cube",
+                reader,
+                source.clone(),
+                SingleSignalSpec {
+                    axis_values: axis.clone(),
+                    axis_unit: "index".to_string(),
+                    axis_kind: AxisKind::Index,
+                    values: indian_pines_pixel_values(cube, rows, cols, bands, y, x),
+                    signal_name: "raw_counts".to_string(),
+                    signal_type: SignalType::RawCounts,
+                    signal_unit: Some("counts".to_string()),
+                    role: "raw_counts".to_string(),
+                },
+                targets,
+                metadata,
+                vec!["matlab_hyperspectral_cube_axis_generated_index".to_string()],
+            )?;
+            if let Some((_gt_values, gt_source)) = &gt {
+                record.provenance.sources.push(gt_source.clone());
+            }
+            records.push(record);
+        }
+    }
+    Ok(Some(records))
+}
+
+fn read_indian_pines_gt(
+    cube_path: &Path,
+    rows: usize,
+    cols: usize,
+) -> Result<Option<(Vec<u16>, SourceFile)>> {
+    let Some(parent) = cube_path.parent() else {
+        return Ok(None);
+    };
+    let gt_path = parent.join("indian_pines_gt.mat");
+    if !gt_path.exists() {
+        return Ok(None);
+    }
+    let bytes = std::fs::read(&gt_path).map_err(|source| Error::Io {
+        path: gt_path.clone(),
+        source,
+    })?;
+    let source = SourceFile::from_bytes(&gt_path, &bytes, "target_sidecar");
+    let gt_mat = Mat5Document::parse(&bytes)?;
+    let Some(gt) = gt_mat
+        .values
+        .get("indian_pines_gt")
+        .and_then(Mat5Value::as_numeric)
+    else {
+        return Err(Error::InvalidRecord(
+            "Indian Pines ground-truth sidecar has no indian_pines_gt matrix".to_string(),
+        ));
+    };
+    if gt.dims.as_slice() != [rows, cols] || gt.values.len() != rows * cols {
+        return Err(Error::InvalidRecord(
+            "Indian Pines ground-truth dimensions do not match cube".to_string(),
+        ));
+    }
+    let values = gt
+        .values
+        .iter()
+        .map(|value| {
+            if !value.is_finite()
+                || *value < 0.0
+                || *value > u16::MAX as f64
+                || value.fract() != 0.0
+            {
+                return Err(Error::InvalidRecord(
+                    "Indian Pines ground-truth class is out of range".to_string(),
+                ));
+            }
+            Ok(*value as u16)
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(Some((values, source)))
+}
+
+fn indian_pines_pixel_values(
+    cube: &Mat5Numeric,
+    rows: usize,
+    cols: usize,
+    bands: usize,
+    y: usize,
+    x: usize,
+) -> Vec<f64> {
+    (0..bands)
+        .map(|band| cube.values[y + x * rows + band * rows * cols])
+        .collect()
 }
 
 fn spectral_array(
