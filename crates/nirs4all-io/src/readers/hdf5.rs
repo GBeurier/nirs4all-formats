@@ -4,13 +4,12 @@ use std::path::Path;
 use hdf5_reader::group::Group;
 use hdf5_reader::{Attribute, Dataset, Datatype, H5Type, Hdf5File};
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SourceFile, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
+    SpectralAxis, SpectralRecord,
 };
 use serde_json::{json, Value};
 
-use crate::readers::util::{
-    safe_signal_name, signal_type_from_label, single_signal_record, SingleSignalSpec,
-};
+use crate::readers::util::{provenance, safe_signal_name, signal_type_from_label};
 use crate::Reader;
 
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
@@ -114,18 +113,18 @@ pub(crate) fn read_hdf5_records(
             "HDF5 axis length does not match spectra bands".to_string(),
         ));
     }
-    let spectra = read_numeric_vec(&candidate.spectra, "spectra")?;
-    if spectra.len() != sample_count * band_count {
-        return Err(Error::InvalidRecord(
-            "HDF5 spectra payload length does not match dimensions".to_string(),
-        ));
-    }
+    let signal_payloads = read_signal_payloads(&candidate)?;
 
+    let spectra_names = candidate
+        .signals
+        .iter()
+        .map(|signal| signal.spectra_name.clone())
+        .collect::<Vec<_>>();
     let target_columns = target_columns(
         &candidate.group,
         sample_count,
         &candidate.axis_name,
-        &candidate.spectra_name,
+        &spectra_names,
     )?;
     let group_attributes =
         attribute_map(candidate.group.attributes().map_err(|error| {
@@ -134,12 +133,6 @@ pub(crate) fn read_hdf5_records(
     let axis_kind = axis_kind(&candidate.axis_name, &candidate.axis);
     let axis_unit = attr_string(&candidate.axis, "units")
         .unwrap_or_else(|| default_axis_unit(&candidate.axis_name, &axis_kind));
-    let signal_unit = attr_string(&candidate.spectra, "units");
-    let signal_label = signal_unit
-        .as_deref()
-        .unwrap_or_else(|| default_signal_label(&candidate.spectra_name));
-    let signal_type = signal_type_from_label(signal_label);
-    let signal_name = safe_signal_name(signal_label, "absorbance");
 
     let mut records = Vec::with_capacity(sample_count);
     for sample_index in 0..sample_count {
@@ -147,7 +140,7 @@ pub(crate) fn read_hdf5_records(
             &candidate,
             &root_attributes,
             &group_attributes,
-            signal_unit.as_deref(),
+            &signal_payloads,
         );
         metadata.insert("sample_index".to_string(), json!(sample_index));
         let mut targets = BTreeMap::new();
@@ -155,24 +148,34 @@ pub(crate) fn read_hdf5_records(
             targets.insert(name.clone(), json!(values[sample_index]));
         }
 
-        records.push(single_signal_record(
-            "hdf5-nirs",
-            reader,
-            source.clone(),
-            SingleSignalSpec {
-                axis_values: axis.clone(),
-                axis_unit: axis_unit.clone(),
-                axis_kind: axis_kind.clone(),
-                values: sample_values(&spectra, layout, sample_index),
-                signal_name: signal_name.clone(),
-                signal_type: signal_type.clone(),
-                signal_unit: signal_unit.clone(),
-                role: signal_name.clone(),
-            },
+        let mut signals = BTreeMap::new();
+        let mut dominant = SignalType::Unknown;
+        for payload in &signal_payloads {
+            let signal_name = unique_signal_name(&payload.signal_name, &signals);
+            if dominant == SignalType::Unknown {
+                dominant = payload.signal_type.clone();
+            }
+            let signal = SpectralArray::new(
+                SpectralAxis::new(axis.clone(), axis_unit.clone(), axis_kind.clone())?,
+                sample_values(&payload.values, payload.layout, sample_index),
+                vec!["x".to_string()],
+                payload.signal_type.clone(),
+                payload.signal_unit.clone(),
+                signal_name.clone(),
+                "file",
+            )?;
+            signals.insert(signal_name, signal);
+        }
+        let record = SpectralRecord {
+            signals,
+            signal_type: dominant,
             targets,
             metadata,
-            Vec::new(),
-        )?);
+            provenance: provenance("hdf5-nirs", reader, source.clone(), Vec::new()),
+            quality_flags: Vec::new(),
+        };
+        record.validate()?;
+        records.push(record);
     }
     Ok(records)
 }
@@ -180,10 +183,15 @@ pub(crate) fn read_hdf5_records(
 struct CandidateGroup {
     group_path: String,
     group: Group,
-    spectra_name: String,
-    spectra: Dataset,
+    signals: Vec<CandidateSignal>,
     axis_name: String,
     axis: Dataset,
+    layout: SpectraLayout,
+}
+
+struct CandidateSignal {
+    spectra_name: String,
+    spectra: Dataset,
     layout: SpectraLayout,
 }
 
@@ -212,6 +220,11 @@ fn find_candidate_group(
 }
 
 fn find_candidate_in_group(group: &Group, group_path: &str) -> Result<Option<CandidateGroup>> {
+    let mut axis_name = None;
+    let mut axis = None;
+    let mut layout = None;
+    let mut signals = Vec::new();
+
     for spectra_name in SPECTRA_DATASET_NAMES {
         let Ok(spectra) = group.dataset(spectra_name) else {
             continue;
@@ -219,19 +232,81 @@ fn find_candidate_in_group(group: &Group, group_path: &str) -> Result<Option<Can
         if spectra.ndim() != 2 {
             continue;
         }
-        if let Some((axis_name, axis, layout)) = find_axis_dataset(group, &spectra)? {
-            return Ok(Some(CandidateGroup {
-                group_path: group_path.to_string(),
-                group: group.clone(),
-                spectra_name: (*spectra_name).to_string(),
-                spectra,
-                axis_name,
-                axis,
-                layout,
-            }));
+
+        let Some((candidate_axis_name, candidate_axis, candidate_layout)) =
+            find_axis_dataset(group, &spectra)?
+        else {
+            continue;
+        };
+
+        if let Some(selected_axis_name) = axis_name.as_deref() {
+            if selected_axis_name != candidate_axis_name || layout != Some(candidate_layout) {
+                continue;
+            }
+        } else {
+            axis_name = Some(candidate_axis_name);
+            axis = Some(candidate_axis);
+            layout = Some(candidate_layout);
         }
+
+        signals.push(CandidateSignal {
+            spectra_name: (*spectra_name).to_string(),
+            spectra,
+            layout: candidate_layout,
+        });
     }
-    Ok(None)
+
+    if signals.is_empty() {
+        Ok(None)
+    } else {
+        Ok(Some(CandidateGroup {
+            group_path: group_path.to_string(),
+            group: group.clone(),
+            signals,
+            axis_name: axis_name.expect("set with non-empty signals"),
+            axis: axis.expect("set with non-empty signals"),
+            layout: layout.expect("set with non-empty signals"),
+        }))
+    }
+}
+
+struct SignalPayload {
+    spectra_name: String,
+    signal_name: String,
+    signal_type: SignalType,
+    signal_unit: Option<String>,
+    layout: SpectraLayout,
+    values: Vec<f64>,
+}
+
+fn read_signal_payloads(candidate: &CandidateGroup) -> Result<Vec<SignalPayload>> {
+    candidate
+        .signals
+        .iter()
+        .map(|signal| {
+            let values = read_numeric_vec(&signal.spectra, &signal.spectra_name)?;
+            if values.len() != signal.layout.sample_count * signal.layout.band_count {
+                return Err(Error::InvalidRecord(format!(
+                    "HDF5 {} payload length does not match dimensions",
+                    signal.spectra_name
+                )));
+            }
+            let signal_unit = attr_string(&signal.spectra, "units");
+            let signal_label = signal_unit
+                .as_deref()
+                .unwrap_or_else(|| default_signal_label(&signal.spectra_name));
+            let signal_type = signal_type_from_label(signal_label);
+            let signal_name = safe_signal_name(signal_label, "absorbance");
+            Ok(SignalPayload {
+                spectra_name: signal.spectra_name.clone(),
+                signal_name,
+                signal_type,
+                signal_unit,
+                layout: signal.layout,
+                values,
+            })
+        })
+        .collect()
 }
 
 fn find_axis_dataset(
@@ -264,7 +339,7 @@ fn find_axis_dataset(
     Ok(None)
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 struct SpectraLayout {
     sample_count: usize,
     band_count: usize,
@@ -272,7 +347,7 @@ struct SpectraLayout {
     name: &'static str,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 enum SpectraStorage {
     SamplesByBands,
     BandsBySamples,
@@ -315,7 +390,7 @@ fn target_columns(
     group: &Group,
     sample_count: usize,
     axis_name: &str,
-    spectra_name: &str,
+    spectra_names: &[String],
 ) -> Result<Vec<(String, Vec<f64>)>> {
     let datasets = group
         .datasets()
@@ -323,7 +398,9 @@ fn target_columns(
     let mut targets = Vec::new();
     for dataset in datasets {
         let name = dataset.name();
-        if name == spectra_name
+        if spectra_names
+            .iter()
+            .any(|spectra_name| spectra_name == name)
             || name == axis_name
             || is_axis_dataset_name(name)
             || dataset.ndim() != 1
@@ -342,13 +419,26 @@ fn base_metadata(
     candidate: &CandidateGroup,
     root_attributes: &BTreeMap<String, Value>,
     group_attributes: &BTreeMap<String, Value>,
-    signal_unit: Option<&str>,
+    signals: &[SignalPayload],
 ) -> BTreeMap<String, Value> {
     let mut metadata = BTreeMap::new();
     metadata.insert("container".to_string(), json!("hdf5"));
     metadata.insert("group_path".to_string(), json!(candidate.group_path));
-    if candidate.spectra_name != "spectra" {
-        metadata.insert("spectra_dataset".to_string(), json!(candidate.spectra_name));
+    if signals.len() == 1 {
+        if signals[0].spectra_name != "spectra" {
+            metadata.insert(
+                "spectra_dataset".to_string(),
+                json!(signals[0].spectra_name),
+            );
+        }
+    } else {
+        metadata.insert(
+            "signal_datasets".to_string(),
+            json!(signals
+                .iter()
+                .map(|signal| signal.spectra_name.as_str())
+                .collect::<Vec<_>>()),
+        );
     }
     if candidate.axis_name != "wavelengths" {
         metadata.insert("axis_dataset".to_string(), json!(candidate.axis_name));
@@ -365,10 +455,37 @@ fn base_metadata(
     if !group_attributes.is_empty() && candidate.group_path != "/" {
         metadata.insert("group_attributes".to_string(), json!(group_attributes));
     }
-    if let Some(unit) = signal_unit {
-        metadata.insert("spectra_units".to_string(), json!(unit));
+    let signal_units = signals
+        .iter()
+        .filter_map(|signal| {
+            signal
+                .signal_unit
+                .as_ref()
+                .map(|unit| (signal.signal_name.clone(), unit.clone()))
+        })
+        .collect::<BTreeMap<_, _>>();
+    if signals.len() == 1 {
+        if let Some(unit) = signals[0].signal_unit.as_ref() {
+            metadata.insert("spectra_units".to_string(), json!(unit));
+        }
+    } else if !signal_units.is_empty() {
+        metadata.insert("signal_units".to_string(), json!(signal_units));
     }
     metadata
+}
+
+fn unique_signal_name(base: &str, signals: &BTreeMap<String, SpectralArray>) -> String {
+    if !signals.contains_key(base) {
+        return base.to_string();
+    }
+    let mut suffix = 2;
+    loop {
+        let candidate = format!("{base}_{suffix}");
+        if !signals.contains_key(&candidate) {
+            return candidate;
+        }
+        suffix += 1;
+    }
 }
 
 pub(crate) fn read_numeric_vec(dataset: &Dataset, context: &str) -> Result<Vec<f64>> {

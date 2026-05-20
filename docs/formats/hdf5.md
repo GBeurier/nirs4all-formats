@@ -7,6 +7,9 @@ fallback for HDF5 containers and currently maps simple NIRS layouts with:
 
 - a 2-D spectral dataset shaped `sample x wavelength`, or `wavelength x
   sample` when the spectral axis matches only the first dimension;
+- multiple compatible spectral datasets in the same group, emitted as separate
+  signals on each `SpectralRecord` when they share the same axis and matrix
+  orientation;
 - spectral dataset names such as `spectra`, `spectrum`, `X`, `absorbance`,
   `reflectance`, `transmittance`, `intensity`, `raw`, `counts` or `data`;
 - a 1-D axis dataset named `wavelengths`, `wavelength`, `wavelength_nm`,
@@ -21,7 +24,7 @@ It emits one `SpectralRecord` per sample row.
 
 | Fixture | Records | Axis | Signal | Targets / metadata |
 |---|---:|---|---|---|
-| `samples/hdf5/synthetic_nirs.h5` | 50 | wavelength, `nm`, 200 points | `absorbance` | `protein`, root attributes |
+| `samples/hdf5/synthetic_nirs.h5` | 50 | wavelength, `nm`, 200 points | `absorbance` + `reflectance` from two datasets sharing `/wavelengths` | `protein`, root attributes |
 | `samples/hdf5/generic_aliases_data_group.h5` | 3 | wavenumber, `cm-1`, 4 points | `absorbance` from `/data/absorbance` stored `bands x samples` | `temperature`, root attributes |
 | `samples/fgi/synthetic_fgi.h5` | 50 | wavelength, `nm`, 200 points | `absorbance` | group attributes from `/Measurement1` |
 

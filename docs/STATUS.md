@@ -50,8 +50,9 @@ Experimental native readers:
   refusal path and weather/PyrNet/AOSMET NetCDF samples are schema-refused as
   non-NIRS;
 - generic HDF5 NIRS datasets: root or nested spectral groups using a pure-Rust
-  reader, with common spectra/axis aliases and unambiguous transposed matrices;
-  non-spectral HDF5 samples are refused, and the committed FGI HDF5+XML
+  reader, with common spectra/axis aliases, multi-signal groups sharing one
+  axis and unambiguous transposed matrices; non-spectral HDF5 samples are
+  refused, and the committed FGI HDF5+XML
   synthetic pair is mapped with both payload and metadata sidecar in provenance;
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR

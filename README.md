@@ -57,9 +57,9 @@ Current implementation highlights:
 - JCAMP-DX now covers dense `XYDATA`/ASDF, NMR `NTUPLES`, top-level
   multi-block records, Ocean Optics `LINK`/`XYPOINTS`, and top-level sparse
   `PEAK TABLE` / `PEAK ASSIGNMENTS` records.
-- Generic HDF5 covers simple spectral schemas plus nested groups, common
-  dataset aliases (`spectra`, `absorbance`, `reflectance`, `data`) and
-  unambiguous transposed matrices.
+- Generic HDF5 covers simple spectral schemas, multi-signal groups sharing one
+  axis, nested groups, common dataset aliases (`spectra`, `absorbance`,
+  `reflectance`, `data`) and unambiguous transposed matrices.
 - Spectral Evolution `.sed` keeps DN-only files loadable while typing DN,
   percent/fraction reflectance and promoting instrument/GPS/acquisition
   metadata.
