@@ -47,6 +47,7 @@ formats/numpy
 formats/renishaw-wdf
 formats/row-spectral-table
 formats/scio-csv
+formats/shimadzu-uvprobe
 formats/siware-neospectra
 formats/siware-api
 formats/spectral-matrix

@@ -4,12 +4,12 @@
 
 ## Samples
 
-| File | Source | License |
-|---|---|---|
-| `synthetic_uvprobe.txt` | Generated locally | CC-0 | Mock UVProbe `.txt` export — `"Spectrum Data"` header + 2-column (wavelength, sample) CSV. |
+| File | Source | License | Notes |
+|---|---|---|---|
+| `synthetic_uvprobe.txt` | Generated locally | CC-0 | Mock UVProbe `.txt` export: `"Spectrum Data"` header + 2-column wavelength/sample CSV. Covered by semantic tests and golden summary. |
 
 ## Parser hints
 
-- Native Shimadzu `.spc`: only experimental readers exist ([`pyfasma-spc`](https://pypi.org/project/pyfasma-spc/) is one of the rare candidates). Refuse with a clear error and recommend the UVProbe export.
+- Native Shimadzu `.spc`: only experimental readers exist ([`pyfasma-spc`](https://pypi.org/project/pyfasma-spc/) is one of the rare candidates). The registry must not route `.spc` by extension alone because Galactic/Thermo SPC uses the same suffix.
 - `.txt` export has a fixed header (`"Spectrum Data"` followed by `"Wavelength nm","Sample <id>"` column row), then 2-column data.
 - Quote handling: UVProbe wraps column names in `"…"` even when not needed by RFC 4180. A tolerant CSV reader is required.
