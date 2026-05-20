@@ -49,6 +49,7 @@ struct NircalSections {
     title: String,
     project_guid: Option<String>,
     project_file_version: Option<String>,
+    spectrum_infos: Vec<SpectrumInfo>,
     targets: TargetMaps,
     warnings: Vec<String>,
 }
@@ -58,6 +59,95 @@ type TargetMaps = Vec<BTreeMap<String, Value>>;
 struct SampleReplicate {
     index: usize,
     count: usize,
+}
+
+#[derive(Clone, Default)]
+struct SpectrumInfo {
+    sample_guid: Option<String>,
+    comment: Option<String>,
+    description: Option<String>,
+    scans: Option<u64>,
+    resolution: Option<u64>,
+    declared_wavenumber_count: Option<u64>,
+    declared_wavenumber_step: Option<f64>,
+    declared_wavenumber_start: Option<f64>,
+    device: Option<String>,
+    software_version: Option<String>,
+    created: Option<String>,
+    modified: Option<String>,
+    creator: Option<String>,
+    creator_login: Option<String>,
+    modified_by: Option<String>,
+    modifier_login: Option<String>,
+    instrument_serial: Option<String>,
+    measurement_cell: Option<String>,
+    option_serial: Option<String>,
+    reference_substance: Option<String>,
+    instrument_version: Option<String>,
+    computer_name: Option<String>,
+    gain_factor: Option<f64>,
+    gain: Option<f64>,
+    instrument_temperature_c: Option<f64>,
+    sample_temperature_c: Option<f64>,
+}
+
+impl SpectrumInfo {
+    fn insert_into(&self, metadata: &mut BTreeMap<String, Value>) {
+        insert_opt_string(metadata, "sample_guid", self.sample_guid.as_ref());
+        insert_opt_string(metadata, "comment", self.comment.as_ref());
+        insert_opt_string(metadata, "description", self.description.as_ref());
+        insert_opt_u64(metadata, "scans", self.scans);
+        insert_opt_u64(metadata, "resolution", self.resolution);
+        insert_opt_u64(
+            metadata,
+            "declared_wavenumber_count",
+            self.declared_wavenumber_count,
+        );
+        insert_opt_f64(
+            metadata,
+            "declared_wavenumber_step",
+            self.declared_wavenumber_step,
+        );
+        insert_opt_f64(
+            metadata,
+            "declared_wavenumber_start",
+            self.declared_wavenumber_start,
+        );
+        insert_opt_string(metadata, "device", self.device.as_ref());
+        insert_opt_string(metadata, "software_version", self.software_version.as_ref());
+        insert_opt_string(metadata, "created", self.created.as_ref());
+        insert_opt_string(metadata, "modified", self.modified.as_ref());
+        insert_opt_string(metadata, "creator", self.creator.as_ref());
+        insert_opt_string(metadata, "creator_login", self.creator_login.as_ref());
+        insert_opt_string(metadata, "modified_by", self.modified_by.as_ref());
+        insert_opt_string(metadata, "modifier_login", self.modifier_login.as_ref());
+        insert_opt_string(
+            metadata,
+            "instrument_serial",
+            self.instrument_serial.as_ref(),
+        );
+        insert_opt_string(metadata, "measurement_cell", self.measurement_cell.as_ref());
+        insert_opt_string(metadata, "option_serial", self.option_serial.as_ref());
+        insert_opt_string(
+            metadata,
+            "reference_substance",
+            self.reference_substance.as_ref(),
+        );
+        insert_opt_string(
+            metadata,
+            "instrument_version",
+            self.instrument_version.as_ref(),
+        );
+        insert_opt_string(metadata, "computer_name", self.computer_name.as_ref());
+        insert_opt_f64(metadata, "gain_factor", self.gain_factor);
+        insert_opt_f64(metadata, "gain", self.gain);
+        insert_opt_f64(
+            metadata,
+            "instrument_temperature_c",
+            self.instrument_temperature_c,
+        );
+        insert_opt_f64(metadata, "sample_temperature_c", self.sample_temperature_c);
+    }
 }
 
 fn parse_nircal(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
@@ -100,6 +190,9 @@ fn parse_nircal(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<Sp
         let replicate = &replicate_info[index];
         metadata.insert("sample_replicate_index".to_string(), json!(replicate.index));
         metadata.insert("sample_replicate_count".to_string(), json!(replicate.count));
+        if let Some(info) = sections.spectrum_infos.get(index) {
+            info.insert_into(&mut metadata);
+        }
         let mut warnings = vec!["buchi_nircal_reverse_engineered_sections".to_string()];
         warnings.extend(sections.warnings.clone());
         records.push(single_signal_record(
@@ -146,7 +239,9 @@ fn locate_sections(bytes: &[u8]) -> Result<NircalSections> {
     let spectrum_len = parse_spectrum_len(&bytes[values_positions[5]..values_positions[6]])?;
     let axis = parse_axis(bytes, spectrum_len, &values_positions)?;
     let spectrum_starts = spectrum_starts(bytes, spectrum_len, sample_ids.len())?;
-    let (targets, warnings) = parse_property_targets(bytes, sample_ids.len())?;
+    let (spectrum_infos, mut warnings) = parse_spectrum_infos(bytes, sample_ids.len());
+    let (targets, target_warnings) = parse_property_targets(bytes, sample_ids.len())?;
+    warnings.extend(target_warnings);
     let title = first_line(bytes);
     let project_guid = project_guid(bytes);
     let project_file_version = project_file_version(&title);
@@ -158,6 +253,7 @@ fn locate_sections(bytes: &[u8]) -> Result<NircalSections> {
         title,
         project_guid,
         project_file_version,
+        spectrum_infos,
         targets,
         warnings,
     })
@@ -305,6 +401,76 @@ fn spectrum_starts(bytes: &[u8], spectrum_len: usize, n_samples: usize) -> Resul
         )));
     }
     Ok(starts)
+}
+
+fn parse_spectrum_infos(bytes: &[u8], n_samples: usize) -> (Vec<SpectrumInfo>, Vec<String>) {
+    let anchors = find_all(bytes, b"\n38/{")
+        .into_iter()
+        .skip(1)
+        .map(|offset| offset + 1)
+        .take(n_samples)
+        .collect::<Vec<_>>();
+    if anchors.len() != n_samples {
+        return (
+            vec![SpectrumInfo::default(); n_samples],
+            vec![format!(
+                "buchi_nircal_spectrum_metadata_count_mismatch: found {}, expected {n_samples}",
+                anchors.len()
+            )],
+        );
+    }
+    (
+        anchors
+            .iter()
+            .map(|anchor| parse_spectrum_info(bytes, *anchor))
+            .collect(),
+        Vec::new(),
+    )
+}
+
+fn parse_spectrum_info(bytes: &[u8], guid_line_start: usize) -> SpectrumInfo {
+    let guid_line = line_at(bytes, guid_line_start);
+    let sample_guid = length_prefixed_value(guid_line).and_then(|value| normalize_guid(&value));
+    let previous = previous_length_prefixed_values(bytes, guid_line_start, 3);
+    let comment = previous.get(1).and_then(|value| non_empty_value(value));
+    let mut description = previous.get(2).and_then(|value| non_empty_value(value));
+    let tokens = following_length_prefixed_values(bytes, guid_line_start, 90);
+    if description.is_none() {
+        description = token_string(&tokens, 16);
+    }
+
+    SpectrumInfo {
+        sample_guid,
+        comment,
+        description,
+        scans: token_u64(&tokens, 5),
+        resolution: token_u64(&tokens, 6),
+        declared_wavenumber_count: token_u64(&tokens, 7),
+        declared_wavenumber_step: token_f64(&tokens, 8),
+        declared_wavenumber_start: token_f64(&tokens, 9),
+        device: token_string(&tokens, 49),
+        software_version: token_string(&tokens, 26),
+        created: timestamp_from_tokens(&tokens, 19),
+        modified: timestamp_from_tokens(&tokens, 32),
+        creator: token_string(&tokens, 27),
+        creator_login: token_string(&tokens, 30),
+        modified_by: token_string(&tokens, 40),
+        modifier_login: token_string(&tokens, 43),
+        instrument_serial: token_string(&tokens, 45),
+        measurement_cell: token_string(&tokens, 46),
+        option_serial: token_string(&tokens, 47),
+        reference_substance: token_string(&tokens, 48),
+        instrument_version: token_string(&tokens, 50),
+        computer_name: token_string(&tokens, 51),
+        gain_factor: numeric_after_label(&tokens, |label| label == "Gain Factor"),
+        gain: numeric_after_label(&tokens, |label| label == "Gain"),
+        instrument_temperature_c: numeric_after_label(&tokens, |label| {
+            label.starts_with("Instrument Temperature")
+        }),
+        sample_temperature_c: numeric_after_label(&tokens, |label| {
+            label.starts_with("Sample Temperature")
+        }),
+    }
 }
 
 fn parse_property_targets(bytes: &[u8], n_samples: usize) -> Result<(TargetMaps, Vec<String>)> {
@@ -517,6 +683,143 @@ fn read_f64_values(bytes: &[u8], offset: usize, len: usize, context: &str) -> Re
 fn first_line(bytes: &[u8]) -> String {
     let end = bytes.iter().position(|byte| *byte == b'\n').unwrap_or(0);
     decode_text(&bytes[..end]).trim().to_string()
+}
+
+fn line_at(bytes: &[u8], start: usize) -> &[u8] {
+    let end = bytes[start..]
+        .iter()
+        .position(|byte| *byte == b'\n')
+        .map(|relative| start + relative)
+        .unwrap_or(bytes.len());
+    &bytes[start..end]
+}
+
+fn previous_length_prefixed_values(bytes: &[u8], offset: usize, count: usize) -> Vec<String> {
+    let mut values = Vec::with_capacity(count);
+    let mut end = offset.saturating_sub(1);
+    while values.len() < count && end > 0 {
+        let start = bytes[..end]
+            .iter()
+            .rposition(|byte| *byte == b'\n')
+            .map(|position| position + 1)
+            .unwrap_or(0);
+        if let Some(value) = length_prefixed_value(&bytes[start..end]) {
+            values.push(value);
+        }
+        if start == 0 {
+            break;
+        }
+        end = start - 1;
+    }
+    values.reverse();
+    values
+}
+
+fn following_length_prefixed_values(
+    bytes: &[u8],
+    guid_line_start: usize,
+    limit: usize,
+) -> Vec<String> {
+    let mut values = Vec::with_capacity(limit);
+    let Some(mut cursor) = bytes[guid_line_start..]
+        .iter()
+        .position(|byte| *byte == b'\n')
+        .map(|relative| guid_line_start + relative + 1)
+    else {
+        return values;
+    };
+    while values.len() < limit && cursor < bytes.len() {
+        let end = bytes[cursor..]
+            .iter()
+            .position(|byte| *byte == b'\n')
+            .map(|relative| cursor + relative)
+            .unwrap_or(bytes.len());
+        let line = &bytes[cursor..end];
+        if line == b"begin" {
+            break;
+        }
+        if let Some(value) = length_prefixed_value(line) {
+            values.push(value);
+        }
+        if end == bytes.len() {
+            break;
+        }
+        cursor = end + 1;
+    }
+    values
+}
+
+fn length_prefixed_value(line: &[u8]) -> Option<String> {
+    let slash = line.iter().position(|byte| *byte == b'/')?;
+    if slash == 0 || !line[..slash].iter().all(u8::is_ascii_digit) {
+        return None;
+    }
+    let value = decode_text(&line[slash + 1..]).trim().to_string();
+    Some(value)
+}
+
+fn normalize_guid(value: &str) -> Option<String> {
+    value
+        .trim()
+        .strip_prefix('{')
+        .and_then(|value| value.strip_suffix('}'))
+        .or_else(|| (!value.trim().is_empty()).then_some(value.trim()))
+        .map(ToOwned::to_owned)
+}
+
+fn token_string(tokens: &[String], index: usize) -> Option<String> {
+    tokens.get(index).and_then(|value| non_empty_value(value))
+}
+
+fn token_u64(tokens: &[String], index: usize) -> Option<u64> {
+    tokens.get(index)?.trim().parse().ok()
+}
+
+fn token_f64(tokens: &[String], index: usize) -> Option<f64> {
+    tokens.get(index)?.trim().parse().ok()
+}
+
+fn timestamp_from_tokens(tokens: &[String], start: usize) -> Option<String> {
+    let second: u32 = tokens.get(start)?.trim().parse().ok()?;
+    let minute: u32 = tokens.get(start + 1)?.trim().parse().ok()?;
+    let hour: u32 = tokens.get(start + 2)?.trim().parse().ok()?;
+    let day: u32 = tokens.get(start + 3)?.trim().parse().ok()?;
+    let month: u32 = tokens.get(start + 4)?.trim().parse().ok()?;
+    let year: u32 = tokens.get(start + 5)?.trim().parse().ok()?;
+    Some(format!(
+        "{year:04}/{month:02}/{day:02} {hour:02}:{minute:02}:{second:02}"
+    ))
+}
+
+fn numeric_after_label(tokens: &[String], predicate: impl Fn(&str) -> bool) -> Option<f64> {
+    tokens.windows(2).find_map(|pair| {
+        predicate(pair[0].trim())
+            .then(|| pair[1].trim().parse().ok())
+            .flatten()
+    })
+}
+
+fn non_empty_value(value: &str) -> Option<String> {
+    let trimmed = value.trim();
+    (!trimmed.is_empty()).then(|| trimmed.to_string())
+}
+
+fn insert_opt_string(metadata: &mut BTreeMap<String, Value>, key: &str, value: Option<&String>) {
+    if let Some(value) = value {
+        metadata.insert(key.to_string(), json!(value));
+    }
+}
+
+fn insert_opt_u64(metadata: &mut BTreeMap<String, Value>, key: &str, value: Option<u64>) {
+    if let Some(value) = value {
+        metadata.insert(key.to_string(), json!(value));
+    }
+}
+
+fn insert_opt_f64(metadata: &mut BTreeMap<String, Value>, key: &str, value: Option<f64>) {
+    if let Some(value) = value {
+        metadata.insert(key.to_string(), json!(value));
+    }
 }
 
 fn find_all(bytes: &[u8], needle: &[u8]) -> Vec<usize> {

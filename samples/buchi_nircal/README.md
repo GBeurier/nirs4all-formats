@@ -19,4 +19,8 @@ Proprietary binary that bundles spectra + metadata + reference properties (prote
   - Free-text description / comments
 - nirs4all-io also exposes the project GUID, NIRCal project-file version and
   per-sample replicate counters when the same sample id appears multiple times.
+- nirs4all-io also exposes per-spectrum GUID, timestamps, creator/modifier,
+  device/instrument serials, measurement cell, option serial, scans,
+  resolution, declared wavenumber geometry and optional gain/temperature
+  diagnostics from the NIRCal `Spectra Info` block.
 - See `get_nircal_*()` helpers in `prospectr` for the field layout.
