@@ -3,6 +3,7 @@ use std::path::Path;
 
 use nirs4all_io_core::{AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile};
 use serde_json::{json, Value};
+use sha2::{Digest, Sha256};
 
 use crate::readers::util::{single_signal_record, SingleSignalSpec};
 use crate::Reader;
@@ -47,6 +48,7 @@ impl Reader for RenishawWdfReader {
 #[derive(Clone)]
 struct WdfBlock {
     name: String,
+    block_uid: u32,
     payload_offset: usize,
     payload_len: usize,
 }
@@ -216,6 +218,7 @@ fn parse_renishaw_wdf(
         metadata.insert("title".to_string(), json!(header.title));
     }
     insert_navigation_metadata(&mut metadata, &navigation);
+    insert_auxiliary_block_metadata(&mut metadata, bytes, &blocks);
 
     let mut warnings = vec!["renishaw_wdf_reverse_engineered_chunks".to_string()];
     warnings.extend(navigation.warnings.iter().cloned());
@@ -461,6 +464,306 @@ fn origin_axis_metadata(axis: &WdfOriginAxis) -> Value {
     })
 }
 
+fn insert_auxiliary_block_metadata(
+    metadata: &mut BTreeMap<String, Value>,
+    bytes: &[u8],
+    blocks: &[WdfBlock],
+) {
+    if let Some(block) = blocks.iter().find(|block| block.name == "WHTL") {
+        metadata.insert(
+            "white_light_image".to_string(),
+            white_light_image_metadata(bytes, block),
+        );
+    }
+
+    let map_blocks = blocks
+        .iter()
+        .filter(|block| block.name == "MAP ")
+        .map(|block| map_analysis_block_metadata(bytes, block))
+        .collect::<Vec<_>>();
+    if !map_blocks.is_empty() {
+        metadata.insert(
+            "map_analysis_block_count".to_string(),
+            json!(map_blocks.len()),
+        );
+        metadata.insert("map_analysis_blocks".to_string(), json!(map_blocks));
+    }
+}
+
+fn white_light_image_metadata(bytes: &[u8], block: &WdfBlock) -> Value {
+    let payload = block_payload(bytes, block);
+    let mut object = serde_json::Map::new();
+    object.insert("block_uid".to_string(), json!(block.block_uid));
+    object.insert("byte_len".to_string(), json!(payload.len()));
+    object.insert("sha256".to_string(), json!(sha256_hex(payload)));
+    if payload.starts_with(b"\xff\xd8") {
+        object.insert("format".to_string(), json!("jpeg"));
+        object.insert("mime_type".to_string(), json!("image/jpeg"));
+        if let Some(jpeg) = jpeg_metadata(payload) {
+            if let Some(width) = jpeg.width_px {
+                object.insert("width_px".to_string(), json!(width));
+            }
+            if let Some(height) = jpeg.height_px {
+                object.insert("height_px".to_string(), json!(height));
+            }
+            if let Some(precision) = jpeg.precision_bits {
+                object.insert("precision_bits".to_string(), json!(precision));
+            }
+            if let Some(components) = jpeg.components {
+                object.insert("components".to_string(), json!(components));
+            }
+            if let Some(unit) = jpeg.jfif_density_unit {
+                object.insert("jfif_density_unit".to_string(), json!(unit));
+            }
+            if let Some(density) = jpeg.jfif_x_density {
+                object.insert("jfif_x_density".to_string(), json!(density));
+            }
+            if let Some(density) = jpeg.jfif_y_density {
+                object.insert("jfif_y_density".to_string(), json!(density));
+            }
+            if let Some(description) = jpeg.exif_description {
+                object.insert("exif_description".to_string(), json!(description));
+            }
+            if let Some(make) = jpeg.exif_make {
+                object.insert("exif_make".to_string(), json!(make));
+            }
+        }
+    } else {
+        object.insert("format".to_string(), json!("unknown"));
+    }
+    Value::Object(object)
+}
+
+fn map_analysis_block_metadata(bytes: &[u8], block: &WdfBlock) -> Value {
+    let payload = block_payload(bytes, block);
+    let mut object = serde_json::Map::new();
+    object.insert("block_uid".to_string(), json!(block.block_uid));
+    object.insert("byte_len".to_string(), json!(payload.len()));
+    object.insert("sha256".to_string(), json!(sha256_hex(payload)));
+    if payload.starts_with(b"PSET") {
+        object.insert("payload_kind".to_string(), json!("pset"));
+        if payload.len() >= 8 {
+            object.insert(
+                "pset_declared_len".to_string(),
+                json!(u32::from_le_bytes([
+                    payload[4], payload[5], payload[6], payload[7]
+                ])),
+            );
+        }
+    } else {
+        object.insert("payload_kind".to_string(), json!("unknown"));
+    }
+    let preview_strings = printable_ascii_strings(payload, 4, 8);
+    if !preview_strings.is_empty() {
+        object.insert("ascii_preview".to_string(), json!(preview_strings));
+    }
+    Value::Object(object)
+}
+
+fn block_payload<'a>(bytes: &'a [u8], block: &WdfBlock) -> &'a [u8] {
+    &bytes[block.payload_offset..block.payload_offset + block.payload_len]
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    format!("{:x}", hasher.finalize())
+}
+
+#[derive(Default)]
+struct JpegMetadata {
+    width_px: Option<u16>,
+    height_px: Option<u16>,
+    precision_bits: Option<u8>,
+    components: Option<u8>,
+    jfif_density_unit: Option<u8>,
+    jfif_x_density: Option<u16>,
+    jfif_y_density: Option<u16>,
+    exif_description: Option<String>,
+    exif_make: Option<String>,
+}
+
+fn jpeg_metadata(bytes: &[u8]) -> Option<JpegMetadata> {
+    if !bytes.starts_with(b"\xff\xd8") {
+        return None;
+    }
+    let mut metadata = JpegMetadata::default();
+    let mut offset = 2usize;
+    while offset + 4 <= bytes.len() {
+        if bytes[offset] != 0xff {
+            offset += 1;
+            continue;
+        }
+        while offset < bytes.len() && bytes[offset] == 0xff {
+            offset += 1;
+        }
+        if offset >= bytes.len() {
+            return None;
+        }
+        let marker = bytes[offset];
+        offset += 1;
+        if marker == 0xd9 || marker == 0xda {
+            break;
+        }
+        if marker == 0xd8 || (0xd0..=0xd7).contains(&marker) {
+            continue;
+        }
+        let segment_len = u16::from_be_bytes([bytes[offset], bytes[offset + 1]]) as usize;
+        if segment_len < 2 || offset + segment_len > bytes.len() {
+            return None;
+        }
+        let payload = &bytes[offset + 2..offset + segment_len];
+        if marker == 0xe0 && payload.starts_with(b"JFIF\0") && payload.len() >= 12 {
+            metadata.jfif_density_unit = Some(payload[7]);
+            metadata.jfif_x_density = Some(u16::from_be_bytes([payload[8], payload[9]]));
+            metadata.jfif_y_density = Some(u16::from_be_bytes([payload[10], payload[11]]));
+        } else if marker == 0xe1 && payload.starts_with(b"Exif\0\0") {
+            parse_exif_tiff_ifd0(&payload[6..], &mut metadata);
+        } else if is_jpeg_start_of_frame(marker) && segment_len >= 8 {
+            metadata.precision_bits = Some(bytes[offset + 2]);
+            let height = u16::from_be_bytes([bytes[offset + 3], bytes[offset + 4]]);
+            let width = u16::from_be_bytes([bytes[offset + 5], bytes[offset + 6]]);
+            metadata.width_px = Some(width);
+            metadata.height_px = Some(height);
+            metadata.components = Some(bytes[offset + 7]);
+        }
+        offset += segment_len;
+    }
+    Some(metadata)
+}
+
+fn parse_exif_tiff_ifd0(tiff: &[u8], metadata: &mut JpegMetadata) {
+    if tiff.len() < 8 {
+        return;
+    }
+    let little_endian = match &tiff[..2] {
+        b"II" => true,
+        b"MM" => false,
+        _ => return,
+    };
+    if tiff_u16(tiff, 2, little_endian) != Some(42) {
+        return;
+    }
+    let Some(ifd_offset) =
+        tiff_u32(tiff, 4, little_endian).and_then(|value| usize::try_from(value).ok())
+    else {
+        return;
+    };
+    let Some(entry_count) = tiff_u16(tiff, ifd_offset, little_endian).map(usize::from) else {
+        return;
+    };
+    let entries_offset = ifd_offset + 2;
+    for entry_index in 0..entry_count {
+        let offset = entries_offset + entry_index * 12;
+        if offset + 12 > tiff.len() {
+            return;
+        }
+        let Some(tag) = tiff_u16(tiff, offset, little_endian) else {
+            continue;
+        };
+        if tag != 0x010e && tag != 0x010f {
+            continue;
+        }
+        let Some(field_type) = tiff_u16(tiff, offset + 2, little_endian) else {
+            continue;
+        };
+        if field_type != 2 {
+            continue;
+        }
+        let Some(count) =
+            tiff_u32(tiff, offset + 4, little_endian).and_then(|value| usize::try_from(value).ok())
+        else {
+            continue;
+        };
+        let value = if count <= 4 {
+            ascii_value(&tiff[offset + 8..offset + 8 + count.min(4)])
+        } else {
+            let Some(value_offset) = tiff_u32(tiff, offset + 8, little_endian)
+                .and_then(|value| usize::try_from(value).ok())
+            else {
+                continue;
+            };
+            let Some(bytes) = tiff.get(value_offset..value_offset.saturating_add(count)) else {
+                continue;
+            };
+            ascii_value(bytes)
+        };
+        if value.is_empty() {
+            continue;
+        }
+        match tag {
+            0x010e => metadata.exif_description = Some(value),
+            0x010f => metadata.exif_make = Some(value),
+            _ => {}
+        }
+    }
+}
+
+fn tiff_u16(bytes: &[u8], offset: usize, little_endian: bool) -> Option<u16> {
+    let raw = [*bytes.get(offset)?, *bytes.get(offset + 1)?];
+    Some(if little_endian {
+        u16::from_le_bytes(raw)
+    } else {
+        u16::from_be_bytes(raw)
+    })
+}
+
+fn tiff_u32(bytes: &[u8], offset: usize, little_endian: bool) -> Option<u32> {
+    let raw = [
+        *bytes.get(offset)?,
+        *bytes.get(offset + 1)?,
+        *bytes.get(offset + 2)?,
+        *bytes.get(offset + 3)?,
+    ];
+    Some(if little_endian {
+        u32::from_le_bytes(raw)
+    } else {
+        u32::from_be_bytes(raw)
+    })
+}
+
+fn ascii_value(bytes: &[u8]) -> String {
+    let end = bytes
+        .iter()
+        .position(|byte| *byte == 0)
+        .unwrap_or(bytes.len());
+    String::from_utf8_lossy(&bytes[..end]).trim().to_string()
+}
+
+fn is_jpeg_start_of_frame(marker: u8) -> bool {
+    matches!(
+        marker,
+        0xc0 | 0xc1 | 0xc2 | 0xc3 | 0xc5 | 0xc6 | 0xc7 | 0xc9 | 0xca | 0xcb | 0xcd | 0xce | 0xcf
+    )
+}
+
+fn printable_ascii_strings(bytes: &[u8], min_len: usize, limit: usize) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut current = Vec::new();
+    for byte in bytes {
+        if (0x20..=0x7e).contains(byte) {
+            current.push(*byte);
+        } else {
+            push_ascii_preview(&mut out, &mut current, min_len, limit);
+            if out.len() >= limit {
+                return out;
+            }
+        }
+    }
+    push_ascii_preview(&mut out, &mut current, min_len, limit);
+    out
+}
+
+fn push_ascii_preview(out: &mut Vec<String>, current: &mut Vec<u8>, min_len: usize, limit: usize) {
+    if current.len() >= min_len && out.len() < limit {
+        let value = String::from_utf8_lossy(current).trim().to_string();
+        if !value.is_empty() && !out.contains(&value) {
+            out.push(value);
+        }
+    }
+    current.clear();
+}
+
 fn insert_record_navigation(
     metadata: &mut BTreeMap<String, Value>,
     navigation: &WdfNavigation,
@@ -673,6 +976,7 @@ fn parse_blocks(bytes: &[u8]) -> Result<Vec<WdfBlock>> {
         }
         out.push(WdfBlock {
             name,
+            block_uid: read_u32(bytes, offset + 4)?,
             payload_offset: offset + WDF_BLOCK_HEADER_LEN,
             payload_len: block_size - WDF_BLOCK_HEADER_LEN,
         });

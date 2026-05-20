@@ -79,7 +79,9 @@ Experimental native readers:
 - Renishaw WDF (`.wdf`) spectral payloads via `WDF1`, `DATA`, `XLST` and
   `YLST` chunks plus `ORGN`/`WMAP` navigation metadata. Map, line, depth,
   FocusTrack, time-series and interrupted acquisitions emit one record per
-  stored spectrum with normalized spatial, elapsed-time and map-index metadata.
+  stored spectrum with normalized spatial, elapsed-time and map-index metadata;
+  `WHTL` JPEG white-light image metadata and `MAP ` PSET analysis-block
+  inventories are preserved without decoding derived images as spectra.
 - Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
   spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
   emits one record per frame and preserves Step-and-Glue child windows.
@@ -142,8 +144,8 @@ Immediate next work:
 1. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-2. continue WDF hardening with white-light image metadata and `MAP ` block
-   interpretation, then WiTec WIP if fixtures are suitable;
+2. add WiTec WIP detection/refusal if a robust synthetic signature test is
+   sufficient, then harden JCAMP `PEAK TABLE`/strict-validation boundaries;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
