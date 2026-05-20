@@ -9,6 +9,7 @@ ASTM E1947 ANDI is the **chromatography-MS** standard, not NIR/FTIR. We list Net
 | `synthetic_nirs.nc` | ~50 KB | Generated locally | CC-0 | NetCDF3 classic file with `sample` and `wavelength` dimensions, `spectra`/`wavelengths`/`protein` variables, and `units` attributes. |
 | `f03tst_open_mem.nc` | 6 KB | [`Unidata/netcdf-c@main/nc_test/f03tst_open_mem.nc`](https://github.com/Unidata/netcdf-c/blob/main/nc_test/f03tst_open_mem.nc) | BSD-3-Clause | Canonical Unidata test fixture — for negative-path tests (NetCDF file that is *not* a NIRS dataset). |
 | `air_temperature.nc` | 7.4 MB | [`pydata/xarray-data@master/air_temperature.nc`](https://github.com/pydata/xarray-data/blob/master/air_temperature.nc) | (no SPDX — xarray sample) | NCEP reanalysis temperature data. Another non-NIRS NetCDF for negative-path tests. |
+| `pyrnet_to_l1a_output.nc` | 77 KB | [`hdeneke/PyrNet@main/example_data/to_l1a_output.nc`](https://github.com/hdeneke/PyrNet/tree/main/example_data) | (TROPOS PyrNet — academic share) | Level-1a output from the TROPOS PyrNet pyranometer network. Pyranometer/MFR-adjacent NetCDF for cross-format detection tests — the loader should *not* claim it as a NIRS spectrum and should hand it back as out-of-scope. |
 
 ## Parser hints
 

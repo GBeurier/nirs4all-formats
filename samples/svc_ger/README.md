@@ -33,6 +33,13 @@ Sugar maple leaf spectra collected with an SVC HR-1024(i).
 | `BNL13002_000_laptop.sig` | Laptop firmware variant |
 | `BNL13001_000_moc.sig` | "moc" (matched overlap corrected) export |
 
+### From [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra/tree/master/inst/extdata) (GPL-3, R package)
+
+| File | Size | Variant / notes |
+|---|---|---|
+| `serbinsh_gr070214_003.sig` | 33 KB | Raw GER 3700 PDA-firmware acquisition (filename pattern matches the GER 1500/3700 `<base>_<NNN>.sig` convention). Closes the prior "no raw GER 3700 PDA sample" gap. |
+| `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | 72 KB | SVC HR-1024i field acquisition (BEO/Cake-Eater phenology campaign, Barrow Environmental Observatory) — `_resamp` indicates spectrolab-style resampling has already been applied. Complements `BNL13001_000_*` for an HR-1024(i) firmware comparison. |
+
 ## Parser hints
 
 - ASCII, CRLF.

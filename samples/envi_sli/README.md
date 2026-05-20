@@ -6,9 +6,11 @@ ASCII `.hdr` paired with binary `.sli` (library) or `.img`/`.dat` (image cube). 
 
 ### Spectral library (`.sli` + `.hdr`)
 
-| File | Size | Source | License |
-|---|---|---|---|
+| File | Size | Source | License | Notes |
+|---|---|---|---|---|
 | `synthetic_lib.sli` + `synthetic_lib.hdr` | 40 KB | Generated locally | CC-0 | Synthetic 50-sample × 200-wavelength library in standard ENVI BSQ float32, complete `.hdr` metadata (`spectra names`, `wavelength`). Useful as a known-good shape fixture. |
+| `usgs_splib06a_aviris95_envi.sli` + `.hdr` | 2.4 MB + 64 KB | [`capstone-coal/pycoal@master/pycoal/tests/s06av95a_envi.sli`](https://github.com/capstone-coal/pycoal/tree/master/pycoal/tests) (GPL-2) | USGS data: U.S. Government public domain; pycoal wrapper: GPL-2 | Real **USGS Digital Spectral Library splib06a** convolved to the AVIRIS 1995 sensor grid (224 bands). 477 spectra × 224 floats covering minerals, soils, coatings, liquids, organics, artificial materials and vegetation. Lets the BSQ float32 + multi-spectra path be validated against a true USGS-distributed library. |
+| `usgs_splib07_aviris95_envi.sli` + `.hdr` | 2.7 MB + 144 KB | [`capstone-coal/pycoal@master/pycoal/tests/s07_AV95_envi.sli`](https://github.com/capstone-coal/pycoal/tree/master/pycoal/tests) (GPL-2) | USGS V7 data: U.S. Government public domain; pycoal wrapper: GPL-2 | Real **USGS Spectral Library Version 7** convolved to AVIRIS 1995 grid. Same shape contract as splib06 but with the v7 superset of spectra (>2300 entries) — useful to confirm the loader handles arbitrary `samples` counts and the `spectra names` array even when it grows past 1000 entries. |
 
 ### ENVI image cube mini-fixture
 
