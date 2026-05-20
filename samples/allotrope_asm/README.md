@@ -22,5 +22,5 @@ All from [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-S
 
 - ASM JSON top-level key is `$asm.manifest` (URL pointing at a `*.manifest` definition in `purl.allotrope.org`).
 - Sub-structure: `<instrument-type> aggregate document` → `<instrument-type> document` (list) → `measurement aggregate document` → `measurement document` → `device control document` + `sample document` + the actual `<measurement>`.
-- Reference parser: [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-Source/allotropy) — most mature parser ecosystem, covers ~40 instrument-vendor flavours. **Don't reimplement** — call out to allotropy if you need ASM support.
-- For the NIRS loader: detect by manifest URL, refuse with a clear "use allotropy" pointer unless we ship an ASM bridge.
+- Reference parser: [`Benchling-Open-Source/allotropy`](https://github.com/Benchling-Open-Source/allotropy) — most mature parser ecosystem, covers ~40 instrument-vendor flavours. Use it to convert original vendor files to ASM when available.
+- `nirs4all-io` now ships a narrow ASM bridge for plate-reader spectral data cubes and detector-wavelength endpoint readings. It is not a full ASM/ADF implementation.

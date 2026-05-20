@@ -11,6 +11,8 @@ ROADMAP
 STATUS
 FORMATS
 formats/avantes
+formats/allotrope-asm
+formats/animl
 formats/asd
 formats/bruker-opus
 formats/envi-sli

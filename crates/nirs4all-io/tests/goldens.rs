@@ -147,6 +147,19 @@ const CASES: &[(&str, &str)] = &[
         "microtops_sun_photometer",
         "samples/microtops/synthetic_microtops.TXT",
     ),
+    ("animl_synthetic_nirs", "samples/animl/synthetic_nirs.animl"),
+    (
+        "allotrope_asm_absorbance_spectrum",
+        "samples/allotrope_asm/ACSINS_absorbance_spectrum.json",
+    ),
+    (
+        "allotrope_asm_emission_spectrum",
+        "samples/allotrope_asm/spectrum_emission_data.json",
+    ),
+    (
+        "allotrope_asm_endpoint_absorbance",
+        "samples/allotrope_asm/MD_SMP_absorbance_example.json",
+    ),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
     (

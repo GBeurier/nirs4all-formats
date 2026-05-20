@@ -72,6 +72,22 @@ fn probes_matrix_and_sun_photometer_exports() {
     assert_eq!(probes[0].confidence, Confidence::Definite);
 }
 
+#[test]
+fn probes_animl_and_allotrope_asm_documents() {
+    let probes = probe_path(workspace_file("samples/animl/synthetic_nirs.animl")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "animl" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file(
+        "samples/allotrope_asm/ACSINS_absorbance_spectrum.json",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "allotrope-asm-json" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

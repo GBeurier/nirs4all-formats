@@ -1,0 +1,71 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "allotrope-asm-json",
+      "metadata_keys": [
+        "asm_cube",
+        "asm_cube_label",
+        "asm_errors",
+        "asm_manifest",
+        "container_type",
+        "data_system_asm_converter_name",
+        "data_system_asm_converter_version",
+        "data_system_asm_file_identifier",
+        "data_system_software_name",
+        "data_system_software_version",
+        "detection_type",
+        "detector_bandwidth",
+        "detector_bandwidth_unit",
+        "detector_carriage_speed",
+        "detector_distance",
+        "detector_distance_unit",
+        "detector_gain",
+        "device_system_device_identifier",
+        "device_system_equipment_serial_number",
+        "device_system_model_number",
+        "device_type",
+        "excitation_bandwidth",
+        "excitation_bandwidth_unit",
+        "excitation_wavelength",
+        "excitation_wavelength_unit",
+        "location_id",
+        "measurement_id",
+        "measurement_index",
+        "measurement_time",
+        "number_of_averages",
+        "number_of_averages_unit",
+        "plate_index",
+        "plate_reader_scan_position",
+        "plate_well_count",
+        "sample_id",
+        "well_plate_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::allotrope_asm",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 320.0,
+          "axis_len": 3,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "mAU",
+          "value_first": 0.123,
+          "value_last": -0.0,
+          "value_sum": 0.247,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "7b1100d788302ce0d83e1d17a662993b808647f6ab35d1b6bd9dd88c4f06ea92",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

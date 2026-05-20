@@ -22,6 +22,11 @@ Experimental native readers:
 - spectral matrix exports with one spectrum per row: Foss/WinISI text,
   Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures;
 - sun photometer channel exports: MFR `.OUT` and Microtops `.TXT` fixtures;
+- AnIML spectral XML: spectral `SeriesSet` fixture with wavelength axis,
+  absorbance signal and sample target; non-spectral AnIML result documents are
+  refused;
+- Allotrope ASM JSON: plate-reader spectral data cubes and detector-wavelength
+  endpoint readings from committed Benchling allotropy fixtures;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -81,10 +86,10 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue with remaining text/export samples that need new containers:
-   AnIML XML, Allotrope JSON examples and MATLAB/HDF5/NetCDF adjacency;
+1. continue with remaining structured-container samples and adjacency:
+   MATLAB/HDF5/NetCDF, then additional JSON/XML exports as fixtures appear;
 2. continue the binary/open-reader-backed batch with remaining SPC/JCAMP variants;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK` files and stricter checkpoint validation;
-4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
+4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM where practical;
 5. replace Python/R subprocess transport with native PyO3/C ABI paths;
 6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

@@ -1,3 +1,5 @@
+pub mod allotrope_asm;
+pub mod animl;
 pub mod asd;
 pub mod avantes_ascii;
 pub mod avantes_binary;
@@ -17,6 +19,8 @@ pub mod svc_sig;
 
 mod util;
 
+pub use allotrope_asm::AllotropeAsmReader;
+pub use animl::AnimlReader;
 pub use asd::AsdReader;
 pub use avantes_ascii::AvantesAsciiReader;
 pub use avantes_binary::AvantesBinaryReader;
