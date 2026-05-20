@@ -19,6 +19,16 @@ fn probes_committed_csv_fixture() {
 }
 
 #[test]
+fn probes_committed_asd_fieldspec_fixtures() {
+    for relative in ["samples/asd/3L9257.000", "samples/asd/v8sample00001.asd"] {
+        let probes = probe_path(workspace_file(relative)).expect("probe ASD");
+        assert!(probes.iter().any(|probe| {
+            probe.format == "asd-fieldspec" && probe.confidence == Confidence::Definite
+        }));
+    }
+}
+
+#[test]
 fn procspec_zip_does_not_probe_as_galactic_spc() {
     let probes = probe_path(workspace_file(
         "samples/ocean_optics/OceanOptics_Linux.ProcSpec",
