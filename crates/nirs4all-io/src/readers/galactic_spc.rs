@@ -837,6 +837,7 @@ fn labels_from_fields(talabs: bool, fcatxt: &[u8], fxtype: u8, fytype: u8, fztyp
 fn new_header_metadata(header: &NewHeader, labels: &LabelSet) -> Value {
     json!({
         "version": "new_lsb_0x4b",
+        "data_layout": data_layout_label(&header.flags),
         "flags": header.flags.as_json(),
         "experiment_type": experiment_type_label(header.fexper),
         "fexper": header.fexper,
@@ -871,6 +872,7 @@ fn new_header_metadata(header: &NewHeader, labels: &LabelSet) -> Value {
 fn old_header_metadata(header: &OldHeader, labels: &LabelSet) -> Value {
     json!({
         "version": "old_lsb_0x4d",
+        "data_layout": data_layout_label(&header.flags),
         "flags": header.flags.as_json(),
         "oexp": header.oexp,
         "onpts": header.onpts,
@@ -911,6 +913,20 @@ fn subfile_metadata(subfile: &ParsedSubfile) -> Value {
         "subwlevel": subfile.header.subwlevel,
         "directory": directory,
     })
+}
+
+fn data_layout_label(flags: &SpcFlags) -> &'static str {
+    if flags.txyxys {
+        "multi_independent_xyxy"
+    } else if flags.tmulti && flags.txvals {
+        "multi_common_explicit_x"
+    } else if flags.tmulti {
+        "multi_common_generated_x"
+    } else if flags.txvals {
+        "single_explicit_x"
+    } else {
+        "single_generated_x"
+    }
 }
 
 fn parse_log_block(bytes: &[u8], offset: usize) -> BTreeMap<String, Value> {

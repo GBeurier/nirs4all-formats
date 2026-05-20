@@ -4967,6 +4967,10 @@ fn reads_galactic_spc_single_even_axis() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "galactic-spc");
+    assert_eq!(
+        records[0].metadata["galactic_spc"]["data_layout"].as_str(),
+        Some("single_generated_x")
+    );
     let signal = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(signal.axis.values.len(), 1_842);
     assert_eq!(signal.axis.unit, "cm-1");
@@ -4980,6 +4984,10 @@ fn reads_galactic_spc_explicit_x_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/s_xy.spc")).expect("open spc");
 
     assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["galactic_spc"]["data_layout"].as_str(),
+        Some("single_explicit_x")
+    );
     let signal = records[0]
         .signals
         .get("arbitrary_intensity")
@@ -5016,6 +5024,10 @@ fn reads_galactic_spc_multi_common_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/nir.spc")).expect("open spc");
 
     assert_eq!(records.len(), 20);
+    assert_eq!(
+        records[0].metadata["galactic_spc"]["data_layout"].as_str(),
+        Some("multi_common_generated_x")
+    );
     let signal = records[0].signals.get("kubelka_munk").expect("km");
     assert_eq!(signal.axis.values.len(), 700);
     assert_eq!(signal.axis.unit, "nm");
@@ -5028,6 +5040,10 @@ fn reads_galactic_spc_xyxy_directory() {
     let records = open_path(workspace_file("samples/galactic_spc/m_xyxy.spc")).expect("open spc");
 
     assert_eq!(records.len(), 512);
+    assert_eq!(
+        records[0].metadata["galactic_spc"]["data_layout"].as_str(),
+        Some("multi_independent_xyxy")
+    );
     let signal = records[0].signals.get("abundance").expect("abundance");
     assert_eq!(signal.axis.values.len(), 8);
     assert_eq!(signal.axis.unit, "m/z");
@@ -5062,6 +5078,10 @@ fn reads_galactic_spc_multi_generated_x_variants() {
     assert_eq!(records[0].metadata["sample_id"].as_str(), Some("subfile_1"));
     let header = &records[0].metadata["galactic_spc"];
     assert_eq!(header["version"].as_str(), Some("new_lsb_0x4b"));
+    assert_eq!(
+        header["data_layout"].as_str(),
+        Some("multi_common_generated_x")
+    );
     assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
     assert_eq!(header["flags"]["txvals"].as_bool(), Some(false));
     let signal = records[0].signals.get("absorbance").expect("absorbance");
@@ -5087,6 +5107,10 @@ fn reads_galactic_spc_old_ordered_z_variant() {
     assert_eq!(records.len(), 10);
     let header = &records[0].metadata["galactic_spc"];
     assert_eq!(header["version"].as_str(), Some("old_lsb_0x4d"));
+    assert_eq!(
+        header["data_layout"].as_str(),
+        Some("multi_common_generated_x")
+    );
     assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
     assert_eq!(header["flags"]["tordrd"].as_bool(), Some(true));
     let signal = records[0].signals.get("absorbance").expect("absorbance");
@@ -5111,6 +5135,10 @@ fn reads_galactic_spc_directory_backed_mass_spectra() {
 
     assert_eq!(records.len(), 400);
     let header = &records[0].metadata["galactic_spc"];
+    assert_eq!(
+        header["data_layout"].as_str(),
+        Some("multi_independent_xyxy")
+    );
     assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
     assert_eq!(header["flags"]["txyxys"].as_bool(), Some(true));
     assert_eq!(header["flags"]["txvals"].as_bool(), Some(true));
