@@ -577,6 +577,8 @@ fn infer_axis_kind(header: &str, unit: &str) -> AxisKind {
         AxisKind::Wavenumber
     } else if lower.contains("hz") {
         AxisKind::Frequency
+    } else if lower.contains("ev") {
+        AxisKind::Energy
     } else if lower.contains("wavelength") || matches!(unit, "nm" | "um") {
         AxisKind::Wavelength
     } else {

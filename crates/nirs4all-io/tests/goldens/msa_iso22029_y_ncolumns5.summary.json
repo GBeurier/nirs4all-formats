@@ -13,7 +13,7 @@
       "signals": [
         {
           "axis_first": 0.0,
-          "axis_kind": "index",
+          "axis_kind": "energy",
           "axis_last": 790.0,
           "axis_len": 80,
           "axis_order": "ascending",

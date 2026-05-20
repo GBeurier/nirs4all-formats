@@ -230,7 +230,7 @@ fn msa_axis_kind_unit(raw: &str) -> (AxisKind, String) {
     } else if upper.contains("NM") || upper.contains("NANOM") {
         (AxisKind::Wavelength, "nm".to_string())
     } else if upper.contains("EV") {
-        (AxisKind::Index, "eV".to_string())
+        (AxisKind::Energy, "eV".to_string())
     } else if upper.is_empty() {
         (AxisKind::Index, "index".to_string())
     } else {

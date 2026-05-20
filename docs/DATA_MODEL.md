@@ -12,7 +12,7 @@ Fields:
 
 - `values`: native axis values as `f64`;
 - `unit`: `nm`, `cm-1`, `um`, `thz`, `index`, etc.;
-- `kind`: wavelength, wavenumber, frequency, time or index;
+- `kind`: wavelength, wavenumber, frequency, energy, time or index;
 - `order`: ascending, descending or non-monotonic.
 
 ## SpectralArray

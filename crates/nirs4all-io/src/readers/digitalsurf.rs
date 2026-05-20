@@ -843,7 +843,9 @@ fn canonical_axis_unit(kind: &AxisKind, unit: &str) -> (f64, String) {
                 (1.0, unit.to_string())
             }
         }
-        AxisKind::Frequency | AxisKind::Time | AxisKind::Index => (1.0, unit.to_string()),
+        AxisKind::Frequency | AxisKind::Energy | AxisKind::Time | AxisKind::Index => {
+            (1.0, unit.to_string())
+        }
     }
 }
 
