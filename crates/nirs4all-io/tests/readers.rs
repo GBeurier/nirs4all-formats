@@ -1719,6 +1719,10 @@ fn reads_avantes_wave_table_long_multi_signal() {
     assert!((transmittance.values[1_441] - 75.393).abs() < 0.000001);
     let sample = records[0].signals.get("sample").expect("sample");
     assert_eq!(sample.signal_type, SignalType::RawCounts);
+    let dark = records[0].signals.get("dark").expect("dark");
+    assert_eq!(dark.signal_type, SignalType::RawCounts);
+    let reference = records[0].signals.get("ref").expect("ref");
+    assert_eq!(reference.signal_type, SignalType::RawCounts);
 }
 
 #[test]
@@ -1728,8 +1732,35 @@ fn reads_avantes_irradiance_export() {
 
     assert_eq!(records.len(), 1);
     let signal = records[0].signals.get("irradiance").expect("irradiance");
-    assert!(signal.axis.values.len() > 1_000);
+    assert_eq!(signal.axis.values.len(), 1_922);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
     assert_eq!(signal.signal_type, SignalType::Irradiance);
+    assert!((signal.axis.values[0] - 173.0).abs() < 0.000001);
+    assert!((signal.axis.values[1_921] - 1133.5).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 1.416468).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_avasoft8_ascii_export() {
+    let records =
+        open_path(workspace_file("samples/avantes/avasoft8.txt")).expect("open avasoft8 txt");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-ascii");
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 401);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.axis.values[0] - 300.0).abs() < 0.000001);
+    assert!((reflectance.axis.values[400] - 700.0).abs() < 0.000001);
+    assert!((reflectance.values[0] - 252.16336).abs() < 0.000001);
+    assert!((reflectance.values[400] - 96.33834).abs() < 0.000001);
+    let dark = records[0].signals.get("dark").expect("dark");
+    assert_eq!(dark.signal_type, SignalType::RawCounts);
+    let reference = records[0].signals.get("reference").expect("reference");
+    assert_eq!(reference.signal_type, SignalType::RawCounts);
 }
 
 #[test]
@@ -1753,6 +1784,27 @@ fn reads_avantes_legacy_transmittance_binary() {
     assert!((transmittance.axis.values[1_441] - 1100.133307).abs() < 0.000001);
     assert!((transmittance.values[0] - 11.840215).abs() < 0.000001);
     assert!((transmittance.values[1_441] + 127.179425).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_legacy_alternate_transmittance_binary() {
+    let records =
+        open_path(workspace_file("samples/avantes/avantes_trans.TRM")).expect("open alt trm");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-legacy-binary");
+    let transmittance = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 1_623);
+    assert_eq!(transmittance.axis.unit, "nm");
+    assert_eq!(transmittance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.axis.values[0] - 179.100616).abs() < 0.000001);
+    assert!((transmittance.axis.values[1_622] - 1100.34788).abs() < 0.000001);
+    assert!((transmittance.values[0] - 30.313837).abs() < 0.000001);
+    assert!((transmittance.values[1_622] - 54.054054).abs() < 0.000001);
 }
 
 #[test]

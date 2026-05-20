@@ -15,7 +15,6 @@ All files are from [`ropensci/lightr@main/inst/testdata`](https://github.com/rop
 | `avantes_reflect.ROH` | Reflectance (raw scope) | `.ROH` = raw output / scope mode |
 | `1305084U1.DRK` | Dark reference | `.DRK` — paired with `.REF` for absorbance/transmittance computation |
 | `1305084U1.REF` | White reference | `.REF` — paired with `.DRK` |
-| `irr_820_1941.IRR` | Absolute irradiance | `.IRR` |
 
 ### AvaSoft 8 — modern binaries
 
@@ -31,6 +30,7 @@ All files are from [`ropensci/lightr@main/inst/testdata`](https://github.com/rop
 | `avantes_export.ttt` | Transmittance text export | `.ttt` |
 | `avantes_export2.trt` | Sample-count text export | `.trt`; one `Sample` counts column |
 | `avantes_export_long.ttt` | Multi-signal transmittance text export | `Dark`, `Ref`, `Sample` and `Transmittance` columns |
+| `irr_820_1941.IRR` | Absolute irradiance ASCII export | two-column wavelength/irradiance text |
 | `avasoft8.txt` | AvaSoft 8 ASCII export | Tab-separated |
 
 ## Parser hints

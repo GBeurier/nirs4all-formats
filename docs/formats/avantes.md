@@ -12,6 +12,9 @@ ASCII exports:
 - two-column irradiance exports (`.IRR`) such as `irr_820_1941.IRR`.
 - text exports from AvaSoft 8 such as `avasoft8.txt`; these are ASCII fixtures
   and do not close the binary AvaSoft 8 suffix gaps.
+- `Dark`, `Ref`, `Reference` and `Sample` ASCII columns are typed as
+  `raw_counts`; processed columns retain reflectance, transmittance or
+  irradiance signal types.
 
 Legacy AvaSoft binaries:
 
@@ -129,9 +132,9 @@ Current ASCII fixtures:
 |---|---:|---|---|
 | `avantes_export.ttt` | 401 | `300.000000 -> 700.000000 nm` | transmittance `3.148700 -> 31.491200` |
 | `avantes_export2.trt` | 1442 | `275.270000 -> 1100.130000 nm` | sample counts `805.000000 -> 774.300000` |
-| `avantes_export_long.ttt` | 1442 | `275.270000 -> 1100.130000 nm` | `Dark`, `Ref`, `Sample`, `Transmittance` columns |
-| `irr_820_1941.IRR` | 2048 | wavelength `nm` | two-column irradiance parser |
-| `avasoft8.txt` | 401 | `300.000000 -> 700.000000 nm` | AvaSoft 8 text export parser |
+| `avantes_export_long.ttt` | 1442 | `275.270000 -> 1100.130000 nm` | `Dark`, `Ref` and `Sample` raw-count columns plus `Transmittance` |
+| `irr_820_1941.IRR` | 1922 | `173.000000 -> 1133.500000 nm` | two-column irradiance parser |
+| `avasoft8.txt` | 401 | `300.000000 -> 700.000000 nm` | AvaSoft 8 text export with raw dark/reference/sample and reflectance |
 
 Reference behavior was compared against the documented `lightr` parser layout
 and its known formulas. `lightr` is GPL, so it remains a conformance reference
