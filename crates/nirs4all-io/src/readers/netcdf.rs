@@ -65,6 +65,85 @@ const MICROTOPS_MSM114_I64_OFFSETS: &[(&str, usize)] = &[
     ("time", 98_494),
     ("section", 101_952),
 ];
+const ARM_MFRSR_FILTER_COUNT: usize = 7;
+const ARM_MFRSR_FALLBACK_WAVELENGTHS: [f64; ARM_MFRSR_FILTER_COUNT] =
+    [415.0, 500.0, 615.0, 673.0, 870.0, 940.0, 1625.0];
+const ARM_MFRSR_SIGNALS: &[(&str, &str, SignalType, &str)] = &[
+    (
+        "hemisp_narrowband",
+        "hemispheric_irradiance",
+        SignalType::Irradiance,
+        "W/(m^2 nm)",
+    ),
+    (
+        "diffuse_hemisp_narrowband",
+        "diffuse_hemispheric_irradiance",
+        SignalType::Irradiance,
+        "W/(m^2 nm)",
+    ),
+    (
+        "direct_normal_narrowband",
+        "direct_normal_irradiance",
+        SignalType::Irradiance,
+        "W/(m^2 nm)",
+    ),
+    (
+        "direct_horizontal_narrowband",
+        "direct_horizontal_irradiance",
+        SignalType::Irradiance,
+        "W/(m^2 nm)",
+    ),
+    (
+        "alltime_hemisp_narrowband",
+        "alltime_hemispheric_voltage",
+        SignalType::RawCounts,
+        "mV",
+    ),
+    (
+        "direct_diffuse_ratio",
+        "direct_diffuse_ratio",
+        SignalType::Unknown,
+        "1",
+    ),
+];
+const ARM_MFRSR_METADATA_FLOATS: &[&str] = &[
+    "time",
+    "head_temp",
+    "head_temp2",
+    "logger_temperature",
+    "logger_volt",
+    "solar_zenith_angle",
+    "cosine_solar_zenith_angle",
+    "elevation_angle",
+    "airmass",
+    "azimuth_angle",
+];
+const ARM_MFRSR_GLOBAL_ATTRIBUTES: &[&str] = &[
+    "site_id",
+    "platform_id",
+    "facility_id",
+    "data_level",
+    "datastream",
+    "location_description",
+    "doi",
+    "serial_number",
+    "logger_id",
+    "head_id",
+    "filter_information",
+];
+const ARM_SURFSPECALB_SIGNAL: &str = "surface_albedo_mfr_narrowband_10m";
+const ARM_SURFSPECALB_QC: &str = "qc_surface_albedo_mfr_narrowband_10m";
+const ARM_SURFSPECALB_GLOBAL_ATTRIBUTES: &[&str] = &[
+    "site_id",
+    "platform_id",
+    "facility_id",
+    "data_level",
+    "datastream",
+    "averaging_interval",
+    "location_description",
+    "authors",
+    "input_datastreams",
+];
 
 pub struct NetcdfReader;
 
@@ -134,6 +213,9 @@ fn read_netcdf4_hdf5_records(
         .map_err(|error| Error::InvalidRecord(format!("NetCDF4/HDF5 open error: {error}")))?;
     if has_microtops_hdf5_aot_channels(&hdf5_file) {
         return read_microtops_man_hdf5_records(&hdf5_file, source.clone(), reader);
+    }
+    if has_arm_surfspecalb_hdf5(&hdf5_file) {
+        return read_arm_surfspecalb_hdf5_records(&hdf5_file, source.clone(), reader);
     }
 
     let file = NcFile::open_with_options(
@@ -611,6 +693,16 @@ fn read_hdf5_1d_i64(file: &Hdf5File, name: &str) -> Result<Vec<i64>> {
     read_hdf5_array::<i64>(&dataset, name)
 }
 
+fn read_hdf5_1d_i32(file: &Hdf5File, name: &str) -> Result<Vec<i32>> {
+    let dataset = hdf5_1d_dataset(file, name)?;
+    read_hdf5_array::<i32>(&dataset, name)
+}
+
+fn read_hdf5_1d_f32(file: &Hdf5File, name: &str) -> Result<Vec<f32>> {
+    let dataset = hdf5_1d_dataset(file, name)?;
+    read_hdf5_array::<f32>(&dataset, name)
+}
+
 fn hdf5_1d_dataset(file: &Hdf5File, name: &str) -> Result<Dataset> {
     let dataset = hdf5_dataset(file, name)?;
     if dataset.ndim() != 1 {
@@ -638,6 +730,182 @@ where
         Error::InvalidRecord(format!("NetCDF4/HDF5 array {name} is not contiguous"))
     })?;
     Ok(values.to_vec())
+}
+
+fn has_arm_surfspecalb_hdf5(file: &Hdf5File) -> bool {
+    hdf5_dataset(file, ARM_SURFSPECALB_SIGNAL).is_ok()
+        && hdf5_dataset(file, "filter").is_ok()
+        && hdf5_dataset(file, "time").is_ok()
+}
+
+fn read_arm_surfspecalb_hdf5_records(
+    file: &Hdf5File,
+    source: SourceFile,
+    reader: &str,
+) -> Result<Vec<SpectralRecord>> {
+    let signal_dataset = hdf5_dataset(file, ARM_SURFSPECALB_SIGNAL)?;
+    let shape = signal_dataset.shape();
+    if shape.len() != 2 {
+        return Err(Error::InvalidRecord(
+            "ARM SURFSPECALB surface albedo variable is not 2-D".to_string(),
+        ));
+    }
+    let sample_count = usize::try_from(shape[0]).map_err(|_| {
+        Error::InvalidRecord("ARM SURFSPECALB time dimension is too large".to_string())
+    })?;
+    let band_count = usize::try_from(shape[1]).map_err(|_| {
+        Error::InvalidRecord("ARM SURFSPECALB filter dimension is too large".to_string())
+    })?;
+    let axis = read_hdf5_1d_i32(file, "filter")?
+        .into_iter()
+        .map(f64::from)
+        .collect::<Vec<_>>();
+    if axis.len() != band_count {
+        return Err(Error::InvalidRecord(
+            "ARM SURFSPECALB filter axis length does not match albedo bands".to_string(),
+        ));
+    }
+
+    let values = read_hdf5_array::<f32>(&signal_dataset, ARM_SURFSPECALB_SIGNAL)?
+        .into_iter()
+        .map(f64::from)
+        .collect::<Vec<_>>();
+    if values.len() != sample_count * band_count {
+        return Err(Error::InvalidRecord(
+            "ARM SURFSPECALB albedo payload length does not match dimensions".to_string(),
+        ));
+    }
+    let qc_values = hdf5_dataset(file, ARM_SURFSPECALB_QC)
+        .ok()
+        .and_then(|dataset| read_hdf5_array::<i32>(&dataset, ARM_SURFSPECALB_QC).ok())
+        .unwrap_or_default();
+    let time = read_hdf5_1d_i64(file, "time").unwrap_or_default();
+    let global_attributes =
+        filtered_hdf5_global_attributes(file, ARM_SURFSPECALB_GLOBAL_ATTRIBUTES);
+    let time_units = hdf5_dataset_attr_string(file, "time", "units");
+    let time_calendar = hdf5_dataset_attr_string(file, "time", "calendar");
+    let signal_unit = hdf5_dataset_attr_string(file, ARM_SURFSPECALB_SIGNAL, "units")
+        .map(|unit| {
+            if unit == "unitless" {
+                "1".to_string()
+            } else {
+                unit
+            }
+        })
+        .unwrap_or_else(|| "1".to_string());
+
+    let mut records = Vec::new();
+    for sample_index in 0..sample_count {
+        let start = sample_index * band_count;
+        let end = start + band_count;
+        let row = values[start..end].to_vec();
+        if row.iter().all(|value| is_missing_arm_value(*value)) {
+            continue;
+        }
+        let qc_row = if qc_values.len() == values.len() {
+            qc_values[start..end].to_vec()
+        } else {
+            Vec::new()
+        };
+        let mut metadata = BTreeMap::new();
+        metadata.insert("container".to_string(), json!("netcdf4-hdf5"));
+        metadata.insert("instrument".to_string(), json!("ARM SURFSPECALB"));
+        metadata.insert("sample_index".to_string(), json!(sample_index));
+        metadata.insert(
+            "sample_id".to_string(),
+            json!(format!("arm_surfspecalb_{sample_index:06}")),
+        );
+        if !global_attributes.is_empty() {
+            metadata.insert(
+                "global_attributes".to_string(),
+                json!(global_attributes.clone()),
+            );
+        }
+        if let Some(value) = time.get(sample_index) {
+            metadata.insert("time".to_string(), json!(value));
+        }
+        if let Some(units) = &time_units {
+            metadata.insert("time_units".to_string(), json!(units));
+        }
+        if let Some(calendar) = &time_calendar {
+            metadata.insert("time_calendar".to_string(), json!(calendar));
+        }
+        if !qc_row.is_empty() {
+            metadata.insert("qc_surface_albedo".to_string(), json!(qc_row));
+        }
+        for scalar in ["lat", "lon", "alt"] {
+            if let Some(value) = read_hdf5_scalar_f64(file, scalar) {
+                metadata.insert(scalar.to_string(), json_f64(value));
+            }
+        }
+
+        let mut quality_flags = Vec::new();
+        if metadata
+            .get("qc_surface_albedo")
+            .and_then(Value::as_array)
+            .is_some_and(|qc| qc.iter().any(|value| value.as_i64().unwrap_or(0) != 0))
+        {
+            quality_flags.push("surface_albedo_qc_nonzero".to_string());
+        }
+        let signal = SpectralArray::new(
+            SpectralAxis::new(axis.clone(), "nm", AxisKind::Wavelength)?,
+            row,
+            vec!["x".to_string()],
+            SignalType::Reflectance,
+            Some(signal_unit.clone()),
+            "surface_albedo",
+            "file",
+        )?;
+        let record = SpectralRecord {
+            signals: BTreeMap::from([("surface_albedo".to_string(), signal)]),
+            signal_type: SignalType::Reflectance,
+            targets: BTreeMap::new(),
+            metadata,
+            provenance: provenance(
+                "arm-surfspecalb-netcdf",
+                reader,
+                source.clone(),
+                vec!["arm_surfspecalb_netcdf_derived_product".to_string()],
+            ),
+            quality_flags,
+        };
+        record.validate()?;
+        records.push(record);
+    }
+    if records.is_empty() {
+        return Err(Error::InvalidRecord(
+            "ARM SURFSPECALB contains no non-missing albedo rows".to_string(),
+        ));
+    }
+    Ok(records)
+}
+
+fn is_missing_arm_value(value: f64) -> bool {
+    !value.is_finite() || value <= -9998.0
+}
+
+fn read_hdf5_scalar_f64(file: &Hdf5File, name: &str) -> Option<f64> {
+    read_hdf5_1d_f32(file, name)
+        .ok()
+        .and_then(|values| values.first().copied())
+        .map(f64::from)
+        .or_else(|| {
+            hdf5_dataset(file, name)
+                .ok()
+                .and_then(|dataset| read_hdf5_array::<f32>(&dataset, name).ok())
+                .and_then(|values| values.first().copied())
+                .map(f64::from)
+        })
+}
+
+fn filtered_hdf5_global_attributes(file: &Hdf5File, names: &[&str]) -> BTreeMap<String, Value> {
+    let Ok(attributes) = hdf5_global_attributes(file) else {
+        return BTreeMap::new();
+    };
+    attributes
+        .into_iter()
+        .filter(|(name, _)| names.iter().any(|expected| *expected == name))
+        .collect()
 }
 
 fn read_netcdf_1d_f64(file: &NcFile, name: &str) -> Result<Vec<f64>> {
@@ -751,6 +1019,10 @@ fn read_netcdf_records(
         )));
     }
 
+    if has_arm_mfrsr_channels(file) {
+        return read_arm_mfrsr_records(file, source, reader);
+    }
+
     let spectra_var = file
         .variable("spectra")
         .map_err(|_| Error::InvalidRecord("NetCDF contains no spectra variable".to_string()))?;
@@ -811,6 +1083,234 @@ fn read_netcdf_records(
         )?);
     }
     Ok(records)
+}
+
+fn has_arm_mfrsr_channels(file: &NcFile) -> bool {
+    file.variable("time").is_ok()
+        && (1..=ARM_MFRSR_FILTER_COUNT).all(|filter| {
+            file.variable(&format!("hemisp_narrowband_filter{filter}"))
+                .is_ok()
+        })
+}
+
+fn read_arm_mfrsr_records(
+    file: &NcFile,
+    source: SourceFile,
+    reader: &str,
+) -> Result<Vec<SpectralRecord>> {
+    let sample_count = arm_mfrsr_sample_count(file)?;
+    let axis_values = arm_mfrsr_axis_values(file)?;
+    let filter_fwhm = arm_mfrsr_filter_fwhm(file);
+    let metadata_floats = read_optional_netcdf_float_series(file, ARM_MFRSR_METADATA_FLOATS)
+        .into_iter()
+        .filter(|(_, values)| values.len() == sample_count)
+        .collect::<Vec<_>>();
+    let global_attributes = filtered_netcdf_global_attributes(file, ARM_MFRSR_GLOBAL_ATTRIBUTES);
+    let signal_groups = ARM_MFRSR_SIGNALS
+        .iter()
+        .map(|(prefix, name, signal_type, unit)| {
+            Ok(ArmMfrsrSignalGroup {
+                name: (*name).to_string(),
+                prefix: (*prefix).to_string(),
+                signal_type: signal_type.clone(),
+                unit: (*unit).to_string(),
+                values: read_arm_mfrsr_filter_matrix(file, prefix, sample_count)?,
+                qc_values: read_arm_mfrsr_qc_matrix(file, prefix, sample_count),
+            })
+        })
+        .collect::<Result<Vec<_>>>()?;
+
+    let mut records = Vec::with_capacity(sample_count);
+    for sample_index in 0..sample_count {
+        let axis = SpectralAxis::new(axis_values.clone(), "nm", AxisKind::Wavelength)?;
+        let mut signals = BTreeMap::new();
+        let mut metadata = BTreeMap::new();
+        metadata.insert("container".to_string(), json!("netcdf"));
+        metadata.insert("instrument".to_string(), json!("MFRSR 7-channel"));
+        metadata.insert("sample_index".to_string(), json!(sample_index));
+        metadata.insert(
+            "sample_id".to_string(),
+            json!(format!("arm_mfrsr_{sample_index:06}")),
+        );
+        if !global_attributes.is_empty() {
+            metadata.insert(
+                "global_attributes".to_string(),
+                json!(global_attributes.clone()),
+            );
+        }
+        if !filter_fwhm.is_empty() {
+            metadata.insert("filter_fwhm_nm".to_string(), json!(filter_fwhm.clone()));
+        }
+        if let Some(units) = file
+            .variable("time")
+            .ok()
+            .and_then(|variable| attr_string(variable, "units"))
+        {
+            metadata.insert("time_units".to_string(), json!(units));
+        }
+        for (name, values) in &metadata_floats {
+            metadata.insert(name.clone(), json_f64(values[sample_index]));
+        }
+
+        let mut quality_flags = Vec::new();
+        for group in &signal_groups {
+            let values = group
+                .values
+                .iter()
+                .map(|values| values[sample_index])
+                .collect::<Vec<_>>();
+            signals.insert(
+                group.name.clone(),
+                SpectralArray::new(
+                    axis.clone(),
+                    values,
+                    vec!["x".to_string()],
+                    group.signal_type.clone(),
+                    Some(group.unit.clone()),
+                    group.name.clone(),
+                    "file",
+                )?,
+            );
+            if let Some(qc_values) = &group.qc_values {
+                let qc_row = qc_values
+                    .iter()
+                    .map(|values| values[sample_index])
+                    .collect::<Vec<_>>();
+                if qc_row.iter().any(|value| *value != 0) {
+                    quality_flags.push(format!("{}_qc_nonzero", group.name));
+                }
+                metadata.insert(format!("qc_{}", group.name), json!(qc_row));
+            }
+            metadata.insert(
+                format!("{}_source_prefix", group.name),
+                json!(group.prefix.clone()),
+            );
+        }
+
+        let record = SpectralRecord {
+            signals,
+            signal_type: SignalType::Irradiance,
+            targets: BTreeMap::new(),
+            metadata,
+            provenance: provenance(
+                "arm-mfrsr-netcdf",
+                reader,
+                source.clone(),
+                vec!["arm_mfrsr_netcdf_experimental".to_string()],
+            ),
+            quality_flags,
+        };
+        record.validate()?;
+        records.push(record);
+    }
+    Ok(records)
+}
+
+struct ArmMfrsrSignalGroup {
+    name: String,
+    prefix: String,
+    signal_type: SignalType,
+    unit: String,
+    values: Vec<Vec<f64>>,
+    qc_values: Option<Vec<Vec<i64>>>,
+}
+
+fn arm_mfrsr_sample_count(file: &NcFile) -> Result<usize> {
+    let variable = file
+        .variable("time")
+        .map_err(|error| Error::InvalidRecord(format!("ARM MFRSR time variable error: {error}")))?;
+    if variable.ndim() != 1 {
+        return Err(Error::InvalidRecord(
+            "ARM MFRSR time variable is not 1-D".to_string(),
+        ));
+    }
+    usize::try_from(variable.num_elements())
+        .map_err(|_| Error::InvalidRecord("ARM MFRSR time dimension is too large".to_string()))
+}
+
+fn arm_mfrsr_axis_values(file: &NcFile) -> Result<Vec<f64>> {
+    let mut values = Vec::with_capacity(ARM_MFRSR_FILTER_COUNT);
+    for filter in 1..=ARM_MFRSR_FILTER_COUNT {
+        let variable_name = format!("hemisp_narrowband_filter{filter}");
+        let value = file
+            .variable(&variable_name)
+            .ok()
+            .and_then(|variable| attr_string(variable, "centroid_wavelength"))
+            .and_then(|value| first_f64_in_text(&value))
+            .unwrap_or(ARM_MFRSR_FALLBACK_WAVELENGTHS[filter - 1]);
+        values.push(value);
+    }
+    Ok(values)
+}
+
+fn arm_mfrsr_filter_fwhm(file: &NcFile) -> Vec<f64> {
+    (1..=ARM_MFRSR_FILTER_COUNT)
+        .filter_map(|filter| {
+            let variable_name = format!("hemisp_narrowband_filter{filter}");
+            file.variable(&variable_name)
+                .ok()
+                .and_then(|variable| attr_string(variable, "FWHM"))
+                .and_then(|value| first_f64_in_text(&value))
+        })
+        .collect()
+}
+
+fn read_arm_mfrsr_filter_matrix(
+    file: &NcFile,
+    prefix: &str,
+    sample_count: usize,
+) -> Result<Vec<Vec<f64>>> {
+    let mut channels = Vec::with_capacity(ARM_MFRSR_FILTER_COUNT);
+    for filter in 1..=ARM_MFRSR_FILTER_COUNT {
+        let variable_name = format!("{prefix}_filter{filter}");
+        let values = read_netcdf_1d_f64(file, &variable_name)?;
+        if values.len() != sample_count {
+            return Err(Error::InvalidRecord(format!(
+                "ARM MFRSR variable {variable_name} length does not match time"
+            )));
+        }
+        channels.push(values);
+    }
+    Ok(channels)
+}
+
+fn read_arm_mfrsr_qc_matrix(
+    file: &NcFile,
+    prefix: &str,
+    sample_count: usize,
+) -> Option<Vec<Vec<i64>>> {
+    let mut channels = Vec::with_capacity(ARM_MFRSR_FILTER_COUNT);
+    for filter in 1..=ARM_MFRSR_FILTER_COUNT {
+        let variable_name = format!("qc_{prefix}_filter{filter}");
+        let values = read_netcdf_1d_i64(file, &variable_name).ok()?;
+        if values.len() != sample_count {
+            return None;
+        }
+        channels.push(values);
+    }
+    Some(channels)
+}
+
+fn filtered_netcdf_global_attributes(file: &NcFile, names: &[&str]) -> BTreeMap<String, Value> {
+    let Ok(attributes) = file.global_attributes() else {
+        return BTreeMap::new();
+    };
+    attributes
+        .iter()
+        .filter(|attribute| names.iter().any(|name| *name == attribute.name))
+        .filter_map(|attribute| attr_value(attribute).map(|value| (attribute.name.clone(), value)))
+        .collect()
+}
+
+fn first_f64_in_text(text: &str) -> Option<f64> {
+    text.split(|ch: char| !(ch.is_ascii_digit() || matches!(ch, '.' | '-' | '+' | 'e' | 'E')))
+        .find_map(|token| {
+            if token.is_empty() || token == "+" || token == "-" {
+                None
+            } else {
+                token.parse::<f64>().ok()
+            }
+        })
 }
 
 fn andi_ms_markers(file: &NcFile) -> Result<Vec<&'static str>> {

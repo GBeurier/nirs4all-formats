@@ -354,6 +354,35 @@ fn reads_buchi_nircal_project_spectra() {
 }
 
 #[test]
+fn reads_local_buchi_nircal_non_null_targets_when_present() {
+    let path = workspace_file("samples_local/buchi_nircal/transpec_DEMO_cannabis.nir");
+    if !path.exists() {
+        eprintln!("skipping local-only BUCHI NIRCal cannabis sample");
+        return;
+    }
+
+    let records = open_path(path).expect("open local BUCHI NIRCal sample");
+
+    assert_eq!(records.len(), 105);
+    assert_eq!(records[0].provenance.format, "buchi-nircal");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("Sample_1"));
+    assert_eq!(
+        records[0].metadata["target_property_count"].as_u64(),
+        Some(2)
+    );
+    assert!((records[0].targets["CBDA"].as_f64().expect("CBDA") - 5.958436124).abs() < 1e-9);
+    assert!((records[0].targets["THCA"].as_f64().expect("THCA") - 0.174373006).abs() < 1e-9);
+    assert!((records[104].targets["CBDA"].as_f64().expect("CBDA") - 14.35).abs() < 1e-9);
+    assert!((records[104].targets["THCA"].as_f64().expect("THCA") - 0.6).abs() < 1e-9);
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 1_501);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert!((absorbance.values[0] - 0.16346853997656646).abs() < 1e-12);
+    assert!((absorbance.values.iter().sum::<f64>() - 702.4047647373825).abs() < 1e-9);
+}
+
+#[test]
 fn reads_jasco_jws_single_channel_files() {
     let records = open_path(workspace_file("samples/jasco/243.jws")).expect("open jws");
 
@@ -614,17 +643,28 @@ fn reads_horiba_labspec_text_exports() {
 fn reads_horiba_labspec6_binary_map() {
     let records = open_path(workspace_file("samples/raman_horiba/AlN_Gd2O3_indepth.l6m"))
         .expect("open labspec6 binary");
+    let text_records = open_path(workspace_file(
+        "samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt",
+    ))
+    .expect("open paired labspec6 text export");
 
     assert_eq!(records.len(), 72);
+    assert_eq!(text_records.len(), records.len());
     assert_eq!(records[0].provenance.format, "horiba-labspec6-binary");
     assert_eq!(
         records[0].metadata["axis_layout"].as_str(),
         Some("labspec6_binary_map")
     );
+    assert_eq!(
+        records[0].metadata["spatial_axis_order"].as_str(),
+        Some("x_slowest_y_fastest")
+    );
     assert!((records[0].metadata["spatial_x"].as_f64().expect("x") + 209.87088).abs() < 0.00001);
     assert!((records[0].metadata["spatial_y"].as_f64().expect("y") + 204.08078).abs() < 0.00001);
     assert!((records[71].metadata["spatial_x"].as_f64().expect("x") - 183.81874).abs() < 0.00001);
     assert!((records[71].metadata["spatial_y"].as_f64().expect("y") - 204.31718).abs() < 0.00001);
+    assert!((records[1].metadata["spatial_x"].as_f64().expect("x") + 209.87088).abs() < 0.00001);
+    assert!((records[1].metadata["spatial_y"].as_f64().expect("y") + 166.9537).abs() < 0.0001);
     assert!(records[0]
         .provenance
         .warnings
@@ -638,6 +678,36 @@ fn reads_horiba_labspec6_binary_map() {
     assert!((signal.axis.values[497] - 1198.541748).abs() < 0.000001);
     assert!((signal.values[0] - 57.0).abs() < 0.000001);
     assert!((signal.values.iter().sum::<f64>() - 72757.0).abs() < 0.000001);
+
+    for (binary, text) in records.iter().zip(&text_records) {
+        assert!(
+            (binary.metadata["spatial_x"].as_f64().expect("binary x")
+                - text.metadata["spatial_x"].as_f64().expect("text x"))
+            .abs()
+                < 0.001
+        );
+        assert!(
+            (binary.metadata["spatial_y"].as_f64().expect("binary y")
+                - text.metadata["spatial_y"].as_f64().expect("text y"))
+            .abs()
+                < 0.001
+        );
+        let binary_signal = binary.signals.get("intensity").expect("binary intensity");
+        let text_signal = text.signals.get("intensity").expect("text intensity");
+        assert_eq!(binary_signal.values, text_signal.values);
+        assert_eq!(
+            binary_signal.axis.values.len(),
+            text_signal.axis.values.len()
+        );
+        for (binary_axis, text_axis) in binary_signal
+            .axis
+            .values
+            .iter()
+            .zip(&text_signal.axis.values)
+        {
+            assert!((binary_axis - text_axis).abs() < 0.005);
+        }
+    }
 }
 
 #[test]
@@ -2365,6 +2435,161 @@ fn reads_sun_photometer_channel_exports() {
     assert_eq!(aot.axis.unit, "nm");
     assert!((aot.values[0] - 0.124).abs() < 0.000001);
     assert!((aot.values[2] - 0.211).abs() < 0.000001);
+}
+
+#[test]
+fn reads_local_microtops_man_ascii_when_present() {
+    let all_points =
+        workspace_file("samples_local/microtops/aeronet_man_Okeanos_19_2_all_points.lev20");
+    if !all_points.exists() {
+        eprintln!("skipping local-only Microtops MAN ASCII samples");
+        return;
+    }
+
+    let records = open_path(all_points).expect("open local Microtops MAN all-points export");
+
+    assert_eq!(records.len(), 25);
+    assert_eq!(records[0].provenance.format, "microtops-man-ascii");
+    assert_eq!(records[0].metadata["level"].as_str(), Some("2.0"));
+    assert_eq!(
+        records[0].metadata["aggregation"].as_str(),
+        Some("All Points")
+    );
+    assert_eq!(
+        records[0].metadata["campaign"].as_str(),
+        Some("Okeanos_19_2")
+    );
+    assert_eq!(records[0].metadata["aeronet_number"].as_f64(), Some(891.0));
+    assert_eq!(
+        records[0].metadata["microtops_number"].as_f64(),
+        Some(19747.0)
+    );
+    assert_eq!(
+        records[0].metadata["missing_aod_channels"]
+            .as_array()
+            .expect("missing channels")
+            .len(),
+        3
+    );
+    let aot = records[0].signals.get("aot").expect("aot");
+    assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
+    assert_eq!(aot.axis.unit, "nm");
+    assert_eq!(aot.unit.as_deref(), Some("1"));
+    assert!((aot.values[0] - 0.095165).abs() < 0.000001);
+    assert!((aot.values[4] - 0.05505).abs() < 0.000001);
+
+    let daily = open_path(workspace_file(
+        "samples_local/microtops/aeronet_man_Okeanos_19_2_daily.lev20",
+    ))
+    .expect("open local Microtops MAN daily export");
+    assert_eq!(daily.len(), 5);
+    assert_eq!(
+        daily[0].metadata["aggregation"].as_str(),
+        Some("Daily Averages")
+    );
+    assert_eq!(
+        daily[0].metadata["number_of_observations"].as_f64(),
+        Some(1.0)
+    );
+    let daily_std = daily[0].signals.get("aot_std").expect("aot_std");
+    assert_eq!(
+        daily_std.axis.values,
+        vec![380.0, 440.0, 500.0, 675.0, 870.0]
+    );
+    assert_eq!(daily_std.values, vec![0.0, 0.0, 0.0, 0.0, 0.0]);
+}
+
+#[test]
+fn reads_local_arm_mfrsr_netcdf_when_present() {
+    let path = workspace_file("samples_local/mfr/arm_mfrsr_sgp_E11_20210329.nc");
+    if !path.exists() {
+        eprintln!("skipping local-only ARM MFRSR NetCDF sample");
+        return;
+    }
+
+    let records = open_path(path).expect("open local ARM MFRSR NetCDF");
+
+    assert_eq!(records.len(), 4_320);
+    assert_eq!(records[0].provenance.format, "arm-mfrsr-netcdf");
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "arm_mfrsr_netcdf_experimental"));
+    assert_eq!(
+        records[0].metadata["global_attributes"]["datastream"].as_str(),
+        Some("sgpmfrsr7nchE11.b1")
+    );
+    assert_eq!(
+        records[0].metadata["time_units"].as_str(),
+        Some("seconds since 2021-03-29 00:00:00 0:00")
+    );
+    assert_eq!(records[0].metadata["time"].as_f64(), Some(25_200.0));
+    assert_eq!(records[0].signals.len(), 6);
+
+    let hemisp = records[0]
+        .signals
+        .get("hemispheric_irradiance")
+        .expect("hemispheric signal");
+    assert_eq!(
+        hemisp.axis.values,
+        vec![413.3, 501.0, 613.5, 671.4, 869.3, 939.4, 1624.2]
+    );
+    assert_eq!(hemisp.axis.unit, "nm");
+    assert_eq!(hemisp.signal_type, SignalType::Irradiance);
+    assert_eq!(hemisp.unit.as_deref(), Some("W/(m^2 nm)"));
+    assert!((hemisp.values[0] - 0.0006153076537884772).abs() < 1e-15);
+    assert!((hemisp.values[1] - 0.0005408665747381747).abs() < 1e-15);
+    assert!((hemisp.values[6] + 0.0012479281285777688).abs() < 1e-15);
+
+    let alltime = records[0]
+        .signals
+        .get("alltime_hemispheric_voltage")
+        .expect("alltime signal");
+    assert_eq!(alltime.signal_type, SignalType::RawCounts);
+    assert_eq!(alltime.unit.as_deref(), Some("mV"));
+    assert_eq!(
+        records[0].metadata["qc_hemispheric_irradiance"]
+            .as_array()
+            .expect("qc row")
+            .len(),
+        7
+    );
+}
+
+#[test]
+fn reads_local_arm_surfspecalb_netcdf_when_present() {
+    let path = workspace_file("samples_local/netcdf/arm_nsa_surfspecalb_20160609.nc");
+    if !path.exists() {
+        eprintln!("skipping local-only ARM SURFSPECALB NetCDF sample");
+        return;
+    }
+
+    let records = open_path(path).expect("open local ARM SURFSPECALB NetCDF");
+
+    assert_eq!(records.len(), 986);
+    assert_eq!(records[0].provenance.format, "arm-surfspecalb-netcdf");
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "arm_surfspecalb_netcdf_derived_product"));
+    assert_eq!(records[0].metadata["sample_index"].as_u64(), Some(410));
+    assert_eq!(records[0].metadata["time"].as_i64(), Some(410));
+
+    let albedo = records[0]
+        .signals
+        .get("surface_albedo")
+        .expect("surface albedo");
+    assert_eq!(
+        albedo.axis.values,
+        vec![415.0, 500.0, 615.0, 673.0, 870.0, 940.0]
+    );
+    assert_eq!(albedo.axis.unit, "nm");
+    assert_eq!(albedo.signal_type, SignalType::Reflectance);
+    assert_eq!(albedo.unit.as_deref(), Some("1"));
+    assert!((albedo.values[0] - 0.3362593352794647).abs() < 1e-12);
+    assert!((albedo.values[5] - 0.5350303053855896).abs() < 1e-12);
 }
 
 #[test]

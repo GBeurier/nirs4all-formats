@@ -39,7 +39,10 @@ axis unit default to `cm-1` with warning
 
 The LabSpec6 binary path emits warning
 `horiba_labspec6_binary_experimental` on every record because it is validated on
-one public `.l6m` fixture only.
+one public `.l6m` fixture only. For that fixture, the Rust test compares all 72
+binary spectra against the paired text export: intensities match exactly,
+spectral axes match within text-rounding tolerance, and `spatial_x` /
+`spatial_y` use the same x-slowest/y-fastest map order as the text export.
 
 ## Supported Fixtures
 
@@ -58,7 +61,7 @@ one public `.l6m` fixture only.
 | `samples/raman_horiba/labspec_serie190214.txt` | 168 | wavenumber, `cm-1`, 1024 points | Time series-row text export |
 | `samples/raman_horiba/labspec_LiNbWO6_pol.txt` | 1 | wavenumber, `cm-1`, 1024 points | Two-column text export |
 | `samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt` | 72 | wavenumber, `cm-1`, 498 points | LabSpec 6 map-row text export |
-| `samples/raman_horiba/AlN_Gd2O3_indepth.l6m` | 72 | wavenumber, `cm-1`, 498 points | Experimental LabSpec6 binary map; intensity payload matches the paired text export |
+| `samples/raman_horiba/AlN_Gd2O3_indepth.l6m` | 72 | wavenumber, `cm-1`, 498 points | Experimental LabSpec6 binary map; intensity and spatial coordinates are compared against the paired text export |
 
 ## Reference Readers
 

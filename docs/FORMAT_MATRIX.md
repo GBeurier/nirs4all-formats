@@ -19,8 +19,8 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid) | fait | spectral, RStoolbox, pysptools |
 | ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN + local Indian Pines MAT point extraction | partiel | spectral, rasterio, scipy |
 | FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | paire HDF5+XML synthetique mappee | partiel | h5py, hdf5r, rhdf5, lxml |
-| MFR Sun Photometer | Solar Light | `.OUT` | MFR-7 synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
-| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export) | ASCII export + MAN NetCDF reel PANGAEA MSM114/2 teste | partiel | parseurs ad hoc, xarray |
+| MFR Sun Photometer | Solar Light / YES Inc. | `.OUT`, `.nc` local | MFR-7 `.OUT` synthetique + ARM MFRSR b1 NetCDF local decode | partiel | SPECCHIO, parseurs ad hoc, xarray, ARM ACT |
+| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export), `.lev10/.lev15/.lev20` local | CSV synthetique + MAN NetCDF PANGAEA + MAN ASCII AERONET local Okeanos | partiel | parseurs ad hoc, xarray |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | plusieurs familles texte + ProcSpec | partiel | lightr, pavo |
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte synthetique uniquement | partiel | SPECCHIO, parseurs ad hoc |
@@ -35,7 +35,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
 | Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | exports matrices WinISI/Foss XDS reels | fait | parseur texte |
 | Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | CSV export synthetique OK; DB native manquante | partiel | parseur texte, pandas, readxl |
-| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | fixture NIRCal avec cibles nulles | partiel | prospectr::read_nircal |
+| BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | fixture NIRCal avec cibles nulles + cannabis local avec cibles non nulles | partiel | prospectr::read_nircal |
 | Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | binaire ferme; CSV cible seule refuse | bloqué | export CSV/Excel vendeur |
 | JASCO JWS | JASCO | `.jws`, `.txt` | OLE2 DataInfo/Y-Data | partiel | jws2txt, jwsProcessor |
 | Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | texte OK; spc proprietaire manquant | partiel | pyfasma-spc, convertisseur Shimadzu |
@@ -44,7 +44,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | JSON/CSV synthetiques | partiel | JSON/CSV standard |
 | JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | XYDATA, ASDF, NTUPLES, LINK partiel | partiel | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
 | ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | detection + refus non-NIRS | fait | pyteomics, PyMassSpec, pyOpenMS |
-| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | schema spectra+wavelengths synthetique + refus adjacents | partiel | netcdf-reader, xarray, netcdf |
+| NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | schema spectra+wavelengths synthetique + lecteurs dedies Microtops MAN / ARM MFRSR / ARM SURFSPECALB locaux + refus adjacents | partiel | netcdf-reader, xarray, netcdf, ARM ACT |
 | AnIML | IUPAC / ASTM | `.animl` | spectral SeriesSet synthetique | partiel | animl-python, validateurs XML |
 | Allotrope ASM | Allotrope / Benchling | `.json` | fixtures Benchling cubes/endpoints spectraux | partiel | Benchling allotropy |
 | Allotrope ADF | Allotrope Foundation | `.adf` | HDF5/RDF, pas de sample | bloqué | Allotrope SDK |
@@ -79,11 +79,11 @@ passer le format a `fait`.
 | Bruker Tango / MPA / Matrix | partiel | AfSIS Bruker MPA `icr_*.0` reels committes (cran/soil.spec). Reste Bruker Tango FT-NIR dedie et metadata MPA/Matrix complete. |
 | ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr`, AVIRIS/Indian Pines `.lan/.spc/.GIS` et le cube MATLAB local-only `indian_pines_corrected.mat` sont charges en spectres par pixel; restent ERDAS LAN generique, NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
 | FGI HDF5 + XML | partiel | Sidecar XML synthetique mappe vers HDF5 et provenance double; reste a valider une paire FGI reelle et le schema XML complet. |
-| MFR Sun Photometer | partiel | Le `.OUT` synthetique valide le parseur de colonnes; il manque un dump MFR-7/MFRSR reel redistribuable pour figer metadata, unites et variantes. |
-| Microtops Sun Photometer | partiel | MAN NetCDF reel committe et teste (PANGAEA MSM114/2, CC-BY-4.0) via fallback SHA-256 borne au fixture; restent un vrai `.TXT` legacy et un parseur MAN NetCDF generique. |
+| MFR Sun Photometer | partiel | Le `.OUT` synthetique valide le parseur texte; le MFRSR NetCDF ARM local est decode en 4,320 enregistrements x 7 filtres avec signaux hemispheric/diffuse/direct/alltime/ratio et QC. Restent un dump MFR-7/MFRSR redistribuable, un mapping ARM plus large (`_FillValue`, calibration, filtres) et comparaison ACT/xarray. |
+| Microtops Sun Photometer | partiel | MAN NetCDF reel committe et teste (PANGAEA MSM114/2, CC-BY-4.0) via fallback SHA-256 borne au fixture; les exports AERONET MAN ASCII `.lev10/.lev15/.lev20` sont testes en local avec AOD et AOD-STD. Restent un vrai `.TXT` legacy redistribuable et un parseur MAN NetCDF generique. |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
-| PP Systems UniSpec SC | partiel | Le `.SPT` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider headers, units et metadata UniSpec SC. |
-| PP Systems UniSpec DC | partiel | Le `.SPU` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider les deux canaux et metadata UniSpec DC. |
+| PP Systems UniSpec SC | partiel | Le `.SPT` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider headers, units et metadata UniSpec SC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
+| PP Systems UniSpec DC | partiel | Le `.SPU` synthetique couvre la forme axe-first; il manque une acquisition terrain reelle pour valider les deux canaux et metadata UniSpec DC. Les indices Arctic LTER locaux sont des produits derives, pas des spectres raw UniSpec. |
 | SVC / GER SIG | partiel | GER 3700 PDA + BEO HR-1024i field exports reels desormais committes; les fixtures declarees BAD sont qualifiees; restent les firmware HR-1024i ≥3.0 et la verification GPS/date/unites systematique. |
 | Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est qualifie sans reflectance; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
@@ -93,7 +93,7 @@ passer le format a `fait`.
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est lu; il manque un export client reel et la base projet native reste fermee. |
-| BUCHI NIRCal | partiel | Obtenir fixtures avec cibles non nulles et variantes NIRMaster/calibration. |
+| BUCHI NIRCal | partiel | Le chemin `.nir` lit spectra/wavenumbers/proprietes; les cibles non nulles sont validees localement sur `transpec_DEMO_cannabis.nir`. Restent une fixture redistribuable avec cibles non nulles, `.cal` calibration-only et variantes NIRMaster. |
 | Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; CSV actuel sans axe spectral. |
 | JASCO JWS | partiel | Ajouter blocs V-series NIR et variantes Raman NRS. |
 | Shimadzu UVProbe | partiel | Obtenir vrai `.spc` Shimadzu et comparaison convertisseur. |
@@ -101,7 +101,7 @@ passer le format a `fait`.
 | Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX desormais committes; resterait a couvrir un export NeoSpectra Scanner natif single-measurement. |
 | Spectro Inc. SiWare API | partiel | Les fixtures JSON/CSV sont synthetiques; il manque une reponse API reelle et des variantes de schema. |
 | JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts; restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
-| NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique et les refus non-NIRS sont couverts; il manque des schemas NIRS reels hors Microtops MAN. |
+| NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; AOSMET est un refus attendu non spectral. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
 | AnIML | partiel | Le `SeriesSet` spectral synthetique est couvert et les resultats non-spectraux sont refuses; restent schemas spectraux reels, `AutoIncrementedValueSet` et validation XSD. |
 | Allotrope ASM | partiel | Les trois fixtures Benchling spectrales/endpoints sont couvertes; restent conversions vendeurs multiples, cas ASM hors plate-reader et validation contre tooling Allotrope. |
 | Allotrope ADF | bloqué | Pas de sample public ni SDK librement utilisable; seul un stub de detection/refus serait possible sans valider un vrai loader. |
@@ -122,7 +122,7 @@ Dernier sweep CLI apres mise a jour de la matrice:
 | Corpus | OK | Refus attendus | Refus inattendus | Notes |
 |---|---:|---:|---:|---|
 | `samples/` | 245 | 18 | 0 | Les refus attendus sont des formats volontairement non-NIRS, des fixtures negatives, des sidecars seuls (`92AV3C.spc`, `92AV3GT.GIS`, header Microtops) ou des descripteurs non spectraux (`neospectra_ossl_column_names.csv`). |
-| `samples_local/` | 1 famille testee | 1 reference negative | 0 | Indian Pines MATLAB v5 local-only lit 21,025 spectres + `_gt.mat`; le `.lev2` NOAA reste une disambiguation radiosonde, pas Microtops. |
+| `samples_local/` | 11 | 5 | 0 | Lectures OK: Indian Pines MATLAB v5, BUCHI cannabis, ARM MFRSR NetCDF, ARM SURFSPECALB derive, 7 exports Microtops MAN ASCII `.lev*`. Refus attendus: `_gt.mat` sidecar, NOAA `.lev2`, ARM AOSMET et PP Systems indices non raw/derives. |
 
 ## Sweep d'echantillons publics (2026-05-20)
 
@@ -167,6 +167,10 @@ github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
 | Format | Fichier | Source | Licence / raison non-commit | Effet |
 |---|---|---|---|---|
 | Hyperspectral cube (AVIRIS Indian Pines) | `samples_local/hyperspectral_cubes/indian_pines_corrected.mat` + `_gt.mat` | [EHU/Grupo de Inteligencia Computacional](http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes) | "academic use" sans SPDX clair → en local seulement | reader MAT v5 local-only teste: 21,025 spectres x 200 bandes + cible `land_cover_class`; la version `92AV3C.lan` plus petite reste committee |
+| Microtops MAN ASCII Okeanos | `samples_local/microtops/aeronet_man_Okeanos_19_2_*.lev10/.lev15/.lev20` | AERONET Maritime Aerosol Network | AERONET MAN PI/coauthorship policy -> en local seulement | reader local teste: AOD valides, canaux `-999` omis, AOD-STD pour exports daily/series |
+| BUCHI NIRCal cannabis | `samples_local/buchi_nircal/transpec_DEMO_cannabis.nir` | orellano-c/transpec_info | licence non clarifiee pour redistribution du fixture -> en local seulement | reader local teste: 105 spectres, axe 1501 wavenumbers et cibles non nulles `CBDA`/`THCA` |
+| ARM MFRSR / ARM NetCDF adjacents | `samples_local/mfr/*.nc`, `samples_local/netcdf/*.nc` | DOE ARM / ARM test data | ARM Data Use Policy -> en local seulement | MFRSR b1 local decode en 4,320 observations x 7 filtres; SURFSPECALB local decode en 986 lignes utiles x 6 filtres; AOSMET reste non spectral |
+| PP Systems Arctic LTER indices | `samples_local/pp_systems/*.csv/.xlsx` | Arctic LTER / EDI | dataset local non committe | produit derive NDVI/EVI/PRI/etc.; ne ferme pas le manque de raw `.SPT/.SPU` |
 | Microtops `.lev2` disambiguation | `samples_local/microtops/noaa_lauder_sonde_la20170315.lev2` | [NOAA GML Lauder](https://gml.noaa.gov/aftp/data/ozwv/WaterVapor/Lauder_LEV/) | US Gov public domain MAIS le fichier est en realite un radiosonde water vapour/ozone, pas un sun-photometer Microtops | aide locale a la disambiguation `.lev2`; non commit pour eviter confusion |
 
 ### Formats restant fermes (sweep sans resultat exploitable, apres 3 passages)
@@ -179,9 +183,9 @@ github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
 | Metrohm Vision Air / OMNIS NIR natif | Format ferme, seul l'export CSV est documente publiquement. |
 | Allotrope ADF | Membership Allotrope obligatoire; adfsee + adf-explorer-plugins GitLab ne contiennent que du code source Java, pas de `.adf` sample. |
 | MODTRAN albedo `.dat` reel | Distribution sous licence MODTRAN/ONTAR ($2400) ; MIT OCW pcmodwin/RIT tutorials ne shippent que des references USGS deja couvertes. |
-| MFR-7 / MFRSR `.OUT` reel | ARM Data Center exige compte; mitige via `samples_local/mfr/` (ARM-DOE/arm-test-data NetCDF) — non commit. |
-| Microtops II `.TXT` reel | AERONET MAN demande co-authorship; mitige via `samples_local/microtops/` (cruise Okeanos 2019) — non commit. |
-| PP Systems UniSpec `.SPT/.SPU` reel raw | Aucune fixture raw `.spu/.spt` publique; mitige via `samples_local/pp_systems/` (EDI Arctic LTER indices) — non commit. |
+| MFR-7 / MFRSR `.OUT` reel | ARM Data Center exige compte; `samples_local/mfr/` ferme localement un NetCDF ARM MFRSR b1, mais pas un `.OUT` MFR-7 redistribuable — non commit. |
+| Microtops II `.TXT` reel | AERONET MAN demande co-authorship; `samples_local/microtops/` ferme localement les exports MAN ASCII `.lev*`, mais pas un `.TXT` legacy redistribuable — non commit. |
+| PP Systems UniSpec `.SPT/.SPU` reel raw | Aucune fixture raw `.spu/.spt` publique; `samples_local/pp_systems/` contient seulement des indices derives Arctic LTER — non commit. |
 | Bruker OPUS 5/6 legacy | Archives privees, pas de mirror public; OPUS 7/8 couvert via 4 lecteurs independants suffit. |
 | Thermo OMNIC `.srsx` | Pas de fixture publique trouvee (S.T.Japan demo bibliotheques `.spg` derriere formulaire); le canal `.srs` reste couvert. |
 | Shimadzu UVProbe `.spc` natif | Un seul candidat (`uri-t/shimadzu-spc-converter`) sans licence claire; aucune autre source apres sweep. |

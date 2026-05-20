@@ -22,8 +22,9 @@ Experimental native readers:
 - spectral matrix exports with one spectrum per row: Foss/WinISI text, real
   Foss XDS CSV, AuroraNIR handheld CSV, OSSL NeoSpectra wide CSV, Metrohm Vision
   Air CSV and VIAVI MicroNIR CSV fixtures;
-- sun photometer channel exports: MFR `.OUT`, Microtops `.TXT`, and the
-  committed Microtops MAN NetCDF AOT fixture;
+- sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF,
+  Microtops `.TXT`, the committed Microtops MAN NetCDF AOT fixture, and
+  local-only AERONET MAN ASCII `.lev10/.lev15/.lev20` exports;
 - AnIML spectral XML: spectral `SeriesSet` fixture with wavelength axis,
   absorbance signal and sample target; non-spectral AnIML result documents are
   refused;
@@ -34,9 +35,10 @@ Experimental native readers:
 - Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped
   `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
-  pure-Rust reader, plus a SHA-256-guarded Microtops MAN NetCDF fixture path;
-  ANDI/MS gets a dedicated refusal path and weather/PyrNet NetCDF samples are
-  schema-refused as non-NIRS;
+  pure-Rust reader, a local ARM MFRSR b1 7-filter time-series path, local ARM
+  SURFSPECALB derived albedo, plus a SHA-256-guarded Microtops MAN NetCDF
+  fixture path; ANDI/MS gets a dedicated refusal path and weather/PyrNet/AOSMET
+  NetCDF samples are schema-refused as non-NIRS;
 - generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
   and the committed FGI HDF5+XML synthetic pair is mapped with both payload and
@@ -86,7 +88,8 @@ Experimental native readers:
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
   for the committed foliar-transfer fixture, including property target schema
-  extraction with zero values mapped to null targets.
+  extraction with zero values mapped to null targets. A local-only cannabis
+  fixture validates non-null `CBDA` and `THCA` targets through the same path.
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   metadata-driven semantic channel labels.
@@ -160,7 +163,11 @@ cargo clippy --workspace --all-targets -- -D warnings
 uv run --python 3.11 --with-editable ./tools/reverse-lab --with-editable ./bindings/python --with-editable /home/delete/nirs4all/nirs4all --with pytest pytest tools/reverse-lab/tests bindings/python/tests
 Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); records <- nirs4allio_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allio_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
 uv run sphinx-build -W -b html docs docs/_build/html
+git diff --check
 ```
+
+Local-only sample sweep (not in CI): `samples_local/` now has 11 successful
+reads, 5 expected refusals and 0 unexpected refusals.
 
 ## Next Agent Prompt
 
@@ -175,8 +182,8 @@ Immediate next work:
 2. add ROI/mask extraction for hyperspectral cubes so large NEON/Specim/HySpex/
    Headwall scenes do not require whole-cube expansion;
 3. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
-   fixture when available;
+   Nicolet OMNIC `.srs/.srsx` variants, redistributable BUCHI NIRCal non-null
+   target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
 5. replace Python/R subprocess transport with native PyO3/C ABI paths;
 6. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
