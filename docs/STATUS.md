@@ -57,7 +57,7 @@ Experimental native readers:
   local-only Indian Pines MATLAB v5 cube mapped to one raw-count spectrum per
   pixel with optional `_gt.mat` class targets;
 - Excel workbooks: simple `.xlsx` spectral tables, `.xlsm` through the same
-  OOXML code path once a fixture is added, first-cell
+  fixture-backed OOXML code path, first-cell
   `axis: ... / data: ...` descriptors used by UvA handheld XLSX exports, and
   canonical `spectra`/`metadata`/`references` multi-sheet lab templates with
   numeric wavelength headers; legacy `.xls` remains pending;

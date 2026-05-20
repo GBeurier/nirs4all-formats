@@ -254,10 +254,18 @@ fn probes_matlab_containers() {
 
 #[test]
 fn probes_excel_workbook() {
-    let probes = probe_path(workspace_file("samples/excel/synthetic_nirs.xlsx")).expect("probe");
-    assert!(probes
-        .iter()
-        .any(|probe| probe.format == "excel-workbook" && probe.confidence == Confidence::Likely));
+    for relative in [
+        "samples/excel/synthetic_nirs.xlsx",
+        "samples/excel/synthetic_nirs_macro_compatible.xlsm",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "excel-workbook" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
 }
 
 #[test]

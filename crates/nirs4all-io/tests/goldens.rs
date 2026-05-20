@@ -464,6 +464,10 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("excel_synthetic_nirs", "samples/excel/synthetic_nirs.xlsx"),
     (
+        "excel_synthetic_nirs_xlsm",
+        "samples/excel/synthetic_nirs_macro_compatible.xlsm",
+    ),
+    (
         "excel_multisheet_nirs",
         "samples/excel/synthetic_multisheet_nirs.xlsx",
     ),

@@ -1,12 +1,14 @@
-# Excel `.xlsx` / `.xls`
+# Excel `.xlsx` / `.xlsm` / `.xls`
 
-`.xlsx` is ZIP/XML (OOXML), `.xls` is OLE/CFB (legacy). Already in `nirs4all`.
+`.xlsx` and `.xlsm` are ZIP/XML (OOXML), `.xls` is OLE/CFB (legacy). Already
+in `nirs4all`.
 
 ## Samples
 
 | File | Size | Source | License | Notes |
 |---|---|---|---|---|
 | `synthetic_nirs.xlsx` | ~30 KB | Generated locally | CC-0 | Same content as the CSV fixture (50 samples × 200 wavelengths) written to a single `spectra` sheet via `pandas.to_excel`. |
+| `synthetic_nirs_macro_compatible.xlsm` | ~30 KB | Generated locally | CC-0 | Macro-compatible extension fixture using the same OOXML workbook payload as `synthetic_nirs.xlsx`; it verifies extension dispatch and the shared `.xlsx/.xlsm` calamine path. |
 | `synthetic_multisheet_nirs.xlsx` | ~40 KB | Generated locally | CC-0 | Compact workbook with `spectra`, `metadata` and `references` sheets joined by `sample_id`. |
 | `scio_forensic_P_avg.xlsx` | 212 KB | [`Figshare 21252300`](https://doi.org/10.21942/uva.21252300) (`P_Avg_Scio.xlsx`) | **CC-BY-4.0** (UvA, Kranenburg et al. 2022) | Real Consumer Physics **SCiO** (740-1070 nm) averaged-per-sample export of 71 phenacetin/cocaine forensic rows — single sheet, `axis: wave` row + wavelength columns + per-sample rows. Smallest real-vendor Excel fixture currently shipping; exercises the "wide-spectra-with-axis-row" Excel layout that miniaturised handheld vendors export. |
 | `nirone_forensic_T_avg.xlsx` | 132 KB | Same Figshare record (`T_Avg_NIRONE.xlsx`) | CC-BY-4.0 | Real Spectral Engines **NIRone** (~1.55-1.95 µm) export, same axis-row layout. Covers the upper end of the handheld NIR wavelength range. |
