@@ -69,6 +69,9 @@ Deliverables:
 - JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   semantic channel labels inferred from metadata;
+- Horiba LabSpec / JobinYvon reader; experimental for LSX XML single spectra,
+  range exports, linescans and maps, plus LabSpec two-column, series-row and
+  map-row text exports;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -166,8 +169,8 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- Excel multi-sheet lab templates, Renishaw WDF and Horiba / JobinYvon
-  LabSpec XML/text for lab-transfer and adjacent spectroscopy workflows;
+- Excel multi-sheet lab templates, Renishaw WDF and WiTec WIP for lab-transfer
+  and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;

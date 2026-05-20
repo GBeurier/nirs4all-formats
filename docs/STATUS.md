@@ -70,6 +70,10 @@ Experimental native readers:
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   metadata-driven semantic channel labels.
+- Horiba LabSpec / JobinYvon XML/text exports for committed single-spectrum,
+  range, linescan, map, two-column, series-row and map-row Raman fixtures.
+  Text exports without explicit axis units are inferred as `cm-1`; XML `eV`
+  axes are preserved with an energy-axis fallback warning.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -116,8 +120,7 @@ Immediate next work:
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
 2. add remaining lab-transfer containers and adjacent spectroscopy readers:
-   Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
-   XML/text;
+   Excel multi-sheet templates and Renishaw WDF;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;

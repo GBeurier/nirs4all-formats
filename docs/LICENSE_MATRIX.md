@@ -30,3 +30,8 @@ Rust core.
 Every committed fixture needs source, license and hash documentation. Private
 or non-redistributable fixtures must stay outside the public repository and be
 referenced only by local manifest entries.
+
+Horiba / JobinYvon fixtures are split across GPL-3.0 RosettaSciIO XML samples
+and MIT text/map samples from SpectroChemPy data and `ccoverstreet/horiba-raman`.
+They are test fixtures only; no GPL reader code is linked or imported by the
+runtime.
