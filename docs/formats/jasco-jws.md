@@ -7,21 +7,28 @@ reverse-engineered stream pair seen in the committed fixtures:
 
 - `DataInfo` stores the channel count, point count and spectral axis endpoints;
 - `Y-Data` stores float32 ordinate values;
-- `BaseInfo`, when present, contributes the original source path as metadata.
+- `BaseInfo`, when present, contributes the original source path as metadata;
+- `ModuleInfo`, `SampleInfo`, `UserInfo` and `MeasParam` contribute instrument,
+  sample and measurement hints used for conservative semantic channel labels.
 
-Single-channel files are emitted as one `signal` array. Multi-channel files are
-emitted as `channel_1`, `channel_2`, ... with a shared spectral axis. The
-current reader does not yet infer JASCO-specific channel semantics such as CD,
-HT, absorbance or fluorescence from measurement metadata; those labels remain a
-future compatibility task against open JWS readers.
+The current committed fixtures are labelled semantically when the metadata is
+specific enough:
+
+- FT/IR single-channel spectra with percent-scale ordinates are emitted as
+  `transmittance` with unit `%T`;
+- fluorescence spectra from `FP-*` modules are emitted as `fluorescence`;
+- CD multi-channel files from `CD-1500` / `J-1500` modules are emitted as
+  `cd` (`mdeg`), `ht` (`V`) and `absorbance` (`dOD`).
+
+Unknown layouts fall back to `signal` or `channel_N` names.
 
 ## Supported Fixtures
 
 | Fixture | Records | Axis | Signals | Notes |
 |---|---:|---|---|---|
-| `samples/jasco/243.jws` | 1 | wavenumber, `cm-1`, 7729 points | `signal` | OLE2/DataInfo/Y-Data single channel |
-| `samples/jasco/sample_fluorescence.jws` | 1 | wavelength, `nm`, 301 points | `signal` | OLE2/DataInfo/Y-Data single channel |
-| `samples/jasco/sample_CD_HT_Abs.jws` | 1 | wavelength, `nm`, 1501 points | `channel_1`, `channel_2`, `channel_3` | OLE2/DataInfo/Y-Data multi-channel |
+| `samples/jasco/243.jws` | 1 | wavenumber, `cm-1`, 7729 points | `transmittance` | FT/IR-4100 percent-transmittance single channel |
+| `samples/jasco/sample_fluorescence.jws` | 1 | wavelength, `nm`, 301 points | `fluorescence` | FP-8300 fluorescence single channel |
+| `samples/jasco/sample_CD_HT_Abs.jws` | 1 | wavelength, `nm`, 1501 points | `cd`, `ht`, `absorbance` | CD-1500/J-1500 multi-channel CD/HT/Abs file |
 
 ## Dispatch Boundaries
 
