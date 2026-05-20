@@ -4,6 +4,10 @@
     {
       "format": "spectral-evolution-sed",
       "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
         "vendor"
       ],
       "quality_flags": [],

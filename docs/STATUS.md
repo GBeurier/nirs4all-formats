@@ -85,7 +85,8 @@ Experimental native readers:
   are rejected and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
-  flagged when no reflectance signal is present;
+  flagged when no reflectance signal is present and parseable GPS/date/time
+  headers promoted to canonical metadata;
 - SVC/GER SIG (`.sig`), including semantic assertions over the committed
   PDA/laptop/white-reference/matched-overlap fixtures and declared bad
   fixtures flagged in quality metadata.

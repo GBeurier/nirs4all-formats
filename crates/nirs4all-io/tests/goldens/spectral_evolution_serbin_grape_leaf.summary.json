@@ -4,6 +4,16 @@
     {
       "format": "spectral-evolution-sed",
       "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
+        "gps_altitude_m",
+        "gps_latitude",
+        "gps_longitude",
+        "gps_satellites_used",
+        "gps_satellites_visible",
+        "gps_time",
         "vendor"
       ],
       "quality_flags": [],

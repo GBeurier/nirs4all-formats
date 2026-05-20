@@ -2122,6 +2122,15 @@ fn reads_spectral_evolution_sed() {
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "spectral-evolution-sed");
     assert!(records[0].signals.keys().any(|key| key.contains("reflect")));
+    assert_eq!(
+        records[0].metadata["acquisition_start_date"].as_str(),
+        Some("2012-10-03")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_end_time"].as_str(),
+        Some("12:05:44")
+    );
+    assert!(!records[0].metadata.contains_key("gps_latitude"));
     let reflectance = records[0]
         .signals
         .iter()

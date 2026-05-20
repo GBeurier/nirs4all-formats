@@ -77,6 +77,23 @@ fn reads_additional_bruker_opus_sed_and_sig_samples() {
     assert_close(reflect.axis.values[0], 350.0);
     assert_close(reflect.axis.values[2_150], 2_500.0);
     assert_close(reflect.values[0], 0.18909);
+    assert_close(sed[0].metadata["gps_latitude"].as_f64().unwrap(), 33.52465);
+    assert_close(
+        sed[0].metadata["gps_longitude"].as_f64().unwrap(),
+        -116.16258,
+    );
+    assert_close(sed[0].metadata["gps_altitude_m"].as_f64().unwrap(), 22.20);
+    assert_eq!(
+        sed[0].metadata["acquisition_start_date"].as_str(),
+        Some("2013-06-08")
+    );
+    assert_eq!(
+        sed[0].metadata["acquisition_start_time"].as_str(),
+        Some("10:57:51")
+    );
+    assert_eq!(sed[0].metadata["gps_time"].as_str(), Some("15:57:11"));
+    assert_eq!(sed[0].metadata["gps_satellites_used"].as_u64(), Some(7));
+    assert_eq!(sed[0].metadata["gps_satellites_visible"].as_u64(), Some(11));
 
     for (relative, axis_len, first_axis, last_axis, first_reflectance) in [
         (
