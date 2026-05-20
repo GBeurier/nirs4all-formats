@@ -34,11 +34,7 @@ impl Reader for JcampReader {
         let (text, source) = read_text_lossy(path)?;
         let parsed = parse_jcamp_text(&text)?;
         let mut signals = BTreeMap::new();
-        let mut dominant = SignalType::Unknown;
         for signal in parsed.signals {
-            if dominant == SignalType::Unknown {
-                dominant = signal.signal_type.clone();
-            }
             let axis = SpectralAxis::new(
                 parsed.axis.clone(),
                 parsed.axis_unit.clone(),
@@ -55,6 +51,7 @@ impl Reader for JcampReader {
             )?;
             signals.insert(signal.name, array);
         }
+        let dominant = dominant_signal_type(&signals);
         let metadata = parsed.metadata;
         let record = record_from_signals(
             "jcamp-dx",
@@ -87,6 +84,9 @@ struct ParsedJcampSignal {
 }
 
 fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    if is_link_jcamp(text) {
+        return parse_link_jcamp_text(text);
+    }
     if text.lines().any(|line| {
         line.trim().strip_prefix("##").is_some_and(|body| {
             normalize_key(body.split_once('=').map_or(body, |(key, _)| key)) == "ntuples"
@@ -95,9 +95,14 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         return parse_ntuples_jcamp_text(text);
     }
 
+    parse_xy_jcamp_text(text)
+}
+
+fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     let mut ldr = BTreeMap::<String, String>::new();
     let mut xy_lines = Vec::new();
     let mut in_xy = false;
+    let mut has_xypoints = false;
     for raw in text.lines() {
         let line = raw.trim();
         if line.starts_with("$$") || line.is_empty() {
@@ -110,8 +115,9 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
             in_xy = false;
             if let Some((key, value)) = body.split_once('=') {
                 let normalized = normalize_key(key);
-                if normalized == "xydata" {
+                if normalized == "xydata" || normalized == "xypoints" {
                     in_xy = true;
+                    has_xypoints = normalized == "xypoints";
                 }
                 ldr.insert(normalized, value.trim().to_string());
             }
@@ -121,21 +127,29 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     }
 
     let yfactor = get_f64(&ldr, "yfactor").unwrap_or(1.0);
-    let firstx = get_f64(&ldr, "firstx").ok_or_else(|| {
-        nirs4all_io_core::Error::InvalidRecord("JCAMP missing FIRSTX".to_string())
-    })?;
-    let deltax = get_f64(&ldr, "deltax").unwrap_or_else(|| {
-        let lastx = get_f64(&ldr, "lastx").unwrap_or(firstx);
-        let npoints = get_f64(&ldr, "npoints").unwrap_or(1.0).max(1.0);
-        if npoints <= 1.0 {
-            1.0
-        } else {
-            (lastx - firstx) / (npoints - 1.0)
-        }
-    });
 
     let mut warnings = Vec::new();
-    let mut values = decode_xy_lines(&xy_lines, yfactor, "signal", &mut warnings);
+    let (mut axis, mut values) = if has_xypoints {
+        parse_xypoints_lines(&xy_lines, yfactor)?
+    } else {
+        let firstx = get_f64(&ldr, "firstx").ok_or_else(|| {
+            nirs4all_io_core::Error::InvalidRecord("JCAMP missing FIRSTX".to_string())
+        })?;
+        let deltax = get_f64(&ldr, "deltax").unwrap_or_else(|| {
+            let lastx = get_f64(&ldr, "lastx").unwrap_or(firstx);
+            let npoints = get_f64(&ldr, "npoints").unwrap_or(1.0).max(1.0);
+            if npoints <= 1.0 {
+                1.0
+            } else {
+                (lastx - firstx) / (npoints - 1.0)
+            }
+        });
+        let values = decode_xy_lines(&xy_lines, yfactor, "signal", &mut warnings);
+        let axis: Vec<f64> = (0..values.len())
+            .map(|idx| firstx + deltax * idx as f64)
+            .collect();
+        (axis, values)
+    };
     if values.is_empty() {
         return Err(nirs4all_io_core::Error::InvalidRecord(
             "JCAMP XYDATA contains no plain AFFN values; packed DIF/DUP support is pending"
@@ -150,6 +164,7 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
                 values.len()
             ));
             values.truncate(expected);
+            axis.truncate(expected);
         } else if values.len() < expected {
             warnings.push(format!(
                 "npoints_mismatch: declared {expected}, parsed {}",
@@ -158,9 +173,6 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         }
     }
 
-    let axis: Vec<f64> = (0..values.len())
-        .map(|idx| firstx + deltax * idx as f64)
-        .collect();
     let xunits = ldr.get("xunits").map(String::as_str).unwrap_or("index");
     let (axis_kind, axis_unit) = axis_kind_unit(xunits);
     let yunits = ldr.get("yunits").map(String::as_str).unwrap_or("");
@@ -181,6 +193,210 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         metadata,
         warnings,
     })
+}
+
+fn is_link_jcamp(text: &str) -> bool {
+    text.lines().any(|line| {
+        let line = line.trim();
+        let Some(body) = line.strip_prefix("##") else {
+            return false;
+        };
+        let Some((key, value)) = body.split_once('=') else {
+            return false;
+        };
+        normalize_key(key) == "data_type" && value.trim().eq_ignore_ascii_case("LINK")
+    })
+}
+
+fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    let chunks = link_block_chunks(text);
+    if chunks.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP LINK contains no child blocks".to_string(),
+        ));
+    }
+
+    let mut axis = Vec::new();
+    let mut axis_unit = String::new();
+    let mut axis_kind = AxisKind::Index;
+    let mut signals = Vec::<ParsedJcampSignal>::new();
+    let mut block_metadata = Vec::<BTreeMap<String, String>>::new();
+    let mut warnings = Vec::<String>::new();
+
+    for (index, chunk) in chunks.iter().enumerate() {
+        let ldr = collect_ldr(chunk);
+        let parsed = parse_xy_jcamp_text(chunk)?;
+        if parsed.signals.len() != 1 {
+            return Err(nirs4all_io_core::Error::InvalidRecord(
+                "JCAMP LINK child block did not decode to one signal".to_string(),
+            ));
+        }
+        if axis.is_empty() {
+            axis = parsed.axis;
+            axis_unit = parsed.axis_unit;
+            axis_kind = parsed.axis_kind;
+        } else if !same_axis(&axis, &parsed.axis) {
+            return Err(nirs4all_io_core::Error::InvalidRecord(
+                "JCAMP LINK child blocks have incompatible axes".to_string(),
+            ));
+        }
+        warnings.extend(parsed.warnings);
+
+        let mut signal = parsed.signals.into_iter().next().expect("checked");
+        let name = link_signal_name(&ldr, index);
+        let (signal_type, unit) = link_signal_type_and_unit(&name, &ldr);
+        signal.name = name.clone();
+        signal.role = name;
+        signal.signal_type = signal_type;
+        signal.signal_unit = unit;
+        signals.push(signal);
+        block_metadata.push(ldr);
+    }
+
+    if let Some((processed, undefined_count)) = compute_ocean_link_transmittance(&signals) {
+        if undefined_count > 0 {
+            warnings.push(format!(
+                "jcamp_link_processed_zero_denominator: {undefined_count} points set to 0"
+            ));
+        }
+        signals.push(ParsedJcampSignal {
+            name: "processed".to_string(),
+            values: processed,
+            signal_type: SignalType::Transmittance,
+            signal_unit: Some("%".to_string()),
+            role: "processed".to_string(),
+        });
+    }
+
+    let mut metadata = BTreeMap::new();
+    metadata.insert(
+        "jcamp_link".to_string(),
+        json!({
+            "block_count": block_metadata.len(),
+            "blocks": block_metadata,
+        }),
+    );
+    Ok(ParsedJcamp {
+        axis,
+        axis_unit,
+        axis_kind,
+        signals,
+        metadata,
+        warnings,
+    })
+}
+
+fn link_block_chunks(text: &str) -> Vec<String> {
+    let mut chunks = Vec::new();
+    let mut current = Vec::new();
+    for raw in text.lines() {
+        current.push(raw.to_string());
+        if raw.trim().to_ascii_uppercase().starts_with("##END=") {
+            if current
+                .iter()
+                .any(|line| line.trim().to_ascii_uppercase().starts_with("##JCAMP-DX="))
+            {
+                chunks.push(current.join("\n"));
+            }
+            current.clear();
+        }
+    }
+    chunks
+}
+
+fn collect_ldr(text: &str) -> BTreeMap<String, String> {
+    let mut ldr = BTreeMap::new();
+    for raw in text.lines() {
+        let line = raw.trim();
+        let Some(body) = line.strip_prefix("##") else {
+            continue;
+        };
+        let Some((key, value)) = body.split_once('=') else {
+            continue;
+        };
+        ldr.insert(
+            normalize_key(key),
+            strip_inline_comment(value).trim().to_string(),
+        );
+    }
+    ldr
+}
+
+fn same_axis(left: &[f64], right: &[f64]) -> bool {
+    left.len() == right.len()
+        && left
+            .iter()
+            .zip(right)
+            .all(|(a, b)| (a - b).abs() <= a.abs().max(b.abs()).max(1.0) * 1e-6)
+}
+
+fn link_signal_name(ldr: &BTreeMap<String, String>, index: usize) -> String {
+    let title = ldr.get("title").map(String::as_str).unwrap_or("");
+    let sample_description = ldr
+        .get("sample_description")
+        .map(String::as_str)
+        .unwrap_or("");
+    let origin = ldr.get("origin").map(String::as_str).unwrap_or("");
+    let combined = format!("{title}\n{sample_description}").to_ascii_uppercase();
+    if combined.contains("DARK") {
+        "dark_reference".to_string()
+    } else if combined.contains("REFERENCE") {
+        "white_reference".to_string()
+    } else if combined.contains("PROCESSED") && origin.eq_ignore_ascii_case("OCEANOPTICS EXPORT") {
+        "sample".to_string()
+    } else if combined.contains("PROCESSED") {
+        "processed".to_string()
+    } else {
+        format!("signal_{}", index + 1)
+    }
+}
+
+fn link_signal_type_and_unit(
+    name: &str,
+    ldr: &BTreeMap<String, String>,
+) -> (SignalType, Option<String>) {
+    if matches!(name, "sample" | "dark_reference" | "white_reference") {
+        return (SignalType::RawCounts, None);
+    }
+    let yunits = ldr.get("yunits").map(String::as_str).unwrap_or("");
+    let signal_type = signal_type_from_yunits(yunits);
+    let unit = if yunits.trim().is_empty() {
+        None
+    } else {
+        Some(yunits.to_string())
+    };
+    (signal_type, unit)
+}
+
+fn compute_ocean_link_transmittance(signals: &[ParsedJcampSignal]) -> Option<(Vec<f64>, usize)> {
+    let sample = signals.iter().find(|signal| signal.name == "sample")?;
+    let dark = signals
+        .iter()
+        .find(|signal| signal.name == "dark_reference")?;
+    let white = signals
+        .iter()
+        .find(|signal| signal.name == "white_reference")?;
+    if sample.values.len() != dark.values.len() || sample.values.len() != white.values.len() {
+        return None;
+    }
+
+    let mut undefined_count = 0usize;
+    let processed = sample
+        .values
+        .iter()
+        .zip(&dark.values)
+        .zip(&white.values)
+        .map(|((sample, dark), white)| {
+            let denominator = white - dark;
+            if denominator.abs() <= f64::EPSILON {
+                undefined_count += 1;
+                0.0
+            } else {
+                (sample - dark) / denominator * 100.0
+            }
+        })
+        .collect();
+    Some((processed, undefined_count))
 }
 
 struct NtuplePage {
@@ -489,6 +705,39 @@ fn values_from_xy_line(line: &str) -> Vec<f64> {
     decode_asdf_values(rest)
 }
 
+fn parse_xypoints_lines(lines: &[String], yfactor: f64) -> Result<(Vec<f64>, Vec<f64>)> {
+    let mut axis = Vec::new();
+    let mut values = Vec::new();
+    for line in lines {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with("$$") {
+            continue;
+        }
+        let fields = if line.contains(',') {
+            line.split(',').collect::<Vec<_>>()
+        } else {
+            line.split_whitespace().collect::<Vec<_>>()
+        };
+        if fields.len() < 2 {
+            continue;
+        }
+        let Some(x) = parse_number(fields[0]) else {
+            continue;
+        };
+        let Some(y) = parse_number(fields[1]) else {
+            continue;
+        };
+        axis.push(x);
+        values.push(y * yfactor);
+    }
+    if axis.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP XYPOINTS contains no numeric XY pairs".to_string(),
+        ));
+    }
+    Ok((axis, values))
+}
+
 fn xy_line_has_dif(line: &str) -> bool {
     let Some((_, rest)) = split_xy_line(line) else {
         return false;
@@ -705,6 +954,27 @@ fn signal_type_from_yunits(raw: &str) -> SignalType {
     } else {
         SignalType::Unknown
     }
+}
+
+fn dominant_signal_type(signals: &BTreeMap<String, SpectralArray>) -> SignalType {
+    for preferred in [
+        SignalType::Absorbance,
+        SignalType::Reflectance,
+        SignalType::Transmittance,
+        SignalType::Irradiance,
+    ] {
+        if signals
+            .values()
+            .any(|signal| signal.signal_type == preferred)
+        {
+            return preferred;
+        }
+    }
+    signals
+        .values()
+        .next()
+        .map(|signal| signal.signal_type.clone())
+        .unwrap_or(SignalType::Unknown)
 }
 
 #[cfg(test)]

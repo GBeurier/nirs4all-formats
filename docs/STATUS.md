@@ -25,7 +25,7 @@ Experimental native readers:
   and `.ProcSpec` ZIP/XML archives; the committed Ocean Optics `.spc` sample is
   covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
-  and NMR `NTUPLES` real/imaginary pages;
+  NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
@@ -74,8 +74,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue the binary/open-reader-backed batch with JCAMP `LINK` and remaining SPC/JCamp variants;
-2. harden JCAMP beyond single-block `XYDATA`: `XYPOINTS`, `PEAK TABLE` and multi-block `LINK`;
+1. continue the binary/open-reader-backed batch with remaining SPC/JCAMP variants;
+2. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK` files and stricter checkpoint validation;
 3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
 5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

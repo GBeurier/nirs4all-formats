@@ -17,6 +17,7 @@ Implemented readers:
 | `jcamp` | `samples/jcamp_dx/nist_water_ir.jdx` | Plain AFFN `XYDATA` with 3917 transmittance points. |
 | `jcamp` | `samples/jcamp_dx/BRUKSQZ.DX`, `BRUKDIF.DX`, `SPECFILE.DX` | PAC/SQZ/DIF/DUP packed `XYDATA` ordinate decoding. |
 | `jcamp` | `samples/jcamp_dx/BRUKNTUP.DX`, `TESTFID.DX` | NMR `NTUPLES` real/imaginary pages decoded into two signals. |
+| `jcamp` | `samples/ocean_optics/OceanOptics_period.jdx` | `LINK`/`XYPOINTS` sample, dark and reference blocks plus computed transmittance. |
 | `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
 | `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
 
@@ -24,7 +25,7 @@ Known limitations:
 
 - CSV parsing is intentionally narrow and expects numeric spectral headers.
 - IDL/ENVI transposed text exports are not parsed yet.
-- JCAMP `XYPOINTS`, `PEAK TABLE` and multi-block `LINK` files are not decoded
+- JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
   yet.
 - The Python bridge uses `nirs4all-io read-json` as temporary transport; native
   PyO3/C ABI transport is still planned.

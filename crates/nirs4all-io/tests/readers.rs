@@ -507,6 +507,33 @@ fn reads_jcamp_ntuples_fid_real_imag_pages() {
 }
 
 #[test]
+fn reads_jcamp_link_xypoints_ocean_optics_blocks() {
+    let records = open_path(workspace_file(
+        "samples/ocean_optics/OceanOptics_period.jdx",
+    ))
+    .expect("open link jcamp");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "jcamp-dx");
+    assert!(records[0].signals.contains_key("sample"));
+    assert!(records[0].signals.contains_key("dark_reference"));
+    assert!(records[0].signals.contains_key("white_reference"));
+    let processed = records[0].signals.get("processed").expect("processed");
+    assert_eq!(processed.axis.values.len(), 3_648);
+    assert_eq!(processed.axis.unit, "nm");
+    assert_eq!(processed.signal_type, SignalType::Transmittance);
+    assert!((processed.axis.values[0] - 176.36).abs() < 0.000001);
+    assert!((processed.axis.values[3_647] - 893.69).abs() < 0.000001);
+    assert!((processed.values[0] - 0.0).abs() < 0.000001);
+    assert!((processed.values[3_647] - 171.97706959107845).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("jcamp_link_processed_zero_denominator")));
+}
+
+#[test]
 fn reads_galactic_spc_single_even_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/BENZENE.SPC")).expect("open spc");
 
