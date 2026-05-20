@@ -1,8 +1,9 @@
 # ASD FieldSpec
 
 Status: Experimental. The primary-spectrum subset for revisions 1/6/7/8 is
-golden-backed; calibration/dependent companion workflows keep the wider ASD
-family partial in `FORMAT_MATRIX.md`.
+golden-backed; undecoded embedded secondary/dependent/reference/calibration
+blocks and separate ASD companion calibration files keep the wider ASD family
+partial in `FORMAT_MATRIX.md`.
 
 Implemented scope:
 
@@ -20,6 +21,8 @@ Covered fixtures:
 | `samples/asd/3L9257.000` | 1 | `float32` | reflectance |
 | `samples/asd/v6sample00000.asd` | 6 | `float64` | raw counts |
 | `samples/asd/v7_field_44231B009.asd` | 7 | `float64` | reflectance |
+| `samples/asd/v7sample00000.asd` | 7 | `float64` | radiance |
+| `samples/asd/soil.asd` | 8 | `float64` | raw counts |
 | `samples/asd/v8sample00001.asd` | 8 | `float64` | raw counts |
 
 Reference readers:
@@ -31,11 +34,13 @@ Reference readers:
 
 Known limitations:
 
-- reference spectrum blocks are not decoded yet;
-- classifier/dependent variables are not decoded yet;
-- calibration headers and calibration spectra are not decoded yet;
+- embedded secondary spectrum blocks are not decoded yet;
+- embedded classifier/dependent variable blocks are not decoded yet;
+- embedded reference spectrum blocks are not decoded yet;
+- embedded calibration headers and calibration spectra are not decoded yet;
 - audit log/signature blocks are not decoded yet;
-- `.ILL`, `.REF` and `.RAW` calibration companions still have no open fixture.
+- separate ASD `.ILL`, `.REF` and `.RAW` calibration companion files still have
+  no open fixture.
 
 The reader emits a `trailing_asd_blocks_not_decoded` warning when bytes remain
 after the primary spectrum. That is expected for newer ASD revisions until the

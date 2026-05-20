@@ -4,8 +4,8 @@ Proprietary binary. `.sp` = single spectrum, `.fsm` = imaging (Spotlight FT-IR m
 
 ## Samples
 
-| File | Type | Size | Source | License |
-|---|---|---|---|---|
+| File | Type | Size | Source | License | Notes |
+|---|---|---|---|---|---|
 | `spectra.sp` | `.sp` single | 27 KB | [`paris-saclay-cds/specio@master/specio/datasets/data/spectra.sp`](https://github.com/paris-saclay-cds/specio/blob/master/specio/datasets/data/spectra.sp) | BSD-3-Clause | The reference test fixture used by `specio`'s PE reader tests. |
 
 ## Parser hints
