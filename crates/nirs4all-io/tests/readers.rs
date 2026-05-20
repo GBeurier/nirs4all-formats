@@ -1972,15 +1972,20 @@ fn reads_ocean_optics_linux_procspec_archive() {
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "ocean-optics-procspec");
     assert!(records[0].provenance.warnings.is_empty());
-    let processed = records[0].signals.get("processed").expect("processed");
-    assert_eq!(processed.axis.values.len(), 3_648);
-    assert_eq!(processed.axis.unit, "nm");
-    assert_eq!(processed.axis.kind, AxisKind::Wavelength);
-    assert!((processed.axis.values[0] - 176.3604183).abs() < 0.000001);
-    assert!((processed.axis.values[3_647] - 893.6943397004063).abs() < 0.000001);
-    assert_eq!(processed.signal_type, SignalType::Unknown);
-    assert!((processed.values[0] - 0.0).abs() < 0.000001);
-    assert!((processed.values[3_647] - 125.07433102081265).abs() < 0.000001);
+    assert_eq!(records[0].signal_type, SignalType::Transmittance);
+    let transmittance = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 3_648);
+    assert_eq!(transmittance.axis.unit, "nm");
+    assert_eq!(transmittance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(transmittance.unit.as_deref(), Some("%"));
+    assert!((transmittance.axis.values[0] - 176.3604183).abs() < 0.000001);
+    assert!((transmittance.axis.values[3_647] - 893.6943397004063).abs() < 0.000001);
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.values[0] - 0.0).abs() < 0.000001);
+    assert!((transmittance.values[3_647] - 125.07433102081265).abs() < 0.000001);
     assert!(records[0].signals.contains_key("sample"));
     assert!(records[0].signals.contains_key("dark_reference"));
     assert!(records[0].signals.contains_key("white_reference"));
@@ -1992,17 +1997,25 @@ fn reads_ocean_optics_windows_and_reference_procspec_archives() {
         "samples/ocean_optics/OceanOptics_Windows.ProcSpec",
     ))
     .expect("open windows procspec");
-    let windows_processed = windows[0].signals.get("processed").expect("processed");
-    assert_eq!(windows_processed.axis.values.len(), 2_048);
-    assert!((windows_processed.values[0] - 282.8571428571289).abs() < 0.000001);
-    assert!((windows_processed.values[2_047] - 40.05032131664623).abs() < 0.000001);
+    assert_eq!(windows[0].signal_type, SignalType::Transmittance);
+    let windows_transmittance = windows[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(windows_transmittance.axis.values.len(), 2_048);
+    assert_eq!(windows_transmittance.signal_type, SignalType::Transmittance);
+    assert!((windows_transmittance.values[0] - 282.8571428571289).abs() < 0.000001);
+    assert!((windows_transmittance.values[2_047] - 40.05032131664623).abs() < 0.000001);
 
     let whiteref =
         open_path(workspace_file("samples/ocean_optics/whiteref.ProcSpec")).expect("open whiteref");
-    let whiteref_processed = whiteref[0].signals.get("processed").expect("processed");
-    assert_eq!(whiteref_processed.axis.values.len(), 3_648);
-    assert!((whiteref_processed.values[0] - 0.0).abs() < 0.000001);
-    assert!((whiteref_processed.values[3_647] - 97.29425028184893).abs() < 0.000001);
+    assert_eq!(whiteref[0].signal_type, SignalType::Reflectance);
+    let whiteref_reflectance = whiteref[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(whiteref_reflectance.axis.values.len(), 3_648);
+    assert_eq!(whiteref_reflectance.signal_type, SignalType::Reflectance);
+    assert_eq!(whiteref_reflectance.unit.as_deref(), Some("%"));
+    assert!((whiteref_reflectance.values[0] - 0.0).abs() < 0.000001);
+    assert!((whiteref_reflectance.values[3_647] - 97.29425028184893).abs() < 0.000001);
 }
 
 #[test]

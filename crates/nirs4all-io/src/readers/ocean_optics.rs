@@ -211,6 +211,7 @@ fn parse_procspec_archive(path: &Path) -> Result<(SourceFile, ParsedProcSpec)> {
     };
 
     let parsed_xml = parse_procspec_xml(&xml)?;
+    let (processed_name, processed_type, processed_unit) = procspec_processed_mapping(&xml);
     let axis = parsed_xml.wavelengths;
     if axis.is_empty() {
         return Err(Error::InvalidRecord(
@@ -246,10 +247,10 @@ fn parse_procspec_archive(path: &Path) -> Result<(SourceFile, ParsedProcSpec)> {
     push_procspec_signal(
         &mut signals,
         &axis,
-        "processed",
+        processed_name,
         parsed_xml.processed,
-        SignalType::Unknown,
-        None,
+        processed_type,
+        processed_unit,
     )?;
     if signals.is_empty() {
         return Err(Error::InvalidRecord(
@@ -263,6 +264,10 @@ fn parse_procspec_archive(path: &Path) -> Result<(SourceFile, ParsedProcSpec)> {
         .collect::<Vec<(String, String)>>();
     metadata_pairs.push(("archive_member".to_string(), xml_name));
     metadata_pairs.push(("signature_status".to_string(), signature_status));
+    metadata_pairs.push((
+        "processed_signal_type".to_string(),
+        processed_name.to_string(),
+    ));
     metadata_pairs.push(("zip_members".to_string(), names.join(";")));
     if let Some(file_name) = path.file_name().and_then(|value| value.to_str()) {
         metadata_pairs.push(("file_name".to_string(), file_name.to_string()));
@@ -276,6 +281,33 @@ fn parse_procspec_archive(path: &Path) -> Result<(SourceFile, ParsedProcSpec)> {
             warnings,
         },
     ))
+}
+
+fn procspec_processed_mapping(xml: &str) -> (&'static str, SignalType, Option<String>) {
+    let lower = xml.to_ascii_lowercase();
+    if lower.contains("transmissioncoreprocessor")
+        || lower.contains("transmissionintensitydescriptor")
+    {
+        (
+            "transmittance",
+            SignalType::Transmittance,
+            Some("%".to_string()),
+        )
+    } else if lower.contains("reflectioncoreprocessor")
+        || lower.contains("reflectionintensitydescriptor")
+    {
+        (
+            "reflectance",
+            SignalType::Reflectance,
+            Some("%".to_string()),
+        )
+    } else if lower.contains("absorbancecoreprocessor")
+        || lower.contains("absorbanceintensitydescriptor")
+    {
+        ("absorbance", SignalType::Absorbance, None)
+    } else {
+        ("processed", SignalType::Unknown, None)
+    }
 }
 
 fn parse_procspec_xml(xml: &str) -> Result<ProcSpecXml> {
