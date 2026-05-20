@@ -9,12 +9,15 @@ repository.workspace = true
 
 [dependencies]
 nirs4all-io-core.workspace = true
+arrow-array = "58.3.0"
+arrow-schema = "58.3.0"
 calamine = "0.35.0"
 cfb = "0.14.0"
 flate2 = "1.1.5"
 hdf5-reader = "0.5.0"
 matfile = "0.5.0"
 netcdf-reader = "0.5.0"
+parquet = { version = "58.3.0", default-features = false, features = ["arrow", "zstd"] }
 quick-xml = "0.40.1"
 rds2rust = "0.1.41"
 serde.workspace = true

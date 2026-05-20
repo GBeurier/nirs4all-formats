@@ -17,7 +17,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | OPUS moderne; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
 | ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64 | partiel | spectral, RStoolbox, pysptools |
-| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5 | imaging | pas fait | spectral, rasterio |
+| ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5 | ENVI Standard BSQ/BIL/BIP point extraction | partiel | spectral, rasterio |
 | FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | schema FGI | partiel | h5py, hdf5r, rhdf5, lxml |
 | MFR Sun Photometer | Solar Light | `.OUT` | MFR-7 | partiel | SPECCHIO, parseurs ad hoc |
 | Microtops Sun Photometer | Solar Light | `.TXT` | export texte | partiel | parseurs ad hoc |
@@ -50,9 +50,9 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Allotrope ADF | Allotrope Foundation | `.adf` | HDF5/RDF, pas de sample | bloqué | Allotrope SDK |
 | mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | detection + refus non-NIRS | fait | pyteomics, pymzML, pyOpenMS |
 | HDF5 NIRS generique | Vendor-neutral | `.h5`, `.hdf5` | schema spectra+wavelengths | partiel | h5py, hdf5-reader, tables |
-| Parquet | Apache / generique | `.parquet` | hors coeur Rust actuel | pas fait | pyarrow, fastparquet, nirs4all ParquetLoader |
+| Parquet | Apache / generique | `.parquet` | table NIRS canonique | fait | pyarrow, fastparquet, nirs4all ParquetLoader |
 | MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.MAT`, `.RData` | MAT v5/v7.3 + RData prospectr | partiel | scipy, hdf5-reader, R serialization, prospectr |
-| NumPy | Python / NumPy | `.npy`, `.npz` | hors coeur Rust actuel | pas fait | numpy |
+| NumPy | Python / NumPy | `.npy`, `.npz` | `.npy` matrice, `.npz` canonique | fait | numpy |
 | Renishaw WDF | Renishaw | `.wdf` | spectra + metadata maps/images | partiel | RosettaSciIO, SpectroChemPy |
 | Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; binaire manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
 | Princeton TriVista TVF | Princeton Instruments | `.tvf` | XML Frame payloads | partiel | RosettaSciIO |
@@ -77,7 +77,7 @@ passer le format a `fait`.
 | Bruker OPUS natif | partiel | Couvrir OPUS 5/6, metadata Tango et blocs 2D/imaging. |
 | Bruker Tango / MPA / Matrix | partiel | Ajouter fixtures instrument NIR et verifier les metadata propres Tango/MPA. |
 | ENVI Spectral Library | partiel | Ajouter vraies `.sli/.hdr` vendeur et tests de variantes header. |
-| ENVI / hyperspectral cubes | pas fait | Future extraction point-spectra; data model image cube encore hors v1. |
+| ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr` est charge en spectres par pixel; restent NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
 | FGI HDF5 + XML | partiel | Ajouter paire HDF5/XML reelle et mapper le sidecar XML. |
 | MFR Sun Photometer | partiel | Remplacer/complete par dumps instrument reels. |
 | Microtops Sun Photometer | partiel | Ajouter exports Microtops reels avec metadata. |
@@ -107,9 +107,7 @@ passer le format a `fait`.
 | Allotrope ASM | partiel | Ajouter conversions vendeurs multiples et cas ASM hors plate-reader. |
 | Allotrope ADF | bloqué | Pas de sample public ni SDK librement utilisable. |
 | HDF5 NIRS generique | partiel | Ajouter schemas reels et metadata/axes complexes. |
-| Parquet | pas fait | Present dans `nirs4all`, pas encore dans le coeur Rust `nirs4all-io`. |
 | MATLAB MAT / RData | partiel | Couvrir plus de structures MAT/RData et metadata/targets heterogenes. |
-| NumPy | pas fait | Present cote Python/nirs4all; pas encore loader Rust natif. |
 | Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
 | Horiba LabSpec / JobinYvon | partiel | Ajouter binaires `.l6s/.l6m` et axes energy mieux typés. |
 | Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |

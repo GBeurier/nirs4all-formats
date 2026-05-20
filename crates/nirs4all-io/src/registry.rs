@@ -7,9 +7,9 @@ use crate::readers::{
     BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
     EnviSliReader, ExcelReader, GalacticSpcReader, HamamatsuImgReader, Hdf5Reader,
     HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader, MsaReader, MzmlReader,
-    NetcdfReader, NicoletOmnicReader, OceanOpticsReader, PerkinElmerReader, RenishawWdfReader,
-    SedReader, SiwareApiReader, SpectralMatrixReader, SpectralTableReader, SunPhotometerReader,
-    SvcSigReader, TrivistaTvfReader, WitecWipReader,
+    NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader, ParquetReader,
+    PerkinElmerReader, RenishawWdfReader, SedReader, SiwareApiReader, SpectralMatrixReader,
+    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, WitecWipReader,
 };
 
 /// Contract implemented by every native reader.
@@ -43,6 +43,8 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(NetcdfReader),
         Box::new(Hdf5Reader),
         Box::new(MatlabReader),
+        Box::new(NumpyReader),
+        Box::new(ParquetReader),
         Box::new(AnimlReader),
         Box::new(SiwareApiReader),
         Box::new(AllotropeAsmReader),

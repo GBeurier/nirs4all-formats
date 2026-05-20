@@ -1,29 +1,29 @@
-# ENVI Spectral Library
+# ENVI Spectral Library / Standard Cubes
 
-Experimental native Rust reader for ENVI Spectral Library sidecars.
+Experimental native Rust reader for ENVI Spectral Library sidecars and a
+minimal ENVI Standard cube-to-point-spectra path.
 
 ## Scope Implemented
 
 - Sniffs `.hdr` files whose header starts with `ENVI` and declares
-  `file type = ENVI Spectral Library`.
+  `file type = ENVI Spectral Library` or `file type = ENVI Standard`.
 - Opens either the `.hdr` path or the paired `.sli` binary path.
 - Resolves the binary payload from `data file = ...` when present, otherwise
   from the sibling `.sli`/`.SLI` file.
 - Decodes one-band BSQ spectral-library payloads with ENVI `data type = 4`
   (`float32`) and `data type = 5` (`float64`), little- or big-endian.
+- Decodes ENVI Standard BSQ/BIL/BIP cubes from `.img` or `.dat` sidecars with
+  integer and float ENVI scalar dtypes currently used by the fixtures.
 - Uses `wavelength = { ... }` plus `wavelength units` to build the spectral
   axis.
 - Emits one `SpectralRecord` per `spectra names` entry, with one `spectrum`
   signal and `metadata.sample_id`.
-- Detects `file type = ENVI Standard` image cubes but refuses to load them.
-
-Image cubes are intentionally out of scope for v1. They should be handled later
-by a cube extractor that produces point spectra, not by silently flattening
-pixels into regular records.
+- Emits one `SpectralRecord` per ENVI Standard pixel, with `pixel_x`,
+  `pixel_y` and optional map coordinates in metadata.
 
 ## Record Mapping
 
-Each spectrum in the library becomes one record:
+Each spectrum in a spectral library becomes one record:
 
 - signal name: `spectrum`;
 - record signal type: `unknown` unless a future fixture provides an explicit
@@ -37,12 +37,25 @@ Each spectrum in the library becomes one record:
   - header sidecar as role `header`;
   - binary payload as role `binary`.
 
+Each ENVI Standard cube pixel also becomes one record:
+
+- signal name: `spectrum`;
+- axis: wavelengths from the ENVI `wavelength = { ... }` vector;
+- metadata:
+  - `sample_id` as `pixel_y{row}_x{col}`;
+  - `pixel_x`, `pixel_y`;
+  - `spatial_x`, `spatial_y`, `spatial_unit` when `map info` is present;
+  - `envi` object with dimensions, interleave, data type, byte order and map
+    info.
+
 ## Fixtures and Reference Checks
 
 Current fixture:
 
 - `samples/envi_sli/synthetic_lib.hdr`
 - `samples/envi_sli/synthetic_lib.sli`
+- `samples/envi_sli/cubescope-mini-cube.hdr`
+- `samples/envi_sli/cubescope-mini-cube.img`
 
 Expected shape:
 
@@ -65,10 +78,18 @@ The format is documented by ENVI and supported by Spectral Python
 (`spectral`) and R `RStoolbox::readSLI()`. The current Rust reader is
 clean-room and uses the local synthetic fixture as the committed golden.
 
+Cube fixture checks:
+
+- 48 by 48 pixels, 32 spectral bands;
+- first pixel first/last values: `100`, `3223`;
+- last pixel first/last values: `152`, `3275`;
+- map coordinates are read from `map info`.
+
 ## Next Work
 
 - Add conformance output from Spectral Python once the optional dependency is
   present in the reverse-engineering environment.
 - Add a real USGS/ECOSTRESS `.sli` fixture if license-compatible.
 - Add tests for non-zero `header offset`, big-endian payloads and `float64`.
-- Add a clear cube-extraction API before accepting `ENVI Standard` image cubes.
+- Add real Specim/HySpex/Headwall/NEON cube fixtures and an explicit
+  mask/ROI extraction API; the current path is whole-cube pixel expansion only.
