@@ -377,6 +377,50 @@ fn reads_plain_affn_jcamp_dx() {
 }
 
 #[test]
+fn reads_jcamp_sqz_packed_xydata() {
+    let records = open_path(workspace_file("samples/jcamp_dx/BRUKSQZ.DX")).expect("open sqz");
+
+    assert_eq!(records.len(), 1);
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 16_384);
+    assert_eq!(signal.axis.unit, "hz");
+    assert!((signal.axis.values[0] - 24_038.5).abs() < 0.000001);
+    assert!((signal.axis.values[16_383] - 0.0).abs() < 0.000001);
+    assert_eq!(signal.values[0], 2_259_260.0);
+    assert_eq!(signal.values[16_383], 1_505_988.0);
+}
+
+#[test]
+fn reads_jcamp_dif_dup_packed_xydata() {
+    let records = open_path(workspace_file("samples/jcamp_dx/BRUKDIF.DX")).expect("open dif");
+
+    assert_eq!(records.len(), 1);
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 16_384);
+    assert_eq!(signal.values[0], 2_254_931.0);
+    assert_eq!(signal.values[16_383], 1_513_177.0);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("npoints_truncated")));
+}
+
+#[test]
+fn reads_jcamp_mixed_squeeze_difference_file() {
+    let records = open_path(workspace_file("samples/jcamp_dx/SPECFILE.DX")).expect("open specfile");
+
+    assert_eq!(records.len(), 1);
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 1_801);
+    assert_eq!(signal.signal_type, SignalType::Transmittance);
+    assert!((signal.axis.values[0] - 400.0).abs() < 0.000001);
+    assert!((signal.axis.values[1_800] - 4_000.0).abs() < 0.000001);
+    assert!((signal.values[0] - 97.737187).abs() < 0.000001);
+    assert!((signal.values[1_800] - 82.830985).abs() < 0.000001);
+}
+
+#[test]
 fn reads_galactic_spc_single_even_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/BENZENE.SPC")).expect("open spc");
 

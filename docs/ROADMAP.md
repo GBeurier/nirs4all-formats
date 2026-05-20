@@ -48,12 +48,15 @@ Gate:
 
 ## Phase 2: JCAMP-DX
 
-Status: in progress for plain AFFN `XYDATA`; compressed encodings are pending.
+Status: in progress for single-block `XYDATA`. Plain AFFN and ASDF
+PAC/SQZ/DIF/DUP ordinate encodings are experimental; `NTUPLES` and multi-block
+files remain pending.
 
 Deliverables:
 
-- JCAMP AFFN and XYDATA; plain rows experimental;
-- then DIF/DUP and NTUPLES;
+- JCAMP AFFN and `XYDATA`; experimental;
+- PAC/SQZ/DIF/DUP ASDF decoding; experimental;
+- then `NTUPLES`, `XYPOINTS` and multi-block `LINK`;
 - conformance against open JCAMP readers where possible;
 - adversarial tests for malformed label-data records and compressed archives.
 
