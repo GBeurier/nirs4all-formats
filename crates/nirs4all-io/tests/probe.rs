@@ -142,6 +142,20 @@ fn probes_excel_workbook() {
         .any(|probe| probe.format == "excel-workbook" && probe.confidence == Confidence::Likely));
 }
 
+#[test]
+fn probes_nicolet_omnic_files() {
+    let probes =
+        probe_path(workspace_file("samples/nicolet_omnic/2-BaSO4_0.SPA")).expect("probe spa");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "nicolet-omnic" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/nicolet_omnic/TGAIR.srs")).expect("probe srs");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "nicolet-omnic-srs" && probe.confidence == Confidence::Possible
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

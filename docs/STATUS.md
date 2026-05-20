@@ -57,6 +57,9 @@ Experimental native readers:
 - Thermo / Galactic GRAMS SPC (`.spc`, `.SPC`), new little-endian generated-X,
   explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian
   support is limited.
+- Thermo Nicolet OMNIC (`.SPA`, `.spg`) single spectra and grouped spectra via
+  the reverse-engineered key table; `.srs` time-series files are detected but
+  not decoded yet.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -102,7 +105,7 @@ Immediate next work:
 1. add dedicated MATLAB struct/DSO and `.RData` dataset mappers for Eigenvector
    Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: Nicolet OMNIC
-   `.spa/.spg/.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
+   `.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
 3. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;

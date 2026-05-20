@@ -19,6 +19,18 @@ const CASES: &[(&str, &str)] = &[
         "bruker_opus_reflectance",
         "samples/bruker_opus/test_spectra.0",
     ),
+    (
+        "nicolet_omnic_spa_baso4",
+        "samples/nicolet_omnic/2-BaSO4_0.SPA",
+    ),
+    (
+        "nicolet_omnic_spg_wodger",
+        "samples/nicolet_omnic/wodger.spg",
+    ),
+    (
+        "nicolet_omnic_spa_not_opus",
+        "samples/nicolet_omnic/not_opus.spa",
+    ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

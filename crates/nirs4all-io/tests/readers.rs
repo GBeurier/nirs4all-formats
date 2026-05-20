@@ -113,6 +113,50 @@ fn reads_bruker_opus_duplicate_absorbance_blocks() {
 }
 
 #[test]
+fn reads_nicolet_omnic_spa_single_spectrum() {
+    let records =
+        open_path(workspace_file("samples/nicolet_omnic/2-BaSO4_0.SPA")).expect("open spa");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "nicolet-omnic-spa");
+    assert_eq!(
+        record.metadata["spectrum_title"].as_str(),
+        Some("2-BaSO4_0")
+    );
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 11_098);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 6000.041015625).abs() < 0.000001);
+    assert!((absorbance.axis.values[11_097] - 649.9039916992188).abs() < 0.000001);
+    assert!((absorbance.values[0] - 2.2815363407).abs() < 0.000001);
+    assert!((absorbance.values[11_097] - 6.0).abs() < 0.000001);
+}
+
+#[test]
+fn reads_nicolet_omnic_spg_group_spectra() {
+    let records = open_path(workspace_file("samples/nicolet_omnic/wodger.spg")).expect("open spg");
+
+    assert_eq!(records.len(), 2);
+    assert_eq!(records[0].provenance.format, "nicolet-omnic-spg");
+    assert!(records[0].metadata["spectrum_title"]
+        .as_str()
+        .expect("title")
+        .starts_with("vz0470.spa"));
+    let first = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(first.axis.values.len(), 5_549);
+    assert_eq!(first.axis.unit, "cm-1");
+    assert_eq!(first.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(first.signal_type, SignalType::Absorbance);
+    assert!((first.values[0] - 1.9831526279).abs() < 0.000001);
+    let second = records[1].signals.get("absorbance").expect("absorbance");
+    assert!((second.values[0] - 2.0048975945).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");
