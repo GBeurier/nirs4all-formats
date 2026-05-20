@@ -213,7 +213,7 @@ fn find_layout(lines: &[&str]) -> Result<TableLayout> {
             collect_metadata_line(line, &mut metadata_pairs, &mut notes);
             continue;
         }
-        if let Some(headers) = descriptive_header_from_line(line) {
+        if let Some(headers) = descriptive_header_from_line(strip_comment_marker(line)) {
             descriptive_header = Some(headers);
             continue;
         }
@@ -290,6 +290,7 @@ fn collect_metadata_line(
     let cleaned = line
         .trim_start_matches('#')
         .trim_start_matches('/')
+        .trim_start_matches(';')
         .trim()
         .trim_matches('"')
         .trim();
@@ -306,6 +307,21 @@ fn collect_metadata_line(
         }
     }
 
+    let fields = split_fields(cleaned, delimiter_for_line(cleaned));
+    if cleaned.contains('\t')
+        && fields.len() >= 2
+        && fields[0]
+            .chars()
+            .any(|character| character.is_ascii_alphabetic())
+        && fields[1]
+            .chars()
+            .any(|character| !character.is_whitespace())
+        && parse_number(&fields[0]).is_none()
+    {
+        metadata_pairs.insert(normalize_key(&fields[0]), fields[1].to_string());
+        return;
+    }
+
     if notes.len() < 12 {
         notes.push(cleaned.to_string());
     }
@@ -315,6 +331,7 @@ fn is_metadata_assignment(line: &str) -> bool {
     let cleaned = line
         .trim_start_matches('#')
         .trim_start_matches('/')
+        .trim_start_matches(';')
         .trim()
         .trim_matches('"')
         .trim();
@@ -339,15 +356,24 @@ fn is_metadata_assignment(line: &str) -> bool {
 fn synthetic_headers_from_metadata(
     metadata_pairs: &BTreeMap<String, String>,
 ) -> Option<Vec<String>> {
-    let first = metadata_value(metadata_pairs, "first_column")?;
-    if !first.eq_ignore_ascii_case("x") && !first.to_ascii_lowercase().contains("wavelength") {
-        return None;
+    if let Some(first) = metadata_value(metadata_pairs, "first_column") {
+        if !first.eq_ignore_ascii_case("x") && !first.to_ascii_lowercase().contains("wavelength") {
+            return None;
+        }
+        let y_label = metadata_value(metadata_pairs, "y_units")
+            .map(signal_label_from_unit)
+            .or_else(|| metadata_value(metadata_pairs, "second_column").map(ToString::to_string))
+            .unwrap_or_else(|| "signal".to_string());
+        return Some(vec!["x".to_string(), y_label]);
     }
-    let y_label = metadata_value(metadata_pairs, "y_units")
+
+    let x_units = metadata_value(metadata_pairs, "xunits")?;
+    let axis = axis_label_from_units(x_units)?;
+    let y_label = metadata_value(metadata_pairs, "yunits")
         .map(signal_label_from_unit)
-        .or_else(|| metadata_value(metadata_pairs, "second_column").map(ToString::to_string))
+        .or_else(|| metadata_value(metadata_pairs, "data_type").map(ToString::to_string))
         .unwrap_or_else(|| "signal".to_string());
-    Some(vec!["x".to_string(), y_label])
+    Some(vec![axis, y_label])
 }
 
 fn descriptive_header_from_line(line: &str) -> Option<Vec<String>> {
@@ -462,7 +488,7 @@ fn trim_bom(line: &str) -> &str {
 
 fn is_comment(line: &str) -> bool {
     let trimmed = line.trim_start();
-    trimmed.starts_with('#') || trimmed.starts_with("//")
+    trimmed.starts_with('#') || trimmed.starts_with("//") || trimmed.starts_with(';')
 }
 
 fn is_section_marker(line: &str) -> bool {
@@ -597,6 +623,32 @@ fn signal_label_from_unit(unit: &str) -> String {
     } else {
         "signal".to_string()
     }
+}
+
+fn axis_label_from_units(unit: &str) -> Option<String> {
+    let lower = unit.to_ascii_lowercase();
+    if lower.contains("wavenumber") || lower.contains("cm-1") || lower.contains("1/cm") {
+        Some("wavenumber".to_string())
+    } else if lower.contains("nanometer")
+        || lower.contains("micrometer")
+        || lower.contains("micrometre")
+        || lower.contains("wavelength")
+        || word_contains(&lower, "nm")
+    {
+        Some("wavelength".to_string())
+    } else {
+        None
+    }
+}
+
+fn strip_comment_marker(line: &str) -> &str {
+    let trimmed = line.trim_start();
+    trimmed
+        .strip_prefix("//")
+        .or_else(|| trimmed.strip_prefix('#'))
+        .or_else(|| trimmed.strip_prefix(';'))
+        .unwrap_or(line)
+        .trim_start()
 }
 
 fn word_contains(text: &str, needle: &str) -> bool {

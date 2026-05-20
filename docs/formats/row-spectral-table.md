@@ -13,9 +13,10 @@ The Rust reader `nirs4all_io::readers::spectral_table` accepts `.csv`, `.tsv`,
 `.txt`, `.dat`, `.asc`, `.SPT` and `.SPU` when the content has either:
 
 - an explicit axis header such as `Wavelength_nm`, `WAVELENGTH_um`,
-  `Wavelength`, `X-Axis` or `wavenumber`; or
+  `Wavelength`, `X-Axis` or `wavenumber`;
+- a comment-prefixed axis header such as `; Wavelength S000 S001`; or
 - metadata that describes `First Column: X` / `X Units` before the numeric
-  block.
+  block, including JASCO-style `XUNITS` / `YUNITS` followed by `XYDATA`.
 
 It emits one `SpectralRecord` with one signal per numeric column after the
 axis. The native axis order is preserved.
@@ -29,7 +30,9 @@ axis. The native axis order is preserved.
 | `samples/pp_systems/synthetic_unispec.SPT` | `dn_white`, `dn_target`, `reflectance` | UniSpec SC style export. |
 | `samples/pp_systems/synthetic_unispec_dc.SPU` | `channel_a_dn`, `channel_b_dn`, `reflectance` | UniSpec DC style export. |
 | `samples/envi_sli/ecostress_b.spectrum.txt` | `reflectance` | ECOSTRESS / ENVI text spectrum with metadata-described columns. |
+| `samples/csv_tsv/idl_envi_output.txt` | `s000` ... `s004` | IDL/ENVI comment-prefixed header. |
 | `samples/shimadzu/synthetic_uvprobe.txt` | `sample_s000` | UVProbe-style quoted CSV export; signal type remains unknown because the header only says sample. |
+| `samples/jasco/synthetic_jws_export.txt` | `absorbance` | JASCO text export with `XYDATA`. |
 | `samples/specpr/asphalt_gds366.27407.asc` | `reflectance`, `standard_deviation` | USGS SPECPR ASCII export, wavelength in `um`. |
 | `samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt` | `spectrum__000__spec_data_1` | WiTec ASCII export with a unit row; parsed as raw CCD counts. |
 

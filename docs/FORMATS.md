@@ -13,11 +13,12 @@ fixtures:
 | Format family | Extensions / fixture class | Status | Notes |
 |---|---|---|---|
 | Plain delimited spectral tables | `.csv`, `.tsv`, numeric-header `.txt` | Experimental | One record per row, numeric header columns become the spectral axis, numeric non-spectral columns become targets. |
-| Row-oriented spectral tables | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` with axis-first content | Experimental | One record per file, first numeric column is the spectral axis, following numeric columns become named signals. Covers committed Si-Ware, MODTRAN, PP Systems, ENVI/ECOSTRESS text, Shimadzu text, USGS SPECPR ASCII and WiTec ASCII fixtures. |
+| Row-oriented spectral tables | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` with axis-first content | Experimental | One record per file, first numeric column is the spectral axis, following numeric columns become named signals. Covers committed Si-Ware, MODTRAN, PP Systems, ENVI/ECOSTRESS/IDL text, JASCO text export, Shimadzu text, USGS SPECPR ASCII and WiTec ASCII fixtures. |
 | Spectral matrix exports | `.csv`, `.txt` with one spectrum per sample row | Experimental | Numeric spectral headers or a `Wavelengths:` block become the axis. Covers committed Foss/WinISI text, Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures. Target-only reports are detected as unsupported. |
 | Sun photometer text exports | `.OUT`, `.TXT` | Experimental | MFR and Microtops channel columns become short wavelength axes, one observation per record. |
 | AnIML spectral XML | `.animl` | Experimental | Spectral `SeriesSet` documents with wavelength/wavenumber axis series and same-length signal series. Non-spectral AnIML result documents are refused. |
 | Allotrope ASM plate-reader JSON | `.json` with `$asm.manifest` | Experimental | Plate-reader ASM spectral data cubes and detector-wavelength endpoint readings. Covers committed Benchling allotropy fluorescence/absorbance ASM fixtures. |
+| SiWare API JSON | `.json` with `measurement.wavelengths` / `measurement.absorbance` | Experimental | One-measurement NeoSpectra-style JSON payloads; predictions become targets. |
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
@@ -105,11 +106,11 @@ Legend for **Container**:
 | Perten DA / Inframatic | vendor proprietary, CSV export | bin / ascii | 🔴 / ✅ via export | Same strategy | Field-feed analyzer; committed CSV fixture is target-only and intentionally unsupported as a `SpectralRecord` because it has no spectral axis. |
 | Avantes AvaSoft v8 (modern) | `.RAW8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.IRR8`, `.RIR8`, `.RMN8`, `.RMD8` | bin | 🟡 | R: `lightr` (subset); MATLAB community tools; **no maintained Python reader** | Each suffix encodes the measurement mode (scope, dark-corrected scope, absorbance, transmittance, reflectance, absolute/relative irradiance, Raman). [AvaSoft 8 manual](https://www.avantes.com/content/uploads/2022/02/020379-AvaSoft-8-Manual.pdf) is the reference. |
 | Avantes AvaSoft ASCII exports | `.ttt`, `.trt`, `.tit`, `.tat` | ascii | ✅ | Any text loader (`pandas`) | Cheap fallback when the binary parser is missing. Worth supporting before the binaries. |
-| JASCO V-series / FT-IR | `.jws`, `.txt` export | bin / ascii | 🟡 | Py: [`jws2txt`](https://pypi.org/project/jws2txt/), `jwsProcessor`; conversion via OMNIC | Reverse-engineered; mostly UV-Vis but used in NIR mode too. |
+| JASCO V-series / FT-IR | `.jws`, `.txt` export | bin / ascii | 🟡 | Py: [`jws2txt`](https://pypi.org/project/jws2txt/), `jwsProcessor`; conversion via OMNIC | Reverse-engineered; mostly UV-Vis but used in NIR mode too. Text export is covered by `spectral_table`; binary `.jws` remains pending. |
 | Shimadzu UVProbe | `.spc` (Shimadzu proprietary, **not** Galactic), `.txt` export | bin / ascii | 🟠 | Experimental Py readers ([`pyfasma-spc`](https://pypi.org/project/pyfasma-spc/) note); vendor [converter](https://www.an.shimadzu.co.jp/products/molecular-spectroscopy/uv-vis/semicustom/uv-13/index.html) | Same `.spc` extension as Galactic but different binary format. TXT export is covered by `spectral_table`; binary sniffer must disambiguate later. |
 | VIAVI MicroNIR (handheld) | CSV export (`.csv`) | ascii | ✅ | Any CSV loader | Committed spectral matrix CSV export is covered by `spectral_matrix`. Native ".pri" project files: out of scope for v1 (no public spec). |
 | Si-Ware NeoSpectra | CSV export | ascii | ✅ | Any CSV loader | Handheld MEMS spectrometer; committed CSV export with site/soil metadata block is covered by `spectral_table`. |
-| Spectro Inc. SiWare API | JSON/CSV | ascii | ✅ | Standard JSON/CSV | Recent cloud-attached spectrometers; consider streaming. |
+| Spectro Inc. SiWare API | JSON/CSV | ascii | ✅ | Standard JSON/CSV | Recent cloud-attached spectrometers; JSON is covered by `siware_api`; CSV stream is covered by `spectral_table`. |
 
 ---
 

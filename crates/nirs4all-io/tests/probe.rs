@@ -88,6 +88,22 @@ fn probes_animl_and_allotrope_asm_documents() {
     }));
 }
 
+#[test]
+fn probes_siware_json_and_comment_header_text_exports() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_api/synthetic_siware_api.json",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "siware-api-json" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/csv_tsv/idl_envi_output.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

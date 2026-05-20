@@ -471,6 +471,55 @@ fn reads_row_oriented_spectral_tables() {
 }
 
 #[test]
+fn reads_jasco_and_idl_text_exports_as_row_tables() {
+    let records =
+        open_path(workspace_file("samples/jasco/synthetic_jws_export.txt")).expect("open jasco");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.036743).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/csv_tsv/idl_envi_output.txt")).expect("open idl");
+    assert_eq!(records.len(), 1);
+    let s000 = records[0].signals.get("s000").expect("s000");
+    assert_eq!(records[0].signals.len(), 5);
+    assert_eq!(s000.axis.values.len(), 200);
+    assert_eq!(s000.axis.unit, "nm");
+    assert!((s000.values[0] - 0.0367).abs() < 0.000001);
+}
+
+#[test]
+fn reads_siware_api_json_measurement() {
+    let records = open_path(workspace_file(
+        "samples/siware_api/synthetic_siware_api.json",
+    ))
+    .expect("open siware json");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "siware-api-json");
+    assert_eq!(
+        records[0].metadata["measurement_id"].as_str(),
+        Some("meas-2026-05-18-001")
+    );
+    assert_eq!(
+        records[0].metadata["instrument_model"].as_str(),
+        Some("NeoSpectra Cloud")
+    );
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(13.7));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.values[0] - 0.024870592439159966).abs() < 0.000001);
+}
+
+#[test]
 fn reads_pp_systems_row_tables_with_multiple_signals() {
     let records =
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");
