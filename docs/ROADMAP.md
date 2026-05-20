@@ -37,7 +37,7 @@ Deliverables:
 - delimited text reader; experimental;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
-- golden JSON writer/validator;
+- golden JSON writer/validator; golden summaries implemented;
 - docs for accepted fixture metadata.
 
 Gate:

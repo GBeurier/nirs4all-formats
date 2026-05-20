@@ -1,0 +1,68 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "spectral-evolution-sed",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::sed",
+      "record_signal_type": "reflectance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "norm__dn_ref_",
+          "role": "norm__dn_ref_",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 2.283859,
+          "value_last": 8.337231,
+          "value_sum": 351168.746483,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "norm__dn_target",
+          "role": "norm__dn_target",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.544265,
+          "value_last": 0.406578,
+          "value_sum": 77614.17611,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "reflect__%",
+          "role": "reflect__%",
+          "signal_type": "reflectance",
+          "unit": "%",
+          "value_first": 23.3105,
+          "value_last": 5.6832,
+          "value_sum": 43035.7028,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "580959ace1362091fc8a928f997ef1f7ff351f51dc150566596c98915970b30a",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

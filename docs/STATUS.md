@@ -22,6 +22,9 @@ Experimental native readers:
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
 
+Golden-summary conformance exists for the seven fixtures above under
+`crates/nirs4all-io/tests/goldens/`.
+
 Python bridge surfaces now call the Rust CLI rather than implementing parser
 logic in Python:
 
@@ -59,9 +62,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. add direct tests for `to_nirs4all_spectrodataset()` against the sibling `nirs4all` checkout;
-2. create golden JSON generation and validation for the first seven readers;
-3. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
-4. start the binary/open-reader-backed batch: ASD and Galactic SPC;
-5. replace Python/R subprocess transport with native PyO3/C ABI paths;
-6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+1. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
+2. start the binary/open-reader-backed batch: ASD and Galactic SPC;
+3. add direct external reference-reader conformance for JCAMP/SED/SIG where practical;
+4. replace Python/R subprocess transport with native PyO3/C ABI paths;
+5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

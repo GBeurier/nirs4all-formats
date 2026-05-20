@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-ascii",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_ascii",
+      "record_signal_type": "transmittance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 300.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 401,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "transmittance",
+          "role": "transmittance",
+          "signal_type": "transmittance",
+          "unit": "% transmittance",
+          "value_first": 3.1487,
+          "value_last": 31.4912,
+          "value_sum": 4224.8329,
+          "values_len": 401
+        }
+      ],
+      "source_sha256": "a0713245f5822dcdff92731484597a198a537b2964845500f6cd2ff8a79ba2cc",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}
