@@ -28,9 +28,13 @@ axis.
 - strict boolean validation of `LineValid` bytes (`0`/`1`) and diagnostic
   metadata for valid/invalid line counts, physical grid slots and physical
   spectrum index;
-- spectral axis reconstruction from the WiTec `FreePolynom` coefficients;
+- spectral axis reconstruction from the WiTec `FreePolynom` coefficients,
+  converted to Raman shift (`cm-1`) from `ExcitationWaveLength`;
 - diagnostic metadata for the `FreePolynom` order and bin range used to build
-  the wavelength axis;
+  the wavelength axis before Raman-shift conversion;
+- physical map position metadata in micrometers, derived from the TDGraph
+  `SpaceTransformationID` and its model/world origin, scale and rotation
+  matrices;
 - strict refusal for legacy `WIT^` and unknown `WIT_PR06` layouts;
 - WiTec ASCII single-spectrum export support through `row-spectral-table`;
 - real `Sa4.wip` TDGraph regression tests.
@@ -41,8 +45,7 @@ axis.
 - extraction of arbitrary single spectra, maps, line scans and time series from
   `.wip`;
 - typed WiTec metadata normalization for laser, objective, integration time,
-  positions and map geometry;
-- physical map coordinate orientation and Raman-shift conversion policy;
+  acquisition settings and broader map geometry;
 - validation against an ASCII export from the same `Sa4.wip` project;
 - conformance reports against external WiTec-capable readers where license and
   fixture terms allow it.
@@ -50,9 +53,10 @@ axis.
 ## Validation Notes
 
 Current native validation is intentionally narrow. The `Sa4.wip` test asserts
-4410 spectra, 1024 wavelength points, the first raw-count values and the
-polynomial wavelength range. It also asserts the diagnostic layout metadata:
-4950 physical grid slots, 49 valid lines, 6 invalid lines and 4410 emitted
-spectra. The parser emits warning
-`witec_wip_experimental_parser` and must stay experimental until more WiTec
-project variants and paired vendor ASCII exports are available.
+4410 spectra, 1024 Raman-shift points, the first raw-count values, the
+underlying wavelength range, the 532.099 nm excitation wavelength and first/last
+map coordinates. It also asserts the diagnostic layout metadata: 4950 physical
+grid slots, 49 valid lines, 6 invalid lines and 4410 emitted spectra. The parser
+emits `witec_wip_experimental_parser` plus explicit warnings for derived
+Raman-shift axis and map coordinates, and must stay experimental until more
+WiTec project variants and paired vendor ASCII exports are available.

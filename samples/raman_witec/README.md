@@ -12,7 +12,7 @@ The supported decode path remains the **WiTec ASCII export** ("Export Spectrum a
 | File | Size | Source | License | Notes |
 |---|---|---|---|---|
 | `Si-wafer-Raman-Spectrum-1.txt` | ~30 KB | [`FAIRmat-NFDI/pynxtools-raman@main/tests/data/witec/`](https://github.com/FAIRmat-NFDI/pynxtools-raman/blob/main/tests/data/witec/Si-wafer-Raman-Spectrum-1.txt) | Apache-2.0 | Silicon-wafer single Raman spectrum, **exported from `Petri-dish-test.wip`** (header reference). Confirms the ASCII export pathway used to bridge `.wip` to open tools. |
-| `Sa4.wip` | 19 MB | [`Zenodo 7907659 — "Raman data"`](https://zenodo.org/records/7907659) (`Sa4.wip` from the ZrO2 Raman imaging dataset, DOI `10.5281/zenodo.7907659`) | **ODbL v1.0** | Real WITec Project FIVE 5.2 PLUS `.wip` for sample Sa4 (zirconium-oxide phase analysis). Decodes as 4410 valid TDGraph spectra with 1024 raw-count points each; the file remains paired with the linked publication (DOI `10.1016/j.saa.2023.122625`). |
+| `Sa4.wip` | 19 MB | [`Zenodo 7907659 — "Raman data"`](https://zenodo.org/records/7907659) (`Sa4.wip` from the ZrO2 Raman imaging dataset, DOI `10.5281/zenodo.7907659`) | **ODbL v1.0** | Real WITec Project FIVE 5.2 PLUS `.wip` for sample Sa4 (zirconium-oxide phase analysis). Decodes as 4410 valid TDGraph spectra with 1024 raw-count points each, Raman-shift axis from the embedded excitation wavelength and map coordinates from the TDGraph space transformation; the file remains paired with the linked publication (DOI `10.1016/j.saa.2023.122625`). |
 
 ## Parser hints
 

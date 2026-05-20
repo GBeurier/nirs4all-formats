@@ -150,8 +150,10 @@ Experimental native readers:
   metadata and warning that the signal is not a point-sample NIR spectrum.
 - WiTec WIP/WID binary project files are detected from `.wip/.wid` plus `WIT^`
   or `WIT_PR06` magic. The committed `Sa4.wip` `WIT_PR06` TDGraph map decodes
-  experimentally into 4410 valid raw-count spectra with a polynomial wavelength
-  axis; legacy `WIT^` and unknown `WIT_PR06` layouts are refused explicitly.
+  experimentally into 4410 valid raw-count spectra with a Raman-shift axis
+  derived from `ExcitationWaveLength` and physical map coordinates derived from
+  the TDGraph space transformation; legacy `WIT^` and unknown `WIT_PR06`
+  layouts are refused explicitly.
   The committed WiTec TXT export remains covered by the row-oriented spectral
   table reader.
 - mzML mass-spectrometry XML is detected and refused with a pointer to
