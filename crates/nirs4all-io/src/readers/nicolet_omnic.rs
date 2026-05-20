@@ -207,8 +207,9 @@ fn read_srs_tg_gc(
     let mut signals = BTreeMap::new();
     signals.insert(signal_name, signal);
 
+    let series_variant = srs_series_variant(&header);
     let mut metadata = BTreeMap::new();
-    metadata.insert("series_variant".to_string(), json!("tg_gc"));
+    metadata.insert("series_variant".to_string(), json!(series_variant));
     metadata.insert("series_name".to_string(), json!(header.name));
     metadata.insert("series_y_len".to_string(), json!(header.ny));
     metadata.insert("series_y_first_min".to_string(), json!(header.first_y));
@@ -271,12 +272,36 @@ fn read_srs_tg_gc(
             "nicolet-omnic-srs",
             reader,
             source,
-            vec!["nicolet_omnic_srs_tg_gc_reverse_engineered".to_string()],
+            vec![srs_warning(series_variant).to_string()],
         ),
         quality_flags: Vec::new(),
     };
     record.validate()?;
     Ok(vec![record])
+}
+
+fn srs_series_variant(header: &SrsHeader) -> &'static str {
+    if header.base.signal_type == SignalType::Interferogram
+        || header.base.axis_kind == AxisKind::Index
+    {
+        "rapid_scan_raw"
+    } else if header.base.zero_path_difference <= 128
+        && header.base.background_scan_count == 0
+        && header.base.scan_count >= 16
+    {
+        "rapid_scan_reprocessed"
+    } else {
+        "tg_gc"
+    }
+}
+
+fn srs_warning(series_variant: &str) -> &'static str {
+    match series_variant {
+        "rapid_scan_raw" | "rapid_scan_reprocessed" => {
+            "nicolet_omnic_srs_rapid_scan_reverse_engineered"
+        }
+        _ => "nicolet_omnic_srs_tg_gc_reverse_engineered",
+    }
 }
 
 fn read_spa(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {

@@ -28,9 +28,9 @@ until the core schema grows a first-class secondary axis.
 | `samples/nicolet_omnic/nh4y-activation.spg` | 55 | wavenumber, `cm-1` | `absorbance` | Additional SPG group fixture |
 | `samples/nicolet_omnic/GC_Demo.srs` | 1 | wavenumber, `cm-1`, 1738 x-points, 788 y rows | `transmittance` | TGA/GC series fixture |
 | `samples/nicolet_omnic/TGAIR.srs` | 1 | wavenumber, `cm-1`, 1868 x-points, 335 y rows | `absorbance` | TGA/GC hard-case fixture |
-| `samples_local/nicolet_omnic/spectrochempy_TGA_demo.srs` | 1 | wavenumber, `cm-1`, 3630 x-points, 485 y rows | `absorbance` | Local-only larger TGA/GC series |
-| `samples_local/nicolet_omnic/spectrochempy_rapid_scan.srs` | 1 | generated index, 4160 x-points, 643 y rows | `detector_signal`, `V`, interferogram | Local-only raw rapid-scan series |
-| `samples_local/nicolet_omnic/spectrochempy_rapid_scan_reprocessed.srs` | 1 | wavenumber, `cm-1`, 3734 x-points, 643 y rows | `absorbance` | Local-only reprocessed rapid-scan series |
+| `samples_local/nicolet_omnic/spectrochempy_TGA_demo.srs` | 1 | wavenumber, `cm-1`, 3630 x-points, 485 y rows | `absorbance` | Local-only larger `tg_gc` series |
+| `samples_local/nicolet_omnic/spectrochempy_rapid_scan.srs` | 1 | generated index, 4160 x-points, 643 y rows | `detector_signal`, `V`, interferogram | Local-only `rapid_scan_raw` series |
+| `samples_local/nicolet_omnic/spectrochempy_rapid_scan_reprocessed.srs` | 1 | wavenumber, `cm-1`, 3734 x-points, 643 y rows | `absorbance` | Local-only `rapid_scan_reprocessed` series |
 
 ## Dispatch Boundaries
 
@@ -40,6 +40,11 @@ committed TGA/GC files and the local SpectroChemPy rapid-scan pair. Files with
 OMNIC series magic but a different anchor pattern are classified as unsupported
 series variants and refused explicitly. `.srsx` remains pending because no
 redistributable fixture is available.
+
+`series_variant` is normalized to `tg_gc`, `rapid_scan_raw` or
+`rapid_scan_reprocessed` for the fixtures currently understood. Raw rapid-scan
+interferograms use a generated index x axis until the model grows a richer
+interferogram-domain axis.
 
 The implementation follows the same public reverse-engineering model used by
 SpectroChemPy: key `02` points to the spectral header, key `03` points to the
