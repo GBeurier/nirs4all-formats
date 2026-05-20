@@ -1563,6 +1563,7 @@ fn reads_hamamatsu_img_streak_camera_modes() {
     assert_eq!(records[0].metadata["image_height"].as_u64(), Some(512));
     assert_eq!(records[0].metadata["y_axis_name"].as_str(), Some("Time"));
     assert_eq!(records[0].metadata["y_axis_unit"].as_str(), Some("us"));
+    assert_eq!(records[0].metadata["y_axis_kind"].as_str(), Some("time"));
     assert!((records[0].metadata["y_axis_first"].as_f64().unwrap() - 0.0).abs() < 0.000001);
     assert!(
         (records[0].metadata["y_axis_last"].as_f64().unwrap() - 16.009395599365234).abs()
@@ -1594,6 +1595,7 @@ fn reads_hamamatsu_img_streak_camera_modes() {
         records[0].metadata["y_axis_name"].as_str(),
         Some("Vertical CCD Position")
     );
+    assert_eq!(records[0].metadata["y_axis_kind"].as_str(), Some("index"));
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.values[signal.values.len() - 3], 21.0);
     assert!((signal.values.iter().sum::<f64>() - 59743889.0).abs() < 0.000001);
@@ -1608,6 +1610,7 @@ fn reads_hamamatsu_img_streak_camera_modes() {
         records[0].metadata["acquisition_mode_label"].as_str(),
         Some("photon_counting")
     );
+    assert_eq!(records[0].metadata["y_axis_kind"].as_str(), Some("time"));
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.values.len(), 672);
     assert_eq!(signal.values.len(), 512 * 672);
@@ -1615,6 +1618,7 @@ fn reads_hamamatsu_img_streak_camera_modes() {
 
     let records = open_path(workspace_file("samples/hamamatsu/shading_file.img"))
         .expect("open Hamamatsu shading");
+    assert_eq!(records[0].metadata["y_axis_kind"].as_str(), Some("time"));
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.values[0], 9385.0);
     assert_eq!(signal.values[1], 8354.0);
@@ -1625,6 +1629,7 @@ fn reads_hamamatsu_img_streak_camera_modes() {
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.kind, AxisKind::Index);
     assert_eq!(signal.axis.unit, "px");
+    assert_eq!(records[0].metadata["y_axis_kind"].as_str(), Some("index"));
     assert_eq!(signal.values.len(), 508 * 672);
     assert_eq!(signal.values[0], 406.0);
     assert!((signal.values.iter().sum::<f64>() - 137039886.0).abs() < 0.000001);

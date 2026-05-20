@@ -282,7 +282,7 @@ fn build_axis(
         kind: if axis == 'X' {
             AxisKind::Wavelength
         } else {
-            AxisKind::Index
+            AxisKind::Time
         },
     })
 }
