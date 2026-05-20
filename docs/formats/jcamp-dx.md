@@ -15,6 +15,9 @@ records.
   - DUP repeat counts.
 - Reads NMR `NTUPLES` pages with `VAR_FORM=AFFN,ASDF,ASDF,AFFN` and emits
   real/imaginary channels as separate normalized signals on the same record.
+- Reads `DATA TYPE=LINK` files whose child blocks use `XYPOINTS=(XY..XY)`;
+  the committed Ocean Optics LINK fixture is mapped to `sample`,
+  `dark_reference`, `white_reference` and a computed transmittance signal.
 - Applies `YFACTOR` to decoded ordinates.
 - Reconstructs the X axis from `FIRSTX` and `DELTAX`, or from `FIRSTX`,
   `LASTX` and `NPOINTS` when `DELTAX` is absent.
@@ -55,6 +58,22 @@ Time-domain axes with `UNITS=SECONDS` are represented as unit `s` with the
 current generic `index` axis kind because the core schema does not yet expose a
 dedicated time-axis enum value.
 
+## LINK / XYPOINTS Notes
+
+`XYPOINTS=(XY..XY)` rows are parsed as explicit X/Y pairs rather than
+reconstructing the axis from `FIRSTX` and `DELTAX`.
+
+For Ocean Optics LINK exports, the three child blocks are raw sample, dark and
+reference arrays even when the first child title says "processed". The reader
+keeps those raw arrays and computes:
+
+```text
+processed = (sample - dark_reference) / (white_reference - dark_reference) * 100
+```
+
+When the denominator is zero, the current schema has no missing-value marker, so
+the reader emits `0.0` for that point and records a provenance warning.
+
 ## Fixtures and Reference Checks
 
 Current committed controls:
@@ -67,6 +86,7 @@ Current committed controls:
 | `SPECFILE.DX` | mixed SQZ/DIF/DUP | 1801 | `400.0 -> 4000.0 cm-1` | `97.737187 -> 82.830985` |
 | `BRUKNTUP.DX` | NTUPLES R/I pages | 16384 x 2 | `24038.5 -> 0.0 Hz` | real `2254931 -> 1513177`, imaginary `-6966283 -> -7303022` |
 | `TESTFID.DX` | NTUPLES FID R/I pages | 16384 x 2 | `0.0 -> 0.6815317 s` | real `2979.837825 -> -60241.607962`, imaginary `6214.555864 -> -6063.227393` |
+| `OceanOptics_period.jdx` | LINK + XYPOINTS | 3648 x 4 | `176.36 -> 893.69 nm` | computed transmittance `0.0 -> 171.977070` |
 
 The current reader is still narrower than mature JCAMP libraries. It is meant
 to cover the high-value NIR/IR `XYDATA` cases first, with warnings where the
@@ -74,6 +94,7 @@ legacy format stores extra line checkpoints.
 
 ## Remaining Work
 
-- Add `XYPOINTS`, `PEAK TABLE` and multi-block `LINK` files.
+- Add `PEAK TABLE` and broader multi-block `LINK` variants with incompatible
+  axes.
 - Add stricter line-level X checkpoint verification.
 - Add reference reports against open JCAMP readers for every committed fixture.

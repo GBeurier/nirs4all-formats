@@ -49,15 +49,17 @@ Gate:
 ## Phase 2: JCAMP-DX
 
 Status: in progress. Single-block `XYDATA`, ASDF PAC/SQZ/DIF/DUP ordinate
-encodings and NMR `NTUPLES` real/imaginary pages are experimental; `XYPOINTS`,
-`PEAK TABLE` and multi-block files remain pending.
+encodings, NMR `NTUPLES` real/imaginary pages and Ocean Optics
+`LINK`/`XYPOINTS` blocks are experimental; `PEAK TABLE` and broader multi-block
+files remain pending.
 
 Deliverables:
 
 - JCAMP AFFN and `XYDATA`; experimental;
 - PAC/SQZ/DIF/DUP ASDF decoding; experimental;
 - NMR `NTUPLES` real/imaginary pages; experimental;
-- then `XYPOINTS`, `PEAK TABLE` and multi-block `LINK`;
+- Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks; experimental;
+- then `PEAK TABLE` and broader multi-block `LINK`;
 - conformance against open JCAMP readers where possible;
 - adversarial tests for malformed label-data records and compressed archives.
 
