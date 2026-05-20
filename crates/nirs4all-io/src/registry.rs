@@ -1,3 +1,4 @@
+use std::ops::Range;
 use std::path::Path;
 
 use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
@@ -18,6 +19,88 @@ pub trait Reader: Send + Sync {
     fn name(&self) -> &'static str;
     fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe>;
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>>;
+    fn read_path_with_options(
+        &self,
+        path: &Path,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        if options.has_reader_options() {
+            return Err(Error::InvalidRecord(format!(
+                "{} does not support read options",
+                self.name()
+            )));
+        }
+        self.read_path(path)
+    }
+}
+
+/// Optional read controls for formats where loading every record is expensive.
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+pub struct ReadOptions {
+    pub cube_window: Option<CubeWindow>,
+}
+
+impl ReadOptions {
+    pub fn with_cube_window(mut self, window: CubeWindow) -> Self {
+        self.cube_window = Some(window);
+        self
+    }
+
+    pub(crate) fn has_reader_options(&self) -> bool {
+        self.cube_window.is_some()
+    }
+}
+
+/// Half-open pixel window for image cubes: rows `[start, end)` and columns
+/// `[start, end)`. Missing ends default to the cube dimensions.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CubeWindow {
+    pub row_start: usize,
+    pub row_end: Option<usize>,
+    pub col_start: usize,
+    pub col_end: Option<usize>,
+}
+
+impl CubeWindow {
+    pub fn new(
+        row_start: usize,
+        row_end: Option<usize>,
+        col_start: usize,
+        col_end: Option<usize>,
+    ) -> Self {
+        Self {
+            row_start,
+            row_end,
+            col_start,
+            col_end,
+        }
+    }
+}
+
+pub(crate) fn cube_window_ranges(
+    options: &ReadOptions,
+    rows: usize,
+    cols: usize,
+    context: &str,
+) -> Result<(Range<usize>, Range<usize>)> {
+    let Some(window) = &options.cube_window else {
+        return Ok((0..rows, 0..cols));
+    };
+    let row_end = window.row_end.unwrap_or(rows);
+    let col_end = window.col_end.unwrap_or(cols);
+    if window.row_start >= row_end || row_end > rows {
+        return Err(Error::InvalidRecord(format!(
+            "{context} row window {}..{} is outside 0..{rows}",
+            window.row_start, row_end
+        )));
+    }
+    if window.col_start >= col_end || col_end > cols {
+        return Err(Error::InvalidRecord(format!(
+            "{context} column window {}..{} is outside 0..{cols}",
+            window.col_start, col_end
+        )));
+    }
+    Ok((window.row_start..row_end, window.col_start..col_end))
 }
 
 fn readers() -> Vec<Box<dyn Reader>> {
@@ -85,6 +168,14 @@ pub fn probe_path(path: impl AsRef<Path>) -> Result<Vec<FormatProbe>> {
 
 /// Open a file through the native registry.
 pub fn open_path(path: impl AsRef<Path>) -> Result<Vec<SpectralRecord>> {
+    open_path_with_options(path, &ReadOptions::default())
+}
+
+/// Open a file through the native registry with optional format-specific read controls.
+pub fn open_path_with_options(
+    path: impl AsRef<Path>,
+    options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
     let path_ref = path.as_ref();
     let bytes = std::fs::read(path_ref).map_err(|source| Error::Io {
         path: path_ref.to_path_buf(),
@@ -105,7 +196,7 @@ pub fn open_path(path: impl AsRef<Path>) -> Result<Vec<SpectralRecord>> {
             path: path_ref.to_path_buf(),
         });
     };
-    reader.read_path(path_ref)
+    reader.read_path_with_options(path_ref, options)
 }
 
 /// Built-in format sniffers backed by the native readers.

@@ -10,4 +10,6 @@ pub use nirs4all_io_core::{
     AxisKind, AxisOrder, Confidence, Error, FormatProbe, Provenance, Result, SignalType,
     SourceFile, SpectralArray, SpectralAxis, SpectralRecord,
 };
-pub use registry::{builtin_probes, open_path, probe_path, Reader};
+pub use registry::{
+    builtin_probes, open_path, open_path_with_options, probe_path, CubeWindow, ReadOptions, Reader,
+};

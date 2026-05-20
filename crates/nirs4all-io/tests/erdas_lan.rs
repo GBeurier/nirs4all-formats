@@ -1,4 +1,6 @@
-use nirs4all_io::{open_path, AxisKind, SignalType};
+use nirs4all_io::{
+    open_path, open_path_with_options, AxisKind, CubeWindow, ReadOptions, SignalType,
+};
 
 #[test]
 fn reads_aviris_indian_pines_erdas_lan_cube() {
@@ -45,6 +47,36 @@ fn reads_aviris_indian_pines_erdas_lan_cube() {
     assert_eq!(last.metadata["x_index"].as_u64(), Some(144));
     assert_eq!(last.metadata["y_index"].as_u64(), Some(144));
     assert_eq!(last.targets["land_cover_class"].as_u64(), Some(0));
+
+    let options =
+        ReadOptions::default().with_cube_window(CubeWindow::new(10, Some(12), 20, Some(22)));
+    let roi = open_path_with_options(
+        workspace_file("samples/hyperspectral_cubes/92AV3C.lan"),
+        &options,
+    )
+    .expect("open AVIRIS LAN ROI");
+
+    assert_eq!(roi.len(), 4);
+    let first_roi = &roi[0];
+    assert_eq!(
+        first_roi.metadata["sample_id"].as_str(),
+        Some("pixel_y10_x20")
+    );
+    assert_eq!(first_roi.metadata["x_index"].as_u64(), Some(20));
+    assert_eq!(first_roi.metadata["y_index"].as_u64(), Some(10));
+    let full_index = 10 * 145 + 20;
+    assert_eq!(
+        first_roi.targets["land_cover_class"],
+        records[full_index].targets["land_cover_class"]
+    );
+    assert_eq!(
+        first_roi.signals["raw_counts"].values,
+        records[full_index].signals["raw_counts"].values
+    );
+    assert_eq!(
+        roi.last().unwrap().metadata["sample_id"].as_str(),
+        Some("pixel_y11_x21")
+    );
 }
 
 fn workspace_file(relative: &str) -> std::path::PathBuf {

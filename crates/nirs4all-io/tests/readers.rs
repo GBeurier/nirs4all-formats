@@ -1,4 +1,7 @@
-use nirs4all_io::{open_path, AxisKind, AxisOrder, Error, SignalType};
+use nirs4all_io::{
+    open_path, open_path_with_options, AxisKind, AxisOrder, CubeWindow, Error, ReadOptions,
+    SignalType,
+};
 
 #[test]
 fn reads_asd_fieldspec_revisions() {
@@ -2452,6 +2455,35 @@ fn reads_envi_standard_image_cube_as_pixel_spectra() {
         assert!((signal.values[0] - 152.0).abs() < 0.000001);
         assert!((signal.values[31] - 3275.0).abs() < 0.000001);
     }
+}
+
+#[test]
+fn reads_envi_standard_image_cube_window() {
+    let path = workspace_file("samples/envi_sli/cubescope-mini-cube.hdr");
+    let full = open_path(&path).expect("open full ENVI cube");
+    let options = ReadOptions::default().with_cube_window(CubeWindow::new(2, Some(4), 3, Some(6)));
+
+    let records = open_path_with_options(&path, &options).expect("open ENVI cube window");
+
+    assert_eq!(records.len(), 6);
+    let first = &records[0];
+    assert_eq!(first.metadata["sample_id"].as_str(), Some("pixel_y2_x3"));
+    assert_eq!(first.metadata["pixel_x"].as_u64(), Some(3));
+    assert_eq!(first.metadata["pixel_y"].as_u64(), Some(2));
+    assert_eq!(first.metadata["spatial_x"].as_f64(), Some(500090.0));
+    assert_eq!(first.metadata["spatial_y"].as_f64(), Some(4099940.0));
+    let full_index = 2 * 48 + 3;
+    assert_eq!(
+        records[0].signals["spectrum"].values,
+        full[full_index].signals["spectrum"].values
+    );
+    let last = records.last().expect("last ROI pixel");
+    assert_eq!(last.metadata["sample_id"].as_str(), Some("pixel_y3_x5"));
+
+    let invalid =
+        ReadOptions::default().with_cube_window(CubeWindow::new(47, Some(49), 0, Some(1)));
+    let err = open_path_with_options(path, &invalid).expect_err("invalid cube window");
+    assert!(err.to_string().contains("row window 47..49"));
 }
 
 #[test]

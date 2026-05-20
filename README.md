@@ -66,6 +66,8 @@ Current implementation highlights:
 - SVC/GER `.sig` covers the committed PDA, laptop, matched-overlap and
   resampled field fixtures with promoted instrument, foreoptic, detector,
   factor and overlap metadata.
+- ENVI Standard and AVIRIS/ERDAS LAN cube readers can emit full pixel spectra
+  or rectangular row/column ROI windows from the Rust API and CLI.
 - Avantes AvaSoft legacy and AvaSoft 8 binaries promote `measurement_mode`,
   `point_count`, pixel range, integration time/averages, instrument serial,
   operator, detector temperature (legacy) and acquisition date/time (AvaSoft

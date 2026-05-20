@@ -8,6 +8,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::normalize_key;
+use crate::registry::{cube_window_ranges, ReadOptions};
 use crate::Reader;
 
 pub struct EnviSliReader;
@@ -32,6 +33,14 @@ impl Reader for EnviSliReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
+        self.read_path_with_options(path, &ReadOptions::default())
+    }
+
+    fn read_path_with_options(
+        &self,
+        path: &Path,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
         let (header_path, data_hint) = paired_paths(path)?;
         let header_bytes = std::fs::read(&header_path).map_err(|source| Error::Io {
             path: header_path.clone(),
@@ -50,7 +59,13 @@ impl Reader for EnviSliReader {
                 data_hint,
                 header_source,
                 &header,
+                options,
             );
+        }
+        if options.has_reader_options() {
+            return Err(Error::InvalidRecord(
+                "ENVI Spectral Library does not support cube read options".to_string(),
+            ));
         }
         if !file_type.eq_ignore_ascii_case("ENVI Spectral Library") {
             return Err(Error::InvalidRecord(format!(
@@ -469,6 +484,7 @@ fn read_standard_cube(
     data_hint: Option<PathBuf>,
     header_source: SourceFile,
     header: &BTreeMap<String, String>,
+    options: &ReadOptions,
 ) -> Result<Vec<SpectralRecord>> {
     let samples = parse_usize(header, "samples")?;
     let lines = parse_usize(header, "lines")?;
@@ -523,10 +539,11 @@ fn read_standard_cube(
     }
     let (axis_values, axis_unit, axis_kind) = axis_from_header(header, bands, &mut warnings)?;
     let map_info = parse_map_info(header);
+    let (row_range, col_range) = cube_window_ranges(options, lines, samples, "ENVI Standard cube")?;
 
-    let mut records = Vec::with_capacity(samples * lines);
-    for row in 0..lines {
-        for col in 0..samples {
+    let mut records = Vec::with_capacity(row_range.len() * col_range.len());
+    for row in row_range {
+        for col in col_range.clone() {
             let spectrum = (0..bands)
                 .map(|band| {
                     let index = cube_value_index(
@@ -545,7 +562,7 @@ fn read_standard_cube(
                 reader,
                 header_source.clone(),
                 data_source.clone(),
-                records.len(),
+                row * samples + col,
                 row,
                 col,
                 samples,
