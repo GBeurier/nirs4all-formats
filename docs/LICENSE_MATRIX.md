@@ -35,3 +35,7 @@ Horiba / JobinYvon fixtures are split across GPL-3.0 RosettaSciIO XML samples
 and MIT text/map samples from SpectroChemPy data and `ccoverstreet/horiba-raman`.
 They are test fixtures only; no GPL reader code is linked or imported by the
 runtime.
+
+Renishaw WDF fixtures are split across GPL-3.0 RosettaSciIO samples and MIT
+SpectroChemPy data samples. They are test fixtures only; reference readers stay
+outside the runtime.
