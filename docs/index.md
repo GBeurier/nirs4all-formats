@@ -16,6 +16,7 @@ formats/bruker-opus
 formats/envi-sli
 formats/galactic-spc
 formats/jcamp-dx
+formats/msa-iso22029
 formats/ocean-optics
 formats/text-readers-001
 DATA_MODEL

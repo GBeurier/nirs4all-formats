@@ -106,6 +106,7 @@ Deliverables:
 - Ocean Optics text and ProcSpec; experimental for SpectraSuite, OceanView,
   Jaz, CRAIC, two-column CSV exports, OceanView ZIP/XML `.ProcSpec` and the
   committed Galactic-layout Ocean Optics `.spc` sample;
+- EMSA/MAS `.msa`; experimental for ISO 22029-style `XY` and `Y` fixtures;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment

@@ -26,6 +26,7 @@ Experimental native readers:
   covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
   NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
+- EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.

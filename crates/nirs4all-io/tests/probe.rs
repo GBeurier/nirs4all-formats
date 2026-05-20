@@ -28,6 +28,17 @@ fn procspec_zip_does_not_probe_as_galactic_spc() {
     assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
 }
 
+#[test]
+fn probes_committed_msa_fixture() {
+    let probes = probe_path(workspace_file(
+        "samples/msa_iso22029/ISO_22029_2022_compliance.msa",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "emsa-mas-msa" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
