@@ -84,8 +84,9 @@ Experimental native readers:
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
   flagged when no reflectance signal is present;
-- SVC/GER SIG (`.sig`), including declared bad fixtures flagged in quality
-  metadata.
+- SVC/GER SIG (`.sig`), including semantic assertions over the committed
+  PDA/laptop/white-reference/matched-overlap fixtures and declared bad
+  fixtures flagged in quality metadata.
 - USGS spectral-library text: SPECPR-style `.asc` wavelength/reflectance
   tables, ECOSTRESS/ASTER `.spectrum.txt` exports and single-column AREF dumps
   with generated index axes.
