@@ -5,7 +5,9 @@ Two output paths:
 1. **JobinYvon XML** — Modern LabSpec 6 / LabRAM exports an XML wrapper around the spectral data, with explicit unit metadata.
 2. **LabSpec text** — Tab/whitespace-separated ASCII (the legacy / "Save As Spectrum" path), with optional per-pixel mapping coordinates.
 
-The native binary formats `.l6s` (single) / `.l6m` (map) are **not openly readable**; no public sample was found.
+The native binary formats `.l6s` (single) / `.l6m` (map) are **not openly readable** in
+the general case; one `.l6m` fixture is now committed (see below) thanks to the
+`ccoverstreet/horiba-raman` repository.
 
 ## Samples
 
@@ -37,6 +39,12 @@ The native binary formats `.l6s` (single) / `.l6m` (map) are **not openly readab
 |---|---|
 | `labspec6_Gd2O3_AlN_map.txt` | Gd₂O₃ in AlN substrate, 2D Raman map export (real material). |
 
+### LabSpec 6 native binary (from [`ccoverstreet/horiba-raman@main/src/example/`](https://github.com/ccoverstreet/horiba-raman/blob/main/src/example/AlN_Gd2O3_indepth.l6m) — MIT)
+
+| File | Size | Notes |
+|---|---|---|
+| `AlN_Gd2O3_indepth.l6m` | 174 KB | Real LabSpec 6 in-depth Raman map of Gd₂O₃ in AlN substrate (binary `.l6m`). Pairs with the `labspec6_Gd2O3_AlN_map.txt` ASCII export above so the binary path can be validated against a known-good text equivalent. |
+
 ## Parser hints
 
 - JobinYvon XML: well-formed LSX XML with `<LSX_Data>`, `<LSX_Tree>`, axis
@@ -50,4 +58,7 @@ The native binary formats `.l6s` (single) / `.l6m` (map) are **not openly readab
   map rows. Locale: `.` decimal in EN, sometimes `,` decimal in FR/DE LabSpec.
 - Reference readers:
   - Python: `rsciio.jobinyvon` (production-quality XML), `spectrochempy.read_labspec()` (text), [`ccoverstreet/horiba-raman`](https://github.com/ccoverstreet/horiba-raman) (mapping text).
-- Native `.l6s` / `.l6m`: **no open reader** — treat as "vendor SDK only".
+- Native `.l6s` / `.l6m`: no documented open reader; the committed
+  `AlN_Gd2O3_indepth.l6m` is a starting point for reverse-engineering the layout
+  against its `labspec6_Gd2O3_AlN_map.txt` ASCII twin, but production parsing
+  still falls back to "vendor SDK only" until a parser ships.

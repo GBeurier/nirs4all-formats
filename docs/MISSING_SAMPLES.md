@@ -1,6 +1,8 @@
 # Missing samples — exact list (format / instrument / version)
 
-Inventory date: 2026-05-18. Cross-referenced against `docs/FORMATS.md` §1–6.
+Inventory date: 2026-05-18, refreshed 2026-05-20 after the public-data sweep
+(see `docs/FORMAT_MATRIX.md` § "Sweep d'echantillons publics (2026-05-20)"
+for the full diff). Cross-referenced against `docs/FORMATS.md` §1–6.
 
 For every format listed in `FORMATS.md`, this file states:
 
@@ -37,7 +39,9 @@ These have a synthetic file matching the documented shape, but no real vendor bi
 | 5 | Vision project DB | NIRS XDS / DS2500 / Vision Air | Metrohm | native project file (post-2010 firmware) | ⚪ | Closed format; only the CSV/Excel export path is public. | A Metrohm Vision Air customer. |
 | 6 | `.spc` (Shimadzu native) | UVProbe UV-1900 / UV-2700 | Shimadzu | proprietary `.spc` (NOT Galactic) | ⚪ | Header magic differs from Galactic; only experimental readers exist (`pyfasma-spc`). | A UVProbe user; vendor support for the binary spec. |
 | 7 | `.pri` project | MicroNIR Pro / MicroNIR OnSite | VIAVI / JDSU | binary project container (post-2018 firmware) | ⚪ | Customer-only; no GitHub mirror. | A VIAVI MicroNIR Pro customer. |
-| 8 | NeoSpectra Scanner real CSV | NeoSpectra Scanner / NeoSpectra Micro | Si-Ware | real customer export (not synthetic) | ⚪ | Customer-only; cloud API behind credentials. | A Si-Ware NeoSpectra customer. |
+| 7a | Real MicroNIR 1700 CSV / XLSX | MicroNIR 1700 EC/ES | VIAVI | real measurement export | ✅ | **Resolved 2026-05-20** — UvA forensic dataset (Figshare 21252300, CC-BY-4.0) ships `K_Avg_MicroNIR.xlsx` and `T_Avg_MicroNIR.xlsx`. | — |
+| 8 | NeoSpectra Scanner single-measurement CSV | NeoSpectra Scanner / NeoSpectra Micro | Si-Ware | real customer **per-measurement** export (one file per scan) | ⚪ | Customer-only; cloud API behind credentials. | A Si-Ware NeoSpectra customer. |
+| 8a | NeoSpectra wide-CSV / XLSX (real, multi-sample) | NeoSpectra Handheld | Si-Ware | real multi-sample database export | ✅ | **Resolved 2026-05-20** — OSSL Woodwell+KSSL slice (Zenodo 13122321) + UvA forensic `K_Avg_NeoSpectra.xlsx` (Figshare 21252300) now ship in `siware_neospectra/`, both CC-BY-4.0. | — |
 | 9 | SiWare API JSON / CSV stream | NeoSpectra Cloud | Spectro Inc. | JSON Web API response payload | ⚪ | API is credential-gated. | A Spectro Inc. customer who can dump an HTTP response. |
 | 10 | `.OUT` | Microtops II Sun Photometer / Aethalometer | Solar Light | real field acquisition (MFR-7 channel layout) | ⚪ | AERONET archive requires login; no GitHub mirror. | AERONET (NASA GSFC) registered access. |
 | 11 | `.SPT` / `.SPU` | UniSpec SC / UniSpec DC | PP Systems | real field acquisition (SC = single channel, DC = dual) | ⚪ | No GitHub fixture in any open-source ecosystem. | A PP Systems UniSpec owner. |
@@ -45,8 +49,9 @@ These have a synthetic file matching the documented shape, but no real vendor bi
 | 13 | FGI HDF5 + XML pairing | (FGI lab spectrometers) | Finnish Geodetic Institute | real FGI-schema HDF5 | ⚪ | Schema is institutional; no public fixture. | A Finnish FGI / NLS researcher. |
 | 14 | UVProbe `.txt` (real) | UV-1900 / UV-2700 | Shimadzu | real customer export | ⚪ | Synthetic only — the actual layout matches Shimadzu docs but no real export was found. | Any UVProbe user. |
 | 15 | JASCO `.txt` Raman export (real) | NRS-4500 / NRS-7500 Raman | JASCO | real Raman text export | ⚪ | Synthetic JASCO V-770 export only — Raman path not exercised. | A JASCO NRS-series owner. |
-| 16 | WiTec `.wip` / `.wid` binary | alpha300 / alpha500 confocal Raman | WiTec | binary project file (any firmware) | 🟡 | Detection/refusal exists, but native decode has no redistributable fixture; only ASCII export is mirrored on GitHub. | A WiTec confocal Raman customer; alpha300 alpha500 owner. |
-| 17 | Horiba LabSpec `.l6s` / `.l6m` binary | LabRAM HR Evolution / LabRAM Odyssey / XploRA | Horiba (Jobin Yvon) | LabSpec 6 native binary | 🟡 | No open reader. ASCII export from "Save As Spectrum / Map" is the practical path. | A Horiba LabRAM customer. |
+| 16 | WiTec `.wip` / `.wid` binary | alpha300 / alpha500 confocal Raman | WiTec | binary project file (any firmware) | ✅ | **Resolved 2026-05-20** — Zenodo 7907659 (ZrO₂ Raman imaging, ODbL v1.0) ships `Sa1-Sa5.wip`; `Sa4.wip` (19 MB, smallest) is committed in `raman_witec/`. Detection magic now validated against a true vendor binary; native decoder still pending. | — |
+| 17 | Horiba LabSpec `.l6m` mapping binary | LabRAM HR Evolution / LabRAM Odyssey / XploRA | Horiba (Jobin Yvon) | LabSpec 6 native binary | ✅ | **Resolved 2026-05-20** — `ccoverstreet/horiba-raman` (MIT) ships `AlN_Gd2O3_indepth.l6m`, paired with its ASCII twin for reverse-engineering. | — |
+| 17a | Horiba LabSpec `.l6s` single-spectrum binary | LabRAM HR Evolution / LabRAM Odyssey / XploRA | Horiba (Jobin Yvon) | LabSpec 6 single-spectrum binary | 🟡 | No open reader and no `.l6s` fixture yet; only `.l6m` (map) is covered. | A Horiba LabRAM customer with a "Save As Spectrum" `.l6s` file. |
 
 ---
 
@@ -62,7 +67,7 @@ These have at least one real sample, but specific instrument or firmware revisio
 | 21 | Thermo Nicolet OMNIC | `.spa` single, `.spg` group (4.7 MB nh4y), `.srs` time-series (GC_Demo 5.7 MB + TGAIR 2.6 MB) | **No `.srsx`** (extended series, newer OMNIC ≥9.7) | `.srsx` files are larger; no small fixture available. SpectroChemPy notes this format is "tricky". |
 | 22 | Perkin Elmer | `.sp` (single spectrum) | **`.fsm` Spotlight imaging** (50 MB available in `specio` but explicitly skipped). No PE Lambda 1050 NIR-specific blocks. | `.fsm` is 50 MB — too large for fixture; explicitly out of scope for v1 anyway per FORMATS.md §2. |
 | 23 | JASCO `.jws` | UV-Vis fluorescence (V-series), CD/HT/Abs (CD spectrometer), IR (V-770) | **No JASCO V-780 NIR-specific blocks**, **no JASCO NRS-series Raman binary** | JASCO V-780 has slightly different binary layout; Raman is a separate `.jws` flavour. |
-| 24 | Foss WinISI / DA / DS3 | Text exports (WinISI / DS3 CSV — synthetic) | **No real WinISI II or DS3 text export from a real instrument** — synthetic only | Foss customers rarely share even text exports publicly. |
+| 24 | Foss WinISI / DA / DS3 | Text exports (WinISI / DS3 CSV — synthetic) + **real Foss XDS Monochromator XM-1000 and NIRSYSTEM-5000 CSV exports** (sensAIfood Cordoba, CC-BY-4.0, **added 2026-05-20**) | **No real WinISI II `.NIR` text export** specifically — covered formats are the XDS / NIRSYSTEM-5000 wide CSV variant. Native `.NIR` binary remains pure-binary and unavailable. | The WinISI text export is the same wide-CSV layout (different metadata header); a real WinISI II export would round out the directory but is functionally equivalent. |
 | 25 | BUCHI NIRCal | `.nir` calibration-transfer file (plant tissue) | **No `.cal` calibration-only files**, **no NIRMaster B-30/N-300 vendor variants** | These ship only with the NIRMaster firmware. |
 | 26 | Avantes AvaSoft 6/7 | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` (mostly transmittance) | **No `.IRR` v6/v7 (legacy absolute irradiance)**, **no `.RMN` Raman v6/v7** | These per-mode variants exist in vendor docs but no open fixture. |
 | 27 | Avantes AvaSoft 8 | `.Raw8`, `.IRR8` | **No `.RWD8` (raw dark)**, **no `.ABS8` / `.TRM8` / `.RFL8` / `.RIR8` / `.RMN8` / `.RMD8`** explicitly — `lightr` does not ship them either | The AvaSoft 8 manual documents all suffixes but only a subset are in `lightr`. |
@@ -77,11 +82,27 @@ These have at least one real sample, but specific instrument or firmware revisio
 
 ---
 
-## Summary
+## Summary (2026-05-20 refresh)
 
-- **151** open sample files cover **34 of 47** format directories with at least one real, verified upstream sample.
-- **14** directories carry only synthetic placeholders — every one of them is a closed-vendor format where the *documented text/CSV export* is the v1 path anyway (so the parser will work as soon as a user contributes a real export).
-- **1** directory (`allotrope_adf/`) has nothing at all — no realistic open fixture exists, and the Allotrope ADF binary is not even a v1 priority per `FORMATS.md` §3.
-- **Critical missing piece without a documented text fallback**: ASD `.ILL` / `.REF` / `.RAW` calibration triplet. Everything else can be unblocked by a single real export from one user with the right hardware.
+- **165** open sample files now cover **38 of 47** format directories with at
+  least one real, verified upstream sample (+4 directories vs the 2026-05-18
+  snapshot: Foss WinISI text exports, real NeoSpectra, real MicroNIR, and the
+  Horiba `.l6m` + WiTec `.wip` binaries).
+- **8** directories now carry only synthetic placeholders (Microtops, MFR,
+  PP Systems, MODTRAN, Metrohm, Shimadzu, Perten, AnIML/FGI/SiWare API/JASCO
+  Raman). Every one of them is a closed-vendor format where the *documented
+  text/CSV export* is the v1 path anyway (so the parser will work as soon as a
+  user contributes a real export).
+- **1** directory (`allotrope_adf/`) has nothing at all — no realistic open
+  fixture exists, and the Allotrope ADF binary is not even a v1 priority per
+  `FORMATS.md` §3.
+- **Critical missing pieces without a documented text fallback**: ASD `.ILL` /
+  `.REF` / `.RAW` calibration triplet, Foss `.NIR/.DA` natifs, Perten DA /
+  Inframatic native, Metrohm Vision Air native, VIAVI `.pri` project, Horiba
+  `.l6s` single-spectrum binary, Bruker OPUS 5/6 legacy, Thermo OMNIC `.srsx`,
+  Shimadzu UVProbe `.spc` native. The 2026-05-20 sweep specifically unblocked
+  Foss text exports, NeoSpectra (real), VIAVI MicroNIR (real), Horiba `.l6m`,
+  WiTec `.wip` and Excel handheld exports — see `FORMAT_MATRIX.md` for sources
+  and licences.
 
 If you can supply a real binary for any row in the 🟡 or ⚪ tables above, drop it into the matching subdirectory and update both that directory's README and the row's status here.
