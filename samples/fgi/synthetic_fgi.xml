@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<FGIMeasurement>
+  <Metadata>
+    <Instrument>FGI-mock</Instrument>
+    <Operator>synthetic</Operator>
+    <Date>2026-05-18</Date>
+  </Metadata>
+  <DataReference path="synthetic_fgi.h5" />
+</FGIMeasurement>

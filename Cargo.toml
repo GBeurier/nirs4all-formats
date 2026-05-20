@@ -1,0 +1,27 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/nirs4all-io-core",
+    "crates/nirs4all-io",
+    "crates/nirs4all-io-capi",
+    "crates/nirs4all-io-cli",
+]
+
+[workspace.package]
+version = "0.1.0-alpha.0"
+edition = "2021"
+license = "MIT"
+authors = ["G. Beurier <beurier@cirad.fr>"]
+repository = "https://github.com/GBeurier/nirs4all-io"
+homepage = "https://github.com/GBeurier/nirs4all-io"
+readme = "README.md"
+
+[workspace.dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+nirs4all-io-core = { path = "crates/nirs4all-io-core" }
+nirs4all-io = { path = "crates/nirs4all-io" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+thiserror = "2.0"

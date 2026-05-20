@@ -1,0 +1,26 @@
+# nirs4all-io
+
+Rust-first NIRS file loading with bindings and conformance tests.
+
+```{toctree}
+:maxdepth: 2
+
+PLAN
+DIRECTIONS
+ROADMAP
+STATUS
+FORMATS
+DATA_MODEL
+CONFORMANCE
+REVERSE_ENGINEERING
+SECURITY
+FIXTURE_GOVERNANCE
+CLI
+VERSIONING
+INTEGRATION_NIRS4ALL
+CI_MATRIX
+LICENSE_MATRIX
+
+bindings/python
+bindings/r
+```

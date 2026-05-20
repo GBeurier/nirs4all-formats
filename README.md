@@ -1,0 +1,74 @@
+# nirs4all-io
+
+Rust-first low-level readers for NIRS and spectroscopy files, with stable
+language bindings and conformance checks against existing reference loaders.
+
+> **Status**: foundation phase. The fixture corpus and format inventory are
+> present; the executable Rust workspace, binding skeletons, CI and roadmap are
+> now in place. Format readers are added one by one behind conformance gates.
+
+## Direction
+
+`nirs4all-io` follows the same product shape as `pls4all`:
+
+- a single low-level core, implemented in Rust;
+- a narrow stable interface for bindings and future C ABI use;
+- thin language bindings for Python and R first;
+- later bindings for JavaScript/WASM, MATLAB/Octave, Android/JNI, Java, C#,
+  Julia, Go, Rust, Ruby, Lua and related targets;
+- parity/conformance tests against reference readers when they exist.
+
+The Rust core is the source of truth. Python and R do not reimplement parsers;
+they expose native records as idiomatic numpy/pandas/sklearn/torch and R data
+structures.
+
+## Repository Layout
+
+```text
+crates/
+  nirs4all-io-core/   # data model, errors, sniffing contracts
+  nirs4all-io/        # Rust facade and reader registry
+  nirs4all-io-capi/   # additive C ABI scaffold
+  nirs4all-io-cli/    # probe/validation CLI
+bindings/
+  python/             # Python package skeleton and compatibility helpers
+  r/                  # R package skeleton
+tools/
+  reverse-lab/        # clean-room reverse-engineering helpers
+samples/              # fixture corpus and per-format provenance
+docs/                 # architecture decisions, roadmap, RTD documentation
+tests/                # future cross-crate conformance/adversarial tests
+```
+
+## Format Scope
+
+The priority set is documented in [`docs/FORMATS.md`](docs/FORMATS.md). Tier A
+starts with CSV/TSV, JCAMP-DX, ASD, SVC/GER, Spectral Evolution, Bruker OPUS,
+Galactic SPC, ENVI SLI, Avantes and Excel. Tier B/C formats follow once the
+core validation and reverse-engineering workflow is stable.
+
+## Development
+
+```bash
+. "$HOME/.cargo/env"
+cargo test --workspace
+cargo run -p nirs4all-io-cli -- probe samples/jcamp_dx/TESTSPEC.DX
+python -m pip install -e tools/reverse-lab -e bindings/python
+python -m pytest tools/reverse-lab/tests bindings/python/tests
+```
+
+The canonical plan is [`docs/ROADMAP.md`](docs/ROADMAP.md). Current progress is
+tracked in [`docs/STATUS.md`](docs/STATUS.md).
+
+## Non-goals
+
+- no chemometrics or modelling algorithms here;
+- no GUI;
+- no parser implementation inside language bindings;
+- no direct import of GPL reference readers into the MIT runtime path.
+
+## License
+
+MIT. Fixture licenses are documented per format under `samples/`. GPL reference
+readers can be used for conformance through isolated subprocesses, not linked
+or imported into the runtime core.

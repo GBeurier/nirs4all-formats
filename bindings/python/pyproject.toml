@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nirs4all-io"
+version = "0.1.0a0"
+description = "Python bindings for the Rust-first nirs4all-io NIRS loader."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "G. Beurier", email = "beurier@cirad.fr" }]
+dependencies = []
+
+[project.optional-dependencies]
+numpy = ["numpy>=1.24"]
+pandas = ["pandas>=2.0"]
+sklearn = ["scikit-learn>=1.3"]
+torch = ["torch>=2.1"]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nirs4all_io"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
