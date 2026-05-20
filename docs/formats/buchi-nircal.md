@@ -16,7 +16,8 @@ The committed fixture carries property names but its numeric property values are
 all zero; those values are exposed as `null` targets to preserve the target
 schema while matching `prospectr::read_nircal()` missing-value semantics. A
 local-only cannabis transfer file exercises the same target path with non-null
-`CBDA` and `THCA` values.
+`CBDA` and `THCA` values. In mixed/non-empty property tables, numeric `0.0`
+targets are preserved as real values instead of being collapsed to `null`.
 
 ## Supported Fixtures
 
