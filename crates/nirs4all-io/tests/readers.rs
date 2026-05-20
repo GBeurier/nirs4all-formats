@@ -2637,6 +2637,29 @@ fn reads_spectral_evolution_sed() {
         .expect("wavelength range");
     assert_eq!(wavelength_range[0].as_f64(), Some(350.0));
     assert_eq!(wavelength_range[1].as_f64(), Some(2500.0));
+    assert_eq!(record.metadata["declared_column_count"].as_u64(), Some(4));
+    assert_json_u64_array(&record.metadata["detector_channels"], &[512, 256, 256]);
+    assert_json_f64_array(
+        &record.metadata["detector_temperatures_reference_celsius"],
+        &[26.14, 8.47, -5.77],
+    );
+    assert_json_f64_array(
+        &record.metadata["detector_temperatures_target_celsius"],
+        &[26.78, 8.54, -6.11],
+    );
+    assert_json_f64_array(
+        &record.metadata["integration_time_reference_ms"],
+        &[50.0, 50.0, 30.0],
+    );
+    assert_json_f64_array(
+        &record.metadata["integration_time_target_ms"],
+        &[100.0, 50.0, 30.0],
+    );
+    assert_json_f64_array(&record.metadata["battery_voltages_volts"], &[7.49, 7.40]);
+    assert_json_u64_array(&record.metadata["scan_averages"], &[10, 10]);
+    assert_json_str_array(&record.metadata["dark_mode"], &["AUTO", "AUTO"]);
+    assert_json_str_array(&record.metadata["foreoptic"], &["PROBE", "PROBE"]);
+    assert_json_str_array(&record.metadata["foreoptic_signal_units"], &["DN", "DN"]);
     assert_sed_signal_units(record, &["DN", "DN", "%"]);
     assert!(!record.metadata.contains_key("gps_latitude"));
 
@@ -2706,6 +2729,18 @@ fn flags_spectral_evolution_sed_without_reflectance() {
         Some("direct_energy")
     );
     assert_eq!(records[0].metadata["point_count"].as_u64(), Some(2_151));
+    assert_eq!(
+        records[0].metadata["declared_column_count"].as_u64(),
+        Some(3)
+    );
+    assert_json_f64_array(
+        &records[0].metadata["integration_time_reference_ms"],
+        &[20.0, 32.0, 27.0],
+    );
+    assert_json_f64_array(
+        &records[0].metadata["integration_time_target_ms"],
+        &[50.0, 50.0, 30.0],
+    );
 
     let vendor = &records[0].metadata["vendor"];
     assert_eq!(
@@ -2744,6 +2779,15 @@ fn reads_spectral_evolution_sed_fraction_reflectance_units_and_gps() {
     assert_eq!(record.metadata["gps_satellites_visible"].as_u64(), Some(11));
     assert!((record.metadata["gps_latitude"].as_f64().unwrap() - 33.52465).abs() < 0.000001);
     assert!((record.metadata["gps_longitude"].as_f64().unwrap() + 116.16258).abs() < 0.000001);
+    assert_json_f64_array(
+        &record.metadata["detector_temperatures_reference_celsius"],
+        &[43.22, 8.94, -4.97],
+    );
+    assert_json_f64_array(
+        &record.metadata["integration_time_target_ms"],
+        &[10.0, 16.0, 16.0],
+    );
+    assert_json_str_array(&record.metadata["foreoptic"], &["PROBE", "PROBE"]);
     assert_sed_signal_units(record, &["DN", "DN", "1"]);
 
     let reference = record.signals.get("norm__dn_ref_").expect("DN reference");
@@ -2763,6 +2807,33 @@ fn assert_sed_signal_units(record: &nirs4all_io::SpectralRecord, expected: &[&st
     assert_eq!(units.len(), expected.len());
     for (unit, expected) in units.iter().zip(expected) {
         assert_eq!(unit.as_str(), Some(*expected));
+    }
+}
+
+fn assert_json_f64_array(value: &serde_json::Value, expected: &[f64]) {
+    let array = value.as_array().expect("json f64 array");
+    assert_eq!(array.len(), expected.len());
+    for (actual, expected) in array.iter().zip(expected) {
+        assert!(
+            (actual.as_f64().expect("f64") - expected).abs() < 0.000001,
+            "actual={actual:?} expected={expected}"
+        );
+    }
+}
+
+fn assert_json_u64_array(value: &serde_json::Value, expected: &[u64]) {
+    let array = value.as_array().expect("json u64 array");
+    assert_eq!(array.len(), expected.len());
+    for (actual, expected) in array.iter().zip(expected) {
+        assert_eq!(actual.as_u64(), Some(*expected));
+    }
+}
+
+fn assert_json_str_array(value: &serde_json::Value, expected: &[&str]) {
+    let array = value.as_array().expect("json string array");
+    assert_eq!(array.len(), expected.len());
+    for (actual, expected) in array.iter().zip(expected) {
+        assert_eq!(actual.as_str(), Some(*expected));
     }
 }
 
