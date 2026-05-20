@@ -4,6 +4,11 @@
     {
       "format": "svc-ger-sig",
       "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
+        "source_signal_units",
         "vendor"
       ],
       "quality_flags": [],
