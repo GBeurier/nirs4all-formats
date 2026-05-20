@@ -80,6 +80,10 @@ const CASES: &[(&str, &str)] = &[
     ("jcamp_fid_ntuples", "samples/jcamp_dx/TESTFID.DX"),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
+    (
+        "galactic_spc_ocean_optics",
+        "samples/ocean_optics/OceanOptics.spc",
+    ),
     ("galactic_spc_nir_multi", "samples/galactic_spc/nir.spc"),
     ("galactic_spc_m_xyxy", "samples/galactic_spc/m_xyxy.spc"),
     (

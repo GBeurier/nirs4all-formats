@@ -536,6 +536,26 @@ fn reads_galactic_spc_explicit_x_axis() {
 }
 
 #[test]
+fn reads_ocean_optics_spc_with_galactic_spc_layout() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/OceanOptics.spc")).expect("open spc");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "galactic-spc");
+    let signal = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(signal.axis.values.len(), 3_648);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.signal_type, SignalType::Transmittance);
+    assert!((signal.axis.values[0] - 176.36041259765625).abs() < 0.000001);
+    assert!((signal.axis.values[3_647] - 893.6943359375).abs() < 0.000001);
+    assert!((signal.values[0] - 0.0).abs() < 0.000001);
+    assert!((signal.values[3_647] - 119.4251708984375).abs() < 0.000001);
+}
+
+#[test]
 fn reads_galactic_spc_multi_common_axis() {
     let records = open_path(workspace_file("samples/galactic_spc/nir.spc")).expect("open spc");
 
