@@ -8,8 +8,17 @@ The TriVista reader covers the committed RosettaSciIO `.tvf` Raman fixtures:
 - non-uniform wavelength axes from `xDim/Calibration@ValueArray`;
 - one `SpectralRecord` per frame for single spectra, time series, line scans
   and maps;
+- `xDim@Length` is checked against `Calibration@ValueArray`, and `Frame@xDim`
+  is checked against the resolved spectral axis length;
+- spectral axis metadata keeps the calibration label, normalized unit,
+  display unit, calibration type and laser wavelength when present;
 - `InfoSerialized` X/Y navigation groups mapped to `spatial_x`,
-  `spatial_y`, frame indices and `um` units;
+  `spatial_y` and frame indices; units are preserved when present and reported
+  as `unknown` in the current RosettaSciIO fixtures where the group has no unit
+  item;
+- `InfoSerialized` detector fields and one-or-many spectrometer groups are
+  promoted to metadata, including serial/model/stage/focal length/groove
+  density/order arrays for triple-stage setups;
 - Windows FILETIME-style frame timestamps mapped to `time_filetime_100ns` and
   `elapsed_time_seconds`;
 - Step-and-Glue files emit the primary glued spectrum plus each child document
@@ -38,16 +47,20 @@ declares the point count.
 
 The `InfoSerialized` attribute is escaped XML. The current reader decodes the
 top-level `Experiment`, `Detector`, `Calibration`, `X-Axis` and `Y-Axis`
-groups. Hardware filtering and richer spectrometer/objective metadata are left
-to a later conformance pass.
+groups plus numbered `Spectrometer` groups. The spectral axis is not assumed to
+be wavelength-only: `Calibration@Unit` drives the axis kind where possible.
+Detector temperature is emitted as `detector_temperature_c`; signal units are
+only inferred from `DataLabel` when it clearly denotes counts.
+Objective metadata and unsupported hardware-specific branches are left to a
+later conformance pass.
 
 ## Remaining Gaps
 
 The committed RosettaSciIO corpus is fully covered by goldens. The remaining
 partial status is not a sample blocker: it is a conformance and metadata task,
-mainly full-array comparison against `rsciio.trivista`, richer hardware /
-objective metadata and an explicit scope decision for variants outside this
-fixture corpus.
+mainly full-array comparison against `rsciio.trivista`, richer objective and
+hardware-branch metadata, and an explicit scope decision for variants outside
+this fixture corpus.
 
 ## Reference Readers
 

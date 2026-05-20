@@ -64,6 +64,18 @@ struct NavAxis {
     from: f64,
     step: f64,
     points: usize,
+    unit: String,
+}
+
+struct SignalAxis {
+    values: Vec<f64>,
+    unit: String,
+    kind: AxisKind,
+    display_unit: Option<String>,
+    label: String,
+    calibration_type: Option<String>,
+    laser_wave: Option<f64>,
+    xdim_length: usize,
 }
 
 fn read_trivista_tvf(
@@ -132,7 +144,25 @@ fn collect_document_records(
     base_metadata.insert("document_depth".to_string(), json!(depth));
     base_metadata.insert("child_document_count".to_string(), json!(child_count));
     base_metadata.insert("document_frame_count".to_string(), json!(frames.len()));
-    base_metadata.insert("spectral_point_count".to_string(), json!(axis.len()));
+    base_metadata.insert("spectral_point_count".to_string(), json!(axis.values.len()));
+    base_metadata.insert("xdim_length".to_string(), json!(axis.xdim_length));
+    base_metadata.insert("spectral_axis_label".to_string(), json!(&axis.label));
+    base_metadata.insert("spectral_axis_unit".to_string(), json!(&axis.unit));
+    if let Some(display_unit) = &axis.display_unit {
+        base_metadata.insert(
+            "spectral_axis_display_unit".to_string(),
+            json!(display_unit),
+        );
+    }
+    if let Some(calibration_type) = &axis.calibration_type {
+        base_metadata.insert(
+            "spectral_axis_calibration_type".to_string(),
+            json!(calibration_type),
+        );
+    }
+    if let Some(laser_wave) = axis.laser_wave {
+        base_metadata.insert("spectral_axis_laser_wave".to_string(), json!(laser_wave));
+    }
     insert_attr(&mut base_metadata, document, "Label", "document_label");
     insert_attr(&mut base_metadata, document, "DataLabel", "data_label");
     insert_attr(&mut base_metadata, document, "DocType", "document_type");
@@ -147,14 +177,22 @@ fn collect_document_records(
         .get("DataLabel")
         .and_then(|value| signal_unit(value));
     let signal_type = trivista_signal_type(document.attrs.get("Label"), signal_unit.as_deref());
+    let frame_count = frames.len();
     let first_timestamp = frames.first().map(|frame| frame.timestamp).unwrap_or(0);
 
     for (frame_index, frame) in frames.into_iter().enumerate() {
-        if frame.values.len() != axis.len() {
+        if frame.values.len() != axis.values.len() {
             return Err(Error::InvalidRecord(format!(
                 "TriVista TVF document {current_document_index} frame {frame_index} has {} points but axis has {}",
                 frame.values.len(),
-                axis.len()
+                axis.values.len()
+            )));
+        }
+        if frame.x_dim != axis.values.len() {
+            return Err(Error::InvalidRecord(format!(
+                "TriVista TVF document {current_document_index} frame {frame_index} declares xDim={} but axis has {}",
+                frame.x_dim,
+                axis.values.len()
             )));
         }
         let mut metadata = base_metadata.clone();
@@ -167,16 +205,16 @@ fn collect_document_records(
             json!(elapsed_filetime_seconds(frame.timestamp, first_timestamp)),
         );
         metadata.insert("elapsed_time_unit".to_string(), json!("s"));
-        insert_navigation_values(&mut metadata, frame_index, &nav_x, &nav_y);
+        insert_navigation_values(&mut metadata, frame_index, frame_count, &nav_x, &nav_y);
 
         out.push(single_signal_record(
             FORMAT,
             reader_name,
             source.clone(),
             SingleSignalSpec {
-                axis_values: axis.clone(),
-                axis_unit: "nm".to_string(),
-                axis_kind: AxisKind::Wavelength,
+                axis_values: axis.values.clone(),
+                axis_unit: axis.unit.clone(),
+                axis_kind: axis.kind.clone(),
                 values: frame.values,
                 signal_name: "intensity".to_string(),
                 signal_type: signal_type.clone(),
@@ -216,21 +254,54 @@ struct FrameData {
     values: Vec<f64>,
 }
 
-fn parse_signal_axis(document: &XmlNode) -> Result<Vec<f64>> {
+fn parse_signal_axis(document: &XmlNode) -> Result<SignalAxis> {
     let x_dim = direct_child(document, "xDim")
         .ok_or_else(|| Error::InvalidRecord("TriVista TVF document has no xDim".to_string()))?;
-    let calibration = direct_child(x_dim, "Calibration")
-        .ok_or_else(|| Error::InvalidRecord("TriVista TVF xDim has no Calibration".to_string()))?;
-    let value_array = attr(calibration, "ValueArray").ok_or_else(|| {
-        Error::InvalidRecord("TriVista TVF Calibration has no ValueArray".to_string())
-    })?;
-    let values = parse_value_array(value_array)?;
-    if values.is_empty() {
-        return Err(Error::InvalidRecord(
-            "TriVista TVF spectral axis is empty".to_string(),
-        ));
+    let xdim_length = attr(x_dim, "Length")
+        .and_then(|value| value.parse::<usize>().ok())
+        .ok_or_else(|| Error::InvalidRecord("TriVista TVF xDim has no Length".to_string()))?;
+    for calibration in x_dim
+        .children
+        .iter()
+        .filter(|node| node.name == "Calibration")
+    {
+        let Some(value_array) = attr(calibration, "ValueArray") else {
+            continue;
+        };
+        let values = parse_value_array(value_array)?;
+        if values.is_empty() {
+            continue;
+        }
+        if values.len() != xdim_length {
+            return Err(Error::InvalidRecord(format!(
+                "TriVista TVF xDim Length={xdim_length} but Calibration ValueArray contains {} points",
+                values.len()
+            )));
+        }
+        let raw_unit = attr(calibration, "Unit").unwrap_or("Nanometer");
+        let unit = normalize_axis_unit(raw_unit);
+        let label = attr(calibration, "Label")
+            .filter(|value| !value.trim().is_empty())
+            .map(ToString::to_string)
+            .unwrap_or_else(|| default_axis_label(&unit).to_string());
+        return Ok(SignalAxis {
+            values,
+            kind: axis_kind_for_unit(&unit),
+            unit,
+            display_unit: attr(calibration, "DisplayUnit")
+                .filter(|value| !value.trim().is_empty())
+                .map(ToString::to_string),
+            label,
+            calibration_type: attr(calibration, "Type")
+                .filter(|value| !value.trim().is_empty())
+                .map(ToString::to_string),
+            laser_wave: attr(calibration, "LaserWave").and_then(parse_number),
+            xdim_length,
+        });
     }
-    Ok(values)
+    Err(Error::InvalidRecord(
+        "TriVista TVF spectral axis is empty".to_string(),
+    ))
 }
 
 fn parse_frames(document: &XmlNode) -> Result<Vec<FrameData>> {
@@ -282,6 +353,34 @@ fn parse_value_array(value_array: &str) -> Result<Vec<f64>> {
         )));
     }
     Ok(values)
+}
+
+fn normalize_axis_unit(unit: &str) -> String {
+    match unit.trim().to_ascii_lowercase().as_str() {
+        "nanometer" | "nanometers" | "nm" => "nm".to_string(),
+        "1/cm" | "cm-1" | "wavenumber" => "cm-1".to_string(),
+        "" => "index".to_string(),
+        _ => unit.trim().to_string(),
+    }
+}
+
+fn axis_kind_for_unit(unit: &str) -> AxisKind {
+    match unit {
+        "nm" => AxisKind::Wavelength,
+        "cm-1" => AxisKind::Wavenumber,
+        _ => AxisKind::Index,
+    }
+}
+
+fn default_axis_label(unit: &str) -> &'static str {
+    match axis_kind_for_unit(unit) {
+        AxisKind::Wavelength => "Wavelength",
+        AxisKind::Wavenumber => "Wavenumber",
+        AxisKind::Frequency => "Frequency",
+        AxisKind::Energy => "Energy",
+        AxisKind::Time => "Time",
+        AxisKind::Index => "Index",
+    }
 }
 
 fn parse_info_groups(
@@ -359,7 +458,27 @@ fn nav_axis_from_group(group: Option<&BTreeMap<String, String>>) -> Option<NavAx
         from: parse_number(group.get("From")?)?,
         step: parse_number(group.get("Step")?)?,
         points: group.get("Points")?.parse::<usize>().ok()?,
+        unit: nav_axis_unit(group),
     })
+}
+
+fn nav_axis_unit(group: &BTreeMap<String, String>) -> String {
+    let unit = ["Unit", "Units", "DisplayUnit", "Display Unit"]
+        .iter()
+        .find_map(|key| group.get(*key))
+        .map(String::as_str)
+        .unwrap_or("unknown");
+    normalize_spatial_unit(unit)
+}
+
+fn normalize_spatial_unit(unit: &str) -> String {
+    match unit.trim().to_ascii_lowercase().as_str() {
+        "micrometer" | "micrometers" | "micron" | "microns" | "um" | "µm" => "um".to_string(),
+        "millimeter" | "millimeters" | "mm" => "mm".to_string(),
+        "nanometer" | "nanometers" | "nm" => "nm".to_string(),
+        "unknown" | "" => "unknown".to_string(),
+        _ => unit.trim().to_string(),
+    }
 }
 
 fn insert_group_metadata(
@@ -403,7 +522,57 @@ fn insert_group_metadata(
         groups,
         "Detector",
         "Detector_Temperature",
-        "detector_temperature",
+        "detector_temperature_c",
+    );
+    insert_group_string(metadata, groups, "Detector", "Name", "detector_name");
+    insert_group_string(
+        metadata,
+        groups,
+        "Detector",
+        "Serialnumber",
+        "detector_serial_number",
+    );
+    insert_group_string(
+        metadata,
+        groups,
+        "Detector",
+        "Detector_Size",
+        "detector_size",
+    );
+    insert_group_string(
+        metadata,
+        groups,
+        "Detector",
+        "ADC__Readout_Port",
+        "detector_adc_readout_port",
+    );
+    insert_group_string(
+        metadata,
+        groups,
+        "Detector",
+        "ADC__Rate_Resolution",
+        "detector_adc_rate_resolution",
+    );
+    insert_group_number(
+        metadata,
+        groups,
+        "Detector",
+        "ADC__Gain",
+        "detector_adc_gain",
+    );
+    insert_group_number(
+        metadata,
+        groups,
+        "Detector",
+        "Clearing__No_of_Cleans",
+        "detector_clearing_count",
+    );
+    insert_group_string(
+        metadata,
+        groups,
+        "Detector",
+        "Region_of_Interests",
+        "detector_roi",
     );
     insert_group_number(
         metadata,
@@ -419,6 +588,7 @@ fn insert_group_metadata(
         "Laser_Wavelength",
         "laser_wavelength_nm",
     );
+    insert_spectrometer_metadata(metadata, groups);
 }
 
 fn insert_group_string(
@@ -451,6 +621,150 @@ fn insert_group_number(
     }
 }
 
+fn insert_spectrometer_metadata(
+    metadata: &mut BTreeMap<String, Value>,
+    groups: &BTreeMap<String, BTreeMap<String, String>>,
+) {
+    let spectrometers = groups
+        .iter()
+        .filter_map(|(name, group)| {
+            if group.is_empty() {
+                None
+            } else {
+                spectrometer_group_index(name).map(|index| (index, group))
+            }
+        })
+        .collect::<BTreeMap<_, _>>()
+        .into_values()
+        .collect::<Vec<_>>();
+    if spectrometers.is_empty() {
+        return;
+    }
+
+    metadata.insert("spectrometer_count".to_string(), json!(spectrometers.len()));
+    insert_first_spectrometer_string(metadata, &spectrometers, "Serialnumber", "serial_number");
+    insert_first_spectrometer_string(metadata, &spectrometers, "Model", "model");
+    insert_first_spectrometer_number(metadata, &spectrometers, "Stage_Number", "stage_number");
+    insert_first_spectrometer_number(metadata, &spectrometers, "Focallength", "focal_length_mm");
+    insert_first_spectrometer_number(
+        metadata,
+        &spectrometers,
+        "Inclusion_Angle",
+        "inclusion_angle",
+    );
+    insert_first_spectrometer_number(metadata, &spectrometers, "Detector_Angle", "detector_angle");
+    insert_first_spectrometer_string(metadata, &spectrometers, "Groove_Density", "groove_density");
+    insert_first_spectrometer_number(metadata, &spectrometers, "Order", "order");
+
+    insert_spectrometer_string_array(
+        metadata,
+        &spectrometers,
+        "Serialnumber",
+        "spectrometer_serial_numbers",
+    );
+    insert_spectrometer_string_array(metadata, &spectrometers, "Model", "spectrometer_models");
+    insert_spectrometer_number_array(
+        metadata,
+        &spectrometers,
+        "Stage_Number",
+        "spectrometer_stage_numbers",
+    );
+    insert_spectrometer_number_array(
+        metadata,
+        &spectrometers,
+        "Focallength",
+        "spectrometer_focal_lengths_mm",
+    );
+    insert_spectrometer_number_array(
+        metadata,
+        &spectrometers,
+        "Inclusion_Angle",
+        "spectrometer_inclusion_angles",
+    );
+    insert_spectrometer_number_array(
+        metadata,
+        &spectrometers,
+        "Detector_Angle",
+        "spectrometer_detector_angles",
+    );
+    insert_spectrometer_string_array(
+        metadata,
+        &spectrometers,
+        "Groove_Density",
+        "spectrometer_groove_densities",
+    );
+    insert_spectrometer_number_array(metadata, &spectrometers, "Order", "spectrometer_orders");
+}
+
+fn spectrometer_group_index(name: &str) -> Option<usize> {
+    let suffix = name.strip_prefix("Spectrometer")?;
+    if suffix.is_empty() {
+        Some(1)
+    } else {
+        suffix.parse::<usize>().ok()
+    }
+}
+
+fn insert_first_spectrometer_string(
+    metadata: &mut BTreeMap<String, Value>,
+    spectrometers: &[&BTreeMap<String, String>],
+    key: &str,
+    suffix: &str,
+) {
+    if let Some(value) = spectrometers.first().and_then(|group| group.get(key)) {
+        if !value.is_empty() {
+            metadata.insert(format!("spectrometer_{suffix}"), json!(value));
+        }
+    }
+}
+
+fn insert_first_spectrometer_number(
+    metadata: &mut BTreeMap<String, Value>,
+    spectrometers: &[&BTreeMap<String, String>],
+    key: &str,
+    suffix: &str,
+) {
+    if let Some(value) = spectrometers
+        .first()
+        .and_then(|group| group.get(key))
+        .and_then(|value| parse_number(value))
+    {
+        metadata.insert(format!("spectrometer_{suffix}"), json!(value));
+    }
+}
+
+fn insert_spectrometer_string_array(
+    metadata: &mut BTreeMap<String, Value>,
+    spectrometers: &[&BTreeMap<String, String>],
+    key: &str,
+    metadata_key: &str,
+) {
+    let values = spectrometers
+        .iter()
+        .filter_map(|group| group.get(key))
+        .filter(|value| !value.is_empty())
+        .collect::<Vec<_>>();
+    if !values.is_empty() {
+        metadata.insert(metadata_key.to_string(), json!(values));
+    }
+}
+
+fn insert_spectrometer_number_array(
+    metadata: &mut BTreeMap<String, Value>,
+    spectrometers: &[&BTreeMap<String, String>],
+    key: &str,
+    metadata_key: &str,
+) {
+    let values = spectrometers
+        .iter()
+        .filter_map(|group| group.get(key))
+        .filter_map(|value| parse_number(value))
+        .collect::<Vec<_>>();
+    if !values.is_empty() {
+        metadata.insert(metadata_key.to_string(), json!(values));
+    }
+}
+
 fn insert_nav_axis_metadata(
     metadata: &mut BTreeMap<String, Value>,
     axis_name: &str,
@@ -460,13 +774,14 @@ fn insert_nav_axis_metadata(
         metadata.insert(format!("spatial_{axis_name}_from"), json!(axis.from));
         metadata.insert(format!("spatial_{axis_name}_step"), json!(axis.step));
         metadata.insert(format!("spatial_{axis_name}_points"), json!(axis.points));
-        metadata.insert(format!("spatial_{axis_name}_unit"), json!("um"));
+        metadata.insert(format!("spatial_{axis_name}_unit"), json!(&axis.unit));
     }
 }
 
 fn insert_navigation_values(
     metadata: &mut BTreeMap<String, Value>,
     frame_index: usize,
+    frame_count: usize,
     nav_x: &Option<NavAxis>,
     nav_y: &Option<NavAxis>,
 ) {
@@ -484,8 +799,8 @@ fn insert_navigation_values(
                 "spatial_y".to_string(),
                 json!(y_axis.from + y_axis.step * y_index as f64),
             );
-            metadata.insert("spatial_x_unit".to_string(), json!("um"));
-            metadata.insert("spatial_y_unit".to_string(), json!("um"));
+            metadata.insert("spatial_x_unit".to_string(), json!(&x_axis.unit));
+            metadata.insert("spatial_y_unit".to_string(), json!(&y_axis.unit));
         }
         (Some(x_axis), None) => {
             metadata.insert("spatial_x_index".to_string(), json!(frame_index));
@@ -493,7 +808,7 @@ fn insert_navigation_values(
                 "spatial_x".to_string(),
                 json!(x_axis.from + x_axis.step * frame_index as f64),
             );
-            metadata.insert("spatial_x_unit".to_string(), json!("um"));
+            metadata.insert("spatial_x_unit".to_string(), json!(&x_axis.unit));
         }
         (None, Some(y_axis)) => {
             metadata.insert("spatial_y_index".to_string(), json!(frame_index));
@@ -501,21 +816,21 @@ fn insert_navigation_values(
                 "spatial_y".to_string(),
                 json!(y_axis.from + y_axis.step * frame_index as f64),
             );
-            metadata.insert("spatial_y_unit".to_string(), json!("um"));
+            metadata.insert("spatial_y_unit".to_string(), json!(&y_axis.unit));
         }
         (None, None) => {
-            metadata.insert("time_index".to_string(), json!(frame_index));
+            if frame_count > 1 {
+                metadata.insert("time_index".to_string(), json!(frame_index));
+            }
         }
     }
 }
 
 fn signal_unit(data_label: &str) -> Option<String> {
-    if data_label.eq_ignore_ascii_case("counts") {
+    if data_label.to_ascii_lowercase().contains("count") {
         Some("counts".to_string())
-    } else if data_label.trim().is_empty() {
-        None
     } else {
-        Some(data_label.trim().to_string())
+        None
     }
 }
 

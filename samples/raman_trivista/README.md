@@ -24,5 +24,10 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/trivista/`](https://gith
 - Current native reader: XML frame payloads, wavelength `ValueArray`, X/Y
   navigation from `InfoSerialized`, timestamps and Step-and-Glue child
   documents are covered.
+- `xDim@Length`, `Frame@xDim`, calibration label/unit/display/type/laser wave,
+  detector fields and numbered spectrometer groups are asserted by semantic
+  tests and goldens.
+- The RosettaSciIO X/Y navigation groups do not carry a unit item; the native
+  reader therefore records `spatial_*_unit = unknown` for those fixtures.
 - Step-and-glue / multi-spectrometer files contain disjoint X axes that the
   parser must keep separate (similar to `.spc` -XYXY layout).
