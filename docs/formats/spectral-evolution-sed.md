@@ -17,6 +17,9 @@ Implemented:
 - DN/reference/target columns typed as `raw_counts`;
 - explicit warning and quality flag when the file contains only DN channels and
   no reflectance signal.
+- parseable GPS latitude/longitude/altitude, acquisition date/time, GPS time
+  and satellite counts promoted to canonical top-level metadata while the raw
+  header remains preserved under `vendor`.
 
 ## Fixture Coverage
 
@@ -24,7 +27,7 @@ Implemented:
 |---|---|---|
 | `1566060_09506_working.sed` | PSR+3500 DN + reflectance | 2151-point axis, raw DN reference/target plus reflectance |
 | `1566060_15025_not_working.sed` | broken-but-valid DN-only export | 2151-point axis, two raw DN signals, `missing_reflectance_signal` quality flag |
-| `serbinsh_cvars_grape_leaf.sed` | PSR-3500 grape-leaf reflectance acquisition | 2151-point axis, firmware/header drift coverage |
+| `serbinsh_cvars_grape_leaf.sed` | PSR-3500 grape-leaf reflectance acquisition | 2151-point axis, firmware/header drift coverage, canonical GPS/date/time metadata |
 
 The DN-only fixture remains readable because it contains valid spectral raw
 channels. It is not promoted to reflectance: downstream users must handle the
@@ -34,8 +37,7 @@ workflow.
 ## Known Gaps
 
 - SR-3500 / SR-6500 firmware-specific headers remain under-covered.
-- GPS/date/unit fields are preserved as vendor metadata but not promoted to a
-  canonical location.
+- Unit fields beyond signal units are still preserved as vendor metadata.
 - The reader does not reconstruct reflectance from DN-only acquisitions.
 - Automated conformance reports against `spectrolab` / `specdal` are still
   pending in the reverse-engineering lab.
