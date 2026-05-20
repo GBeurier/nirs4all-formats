@@ -1,0 +1,137 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "bruker-opus",
+      "metadata_keys": [
+        "bruker_opus",
+        "bruker_opus_history",
+        "bruker_opus_params",
+        "bruker_opus_signal_params"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::bruker_opus",
+      "record_signal_type": "absorbance",
+      "signal_count": 7,
+      "signals": [
+        {
+          "axis_first": 11540.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 3948.0,
+          "axis_len": 1899,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0714,
+          "value_last": 0.797975,
+          "value_sum": 441.797747,
+          "values_len": 1899
+        },
+        {
+          "axis_first": 11543.418108,
+          "axis_kind": "index",
+          "axis_last": 3947.130591,
+          "axis_len": 1862,
+          "axis_order": "descending",
+          "axis_unit": "index",
+          "name": "match",
+          "role": "Match",
+          "signal_type": "preprocessed",
+          "unit": null,
+          "value_first": 0.649707,
+          "value_last": 0.656174,
+          "value_sum": 1216.291799,
+          "values_len": 1862
+        },
+        {
+          "axis_first": 11543.418108,
+          "axis_kind": "index",
+          "axis_last": 3947.130591,
+          "axis_len": 1862,
+          "axis_order": "descending",
+          "axis_unit": "index",
+          "name": "match_2ch",
+          "role": "Match",
+          "signal_type": "preprocessed",
+          "unit": null,
+          "value_first": 0.002647,
+          "value_last": 0.002334,
+          "value_sum": 4.716891,
+          "values_len": 1862
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 15043.0,
+          "axis_len": 15044,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "reference_interferogram",
+          "role": "Reference Interferogram",
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": 0.001802,
+          "value_last": 0.001829,
+          "value_sum": 27.291961,
+          "values_len": 15044
+        },
+        {
+          "axis_first": 11559.745432,
+          "axis_kind": "wavenumber",
+          "axis_last": 3938.966929,
+          "axis_len": 1868,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "reference_spectrum",
+          "role": "Reference Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.002206,
+          "value_last": 0.026484,
+          "value_sum": 66.89204,
+          "values_len": 1868
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 15043.0,
+          "axis_len": 15044,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "sample_interferogram",
+          "role": "Sample Interferogram",
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": 0.000377,
+          "value_last": 0.000384,
+          "value_sum": 5.74978,
+          "values_len": 15044
+        },
+        {
+          "axis_first": 11543.418108,
+          "axis_kind": "wavenumber",
+          "axis_last": 3947.130591,
+          "axis_len": 1862,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "sample_spectrum",
+          "role": "Sample Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.001213,
+          "value_last": 0.00293,
+          "value_sum": 18.986221,
+          "values_len": 1862
+        }
+      ],
+      "source_sha256": "9a0367f64b2c5cf7596b21a8994bc0e67545b2ae53188b0efd21c080df3aaaa6",
+      "target_keys": [],
+      "warnings": [
+        "opus_data_block_26_has_no_matching_status_block"
+      ]
+    }
+  ]
+}

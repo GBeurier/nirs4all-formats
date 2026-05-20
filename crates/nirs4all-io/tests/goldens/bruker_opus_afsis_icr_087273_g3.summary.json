@@ -1,0 +1,87 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "bruker-opus",
+      "metadata_keys": [
+        "bruker_opus",
+        "bruker_opus_history",
+        "bruker_opus_params",
+        "bruker_opus_signal_params"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::bruker_opus",
+      "record_signal_type": "absorbance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 7498.059202,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.767596,
+          "axis_len": 3578,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.187611,
+          "value_last": 1.410878,
+          "value_sum": 2248.492011,
+          "values_len": 3578
+        },
+        {
+          "axis_first": 7498.059202,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.767596,
+          "axis_len": 3578,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "reference_spectrum",
+          "role": "Reference Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.016631,
+          "value_last": 0.029626,
+          "value_sum": 1067.480034,
+          "values_len": 3578
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 28947.0,
+          "axis_len": 28948,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "sample_interferogram",
+          "role": "Sample Interferogram",
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": 0.000038,
+          "value_last": 2e-6,
+          "value_sum": 1.4252,
+          "values_len": 28948
+        },
+        {
+          "axis_first": 7498.059202,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.767596,
+          "axis_len": 3578,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "sample_spectrum",
+          "role": "Sample Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.010797,
+          "value_last": 0.00115,
+          "value_sum": 243.437883,
+          "values_len": 3578
+        }
+      ],
+      "source_sha256": "f871047a1574db987a69fdfc07a889276fa9c2955341ae4d5defc4928e23c714",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

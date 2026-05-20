@@ -37,6 +37,9 @@ Proprietary, reverse-engineered, block-based format. Files have **no fixed exten
 
 - Detect by header magic: bytes 0-3 are `0a 0a fe fe` (the OPUS magic for newer files); some older files start with `0a 0a 1a 1a`. Never route on the extension alone.
 - Coverage now spans **OPUS 7.x / 8.x** (spectral-cockpit, opusreader, brukeropus) and **Bruker MPA/Tensor soils workflow** (cran/soil.spec, AfSIS). OPUS 5.x / 6.x legacy archives remain the only documented gap.
+- Every committed OPUS fixture in this directory is included in the golden
+  summary suite; selected files also have semantic tests for signals and
+  reference-reader anchor values.
 - Reference readers:
   - R: [`opusreader2`](https://github.com/spectral-cockpit/opusreader2) (production-quality, actively maintained)
   - Python: [`brukeropusreader`](https://github.com/qedsoftware/brukeropusreader), [`brukeropus`](https://github.com/joshduran/brukeropus), [`opusFC`](https://stuart-cls.github.io/python-opusfc-dist/), [`spectrochempy.read_opus()`](https://www.spectrochempy.fr/reference/generated/spectrochempy.read_opus.html). Coverage and completeness vary across readers.

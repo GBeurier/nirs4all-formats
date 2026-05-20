@@ -14,7 +14,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | AVS8 `.Raw8/.IRR8` fixture-backed | partiel | lightr, manuel AvaSoft |
 | Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | wave-table mono/multi-colonnes, irradiance deux-colonnes, AvaSoft 8 text | fait | pandas, read.table |
 | Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS | fait | pandas, read.table |
-| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | OPUS 7/8 (4 lecteurs) + Bruker MPA AfSIS soils; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
+| Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | corpus OPUS 7/8 complet golden-backed (4 lecteurs) + Bruker MPA AfSIS soils; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
 | ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid); `.slb` non fixture | fait | spectral, RStoolbox, pysptools |
 | ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan`, `.mat` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN + local Indian Pines MAT point extraction | partiel | spectral, rasterio, scipy |
@@ -75,7 +75,7 @@ passer le format a `fait`.
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`; les samples `.asd` actuels ne contiennent pas les compagnons calibration, et le `.REF` present dans `samples/avantes/` est Avantes, pas ASD. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS` et autres modes binaires legacy puis comparaison `lightr`; le `.IRR` present est un export ASCII couvert par Avantes ASCII, pas une preuve du binaire legacy. |
 | Avantes AvaSoft 8 binaire | partiel | `.Raw8` et `.IRR8` sont couverts par fixtures/goldens/tests semantiques (`AVS84`, modes 0/4, calibration `.IRR8` non appliquee); restent `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8`, multi-subfile AVS8 et calibration irradiance complete pour `.IRR8`. |
-| Bruker OPUS natif | partiel | OPUS 7/8 desormais teste via 4 lecteurs independants (spectral-cockpit, pierreroudier, brukeropus MIT, cran soil.spec AfSIS). OPUS 5/6 legacy archives + blocs 2D/imaging restent. |
+| Bruker OPUS natif | partiel | Tout le corpus commite `samples/bruker_opus/` est golden-backed: spectral-cockpit/opusreader2, pierreroudier/opusreader, brukeropus MIT, SpectroChemPy et cran soil.spec AfSIS/MPA. Restent OPUS 5/6 legacy archives, blocs 2D/imaging et conformance full-array automatisee contre lecteurs externes. |
 | Bruker Tango / MPA / Matrix | partiel | AfSIS Bruker MPA `icr_*.0` reels committes (cran/soil.spec). Reste Bruker Tango FT-NIR dedie et metadata MPA/Matrix complete. |
 | ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr`, AVIRIS/Indian Pines `.lan/.spc/.GIS` et le cube MATLAB local-only `indian_pines_corrected.mat` sont charges en spectres par pixel; restent ERDAS LAN generique, NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
 | FGI HDF5 + XML | partiel | Sidecar XML synthetique mappe vers HDF5 et provenance double; reste a valider une paire FGI reelle et le schema XML complet. |
