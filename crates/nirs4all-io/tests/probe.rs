@@ -314,10 +314,19 @@ fn probes_buchi_nircal_files() {
 
 #[test]
 fn probes_jasco_jws_files() {
-    let probes = probe_path(workspace_file("samples/jasco/243.jws")).expect("probe jws");
-    assert!(probes
-        .iter()
-        .any(|probe| probe.format == "jasco-jws" && probe.confidence == Confidence::Likely));
+    for relative in [
+        "samples/jasco/243.jws",
+        "samples/jasco/sample_fluorescence.jws",
+        "samples/jasco/sample_CD_HT_Abs.jws",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe jws");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "jasco-jws" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
 }
 
 #[test]
