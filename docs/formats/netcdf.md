@@ -30,11 +30,13 @@ pure-Rust metadata stack can decode them. The reader emits one `SpectralRecord`
 per sample row or per non-missing time row for derived time-series products.
 
 The Microtops MAN NetCDF path is intentionally narrower than the generic NIRS
-schema. The committed PANGAEA MSM114/2 fixture is NetCDF4/HDF5 with contiguous
-`aot_380`, `aot_440`, `aot_500`, `aot_675` and `aot_870` series plus matching
-`*_std` series. Current pure-Rust NetCDF/HDF5 metadata reconstruction cannot
-resolve this file, so the fixture is decoded through a SHA-256-guarded fallback
-and emits `microtops_man_netcdf_known_fixture_layout`.
+schema. The reader now discovers root-level `aot_<wavelength>` variables and
+sorts them into a wavelength axis before validating series lengths. The
+committed PANGAEA MSM114/2 fixture is NetCDF4/HDF5 with contiguous `aot_380`,
+`aot_440`, `aot_500`, `aot_675` and `aot_870` series plus matching `*_std`
+series. Current pure-Rust NetCDF/HDF5 payload reconstruction still cannot read
+that fixture's datasets after discovery, so MSM114/2 is decoded through a
+SHA-256-guarded fallback and emits `microtops_man_netcdf_known_fixture_layout`.
 
 The ARM MFRSR path is validated locally only. It maps filter variables
 `*_filter1..7` onto a wavelength axis from `centroid_wavelength` attributes,

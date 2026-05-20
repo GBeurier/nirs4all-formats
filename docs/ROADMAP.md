@@ -109,11 +109,11 @@ Gate:
 
 ## Phase 2: JCAMP-DX
 
-Status: in progress. Single-block `XYDATA`, ASDF PAC/SQZ/DIF/DUP ordinate
-encodings, NMR `NTUPLES` real/imaginary pages and Ocean Optics
+Status: in progress. `XYDATA` single-block and top-level multi-block files,
+ASDF PAC/SQZ/DIF/DUP ordinate encodings, NMR `NTUPLES` real/imaginary pages and Ocean Optics
 `LINK`/`XYPOINTS` blocks are experimental. `PEAK TABLE` is now explicitly
 refused and short `NPOINTS` payloads fail strictly; real peak-list support and
-broader multi-block files remain pending.
+broader multi-block `LINK` files remain pending.
 
 Deliverables:
 

@@ -6,7 +6,8 @@ records.
 ## Scope Implemented
 
 - Sniffs labeled-data records containing `##JCAMP-DX=` or `##JCAMPDX=`.
-- Reads one `XYDATA=(X++(Y..Y))` data table from the first block.
+- Reads `XYDATA=(X++(Y..Y))` data tables, including top-level multi-block
+  files where each block becomes one `SpectralRecord`.
 - Supports plain AFFN rows.
 - Supports packed ASDF ordinate encodings:
   - PAC-style adjacent signed numbers;
@@ -87,6 +88,7 @@ Current committed controls:
 | File | Encoding | Points | Axis | Value control |
 |---|---|---:|---|---|
 | `nist_water_ir.jdx` | plain AFFN | 3917 | `388.677 -> 3799.45426 cm-1` | `0.438 -> 0.885` |
+| `nist_sucrose_ir.jdx` | two top-level XYDATA blocks | 7153 x 2 | `7498.994 -> 600.88399 cm-1` | reflectance first values `0.422011`, `0.471453` |
 | `BRUKSQZ.DX` | SQZ | 16384 | `24038.5 -> 0.0 Hz` | `2259260 -> 1505988` |
 | `BRUKDIF.DX` | DIF/DUP | 16384 | `24038.5 -> 0.0 Hz` | `2254931 -> 1513177` |
 | `SPECFILE.DX` | mixed SQZ/DIF/DUP | 1801 | `400.0 -> 4000.0 cm-1` | `97.737187 -> 82.830985` |
@@ -102,6 +104,6 @@ legacy format stores extra line checkpoints.
 
 - Implement `PEAK TABLE` as a real sparse peak-list representation once the
   shared model can represent it.
-- Add broader multi-block `LINK` variants beyond same-axis spectral children.
+- Add broader `LINK` variants beyond same-axis spectral children.
 - Add stricter line-level X checkpoint verification.
 - Add reference reports against open JCAMP readers for every committed fixture.

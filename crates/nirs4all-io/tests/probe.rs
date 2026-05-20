@@ -56,6 +56,18 @@ fn probes_row_spectral_table_fixture() {
 }
 
 #[test]
+fn probes_real_neospectra_ossl_wide_csv() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",
+    ))
+    .expect("probe real NeoSpectra OSSL CSV");
+
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "delimited-text" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
 fn probes_usgs_aref_single_column_dump() {
     let probes = probe_path(workspace_file("samples/envi_sli/usgs_liba_AREF.txt")).expect("probe");
     assert!(probes.iter().any(|probe| {
@@ -197,6 +209,25 @@ fn probes_excel_workbook() {
     assert!(probes
         .iter()
         .any(|probe| probe.format == "excel-workbook" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
+fn probes_real_handheld_excel_workbooks() {
+    for relative in [
+        "samples/excel/scio_forensic_P_avg.xlsx",
+        "samples/excel/nirone_forensic_T_avg.xlsx",
+        "samples/siware_neospectra/neospectra_forensic_K_avg.xlsx",
+        "samples/viavi_micronir/micronir_forensic_K_avg.xlsx",
+        "samples/viavi_micronir/micronir_forensic_T_avg.xlsx",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe real handheld xlsx");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "excel-workbook" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
 }
 
 #[test]

@@ -36,4 +36,6 @@ record metadata, while numeric `references` columns are copied to targets.
 Legacy `.xls` OLE workbooks, caller-selected non-canonical sheet names and
 workbooks where Excel has coerced wavelengths into dates remain pending. The
 current reader is intentionally limited to numeric spectral headers so malformed
-lab transfers fail clearly instead of silently producing shifted axes.
+lab transfers fail clearly instead of silently producing shifted axes. Probe
+tests lock the real handheld workbooks from SCiO, NIRone, NeoSpectra and
+MicroNIR in addition to the synthetic Excel fixtures.

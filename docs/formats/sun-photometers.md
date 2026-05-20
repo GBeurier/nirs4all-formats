@@ -31,9 +31,9 @@ axis.
 - Aerosol optical thickness has no dedicated `SignalType`; it is currently
   emitted as `unknown`.
 - No atmospheric correction or unit conversion is applied.
-- The real MAN NetCDF fixture currently uses a SHA-256-guarded fallback because
-  the pure-Rust NetCDF/HDF5 metadata stack cannot yet resolve the file
-  generically.
+- The real MAN NetCDF fixture is discovered as a Microtops `aot_<nm>` schema,
+  but still uses a SHA-256-guarded payload fallback because the pure-Rust
+  NetCDF/HDF5 stack cannot yet read the MSM114/2 datasets generically.
 - AERONET MAN `.lev10/.lev15/.lev20` ASCII support is validated on local
   Okeanos samples only; the files are not redistributed because of AERONET MAN
   data-policy constraints.
