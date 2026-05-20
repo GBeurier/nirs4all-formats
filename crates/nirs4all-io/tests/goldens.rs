@@ -30,8 +30,20 @@ const CASES: &[(&str, &str)] = &[
         "samples/nicolet_omnic/2-BaSO4_0.SPA",
     ),
     (
+        "nicolet_omnic_spa_11_z25_cp",
+        "samples/nicolet_omnic/11-Z25-CP_0.SPA",
+    ),
+    (
         "nicolet_omnic_spg_wodger",
         "samples/nicolet_omnic/wodger.spg",
+    ),
+    (
+        "nicolet_omnic_spg_co_mo_al2o3",
+        "samples/nicolet_omnic/CO_at_Mo_Al2O3.SPG",
+    ),
+    (
+        "nicolet_omnic_spg_nh4y_activation",
+        "samples/nicolet_omnic/nh4y-activation.spg",
     ),
     (
         "nicolet_omnic_spa_not_opus",

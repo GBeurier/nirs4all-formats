@@ -21,8 +21,11 @@ until the core schema grows a first-class secondary axis.
 | Fixture | Records | Axis | Signal | Notes |
 |---|---:|---|---|---|
 | `samples/nicolet_omnic/2-BaSO4_0.SPA` | 1 | wavenumber, `cm-1`, 11098 points | `absorbance` | Real SpectroChemPy fixture |
+| `samples/nicolet_omnic/11-Z25-CP_0.SPA` | 1 | wavenumber, `cm-1` | `absorbance` | Additional SPA regression fixture |
 | `samples/nicolet_omnic/not_opus.spa` | 1 | wavenumber, `cm-1`, 5549 points | `absorbance` | Regression fixture for `.spa` vs Bruker OPUS disambiguation |
 | `samples/nicolet_omnic/wodger.spg` | 2 | wavenumber, `cm-1`, 5549 points | `absorbance` | SpectroChemPy documentation fixture |
+| `samples/nicolet_omnic/CO_at_Mo_Al2O3.SPG` | 19 | wavenumber, `cm-1` | `absorbance` | Additional SPG group fixture |
+| `samples/nicolet_omnic/nh4y-activation.spg` | 55 | wavenumber, `cm-1` | `absorbance` | Additional SPG group fixture |
 | `samples/nicolet_omnic/GC_Demo.srs` | 1 | wavenumber, `cm-1`, 1738 x-points, 788 y rows | `transmittance` | TGA/GC series fixture |
 | `samples/nicolet_omnic/TGAIR.srs` | 1 | wavenumber, `cm-1`, 1868 x-points, 335 y rows | `absorbance` | TGA/GC hard-case fixture |
 
