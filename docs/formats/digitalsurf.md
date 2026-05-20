@@ -11,6 +11,10 @@ fixtures from RosettaSciIO:
 - `_HYPCARD` hyperspectral maps emitted as one `SpectralRecord` per XY point;
 - `_SURFACE` height maps emitted as one profile record per row, with an
   explicit warning because the axis is spatial rather than spectral.
+- normalized map metadata: `map_x_index`, `map_y_index`, dimensions and
+  `map_axis_order = y_slowest_x_fastest`;
+- normalized surface row metadata: `spatial_y_index`, X/Y spatial units and
+  `surface_axis_order = row_profiles_y_slowest_x_fastest`.
 
 Wavelength axes stored in `mm` by MountainsMap are normalized to `nm` in the
 `SpectralAxis`. The original DigitalSurf axis name and unit are preserved in
@@ -66,7 +70,7 @@ the decoded value is:
 The committed RosettaSciIO spectrum, multi-spectrum, hyperspectral-map,
 surface and compressed fixtures are fully golden-backed. The remaining partial
 status is conformance and scope work: automate full-array comparison against
-`rsciio.digitalsurf`, enrich surface/object metadata and decide which
+`rsciio.digitalsurf`, enrich object/comment metadata and decide which
 MountainsMap variants outside this corpus, including branded AFM-Raman exports,
 belong in the core reader.
 

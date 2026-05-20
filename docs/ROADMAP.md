@@ -82,8 +82,8 @@ Deliverables:
 - Renishaw WDF reader; experimental for `WDF1` spectral payloads using `DATA`,
   `XLST`, `YLST`, `ORGN` and `WMAP`; maps/lines/depth/time-series records are
   emitted one stored spectrum at a time with spatial, elapsed-time and map-index
-  metadata, plus conservative `WHTL` JPEG image metadata and `MAP ` PSET
-  analysis-block inventories;
+  metadata, plus conservative `WHTL` JPEG image metadata and golden-backed
+  `MAP ` PSET `dataRange` analysis metadata for observed map/depth fixtures;
 - Princeton TriVista TVF reader; experimental for XML frame payloads,
   `xDim/Calibration` spectral axes, X/Y navigation axes, time-series
   timestamps, Step-and-Glue child windows and detector/spectrometer metadata;
@@ -204,8 +204,8 @@ Add one family at a time:
   target fixture, each validated against an open reference reader when possible;
 - WiTec native WIP/WID parsing once a redistributable or private-test binary
   fixture exists; DigitalSurf richer comment/metadata parsing, TriVista
-  objective/hardware-branch metadata and later Renishaw WDF `MAP ` dataRange
-  decoding if derived analysis maps become part of the export model;
+  objective/hardware-branch metadata and later Renishaw WDF `MAP ` layout
+  variants if additional derived analysis maps become part of the export model;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;

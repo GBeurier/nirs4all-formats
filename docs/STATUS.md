@@ -124,7 +124,8 @@ Experimental native readers:
   stored spectrum with normalized spatial, elapsed-time and map-index metadata;
   `WHTL` JPEG white-light image metadata is preserved, and observed `MAP `
   PSET `dataRange` tails are decoded as per-record derived metadata when their
-  length matches the stored spectrum count.
+  length matches the stored spectrum count. The map/depth `dataRange` fixtures
+  are golden-backed.
 - Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
   spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
   emits one record per frame, validates `xDim` lengths, preserves
@@ -135,6 +136,8 @@ Experimental native readers:
   via fixed headers and zlib-stream compression. Single spectra, multi-spectrum
   profiles and hyperspectral maps emit one record per spectrum or XY point;
   plain surfaces emit one spatial-profile record per row with a warning.
+  Hyperspectral maps and surfaces expose normalized spatial indices, dimensions
+  and explicit axis-order metadata.
 - Hamamatsu HPD-TA streak-camera `.img` files as adjacent 2D `y,x` signals.
   The reader covers committed focus, operate, photon-counting, shading and
   uncalibrated-axis fixtures, preserving the secondary time/CCD axis in

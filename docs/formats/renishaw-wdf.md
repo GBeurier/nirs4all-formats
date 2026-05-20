@@ -41,7 +41,7 @@ entries keyed by block UID and label. Undefined
 | `samples/raman_renishaw/renishaw_test_spectrum.wdf` | 1 | wavelength, `nm`, 36 points | RosettaSciIO single-point spectrum |
 | `samples/raman_renishaw/renishaw_test_linescan.wdf` | 5 | wavelength, `nm`, 40 points | Diagonal `xyline`; exposes X/Y and distance metadata |
 | `samples/raman_renishaw/renishaw_test_map.wdf` | 9 | wavelength, `nm`, 40 points | 3 x 3 regular map with WMAP-derived X/Y indices |
-| `samples/raman_renishaw/renishaw_test_map2.wdf` | 400 | wavelength, `nm`, 40 points | 20 x 20 map plus two `MAP ` PSET `dataRange` analysis maps |
+| `samples/raman_renishaw/renishaw_test_map2.wdf` | 400 | wavelength, `nm`, 40 points | Golden-backed 20 x 20 map plus two `MAP ` PSET `dataRange` analysis maps |
 | `samples/raman_renishaw/renishaw_test_streamline.wdf` | 2,205 | wavelength, `nm`, 1,015 points | StreamLine map, emitted as one record per stored spectrum |
 | `samples/raman_renishaw/renishaw_test_focustrack.wdf` | 3 | wavelength, `nm`, 1,015 points | FocusTrack Z metadata |
 | `samples/raman_renishaw/renishaw_test_focustrack_invariant.wdf` | 10 | wavelength, `nm`, 1,015 points | FocusTrack invariant navigation variant |
@@ -50,7 +50,7 @@ entries keyed by block UID and label. Undefined
 | `samples/raman_renishaw/renishaw_test_zscan.wdf` | 40 | wavelength, `nm`, 1,015 points | Z-depth navigation regression |
 | `samples/raman_renishaw/interrupted_acquisition.wdf` | 12 | wavenumber, `cm-1`, 1010 points | Reads stored count, preserves X/Y map positions and warns about truncated capacity |
 | `samples/raman_renishaw/wire_sp.wdf` | 1 | wavenumber, `cm-1`, 1015 points | SpectroChemPy real-world single spectrum |
-| `samples/raman_renishaw/wire_depth.wdf` | 40 | wavenumber, `cm-1`, 1,015 points | SpectroChemPy depth profile with elapsed time and two `MAP ` PSET `dataRange` analysis maps |
+| `samples/raman_renishaw/wire_depth.wdf` | 40 | wavenumber, `cm-1`, 1,015 points | Golden-backed SpectroChemPy depth profile with elapsed time and two `MAP ` PSET `dataRange` analysis maps |
 | `samples/raman_renishaw/wire_line.wdf` | 235 | wavenumber, `cm-1`, 1,015 points | Real-world `xyline` path with distance and X/Y normalization |
 | `samples/raman_renishaw/wire_Streamline.wdf` | 2,205 | wavenumber, `cm-1`, 1,015 points | Real-world StreamLine map |
 
