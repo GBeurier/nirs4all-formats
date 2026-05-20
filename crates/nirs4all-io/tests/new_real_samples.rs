@@ -10,7 +10,19 @@ fn reads_real_usgs_envi_spectral_libraries() {
             0.04158623889088631,
         ),
         (
+            "samples/envi_sli/usgs_splib06a_aviris95_envi.sli",
+            1_365,
+            "Acmite NMNH133746 Pyroxene s06av95a=a",
+            0.04158623889088631,
+        ),
+        (
             "samples/envi_sli/usgs_splib07_aviris95_envi.hdr",
+            3_139,
+            "Wavelengths in microns 224ch AVIRIS95.1",
+            0.38314998149871826,
+        ),
+        (
+            "samples/envi_sli/usgs_splib07_aviris95_envi.sli",
             3_139,
             "Wavelengths in microns 224ch AVIRIS95.1",
             0.38314998149871826,
