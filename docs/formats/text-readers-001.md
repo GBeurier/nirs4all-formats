@@ -15,6 +15,7 @@ Implemented readers:
 | `avantes_ascii` | `samples/avantes/avantes_export.ttt` | Transmittance wave table. |
 | `avantes_ascii` | `samples/avantes/irr_820_1941.IRR` | Two-column irradiance export. |
 | `jcamp` | `samples/jcamp_dx/nist_water_ir.jdx` | Plain AFFN `XYDATA` with 3917 transmittance points. |
+| `jcamp` | `samples/jcamp_dx/BRUKSQZ.DX`, `BRUKDIF.DX`, `SPECFILE.DX` | PAC/SQZ/DIF/DUP packed `XYDATA` ordinate decoding. |
 | `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
 | `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
 
@@ -22,7 +23,7 @@ Known limitations:
 
 - CSV parsing is intentionally narrow and expects numeric spectral headers.
 - IDL/ENVI transposed text exports are not parsed yet.
-- JCAMP compressed encodings (`SQZ`, `DIF`, `DUP`, `PAC`) and `NTUPLES` are not
+- JCAMP `NTUPLES`, `XYPOINTS`, `PEAK TABLE` and multi-block `LINK` files are not
   decoded yet.
 - The Python bridge uses `nirs4all-io read-json` as temporary transport; native
   PyO3/C ABI transport is still planned.
