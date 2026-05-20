@@ -33,6 +33,8 @@ OLE2 compound-document binary (Microsoft compound file format). Reverse-engineer
   - `sample_fluorescence.jws`: `fluorescence` from `FP-8300` metadata.
   - `sample_CD_HT_Abs.jws`: `cd` (`mdeg`), `ht` (`V`) and `absorbance`
     (`dOD`) from `CD-1500` / `J-1500` metadata.
+- The three committed `.jws` fixtures are covered by semantic tests, probes and
+  golden summaries.
 - Other JASCO variants may use streams such as `Data`, `Header`, `XdataValue`,
   etc. (varies by JASCO firmware).
 - Reference readers:

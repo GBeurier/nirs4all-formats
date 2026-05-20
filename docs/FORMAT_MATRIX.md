@@ -37,7 +37,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | CSV export synthetique teste semantiquement; DB native manquante | partiel | parseur texte, pandas, readxl |
 | BUCHI NIRCal | BUCHI / Buhler | `.nir`, export JCAMP-DX | fixture NIRCal avec cibles nulles + cannabis local avec cibles non nulles | partiel | prospectr::read_nircal |
 | Perten DA / Inframatic | Perten / PerkinElmer | binaire vendeur, `.csv` | binaire ferme; CSV cible seule refuse | bloqué | export CSV/Excel vendeur |
-| JASCO JWS | JASCO | `.jws`, `.txt` | OLE2 DataInfo/Y-Data | partiel | jws2txt, jwsProcessor |
+| JASCO JWS | JASCO | `.jws`, `.txt` | OLE2 DataInfo/Y-Data FT/IR + fluorescence + CD/HT/Abs; texte export | partiel | jws2txt, jwsProcessor |
 | Shimadzu UVProbe | Shimadzu | `.spc`, `.txt` | `.txt` synthetique teste semantiquement; `.spc` proprietaire manquant | partiel | pyfasma-spc, convertisseur Shimadzu |
 | VIAVI MicroNIR | VIAVI / JDSU | `.csv`, `.xlsx`, `.pri` | CSV/XLSX (UvA forensic 1700) OK; pri manquant | partiel | parseur texte, openpyxl |
 | Si-Ware NeoSpectra | Si-Ware | `.csv`, `.xlsx` | OSSL Woodwell + UvA forensic XLSX OK | partiel | parseur texte, openpyxl |
@@ -95,7 +95,7 @@ passer le format a `fait`.
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est verrouille par golden et test semantique sur 50 records, axe `nm`, signal absorbance et cibles `protein`/`moisture`/`fat`. Il manque un export client reel, une comparaison reference et la base projet native reste fermee. |
 | BUCHI NIRCal | partiel | Le chemin `.nir` lit spectra/wavenumbers/proprietes; les cibles non nulles sont validees localement sur `transpec_DEMO_cannabis.nir`. Restent une fixture redistribuable avec cibles non nulles, `.cal` calibration-only et variantes NIRMaster. |
 | Perten DA / Inframatic | bloqué | Pas de fixture spectrale native; le CSV actuel est un rapport cible-seule sans axe spectral. Un export CSV/Excel avec colonnes de longueurs d'onde serait traitable par les readers tabulaires. |
-| JASCO JWS | partiel | Ajouter blocs V-series NIR et variantes Raman NRS. |
+| JASCO JWS | partiel | Les fixtures OLE2 `DataInfo`/`Y-Data` FT/IR transmittance, FP-8300 fluorescence et CD-1500/J-1500 CD/HT/Abs sont verrouillees par goldens/tests semantiques et probe; l'export texte JASCO est couvert par `row-spectral-table`. Restent blocs V-series NIR distincts, variantes Raman NRS et streams alternatifs (`Data`, `Header`, `XdataValue`). |
 | Shimadzu UVProbe | partiel | Le `.txt` UVProbe synthetique est verrouille par golden/test semantique sur axe `nm`, signal `sample_s000` et titre `Spectrum Data`; la registry teste aussi que `.spc` n'est pas revendique par extension seule. Restent vrai `.txt`, vrai `.spc` Shimadzu et comparaison convertisseur/`pyfasma-spc`. |
 | VIAVI MicroNIR | partiel | Reels CSV/XLSX MicroNIR 1700 committes et verrouilles par tests de lecture + probe (UvA forensic). `.pri` natif reste hors atteinte. |
 | Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX committes et verrouilles par tests de lecture + probe; le descripteur OSSL non spectral est refuse explicitement. Reste a couvrir un export NeoSpectra Scanner natif single-measurement. |
