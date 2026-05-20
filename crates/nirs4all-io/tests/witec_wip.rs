@@ -24,6 +24,46 @@ fn reads_sa4_wit_pr06_tdgraph() {
     assert_eq!(first.signal_type, SignalType::RawCounts);
     assert_eq!(first.metadata.get("x_index"), Some(&serde_json::json!(0)));
     assert_eq!(first.metadata.get("y_index"), Some(&serde_json::json!(0)));
+    assert_eq!(
+        first.metadata.get("witec_layout"),
+        Some(&serde_json::json!("WIT_PR06_TDGraph_u16_Sa4"))
+    );
+    assert_eq!(
+        first.metadata.get("physical_grid_slots"),
+        Some(&serde_json::json!(4950))
+    );
+    assert_eq!(
+        first.metadata.get("valid_line_count"),
+        Some(&serde_json::json!(49))
+    );
+    assert_eq!(
+        first.metadata.get("invalid_line_count"),
+        Some(&serde_json::json!(6))
+    );
+    assert_eq!(
+        first.metadata.get("valid_spectrum_count"),
+        Some(&serde_json::json!(4410))
+    );
+    assert_eq!(
+        first.metadata.get("line_valid_encoding"),
+        Some(&serde_json::json!("u8_boolean"))
+    );
+    assert_eq!(
+        first.metadata.get("axis_calibration"),
+        Some(&serde_json::json!("FreePolynom"))
+    );
+    assert_eq!(
+        first.metadata.get("free_polynom_order"),
+        Some(&serde_json::json!(6))
+    );
+    assert_eq!(
+        first.metadata.get("free_polynom_start_bin"),
+        Some(&serde_json::json!(0.0))
+    );
+    assert_eq!(
+        first.metadata.get("free_polynom_stop_bin"),
+        Some(&serde_json::json!(1024.0))
+    );
     assert!(first
         .provenance
         .warnings
@@ -44,6 +84,10 @@ fn reads_sa4_wit_pr06_tdgraph() {
     let last = records.last().expect("last record");
     assert_eq!(last.metadata.get("x_index"), Some(&serde_json::json!(89)));
     assert_eq!(last.metadata.get("y_index"), Some(&serde_json::json!(48)));
+    assert_eq!(
+        last.metadata.get("physical_spectrum_index"),
+        Some(&serde_json::json!(4409))
+    );
 }
 
 #[test]

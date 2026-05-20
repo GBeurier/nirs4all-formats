@@ -25,7 +25,12 @@ axis.
   `SizeX=90`, `SizeY=55`, `SizeGraph=1024`, `DataType=6`;
 - `LineValid` handling so the interrupted acquisition emits 4410 valid spectra
   instead of 4950 physical grid slots;
+- strict boolean validation of `LineValid` bytes (`0`/`1`) and diagnostic
+  metadata for valid/invalid line counts, physical grid slots and physical
+  spectrum index;
 - spectral axis reconstruction from the WiTec `FreePolynom` coefficients;
+- diagnostic metadata for the `FreePolynom` order and bin range used to build
+  the wavelength axis;
 - strict refusal for legacy `WIT^` and unknown `WIT_PR06` layouts;
 - WiTec ASCII single-spectrum export support through `row-spectral-table`;
 - real `Sa4.wip` TDGraph regression tests.
@@ -46,6 +51,8 @@ axis.
 
 Current native validation is intentionally narrow. The `Sa4.wip` test asserts
 4410 spectra, 1024 wavelength points, the first raw-count values and the
-polynomial wavelength range. The parser emits warning
+polynomial wavelength range. It also asserts the diagnostic layout metadata:
+4950 physical grid slots, 49 valid lines, 6 invalid lines and 4410 emitted
+spectra. The parser emits warning
 `witec_wip_experimental_parser` and must stay experimental until more WiTec
 project variants and paired vendor ASCII exports are available.

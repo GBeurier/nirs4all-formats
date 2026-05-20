@@ -58,7 +58,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Princeton TriVista TVF | Princeton Instruments | `.tvf` | corpus RosettaSciIO XML Frame golden-backed; conformance metadata a durcir | partiel | RosettaSciIO |
 | DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus RosettaSciIO spectra/maps/surfaces/zlib golden-backed; conformance metadata a durcir | partiel | RosettaSciIO |
 | Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | corpus adjacent 2D OK; axes Y calibres temps en metadata `time`; hors point-spectra NIRS | partiel | RosettaSciIO |
-| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
+| WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + metadata LineValid/FreePolynom; ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
 | EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y avec axes `eV` types `energy`, notation scientifique, titres multi-lignes, metadata non conformes preservees | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
 | Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; `band*`, `spectrum`/`wr_raw`/`sample_raw` et calibration axis-first golden-backed | fait | kebasaa/SCIO-read |
@@ -112,7 +112,7 @@ passer le format a `fait`.
 | Princeton TriVista TVF | partiel | Corpus RosettaSciIO couvert et golden-backed, y compris single/multi-frame, time series, line/map, multi-spectrometer et Step-and-Glue. Aucun sample bloquant connu dans le corpus actuel; restent conformance full-array automatisee contre `rsciio.trivista`, hardware/objective metadata plus riche et decision de scope pour variantes hors corpus. |
 | DigitalSurf MountainsMap | partiel | Fixtures RosettaSciIO spectre, multi-spectres, hyperspectral maps, surface et zlib compresse/non compresse golden-backed. Aucun sample bloquant connu dans le corpus actuel; restent conformance full-array contre `rsciio.digitalsurf`, metadata surfaces plus riche et decision de scope pour variantes MountainsMap hors corpus/branded AFM-Raman. |
 | Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes, avec axes Y calibres temporels exposes en metadata `time` et axes detecteur non calibres conserves en `index`. Rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
-| WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`; restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
+| WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`, avec validation stricte `LineValid` booleenne et metadata diagnostique: 4950 slots physiques, 49 lignes valides, 6 lignes invalides, index physique et calibration `FreePolynom`. Restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
 | fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. Aucun sample fNIRS n'est present; les `.hdr` actuels sont ENVI et ne doivent pas etre routes par extension seule. |
 
 ## Verification locale du corpus (2026-05-20)
