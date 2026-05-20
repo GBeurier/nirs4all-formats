@@ -7,9 +7,9 @@ minimal ENVI Standard cube-to-point-spectra path.
 
 - Sniffs `.hdr` files whose header starts with `ENVI` and declares
   `file type = ENVI Spectral Library` or `file type = ENVI Standard`.
-- Opens either the `.hdr` path or the paired `.sli` binary path.
+- Opens either the `.hdr` path or the paired `.sli` / `.img` binary path.
 - Resolves the binary payload from `data file = ...` when present, otherwise
-  from the sibling `.sli`/`.SLI` file.
+  from the sibling `.sli`/`.SLI`, `.img` or `.dat` file.
 - Decodes one-band BSQ spectral-library payloads with ENVI `data type = 4`
   (`float32`) and `data type = 5` (`float64`), little- or big-endian.
 - Decodes ENVI Standard BSQ/BIL/BIP cubes from `.img` or `.dat` sidecars with
@@ -80,11 +80,14 @@ Additional fixed control points for the current little-endian float32 fixture:
 
 The format is documented by ENVI and supported by Spectral Python
 (`spectral`) and R `RStoolbox::readSLI()`. The current Rust reader is
-clean-room and uses the local synthetic fixture as the committed golden.
+clean-room. The synthetic library is the committed golden, while the USGS
+splib06/07 fixtures are tested through both `.hdr` and direct `.sli` entry
+paths.
 
 Cube fixture checks:
 
 - 48 by 48 pixels, 32 spectral bands;
+- header and direct `.img` entry paths both dispatch to `envi-standard-cube`;
 - first pixel first/last values: `100`, `3223`;
 - last pixel first/last values: `152`, `3275`;
 - map coordinates are read from `map info`.

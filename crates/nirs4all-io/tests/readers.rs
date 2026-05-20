@@ -2007,35 +2007,39 @@ fn reads_ocean_optics_windows_and_reference_procspec_archives() {
 
 #[test]
 fn reads_envi_standard_image_cube_as_pixel_spectra() {
-    let records = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
-        .expect("open envi cube");
+    for relative in [
+        "samples/envi_sli/cubescope-mini-cube.hdr",
+        "samples/envi_sli/cubescope-mini-cube.img",
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open envi cube");
 
-    assert_eq!(records.len(), 2_304);
-    assert_eq!(records[0].provenance.format, "envi-standard-cube");
-    assert_eq!(
-        records[0].metadata["sample_id"].as_str(),
-        Some("pixel_y0_x0")
-    );
-    assert_eq!(records[0].metadata["pixel_x"].as_u64(), Some(0));
-    assert_eq!(records[0].metadata["pixel_y"].as_u64(), Some(0));
-    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(500000.0));
-    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(4100000.0));
-    let signal = records[0].signals.get("spectrum").expect("spectrum");
-    assert_eq!(signal.axis.values.len(), 32);
-    assert_eq!(signal.axis.unit, "unknown");
-    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
-    assert_eq!(signal.signal_type, SignalType::Unknown);
-    assert!((signal.axis.values[0] - 400.0).abs() < 0.000001);
-    assert!((signal.axis.values[31] - 710.0).abs() < 0.000001);
-    assert!((signal.values[0] - 100.0).abs() < 0.000001);
-    assert!((signal.values[31] - 3223.0).abs() < 0.000001);
-    assert!((signal.values.iter().sum::<f64>() - 54_138.0).abs() < 0.000001);
+        assert_eq!(records.len(), 2_304, "{relative}");
+        assert_eq!(records[0].provenance.format, "envi-standard-cube");
+        assert_eq!(
+            records[0].metadata["sample_id"].as_str(),
+            Some("pixel_y0_x0")
+        );
+        assert_eq!(records[0].metadata["pixel_x"].as_u64(), Some(0));
+        assert_eq!(records[0].metadata["pixel_y"].as_u64(), Some(0));
+        assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(500000.0));
+        assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(4100000.0));
+        let signal = records[0].signals.get("spectrum").expect("spectrum");
+        assert_eq!(signal.axis.values.len(), 32);
+        assert_eq!(signal.axis.unit, "unknown");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(signal.signal_type, SignalType::Unknown);
+        assert!((signal.axis.values[0] - 400.0).abs() < 0.000001);
+        assert!((signal.axis.values[31] - 710.0).abs() < 0.000001);
+        assert!((signal.values[0] - 100.0).abs() < 0.000001);
+        assert!((signal.values[31] - 3223.0).abs() < 0.000001);
+        assert!((signal.values.iter().sum::<f64>() - 54_138.0).abs() < 0.000001);
 
-    let last = &records[2_303];
-    assert_eq!(last.metadata["sample_id"].as_str(), Some("pixel_y47_x47"));
-    let signal = last.signals.get("spectrum").expect("spectrum");
-    assert!((signal.values[0] - 152.0).abs() < 0.000001);
-    assert!((signal.values[31] - 3275.0).abs() < 0.000001);
+        let last = &records[2_303];
+        assert_eq!(last.metadata["sample_id"].as_str(), Some("pixel_y47_x47"));
+        let signal = last.signals.get("spectrum").expect("spectrum");
+        assert!((signal.values[0] - 152.0).abs() < 0.000001);
+        assert!((signal.values[31] - 3275.0).abs() < 0.000001);
+    }
 }
 
 #[test]
