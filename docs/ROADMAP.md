@@ -35,6 +35,9 @@ Deliverables:
 - strict `Reader` trait and registry behavior; done;
 - bounded readers and archive policy;
 - delimited text reader; experimental;
+- row-oriented axis-first spectral table reader; experimental for Si-Ware,
+  MODTRAN, PP Systems, ENVI/ECOSTRESS text, Shimadzu text, USGS SPECPR ASCII
+  and WiTec ASCII fixtures;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -107,6 +110,8 @@ Deliverables:
   Jaz, CRAIC, two-column CSV exports, OceanView ZIP/XML `.ProcSpec` and the
   committed Galactic-layout Ocean Optics `.spc` sample;
 - EMSA/MAS `.msa`; experimental for ISO 22029-style `XY` and `Y` fixtures;
+- row-oriented text exports; experimental for several vendor and scientific
+  fixtures where the first column is the spectral axis;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment
@@ -122,7 +127,8 @@ Deliverables:
 
 Add one family at a time:
 
-- Nicolet OMNIC, Perkin Elmer, BUCHI NIRCal, OceanView ProcSpec, JASCO;
+- Foss/WinISI matrix text exports, MFR `.OUT`, Microtops `.TXT`, then Nicolet
+  OMNIC, Perkin Elmer, BUCHI NIRCal and JASCO;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;
 - adjacent formats only when they help disambiguation or user workflows.

@@ -98,6 +98,38 @@ const CASES: &[(&str, &str)] = &[
         "msa_iso22029_minimum",
         "samples/msa_iso22029/minimum_metadata.msa",
     ),
+    (
+        "row_spectral_table_siware_neospectra",
+        "samples/siware_neospectra/synthetic_neospectra.csv",
+    ),
+    (
+        "row_spectral_table_modtran_albedo",
+        "samples/modtran/synthetic_albedo.dat",
+    ),
+    (
+        "row_spectral_table_pp_systems_spt",
+        "samples/pp_systems/synthetic_unispec.SPT",
+    ),
+    (
+        "row_spectral_table_pp_systems_spu",
+        "samples/pp_systems/synthetic_unispec_dc.SPU",
+    ),
+    (
+        "row_spectral_table_envi_ecostress",
+        "samples/envi_sli/ecostress_b.spectrum.txt",
+    ),
+    (
+        "row_spectral_table_shimadzu_uvprobe",
+        "samples/shimadzu/synthetic_uvprobe.txt",
+    ),
+    (
+        "row_spectral_table_usgs_specpr_ascii",
+        "samples/specpr/asphalt_gds366.27407.asc",
+    ),
+    (
+        "row_spectral_table_witec_ascii",
+        "samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt",
+    ),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
     (

@@ -24,7 +24,9 @@ impl Reader for AvantesAsciiReader {
             return None;
         }
         let text = String::from_utf8_lossy(head);
-        if text.contains("Wave") && text.contains(';') {
+        if text.lines().any(|line| {
+            line.trim_start().to_ascii_lowercase().starts_with("wave") && line.contains(';')
+        }) {
             Some(FormatProbe::new(
                 "avantes-ascii",
                 self.name(),

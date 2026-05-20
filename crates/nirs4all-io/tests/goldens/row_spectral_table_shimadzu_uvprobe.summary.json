@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "notes"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::spectral_table",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample_s000",
+          "role": "sample_s000",
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.036743,
+          "value_last": -0.146586,
+          "value_sum": 41.350459,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "498290b253d5afae68339fde97a4919447fb7191c7fb1360f184ee13ccb09117",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

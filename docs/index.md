@@ -18,6 +18,7 @@ formats/galactic-spc
 formats/jcamp-dx
 formats/msa-iso22029
 formats/ocean-optics
+formats/row-spectral-table
 formats/text-readers-001
 DATA_MODEL
 CONFORMANCE

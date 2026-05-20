@@ -13,6 +13,7 @@ fixtures:
 | Format family | Extensions / fixture class | Status | Notes |
 |---|---|---|---|
 | Plain delimited spectral tables | `.csv`, `.tsv`, numeric-header `.txt` | Experimental | One record per row, numeric header columns become the spectral axis, numeric non-spectral columns become targets. |
+| Row-oriented spectral tables | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` with axis-first content | Experimental | One record per file, first numeric column is the spectral axis, following numeric columns become named signals. Covers committed Si-Ware, MODTRAN, PP Systems, ENVI/ECOSTRESS text, Shimadzu text, USGS SPECPR ASCII and WiTec ASCII fixtures. |
 | Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
@@ -72,14 +73,14 @@ Legend for **Container**:
 | MFR Sun Photometer | `.OUT` | ascii | 🟠 | Ad-hoc parser; SPECCHIO | Regular fixed-width text. Needs a small format detector. |
 | Ocean Optics SpectraSuite | `.csv` (non-comma) | ascii | ✅ | R: `lightr`, `pavo::getspec()`; Py: ad-hoc | Variant CSV with `;` or tab separator + multi-line header. |
 | Ocean Optics OceanView | `.txt`, `.ProcSpec`, `.spc` (Ocean Optics flavour, not Galactic) | mixed | 🟡 | R: [`lightr::lr_parse_procspec()`](https://www.rdocumentation.org/packages/lightr/versions/1.9.0/topics/lr_parse_procspec) | `.ProcSpec` is a proprietary container (XML + binary payload, optionally archived) with a checksum that `lightr` validates. Layout drifts across OceanView versions. |
-| PP Systems UniSpec SC | `.SPT` | ascii | 🟠 | Ad-hoc | Limited literature; SPECCHIO claims support. |
-| PP Systems UniSpec DC | `.SPU` | ascii | 🟠 | Ad-hoc | Same family as `.SPT`. |
+| PP Systems UniSpec SC | `.SPT` | ascii | 🟠 | Ad-hoc | Axis-first text export now covered by `spectral_table`; limited literature; SPECCHIO claims support. |
+| PP Systems UniSpec DC | `.SPU` | ascii | 🟠 | Ad-hoc | Axis-first text export now covered by `spectral_table`. |
 | Microtops Sun Photometer | `.TXT` | ascii | 🟠 | Ad-hoc | Text but rich metadata (geo, sun angle, pressure, water vapor). Parser must preserve them. |
 | GER 3700 / SVC | `.sig` | ascii (with variants) | ✅ | R: `spectrolab`; Py: `specdal` | Two header conventions (PDA vs. laptop). |
 | SVC HR-1024 / HR-1024i | `.sig` | ascii (with variants) | ✅ | Same as above | Date/GPS/units differ across firmware. |
 | Spectral Evolution / PSR | `.sed` | ascii | ✅ | R: `spectrolab::read_spectra(format="sed")`; Py: `specdal` | Best-documented field spectrometer ASCII format. |
-| MODTRAN5 albedo | `.dat` | ascii | ✅ | Text loader | Not really an instrument format — auxiliary scientific text. |
-| IDL / ENVI text output | `.txt` (whitespace-sep) | ascii | ✅ | Text loader | Needs header-line skipping and column auto-detection. |
+| MODTRAN5 albedo | `.dat` | ascii | ✅ | Text loader | Not really an instrument format; committed albedo fixture is covered by `spectral_table`. |
+| IDL / ENVI text output | `.txt` (whitespace-sep) | ascii | ✅ | Text loader | Axis-first ECOSTRESS/ENVI text spectra are covered by `spectral_table`; single-column sidecar-axis dumps remain pending. |
 | USGS SPECPR / PRISM | `SPECPR` (no ext.) | bin (historical) | 🟠 | USGS free SW; convert to ENVI/ASCII | Practical approach: shell out to USGS converter once, then ingest ASCII/ENVI. |
 
 ---
@@ -101,9 +102,9 @@ Legend for **Container**:
 | Avantes AvaSoft v8 (modern) | `.RAW8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.IRR8`, `.RIR8`, `.RMN8`, `.RMD8` | bin | 🟡 | R: `lightr` (subset); MATLAB community tools; **no maintained Python reader** | Each suffix encodes the measurement mode (scope, dark-corrected scope, absorbance, transmittance, reflectance, absolute/relative irradiance, Raman). [AvaSoft 8 manual](https://www.avantes.com/content/uploads/2022/02/020379-AvaSoft-8-Manual.pdf) is the reference. |
 | Avantes AvaSoft ASCII exports | `.ttt`, `.trt`, `.tit`, `.tat` | ascii | ✅ | Any text loader (`pandas`) | Cheap fallback when the binary parser is missing. Worth supporting before the binaries. |
 | JASCO V-series / FT-IR | `.jws`, `.txt` export | bin / ascii | 🟡 | Py: [`jws2txt`](https://pypi.org/project/jws2txt/), `jwsProcessor`; conversion via OMNIC | Reverse-engineered; mostly UV-Vis but used in NIR mode too. |
-| Shimadzu UVProbe | `.spc` (Shimadzu proprietary, **not** Galactic), `.txt` export | bin / ascii | 🟠 | Experimental Py readers ([`pyfasma-spc`](https://pypi.org/project/pyfasma-spc/) note); vendor [converter](https://www.an.shimadzu.co.jp/products/molecular-spectroscopy/uv-vis/semicustom/uv-13/index.html) | Same `.spc` extension as Galactic but different binary format — sniffer must disambiguate. v1 strategy: rely on CSV/TXT export. |
+| Shimadzu UVProbe | `.spc` (Shimadzu proprietary, **not** Galactic), `.txt` export | bin / ascii | 🟠 | Experimental Py readers ([`pyfasma-spc`](https://pypi.org/project/pyfasma-spc/) note); vendor [converter](https://www.an.shimadzu.co.jp/products/molecular-spectroscopy/uv-vis/semicustom/uv-13/index.html) | Same `.spc` extension as Galactic but different binary format. TXT export is covered by `spectral_table`; binary sniffer must disambiguate later. |
 | VIAVI MicroNIR (handheld) | CSV export (`.csv`) | ascii | ✅ | Any CSV loader | Native ".pri" project files: out of scope for v1 (no public spec). |
-| Si-Ware NeoSpectra | CSV export | ascii | ✅ | Any CSV loader | Handheld MEMS spectrometer; exports CSV with site/soil metadata block. |
+| Si-Ware NeoSpectra | CSV export | ascii | ✅ | Any CSV loader | Handheld MEMS spectrometer; committed CSV export with site/soil metadata block is covered by `spectral_table`. |
 | Spectro Inc. SiWare API | JSON/CSV | ascii | ✅ | Standard JSON/CSV | Recent cloud-attached spectrometers; consider streaming. |
 
 ---

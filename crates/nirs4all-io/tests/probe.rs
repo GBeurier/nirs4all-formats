@@ -39,6 +39,20 @@ fn probes_committed_msa_fixture() {
     }));
 }
 
+#[test]
+fn probes_row_spectral_table_fixture() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_neospectra/synthetic_neospectra.csv",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+    assert!(!probes
+        .iter()
+        .any(|probe| probe.format == "ocean-optics-two-column-csv"));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
