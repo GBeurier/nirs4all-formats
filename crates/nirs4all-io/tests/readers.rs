@@ -2036,6 +2036,28 @@ fn reads_row_oriented_spectral_tables() {
 }
 
 #[test]
+fn reads_shimadzu_uvprobe_text_export() {
+    let records =
+        open_path(workspace_file("samples/shimadzu/synthetic_uvprobe.txt")).expect("open uvprobe");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert_eq!(
+        records[0].metadata["notes"][0].as_str(),
+        Some("Spectrum Data")
+    );
+    let sample = records[0].signals.get("sample_s000").expect("sample_s000");
+    assert_eq!(sample.axis.values.len(), 200);
+    assert_eq!(sample.axis.unit, "nm");
+    assert_eq!(sample.axis.kind, AxisKind::Wavelength);
+    assert_eq!(sample.signal_type, SignalType::Unknown);
+    assert!((sample.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((sample.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((sample.values[0] - 0.036743).abs() < 0.000001);
+    assert!((sample.values[199] + 0.146586).abs() < 0.000001);
+}
+
+#[test]
 fn reads_jasco_and_idl_text_exports_as_row_tables() {
     let records =
         open_path(workspace_file("samples/jasco/synthetic_jws_export.txt")).expect("open jasco");

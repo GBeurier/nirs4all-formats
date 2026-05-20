@@ -140,6 +140,24 @@ fn probes_siware_json_and_comment_header_text_exports() {
 }
 
 #[test]
+fn probes_shimadzu_uvprobe_text_without_claiming_spc_by_extension() {
+    let probes =
+        probe_path(workspace_file("samples/shimadzu/synthetic_uvprobe.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+
+    let probes = builtin_probes(
+        b"Shimadzu UVProbe native placeholder",
+        Path::new("sample.spc"),
+    );
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "candidate-spc" && probe.confidence == Confidence::Possible));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
+#[test]
 fn probes_netcdf_containers() {
     for relative in [
         "samples/netcdf/synthetic_nirs.nc",
