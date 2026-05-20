@@ -1,44 +1,51 @@
 # WiTec WIP / WID
 
-Status: detected and refused; ASCII exports are covered by the row-oriented
-spectral table reader.
+Status: experimental native subset; ASCII exports are covered by the
+row-oriented spectral table reader.
 
 ## Format
 
 WiTec `.wip` and `.wid` files are binary project containers produced by WiTec
 Project / Project FIVE for confocal Raman workflows. They can contain single
 spectra, maps, line scans, image/navigation metadata and project-tree objects.
-Public reverse-engineering notes indicate a `WIT^` magic at the beginning of
-the binary container, but there is no redistributable fixture in this repository
-yet.
+Observed public fixtures include both older `WIT^` signatures and the Project
+FIVE `WIT_PR06` signature. The committed `Sa4.wip` fixture is a `WIT_PR06`
+project containing a `TDGraph` spectral map.
 
-The practical open interchange path is the WiTec ASCII export. The committed
-fixture `samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt` is parsed by
-`nirs4all_io::readers::spectral_table` as raw CCD counts with a nanometer axis.
+The practical broad interchange path remains the WiTec ASCII export. The
+committed fixture `samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt` is parsed
+by `nirs4all_io::readers::spectral_table` as raw CCD counts with a nanometer
+axis.
 
 ## Implemented
 
-- `.wip` and `.wid` sniffing when the file starts with `WIT^`;
+- `.wip` and `.wid` sniffing when the file starts with `WIT^` or `WIT_PR06`;
 - definite `witec-wip` probe result for signed binary project files;
-- explicit refusal on read with guidance to export spectra from WiTec
-  Project/FIVE as ASCII text;
+- experimental `WIT_PR06` TDGraph decoder for the committed `Sa4.wip` layout:
+  `SizeX=90`, `SizeY=55`, `SizeGraph=1024`, `DataType=6`;
+- `LineValid` handling so the interrupted acquisition emits 4410 valid spectra
+  instead of 4950 physical grid slots;
+- spectral axis reconstruction from the WiTec `FreePolynom` coefficients;
+- strict refusal for legacy `WIT^` and unknown `WIT_PR06` layouts;
 - WiTec ASCII single-spectrum export support through `row-spectral-table`;
-- synthetic probe/read-refusal tests, because no redistributable binary WIP
-  fixture is available.
+- real `Sa4.wip` TDGraph regression tests.
 
 ## Missing
 
-- native binary project-tree parser;
-- extraction of single spectra, maps, line scans and time series from `.wip`;
+- general native binary project-tree parser;
+- extraction of arbitrary single spectra, maps, line scans and time series from
+  `.wip`;
 - typed WiTec metadata normalization for laser, objective, integration time,
   positions and map geometry;
-- validation against a real `.wip` / `.wid` fixture with redistribution or
-  private-test permission;
+- physical map coordinate orientation and Raman-shift conversion policy;
+- validation against an ASCII export from the same `Sa4.wip` project;
 - conformance reports against external WiTec-capable readers where license and
   fixture terms allow it.
 
 ## Validation Notes
 
-Current validation is intentionally limited to signature detection and refusal.
-Native decoding must not be promoted until a real project file is available and
-the decoded spectra can be compared with an ASCII export from the same project.
+Current native validation is intentionally narrow. The `Sa4.wip` test asserts
+4410 spectra, 1024 wavelength points, the first raw-count values and the
+polynomial wavelength range. The parser emits warning
+`witec_wip_experimental_parser` and must stay experimental until more WiTec
+project variants and paired vendor ASCII exports are available.

@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::fs;
 use std::path::Path;
 
 use nirs4all_io_core::{
@@ -9,11 +10,17 @@ use quick_xml::events::{BytesStart, Event};
 use quick_xml::Reader as XmlReader;
 use serde_json::{json, Value};
 
-use crate::readers::util::{normalize_key, parse_number, provenance, read_text_lossy};
+use crate::readers::util::{normalize_key, parse_number, provenance};
 use crate::Reader;
 
 const XML_FORMAT: &str = "horiba-jobinyvon-xml";
 const TEXT_FORMAT: &str = "horiba-labspec-text";
+const BINARY_FORMAT: &str = "horiba-labspec6-binary";
+const LABSPEC6_MAGIC: &[u8] = b"LabSpec6";
+const LABSPEC6_TYPE_TAG: &[u8] = b"typm\x01\0\0\0";
+const LABSPEC6_UNIT_TAG: &[u8] = b"uni|\x01\0\0\0";
+const LABSPEC6_COUNT_TAG: &[u8] = &[0xdb, 0xd4, 0x6c, 0x7d];
+const LABSPEC6_DATA_TAG: &[u8] = &[0xe3, 0x74, 0x61, 0x6d];
 
 pub struct HoribaLabSpecReader;
 
@@ -29,6 +36,15 @@ impl Reader for HoribaLabSpecReader {
             .unwrap_or_default()
             .to_ascii_lowercase();
         let text = String::from_utf8_lossy(head);
+
+        if matches!(ext.as_str(), "l6m" | "l6s") && looks_like_labspec6_binary(head) {
+            return Some(FormatProbe::new(
+                BINARY_FORMAT,
+                self.name(),
+                Confidence::Definite,
+                "Horiba LabSpec 6 binary container detected",
+            ));
+        }
 
         if ext == "xml" && text.contains("<LSX_Data") && text.contains("<LSX_Tree") {
             return Some(FormatProbe::new(
@@ -52,7 +68,16 @@ impl Reader for HoribaLabSpecReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
+            source,
+        })?;
+        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        if looks_like_labspec6_binary(&bytes) {
+            return read_labspec6_binary(&bytes, source, self.name());
+        }
+
+        let text = String::from_utf8_lossy(&bytes).replace('\0', " ");
         if text.contains("<LSX_Data") && text.contains("<LSX_Tree") {
             read_lsx_xml(&text, source, self.name())
         } else if looks_like_labspec_text(&text) {
@@ -110,12 +135,258 @@ struct IntensityRecordInput<'a> {
     warnings: Vec<String>,
 }
 
+#[derive(Clone)]
+struct BinaryBlock {
+    label: String,
+    unit: String,
+    values: Vec<f64>,
+    values_offset: usize,
+}
+
 fn looks_like_labspec_text(text: &str) -> bool {
     let lower = text.to_ascii_lowercase();
     let has_labram = lower.contains("#instrument=\tlabram") || lower.contains("#instrument=labram");
     (lower.contains("#acq. time")
         && (lower.contains("#axis") || has_labram || lower.contains("#laser")))
         || (has_labram && lower.contains("#spectro") && lower.contains("#laser"))
+}
+
+fn looks_like_labspec6_binary(bytes: &[u8]) -> bool {
+    bytes.starts_with(LABSPEC6_MAGIC)
+}
+
+fn read_labspec6_binary(
+    bytes: &[u8],
+    source: SourceFile,
+    reader_name: &str,
+) -> Result<Vec<SpectralRecord>> {
+    let spectral_axis = find_labspec6_blocks(bytes, "Spectr")
+        .into_iter()
+        .find(|block| looks_like_binary_spectral_axis(&block.values))
+        .ok_or_else(|| {
+            Error::InvalidRecord("Horiba LabSpec6 binary spectral axis not found".to_string())
+        })?;
+    let spectral_len = spectral_axis.values.len();
+    let intensity = find_labspec6_blocks(bytes, "Intens")
+        .into_iter()
+        .filter(|block| {
+            block.values.len() >= spectral_len && block.values.len() % spectral_len == 0
+        })
+        .max_by_key(|block| block.values.len())
+        .ok_or_else(|| {
+            Error::InvalidRecord("Horiba LabSpec6 binary intensity matrix not found".to_string())
+        })?;
+    let spectrum_count = intensity.values.len() / spectral_len;
+    let mut warnings = vec!["horiba_labspec6_binary_experimental".to_string()];
+    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&spectral_axis.unit, &mut warnings);
+    let signal_unit = Some(normalize_unit(&intensity.unit));
+    let spatial = find_labspec6_spatial_pair(bytes, spectrum_count);
+
+    let mut base_metadata = BTreeMap::new();
+    base_metadata.insert("container".to_string(), json!("labspec6_binary"));
+    base_metadata.insert("axis_layout".to_string(), json!("labspec6_binary_map"));
+    base_metadata.insert("dataset_type".to_string(), json!("LabSpec6"));
+    base_metadata.insert("spectrum_count".to_string(), json!(spectrum_count));
+    base_metadata.insert("spectral_point_count".to_string(), json!(spectral_len));
+    base_metadata.insert(
+        "intensity_payload_offset".to_string(),
+        json!(intensity.values_offset),
+    );
+    base_metadata.insert(
+        "spectral_axis_payload_offset".to_string(),
+        json!(spectral_axis.values_offset),
+    );
+
+    let mut out = Vec::new();
+    for (index, values) in intensity.values.chunks(spectral_len).enumerate() {
+        let mut metadata = base_metadata.clone();
+        metadata.insert("spectrum_index".to_string(), json!(index));
+        if let Some(spatial) = &spatial {
+            let x_index = index % spatial.x_values.len();
+            let y_index = index / spatial.x_values.len();
+            insert_spatial(&mut metadata, "x", spatial.x_values[x_index], &spatial.unit);
+            insert_spatial(&mut metadata, "y", spatial.y_values[y_index], &spatial.unit);
+            metadata.insert("spatial_axis_source".to_string(), json!(spatial.source));
+        }
+        out.push(build_intensity_record(IntensityRecordInput {
+            format: BINARY_FORMAT,
+            reader_name,
+            source: source.clone(),
+            axis_values: spectral_axis.values.clone(),
+            axis_unit: axis_unit.clone(),
+            axis_kind: axis_kind.clone(),
+            values: values.to_vec(),
+            signal_unit: signal_unit.clone(),
+            metadata,
+            warnings: warnings.clone(),
+        })?);
+    }
+
+    Ok(out)
+}
+
+#[derive(Clone)]
+struct SpatialPair {
+    x_values: Vec<f64>,
+    y_values: Vec<f64>,
+    unit: String,
+    source: String,
+}
+
+fn find_labspec6_spatial_pair(bytes: &[u8], spectrum_count: usize) -> Option<SpatialPair> {
+    let mut axes = find_labspec6_blocks(bytes, "X")
+        .into_iter()
+        .chain(find_labspec6_blocks(bytes, "Y"))
+        .filter(|block| {
+            block.values.len() >= 2
+                && block.values.len() <= spectrum_count
+                && block.values.len() < 10_000
+                && block.values.iter().all(|value| value.is_finite())
+        })
+        .collect::<Vec<_>>();
+    axes.sort_by_key(|block| block.values.len());
+    for x_candidate in &axes {
+        for y_candidate in &axes {
+            if x_candidate.label == y_candidate.label {
+                continue;
+            }
+            if x_candidate.values.len() * y_candidate.values.len() != spectrum_count {
+                continue;
+            }
+            let (x_axis, y_axis) = if x_candidate.values.len() <= y_candidate.values.len() {
+                (x_candidate, y_candidate)
+            } else {
+                (y_candidate, x_candidate)
+            };
+            return Some(SpatialPair {
+                x_values: x_axis.values.clone(),
+                y_values: y_axis.values.clone(),
+                unit: if x_axis.unit.is_empty() {
+                    y_axis.unit.clone()
+                } else {
+                    x_axis.unit.clone()
+                },
+                source: format!(
+                    "binary_{}_{}_points_{}_{}_points",
+                    x_axis.label,
+                    x_axis.values.len(),
+                    y_axis.label,
+                    y_axis.values.len()
+                ),
+            });
+        }
+    }
+    None
+}
+
+fn find_labspec6_blocks(bytes: &[u8], label: &str) -> Vec<BinaryBlock> {
+    let mut blocks = Vec::new();
+    for label_pos in find_labspec6_label_positions(bytes, label) {
+        let unit = find_tag(
+            bytes,
+            LABSPEC6_UNIT_TAG,
+            label_pos,
+            label_pos.saturating_add(96),
+        )
+        .map(|offset| read_c_string(bytes, offset + LABSPEC6_UNIT_TAG.len(), 16))
+        .unwrap_or_default();
+        let window_start = label_pos.saturating_sub(128);
+        let window_end = label_pos.saturating_add(256).min(bytes.len());
+        for count_tag in find_tags(bytes, LABSPEC6_COUNT_TAG, window_start, window_end) {
+            let Some(count) = read_u32_le(bytes, count_tag + 12).map(|value| value as usize) else {
+                continue;
+            };
+            if count == 0 || count > 10_000_000 {
+                continue;
+            }
+            let Some(data_tag) = find_tag(
+                bytes,
+                LABSPEC6_DATA_TAG,
+                count_tag + LABSPEC6_COUNT_TAG.len(),
+                count_tag.saturating_add(256).min(bytes.len()),
+            ) else {
+                continue;
+            };
+            let values_offset = data_tag + 16;
+            let Some(values) = read_f32_values(bytes, values_offset, count) else {
+                continue;
+            };
+            if values.iter().all(|value| value.is_finite()) {
+                blocks.push(BinaryBlock {
+                    label: label.to_string(),
+                    unit: unit.clone(),
+                    values,
+                    values_offset,
+                });
+            }
+        }
+    }
+    blocks
+}
+
+fn find_labspec6_label_positions(bytes: &[u8], label: &str) -> Vec<usize> {
+    let mut pattern = LABSPEC6_TYPE_TAG.to_vec();
+    pattern.extend_from_slice(label.as_bytes());
+    find_tags(bytes, &pattern, 0, bytes.len())
+        .into_iter()
+        .map(|offset| offset + LABSPEC6_TYPE_TAG.len())
+        .filter(|label_pos| {
+            bytes
+                .get(label_pos + label.len())
+                .is_some_and(|value| *value == 0)
+        })
+        .collect()
+}
+
+fn looks_like_binary_spectral_axis(values: &[f64]) -> bool {
+    values.len() >= 10
+        && values.iter().all(|value| value.is_finite())
+        && (values.windows(2).all(|pair| pair[0] < pair[1])
+            || values.windows(2).all(|pair| pair[0] > pair[1]))
+}
+
+fn read_u32_le(bytes: &[u8], offset: usize) -> Option<u32> {
+    Some(u32::from_le_bytes(
+        bytes.get(offset..offset + 4)?.try_into().ok()?,
+    ))
+}
+
+fn read_f32_values(bytes: &[u8], offset: usize, count: usize) -> Option<Vec<f64>> {
+    let byte_len = count.checked_mul(4)?;
+    let data = bytes.get(offset..offset.checked_add(byte_len)?)?;
+    let mut out = Vec::with_capacity(count);
+    for chunk in data.chunks_exact(4) {
+        out.push(f32::from_le_bytes(chunk.try_into().ok()?) as f64);
+    }
+    Some(out)
+}
+
+fn read_c_string(bytes: &[u8], offset: usize, limit: usize) -> String {
+    let Some(data) = bytes.get(offset..offset.saturating_add(limit).min(bytes.len())) else {
+        return String::new();
+    };
+    let end = data
+        .iter()
+        .position(|byte| *byte == 0)
+        .unwrap_or(data.len());
+    String::from_utf8_lossy(&data[..end]).trim().to_string()
+}
+
+fn find_tag(bytes: &[u8], tag: &[u8], start: usize, end: usize) -> Option<usize> {
+    find_tags(bytes, tag, start, end).into_iter().next()
+}
+
+fn find_tags(bytes: &[u8], tag: &[u8], start: usize, end: usize) -> Vec<usize> {
+    if tag.is_empty() || start >= bytes.len() {
+        return Vec::new();
+    }
+    let end = end.min(bytes.len());
+    let Some(last_start) = end.checked_sub(tag.len()) else {
+        return Vec::new();
+    };
+    (start..=last_start)
+        .filter(|offset| bytes[*offset..].starts_with(tag))
+        .collect()
 }
 
 fn read_lsx_xml(text: &str, source: SourceFile, reader_name: &str) -> Result<Vec<SpectralRecord>> {

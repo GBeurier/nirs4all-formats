@@ -57,6 +57,53 @@ fn reads_synthetic_delimited_nirs_table() {
 }
 
 #[test]
+fn reads_real_handheld_and_reference_csv_matrices() {
+    for (relative, expected_len, sample_id, axis_len, first_axis, last_axis, first_value) in [
+        (
+            "samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv",
+            86,
+            "1",
+            351,
+            950.0,
+            1650.0,
+            0.17570436,
+        ),
+        (
+            "samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv",
+            7,
+            "7693",
+            1050,
+            400.0,
+            2498.0,
+            0.249042,
+        ),
+        (
+            "samples/foss_winisi/foss_xds_wheat2_sensAIfood.csv",
+            2,
+            "11329",
+            1050,
+            400.0,
+            2498.0,
+            0.2466762,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open real csv matrix");
+
+        assert_eq!(records.len(), expected_len);
+        assert_eq!(records[0].provenance.format, "delimited-text");
+        assert_eq!(records[0].metadata["sample_id"].as_str(), Some(sample_id));
+        assert!(records[0].targets.contains_key("Protein"));
+        let signal = records[0].signals.get("signal").expect("signal");
+        assert_eq!(signal.axis.values.len(), axis_len);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert!((signal.axis.values[0] - first_axis).abs() < 0.000001);
+        assert!((signal.axis.values[axis_len - 1] - last_axis).abs() < 0.000001);
+        assert!((signal.values[0] - first_value).abs() < 0.000001);
+    }
+}
+
+#[test]
 fn reads_bruker_dpt_export() {
     let records = open_path(workspace_file("samples/bruker_dpt/synthetic.dpt")).expect("open dpt");
 
@@ -560,6 +607,36 @@ fn reads_horiba_labspec_text_exports() {
     assert_eq!(signal.axis.values.len(), 498);
     assert_eq!(signal.axis.unit, "cm-1");
     assert_eq!(signal.unit.as_deref(), Some("Cnt"));
+    assert!((signal.values.iter().sum::<f64>() - 72757.0).abs() < 0.000001);
+}
+
+#[test]
+fn reads_horiba_labspec6_binary_map() {
+    let records = open_path(workspace_file("samples/raman_horiba/AlN_Gd2O3_indepth.l6m"))
+        .expect("open labspec6 binary");
+
+    assert_eq!(records.len(), 72);
+    assert_eq!(records[0].provenance.format, "horiba-labspec6-binary");
+    assert_eq!(
+        records[0].metadata["axis_layout"].as_str(),
+        Some("labspec6_binary_map")
+    );
+    assert!((records[0].metadata["spatial_x"].as_f64().expect("x") + 209.87088).abs() < 0.00001);
+    assert!((records[0].metadata["spatial_y"].as_f64().expect("y") + 204.08078).abs() < 0.00001);
+    assert!((records[71].metadata["spatial_x"].as_f64().expect("x") - 183.81874).abs() < 0.00001);
+    assert!((records[71].metadata["spatial_y"].as_f64().expect("y") - 204.31718).abs() < 0.00001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"horiba_labspec6_binary_experimental".to_string()));
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 498);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.unit.as_deref(), Some("Cnt"));
+    assert!((signal.axis.values[0] - 100.166382).abs() < 0.000001);
+    assert!((signal.axis.values[497] - 1198.541748).abs() < 0.000001);
+    assert!((signal.values[0] - 57.0).abs() < 0.000001);
     assert!((signal.values.iter().sum::<f64>() - 72757.0).abs() < 0.000001);
 }
 
@@ -1590,6 +1667,33 @@ fn reads_siware_api_json_measurement() {
 }
 
 #[test]
+fn reads_real_neospectra_ossl_wide_csv_slice() {
+    let records = open_path(workspace_file(
+        "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",
+    ))
+    .expect("open real neospectra ossl csv");
+
+    assert_eq!(records.len(), 24);
+    assert_eq!(records[0].provenance.format, "delimited-text");
+    assert_eq!(
+        records[0].metadata["sample_id"].as_str(),
+        Some("a20c71b9ead451310a3d22317355ac57")
+    );
+    assert_eq!(
+        records[0].metadata["dataset.code_ascii_txt"].as_str(),
+        Some("Neospectra")
+    );
+    assert!(records[0].targets.contains_key("oc_usda.c729_w.pct"));
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 601);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert!((signal.axis.values[0] - 1350.0).abs() < 0.000001);
+    assert!((signal.axis.values[600] - 2550.0).abs() < 0.000001);
+    assert!((signal.values[0] - 0.37305).abs() < 0.000001);
+}
+
+#[test]
 fn reads_synthetic_nirs_netcdf_dataset() {
     let records =
         open_path(workspace_file("samples/netcdf/synthetic_nirs.nc")).expect("open netcdf");
@@ -1905,6 +2009,92 @@ fn reads_synthetic_excel_workbook() {
     assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
     assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
     assert!((absorbance.values[0] - 0.03674271524932157).abs() < 0.000001);
+}
+
+#[test]
+fn reads_real_axis_descriptor_excel_workbooks() {
+    for (
+        relative,
+        expected_len,
+        sample_id,
+        signal_name,
+        signal_type,
+        axis_len,
+        first_axis,
+        last_axis,
+        first_value,
+    ) in [
+        (
+            "samples/viavi_micronir/micronir_forensic_K_avg.xlsx",
+            88,
+            "K1",
+            "absorbance",
+            SignalType::Absorbance,
+            125,
+            908.1,
+            1676.2,
+            0.06214933,
+        ),
+        (
+            "samples/viavi_micronir/micronir_forensic_T_avg.xlsx",
+            71,
+            "T1",
+            "absorbance",
+            SignalType::Absorbance,
+            125,
+            908.1,
+            1676.2,
+            0.4184331,
+        ),
+        (
+            "samples/siware_neospectra/neospectra_forensic_K_avg.xlsx",
+            88,
+            "K1",
+            "absorbance",
+            SignalType::Absorbance,
+            160,
+            1299.36951243185,
+            2604.09316651211,
+            0.2083189,
+        ),
+        (
+            "samples/excel/nirone_forensic_T_avg.xlsx",
+            71,
+            "T0",
+            "absorbance",
+            SignalType::Absorbance,
+            201,
+            1550.0,
+            1950.0,
+            0.4187897,
+        ),
+        (
+            "samples/excel/scio_forensic_P_avg.xlsx",
+            71,
+            "P1",
+            "raw",
+            SignalType::RawCounts,
+            331,
+            740.0,
+            1070.0,
+            0.06505498,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open real descriptor xlsx");
+
+        assert_eq!(records.len(), expected_len);
+        assert_eq!(records[0].provenance.format, "excel-xlsx");
+        assert_eq!(records[0].metadata["sample_id"].as_str(), Some(sample_id));
+        assert!(records[0].metadata.contains_key("axis_descriptor"));
+        let signal = records[0].signals.get(signal_name).expect(signal_name);
+        assert_eq!(signal.axis.values.len(), axis_len);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(signal.signal_type, signal_type);
+        assert!((signal.axis.values[0] - first_axis).abs() < 0.000001);
+        assert!((signal.axis.values[axis_len - 1] - last_axis).abs() < 0.000001);
+        assert!((signal.values[0] - first_value).abs() < 0.000001);
+    }
 }
 
 #[test]
