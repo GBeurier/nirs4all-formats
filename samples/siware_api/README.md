@@ -4,10 +4,10 @@ Recent cloud-attached MEMS spectrometers stream measurements as JSON over HTTP. 
 
 ## Samples
 
-| File | Source | License |
-|---|---|---|
+| File | Source | License | Notes |
+|---|---|---|---|
 | `synthetic_siware_api.json` | Generated locally | CC-0 | Mock SiWare API payload: `instrument` / `measurement` (wavelengths + absorbance + metadata) / `predictions` (property values). |
-| `synthetic_siware_api.csv` | Generated locally | CC-0 | Mock CSV stream with `#`-commented metadata then `wavelength_nm,absorbance`. |
+| `synthetic_siware_api.csv` | Generated locally | CC-0 | Mock CSV stream with `#`-commented metadata then `wavelength_nm,absorbance`; parsed by the generic `row-spectral-table` reader. |
 
 ## Parser hints
 

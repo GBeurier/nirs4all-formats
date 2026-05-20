@@ -50,8 +50,8 @@ Deliverables:
 - Allotrope ADF reader; experimental local-only subset for numeric HDF5
   `/data-cubes`, with minimal RDF component mapping but without full
   ontology/SDK validation yet;
-- SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
-  payloads;
+- SiWare API JSON reader and CSV companion coverage; experimental for
+  one-measurement NeoSpectra-style JSON payloads and axis-first CSV streams;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
   datasets, dedicated ANDI/MS refusal and schema refusal of adjacent non-NIRS
   NetCDF containers;

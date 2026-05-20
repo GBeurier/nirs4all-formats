@@ -34,8 +34,10 @@ Experimental native readers:
   extracted as an experimental subset, plus minimal RDF component mapping for
   cube titles, seconds axes, secondary nm scales and absorbance units; full
   ontology resolution and SDK validation remain pending;
-- SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
-  `measurement.absorbance` payloads with predictions mapped to targets;
+- SiWare API JSON / CSV companion: NeoSpectra-style
+  `measurement.wavelengths` and `measurement.absorbance` JSON payloads with
+  predictions mapped to targets, plus the synthetic CSV stream through
+  `row-spectral-table`;
 - Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped
   `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
