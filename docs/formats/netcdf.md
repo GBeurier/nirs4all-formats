@@ -30,16 +30,44 @@ pure-Rust metadata stack can decode them. The reader emits one `SpectralRecord`
 per sample row or per non-missing time row for derived time-series products.
 
 The Microtops MAN NetCDF path is intentionally narrower than the generic NIRS
-schema. The reader now discovers root-level `aot_<wavelength>` variables and
-sorts them into a wavelength axis before validating series lengths. The
-committed PANGAEA MSM114/2 fixture is NetCDF4/HDF5 with contiguous `aot_380`,
-`aot_440`, `aot_500`, `aot_675` and `aot_870` series plus matching `*_std`
-series. The primary `aot` array and record now carry the
-`aerosol_optical_thickness` signal type, while `aot_std` carries the
-`uncertainty` signal type. Current pure-Rust NetCDF/HDF5 payload reconstruction
-still cannot read that fixture's datasets after discovery, so MSM114/2 is
-decoded through a SHA-256-guarded fallback and emits
-`microtops_man_netcdf_known_fixture_layout`.
+schema. The reader discovers root-level `aot_<wavelength>` variables and sorts
+them into a wavelength axis before validating series lengths. The committed
+PANGAEA MSM114/2 fixture is NetCDF4/HDF5 with contiguous `aot_380`, `aot_440`,
+`aot_500`, `aot_675` and `aot_870` series plus matching `*_std` series. The
+primary `aot` array and record carry the `aerosol_optical_thickness` signal
+type, while `aot_std` carries the `uncertainty` signal type.
+
+The current `hdf5-reader` 0.5 high-level API mis-decodes the shared attribute
+heap on this particular NetCDF4 layout, which causes per-variable header
+resolution to fail for any 1-D dataset that carries shared `standard_name` or
+`coordinates` attributes (the five AOT channels, `lat`, `lon`, `cwv` and
+`angstrom_exp`). When that happens, the reader falls back to a *generic*
+contiguous-layout decoder that:
+
+1. Scans the file bytes for fractal-heap hard-link records
+   (`<name_len:u8><name:UTF-8><object_header_addr:u64_LE>`) whose 8-byte
+   address points to a valid `OHDR` signature elsewhere in the file.
+2. Resolves each candidate dataset through
+   `Hdf5File::get_or_parse_header(addr)` to obtain `DataLayout::Contiguous {
+   address, size }`, `Dataspace`, and `Datatype` messages.
+3. Reads the contiguous payload through the file storage and decodes it
+   according to the on-disk byte order. Only 1-D primitive datasets
+   (`f64`/`i64`) with a `DataLayout::Contiguous` are accepted; chunked,
+   compact, compound, VLEN, or non-numeric datasets are explicitly rejected.
+
+The fallback is keyed on standard HDF5 metadata, not on file hashes or
+byte offset tables. It emits `microtops_man_netcdf_contiguous_layout_fallback`
+on every record whenever at least one variable went through it, alongside the
+existing `microtops_man_netcdf_experimental` marker.
+
+Global attributes are recovered from the same `Hdf5LayoutFallback` byte buffer
+when `hdf5-reader`'s high-level attribute iterator fails on the root group.
+The byte-scan path only recovers fixed-length ASCII string attributes encoded
+as `<name>\0<class_word=0x13><size:u32_LE><scalar_dataspace=0x02><data>`;
+variable-length string attributes (`authors`, `reference`) and numeric scalar
+attributes are intentionally skipped. When that path is used the reader emits
+`microtops_man_netcdf_global_attributes_byte_scan` so downstream consumers
+know the attribute map came from a positional decoder.
 
 The ARM MFRSR path is validated locally only. It maps filter variables
 `*_filter1..7` onto a wavelength axis from `centroid_wavelength` attributes,

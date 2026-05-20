@@ -220,7 +220,12 @@ fn reads_microtops_man_netcdf_and_refuses_pyrnet() {
         .provenance
         .warnings
         .iter()
-        .any(|warning| warning == "microtops_man_netcdf_known_fixture_layout"));
+        .any(|warning| warning == "microtops_man_netcdf_contiguous_layout_fallback"));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "microtops_man_netcdf_global_attributes_byte_scan"));
     let aot = records[0].signals.get("aot").expect("aot");
     assert_eq!(aot.axis.values, vec![380.0, 440.0, 500.0, 675.0, 870.0]);
     assert_eq!(aot.unit.as_deref(), Some("1"));
