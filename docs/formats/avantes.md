@@ -104,7 +104,8 @@ the merge-group trailer observed in the fixtures.
 - one `SpectralRecord` per file or AvaSoft 8 subfile;
 - axis: wavelength in `nm`;
 - metadata: `metadata.avantes` with version/magic, spectrometer id, user name,
-  pixels, acquisition parameters and comments where present;
+  pixels, acquisition parameters, decoded AvaSoft 8 SPC date/time and comments
+  where present;
 - legacy `.TRM`: `transmittance`, `sample`, `white_reference`,
   `dark_reference`;
 - legacy `.ROH/.DRK/.REF`: `scope`, `dark_reference` or `white_reference`;
@@ -128,6 +129,9 @@ Current binary fixtures:
 
 Each committed binary suffix above is also locked by probe tests so extension
 routing remains aligned with the binary header/magic checks.
+AvaSoft 8 `spc_date` values are unpacked into top-level
+`acquisition_start_date` and `acquisition_start_time` metadata while the raw
+integer and decoded components remain under `metadata.avantes`.
 
 Current ASCII fixtures:
 
@@ -146,7 +150,7 @@ only; no runtime dependency is linked into the MIT Rust core.
 ## Next Work
 
 - Add committed `.ABS`, `.RFL8`, `.TRM8` and multi-subfile AVS8 fixtures.
-- Decode and normalize the AVS8 date and the remaining acquisition fields.
+- Decode and normalize the remaining AVS8 acquisition fields.
 - Implement calibrated `IRR8` once the required irradiance calibration terms are
   understood.
 - Add subprocess-based conformance reports against `lightr` in the

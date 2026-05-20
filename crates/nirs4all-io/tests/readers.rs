@@ -1987,6 +1987,19 @@ fn reads_avantes_avasoft8_raw_binary() {
     let metadata = &records[0].metadata["avantes"];
     assert_eq!(metadata["magic"].as_str(), Some("AVS84"));
     assert_eq!(metadata["measure_mode"].as_u64(), Some(0));
+    assert_eq!(
+        records[0].metadata["acquisition_start_date"].as_str(),
+        Some("2019-07-06")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_start_time"].as_str(),
+        Some("15:48")
+    );
+    assert_eq!(
+        metadata["spc_date_decoded"]["date"].as_str(),
+        Some("2019-07-06")
+    );
+    assert_eq!(metadata["spc_date_decoded"]["minute"].as_u64(), Some(48));
     let scope = records[0].signals.get("scope").expect("scope");
     assert_eq!(scope.axis.values.len(), 1_019);
     assert_eq!(scope.axis.unit, "nm");
@@ -2009,6 +2022,19 @@ fn reads_avantes_avasoft8_irradiance_binary() {
     let metadata = &records[0].metadata["avantes"];
     assert_eq!(metadata["magic"].as_str(), Some("AVS84"));
     assert_eq!(metadata["measure_mode"].as_u64(), Some(4));
+    assert_eq!(
+        records[0].metadata["acquisition_start_date"].as_str(),
+        Some("2022-03-20")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_start_time"].as_str(),
+        Some("16:39")
+    );
+    assert_eq!(
+        metadata["spc_date_decoded"]["date"].as_str(),
+        Some("2022-03-20")
+    );
+    assert_eq!(metadata["spc_date_decoded"]["hour"].as_u64(), Some(16));
     let irradiance = records[0].signals.get("irradiance").expect("irradiance");
     assert_eq!(irradiance.axis.values.len(), 1_620);
     assert_eq!(irradiance.axis.unit, "nm");

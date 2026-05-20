@@ -4,6 +4,8 @@
     {
       "format": "avantes-avasoft8-binary",
       "metadata_keys": [
+        "acquisition_start_date",
+        "acquisition_start_time",
         "avantes"
       ],
       "quality_flags": [],

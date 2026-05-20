@@ -69,7 +69,8 @@ Experimental native readers:
 - Bruker OPUS native binaries, 1D data/status block pairs and cross-reader
   fixtures with semantic tests over the committed OPUS corpus;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
-- Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
+- Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and
+  AvaSoft 8 binaries (`.Raw8`, `.IRR8`) with decoded AVS8 SPC date/time;
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64
   payloads, and ENVI Standard cubes expanded by pixel with parsed `map info`;
 - AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
