@@ -27,6 +27,7 @@ formats/jasco-jws
 formats/jcamp-dx
 formats/matlab
 formats/msa-iso22029
+formats/mzml
 formats/netcdf
 formats/nicolet-omnic
 formats/ocean-optics
