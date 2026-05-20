@@ -30,7 +30,7 @@ All samples here are from [`ropensci/lightr`](https://github.com/ropensci/lightr
 
 | File | Notes |
 |---|---|
-| `OceanOptics.spc` | OceanView-flavour `.spc` — **NOT** the Galactic SPC format. Must be disambiguated by header magic. |
+| `OceanOptics.spc` | OceanView export with Galactic SPC-compatible payload; routed through the Galactic SPC reader after header validation, not by extension alone. |
 
 ### Ocean Optics JCAMP-DX exports
 
@@ -48,6 +48,6 @@ All samples here are from [`ropensci/lightr`](https://github.com/ropensci/lightr
 ## Parser hints
 
 - `.ProcSpec` is **zip-like internally** in many revisions — `lightr` first tries to unzip, then falls back to direct XML parsing. CRC mismatch is a soft warning, not a fatal error.
-- The OceanOptics `.spc` magic differs from Galactic; do not route on extension.
+- The OceanOptics `.spc` fixture is intentionally disambiguated by header magic; do not route `.spc` files by extension alone.
 - Reference reader: R [`lightr`](https://github.com/ropensci/lightr) (see [`lr_parse_procspec()`](https://docs.ropensci.org/lightr/reference/lr_parse_procspec.html)). No maintained Python port yet.
 - Locale matters: SpectraSuite/OceanView use either `.` or `,` as decimal separator depending on Windows locale. See `lightr`'s non-English fixtures.

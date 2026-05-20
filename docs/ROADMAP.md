@@ -48,7 +48,8 @@ Deliverables:
 - Allotrope ASM JSON bridge; experimental for plate-reader spectral data cubes
   and detector-wavelength endpoint readings;
 - Allotrope ADF reader; experimental local-only subset for numeric HDF5
-  `/data-cubes`, without RDF/ontology resolution yet;
+  `/data-cubes`, with minimal RDF component mapping but without full
+  ontology/SDK validation yet;
 - SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
   payloads;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`

@@ -3137,6 +3137,7 @@ fn reads_local_allotrope_adf_data_cubes_when_present() {
         first.metadata["axis_source"].as_str(),
         Some("generated_index")
     );
+    assert_eq!(first.metadata["cube_title"].as_str(), Some("double array"));
     let signal = first.signals.values().next().expect("ADF measure signal");
     assert_eq!(signal.axis.values.len(), 18_001);
     assert_eq!(signal.axis.unit, "index");
@@ -3147,7 +3148,7 @@ fn reads_local_allotrope_adf_data_cubes_when_present() {
     assert!(first
         .provenance
         .warnings
-        .contains(&"allotrope_adf_rdf_semantics_not_resolved".to_string()));
+        .contains(&"allotrope_adf_rdf_semantics_partially_mapped".to_string()));
 
     let scaled = &records[1];
     assert_eq!(
@@ -3155,9 +3156,53 @@ fn reads_local_allotrope_adf_data_cubes_when_present() {
         Some("scale_dataset")
     );
     assert_eq!(scaled.metadata["secondary_index"].as_u64(), Some(0));
+    assert_eq!(scaled.metadata["cube_title"].as_str(), Some("uv spectrum"));
+    assert_eq!(
+        scaled.metadata["adf_measure_component_type"].as_str(),
+        Some("AbsorbanceUnitValue")
+    );
+    assert_eq!(
+        scaled.metadata["adf_axis_component_type"].as_str(),
+        Some("SecondTimeValue")
+    );
+    assert_eq!(
+        scaled.metadata["secondary_scale_id"].as_str(),
+        Some("a6643890-8173-42f9-9616-8d6f6589989b")
+    );
+    assert_eq!(
+        scaled.metadata["secondary_axis_value"].as_f64(),
+        Some(250.0)
+    );
+    assert_eq!(scaled.metadata["secondary_axis_unit"].as_str(), Some("nm"));
+    assert_eq!(
+        scaled.metadata["secondary_axis_kind"].as_str(),
+        Some("wavelength")
+    );
     let signal = scaled.signals.values().next().expect("scaled ADF signal");
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert_eq!(signal.unit.as_deref(), Some("mAU"));
+    assert_eq!(signal.axis.unit, "s");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
     assert!((signal.axis.values[0] - 0.0).abs() < 0.000001);
     assert!((signal.axis.values[18_000] - 15.002275).abs() < 0.000001);
+    assert!(scaled
+        .provenance
+        .warnings
+        .contains(&"allotrope_adf_time_axis_mapped_as_index".to_string()));
+
+    assert_eq!(
+        records[2].metadata["secondary_axis_value"].as_f64(),
+        Some(400.0)
+    );
+    assert_eq!(
+        records[3].metadata["cube_title"].as_str(),
+        Some("uv chromatogram")
+    );
+    let chromatogram = records[3].signals.get("absorbance").expect("absorbance");
+    assert_eq!(chromatogram.signal_type, SignalType::Absorbance);
+    assert_eq!(chromatogram.unit.as_deref(), Some("mAU"));
+    assert_eq!(chromatogram.axis.unit, "s");
+    assert!((chromatogram.axis.values[18_000] - 15.002275).abs() < 0.000001);
 }
 
 #[test]
