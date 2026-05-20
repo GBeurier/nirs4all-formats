@@ -25,9 +25,9 @@ Experimental native readers:
 - sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF,
   Microtops `.TXT`, the committed Microtops MAN NetCDF AOT fixture, and
   local-only AERONET MAN ASCII `.lev10/.lev15/.lev20` exports;
-- AnIML spectral XML: spectral `SeriesSet` fixture with wavelength axis,
-  absorbance signal and sample target; non-spectral AnIML result documents are
-  refused;
+- AnIML spectral XML: spectral `SeriesSet` fixtures with explicit values or
+  uniform `AutoIncrementedValueSet` wavelength axes, absorbance signal and
+  sample target; non-spectral AnIML result documents are refused;
 - Allotrope ASM JSON: plate-reader spectral data cubes and detector-wavelength
   endpoint readings from committed Benchling allotropy fixtures;
 - Allotrope ADF: local-only `adfsee` HDF5 fixture with numeric `/data-cubes`

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnIML xmlns="urn:org:astm:animl:schema:core:draft:0.90">
+  <SampleSet>
+    <Sample sampleID="S002" name="Synthetic auto-incremented NIRS sample">
+      <Category name="Properties">
+        <Parameter name="Protein" parameterType="Float">
+          <F>11.25</F>
+        </Parameter>
+      </Category>
+    </Sample>
+  </SampleSet>
+  <ExperimentStepSet>
+    <ExperimentStep experimentStepID="E002" name="NIRS measurement">
+      <Result name="Spectrum">
+        <SeriesSet name="Spectrum data" length="5">
+          <Series seriesID="wavelength" name="Wavelength" seriesType="Float" plotScale="linear">
+            <AutoIncrementedValueSet endIndex="4">
+              <StartValue>
+                <F>1100.0</F>
+              </StartValue>
+              <Increment>
+                <F>25.0</F>
+              </Increment>
+            </AutoIncrementedValueSet>
+            <Unit label="nm" quantity="length">
+              <SIUnit factor="1.0E-9">m</SIUnit>
+            </Unit>
+          </Series>
+          <Series seriesID="absorbance" name="Absorbance" seriesType="Float" plotScale="linear">
+            <IndividualValueSet>
+              <F>0.10</F><F>0.12</F><F>0.15</F><F>0.14</F><F>0.11</F>
+            </IndividualValueSet>
+            <Unit label="AU" quantity="absorbance" />
+          </Series>
+        </SeriesSet>
+      </Result>
+    </ExperimentStep>
+  </ExperimentStepSet>
+</AnIML>

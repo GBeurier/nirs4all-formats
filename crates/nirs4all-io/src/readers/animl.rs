@@ -69,12 +69,22 @@ struct CurrentSeries {
     values: Vec<f64>,
 }
 
+#[derive(Default)]
+struct CurrentAutoValues {
+    start_index: usize,
+    end_index: Option<usize>,
+    start_value: Option<f64>,
+    increment: Option<f64>,
+}
+
 fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
     let mut reader = XmlReader::from_str(text);
     reader.config_mut().trim_text(true);
     let mut parsed = ParsedAniml::default();
     let mut stack = Vec::<String>::new();
     let mut current_series: Option<CurrentSeries> = None;
+    let mut current_series_set_length: Option<usize> = None;
+    let mut current_auto_values: Option<CurrentAutoValues> = None;
     let mut current_parameter: Option<String> = None;
 
     loop {
@@ -96,6 +106,20 @@ fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
                                 .unwrap_or_else(|| "signal".to_string()),
                             unit: None,
                             values: Vec::new(),
+                        });
+                    }
+                    "SeriesSet" => {
+                        current_series_set_length = attr_usize(&event, "length");
+                    }
+                    "AutoIncrementedValueSet" => {
+                        current_auto_values = Some(CurrentAutoValues {
+                            start_index: attr_usize(&event, "startIndex")
+                                .or_else(|| attr_usize(&event, "start_index"))
+                                .unwrap_or(0),
+                            end_index: attr_usize(&event, "endIndex")
+                                .or_else(|| attr_usize(&event, "end_index")),
+                            start_value: None,
+                            increment: None,
                         });
                     }
                     "Unit" => {
@@ -125,7 +149,13 @@ fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
                     .map_err(|error| Error::InvalidRecord(format!("AnIML text error: {error}")))?;
                 if stack.last().is_some_and(|tag| tag == "F" || tag == "D") {
                     if let Some(value) = parse_number(&text) {
-                        if let Some(series) = &mut current_series {
+                        if let Some(auto_values) = &mut current_auto_values {
+                            if stack.iter().any(|tag| tag == "StartValue") {
+                                auto_values.start_value = Some(value);
+                            } else if stack.iter().any(|tag| tag == "Increment") {
+                                auto_values.increment = Some(value);
+                            }
+                        } else if let Some(series) = &mut current_series {
                             series.values.push(value);
                         } else if stack.iter().any(|tag| tag == "SampleSet") {
                             if let Some(parameter) = &current_parameter {
@@ -148,6 +178,15 @@ fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
                             values: series.values,
                         });
                     }
+                } else if tag == "AutoIncrementedValueSet" {
+                    if let Some(auto_values) = current_auto_values.take() {
+                        let values = expand_auto_values(auto_values, current_series_set_length)?;
+                        if let Some(series) = &mut current_series {
+                            series.values.extend(values);
+                        }
+                    }
+                } else if tag == "SeriesSet" {
+                    current_series_set_length = None;
                 } else if tag == "Parameter" {
                     current_parameter = None;
                 }
@@ -162,6 +201,38 @@ fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
     }
 
     Ok(parsed)
+}
+
+fn expand_auto_values(
+    values: CurrentAutoValues,
+    series_set_length: Option<usize>,
+) -> Result<Vec<f64>> {
+    if values.start_index != 0 {
+        return Err(Error::InvalidRecord(
+            "AnIML AutoIncrementedValueSet with non-zero startIndex is not supported yet"
+                .to_string(),
+        ));
+    }
+    let start_value = values.start_value.ok_or_else(|| {
+        Error::InvalidRecord("AnIML AutoIncrementedValueSet missing StartValue".to_string())
+    })?;
+    let increment = values.increment.ok_or_else(|| {
+        Error::InvalidRecord("AnIML AutoIncrementedValueSet missing Increment".to_string())
+    })?;
+    let count = if let Some(end_index) = values.end_index {
+        end_index.checked_add(1).ok_or_else(|| {
+            Error::InvalidRecord("AnIML AutoIncrementedValueSet endIndex overflow".to_string())
+        })?
+    } else {
+        series_set_length.ok_or_else(|| {
+            Error::InvalidRecord(
+                "AnIML AutoIncrementedValueSet missing endIndex and SeriesSet length".to_string(),
+            )
+        })?
+    };
+    Ok((0..count)
+        .map(|index| start_value + increment * index as f64)
+        .collect())
 }
 
 fn build_animl_record(
@@ -251,6 +322,10 @@ fn attr_value(event: &BytesStart<'_>, key: &str) -> Option<String> {
         .flatten()
         .find(|attr| attr.key.as_ref() == key.as_bytes())
         .map(|attr| String::from_utf8_lossy(attr.value.as_ref()).into_owned())
+}
+
+fn attr_usize(event: &BytesStart<'_>, key: &str) -> Option<usize> {
+    attr_value(event, key)?.parse().ok()
 }
 
 fn is_axis_series(series: &AnimlSeries) -> bool {

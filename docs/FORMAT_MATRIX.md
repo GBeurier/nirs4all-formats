@@ -45,7 +45,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | JCAMP-DX | Vendor-neutral / IUPAC | `.jdx`, `.dx`, `.jcm`, `.jcamp` | XYDATA mono/multi-blocs, ASDF, NTUPLES, LINK partiel | partiel | jcamp, SpectroChemPy, nmrglue, ChemoSpec, hyperSpec |
 | ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | detection + refus non-NIRS | fait | pyteomics, PyMassSpec, pyOpenMS |
 | NetCDF NIRS generique | Vendor-neutral | `.nc`, `.cdf` | schema spectra+wavelengths synthetique + lecteurs dedies Microtops MAN / ARM MFRSR / ARM SURFSPECALB locaux + refus adjacents | partiel | netcdf-reader, xarray, netcdf, ARM ACT |
-| AnIML | IUPAC / ASTM | `.animl` | spectral SeriesSet synthetique | partiel | animl-python, validateurs XML |
+| AnIML | IUPAC / ASTM | `.animl` | spectral SeriesSet synthetique explicite + `AutoIncrementedValueSet` uniforme | partiel | animl-python, validateurs XML |
 | Allotrope ASM | Allotrope / Benchling | `.json` | fixtures Benchling cubes/endpoints spectraux | partiel | Benchling allotropy |
 | Allotrope ADF | Allotrope Foundation | `.adf` | HDF5/RDF; `adfsee` GitLab `example.adf` local data-cube subset | partiel | Allotrope SDK, adfsee |
 | mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | `.mzML` detection + refus non-NIRS; `.mzMLb` documente sans fixture | fait | pyteomics, pymzML, pyOpenMS |
@@ -102,7 +102,7 @@ passer le format a `fait`.
 | Spectro Inc. SiWare API | partiel | Les fixtures JSON/CSV sont synthetiques; il manque une reponse API reelle et des variantes de schema. |
 | JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts par goldens elargis, y compris fichiers top-level multi-blocs (`nist_sucrose_ir.jdx` -> 2 records). Restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
 | NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; PyrNet et AOSMET sont des refus attendus non spectraux. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
-| AnIML | partiel | Le `SeriesSet` spectral synthetique est couvert; `Example3.animl` est un sample AnIML reel non spectral refuse comme attendu. Restent vrais AnIML spectraux, `AutoIncrementedValueSet` et validation XSD. |
+| AnIML | partiel | Les `SeriesSet` spectraux synthetiques sont couverts avec valeurs explicites et axe uniforme `AutoIncrementedValueSet`; `Example3.animl` est un sample AnIML reel non spectral refuse comme attendu. Restent vrais AnIML spectraux, indices segmentes non-zero, validation XSD et conformance avec tooling AnIML. |
 | Allotrope ASM | partiel | Les trois fixtures Benchling spectrales/endpoints sont couvertes; restent conversions vendeurs multiples, cas ASM hors plate-reader et validation contre tooling Allotrope. |
 | Allotrope ADF | partiel | `samples_local/allotrope_adf/adfsee_example.adf` valide la detection ADF et un decodage experimental des `/data-cubes` numeriques; les semantiques RDF, unites, ontologies Allotrope et exports vendeurs restent non resolus, et aucun fixture redistribuable n'est committe. |
 | HDF5 NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique et les refus non-spectraux sont couverts; il manque schemas reels avec metadata, axes complexes et groupes multi-signaux. |

@@ -482,6 +482,10 @@ const CASES: &[(&str, &str)] = &[
     ),
     ("animl_synthetic_nirs", "samples/animl/synthetic_nirs.animl"),
     (
+        "animl_synthetic_nirs_autoincrement",
+        "samples/animl/synthetic_nirs_autoincrement.animl",
+    ),
+    (
         "allotrope_asm_absorbance_spectrum",
         "samples/allotrope_asm/ACSINS_absorbance_spectrum.json",
     ),

@@ -11,6 +11,7 @@ more same-length signal series.
 | Fixture | Records | Axis | Signals | Targets |
 |---|---:|---|---|---|
 | `samples/animl/synthetic_nirs.animl` | 1 | wavelength, `nm` | `absorbance` | `protein` |
+| `samples/animl/synthetic_nirs_autoincrement.animl` | 1 | wavelength, `nm`, `AutoIncrementedValueSet` | `absorbance` | `protein` |
 
 The reader preserves `sample_id` and `sample_name` metadata from `Sample`
 attributes. Numeric `Parameter` values inside `SampleSet` are emitted as
@@ -23,6 +24,7 @@ committed `samples/animl/Example3.animl` fixture contains non-spectral NMR/DLS
 result parameters and is intentionally refused because it has no supported
 spectral axis series.
 
-Supported value blocks are currently explicit `<F>` and `<D>` values. Uniform
-`AutoIncrementedValueSet` axis reconstruction and broader schema validation are
-reserved for the next AnIML hardening pass.
+Supported value blocks are explicit `<F>` and `<D>` numeric values plus uniform
+`AutoIncrementedValueSet` grids with `StartValue` and `Increment`. Remaining
+gaps are real spectral AnIML fixtures, non-zero segmented value-set indices,
+schema/XSD validation and broader vendor export conformance.
