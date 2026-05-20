@@ -46,7 +46,8 @@ Experimental native readers:
   pure-Rust reader, a local ARM MFRSR b1 7-filter time-series path with
   optional QC YAML sidecar mapping, local ARM
   SURFSPECALB derived albedo, plus Microtops MAN NetCDF `aot_<nm>` discovery
-  with a SHA-256-guarded MSM114/2 payload fallback; ANDI/MS gets a dedicated
+  with a generic `DataLayout::Contiguous` fallback for the MSM114/2 NetCDF4
+  shared-attribute layout; ANDI/MS gets a dedicated
   refusal path and weather/PyrNet/AOSMET NetCDF samples are schema-refused as
   non-NIRS;
 - generic HDF5 NIRS datasets: root or nested spectral groups using a pure-Rust
@@ -103,7 +104,9 @@ Experimental native readers:
 - USGS spectral-library text: SPECPR-style `.asc` wavelength/reflectance
   tables, ECOSTRESS/ASTER `.spectrum.txt` exports and single-column AREF dumps
   with generated index axes.
-- ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
+- ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions
+  1/6/7/8, with internal secondary/reference/classifier/dependent/calibration/
+  audit/signature block inventory.
 - Thermo / Galactic GRAMS SPC (`.spc`, `.SPC`), new little-endian generated-X,
   explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian
   support is limited.
@@ -115,10 +118,10 @@ Experimental native readers:
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
   for the committed foliar-transfer fixture, including project GUID/version,
-  sample replicate counters and property target schema extraction with zero
-  values mapped to null targets. A local-only cannabis fixture validates
-  non-null `CBDA` and `THCA` targets plus 3 replicate spectra per sample through
-  the same path.
+  sample replicate counters, per-spectrum `Spectra Info` metadata and property
+  target schema extraction with zero values mapped to null targets. A
+  local-only cannabis fixture validates non-null `CBDA` and `THCA` targets plus
+  3 replicate spectra per sample through the same path.
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   metadata-driven semantic channel labels.
@@ -226,7 +229,7 @@ Immediate next work:
 6. source real JCAMP PEAK TABLE/ASSIGNMENTS fixtures for conformance and decide
    the public API shape for heterogeneous `LINK` fan-out;
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
-8. owner-requested documentation tail work: rewrite the root `README.md`,
-   add implementation visualizations for format/probe-confidence/maturity/
-   missing-fixture status, and audit every `docs/formats/` page for
-   description, implemented behavior, missing behavior and validation status.
+8. keep the refreshed root `README.md`, `FORMAT_MATRIX.md` and
+   `IMPLEMENTATION_DASHBOARD.md` current after each material format change, and
+   continue auditing individual `docs/formats/` pages for description,
+   implemented behavior, missing behavior and validation status.

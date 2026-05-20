@@ -98,10 +98,13 @@ Every sample is either:
    located. After the 2026-05-20 sample sweep, this list has shrunk: real
    fixtures now ship for **Foss WinISI text export**, **Si-Ware NeoSpectra**,
    **VIAVI MicroNIR** and the **Horiba LabSpec `.l6m`** / **WiTec `.wip`**
-   binaries. The remaining synthetic-only formats are Microtops, PP Systems,
-   MODTRAN albedo, Metrohm Vision Air CSV export, AnIML, FGI HDF5+XML,
-   Shimadzu text export, JASCO text export, MFR Sun Photometer, and Perten DA
-   — all closed-vendor formats with no public fixture available at sweep time.
+   binaries. The remaining synthetic-only gaps are specific export paths:
+   legacy Microtops `.TXT`, PP Systems raw `.SPT/.SPU`, MODTRAN albedo,
+   Metrohm Vision Air CSV/native, AnIML, FGI HDF5+XML, Shimadzu text/native,
+   JASCO Raman text, legacy MFR `.OUT`, and Perten DA native/spectral export
+   — all closed-vendor or licensed formats with no public fixture available at
+   sweep time. The Microtops directory itself now includes a real MAN NetCDF
+   AOD fixture.
    Synthetic files contain a documented 50-sample × 200-band realistic NIRS
    shape (1100–2500 nm absorbance with three Gaussian peaks at typical NIR
    bands).

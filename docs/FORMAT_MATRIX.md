@@ -33,6 +33,9 @@ Règle de lecture: `Popularité` élevée + `Impact manque` `grave`/`bloquant` +
 `Couverture NIRS = diffusable` avec impact `aucun`/`mineur`/`moyen` indique un
 périmètre publiable si les limites sont annoncées.
 
+Synthese visuelle: voir `IMPLEMENTATION_DASHBOARD.md` pour les graphes compacts
+format / confiance probe / maturite / manquants.
+
 Tri: la matrice principale est triée par `Priorité`, puis `Impact manque`, puis
 `Popularité`. Les tableaux de suivi sont triés par leur colonne de pilotage
 visible (`Suivi actuel`, `Corpus` ou `Format`).
