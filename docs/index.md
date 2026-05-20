@@ -10,6 +10,7 @@ DIRECTIONS
 ROADMAP
 STATUS
 FORMATS
+formats/asd
 formats/text-readers-001
 DATA_MODEL
 CONFORMANCE

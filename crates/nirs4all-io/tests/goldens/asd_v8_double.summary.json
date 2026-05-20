@@ -1,0 +1,38 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "asd-fieldspec",
+      "metadata_keys": [
+        "asd"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::asd",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "raw",
+          "role": "raw",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 153.995245,
+          "value_last": 185.353967,
+          "value_sum": 34946821.589845,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "7170bd3bdf473857027f9c10a6b188e6041b8184a5207d8f7ca1ed3fecc1d0e9",
+      "target_keys": [],
+      "warnings": [
+        "trailing_asd_blocks_not_decoded: 18699 bytes"
+      ]
+    }
+  ]
+}

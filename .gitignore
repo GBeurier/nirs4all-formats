@@ -20,3 +20,4 @@ target/
 htmlcov/
 docs/_build/
 .DS_Store
+asd_reader_*.log

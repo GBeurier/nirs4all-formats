@@ -21,8 +21,9 @@ Experimental native readers:
 - JCAMP-DX plain AFFN `XYDATA=(X++(Y..Y))`;
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
+- ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
 
-Golden-summary conformance exists for the seven fixtures above under
+Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
 
 Python bridge surfaces now call the Rust CLI rather than implementing parser
@@ -63,7 +64,7 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
-2. start the binary/open-reader-backed batch: ASD and Galactic SPC;
+2. continue the binary/open-reader-backed batch with Galactic SPC;
 3. add direct external reference-reader conformance for JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
 5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

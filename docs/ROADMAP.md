@@ -65,7 +65,7 @@ Deliverables:
 
 - Spectral Evolution `.sed`; experimental;
 - SVC/GER `.sig`; experimental;
-- ASD `.asd`;
+- ASD `.asd`; experimental primary-spectrum reader for revisions 1/6/7/8;
 - first full metadata/PII redaction policy implementation.
 
 ## Phase 4: First Bindings
