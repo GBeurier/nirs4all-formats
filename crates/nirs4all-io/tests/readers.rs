@@ -126,7 +126,7 @@ fn reads_bruker_dpt_export() {
     assert_eq!(signal.axis.order, AxisOrder::Ascending);
     assert_eq!(signal.signal_type, SignalType::Absorbance);
     assert!((signal.axis.values[0] - 800.44463).abs() < 0.000001);
-    assert!((signal.axis.values[3_438] - 2_500.13516).abs() < 0.000001);
+    assert!((signal.axis.values[3_438] - 2_500.135_16).abs() < 0.000001);
     assert!((signal.values[0] - 1.11622).abs() < 0.000001);
     assert!((signal.values[3_438] - 2.20339).abs() < 0.000001);
 }
@@ -2223,6 +2223,23 @@ fn reads_svc_sig_laptop_firmware_variant() {
 }
 
 #[test]
+fn reads_svc_sig_second_laptop_firmware_variant() {
+    let records = open_path(workspace_file("samples/svc_ger/BNL13002_000_laptop.sig"))
+        .expect("open second laptop sig");
+
+    assert_eq!(records.len(), 1);
+    assert_svc_sig_triplet_record(&records[0], 338.2, 2517.2);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert!((reflectance.values[0] - 13.44).abs() < 0.000001);
+    assert!((reflectance.values[1_023] - 5.61).abs() < 0.000001);
+    assert!((reflectance.values.iter().sum::<f64>() - 22_957.18).abs() < 0.01);
+    let reference = records[0].signals.get("reference").expect("reference");
+    assert!((reference.values[0] - 469.43).abs() < 0.000001);
+    let target = records[0].signals.get("target").expect("target");
+    assert!((target.values[0] - 63.11).abs() < 0.000001);
+}
+
+#[test]
 fn reads_svc_sig_clean_acer_pda_variant() {
     let records = open_path(workspace_file("samples/svc_ger/ACPL_D2_P1_B_1_001.sig"))
         .expect("open Acer PDA sig");
@@ -2240,6 +2257,109 @@ fn reads_svc_sig_clean_acer_pda_variant() {
     assert!((reflectance.axis.values[1_023] - 2522.8).abs() < 0.000001);
     assert!((reflectance.values[0] - 6.13).abs() < 0.000001);
     assert!((reflectance.values[1_023] - 10.28).abs() < 0.000001);
+}
+
+#[test]
+fn reads_svc_sig_clean_acer_fixture_set() {
+    for (relative, first, last, sum) in [
+        (
+            "samples/svc_ger/ACPL_D2_P1_B_2_001.sig",
+            6.13,
+            9.58,
+            23_971.81,
+        ),
+        (
+            "samples/svc_ger/ACPL_D2_P1_M_1_000.sig",
+            7.0,
+            8.58,
+            22_861.49,
+        ),
+        (
+            "samples/svc_ger/ACPL_D2_P1_M_2_000.sig",
+            9.63,
+            9.68,
+            24_036.92,
+        ),
+        (
+            "samples/svc_ger/ACPL_D2_P1_T_1_000.sig",
+            7.88,
+            8.08,
+            22_733.75,
+        ),
+        (
+            "samples/svc_ger/ACPL_D2_P1_T_2_000.sig",
+            12.25,
+            8.88,
+            23_292.20,
+        ),
+        (
+            "samples/svc_ger/ACPL_F3_P2_B_1_000.sig",
+            12.25,
+            8.75,
+            22_805.46,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open clean Acer sig");
+
+        assert_eq!(records.len(), 1, "{relative}");
+        assert_svc_sig_triplet_record(&records[0], 340.5, 2522.8);
+        let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+        assert!(
+            (reflectance.values[0] - first).abs() < 0.000001,
+            "{relative}"
+        );
+        assert!(
+            (reflectance.values[1_023] - last).abs() < 0.000001,
+            "{relative}"
+        );
+        assert!(
+            (reflectance.values.iter().sum::<f64>() - sum).abs() < 0.01,
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn reads_svc_sig_acer_white_reference_fixture() {
+    let records = open_path(workspace_file("samples/svc_ger/ACPL_D2_P1_T_1_WR_000.sig"))
+        .expect("open Acer white reference sig");
+
+    assert_eq!(records.len(), 1);
+    assert_svc_sig_triplet_record(&records[0], 340.5, 2522.8);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert!((reflectance.values[0] - 97.5).abs() < 0.000001);
+    assert!((reflectance.values[1_023] - 100.5).abs() < 0.000001);
+    assert!((reflectance.values.iter().sum::<f64>() - 102_439.28).abs() < 0.01);
+    let reference = records[0].signals.get("reference").expect("reference");
+    assert!((reference.values[0] - 1323.43).abs() < 0.000001);
+    let target = records[0].signals.get("target").expect("target");
+    assert!((target.values[0] - 1290.34).abs() < 0.000001);
+}
+
+fn assert_svc_sig_triplet_record(
+    record: &nirs4all_io::SpectralRecord,
+    first_axis: f64,
+    last_axis: f64,
+) {
+    assert_eq!(record.provenance.format, "svc-ger-sig");
+    assert!(record.quality_flags.is_empty());
+    assert!(record.provenance.warnings.is_empty());
+    assert_eq!(record.signals.len(), 3);
+    for (name, signal_type) in [
+        ("reference", SignalType::Radiance),
+        ("target", SignalType::Radiance),
+        ("reflectance", SignalType::Reflectance),
+    ] {
+        let signal = record.signals.get(name).expect(name);
+        assert_eq!(signal.axis.values.len(), 1_024);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert!((signal.axis.values[0] - first_axis).abs() < 0.000001);
+        assert!((signal.axis.values[1_023] - last_axis).abs() < 0.000001);
+        assert_eq!(signal.signal_type, signal_type);
+    }
+    let reflectance = record.signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.unit.as_deref(), Some("%"));
 }
 
 #[test]
