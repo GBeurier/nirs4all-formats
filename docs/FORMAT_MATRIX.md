@@ -31,7 +31,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi + tests semantiques; old LSB partiel; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
 | Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + `.srs` `tg_gc`, `rapid_scan_raw`, `rapid_scan_reprocessed`; srsx manquant | partiel | SpectroChemPy, spa-on-python |
-| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | sp OK; fsm imaging refuse | partiel | specio |
+| Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | `.sp` PEPE mono golden-backed; `.fsm` imaging refuse/out of scope | partiel | specio |
 | Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
 | Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | exports matrices WinISI/Foss XDS reels | fait | parseur texte |
 | Metrohm Vision / Vision Air | Metrohm | `.csv`, `.xlsx`, base projet native | CSV export synthetique teste semantiquement; DB native manquante | partiel | parseur texte, pandas, readxl |
@@ -55,8 +55,8 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | NumPy | Python / NumPy | `.npy`, `.npz` | `.npy` matrice, `.npz` canonique | fait | numpy |
 | Renishaw WDF | Renishaw | `.wdf` | WDF1 spectra + maps/lines/depth/zscan/focustrack/timeseries/streamline/interrupted; `MAP ` inventory only | partiel | RosettaSciIO, SpectroChemPy |
 | Horiba LabSpec / JobinYvon | Horiba | `.xml`, `.txt`, `.l6s`, `.l6m` | XML/TXT OK; `.l6m` Gd₂O₃/AlN map decode experimental; `.l6s` manquant | partiel | RosettaSciIO, SpectroChemPy, horiba-raman |
-| Princeton TriVista TVF | Princeton Instruments | `.tvf` | corpus XML Frame complet OK; refs externes a durcir | partiel | RosettaSciIO |
-| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus spectra/maps/surfaces OK; variantes hors corpus | partiel | RosettaSciIO |
+| Princeton TriVista TVF | Princeton Instruments | `.tvf` | corpus RosettaSciIO XML Frame golden-backed; conformance metadata a durcir | partiel | RosettaSciIO |
+| DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus RosettaSciIO spectra/maps/surfaces/zlib golden-backed; conformance metadata a durcir | partiel | RosettaSciIO |
 | Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | corpus adjacent 2D OK; hors point-spectra NIRS | partiel | RosettaSciIO |
 | WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
 | EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y, notation scientifique, titres multi-lignes | fait | RosettaSciIO |
@@ -71,7 +71,7 @@ passer le format a `fait`.
 | Nom | Status nirs4allio | Note / manque |
 |---|---|---|
 | Excel spectral | partiel | Ajouter `.xls` legacy, une fixture `.xlsm` dediee et plus de fixtures multi-feuilles reelles; XLSX axis/data descriptor et handheld UvA sont couverts. |
-| ASD FieldSpec | partiel | Revisions 1/6/7/8 primary spectra couvertes; restent v3/v4/v5 eventuelles, blocs dependent/reference/calibration, audit/signatures et compagnons calibration. |
+| ASD FieldSpec | partiel | Revisions 1/6/7/8 primary spectra couvertes; restent v3/v4/v5 eventuelles, blocs internes secondary/dependent/reference/calibration, audit/signatures et compagnons calibration `.ILL/.REF/.RAW` separes. |
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`; les samples `.asd` actuels ne contiennent pas les compagnons calibration, et le `.REF` present dans `samples/avantes/` est Avantes, pas ASD. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS` et autres modes binaires legacy puis comparaison `lightr`; le `.IRR` present est un export ASCII couvert par Avantes ASCII, pas une preuve du binaire legacy. |
 | Avantes AvaSoft 8 binaire | partiel | `.Raw8` et `.IRR8` sont couverts par fixtures/goldens/tests semantiques (`AVS84`, modes 0/4, calibration `.IRR8` non appliquee); restent `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8`, multi-subfile AVS8 et calibration irradiance complete pour `.IRR8`. |
@@ -90,7 +90,7 @@ passer le format a `fait`.
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert, avec tests semantiques directs pour multi-subfile generated-X, directory-backed `TXYXYS`, old ordered-Z limite et NMR/FID adjacent. Restent new big-endian `0x4C`, vieux headers/logs complets et decision de scope finale pour NMR/FID. |
 | Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/tests semantiques sur le corpus committe, y compris matrice 2D, offsets et metadata `series_y_*`; les trois `.srs` locaux SpectroChemPy couvrent `tg_gc`, `rapid_scan_raw` et `rapid_scan_reprocessed`. Reste `.srsx` et davantage de variantes high-speed. |
-| Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
+| Perkin Elmer Spectrum / IR | partiel | Le `.sp` PEPE mono-spectre reel `specio` est golden-backed et teste semantiquement. Le statut reste partiel parce que la ligne inclut `.fsm` Spotlight imaging, detecte/refuse comme hors v1, et parce qu'il manque des variantes PE NIR/Lambda; une separation future `.sp` vs `.fsm` permettrait de promouvoir le sous-ensemble `.sp`. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference; les samples Foss actuels sont des exports CSV/texte et les `.nir` presents sont BUCHI NIRCal, donc ne debloquent pas `.NIR/.DA/.cal/.eqa`. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est verrouille par golden et test semantique sur 50 records, axe `nm`, signal absorbance et cibles `protein`/`moisture`/`fat`. Il manque un export client reel, une comparaison reference et la base projet native reste fermee. |
 | BUCHI NIRCal | partiel | Le chemin `.nir` lit spectra/wavenumbers/proprietes; les cibles non nulles sont validees localement sur `transpec_DEMO_cannabis.nir`. Restent une fixture redistribuable avec cibles non nulles, `.cal` calibration-only et variantes NIRMaster. |
@@ -109,8 +109,8 @@ passer le format a `fait`.
 | MATLAB MAT / RData | partiel | MAT v5/v7.3 simples, DSO academiques, prospectr `NIRsoil.RData` et cube Indian Pines local-only sont couverts; restent structures MAT/RData generiques, cubes MAT v7.3 et metadata/targets heterogenes. |
 | Renishaw WDF | partiel | Les 15 fixtures spectrales versionnees couvrent single, map, line, depth/zscan, FocusTrack, time-series, StreamLine et interrupted; les deux fixtures `measurement_type=0` sont des refus attendus. Reste le decodage complet des payloads derives `MAP ` / `dataRange` et des fixtures par modele InVia Qontor/Apollo. |
 | Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et compare integralement contre l'export texte (intensites + coordonnees); restent `.l6s`, autres layouts LabSpec6, metadata complete et axes energy mieux types. |
-| Princeton TriVista TVF | partiel | Corpus RosettaSciIO couvert, y compris multi-frame, time series, line/map et Step-and-Glue; restent hardware/objective metadata plus riche et variantes hors corpus. |
-| DigitalSurf MountainsMap | partiel | Fixtures spectres, maps, surface et zlib compresse/non compresse couverts; restent variantes MountainsMap hors corpus et metadata surfaces plus riche. |
+| Princeton TriVista TVF | partiel | Corpus RosettaSciIO couvert et golden-backed, y compris single/multi-frame, time series, line/map, multi-spectrometer et Step-and-Glue. Aucun sample bloquant connu dans le corpus actuel; restent conformance full-array automatisee contre `rsciio.trivista`, hardware/objective metadata plus riche et decision de scope pour variantes hors corpus. |
+| DigitalSurf MountainsMap | partiel | Fixtures RosettaSciIO spectre, multi-spectres, hyperspectral maps, surface et zlib compresse/non compresse golden-backed. Aucun sample bloquant connu dans le corpus actuel; restent conformance full-array contre `rsciio.digitalsurf`, metadata surfaces plus riche et decision de scope pour variantes MountainsMap hors corpus/branded AFM-Raman. |
 | Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes; rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
 | WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`; restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
 | fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. Aucun sample fNIRS n'est present; les `.hdr` actuels sont ENVI et ne doivent pas etre routes par extension seule. |

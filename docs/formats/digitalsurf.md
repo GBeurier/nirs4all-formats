@@ -1,6 +1,6 @@
 # DigitalSurf SUR / PRO
 
-Status: experimental.
+Status: experimental / partial.
 
 The DigitalSurf reader covers the committed MountainsMap `.sur` and `.pro`
 fixtures from RosettaSciIO:
@@ -60,6 +60,15 @@ the decoded value is:
 ```text
 (raw_int - z_min) * (z_spacing / z_unit_ratio) + z_offset
 ```
+
+## Remaining Gaps
+
+The committed RosettaSciIO spectrum, multi-spectrum, hyperspectral-map,
+surface and compressed fixtures are fully golden-backed. The remaining partial
+status is conformance and scope work: automate full-array comparison against
+`rsciio.digitalsurf`, enrich surface/object metadata and decide which
+MountainsMap variants outside this corpus, including branded AFM-Raman exports,
+belong in the core reader.
 
 ## Reference Readers
 

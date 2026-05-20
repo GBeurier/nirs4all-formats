@@ -1,6 +1,6 @@
 # Princeton TriVista TVF
 
-Status: experimental.
+Status: experimental / partial.
 
 The TriVista reader covers the committed RosettaSciIO `.tvf` Raman fixtures:
 
@@ -40,6 +40,14 @@ The `InfoSerialized` attribute is escaped XML. The current reader decodes the
 top-level `Experiment`, `Detector`, `Calibration`, `X-Axis` and `Y-Axis`
 groups. Hardware filtering and richer spectrometer/objective metadata are left
 to a later conformance pass.
+
+## Remaining Gaps
+
+The committed RosettaSciIO corpus is fully covered by goldens. The remaining
+partial status is not a sample blocker: it is a conformance and metadata task,
+mainly full-array comparison against `rsciio.trivista`, richer hardware /
+objective metadata and an explicit scope decision for variants outside this
+fixture corpus.
 
 ## Reference Readers
 

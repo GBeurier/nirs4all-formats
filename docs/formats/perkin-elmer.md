@@ -1,6 +1,6 @@
 # Perkin Elmer Spectrum / IR
 
-Status: experimental.
+Status: experimental / partial.
 
 The Perkin Elmer reader covers the `PEPE` block container used by Spectrum /
 Spotlight `.sp` single-spectrum files. It reads the root block table, typed
@@ -30,3 +30,10 @@ spectrum.
 The committed `.sp` fixture contains footer metadata whose scan range disagrees
 with the typed axis blocks. The native reader treats the typed blocks as
 canonical and leaves the footer text for future reverse-engineering work.
+
+## Remaining Gaps
+
+The `.sp` single-spectrum path is covered by a real `specio` fixture. The
+format family remains partial because `.fsm` Spotlight imaging is intentionally
+refused for v1 and because PE NIR / Lambda variants still need sample-backed
+validation.
