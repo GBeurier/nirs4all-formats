@@ -604,10 +604,54 @@ const CASES: &[(&str, &str)] = &[
         "spectral_evolution_serbin_grape_leaf",
         "samples/spectral_evolution/serbinsh_cvars_grape_leaf.sed",
     ),
-    ("svc_sig_moc", "samples/svc_ger/BNL13001_000_moc.sig"),
+    (
+        "svc_sig_acer_panvi_declared_bad",
+        "samples/svc_ger/3_6_PANVI_2_T_1_001_BAD.sig",
+    ),
     (
         "svc_sig_declared_bad",
         "samples/svc_ger/ACPL_D2_P1_B_1_000_BAD.sig",
+    ),
+    (
+        "svc_sig_acer_bottom_1",
+        "samples/svc_ger/ACPL_D2_P1_B_1_001.sig",
+    ),
+    (
+        "svc_sig_acer_bottom_2",
+        "samples/svc_ger/ACPL_D2_P1_B_2_001.sig",
+    ),
+    (
+        "svc_sig_acer_middle_1",
+        "samples/svc_ger/ACPL_D2_P1_M_1_000.sig",
+    ),
+    (
+        "svc_sig_acer_middle_2",
+        "samples/svc_ger/ACPL_D2_P1_M_2_000.sig",
+    ),
+    (
+        "svc_sig_acer_top_1",
+        "samples/svc_ger/ACPL_D2_P1_T_1_000.sig",
+    ),
+    (
+        "svc_sig_acer_top_1_white_reference",
+        "samples/svc_ger/ACPL_D2_P1_T_1_WR_000.sig",
+    ),
+    (
+        "svc_sig_acer_top_2",
+        "samples/svc_ger/ACPL_D2_P1_T_2_000.sig",
+    ),
+    (
+        "svc_sig_acer_f3_bottom",
+        "samples/svc_ger/ACPL_F3_P2_B_1_000.sig",
+    ),
+    (
+        "svc_sig_laptop_bnl13001",
+        "samples/svc_ger/BNL13001_000_laptop.sig",
+    ),
+    ("svc_sig_moc", "samples/svc_ger/BNL13001_000_moc.sig"),
+    (
+        "svc_sig_laptop_bnl13002",
+        "samples/svc_ger/BNL13002_000_laptop.sig",
     ),
     (
         "svc_sig_serbin_ger3700",

@@ -25,10 +25,10 @@ Implemented:
 
 | Fixture | Variant | Coverage |
 |---|---|---|
-| `BNL13001_000_laptop.sig` | laptop firmware | Semantic test: 1024 points, reference/target/reflectance, no quality flags |
-| `BNL13001_000_moc.sig` | matched overlap corrected | Semantic test for overlap quality flag |
-| `ACPL_D2_P1_B_1_001.sig` | Acer PDA clean fixture | Semantic test: 1024 points, no warnings or quality flags |
-| `ACPL_D2_P1_B_1_000_BAD.sig`, `3_6_PANVI_2_T_1_001_BAD.sig` | declared bad fixtures | Accepted but flagged as bad fixtures |
+| `ACPL_D2_P1_*.sig`, `ACPL_F3_P2_B_1_000.sig` | Acer PDA clean fixtures | Golden-backed; `ACPL_D2_P1_B_1_001.sig` also has semantic assertions for 1024 points, no warnings and no quality flags |
+| `ACPL_D2_P1_B_1_000_BAD.sig`, `3_6_PANVI_2_T_1_001_BAD.sig` | declared bad fixtures | Golden-backed; accepted but flagged as bad fixtures |
+| `BNL13001_000_laptop.sig`, `BNL13002_000_laptop.sig` | laptop firmware | Golden-backed; `BNL13001_000_laptop.sig` also has semantic assertions for reference/target/reflectance and no quality flags |
+| `BNL13001_000_moc.sig` | matched overlap corrected | Golden-backed with semantic test for overlap quality flag |
 | `serbinsh_gr070214_003.sig` | GER 3700 PDA | Golden and real-sample tests |
 | `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | HR-1024i field resampled export | Golden and real-sample tests |
 

@@ -44,6 +44,7 @@ Sugar maple leaf spectra collected with an SVC HR-1024(i).
 
 - ASCII, CRLF.
 - Detect convention by inspecting header keys: PDA writes a different subset of metadata than laptop firmware.
+- Every committed `.sig` file in this directory is covered by a golden summary.
 - The two `*_BAD.sig` fixtures are accepted as parseable text but are marked
   with `declared_bad_fixture` / `svc_sig_declared_bad_fixture` so validation
   reports can separate them from clean acquisitions.
