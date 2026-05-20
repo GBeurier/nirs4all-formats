@@ -57,7 +57,8 @@ Deliverables:
 - Excel workbook reader; experimental for simple `.xlsx/.xlsm` spectral tables
   with numeric wavelength headers;
 - Thermo Nicolet OMNIC reader; experimental for `.SPA` single spectra and
-  `.spg` grouped spectra, with `.srs` series still pending;
+  `.spg` grouped spectra and TGA/GC `.srs` time-series matrices, with
+  rapid-scan/high-speed `.srs` and `.srsx` still pending;
 - Perkin Elmer Spectrum / IR reader; experimental for single-spectrum `.sp`
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - Bruker DPT reader; experimental;
@@ -157,8 +158,8 @@ Add one family at a time:
 
 - MATLAB struct/DSO and `.RData` academic dataset mappers after the simple
   MAT v5/v7.3 matrix path;
-- Nicolet OMNIC `.srs`, BUCHI NIRCal `.nir` and JASCO `.jws`, each validated
-  against an open reference reader when possible;
+- remaining Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal `.nir` and JASCO
+  `.jws`, each validated against an open reference reader when possible;
 - Excel multi-sheet lab templates, Renishaw WDF and Horiba / JobinYvon
   LabSpec XML/text for lab-transfer and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
