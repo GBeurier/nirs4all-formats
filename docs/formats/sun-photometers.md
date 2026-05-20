@@ -35,8 +35,8 @@ AERONET MAN ASCII reader is validated against all available Okeanos exports:
 daily and series aggregations. It preserves campaign, level, aggregation, PI
 fields and row metadata, while omitting missing `-999` AOD channels from the
 spectral axis. Microtops and MAN `aot` arrays use the dedicated
-`aerosol_optical_thickness` signal type; `aot_std` remains an uncertainty
-side signal.
+`aerosol_optical_thickness` signal type; `aot_std` uses the dedicated
+`uncertainty` signal type.
 
 ## Limitations
 

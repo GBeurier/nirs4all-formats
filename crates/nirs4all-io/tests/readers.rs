@@ -3249,7 +3249,7 @@ fn reads_usgs_specpr_ascii_spectrum() {
     assert_eq!(reflectance.axis.unit, "um");
     assert_eq!(reflectance.axis.values.len(), 2_151);
     assert_eq!(reflectance.signal_type, SignalType::Reflectance);
-    assert_eq!(stddev.signal_type, SignalType::Unknown);
+    assert_eq!(stddev.signal_type, SignalType::Uncertainty);
     assert!((reflectance.values[0] - 0.042736).abs() < 0.000001);
 }
 
@@ -3478,6 +3478,7 @@ fn reads_local_microtops_man_ascii_when_present() {
         Some(1.0)
     );
     let daily_std = daily[0].signals.get("aot_std").expect("aot_std");
+    assert_eq!(daily_std.signal_type, SignalType::Uncertainty);
     assert_eq!(
         daily_std.axis.values,
         vec![380.0, 440.0, 500.0, 675.0, 870.0]
@@ -3489,6 +3490,7 @@ fn reads_local_microtops_man_ascii_when_present() {
     ))
     .expect("open local Microtops MAN series export");
     let series_std = series[0].signals.get("aot_std").expect("aot_std");
+    assert_eq!(series_std.signal_type, SignalType::Uncertainty);
     assert_eq!(
         series_std.values,
         vec![0.003836, 0.003214, 0.003314, 0.006083, 0.00387]

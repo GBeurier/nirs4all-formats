@@ -592,7 +592,7 @@ fn infer_signal_type(header: &str, unit_hint: Option<&str>) -> SignalType {
     if lower.contains("albedo") {
         SignalType::Reflectance
     } else if lower.contains("standard deviation") || lower == "stddev" || lower.contains("std") {
-        SignalType::Unknown
+        SignalType::Uncertainty
     } else if lower.contains("ccd") || lower.contains("cts") {
         SignalType::RawCounts
     } else if lower.starts_with("sample") {
@@ -707,6 +707,7 @@ fn signal_priority(signal_type: &SignalType) -> u8 {
         | SignalType::AerosolOpticalThickness => 4,
         SignalType::KubelkaMunk | SignalType::Derivative | SignalType::Preprocessed => 3,
         SignalType::RawCounts | SignalType::SingleBeam | SignalType::Interferogram => 2,
+        SignalType::Uncertainty => 1,
         SignalType::Unknown => 0,
     }
 }

@@ -580,7 +580,7 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
                     axis,
                     std_row,
                     vec!["x".to_string()],
-                    SignalType::Unknown,
+                    SignalType::Uncertainty,
                     Some("1".to_string()),
                     "uncertainty",
                     "file",

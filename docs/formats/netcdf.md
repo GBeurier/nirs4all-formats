@@ -35,8 +35,8 @@ sorts them into a wavelength axis before validating series lengths. The
 committed PANGAEA MSM114/2 fixture is NetCDF4/HDF5 with contiguous `aot_380`,
 `aot_440`, `aot_500`, `aot_675` and `aot_870` series plus matching `*_std`
 series. The primary `aot` array and record now carry the
-`aerosol_optical_thickness` signal type, while `aot_std` is retained as an
-uncertainty side signal. Current pure-Rust NetCDF/HDF5 payload reconstruction
+`aerosol_optical_thickness` signal type, while `aot_std` carries the
+`uncertainty` signal type. Current pure-Rust NetCDF/HDF5 payload reconstruction
 still cannot read that fixture's datasets after discovery, so MSM114/2 is
 decoded through a SHA-256-guarded fallback and emits
 `microtops_man_netcdf_known_fixture_layout`.

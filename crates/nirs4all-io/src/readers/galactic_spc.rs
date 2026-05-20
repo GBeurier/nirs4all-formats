@@ -1070,6 +1070,7 @@ fn signal_name_from_type(signal_type: &SignalType, label: &str) -> String {
         SignalType::Derivative => "derivative".to_string(),
         SignalType::Preprocessed => "preprocessed".to_string(),
         SignalType::AerosolOpticalThickness => "aot".to_string(),
+        SignalType::Uncertainty => safe_signal_name(label, "uncertainty"),
         SignalType::Unknown => safe_signal_name(label, "signal"),
     }
 }

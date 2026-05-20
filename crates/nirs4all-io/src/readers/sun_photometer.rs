@@ -377,7 +377,7 @@ fn read_microtops_man_ascii_records(
                         SpectralAxis::new(axis, "nm", AxisKind::Wavelength)?,
                         std_values,
                         vec!["x".to_string()],
-                        SignalType::Unknown,
+                        SignalType::Uncertainty,
                         Some("1".to_string()),
                         "uncertainty",
                         "file",

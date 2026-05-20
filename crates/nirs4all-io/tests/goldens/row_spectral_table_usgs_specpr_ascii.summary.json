@@ -37,7 +37,7 @@
           "axis_unit": "um",
           "name": "standard_deviation",
           "role": "standard_deviation",
-          "signal_type": "unknown",
+          "signal_type": "uncertainty",
           "unit": null,
           "value_first": 0.0,
           "value_last": 0.0,
