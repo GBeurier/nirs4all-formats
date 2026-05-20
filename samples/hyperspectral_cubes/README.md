@@ -1,8 +1,9 @@
 # Hyperspectral imaging cubes
 
-Partially supported per `FORMATS.md` §4. The native reader currently expands
-small ENVI Standard `.img/.dat + .hdr` cubes to one point spectrum per pixel.
-Larger hyperspectral workflows still need an explicit
+Partially supported per `FORMATS.md` §4. The native readers currently expand
+small ENVI Standard `.img/.dat + .hdr` cubes and the AVIRIS 92AV3C ERDAS
+`.lan` cube to one point spectrum per pixel. Larger hyperspectral workflows
+still need an explicit
 `extract_point_spectra(cube, mask)` helper and reference checks against
 `spectral` / `rasterio`.
 
@@ -19,7 +20,7 @@ All from [`spectralpython/sample-data@master`](https://github.com/spectralpython
 
 ## Parser hints
 
-- `.lan` is ENVI-BIL with a 128-byte ERDAS header — readable with [`spectral.io.envi.open_image()`](https://www.spectralpython.net/) by writing a small `.hdr` sidecar.
-- For pure refusal-path testing: the BIL byte order, line interleave, and band count are enough to confirm "this is an imaging cube".
-- For future point-extraction: ground-truth `.GIS` is a per-pixel integer label map (single band, no header). A `mask + extract` operation produces ~16 representative spectra per class for `SpectralCollection` ingestion.
+- `.lan` is BIL with a 128-byte ERDAS `HEAD74` header and is now parsed directly for the 92AV3C layout.
+- Ground-truth `.GIS` is a per-pixel integer label map and is exposed as `targets.land_cover_class`.
+- Future ROI/mask extraction should produce representative spectra per class without expanding very large cubes eagerly.
 - The `mini-cube` ENVI fixture (`cubescope-mini-cube.hdr` + `.img`) lives in `envi_sli/` — kept there because it ships as an ENVI library-like pair.

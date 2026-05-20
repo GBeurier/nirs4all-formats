@@ -51,7 +51,7 @@ format can be promoted.
 |---|---|---|
 | NeoSpectra Scanner CSV | Synthetic NeoSpectra-style CSV is parsed by row/table readers. | Real customer export with instrument metadata. |
 | SiWare / Spectro Inc. API JSON or CSV stream | Synthetic one-measurement JSON is parsed. | Real credentialed API response. |
-| Solar Light MFR `.OUT` and Microtops `.TXT` | Synthetic channel exports are parsed by `sun_photometer`. | Real AERONET or instrument dump. |
+| Solar Light MFR `.OUT` and Microtops legacy `.TXT` | Synthetic channel exports are parsed by `sun_photometer`; committed Microtops MAN NetCDF is parsed through a guarded fixture path. | Real legacy Microtops `.TXT` export and a generic MAN NetCDF/HDF5 metadata path. |
 | PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. | Real field acquisition. |
 | MODTRAN albedo `.dat` | Synthetic albedo table is parsed. | Redistributable licensed MODTRAN output. |
 | FGI HDF5 + XML pairing | Synthetic nested HDF5 payload is parsed; XML sidecar mapping is pending. | Real FGI HDF5/XML pair. |
@@ -73,7 +73,8 @@ variants remain untreated until a sample or reference comparison is available.
 | BUCHI NIRCal | One `.nir` transfer file with spectra/wavenumbers/property schema. | Non-zero property targets, `.cal` calibration-only files, NIRMaster variants. |
 | Avantes AvaSoft | Legacy `.TRM/.ROH/.DRK/.REF/.ABS`, AvaSoft 8 `.Raw8/.IRR8`, ASCII exports. | Legacy `.IRR/.RMN`, AvaSoft 8 `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8` fixtures. |
 | Ocean Optics / Ocean Insight | SpectraSuite/OceanView/Jaz/CRAIC text, `.ProcSpec`, Ocean Optics-flavoured SPC. | QE Pro, Maya and Apex firmware-specific exports. |
-| ENVI / hyperspectral | ENVI SLI and ENVI Standard `.img/.dat + .hdr` cubes expanded to one spectrum per pixel. | Real vendor `.sli`, NEON/Specim/HySpex/Headwall cubes and mask/ROI extraction workflows. |
+| ENVI / hyperspectral | ENVI SLI including USGS splib06a/splib07, ENVI Standard `.img/.dat + .hdr` cubes and AVIRIS 92AV3C ERDAS `.lan/.spc/.GIS` expanded to one spectrum per pixel. | Generic ERDAS LAN, NEON/Specim/HySpex/Headwall cubes and mask/ROI extraction workflows. |
+| Consumer Physics SCiO CSV | Developer-app `band*`, grouped spectrum/raw CSV and axis-first calibration CSV fixtures. | Native/mobile project containers and additional firmware exports. |
 | JASCO JWS | FT/IR, fluorescence and CD/HT/Abs OLE2 payloads. | NIR-specific V-780 blocks and NRS-series Raman binary flavor. |
 | Renishaw WDF | Spectra, maps/lines/depth/time metadata, WHTL JPEG metadata, MAP inventory. | Full derived `MAP ` dataRange decoding and per-model fixtures. |
 

@@ -36,4 +36,6 @@ Not ENVI binaries, but reference spectra in plain ASCII used widely with ENVI. F
 - Reference readers:
   - Python: [`spectral`](https://github.com/spectralpython/spectral) (Spectral Python), `pysptools`
   - R: `RStoolbox::readSLI()`
-- Image cubes are explicitly **out-of-scope for v1**. Detect by `file type = ENVI Standard` (vs. `ENVI Spectral Library`) and refuse with a pointer to `spectral`/`rasterio`.
+- Small ENVI Standard cubes are parsed by expanding each pixel to a point
+  spectrum. Large production cubes still need an explicit mask/ROI extraction
+  API before they should be treated as routine tabular spectra.
