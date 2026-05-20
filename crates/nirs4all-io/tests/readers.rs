@@ -1488,15 +1488,23 @@ fn reads_avantes_avasoft8_raw_binary() {
 
     assert_eq!(records.len(), 1);
     assert_eq!(records[0].provenance.format, "avantes-avasoft8-binary");
+    assert!(records[0].provenance.warnings.is_empty());
     assert!(records[0].signals.contains_key("dark_reference"));
     assert!(records[0].signals.contains_key("white_reference"));
+    let metadata = &records[0].metadata["avantes"];
+    assert_eq!(metadata["magic"].as_str(), Some("AVS84"));
+    assert_eq!(metadata["measure_mode"].as_u64(), Some(0));
     let scope = records[0].signals.get("scope").expect("scope");
     assert_eq!(scope.axis.values.len(), 1_019);
+    assert_eq!(scope.axis.unit, "nm");
+    assert_eq!(scope.axis.kind, AxisKind::Wavelength);
     assert_eq!(scope.signal_type, SignalType::RawCounts);
     assert!((scope.axis.values[0] - 300.013855).abs() < 0.000001);
     assert!((scope.axis.values[1_018] - 899.874878).abs() < 0.000001);
     assert!((scope.values[0] - 267.155243).abs() < 0.000001);
     assert!((scope.values[1_018] - 360.127502).abs() < 0.000001);
+    let sample = records[0].signals.get("sample").expect("sample");
+    assert_eq!(scope.values, sample.values);
 }
 
 #[test]
@@ -1504,13 +1512,21 @@ fn reads_avantes_avasoft8_irradiance_binary() {
     let records = open_path(workspace_file("samples/avantes/eg.IRR8")).expect("open irr8");
 
     assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-avasoft8-binary");
+    let metadata = &records[0].metadata["avantes"];
+    assert_eq!(metadata["magic"].as_str(), Some("AVS84"));
+    assert_eq!(metadata["measure_mode"].as_u64(), Some(4));
     let irradiance = records[0].signals.get("irradiance").expect("irradiance");
     assert_eq!(irradiance.axis.values.len(), 1_620);
+    assert_eq!(irradiance.axis.unit, "nm");
+    assert_eq!(irradiance.axis.kind, AxisKind::Wavelength);
     assert_eq!(irradiance.signal_type, SignalType::Irradiance);
     assert!((irradiance.axis.values[0] - 144.942429).abs() < 0.000001);
     assert!((irradiance.axis.values[1_619] - 1100.441406).abs() < 0.000001);
     assert!((irradiance.values[0] - 1096.812012).abs() < 0.000001);
     assert!((irradiance.values[1_619] - 2009.875).abs() < 0.000001);
+    let sample = records[0].signals.get("sample").expect("sample");
+    assert_eq!(irradiance.values, sample.values);
     assert!(records[0]
         .provenance
         .warnings

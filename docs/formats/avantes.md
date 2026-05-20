@@ -120,8 +120,8 @@ Current binary fixtures:
 | `avantes_reflect.ROH` | 1442 | `275.271759 -> 1100.133307 nm` | scope `805.000000 -> 774.299988` |
 | `1305084U1.DRK` | 1442 | `275.271759 -> 1100.133307 nm` | dark `785.900024 -> 782.700012` |
 | `1305084U1.REF` | 1442 | `275.271759 -> 1100.133307 nm` | white `856.000000 -> 802.200012` |
-| `1904090M1_0003.Raw8` | 1019 | `300.013855 -> 899.874878 nm` | scope `267.155243 -> 360.127502` |
-| `eg.IRR8` | 1620 | `144.942429 -> 1100.441406 nm` | scope `1096.812012 -> 2009.875000` |
+| `1904090M1_0003.Raw8` | 1019 | `300.013855 -> 899.874878 nm` | `scope` equals raw `sample`; `AVS84`, measure mode `0` |
+| `eg.IRR8` | 1620 | `144.942429 -> 1100.441406 nm` | `irradiance` equals raw `sample`; `AVS84`, measure mode `4`, calibration warning |
 
 Current ASCII fixtures:
 
