@@ -31,6 +31,7 @@ pub mod spectral_table;
 pub mod sun_photometer;
 pub mod svc_sig;
 pub mod trivista_tvf;
+pub mod witec_wip;
 
 mod util;
 
@@ -67,3 +68,4 @@ pub use spectral_table::SpectralTableReader;
 pub use sun_photometer::SunPhotometerReader;
 pub use svc_sig::SvcSigReader;
 pub use trivista_tvf::TrivistaTvfReader;
+pub use witec_wip::WitecWipReader;

@@ -53,6 +53,8 @@ Experimental native readers:
   covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
   NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
+  `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
+  are rejected and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
@@ -93,6 +95,10 @@ Experimental native readers:
   The reader covers committed focus, operate, photon-counting, shading and
   uncalibrated-axis fixtures, preserving the secondary time/CCD axis in
   metadata and warning that the signal is not a point-sample NIR spectrum.
+- WiTec WIP/WID binary project files are detected from `.wip/.wid` plus `WIT^`
+  magic and refused with explicit WiTec Project/FIVE ASCII-export guidance; the
+  committed WiTec TXT export remains covered by the row-oriented spectral table
+  reader.
 - mzML mass-spectrometry XML is detected and refused with a pointer to
   `pyteomics`, `pymzML` or `pyOpenMS`; committed mzML spectrum/chromatogram
   fixtures cover the refusal path.
@@ -144,10 +150,12 @@ Immediate next work:
 1. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-2. add WiTec WIP detection/refusal if a robust synthetic signature test is
-   sufficient, then harden JCAMP `PEAK TABLE`/strict-validation boundaries;
-3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
-   files and stricter checkpoint validation;
-4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-5. replace Python/R subprocess transport with native PyO3/C ABI paths;
-6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+2. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+3. replace Python/R subprocess transport with native PyO3/C ABI paths;
+4. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
+   only after the shared model can represent sparse peak lists;
+5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+6. owner-requested documentation tail work: rewrite the root `README.md`,
+   add implementation visualizations for format/probe-confidence/maturity/
+   missing-fixture status, and audit every `docs/formats/` page for
+   description, implemented behavior, missing behavior and validation status.

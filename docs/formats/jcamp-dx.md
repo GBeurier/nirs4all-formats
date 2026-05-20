@@ -18,11 +18,14 @@ records.
 - Reads `DATA TYPE=LINK` files whose child blocks use `XYPOINTS=(XY..XY)`;
   the committed Ocean Optics LINK fixture is mapped to `sample`,
   `dark_reference`, `white_reference` and a computed transmittance signal.
+  Child blocks with incompatible axes are rejected instead of silently merging
+  mismatched signals.
 - Applies `YFACTOR` to decoded ordinates.
 - Reconstructs the X axis from `FIRSTX` and `DELTAX`, or from `FIRSTX`,
   `LASTX` and `NPOINTS` when `DELTAX` is absent.
 - Uses `XUNITS`/`YUNITS` or NTUPLES `UNITS` to map axis kind/unit and signal
   type.
+- Refuses `PEAK TABLE` blocks explicitly until that table model is implemented.
 
 `XFACTOR` is preserved in metadata but is not applied to the reconstructed axis.
 In the committed Bruker fixtures, `FIRSTX` and `DELTAX` are already in physical
@@ -42,6 +45,9 @@ number of occurrences for the previous difference/value, so the reader emits
 Some legacy fixtures still decode a small number of trailing checkpoint values.
 When `NPOINTS` is present and fewer points are declared than decoded, the reader
 truncates to `NPOINTS` and records a provenance warning.
+
+When `NPOINTS` declares more points than can be decoded, the reader now rejects
+the file as malformed instead of emitting a shorter silent record.
 
 ## NTUPLES Notes
 
@@ -94,7 +100,8 @@ legacy format stores extra line checkpoints.
 
 ## Remaining Work
 
-- Add `PEAK TABLE` and broader multi-block `LINK` variants with incompatible
-  axes.
+- Implement `PEAK TABLE` as a real sparse peak-list representation once the
+  shared model can represent it.
+- Add broader multi-block `LINK` variants beyond same-axis spectral children.
 - Add stricter line-level X checkpoint verification.
 - Add reference reports against open JCAMP readers for every committed fixture.

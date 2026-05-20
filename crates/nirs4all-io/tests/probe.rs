@@ -1,4 +1,6 @@
-use nirs4all_io::{probe_path, Confidence};
+use std::path::Path;
+
+use nirs4all_io::{builtin_probes, probe_path, Confidence};
 
 #[test]
 fn probes_committed_jcamp_fixture() {
@@ -264,6 +266,14 @@ fn probes_hamamatsu_img_files() {
     assert!(probes
         .iter()
         .any(|probe| probe.format == "hamamatsu-img" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_witec_wip_magic() {
+    let probes = builtin_probes(b"WIT^\0\0\0\0", Path::new("sample.wip"));
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "witec-wip" && probe.confidence == Confidence::Definite));
 }
 
 #[test]
