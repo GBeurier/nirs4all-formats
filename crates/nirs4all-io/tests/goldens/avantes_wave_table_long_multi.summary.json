@@ -1,0 +1,84 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-ascii",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::avantes_ascii",
+      "record_signal_type": "transmittance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 275.27,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.13,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark",
+          "role": "dark",
+          "signal_type": "unknown",
+          "unit": "counts",
+          "value_first": 768.6,
+          "value_last": 770.8,
+          "value_sum": 1107684.45,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.27,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.13,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "ref",
+          "role": "ref",
+          "signal_type": "unknown",
+          "unit": "counts",
+          "value_first": 885.6,
+          "value_last": 809.0,
+          "value_sum": 4946923.65,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.27,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.13,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 795.9,
+          "value_last": 799.6,
+          "value_sum": 1512901.94,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.27,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.13,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "transmittance",
+          "role": "transmittance",
+          "signal_type": "transmittance",
+          "unit": "% transmittance",
+          "value_first": 23.333,
+          "value_last": 75.393,
+          "value_sum": 25073.7699,
+          "values_len": 1442
+        }
+      ],
+      "source_sha256": "3d48a4bfbd727c8f19ecb55eb4d0301d7e446cec17639a696de0a940c0a6e3c0",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

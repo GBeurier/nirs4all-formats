@@ -1368,12 +1368,63 @@ fn reads_avantes_wave_table() {
         .expect("open avantes table");
 
     assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-ascii");
     let signal = records[0]
         .signals
         .get("transmittance")
         .expect("transmittance");
-    assert!(signal.axis.values.len() >= 300);
+    assert_eq!(signal.axis.values.len(), 401);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
     assert_eq!(signal.signal_type, SignalType::Transmittance);
+    assert!((signal.axis.values[0] - 300.0).abs() < 0.000001);
+    assert!((signal.axis.values[400] - 700.0).abs() < 0.000001);
+    assert!((signal.values[0] - 3.1487).abs() < 0.000001);
+    assert!((signal.values[400] - 31.4912).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_wave_table_sample_counts() {
+    let records = open_path(workspace_file("samples/avantes/avantes_export2.trt"))
+        .expect("open avantes sample-count table");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-ascii");
+    let signal = records[0].signals.get("sample").expect("sample");
+    assert_eq!(signal.axis.values.len(), 1_442);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert!((signal.axis.values[0] - 275.27).abs() < 0.000001);
+    assert!((signal.axis.values[1_441] - 1100.13).abs() < 0.000001);
+    assert!((signal.values[0] - 805.0).abs() < 0.000001);
+    assert!((signal.values[1_441] - 774.3).abs() < 0.000001);
+}
+
+#[test]
+fn reads_avantes_wave_table_long_multi_signal() {
+    let records = open_path(workspace_file("samples/avantes/avantes_export_long.ttt"))
+        .expect("open avantes long table");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "avantes-ascii");
+    for name in ["dark", "ref", "sample", "transmittance"] {
+        assert!(records[0].signals.contains_key(name), "missing {name}");
+    }
+    let transmittance = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 1_442);
+    assert_eq!(transmittance.axis.unit, "nm");
+    assert_eq!(transmittance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.axis.values[0] - 275.27).abs() < 0.000001);
+    assert!((transmittance.axis.values[1_441] - 1100.13).abs() < 0.000001);
+    assert!((transmittance.values[0] - 23.333).abs() < 0.000001);
+    assert!((transmittance.values[1_441] - 75.393).abs() < 0.000001);
+    let sample = records[0].signals.get("sample").expect("sample");
+    assert_eq!(sample.signal_type, SignalType::RawCounts);
 }
 
 #[test]
@@ -3157,6 +3208,101 @@ fn reads_galactic_spc_old_lsb_header() {
         .warnings
         .iter()
         .any(|warning| warning.contains("old_spc_header_limited")));
+}
+
+#[test]
+fn reads_galactic_spc_multi_generated_x_variants() {
+    let records = open_path(workspace_file("samples/galactic_spc/m_evenz.spc"))
+        .expect("open multi even-z spc");
+
+    assert_eq!(records.len(), 32);
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("subfile_1"));
+    let header = &records[0].metadata["galactic_spc"];
+    assert_eq!(header["version"].as_str(), Some("new_lsb_0x4b"));
+    assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
+    assert_eq!(header["flags"]["txvals"].as_bool(), Some(false));
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 171);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert!((signal.axis.values[0] - 200.0).abs() < 0.000001);
+    assert!((signal.axis.values[170] - 800.0).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 4.61097).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning == "invalid_spc_integer_exponent_255_treated_as_0"));
+}
+
+#[test]
+fn reads_galactic_spc_old_ordered_z_variant() {
+    let records =
+        open_path(workspace_file("samples/galactic_spc/m_ordz.spc")).expect("open old ordz spc");
+
+    assert_eq!(records.len(), 10);
+    let header = &records[0].metadata["galactic_spc"];
+    assert_eq!(header["version"].as_str(), Some("old_lsb_0x4d"));
+    assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
+    assert_eq!(header["flags"]["tordrd"].as_bool(), Some(true));
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 857);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert!((signal.axis.values[0] - 698.229736328125).abs() < 0.000001);
+    assert!((signal.axis.values[856] - 4000.354736328125).abs() < 0.000001);
+    assert!((signal.values[0] - 0.02219367027282715).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 12.425798).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("old_spc_header_limited")));
+}
+
+#[test]
+fn reads_galactic_spc_directory_backed_mass_spectra() {
+    let records = open_path(workspace_file("samples/galactic_spc/DRUG_SAMPLE.SPC"))
+        .expect("open drug sample spc");
+
+    assert_eq!(records.len(), 400);
+    let header = &records[0].metadata["galactic_spc"];
+    assert_eq!(header["flags"]["tmulti"].as_bool(), Some(true));
+    assert_eq!(header["flags"]["txyxys"].as_bool(), Some(true));
+    assert_eq!(header["flags"]["txvals"].as_bool(), Some(true));
+    let signal = records[0]
+        .signals
+        .get("arbitrary_intensity")
+        .expect("intensity");
+    assert_eq!(signal.axis.values.len(), 60);
+    assert_eq!(signal.axis.unit, "m/z");
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert!((signal.axis.values[0] - 34_659.0).abs() < 0.000001);
+    assert!((signal.axis.values[59] - 33_848.399993896484).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 245_071.0).abs() < 0.000001);
+    assert!(records[0].metadata["galactic_spc_subfile"]["directory"].is_object());
+}
+
+#[test]
+fn reads_galactic_spc_adjacent_nmr_fid_without_promoting_scope() {
+    let records =
+        open_path(workspace_file("samples/galactic_spc/NMR_FID.SPC")).expect("open fid spc");
+
+    assert_eq!(records.len(), 1);
+    let header = &records[0].metadata["galactic_spc"];
+    assert_eq!(header["version"].as_str(), Some("new_lsb_0x4b"));
+    assert_eq!(header["experiment_type"].as_str(), Some("General SPC"));
+    let signal = records[0]
+        .signals
+        .get("arbitrary_intensity")
+        .expect("fid intensity");
+    assert_eq!(signal.axis.values.len(), 16_384);
+    assert_eq!(signal.axis.unit, "s");
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert!((signal.axis.values[16_383] - 0.3268608).abs() < 0.000001);
+    assert_eq!(signal.values[0], 0.0);
+    assert_eq!(signal.values[16_383], -139_836.0);
 }
 
 #[test]

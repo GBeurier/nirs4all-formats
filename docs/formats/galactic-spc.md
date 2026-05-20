@@ -61,6 +61,7 @@ Committed smoke and golden coverage currently includes:
 | `OceanOptics.spc` | new LSB, explicit global X, Ocean Optics export | 1 record, 3648 transmittance points |
 | `nir.spc` | new LSB, multi common-X | 20 records, 700 points each |
 | `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
+| `DRUG_SAMPLE.SPC` | new LSB, directory-backed `TXYXYS` mass spectra | 400 records, variable point counts |
 | `RAMAN.SPC`, `resolutionPro.spc` | new LSB variants | Golden summary coverage |
 | `cell01_c1.spc`, `cell01_c2.spc` | cell assay examples | Golden summary coverage |
 | `Ft-ir.spc`, `RUBY18.SPC`, `SINGLE_POLYMER_FILM.SPC`, `TOLUENE.SPC`, `MERC.SPC`, `NDR0002.SPC`, `SPECTRUM_WITH_BAD_BASELINE.SPC`, `test_input.spc` | additional new-LSB corpus | Golden summary coverage |
@@ -78,6 +79,14 @@ reader for the new-LSB fixtures. Important controls:
 - `nir.spc`: 20 records, first record first Y `0.0002004839`, sum `238.526`.
 - `m_xyxy.spc`: 512 records, first subfile has 8 points, first X
   `16943.600006`, first Y `6823`, sum `45327`.
+- `m_evenz.spc`: 32 records with generated wavelength axis, first record sum
+  `4.61097`, and invalid integer exponent `255` preserved as a warning.
+- `m_ordz.spc`: old LSB ordered-Z fixture decoded in limited mode, 10 records
+  with the old-header warning retained.
+- `DRUG_SAMPLE.SPC`: 400 directory-backed `TXYXYS` records; first record uses a
+  descending `m/z` axis and sums to `245071`.
+- `NMR_FID.SPC`: adjacent FID control is readable as raw counts over seconds,
+  but it is not promoted as a core NIRS scope guarantee.
 
 `spc_spectra` does not implement new big-endian SPC and is unreliable for at
 least one old ordered-Z fixture, so old-format promotion requires an additional
