@@ -2,6 +2,7 @@ use nirs4all_io::{
     open_path, open_path_with_options, AxisKind, AxisOrder, CubeWindow, Error, ReadOptions,
     SignalType,
 };
+use serde_json::Value;
 
 #[test]
 fn reads_asd_fieldspec_revisions() {
@@ -14,6 +15,7 @@ fn reads_asd_fieldspec_revisions() {
         signal_type,
         first_value,
         trailing_block_bytes,
+        secondary_warning,
     ) in [
         (
             "samples/asd/3L9257.000",
@@ -24,6 +26,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::Reflectance,
             0.026823,
             0,
+            None,
         ),
         (
             "samples/asd/v6sample00000.asd",
@@ -34,6 +37,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::RawCounts,
             29.311738,
             17_274,
+            Some("asd_secondary_spectra_not_emitted: reference_spectrum=1"),
         ),
         (
             "samples/asd/v7_field_44231B009.asd",
@@ -44,6 +48,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::Reflectance,
             18.622284,
             34_523,
+            Some("asd_secondary_spectra_not_emitted: reference_spectrum=1, calibration_spectrum=1"),
         ),
         (
             "samples/asd/v7sample00000.asd",
@@ -54,6 +59,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::Radiance,
             30.425934,
             68_994,
+            Some("asd_secondary_spectra_not_emitted: reference_spectrum=1, calibration_spectrum=3"),
         ),
         (
             "samples/asd/soil.asd",
@@ -64,6 +70,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::RawCounts,
             15.700499,
             17_440,
+            Some("asd_secondary_spectra_not_emitted: reference_spectrum=1"),
         ),
         (
             "samples/asd/v8sample00001.asd",
@@ -74,6 +81,7 @@ fn reads_asd_fieldspec_revisions() {
             SignalType::RawCounts,
             153.995245,
             18_699,
+            Some("asd_secondary_spectra_not_emitted: reference_spectrum=1"),
         ),
     ] {
         let records = open_path(workspace_file(relative)).expect("open asd");
@@ -98,12 +106,87 @@ fn reads_asd_fieldspec_revisions() {
             Some(trailing_block_bytes)
         );
         assert_eq!(
-            records[0].provenance.warnings.iter().any(|warning| {
-                warning == &format!("trailing_asd_blocks_not_decoded: {trailing_block_bytes} bytes")
-            }),
-            trailing_block_bytes > 0
+            asd["decoded_trailing_block_bytes"].as_u64(),
+            Some(trailing_block_bytes)
         );
+        assert_eq!(asd["undecoded_trailing_block_bytes"].as_u64(), Some(0));
+        assert!(!records[0]
+            .provenance
+            .warnings
+            .iter()
+            .any(|warning| warning.starts_with("trailing_asd_blocks_not_decoded")));
+        match secondary_warning {
+            Some(expected) => assert!(records[0]
+                .provenance
+                .warnings
+                .iter()
+                .any(|warning| warning == expected)),
+            None => assert!(records[0].provenance.warnings.is_empty()),
+        }
     }
+}
+
+#[test]
+fn exposes_asd_header_metadata_from_committed_fixtures() {
+    let asd = asd_metadata("samples/asd/v7_field_44231B009.asd");
+
+    assert_eq!(asd["program_version"].as_str(), Some("6.4"));
+    assert_eq!(asd["file_version"].as_str(), Some("7.0"));
+    assert_eq!(
+        asd["acquisition_time"]["local"].as_str(),
+        Some("2024-10-23T16:58:54")
+    );
+    assert_eq!(asd["dark_corrected"].as_bool(), Some(true));
+    assert_eq!(
+        asd["instrument_type"].as_str(),
+        Some("fieldspec_full_range")
+    );
+    assert_eq!(asd["instrument_number"].as_u64(), Some(19_082));
+    assert_eq!(asd["integration_time_ms"].as_u64(), Some(17));
+    assert_eq!(asd["sample_count"].as_u64(), Some(10));
+    assert_eq!(asd["app_data_nonzero_bytes"].as_u64(), Some(30));
+    assert!((asd["splice1_wavelength"].as_f64().unwrap() - 1000.0).abs() < 0.000001);
+    assert!((asd["splice2_wavelength"].as_f64().unwrap() - 1800.0).abs() < 0.000001);
+}
+
+#[test]
+fn inventories_asd_secondary_classifier_calibration_and_audit_blocks() {
+    let asd = asd_metadata("samples/asd/v7sample00000.asd");
+    let blocks = asd["secondary_blocks"].as_array().expect("blocks");
+    assert_eq!(count_asd_blocks(blocks, "reference_spectrum"), 1);
+    assert_eq!(count_asd_blocks(blocks, "calibration_spectrum"), 3);
+    let calibration_header = find_asd_block(blocks, "calibration_header");
+    assert_eq!(calibration_header["count"].as_i64(), Some(3));
+    let series = calibration_header["series"].as_array().expect("series");
+    assert_eq!(series[0]["name"].as_str(), Some("bse63554.ref"));
+    assert_eq!(series[1]["calibration_type"].as_str(), Some("lamp"));
+    assert_eq!(series[2]["name"].as_str(), Some("ni63554.raw"));
+
+    let asd = asd_metadata("samples/asd/v8sample00001.asd");
+    let blocks = asd["secondary_blocks"].as_array().expect("blocks");
+    let classifier = find_asd_block(blocks, "classifier_data");
+    assert_eq!(classifier["constituent_count"].as_u64(), Some(1));
+    assert_eq!(
+        classifier["strings"]["display_mode"].as_str(),
+        Some("REFLECTANCE")
+    );
+    assert_eq!(
+        classifier["constituents"][0]["name"].as_str(),
+        Some("Polystryrene.41D")
+    );
+    let dependents = find_asd_block(blocks, "dependent_variables");
+    assert_eq!(dependents["count"].as_i64(), Some(3));
+    assert_eq!(dependents["labels"][0].as_str(), Some("Dep1"));
+    assert_eq!(dependents["values"][2].as_f64(), Some(3.0));
+    let audit_log = find_asd_block(blocks, "audit_log");
+    assert_eq!(audit_log["event_count"].as_i64(), Some(1));
+    assert_eq!(
+        audit_log["events"][0]["application"].as_str(),
+        Some("Indico Pro")
+    );
+    let signature = find_asd_block(blocks, "signature");
+    assert_eq!(signature["signed"].as_str(), Some("signed"));
+    assert_eq!(signature["signature_nonzero_bytes"].as_u64(), Some(128));
 }
 
 #[test]
@@ -5265,6 +5348,27 @@ fn refuses_witec_wip_binary_projects() {
         }
         other => panic!("unexpected error: {other}"),
     }
+}
+
+fn asd_metadata(relative: &str) -> Value {
+    let records = open_path(workspace_file(relative)).unwrap_or_else(|err| {
+        panic!("open {relative}: {err}");
+    });
+    records[0].metadata["asd"].clone()
+}
+
+fn count_asd_blocks(blocks: &[Value], kind: &str) -> usize {
+    blocks
+        .iter()
+        .filter(|block| block["kind"].as_str() == Some(kind))
+        .count()
+}
+
+fn find_asd_block<'a>(blocks: &'a [Value], kind: &str) -> &'a Value {
+    blocks
+        .iter()
+        .find(|block| block["kind"].as_str() == Some(kind))
+        .unwrap_or_else(|| panic!("missing ASD block {kind}"))
 }
 
 fn workspace_file(relative: &str) -> std::path::PathBuf {

@@ -11,7 +11,21 @@ Binary, multiple revisions. Reverse-engineered headers expose DN / white referen
 | `v6sample00000.asd` | 34 KB | [`KaiTastic/pyASDReader`](https://github.com/KaiTastic/pyASDReader/blob/main/tests/sample_data/v6sample/v6sample00000.asd) | MIT | **ASD file format revision 6** — used to test legacy-header parsing. |
 | `v7sample00000.asd` | 85 KB | [`KaiTastic/pyASDReader`](https://github.com/KaiTastic/pyASDReader/blob/main/tests/sample_data/v7sample/v7sample00000.asd) | MIT | **ASD file format revision 7**. |
 | `v8sample00001.asd` | 36 KB | [`KaiTastic/pyASDReader`](https://github.com/KaiTastic/pyASDReader/blob/main/tests/sample_data/v8sample/v8sample00001.asd) | MIT | **ASD file format revision 8** — newest revision; parser must dispatch on the version prefix. |
-| `v7_field_44231B009.asd` | 52 KB | [`KaiTastic/pyASDReader`](https://github.com/KaiTastic/pyASDReader/blob/main/tests/sample_data/v7sample_field_spectroscopy/44231B009-1-FW3R00000.asd) | MIT | Real field-spectroscopy v7 spectrum — GPS / sun-angle metadata populated (cf. `_FW3R00000` naming). |
+| `v7_field_44231B009.asd` | 52 KB | [`KaiTastic/pyASDReader`](https://github.com/KaiTastic/pyASDReader/blob/main/tests/sample_data/v7sample_field_spectroscopy/44231B009-1-FW3R00000.asd) | MIT | Real field-spectroscopy v7 spectrum — populated app-data bytes, one internal absolute-calibration spectrum and an ASD footer marker. |
+
+## Fixture-backed parser coverage
+
+The Rust reader currently emits one primary `SpectralRecord` per ASD file and
+stores additional fixture-backed diagnostics in `metadata.asd`.
+
+| File | Internal block coverage |
+|---|---|
+| `3L9257.000` | Legacy revision-1 float32 primary spectrum; no trailing internal blocks. |
+| `v6sample00000.asd` | Reference header/spectrum plus empty classifier block inventoried. |
+| `v7sample00000.asd` | Reference block, empty classifier/dependent blocks, three calibration spectra (`BSE`, `LMP`, `RAW`) inventoried. |
+| `v7_field_44231B009.asd` | Reference block, empty classifier/dependent blocks, one absolute calibration spectrum and footer marker inventoried. |
+| `soil.asd` | Reference block, empty classifier/dependent/calibration/audit blocks, unsigned signature placeholder and padding inventoried. |
+| `v8sample00001.asd` | Reference block, material-report classifier, dependent variables, audit event and signed signature inventoried. |
 
 ## Parser hints
 

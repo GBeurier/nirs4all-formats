@@ -11,7 +11,14 @@ Implemented scope:
 - support for ASD files without `.asd` extension, such as `.000`;
 - fixed header fields needed for primary loading: channel count, first
   wavelength, wavelength step, data type and data format;
-- explicit `trailing_block_bytes` metadata for undecoded internal ASD blocks;
+- sample-backed fixed header metadata: acquisition time, program/file version,
+  dark/reference timestamps, integration time, instrument/calibration labels,
+  detector gains, splice wavelengths and sample/reference/dark counts;
+- explicit `trailing_block_bytes`, `decoded_trailing_block_bytes` and
+  `undecoded_trailing_block_bytes` metadata for internal ASD blocks;
+- internal block inventory for reference headers/spectra, classifier data,
+  dependent variables, calibration headers/spectra, v8 audit logs/signatures,
+  footer markers and zero padding;
 - primary spectrum payload in `float32`, `int32` and `float64` encodings;
 - normalized output as one `SpectralRecord` with a wavelength axis in `nm`.
 
@@ -35,15 +42,19 @@ Reference readers:
 
 Known limitations:
 
-- embedded secondary spectrum blocks are not decoded yet;
-- embedded classifier/dependent variable blocks are not decoded yet;
-- embedded reference spectrum blocks are not decoded yet;
-- embedded calibration headers and calibration spectra are not decoded yet;
-- audit log/signature blocks are not decoded yet;
+- embedded secondary/reference/calibration spectra are inventoried but not
+  emitted as additional signals or records yet;
+- embedded classifier/dependent variable blocks are summarized for diagnostics,
+  not treated as calibrated quantitative targets yet;
+- embedded calibration spectra are counted and typed, but their numeric payloads
+  are not exposed yet;
+- audit log/signature blocks are summarized for v8 diagnostics only;
 - separate ASD `.ILL`, `.REF` and `.RAW` calibration companion files still have
   no open fixture.
 
-The reader emits a `trailing_asd_blocks_not_decoded` warning when bytes remain
-after the primary spectrum. That is expected for newer ASD revisions until the
-secondary block parsers are implemented; the same byte count is exposed in
-`metadata.asd.trailing_block_bytes` for downstream auditing.
+The reader emits `asd_secondary_spectra_not_emitted` when internal reference or
+calibration spectra are present but the normalized output still contains only
+the primary spectrum. If bytes remain outside the known block inventory, it
+emits `trailing_asd_blocks_not_decoded`; the byte counts are exposed in
+`metadata.asd.trailing_block_bytes`, `decoded_trailing_block_bytes` and
+`undecoded_trailing_block_bytes` for downstream auditing.
