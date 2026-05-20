@@ -47,7 +47,7 @@ impl Reader for Hdf5Reader {
     }
 }
 
-fn read_hdf5_records(
+pub(crate) fn read_hdf5_records(
     file: &Hdf5File,
     source: SourceFile,
     reader: &str,

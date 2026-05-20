@@ -18,17 +18,17 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
 | ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr`, `.slb` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid) | fait | spectral, RStoolbox, pysptools |
 | ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN point extraction | partiel | spectral, rasterio |
-| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | schema FGI | partiel | h5py, hdf5r, rhdf5, lxml |
+| FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | paire HDF5+XML synthetique mappee | partiel | h5py, hdf5r, rhdf5, lxml |
 | MFR Sun Photometer | Solar Light | `.OUT` | MFR-7 | partiel | SPECCHIO, parseurs ad hoc |
 | Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export) | ASCII export + MAN NetCDF reel PANGAEA MSM114/2 teste | partiel | parseurs ad hoc, xarray |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | plusieurs familles texte + ProcSpec | partiel | lightr, pavo |
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte | partiel | SPECCHIO, parseurs ad hoc |
-| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA + laptop + GER 3700 PDA + HR-1024i field reels | partiel | spectrolab, specdal |
-| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels | partiel | spectrolab, specdal |
+| SVC / GER SIG | Spectra Vista / GER | `.sig` | PDA + laptop + GER 3700 PDA + HR-1024i field reels; BAD fixtures flagged | partiel | spectrolab, specdal |
+| Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only flagged | partiel | spectrolab, specdal |
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
-| USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc` | ASCII seulement | partiel | convertisseur USGS |
+| USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | new LSB OK; old limite; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
 | Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg/TGA-GC srs OK; srsx manquant | partiel | SpectroChemPy, spa-on-python |
 | Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | sp OK; fsm imaging refuse | partiel | specio |
@@ -79,16 +79,16 @@ passer le format a `fait`.
 | Bruker Tango / MPA / Matrix | partiel | AfSIS Bruker MPA `icr_*.0` reels committes (cran/soil.spec). Reste Bruker Tango FT-NIR dedie et metadata MPA/Matrix complete. |
 | ENVI Spectral Library | fait | USGS splib06a + splib07 reels (AVIRIS-1995 sensor grid, ENVI BSQ float32) committs via pycoal. |
 | ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr` et AVIRIS/Indian Pines `.lan/.spc/.GIS` sont charges en spectres par pixel; restent ERDAS LAN generique, NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
-| FGI HDF5 + XML | partiel | Ajouter paire HDF5/XML reelle et mapper le sidecar XML. |
+| FGI HDF5 + XML | partiel | Sidecar XML synthetique mappe vers HDF5 et provenance double; reste a valider une paire FGI reelle et le schema XML complet. |
 | MFR Sun Photometer | partiel | Remplacer/complete par dumps instrument reels. |
 | Microtops Sun Photometer | partiel | MAN NetCDF reel committe et teste (PANGAEA MSM114/2, CC-BY-4.0) via fallback SHA-256 borne au fixture; restent un vrai `.TXT` legacy et un parseur MAN NetCDF generique. |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
 | PP Systems UniSpec SC | partiel | Ajouter acquisitions terrain reelles. |
 | PP Systems UniSpec DC | partiel | Ajouter acquisitions terrain reelles. |
-| SVC / GER SIG | partiel | GER 3700 PDA + BEO HR-1024i field exports reels desormais committes; restent les firmware HR-1024i ≥3.0 et la verification GPS/date/unites systematique. |
-| Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
+| SVC / GER SIG | partiel | GER 3700 PDA + BEO HR-1024i field exports reels desormais committes; les fixtures declarees BAD sont qualifiees; restent les firmware HR-1024i ≥3.0 et la verification GPS/date/unites systematique. |
+| Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est qualifie sans reflectance; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
 | MODTRAN albedo | partiel | Ajouter sortie MODTRAN redistribuable sous licence claire. |
-| USGS SPECPR / PRISM | partiel | Implementer/valider le binaire SPECPR ou un flux de conversion stable. |
+| USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Couvrir big-endian, vieux headers et fixtures multi-canaux. |
 | Thermo Nicolet OMNIC | partiel | Decoder `.srsx` et variantes rapid-scan/high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
@@ -112,8 +112,8 @@ passer le format a `fait`.
 | Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
 | Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et valide contre l'export texte; restent `.l6s`, autres layouts LabSpec6, metadata complete et axes energy mieux types. |
 | Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |
-| DigitalSurf MountainsMap | partiel | Ajouter variantes compressees/non compressees et metadata surfaces. |
-| Hamamatsu HPD-TA IMG | partiel | Clarifier si le format reste adjacent ou devient export spectral supporte. |
+| DigitalSurf MountainsMap | partiel | Fixtures spectres, maps, surface et zlib compresse/non compresse couverts; restent variantes MountainsMap hors corpus et metadata surfaces plus riche. |
+| Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes; rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
 | WiTec WIP / WID | partiel | `Sa4.wip` reel decode en 4410 spectres TDGraph `WIT_PR06`; restent layouts WiTec generaux, coordonnees physiques, conversion Raman-shift et export ASCII equivalent pour comparaison. |
 | fNIRS neuroscience | pas fait | Domaine physiologie hors scope; rediriger vers SNIRF/MNE-NIRS. |
 

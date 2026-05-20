@@ -100,6 +100,19 @@ impl Reader for SvcSigReader {
                 .quality_flags
                 .push("matched_overlap_corrected".to_string());
         }
+        if path
+            .file_stem()
+            .and_then(|value| value.to_str())
+            .is_some_and(|stem| stem.to_ascii_lowercase().contains("_bad"))
+        {
+            record
+                .quality_flags
+                .push("declared_bad_fixture".to_string());
+            record
+                .provenance
+                .warnings
+                .push("svc_sig_declared_bad_fixture".to_string());
+        }
         Ok(vec![record])
     }
 }

@@ -1,6 +1,6 @@
 # FGI HDF5 + XML
 
-Standards-based container (HDF5 for arrays, XML for metadata), but the schema is FGI-specific → needs a dedicated mapper.
+Standards-based container (HDF5 for arrays, XML for metadata), but the schema is FGI-specific and still needs real fixtures.
 
 ## Samples
 
@@ -10,6 +10,7 @@ Standards-based container (HDF5 for arrays, XML for metadata), but the schema is
 
 ## Parser hints
 
+- `synthetic_fgi.xml` is routed through the dedicated `fgi-hdf5-xml` reader, which opens the referenced HDF5 payload and attaches XML metadata to each record.
 - The FGI schema places spectra inside groups (one group per measurement) with vendor-specific attribute names.
 - Real FGI fixtures are not publicly available; reach out to the data owner for production samples.
 - Reference readers: `h5py` for arrays, `lxml` for XML — no vendor SDK needed beyond the schema documentation.

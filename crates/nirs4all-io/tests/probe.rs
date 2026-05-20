@@ -56,6 +56,14 @@ fn probes_row_spectral_table_fixture() {
 }
 
 #[test]
+fn probes_usgs_aref_single_column_dump() {
+    let probes = probe_path(workspace_file("samples/envi_sli/usgs_liba_AREF.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "usgs-aref-single-column" && probe.confidence == Confidence::Likely
+    }));
+}
+
+#[test]
 fn probes_matrix_and_sun_photometer_exports() {
     let probes = probe_path(workspace_file(
         "samples/foss_winisi/synthetic_winisi_export.txt",
@@ -127,6 +135,11 @@ fn probes_hdf5_containers() {
     let probes = probe_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("probe");
     assert!(probes.iter().any(|probe| {
         probe.format == "hdf5-nirs-container" && probe.confidence == Confidence::Likely
+    }));
+
+    let probes = probe_path(workspace_file("samples/fgi/synthetic_fgi.xml")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "fgi-hdf5-xml" && probe.confidence == Confidence::Definite
     }));
 }
 

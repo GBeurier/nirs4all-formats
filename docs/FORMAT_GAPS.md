@@ -54,7 +54,7 @@ format can be promoted.
 | Solar Light MFR `.OUT` and Microtops legacy `.TXT` | Synthetic channel exports are parsed by `sun_photometer`; committed Microtops MAN NetCDF is parsed through a guarded fixture path. | Real legacy Microtops `.TXT` export and a generic MAN NetCDF/HDF5 metadata path. |
 | PP Systems UniSpec `.SPT` / `.SPU` | Synthetic SC/DC axis-first exports are parsed. | Real field acquisition. |
 | MODTRAN albedo `.dat` | Synthetic albedo table is parsed. | Redistributable licensed MODTRAN output. |
-| FGI HDF5 + XML pairing | Synthetic nested HDF5 payload is parsed; XML sidecar mapping is pending. | Real FGI HDF5/XML pair. |
+| FGI HDF5 + XML pairing | Synthetic nested HDF5 payload and XML sidecar are parsed; real schema coverage is unknown. | Real FGI HDF5/XML pair. |
 | Shimadzu UVProbe `.txt` | Synthetic UVProbe text export is parsed. | Real customer text export. |
 | JASCO Raman `.txt` | JASCO text export path is parsed. | Real NRS-series Raman text export. |
 

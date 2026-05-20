@@ -39,8 +39,8 @@ Experimental native readers:
   schema-refused as non-NIRS;
 - generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
-  and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
-  pending;
+  and the committed FGI HDF5+XML synthetic pair is mapped with both payload and
+  metadata sidecar in provenance;
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
@@ -65,8 +65,12 @@ Experimental native readers:
   `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
   are rejected and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
-- Spectral Evolution SED (`.sed`);
-- SVC/GER SIG (`.sig`).
+- Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
+  flagged when no reflectance signal is present;
+- SVC/GER SIG (`.sig`), including declared bad fixtures flagged in quality
+  metadata.
+- USGS spectral-library text: SPECPR-style `.asc` wavelength/reflectance
+  tables and single-column AREF dumps with generated index axes.
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
 - Thermo / Galactic GRAMS SPC (`.spc`, `.SPC`), new little-endian generated-X,
   explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian

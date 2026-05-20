@@ -5,12 +5,12 @@ use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
 use crate::readers::{
     AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
     BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
-    EnviSliReader, ErdasLanReader, ExcelReader, GalacticSpcReader, HamamatsuImgReader, Hdf5Reader,
-    HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader, MsaReader, MzmlReader,
-    NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader, ParquetReader,
-    PerkinElmerReader, RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader,
+    EnviSliReader, ErdasLanReader, ExcelReader, FgiXmlReader, GalacticSpcReader,
+    HamamatsuImgReader, Hdf5Reader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader,
+    MsaReader, MzmlReader, NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader,
+    ParquetReader, PerkinElmerReader, RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader,
     SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
-    TrivistaTvfReader, WitecWipReader,
+    TrivistaTvfReader, UsgsArefReader, WitecWipReader,
 };
 
 /// Contract implemented by every native reader.
@@ -43,6 +43,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(MsaReader),
         Box::new(MzmlReader),
         Box::new(NetcdfReader),
+        Box::new(FgiXmlReader),
         Box::new(Hdf5Reader),
         Box::new(MatlabReader),
         Box::new(NumpyReader),
@@ -52,6 +53,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(AllotropeAsmReader),
         Box::new(ExcelReader),
         Box::new(ScioCsvReader),
+        Box::new(UsgsArefReader),
         Box::new(SpectralTableReader),
         Box::new(SpectralMatrixReader),
         Box::new(SunPhotometerReader),

@@ -1541,6 +1541,28 @@ fn reads_spectral_evolution_sed() {
 }
 
 #[test]
+fn flags_spectral_evolution_sed_without_reflectance() {
+    let records = open_path(workspace_file(
+        "samples/spectral_evolution/1566060_15025_not_working.sed",
+    ))
+    .expect("open broken-but-valid sed");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "spectral-evolution-sed");
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"sed_missing_reflectance_signal".to_string()));
+    assert!(records[0]
+        .quality_flags
+        .contains(&"missing_reflectance_signal".to_string()));
+    assert!(!records[0]
+        .signals
+        .values()
+        .any(|signal| signal.signal_type == SignalType::Reflectance));
+}
+
+#[test]
 fn reads_svc_sig_with_overlap_quality_flag() {
     let records =
         open_path(workspace_file("samples/svc_ger/BNL13001_000_moc.sig")).expect("open sig");
@@ -1552,6 +1574,24 @@ fn reads_svc_sig_with_overlap_quality_flag() {
     assert!(records[0]
         .quality_flags
         .contains(&"matched_overlap_corrected".to_string()));
+}
+
+#[test]
+fn flags_declared_bad_svc_sig_fixtures() {
+    for relative in [
+        "samples/svc_ger/ACPL_D2_P1_B_1_000_BAD.sig",
+        "samples/svc_ger/3_6_PANVI_2_T_1_001_BAD.sig",
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open bad sig fixture");
+        assert_eq!(records[0].provenance.format, "svc-ger-sig");
+        assert!(records[0]
+            .quality_flags
+            .contains(&"declared_bad_fixture".to_string()));
+        assert!(records[0]
+            .provenance
+            .warnings
+            .contains(&"svc_sig_declared_bad_fixture".to_string()));
+    }
 }
 
 #[test]
@@ -1767,6 +1807,32 @@ fn reads_nested_fgi_hdf5_payload() {
     let absorbance = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 200);
     assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+}
+
+#[test]
+fn reads_fgi_xml_sidecar_with_hdf5_payload() {
+    let records = open_path(workspace_file("samples/fgi/synthetic_fgi.xml")).expect("open fgi xml");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "fgi-hdf5-xml");
+    assert_eq!(records[0].provenance.sources.len(), 2);
+    assert_eq!(records[0].provenance.sources[0].role, "primary");
+    assert_eq!(records[0].provenance.sources[1].role, "metadata_sidecar");
+    assert_eq!(
+        records[0].metadata["fgi_xml"]["instrument"].as_str(),
+        Some("FGI-mock")
+    );
+    assert_eq!(
+        records[0].metadata["fgi_xml"]["operator"].as_str(),
+        Some("synthetic")
+    );
+    assert_eq!(
+        records[0].metadata["fgi_data_reference"].as_str(),
+        Some("synthetic_fgi.h5")
+    );
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
     assert_eq!(absorbance.signal_type, SignalType::Absorbance);
 }
 
@@ -2169,6 +2235,26 @@ fn reads_usgs_specpr_ascii_spectrum() {
     assert_eq!(reflectance.signal_type, SignalType::Reflectance);
     assert_eq!(stddev.signal_type, SignalType::Unknown);
     assert!((reflectance.values[0] - 0.042736).abs() < 0.000001);
+}
+
+#[test]
+fn reads_usgs_aref_single_column_dump_with_index_axis() {
+    let records =
+        open_path(workspace_file("samples/envi_sli/usgs_liba_AREF.txt")).expect("open usgs aref");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "usgs-aref-single-column");
+    assert_eq!(records[0].metadata["record_number"].as_u64(), Some(1));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"usgs_aref_axis_generated_index".to_string()));
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.kind, AxisKind::Index);
+    assert_eq!(reflectance.axis.unit, "index");
+    assert_eq!(reflectance.axis.values.len(), 24);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.values[0] - 0.33849356).abs() < 0.000001);
 }
 
 #[test]
