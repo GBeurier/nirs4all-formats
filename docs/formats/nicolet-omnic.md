@@ -29,9 +29,11 @@ until the core schema grows a first-class secondary axis.
 ## Dispatch Boundaries
 
 `.srs` support is intentionally limited to the TGA/GC layout identified by the
-three `02 00 00 00 18 00 00 00 00 00` signature anchors. Rapid-scan,
-high-speed and `.srsx` variants remain pending because their data offsets and
-secondary axes differ.
+three `02 00 00 00 18 00 00 00 00 00` signature anchors. Files with OMNIC
+series magic but a different anchor pattern are now classified as unsupported
+series variants and refused explicitly. Rapid-scan, high-speed and `.srsx`
+variants remain pending because their data offsets and secondary axes differ,
+and no redistributable `.srsx` fixture is available.
 
 The implementation follows the same public reverse-engineering model used by
 SpectroChemPy: key `02` points to the spectral header, key `03` points to the

@@ -112,7 +112,11 @@ pub fn builtin_probes(head: &[u8], path: &Path) -> Vec<FormatProbe> {
         .unwrap_or_default()
         .to_ascii_lowercase();
 
-    if matches!(ext.as_str(), "asd" | "hdr" | "spc" | "spa" | "spg" | "srs") && out.is_empty() {
+    if matches!(
+        ext.as_str(),
+        "asd" | "hdr" | "spc" | "spa" | "spg" | "srs" | "srsx"
+    ) && out.is_empty()
+    {
         out.push(FormatProbe::new(
             format!("candidate-{ext}"),
             "nirs4all_io::registry",
@@ -138,6 +142,13 @@ mod tests {
     #[test]
     fn marks_known_collision_extension_as_possible() {
         let probes = builtin_probes(b"not enough bytes", Path::new("sample.spc"));
+        assert_eq!(probes[0].confidence, Confidence::Possible);
+    }
+
+    #[test]
+    fn marks_srsx_extension_as_possible_without_magic() {
+        let probes = builtin_probes(b"not enough bytes", Path::new("sample.srsx"));
+        assert_eq!(probes[0].format, "candidate-srsx");
         assert_eq!(probes[0].confidence, Confidence::Possible);
     }
 }

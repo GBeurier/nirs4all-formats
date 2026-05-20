@@ -152,6 +152,12 @@ struct SrsLayout {
 }
 
 #[derive(Clone, Debug)]
+enum SrsVariant {
+    TgGc(SrsLayout),
+    Unsupported { signature_count: usize },
+}
+
+#[derive(Clone, Debug)]
 struct SrsHeader {
     base: OmnicHeader,
     name: String,
@@ -167,7 +173,20 @@ struct SrsSpectra {
 }
 
 fn read_srs(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
-    let layout = find_srs_tg_layout(bytes)?;
+    match detect_srs_variant(bytes)? {
+        SrsVariant::TgGc(layout) => read_srs_tg_gc(bytes, source, reader, layout),
+        SrsVariant::Unsupported { signature_count } => Err(Error::InvalidRecord(format!(
+            "Nicolet OMNIC .srs/.srsx series variant is not supported yet: found {signature_count} TGA/GC anchors, expected 3. Supported series layout is TGA/GC; rapid-scan, high-speed and .srsx variants require a real fixture plus a reference export before decoding."
+        ))),
+    }
+}
+
+fn read_srs_tg_gc(
+    bytes: &[u8],
+    source: SourceFile,
+    reader: &str,
+    layout: SrsLayout,
+) -> Result<Vec<SpectralRecord>> {
     let header = read_srs_header(bytes, layout.data_header_offset)?;
     let spectra = read_srs_spectra(bytes, layout.data_offset, header.ny, header.base.nx)?;
     let axis = SpectralAxis::new(
@@ -329,13 +348,12 @@ fn read_spg(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<Spectr
     Ok(records)
 }
 
-fn find_srs_tg_layout(bytes: &[u8]) -> Result<SrsLayout> {
+fn detect_srs_variant(bytes: &[u8]) -> Result<SrsVariant> {
     let occurrences = find_all(bytes, SRS_TG_SIGNATURE);
     if occurrences.len() != 3 {
-        return Err(Error::InvalidRecord(format!(
-            "Nicolet OMNIC .srs TGA/GC signature count is {}, expected 3",
-            occurrences.len()
-        )));
+        return Ok(SrsVariant::Unsupported {
+            signature_count: occurrences.len(),
+        });
     }
     let data_header_offset = occurrences[0].checked_sub(152).ok_or_else(|| {
         Error::InvalidRecord("Nicolet OMNIC .srs data header offset underflow".to_string())
@@ -343,12 +361,14 @@ fn find_srs_tg_layout(bytes: &[u8]) -> Result<SrsLayout> {
     let background_header_offset = occurrences[1].checked_sub(152).ok_or_else(|| {
         Error::InvalidRecord("Nicolet OMNIC .srs background header offset underflow".to_string())
     })?;
-    let data_offset = occurrences[2] + 60;
-    Ok(SrsLayout {
+    let data_offset = occurrences[2].checked_add(60).ok_or_else(|| {
+        Error::InvalidRecord("Nicolet OMNIC .srs data offset overflow".to_string())
+    })?;
+    Ok(SrsVariant::TgGc(SrsLayout {
         data_header_offset,
         background_header_offset,
         data_offset,
-    })
+    }))
 }
 
 fn read_srs_header(bytes: &[u8], offset: usize) -> Result<SrsHeader> {
@@ -370,21 +390,34 @@ fn read_srs_header(bytes: &[u8], offset: usize) -> Result<SrsHeader> {
 }
 
 fn read_srs_spectra(bytes: &[u8], data_offset: usize, ny: usize, nx: usize) -> Result<SrsSpectra> {
+    let value_count = nx.checked_mul(ny).ok_or_else(|| {
+        Error::InvalidRecord("Nicolet OMNIC .srs matrix dimensions overflow".to_string())
+    })?;
     let mut labels = Vec::with_capacity(ny);
-    let mut values = Vec::with_capacity(nx.saturating_mul(ny));
+    let mut values = Vec::with_capacity(value_count);
     let mut cursor = data_offset;
     for index in 0..ny {
         if index > 0 {
-            cursor += 16;
+            cursor = cursor.checked_add(16).ok_or_else(|| {
+                Error::InvalidRecord("Nicolet OMNIC .srs cursor offset overflow".to_string())
+            })?;
         }
-        if cursor + 84 > bytes.len() {
+        let label_end = cursor.checked_add(84).ok_or_else(|| {
+            Error::InvalidRecord("Nicolet OMNIC .srs label offset overflow".to_string())
+        })?;
+        if label_end > bytes.len() {
             return Err(Error::InvalidRecord(
                 "Nicolet OMNIC .srs spectrum label extends past end of file".to_string(),
             ));
         }
         labels.push(read_fixed_text(bytes, cursor, 84));
-        let values_offset = cursor + 84;
-        let values_end = values_offset + nx * 4;
+        let values_offset = label_end;
+        let byte_len = nx.checked_mul(4).ok_or_else(|| {
+            Error::InvalidRecord("Nicolet OMNIC .srs row byte length overflow".to_string())
+        })?;
+        let values_end = values_offset.checked_add(byte_len).ok_or_else(|| {
+            Error::InvalidRecord("Nicolet OMNIC .srs row offset overflow".to_string())
+        })?;
         if values_end > bytes.len() {
             return Err(Error::InvalidRecord(
                 "Nicolet OMNIC .srs spectrum data extends past end of file".to_string(),
@@ -717,4 +750,55 @@ fn read_f32(bytes: &[u8], offset: usize) -> Result<f32> {
         .get(offset..offset + 4)
         .ok_or_else(|| Error::InvalidRecord("truncated Nicolet OMNIC f32 field".to_string()))?;
     Ok(f32::from_le_bytes(value.try_into().expect("slice len")))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::Path;
+
+    #[test]
+    fn detects_gc_demo_srs_tg_gc_layout() {
+        let bytes = fixture_bytes("samples/nicolet_omnic/GC_Demo.srs");
+        let layout = tg_gc_layout(&bytes);
+
+        assert_eq!(layout.data_header_offset, 5_584);
+        assert_eq!(layout.background_header_offset, 7_044);
+        assert_eq!(layout.data_offset, 20_616);
+    }
+
+    #[test]
+    fn detects_tgair_srs_tg_gc_layout() {
+        let bytes = fixture_bytes("samples/nicolet_omnic/TGAIR.srs");
+        let layout = tg_gc_layout(&bytes);
+
+        assert_eq!(layout.data_header_offset, 14_032);
+        assert_eq!(layout.background_header_offset, 20_836);
+        assert_eq!(layout.data_offset, 30_888);
+    }
+
+    #[test]
+    fn classifies_series_without_tg_gc_anchors_as_unsupported() {
+        let variant = detect_srs_variant(OMNIC_SERIES_MAGIC).expect("variant");
+        match variant {
+            SrsVariant::Unsupported { signature_count } => assert_eq!(signature_count, 0),
+            SrsVariant::TgGc(_) => panic!("unexpected TGA/GC variant"),
+        }
+    }
+
+    fn tg_gc_layout(bytes: &[u8]) -> SrsLayout {
+        match detect_srs_variant(bytes).expect("variant") {
+            SrsVariant::TgGc(layout) => layout,
+            SrsVariant::Unsupported { signature_count } => {
+                panic!("expected TGA/GC layout, found {signature_count} anchors")
+            }
+        }
+    }
+
+    fn fixture_bytes(relative: &str) -> Vec<u8> {
+        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../..")
+            .join(relative);
+        std::fs::read(path).expect("fixture bytes")
+    }
 }
