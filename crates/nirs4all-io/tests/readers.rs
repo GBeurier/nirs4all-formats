@@ -827,6 +827,103 @@ fn reads_trivista_tvf_modes() {
 }
 
 #[test]
+fn reads_digitalsurf_sur_pro_modes() {
+    let records =
+        open_path(workspace_file("samples/digitalsurf/test_spectrum.pro")).expect("open spectrum");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "digitalsurf-sur-pro");
+    assert_eq!(
+        records[0].metadata["object_type_label"].as_str(),
+        Some("_SPECTRUM")
+    );
+    assert_eq!(
+        records[0].metadata["signal_axis_original_unit"].as_str(),
+        Some("mm")
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 512);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert!((signal.axis.values[0] - 172.84281784668565).abs() < 0.000001);
+    assert!((signal.axis.values[511] - 726.7669435577773).abs() < 0.000001);
+    assert!((signal.values[0] - 2438.830136228884).abs() < 0.000001);
+    assert!((signal.values[511] - 2671.460130352156).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 1377533.5414941004).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/digitalsurf/test_spectra.pro")).expect("open spectra");
+    assert_eq!(records.len(), 65);
+    assert_eq!(
+        records[64].metadata["spectrum_position"].as_f64().unwrap(),
+        0.0073336162604391575
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 512);
+    assert!((signal.values.iter().sum::<f64>() - 207561.0).abs() < 0.000001);
+    let signal = records[64].signals.get("intensity").expect("intensity");
+    assert!((signal.values.iter().sum::<f64>() - 221920.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file("samples/digitalsurf/test_spectral_map.sur"))
+        .expect("open spectral map");
+    assert_eq!(records.len(), 120);
+    assert_eq!(
+        records[0].metadata["object_type_label"].as_str(),
+        Some("_HYPCARD")
+    );
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(10));
+    assert_eq!(records[0].metadata["map_height"].as_u64(), Some(12));
+    assert!(
+        (records[119].metadata["spatial_x"].as_f64().unwrap() - 0.007757065512123518).abs()
+            < 0.000001
+    );
+    assert!(
+        (records[119].metadata["spatial_y"].as_f64().unwrap() - 0.003961054855608381).abs()
+            < 0.000001
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 310);
+    assert_eq!(signal.axis.unit, "nm");
+    assert!((signal.axis.values[0] - 333.2748601678759).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 115284.0).abs() < 0.000001);
+    let signal = records[119].signals.get("intensity").expect("intensity");
+    assert!((signal.values.iter().sum::<f64>() - 127121.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/digitalsurf/test_spectral_map_compressed.sur",
+    ))
+    .expect("open compressed spectral map");
+    assert_eq!(records.len(), 120);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"digitalsurf_zlib_stream_decompressed".to_string()));
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 281);
+    assert!((signal.axis.values[0] - 344.11484375596046).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 118502.0).abs() < 0.000001);
+    let signal = records[119].signals.get("intensity").expect("intensity");
+    assert!((signal.values.iter().sum::<f64>() - 112712.0).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/digitalsurf/test_surface.sur")).expect("open surface");
+    assert_eq!(records.len(), 128);
+    assert_eq!(
+        records[0].metadata["object_type_label"].as_str(),
+        Some("_SURFACE")
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 128);
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.axis.unit, "mm");
+    assert!((signal.values.iter().sum::<f64>() - 56206.743748958834).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"digitalsurf_surface_rows_exported_as_profiles".to_string()));
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

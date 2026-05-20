@@ -16,6 +16,7 @@ formats/animl
 formats/asd
 formats/bruker-opus
 formats/buchi-nircal
+formats/digitalsurf
 formats/envi-sli
 formats/excel
 formats/galactic-spc

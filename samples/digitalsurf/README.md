@@ -10,12 +10,13 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/digitalsurf/`](https://g
 |---|---|
 | `test_surface.sur` | Plain surface (height map). |
 | `test_spectral_map.sur` | **Hyperspectral map** (XY of spectra). |
-| `test_spectral_map_compressed.sur` | Same, RLE-compressed. |
+| `test_spectral_map_compressed.sur` | Same, zlib-stream compressed. |
 | `test_spectrum.pro` | Single profile spectrum (`.pro` = profile). |
 | `test_spectra.pro` | Multi-spectrum profile. |
 
 ## Parser hints
 
-- The Digital Surf `.sur`/`.pro` format is a chunk container — each block has a leading header with type, dimensions, units, and compression flag, followed by the payload.
+- The Digital Surf `.sur`/`.pro` format is an object container — each object has a 512-byte header with type, dimensions, units, and compression flag, followed by comments/private bytes and the payload.
+- `DSCOMPRESSED` payloads in these fixtures use a small zlib-stream directory, not RLE.
 - Reference reader: [`rsciio.digitalsurf`](https://hyperspy.org/rosettasciio/).
 - For hyperspectral maps the spectral axis is encoded in the W (channel) dimension; the loader has to detect this and expose the spectra rather than treating it as a 3-D image.
