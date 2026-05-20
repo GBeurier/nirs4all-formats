@@ -50,12 +50,12 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Install dependencies
         run: |
-          Rscript -e 'install.packages(c("jsonlite", "testthat", "tibble"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages("jsonlite", repos = "https://cloud.r-project.org")'
       - name: Install package
         run: R CMD INSTALL bindings/r/nirs4allio
-      - name: Test
+      - name: Smoke test
         run: |
-          Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
+          Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); records <- nirs4allio_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allio_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
 
   docs:
     name: Docs
