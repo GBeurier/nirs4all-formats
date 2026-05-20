@@ -14,10 +14,17 @@ fn reads_aviris_indian_pines_erdas_lan_cube() {
     assert_eq!(first.metadata["y_index"].as_u64(), Some(0));
     assert_eq!(first.targets["land_cover_class"].as_u64(), Some(3));
     assert_eq!(first.provenance.sources.len(), 3);
+    assert_eq!(first.provenance.sources[0].role, "primary");
+    assert_eq!(first.provenance.sources[1].role, "wavelength_sidecar");
+    assert_eq!(first.provenance.sources[2].role, "ground_truth_sidecar");
     assert!(first
         .provenance
         .warnings
         .contains(&"erdas_lan_aviris_experimental".to_string()));
+    assert!(first
+        .provenance
+        .warnings
+        .contains(&"erdas_lan_spc_axis_non_monotonic_native_order".to_string()));
 
     let signal = first.signals.get("raw_counts").expect("raw_counts");
     assert_eq!(signal.signal_type, SignalType::RawCounts);

@@ -24,6 +24,10 @@ fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
             "no Microtops aot_* channel set",
         ),
         (
+            "samples/microtops/microtops_arc_msm114_2_header.txt",
+            "no numeric spectral headers found",
+        ),
+        (
             "samples/hdf5/vlen_string_dset.h5",
             "HDF5 contains no spectra dataset with matching wavelength axis",
         ),

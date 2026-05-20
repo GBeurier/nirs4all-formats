@@ -425,6 +425,16 @@ fn probes_aviris_erdas_lan_cube() {
 }
 
 #[test]
+fn probes_aviris_spc_sidecar_without_claiming_galactic_spc() {
+    let probes =
+        probe_path(workspace_file("samples/hyperspectral_cubes/92AV3C.spc")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "candidate-spc" && probe.confidence == Confidence::Possible
+    }));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
+#[test]
 fn probes_witec_wip_magic() {
     let probes = builtin_probes(b"WIT^\0\0\0\0", Path::new("sample.wip"));
     assert!(probes
