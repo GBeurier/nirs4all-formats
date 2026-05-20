@@ -17,8 +17,8 @@ Experimental native readers:
 
 - delimited spectral tables (`.csv`, `.tsv`, headered `.txt`);
 - row-oriented spectral tables with an axis in the first column: Si-Ware CSV,
-  MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS spectrum text,
-  Shimadzu TXT, USGS SPECPR ASCII and WiTec TXT fixtures;
+  MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS/IDL spectrum text,
+  JASCO text export, Shimadzu TXT, USGS SPECPR ASCII and WiTec TXT fixtures;
 - spectral matrix exports with one spectrum per row: Foss/WinISI text,
   Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures;
 - sun photometer channel exports: MFR `.OUT` and Microtops `.TXT` fixtures;
@@ -27,6 +27,8 @@ Experimental native readers:
   refused;
 - Allotrope ASM JSON: plate-reader spectral data cubes and detector-wavelength
   endpoint readings from committed Benchling allotropy fixtures;
+- SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
+  `measurement.absorbance` payloads with predictions mapped to targets;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);

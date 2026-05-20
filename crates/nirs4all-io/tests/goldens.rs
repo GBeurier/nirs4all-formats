@@ -131,6 +131,18 @@ const CASES: &[(&str, &str)] = &[
         "samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt",
     ),
     (
+        "row_spectral_table_jasco_ascii",
+        "samples/jasco/synthetic_jws_export.txt",
+    ),
+    (
+        "row_spectral_table_idl_envi_output",
+        "samples/csv_tsv/idl_envi_output.txt",
+    ),
+    (
+        "siware_api_json",
+        "samples/siware_api/synthetic_siware_api.json",
+    ),
+    (
         "spectral_matrix_foss_winisi",
         "samples/foss_winisi/synthetic_winisi_export.txt",
     ),

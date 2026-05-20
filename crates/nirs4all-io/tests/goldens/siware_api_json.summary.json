@@ -1,0 +1,48 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "siware-api-json",
+      "metadata_keys": [
+        "gps_latitude",
+        "gps_longitude",
+        "humidity_pct",
+        "instrument_model",
+        "instrument_serial",
+        "instrument_vendor",
+        "measurement_id",
+        "operator",
+        "temperature_c",
+        "timestamp"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::siware_api",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.024871,
+          "value_last": -0.057148,
+          "value_sum": 38.785143,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "c1f71ad60174cad2eff116c115abba8e75fbb520d93bd4d8a68f083087386357",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": []
+    }
+  ]
+}

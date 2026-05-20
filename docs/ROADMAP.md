@@ -37,7 +37,8 @@ Deliverables:
 - delimited text reader; experimental;
 - row-oriented axis-first spectral table reader; experimental for Si-Ware,
   MODTRAN, PP Systems, ENVI/ECOSTRESS text, Shimadzu text, USGS SPECPR ASCII
-  and WiTec ASCII fixtures;
+  and WiTec ASCII fixtures; comment-prefixed IDL/ENVI headers and JASCO
+  `XYDATA` text exports are also covered;
 - spectral matrix reader; experimental for Foss/WinISI, Metrohm Vision Air and
   VIAVI MicroNIR exports;
 - sun photometer reader; experimental for MFR and Microtops text exports;
@@ -45,6 +46,8 @@ Deliverables:
   fixtures and refusal of non-spectral AnIML results;
 - Allotrope ASM JSON bridge; experimental for plate-reader spectral data cubes
   and detector-wavelength endpoint readings;
+- SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
+  payloads;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
