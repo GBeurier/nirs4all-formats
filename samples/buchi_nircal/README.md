@@ -15,6 +15,6 @@ Proprietary binary that bundles spectra + metadata + reference properties (prote
 - The format embeds:
   - Spectra (matrix)
   - Wavelength axis
-  - Reference properties (protein, moisture, fat, ash, …) → these are training labels and must be exposed in `targets`, not metadata.
+  - Reference properties (protein, moisture, fat, ash, …) → these are training labels and must be exposed in `targets`, not metadata. The committed fixture has property names but zero numeric values, which `prospectr` treats as missing.
   - Free-text description / comments
 - See `get_nircal_*()` helpers in `prospectr` for the field layout.

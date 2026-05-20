@@ -262,6 +262,24 @@ fn reads_buchi_nircal_project_spectra() {
     assert_eq!(records[0].provenance.format, "buchi-nircal");
     assert_eq!(records[0].metadata["sample_id"].as_str(), Some("105/78G"));
     assert_eq!(records[19].metadata["sample_id"].as_str(), Some("105/59"));
+    assert_eq!(
+        records[0].metadata["target_property_count"].as_u64(),
+        Some(20)
+    );
+    assert_eq!(records[0].targets.len(), 20);
+    assert!(records[0].targets["K"].is_null());
+    assert!(records[0].targets["S_1"].is_null());
+    assert!(records[0].targets["S_2"].is_null());
+    assert!(records[0].targets["Mn_1"].is_null());
+    assert!(records[0].targets["Mn_2"].is_null());
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"buchi_nircal_duplicate_property_names_normalized".to_string()));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"buchi_nircal_zero_property_values_as_missing".to_string()));
     let absorbance = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 1_501);
     assert_eq!(absorbance.axis.unit, "cm-1");

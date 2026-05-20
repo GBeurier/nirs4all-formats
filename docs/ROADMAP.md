@@ -64,7 +64,8 @@ Deliverables:
 - Perkin Elmer Spectrum / IR reader; experimental for single-spectrum `.sp`
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`
-  spectra/wavenumber sections, with non-zero reference properties still pending;
+  spectra, wavenumber and property-target sections, with a non-zero target
+  fixture still pending;
 - JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
   single-channel and multi-channel fixtures, with semantic channel labels still
   pending;
@@ -163,9 +164,9 @@ Deliverables:
 
 Add one family at a time:
 
-- remaining Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets
-  and JASCO `.jws` semantic channel labels, each validated against an open
-  reference reader when possible;
+- remaining Nicolet OMNIC `.srs/.srsx` variants, a non-zero BUCHI NIRCal target
+  fixture and JASCO `.jws` semantic channel labels, each validated against an
+  open reference reader when possible;
 - Excel multi-sheet lab templates, Renishaw WDF and Horiba / JobinYvon
   LabSpec XML/text for lab-transfer and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;

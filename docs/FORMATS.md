@@ -34,7 +34,7 @@ fixtures:
 | Thermo / Galactic GRAMS SPC | `.spc`, `.SPC` | Experimental | New little-endian `0x4B` headers with generated X, explicit X, multi common-X, and `-XYXY` directory layouts; old little-endian `0x4D` is limited. New big-endian `0x4C` is detected but not decoded. |
 | Thermo Nicolet OMNIC | `.SPA`, `.spg`, `.srs` | Experimental | Reverse-engineered key-table reader for single-spectrum `.SPA` and grouped `.SPG` files, plus TGA/GC `.srs` time series as 2D `y,x` records. |
 | Perkin Elmer Spectrum / IR | `.sp` | Experimental | `PEPE` block reader for single-spectrum `.sp` files; `.fsm` imaging is detected but out of scope for v1. |
-| BUCHI NIRCal | `.nir` | Experimental | `NIRCAL Project File` section reader for 20-sample foliar-transfer fixture; reference properties remain pending because the committed fixture values are zero. |
+| BUCHI NIRCal | `.nir` | Experimental | `NIRCAL Project File` section reader for 20-sample foliar-transfer fixture; property names are mapped to targets, with the committed zero-valued properties emitted as nulls. |
 | JASCO JWS | `.jws` | Experimental | OLE2 `DataInfo` + `Y-Data` reader for single- and multi-channel committed fixtures; channel semantics beyond generic `signal` / `channel_N` labels remain pending. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
