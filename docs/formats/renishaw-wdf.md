@@ -9,23 +9,27 @@ files:
 - `DATA` float32 ordinate payload;
 - `XLST` float32 spectral axis payload;
 - `YLST` unit metadata when present;
+- `ORGN` navigation axes for spatial X/Y/Z, FocusTrack Z and acquisition time;
+- `WMAP` map dimensions, map type, offsets and scales;
 - fixed-header metadata such as point count, scan type, measurement type,
   accumulation count, application version, laser wavenumber, user and title.
 
 Maps, line scans, depth profiles, time series, StreamLine acquisitions and
 interrupted acquisitions are emitted as one `SpectralRecord` per stored
-spectrum. Navigation axes from `WMAP` and `ORGN` are not decoded yet, so those
-multi-spectrum records carry `spectrum_index` and warning
-`renishaw_wdf_navigation_axes_pending`. Undefined `measurement_type=0`
-containers are still refused.
+spectrum. `ORGN` values are copied to normalized per-record metadata such as
+`spatial_x`, `spatial_y`, `spatial_z`, `focus_track_z`,
+`time_filetime_100ns` and `elapsed_time_seconds`. `WMAP` adds `map_width`,
+`map_height`, `map_x_index`, `map_y_index` and line-scan
+`spatial_distance` when the map type is `xyline`. Undefined
+`measurement_type=0` containers are still refused.
 
 ## Supported Fixtures
 
 | Fixture | Records | Axis | Notes |
 |---|---:|---|---|
 | `samples/raman_renishaw/renishaw_test_spectrum.wdf` | 1 | wavelength, `nm`, 36 points | RosettaSciIO single-point spectrum |
-| `samples/raman_renishaw/renishaw_test_linescan.wdf` | 5 | wavelength, `nm`, 40 points | Linescan payload; navigation axes pending |
-| `samples/raman_renishaw/interrupted_acquisition.wdf` | 12 | wavenumber, `cm-1`, 1010 points | Reads stored count and warns about truncated capacity |
+| `samples/raman_renishaw/renishaw_test_linescan.wdf` | 5 | wavelength, `nm`, 40 points | Diagonal `xyline`; exposes X/Y and distance metadata |
+| `samples/raman_renishaw/interrupted_acquisition.wdf` | 12 | wavenumber, `cm-1`, 1010 points | Reads stored count, preserves X/Y map positions and warns about truncated capacity |
 | `samples/raman_renishaw/wire_sp.wdf` | 1 | wavenumber, `cm-1`, 1015 points | SpectroChemPy real-world single spectrum |
 
 The full committed WDF fixture set is covered by count-level tests except
@@ -59,10 +63,21 @@ header offsets:
 `XLST` payload starts with `data_type: u32le`, `unit: u32le`, followed by
 `point_count` float32 axis values. `DATA` stores float32 ordinate values.
 
+`ORGN` payload starts with an axis count. Each axis entry stores
+`data_type: u32le`, `unit: u32le`, a 16-byte annotation and one 64-bit value
+per capacity slot. Completed acquisitions have `capacity == count`; interrupted
+acquisitions require advancing by `capacity` while only emitting the first
+`count` values.
+
+`WMAP` is a 48-byte payload containing a map type, XYZ offsets, XYZ scales, XYZ
+sizes and `linefocus_size`. Current normalization covers observed map type
+values `0` (unspecified regular grid), `2` (column-major StreamLine) and `128`
+(`xyline`).
+
 ## Reference Readers
 
-Planned reference checks:
+Layout cross-checks:
 
-- `rsciio.renishaw` for broad WDF coverage;
-- `py-wdf-reader` / `renishawWiRE` for the single-spectrum path;
+- `rsciio.renishaw` 0.13.0 for broad WDF coverage and ORGN/WMAP conventions;
+- `renishawWiRE` 0.1.16 / `py-wdf-reader` for the single-spectrum and ORGN path;
 - SpectroChemPy `read_wire` for chunk and enum cross-checking.

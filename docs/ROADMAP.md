@@ -73,8 +73,9 @@ Deliverables:
   range exports, linescans and maps, plus LabSpec two-column, series-row and
   map-row text exports;
 - Renishaw WDF reader; experimental for `WDF1` spectral payloads using `DATA`,
-  `XLST` and `YLST`; maps/lines/depth/time-series records are emitted by
-  stored spectrum index while `WMAP`/`ORGN` navigation axes remain pending;
+  `XLST`, `YLST`, `ORGN` and `WMAP`; maps/lines/depth/time-series records are
+  emitted one stored spectrum at a time with spatial, elapsed-time and map-index
+  metadata;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -172,8 +173,9 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- Renishaw WDF `WMAP`/`ORGN` navigation axes, Excel multi-sheet lab templates
-  and WiTec WIP for lab-transfer and adjacent spectroscopy workflows;
+- Excel multi-sheet lab templates, WiTec WIP for lab-transfer and adjacent
+  spectroscopy workflows, and Renishaw WDF hardening for white-light image
+  metadata plus `MAP ` block interpretation;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;
