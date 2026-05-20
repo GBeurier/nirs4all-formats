@@ -981,7 +981,7 @@ fn axis_kind_and_unit(label: &str) -> (AxisKind, String) {
     } else if lower.contains("second") {
         (AxisKind::Index, "s".to_string())
     } else if lower.contains("ev") {
-        (AxisKind::Index, "eV".to_string())
+        (AxisKind::Energy, "eV".to_string())
     } else {
         (AxisKind::Index, unit_from_label(label))
     }

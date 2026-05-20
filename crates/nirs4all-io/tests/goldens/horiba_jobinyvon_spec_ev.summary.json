@@ -28,7 +28,7 @@
       "signals": [
         {
           "axis_first": 1.60672,
-          "axis_kind": "index",
+          "axis_kind": "energy",
           "axis_last": 1.7201,
           "axis_len": 34,
           "axis_order": "ascending",
@@ -45,9 +45,7 @@
       ],
       "source_sha256": "8e024979dd679a7b243c3240a14017e5726281e0e53f5b51bd63398e6d5937db",
       "target_keys": [],
-      "warnings": [
-        "horiba_unsupported_axis_kind_energy"
-      ]
+      "warnings": []
     }
   ]
 }

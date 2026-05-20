@@ -29,8 +29,7 @@ Axis units are normalized conservatively:
 - `nm` -> wavelength axis;
 - `1/cm`, `cm-1` and corrupted `cm-�` headers -> wavenumber axis with unit
   `cm-1`;
-- `eV` -> index axis with warning `horiba_unsupported_axis_kind_energy` until
-  the core model grows an explicit energy axis kind.
+- `eV` -> energy axis.
 
 For XML and text maps, spatial coordinates are stored in metadata as
 `spatial_x`, `spatial_y` and unit fields. Text exports that omit the spectral
@@ -50,7 +49,7 @@ spectral axes match within text-rounding tolerance, and `spatial_x` /
 |---|---:|---|---|
 | `samples/raman_horiba/jobinyvon_test_spec.xml` | 1 | wavelength, `nm`, 34 points | LSX XML single spectrum |
 | `samples/raman_horiba/jobinyvon_test_spec_3s_cm-1.xml` | 1 | wavenumber, `cm-1`, 34 points | LSX XML single spectrum |
-| `samples/raman_horiba/jobinyvon_test_spec_3s_eV.xml` | 1 | index, `eV`, 34 points | LSX XML energy-axis fallback |
+| `samples/raman_horiba/jobinyvon_test_spec_3s_eV.xml` | 1 | energy, `eV`, 34 points | LSX XML energy axis |
 | `samples/raman_horiba/jobinyvon_test_spec_range.xml` | 1 | wavelength, `nm`, 105 points | LSX XML range export |
 | `samples/raman_horiba/jobinyvon_test_linescan.xml` | 3 | wavelength, `nm`, 34 points | LSX XML linescan, one record per point |
 | `samples/raman_horiba/jobinyvon_test_map_x3-y2.xml` | 6 | wavelength, `nm`, 34 points | LSX XML 3 x 2 map |

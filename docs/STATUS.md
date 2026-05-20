@@ -85,7 +85,8 @@ Experimental native readers:
   `LINK`/`XYPOINTS` blocks;
   `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
   are rejected and short `NPOINTS` payloads fail strictly;
-- EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files;
+- EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files
+  with typed energy axes for `eV` data;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
   flagged when no reflectance signal is present and parseable GPS/date/time
   headers promoted to canonical metadata;
@@ -116,8 +117,7 @@ Experimental native readers:
   range, linescan, map, two-column, series-row and map-row Raman fixtures, plus
   an experimental LabSpec6 `.l6m` binary map decoder validated against the
   paired Gd2O3/AlN text export. Text exports without explicit axis units are
-  inferred as `cm-1`; XML `eV` axes are preserved with an energy-axis fallback
-  warning.
+  inferred as `cm-1`; XML `eV` axes are typed as energy axes.
 - Renishaw WDF (`.wdf`) spectral payloads via `WDF1`, `DATA`, `XLST` and
   `YLST` chunks plus `ORGN`/`WMAP` navigation metadata. Map, line, depth,
   FocusTrack, time-series and interrupted acquisitions emit one record per

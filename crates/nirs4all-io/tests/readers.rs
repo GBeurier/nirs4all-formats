@@ -852,8 +852,8 @@ fn reads_horiba_jobinyvon_xml_exports() {
     .expect("open eV xml");
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.unit, "eV");
-    assert_eq!(signal.axis.kind, AxisKind::Index);
-    assert!(records[0]
+    assert_eq!(signal.axis.kind, AxisKind::Energy);
+    assert!(!records[0]
         .provenance
         .warnings
         .contains(&"horiba_unsupported_axis_kind_energy".to_string()));
@@ -3838,6 +3838,7 @@ fn reads_msa_iso22029_xy_variants() {
     let signal = records[0].signals.get("counts").expect("counts");
     assert_eq!(signal.axis.values.len(), 21);
     assert_eq!(signal.axis.unit, "eV");
+    assert_eq!(signal.axis.kind, AxisKind::Energy);
     assert_eq!(signal.signal_type, SignalType::RawCounts);
     assert!((signal.axis.values[0] - 520.13).abs() < 0.000001);
     assert!((signal.axis.values[20] - 580.50).abs() < 0.000001);
@@ -3850,6 +3851,7 @@ fn reads_msa_iso22029_xy_variants() {
     .expect("open msa ncolumns");
     let signal = records[0].signals.get("counts").expect("counts");
     assert_eq!(signal.axis.values.len(), 21);
+    assert_eq!(signal.axis.kind, AxisKind::Energy);
     assert_eq!(signal.values[20], 4_217.0);
 }
 
@@ -3867,6 +3869,7 @@ fn reads_msa_iso22029_y_axis_reconstruction() {
         .expect("x-ray intensity");
     assert_eq!(signal.axis.values.len(), 80);
     assert_eq!(signal.axis.unit, "eV");
+    assert_eq!(signal.axis.kind, AxisKind::Energy);
     assert!((signal.axis.values[0] - 0.0).abs() < 0.000001);
     assert!((signal.axis.values[79] - 790.0).abs() < 0.000001);
     assert!((signal.values[0] - 65.820).abs() < 0.000001);

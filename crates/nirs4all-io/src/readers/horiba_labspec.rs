@@ -177,8 +177,8 @@ fn read_labspec6_binary(
             Error::InvalidRecord("Horiba LabSpec6 binary intensity matrix not found".to_string())
         })?;
     let spectrum_count = intensity.values.len() / spectral_len;
-    let mut warnings = vec!["horiba_labspec6_binary_experimental".to_string()];
-    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&spectral_axis.unit, &mut warnings);
+    let warnings = vec!["horiba_labspec6_binary_experimental".to_string()];
+    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&spectral_axis.unit);
     let signal_unit = Some(normalize_unit(&intensity.unit));
     let spatial = find_labspec6_spatial_pair(bytes, spectrum_count);
 
@@ -415,8 +415,8 @@ fn read_lsx_xml(text: &str, source: SourceFile, reader_name: &str) -> Result<Vec
         .iter()
         .find(|axis| axis.label.eq_ignore_ascii_case("Intens"));
     let rows = extract_xml_matrix_rows(&root)?;
-    let mut warnings = Vec::new();
-    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&spectral_axis.unit, &mut warnings);
+    let warnings = Vec::new();
+    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&spectral_axis.unit);
     let signal_unit = intensity_axis.map(|axis| normalize_unit(&axis.unit));
     let mut metadata = xml_base_metadata(tree, dataset_type, dataset_name);
     metadata.insert("container".to_string(), json!("jobinyvon_xml"));
@@ -473,7 +473,7 @@ fn read_labspec_text(
     let mut warnings = Vec::new();
     let signal_unit = header.axis_units.get(&0).map(|unit| normalize_unit(unit));
     let axis_unit = infer_text_axis_unit(&header, &mut warnings);
-    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&axis_unit, &mut warnings);
+    let (axis_kind, axis_unit) = spectral_axis_kind_unit(&axis_unit);
 
     let (axis_values, rows, layout) = parse_text_rows(&header, &lines)?;
     metadata.insert("axis_layout".to_string(), json!(layout));
@@ -1030,20 +1030,12 @@ fn build_intensity_record(input: IntensityRecordInput<'_>) -> Result<SpectralRec
     Ok(record)
 }
 
-fn spectral_axis_kind_unit(unit: &str, warnings: &mut Vec<String>) -> (AxisKind, String) {
+fn spectral_axis_kind_unit(unit: &str) -> (AxisKind, String) {
     let normalized = normalize_unit(unit);
     match normalized.as_str() {
         "nm" | "um" => (AxisKind::Wavelength, normalized),
         "cm-1" => (AxisKind::Wavenumber, normalized),
-        "eV" => {
-            if !warnings
-                .iter()
-                .any(|warning| warning == "horiba_unsupported_axis_kind_energy")
-            {
-                warnings.push("horiba_unsupported_axis_kind_energy".to_string());
-            }
-            (AxisKind::Index, normalized)
-        }
+        "eV" => (AxisKind::Energy, normalized),
         _ => (AxisKind::Index, normalized),
     }
 }

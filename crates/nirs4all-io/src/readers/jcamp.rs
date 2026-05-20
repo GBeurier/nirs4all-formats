@@ -1018,6 +1018,8 @@ fn axis_kind_unit(raw: &str) -> (AxisKind, String) {
         (AxisKind::Wavelength, "nm".to_string())
     } else if upper.contains("HZ") {
         (AxisKind::Frequency, "hz".to_string())
+    } else if upper.contains("EV") {
+        (AxisKind::Energy, "eV".to_string())
     } else if upper.contains("SECOND") || upper == "S" {
         (AxisKind::Time, "s".to_string())
     } else {
