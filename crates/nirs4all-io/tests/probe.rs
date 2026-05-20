@@ -156,6 +156,14 @@ fn probes_nicolet_omnic_files() {
     }));
 }
 
+#[test]
+fn probes_perkin_elmer_sp_files() {
+    let probes = probe_path(workspace_file("samples/perkin_elmer/spectra.sp")).expect("probe sp");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "perkin-elmer-sp" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

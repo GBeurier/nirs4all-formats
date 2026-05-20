@@ -60,6 +60,8 @@ Experimental native readers:
 - Thermo Nicolet OMNIC (`.SPA`, `.spg`) single spectra and grouped spectra via
   the reverse-engineered key table; `.srs` time-series files are detected but
   not decoded yet.
+- Perkin Elmer Spectrum / IR (`.sp`) single spectra via the `PEPE` block
+  container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -105,7 +107,7 @@ Immediate next work:
 1. add dedicated MATLAB struct/DSO and `.RData` dataset mappers for Eigenvector
    Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: Nicolet OMNIC
-   `.srs`, Perkin Elmer `.sp`, BUCHI NIRCal `.nir`, JASCO `.jws`;
+   `.srs`, BUCHI NIRCal `.nir`, JASCO `.jws`;
 3. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;

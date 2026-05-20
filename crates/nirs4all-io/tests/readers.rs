@@ -157,6 +157,34 @@ fn reads_nicolet_omnic_spg_group_spectra() {
 }
 
 #[test]
+fn reads_perkin_elmer_sp_single_spectrum() {
+    let records = open_path(workspace_file("samples/perkin_elmer/spectra.sp")).expect("open sp");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "perkin-elmer-sp");
+    assert_eq!(record.metadata["sample_id"].as_str(), Some("strip01"));
+    assert_eq!(record.metadata["instrument"].as_str(), Some("Spectrum One"));
+    assert_eq!(record.metadata["detector"].as_str(), Some("MCT"));
+    assert_eq!(
+        record.metadata["scan_date"].as_str(),
+        Some("Thu Mar 09 09:17:56 2006")
+    );
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 3_301);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.unit.as_deref(), Some("A"));
+    assert!((absorbance.axis.values[0] - 4000.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[3_300] - 700.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.03723936007346753).abs() < 0.000001);
+    assert!((absorbance.values[3_300] - 0.004175562077308466).abs() < 0.000001);
+    assert!((absorbance.values.iter().sum::<f64>() - 117.16218877705974).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");
