@@ -68,6 +68,10 @@ Current implementation highlights:
   factor and overlap metadata.
 - ENVI Standard and AVIRIS/ERDAS LAN cube readers can emit full pixel spectra
   or rectangular row/column ROI windows from the Rust API and CLI.
+- WiTec `WIT_PR06` TDGraph maps are decoded experimentally for the committed
+  `Sa4.wip` fixture, including Raman-shift axis derivation and physical map
+  coordinate metadata; unknown WiTec project layouts are still refused
+  explicitly.
 - Avantes AvaSoft legacy and AvaSoft 8 binaries promote `measurement_mode`,
   `point_count`, pixel range, integration time/averages, instrument serial,
   operator, detector temperature (legacy) and acquisition date/time (AvaSoft

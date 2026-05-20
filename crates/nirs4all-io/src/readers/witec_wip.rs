@@ -83,14 +83,22 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
     }
 
     let axis_calibration = read_free_polynom(bytes, graph.size_graph)?;
-    let axis_values: Vec<f64> = (0..graph.size_graph)
+    let wavelength_values_nm: Vec<f64> = (0..graph.size_graph)
         .map(|bin| eval_polynom(&axis_calibration.coeffs, f64::from(bin)))
         .collect();
+    let excitation_wavelength_nm = read_excitation_wavelength_nm(bytes)?;
+    let axis_values: Vec<f64> = wavelength_values_nm
+        .iter()
+        .map(|wavelength_nm| raman_shift_cm1(excitation_wavelength_nm, *wavelength_nm))
+        .collect();
+    let spatial_transform = read_space_transform_by_id(bytes, graph.space_transformation_id)?;
 
     let source = SourceFile::from_bytes(path, bytes, "primary");
     let warnings = vec![
         "witec_wip_experimental_parser".to_string(),
         "witec_wip_layout_limited_to_wit_pr06_tdgraph_u16_sa4".to_string(),
+        "witec_wip_raman_shift_axis_derived_from_excitation_wavelength".to_string(),
+        "witec_wip_map_coordinates_derived_from_space_transform".to_string(),
     ];
 
     let size_x = graph.size_x as usize;
@@ -110,7 +118,7 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
             let end = offset + bytes_per_spectrum;
             let values = read_u16_le_values(bytes, offset..end)?;
 
-            let axis = SpectralAxis::new(axis_values.clone(), "nm", AxisKind::Wavelength)?;
+            let axis = SpectralAxis::new(axis_values.clone(), "cm-1", AxisKind::Wavenumber)?;
             let signal = SpectralArray::new(
                 axis,
                 values,
@@ -137,6 +145,22 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
             metadata.insert("dimension".to_string(), json!(graph.dimension));
             metadata.insert("data_type".to_string(), json!(graph.data_type));
             metadata.insert("data_byte_length".to_string(), json!(graph.data_len));
+            metadata.insert(
+                "space_transformation_id".to_string(),
+                json!(graph.space_transformation_id),
+            );
+            metadata.insert(
+                "x_transformation_id".to_string(),
+                json!(graph.x_transformation_id),
+            );
+            metadata.insert(
+                "x_interpretation_id".to_string(),
+                json!(graph.x_interpretation_id),
+            );
+            metadata.insert(
+                "z_interpretation_id".to_string(),
+                json!(graph.z_interpretation_id),
+            );
             metadata.insert(
                 "physical_grid_slots".to_string(),
                 json!(physical_grid_slots),
@@ -167,6 +191,46 @@ fn parse_wit_pr06(path: &Path, bytes: &[u8], reader: &str) -> Result<Vec<Spectra
             metadata.insert(
                 "free_polynom_stop_bin".to_string(),
                 json!(axis_calibration.stop_bin),
+            );
+            metadata.insert(
+                "wavelength_axis_first_nm".to_string(),
+                json!(wavelength_values_nm[0]),
+            );
+            metadata.insert(
+                "wavelength_axis_last_nm".to_string(),
+                json!(wavelength_values_nm[wavelength_values_nm.len() - 1]),
+            );
+            metadata.insert(
+                "excitation_wavelength_nm".to_string(),
+                json!(excitation_wavelength_nm),
+            );
+            metadata.insert(
+                "raman_shift_conversion".to_string(),
+                json!("1e7/excitation_wavelength_nm - 1e7/emission_wavelength_nm"),
+            );
+            let map_position = spatial_transform.position(x_index as f64, y_index as f64, 0.0);
+            metadata.insert(
+                "map_position_unit".to_string(),
+                json!(spatial_transform.unit),
+            );
+            metadata.insert("map_x_position".to_string(), json!(map_position[0]));
+            metadata.insert("map_y_position".to_string(), json!(map_position[1]));
+            metadata.insert("map_z_position".to_string(), json!(map_position[2]));
+            metadata.insert(
+                "space_model_origin".to_string(),
+                json!(spatial_transform.model_origin),
+            );
+            metadata.insert(
+                "space_world_origin".to_string(),
+                json!(spatial_transform.world_origin),
+            );
+            metadata.insert(
+                "space_scale_matrix".to_string(),
+                json!(spatial_transform.scale),
+            );
+            metadata.insert(
+                "space_rotation_matrix".to_string(),
+                json!(spatial_transform.rotation),
             );
 
             let record = SpectralRecord {
@@ -202,6 +266,10 @@ fn find_supported_graph(bytes: &[u8]) -> Result<GraphLayout> {
         let graph_data = required_entry(bytes, entry.range(), "GraphData")?;
         let dimension = read_u32_field(bytes, &graph_data, "Dimension")?;
         let data_type = read_u32_field(bytes, &graph_data, "DataType")?;
+        let space_transformation_id = read_u32_field(bytes, &entry, "SpaceTransformationID")?;
+        let x_transformation_id = read_u32_field(bytes, &entry, "XTransformationID")?;
+        let x_interpretation_id = read_u32_field(bytes, &entry, "XInterpretationID")?;
+        let z_interpretation_id = read_u32_field(bytes, &entry, "ZInterpretationID")?;
         let data = required_entry(bytes, graph_data.range(), "Data")?;
         if version != 1
             || size_x != SUPPORTED_SIZE_X
@@ -231,6 +299,10 @@ fn find_supported_graph(bytes: &[u8]) -> Result<GraphLayout> {
             size_graph,
             dimension,
             data_type,
+            space_transformation_id,
+            x_transformation_id,
+            x_interpretation_id,
+            z_interpretation_id,
             data_len: data.len(),
             data_start: data.data_start,
         });
@@ -296,6 +368,108 @@ fn read_free_polynom(bytes: &[u8], size_graph: u32) -> Result<AxisCalibration> {
         start_bin,
         stop_bin,
     })
+}
+
+fn read_excitation_wavelength_nm(bytes: &[u8]) -> Result<f64> {
+    let value = read_f64_named(bytes, 0..bytes.len(), "ExcitationWaveLength")?;
+    if value <= 0.0 || !value.is_finite() {
+        return Err(Error::InvalidRecord(format!(
+            "unsupported WiTec WIP spectral interpretation: ExcitationWaveLength={value}"
+        )));
+    }
+    Ok(value)
+}
+
+fn raman_shift_cm1(excitation_wavelength_nm: f64, emission_wavelength_nm: f64) -> f64 {
+    10_000_000.0 / excitation_wavelength_nm - 10_000_000.0 / emission_wavelength_nm
+}
+
+fn read_space_transform_by_id(bytes: &[u8], id: u32) -> Result<SpatialTransform> {
+    for data_entry in find_entries_with_prefix(bytes, 0..bytes.len(), "Data ") {
+        let Ok(entry_id) = read_u32_field(bytes, &data_entry.entry, "ID") else {
+            continue;
+        };
+        if entry_id != id {
+            continue;
+        }
+        let transform = required_entry(bytes, data_entry.entry.range(), "TDSpaceTransformation")?;
+        let unit = read_standard_unit(bytes, data_entry.entry.range())
+            .unwrap_or_else(|| "unknown".to_string());
+        return Ok(SpatialTransform {
+            unit,
+            model_origin: read_f64_array_3(bytes, &transform, "ModelOrigin")?,
+            world_origin: read_f64_array_3(bytes, &transform, "WorldOrigin")?,
+            scale: read_f64_array_9(bytes, &transform, "Scale")?,
+            rotation: read_f64_array_9(bytes, &transform, "Rotation")?,
+        });
+    }
+
+    Err(Error::InvalidRecord(format!(
+        "unsupported WiTec WIP layout: SpaceTransformationID={id} was not found"
+    )))
+}
+
+fn read_standard_unit(bytes: &[u8], range: Range<usize>) -> Option<String> {
+    let entry = find_entries(bytes, range, "StandardUnit")
+        .into_iter()
+        .next()?;
+    if entry.type_code != 9 {
+        return None;
+    }
+    Some(decode_wip_string(&bytes[entry.range()]))
+}
+
+fn decode_wip_string(payload: &[u8]) -> String {
+    let text = if payload.len() >= 4 {
+        &payload[4..]
+    } else {
+        payload
+    };
+    let text = trim_ascii_nul(text);
+    if text == [0xb5, b'm'] || text == [0xc2, 0xb5, b'm'] {
+        return "um".to_string();
+    }
+    String::from_utf8_lossy(text).trim().to_string()
+}
+
+fn trim_ascii_nul(bytes: &[u8]) -> &[u8] {
+    let end = bytes
+        .iter()
+        .rposition(|byte| *byte != 0)
+        .map(|index| index + 1)
+        .unwrap_or(0);
+    &bytes[..end]
+}
+
+fn read_f64_array_3(bytes: &[u8], parent: &WipEntry, name: &str) -> Result<[f64; 3]> {
+    let values = read_f64_field_values(bytes, parent, name, 3)?;
+    Ok([values[0], values[1], values[2]])
+}
+
+fn read_f64_array_9(bytes: &[u8], parent: &WipEntry, name: &str) -> Result<[f64; 9]> {
+    let values = read_f64_field_values(bytes, parent, name, 9)?;
+    Ok([
+        values[0], values[1], values[2], values[3], values[4], values[5], values[6], values[7],
+        values[8],
+    ])
+}
+
+fn read_f64_field_values(
+    bytes: &[u8],
+    parent: &WipEntry,
+    name: &str,
+    expected_values: usize,
+) -> Result<Vec<f64>> {
+    let entry = required_entry(bytes, parent.range(), name)?;
+    require_type(&entry, 2, name)?;
+    let expected_len = expected_values * 8;
+    if entry.len() != expected_len {
+        return Err(Error::InvalidRecord(format!(
+            "unsupported WiTec WIP layout: {name} has {} bytes, expected {expected_len}",
+            entry.len()
+        )));
+    }
+    read_f64_values(bytes, entry.range())
 }
 
 fn read_u32_named(bytes: &[u8], range: Range<usize>, name: &str) -> Result<u32> {
@@ -404,25 +578,48 @@ fn find_entries(bytes: &[u8], range: Range<usize>, name: &str) -> Vec<WipEntry> 
         if entry_start < range.start {
             continue;
         }
-        let encoded_name_len = u32::from_le_bytes(
-            bytes[entry_start..name_start]
-                .try_into()
-                .expect("name length prefix is 4 bytes"),
-        ) as usize;
-        if encoded_name_len != needle.len() {
-            continue;
-        }
-        let Ok(entry) = parse_entry(bytes, entry_start) else {
+        let Ok(named_entry) = parse_named_entry(bytes, entry_start) else {
             continue;
         };
-        if entry.data_end <= range.end {
-            out.push(entry);
+        if named_entry.name == name && named_entry.entry.data_end <= range.end {
+            out.push(named_entry.entry);
         }
     }
     out
 }
 
-fn parse_entry(bytes: &[u8], entry_start: usize) -> Result<WipEntry> {
+fn find_entries_with_prefix(bytes: &[u8], range: Range<usize>, prefix: &str) -> Vec<NamedWipEntry> {
+    let needle = prefix.as_bytes();
+    let mut out = Vec::new();
+    if needle.is_empty() || range.start >= range.end || range.end > bytes.len() {
+        return out;
+    }
+
+    let mut offset = range.start;
+    while offset + needle.len() <= range.end {
+        let Some(relative) = find_bytes(&bytes[offset..range.end], needle) else {
+            break;
+        };
+        let name_start = offset + relative;
+        offset = name_start + 1;
+        if name_start < 4 {
+            continue;
+        }
+        let entry_start = name_start - 4;
+        if entry_start < range.start {
+            continue;
+        }
+        let Ok(named_entry) = parse_named_entry(bytes, entry_start) else {
+            continue;
+        };
+        if named_entry.name.starts_with(prefix) && named_entry.entry.data_end <= range.end {
+            out.push(named_entry);
+        }
+    }
+    out
+}
+
+fn parse_named_entry(bytes: &[u8], entry_start: usize) -> Result<NamedWipEntry> {
     let name_len_end = entry_start + 4;
     if name_len_end > bytes.len() {
         return Err(Error::InvalidRecord(
@@ -480,10 +677,13 @@ fn parse_entry(bytes: &[u8], entry_start: usize) -> Result<WipEntry> {
         ));
     }
 
-    Ok(WipEntry {
-        type_code,
-        data_start,
-        data_end,
+    Ok(NamedWipEntry {
+        name: String::from_utf8_lossy(name).to_string(),
+        entry: WipEntry {
+            type_code,
+            data_start,
+            data_end,
+        },
     })
 }
 
@@ -534,6 +734,10 @@ struct GraphLayout {
     size_graph: u32,
     dimension: u32,
     data_type: u32,
+    space_transformation_id: u32,
+    x_transformation_id: u32,
+    x_interpretation_id: u32,
+    z_interpretation_id: u32,
     data_len: usize,
     data_start: usize,
 }
@@ -549,4 +753,42 @@ struct LineValid {
     values: Vec<bool>,
     valid_count: usize,
     invalid_count: usize,
+}
+
+struct NamedWipEntry {
+    name: String,
+    entry: WipEntry,
+}
+
+struct SpatialTransform {
+    unit: String,
+    model_origin: [f64; 3],
+    world_origin: [f64; 3],
+    scale: [f64; 9],
+    rotation: [f64; 9],
+}
+
+impl SpatialTransform {
+    fn position(&self, x: f64, y: f64, z: f64) -> [f64; 3] {
+        let local = [
+            x - self.model_origin[0],
+            y - self.model_origin[1],
+            z - self.model_origin[2],
+        ];
+        let scaled = multiply_matrix_vector(self.scale, local);
+        let rotated = multiply_matrix_vector(self.rotation, scaled);
+        [
+            self.world_origin[0] + rotated[0],
+            self.world_origin[1] + rotated[1],
+            self.world_origin[2] + rotated[2],
+        ]
+    }
+}
+
+fn multiply_matrix_vector(matrix: [f64; 9], vector: [f64; 3]) -> [f64; 3] {
+    [
+        matrix[0] * vector[0] + matrix[1] * vector[1] + matrix[2] * vector[2],
+        matrix[3] * vector[0] + matrix[4] * vector[1] + matrix[5] * vector[2],
+        matrix[6] * vector[0] + matrix[7] * vector[1] + matrix[8] * vector[2],
+    ]
 }
