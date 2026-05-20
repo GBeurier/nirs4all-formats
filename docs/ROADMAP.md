@@ -117,10 +117,11 @@ Gate:
 ## Phase 2: JCAMP-DX
 
 Status: in progress. `XYDATA` single-block and top-level multi-block files,
-ASDF PAC/SQZ/DIF/DUP ordinate encodings, NMR `NTUPLES` real/imaginary pages and Ocean Optics
-`LINK`/`XYPOINTS` blocks are experimental. `PEAK TABLE` is now explicitly
-refused and short `NPOINTS` payloads fail strictly; real peak-list support and
-broader multi-block `LINK` files remain pending.
+ASDF PAC/SQZ/DIF/DUP ordinate encodings, NMR `NTUPLES` real/imaginary pages,
+Ocean Optics `LINK`/`XYPOINTS` blocks and top-level sparse `PEAK TABLE` /
+`PEAK ASSIGNMENTS` are experimental. Short `NPOINTS` payloads fail strictly and
+`XYDATA` line-start X checkpoints now warn on mismatch; real peak-list
+conformance fixtures and broader heterogeneous `LINK` files remain pending.
 
 Deliverables:
 
@@ -128,9 +129,10 @@ Deliverables:
 - PAC/SQZ/DIF/DUP ASDF decoding; experimental;
 - NMR `NTUPLES` real/imaginary pages; experimental;
 - Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks; experimental;
-- explicit `PEAK TABLE` refusal until a sparse peak-list export model exists;
-- strict short-`NPOINTS` rejection and incompatible-axis `LINK` rejection;
-- then real `PEAK TABLE` support and broader multi-block `LINK`;
+- top-level sparse `PEAK TABLE` / `PEAK ASSIGNMENTS` support; experimental;
+- strict short-`NPOINTS` rejection, incompatible-axis `LINK` rejection and
+  `XYDATA` line-start X checkpoint warning;
+- then real peak-table conformance and broader multi-block `LINK`;
 - conformance against open JCAMP readers where possible;
 - adversarial tests for malformed label-data records and compressed archives.
 

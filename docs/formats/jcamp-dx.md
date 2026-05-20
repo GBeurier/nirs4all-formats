@@ -27,6 +27,9 @@ sparse `PEAK TABLE` / `PEAK ASSIGNMENTS`, and Ocean Optics `LINK` records.
   widths inside peak tables.
 - Reconstructs the X axis from `FIRSTX` and `DELTAX`, or from `FIRSTX`,
   `LASTX` and `NPOINTS` when `DELTAX` is absent.
+- Verifies `XYDATA` line-start X checkpoints against the reconstructed axis,
+  accepting either physical checkpoints or checkpoints that require `XFACTOR`;
+  mismatches are reported as provenance warnings.
 - Uses `XUNITS`/`YUNITS` or NTUPLES `UNITS` to map axis kind/unit and signal
   type.
 
@@ -200,5 +203,4 @@ legacy format stores extra line checkpoints.
   multi-line assignments, peak groups separated by `;`).
 - Broader `LINK` variants beyond same-axis spectral children require a
   per-record fan-out decision in the public API; see the LINK section.
-- Stricter line-level X checkpoint verification.
 - Reference reports against open JCAMP readers for every committed fixture.

@@ -89,7 +89,8 @@ Experimental native readers:
   `NTUPLES` real/imaginary pages with frequency/time axes, Ocean Optics
   `LINK`/`XYPOINTS` blocks, and top-level sparse `PEAK TABLE` /
   `PEAK ASSIGNMENTS` records; incompatible-axis `LINK` children are rejected
-  and short `NPOINTS` payloads fail strictly;
+  and short `NPOINTS` payloads fail strictly. `XYDATA` line-start X checkpoints
+  are verified against the reconstructed axis, with warnings on mismatch;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files
   with typed energy axes for `eV` data;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
@@ -222,9 +223,8 @@ Immediate next work:
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
 5. replace Python/R subprocess transport with native PyO3/C ABI paths;
-6. harden JCAMP line-level X checkpoint validation, source real PEAK
-   TABLE/ASSIGNMENTS fixtures for conformance and decide the public API shape
-   for heterogeneous `LINK` fan-out;
+6. source real JCAMP PEAK TABLE/ASSIGNMENTS fixtures for conformance and decide
+   the public API shape for heterogeneous `LINK` fan-out;
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
 8. owner-requested documentation tail work: rewrite the root `README.md`,
    add implementation visualizations for format/probe-confidence/maturity/

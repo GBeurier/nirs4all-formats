@@ -61,6 +61,9 @@ peak-table sample is currently mirrored here.
 - Header tags begin with `##` (e.g. `##TITLE=`, `##JCAMP-DX=`, `##XUNITS=`, `##YUNITS=`, `##NPOINTS=`, `##FIRSTX=`, `##LASTX=`).
 - Data block follows `##XYDATA=`, `##XYPOINTS=`, `##NTUPLES=`, `##PEAK TABLE=`, or `##PEAK ASSIGNMENTS=`, and is terminated by `##END=`.
 - DIF/DUP/SQZ are digit-substitution encodings; AFFN is plain numbers. NTUPLES is for multi-dimensional data.
+- `XYDATA` line-start X values are treated as checkpoints and verified against
+  the reconstructed axis; files with inconsistent checkpoints remain readable
+  but carry a provenance warning.
 - Peak-table shapes (`XY`, `XYW`, `XYM`, `XYA`, `XYWA`, `XYMA`) are parsed
   field-by-field. `..` inside the shape (e.g. `(XY..XY)`) means "many peaks
   per line"; any shape carrying the `A` field is read one peak per line so
