@@ -4,7 +4,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 
 | Nom | Vendeur | Extension | Version (si applicable) | Status nirs4allio | Lib référence |
 |---|---|---|---|---|---|
-| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | en-tetes numeriques | fait | pandas, read.table, nirs4all CSVLoader |
+| Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | en-tetes numeriques; CSV virgule, CSV point-virgule et TSV golden-backed | fait | pandas, read.table, nirs4all CSVLoader |
 | Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | une colonne axe + signaux | fait | pandas, read.table |
 | Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | un spectre par ligne | fait | pandas, read.table |
 | Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` fixture-backed; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
@@ -59,9 +59,9 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus RosettaSciIO spectra/maps/surfaces/zlib golden-backed; conformance metadata a durcir | partiel | RosettaSciIO |
 | Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | corpus adjacent 2D OK; hors point-spectra NIRS | partiel | RosettaSciIO |
 | WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
-| EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y, notation scientifique, titres multi-lignes | fait | RosettaSciIO |
+| EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y, notation scientifique, titres multi-lignes, metadata non conformes preservees | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
-| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; CSV reel committe (`R`/`S`/`C` sections) | fait | kebasaa/SCIO-read |
+| Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; `band*`, `spectrum`/`wr_raw`/`sample_raw` et calibration axis-first golden-backed | fait | kebasaa/SCIO-read |
 
 ## Notes pour les statuts non finis
 

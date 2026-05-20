@@ -126,6 +126,24 @@ fn reads_scio_csv_exports() {
     assert_close(tech[0].signals["spectrum"].values[0], 0.619431817);
     assert_close(tech[0].signals["wr_raw"].values[0], 7_973.843642);
     assert_close(tech[0].signals["sample_raw"].values[0], 4_939.252455);
+
+    let calibration = open_path(workspace_file(
+        "samples/scio/scio_calibration_plate_Polypen.csv",
+    ))
+    .expect("open SCiO calibration plate");
+    assert_eq!(calibration.len(), 1);
+    assert_eq!(calibration[0].provenance.format, "row-spectral-table");
+    let reflectance = calibration[0]
+        .signals
+        .get("reflectance")
+        .expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 256);
+    assert_eq!(reflectance.axis.unit, "nm");
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert_close(reflectance.axis.values[0], 324.0);
+    assert_close(reflectance.axis.values[255], 790.0);
+    assert_close(reflectance.values[0], 1.06959706959707);
+    assert_close(reflectance.values[255], 1.014440433213);
 }
 
 #[test]

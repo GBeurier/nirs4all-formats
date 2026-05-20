@@ -12,9 +12,23 @@ const CASES: &[(&str, &str)] = &[
     ("asd_v8_double", "samples/asd/v8sample00001.asd"),
     ("asd_soil_real", "samples/asd/soil.asd"),
     ("csv_synthetic", "samples/csv_tsv/synthetic_nirs.csv"),
+    ("csv_synthetic_tsv", "samples/csv_tsv/synthetic_nirs.tsv"),
+    (
+        "csv_synthetic_semicolon",
+        "samples/csv_tsv/synthetic_nirs_semicolon.csv",
+    ),
     (
         "csv_auroranir_handheld_sensaifood",
         "samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv",
+    ),
+    ("scio_app_scan", "samples/scio/scio_app_scan.csv"),
+    (
+        "scio_calibration_plate_polypen",
+        "samples/scio/scio_calibration_plate_Polypen.csv",
+    ),
+    (
+        "scio_tech_support",
+        "samples/scio/scio_scans_from_tech_support.csv",
     ),
     ("bruker_dpt_synthetic", "samples/bruker_dpt/synthetic.dpt"),
     ("bruker_dpt_rs1_lightr", "samples/bruker_dpt/RS-1.dpt"),
@@ -364,6 +378,14 @@ const CASES: &[(&str, &str)] = &[
     (
         "msa_example1_with_seconds",
         "samples/msa_iso22029/example1_with_seconds.msa",
+    ),
+    (
+        "msa_example1_wrong_date",
+        "samples/msa_iso22029/example1_wrong_date.msa",
+    ),
+    (
+        "msa_example1_wrong_date_empty_field",
+        "samples/msa_iso22029/example1_wrong_date_empty_field.msa",
     ),
     ("msa_example2", "samples/msa_iso22029/example2.msa"),
     (
