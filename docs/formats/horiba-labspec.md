@@ -36,6 +36,10 @@ For XML and text maps, spatial coordinates are stored in metadata as
 axis unit default to `cm-1` with warning
 `horiba_labspec_text_axis_unit_inferred`.
 
+The XML range and linescan branches are covered by semantic tests in addition
+to golden summaries, including linescan spatial coordinates and the ascending
+range axis.
+
 The LabSpec6 binary path emits warning
 `horiba_labspec6_binary_experimental` on every record because it is validated on
 one public `.l6m` fixture only. For that fixture, the Rust test compares all 72

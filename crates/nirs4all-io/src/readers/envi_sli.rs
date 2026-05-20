@@ -522,6 +522,7 @@ fn read_standard_cube(
         ));
     }
     let (axis_values, axis_unit, axis_kind) = axis_from_header(header, bands, &mut warnings)?;
+    let map_info = parse_map_info(header);
 
     let mut records = Vec::with_capacity(samples * lines);
     for row in 0..lines {
@@ -551,6 +552,7 @@ fn read_standard_cube(
                 lines,
                 bands,
                 header,
+                map_info.as_ref(),
                 &axis_values,
                 &axis_unit,
                 axis_kind.clone(),
@@ -592,6 +594,7 @@ fn make_cube_record(
     lines: usize,
     bands: usize,
     header: &BTreeMap<String, String>,
+    map_info: Option<&EnviMapInfo>,
     axis_values: &[f64],
     axis_unit: &str,
     axis_kind: AxisKind,
@@ -616,10 +619,28 @@ fn make_cube_record(
     metadata.insert("sample_id".to_string(), json!(sample_id));
     metadata.insert("pixel_x".to_string(), json!(col));
     metadata.insert("pixel_y".to_string(), json!(row));
-    if let Some((spatial_x, spatial_y, spatial_unit)) = map_coordinates(header, col, row) {
+    if let Some(map_info) = map_info {
+        let (spatial_x, spatial_y) = map_info.coordinates(col, row);
         metadata.insert("spatial_x".to_string(), json!(spatial_x));
         metadata.insert("spatial_y".to_string(), json!(spatial_y));
-        metadata.insert("spatial_unit".to_string(), json!(spatial_unit));
+        metadata.insert("spatial_unit".to_string(), json!(map_info.unit));
+        metadata.insert("map_axis_order".to_string(), json!("row_slowest_x_fastest"));
+        metadata.insert("map_projection".to_string(), json!(map_info.projection));
+        metadata.insert("map_ref_pixel_x".to_string(), json!(map_info.ref_pixel_x));
+        metadata.insert("map_ref_pixel_y".to_string(), json!(map_info.ref_pixel_y));
+        metadata.insert("map_ref_x".to_string(), json!(map_info.ref_map_x));
+        metadata.insert("map_ref_y".to_string(), json!(map_info.ref_map_y));
+        metadata.insert("map_pixel_size_x".to_string(), json!(map_info.pixel_size_x));
+        metadata.insert("map_pixel_size_y".to_string(), json!(map_info.pixel_size_y));
+        if let Some(zone) = map_info.zone.as_deref() {
+            metadata.insert("map_zone".to_string(), json!(zone));
+        }
+        if let Some(hemisphere) = map_info.hemisphere.as_deref() {
+            metadata.insert("map_hemisphere".to_string(), json!(hemisphere));
+        }
+        if let Some(datum) = map_info.datum.as_deref() {
+            metadata.insert("map_datum".to_string(), json!(datum));
+        }
     }
     metadata.insert(
         "envi".to_string(),
@@ -636,6 +657,8 @@ fn make_cube_record(
             "wavelength_units": header_value(header, "wavelength units"),
             "sensor_type": header_value(header, "sensor type"),
             "map_info": header_value(header, "map info"),
+            "map_info_parsed": map_info.map(EnviMapInfo::as_json),
+            "coordinate_system_string": header_value(header, "coordinate system string"),
         }),
     );
 
@@ -659,29 +682,85 @@ fn make_cube_record(
     Ok(record)
 }
 
-fn map_coordinates(
-    header: &BTreeMap<String, String>,
-    col: usize,
-    row: usize,
-) -> Option<(f64, f64, String)> {
+#[derive(Debug)]
+struct EnviMapInfo {
+    projection: String,
+    ref_pixel_x: f64,
+    ref_pixel_y: f64,
+    ref_map_x: f64,
+    ref_map_y: f64,
+    pixel_size_x: f64,
+    pixel_size_y: f64,
+    zone: Option<String>,
+    hemisphere: Option<String>,
+    datum: Option<String>,
+    unit: String,
+    raw_unit: Option<String>,
+}
+
+impl EnviMapInfo {
+    fn coordinates(&self, col: usize, row: usize) -> (f64, f64) {
+        let spatial_x = self.ref_map_x + (col as f64 + 1.0 - self.ref_pixel_x) * self.pixel_size_x;
+        let spatial_y = self.ref_map_y - (row as f64 + 1.0 - self.ref_pixel_y) * self.pixel_size_y;
+        (spatial_x, spatial_y)
+    }
+
+    fn as_json(&self) -> serde_json::Value {
+        json!({
+            "projection": &self.projection,
+            "ref_pixel_x": self.ref_pixel_x,
+            "ref_pixel_y": self.ref_pixel_y,
+            "ref_map_x": self.ref_map_x,
+            "ref_map_y": self.ref_map_y,
+            "pixel_size_x": self.pixel_size_x,
+            "pixel_size_y": self.pixel_size_y,
+            "zone": &self.zone,
+            "hemisphere": &self.hemisphere,
+            "datum": &self.datum,
+            "unit": &self.unit,
+            "raw_unit": &self.raw_unit,
+        })
+    }
+}
+
+fn parse_map_info(header: &BTreeMap<String, String>) -> Option<EnviMapInfo> {
     let values = parse_list(header_value(header, "map info")?);
     if values.len() < 7 {
         return None;
     }
-    let ref_pixel_x = values.get(1)?.parse::<f64>().ok()?;
-    let ref_pixel_y = values.get(2)?.parse::<f64>().ok()?;
-    let ref_map_x = values.get(3)?.parse::<f64>().ok()?;
-    let ref_map_y = values.get(4)?.parse::<f64>().ok()?;
-    let pixel_size_x = values.get(5)?.parse::<f64>().ok()?;
-    let pixel_size_y = values.get(6)?.parse::<f64>().ok()?;
-    let spatial_x = ref_map_x + (col as f64 + 1.0 - ref_pixel_x) * pixel_size_x;
-    let spatial_y = ref_map_y - (row as f64 + 1.0 - ref_pixel_y) * pixel_size_y;
-    let unit = values
-        .iter()
-        .find_map(|value| value.strip_prefix("units="))
-        .unwrap_or("unknown")
-        .to_string();
-    Some((spatial_x, spatial_y, unit))
+    let raw_unit = values.iter().find_map(|value| {
+        let (key, raw) = value.split_once('=')?;
+        normalize_key(key)
+            .eq("units")
+            .then(|| raw.trim().to_string())
+    });
+    let unit = raw_unit
+        .as_deref()
+        .map(normalize_spatial_unit)
+        .unwrap_or_else(|| "unknown".to_string());
+    Some(EnviMapInfo {
+        projection: values.first()?.to_string(),
+        ref_pixel_x: values.get(1)?.parse::<f64>().ok()?,
+        ref_pixel_y: values.get(2)?.parse::<f64>().ok()?,
+        ref_map_x: values.get(3)?.parse::<f64>().ok()?,
+        ref_map_y: values.get(4)?.parse::<f64>().ok()?,
+        pixel_size_x: values.get(5)?.parse::<f64>().ok()?,
+        pixel_size_y: values.get(6)?.parse::<f64>().ok()?,
+        zone: values.get(7).filter(|value| !value.contains('=')).cloned(),
+        hemisphere: values.get(8).filter(|value| !value.contains('=')).cloned(),
+        datum: values.get(9).filter(|value| !value.contains('=')).cloned(),
+        unit,
+        raw_unit,
+    })
+}
+
+fn normalize_spatial_unit(value: &str) -> String {
+    match value.trim().to_ascii_lowercase().as_str() {
+        "m" | "meter" | "meters" | "metre" | "metres" => "m".to_string(),
+        "ft" | "foot" | "feet" => "ft".to_string(),
+        "degree" | "degrees" => "degree".to_string(),
+        _ => value.trim().to_string(),
+    }
 }
 
 #[allow(clippy::too_many_arguments)]

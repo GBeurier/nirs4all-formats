@@ -70,7 +70,8 @@ Experimental native readers:
   fixtures with semantic tests over the committed OPUS corpus;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
-- ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64 payloads;
+- ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64
+  payloads, and ENVI Standard cubes expanded by pixel with parsed `map info`;
 - AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
   BIL payload expanded to one raw-count spectrum per pixel, with wavelength
   axis from `.spc` and optional ground-truth class targets from `.GIS`;

@@ -126,6 +126,9 @@ Current binary fixtures:
 | `1904090M1_0003.Raw8` | 1019 | `300.013855 -> 899.874878 nm` | `scope` equals raw `sample`; `AVS84`, measure mode `0` |
 | `eg.IRR8` | 1620 | `144.942429 -> 1100.441406 nm` | `irradiance` equals raw `sample`; `AVS84`, measure mode `4`, calibration warning |
 
+Each committed binary suffix above is also locked by probe tests so extension
+routing remains aligned with the binary header/magic checks.
+
 Current ASCII fixtures:
 
 | File | Points | Axis | Primary control |

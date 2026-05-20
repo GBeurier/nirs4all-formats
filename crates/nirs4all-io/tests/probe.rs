@@ -113,7 +113,32 @@ fn probes_avantes_ascii_and_binary_fixtures() {
             Confidence::Definite,
         ),
         (
+            "samples/avantes/avantes_trans.TRM",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/avantes_reflect.ROH",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1305084U1.DRK",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1305084U1.REF",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
             "samples/avantes/1904090M1_0003.Raw8",
+            "avantes-avasoft8-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/eg.IRR8",
             "avantes-avasoft8-binary",
             Confidence::Definite,
         ),

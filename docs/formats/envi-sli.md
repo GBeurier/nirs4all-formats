@@ -19,7 +19,8 @@ minimal ENVI Standard cube-to-point-spectra path.
 - Emits one `SpectralRecord` per `spectra names` entry, with one `spectrum`
   signal and `metadata.sample_id`.
 - Emits one `SpectralRecord` per ENVI Standard pixel, with `pixel_x`,
-  `pixel_y` and optional map coordinates in metadata.
+  `pixel_y`, row-slowest/X-fastest order and optional parsed `map info`
+  coordinates in metadata.
 
 ## Record Mapping
 
@@ -44,9 +45,12 @@ Each ENVI Standard cube pixel also becomes one record:
 - metadata:
   - `sample_id` as `pixel_y{row}_x{col}`;
   - `pixel_x`, `pixel_y`;
-  - `spatial_x`, `spatial_y`, `spatial_unit` when `map info` is present;
-  - `envi` object with dimensions, interleave, data type, byte order and map
-    info.
+  - `spatial_x`, `spatial_y`, normalized `spatial_unit` when `map info` is
+    present;
+  - `map_axis_order`, projection, reference pixel/map coordinates, pixel sizes,
+    zone, hemisphere and datum when they are present in `map info`;
+  - `envi` object with dimensions, interleave, data type, byte order, raw map
+    info, parsed map info and coordinate system string.
 
 ## Fixtures and Reference Checks
 
@@ -90,7 +94,8 @@ Cube fixture checks:
 - header and direct `.img` entry paths both dispatch to `envi-standard-cube`;
 - first pixel first/last values: `100`, `3223`;
 - last pixel first/last values: `152`, `3275`;
-- map coordinates are read from `map info`.
+- map coordinates are read from `map info`, with `units=Meters` normalized to
+  `spatial_unit = "m"` and UTM zone/hemisphere/datum promoted.
 
 USGS AVIRIS95 spectral-library checks:
 
