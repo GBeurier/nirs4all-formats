@@ -30,7 +30,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi; old limite; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
-| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + TGA-GC srs OK + rapid-scan `.srs` local; srsx manquant | partiel | SpectroChemPy, spa-on-python |
+| Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + `.srs` `tg_gc`, `rapid_scan_raw`, `rapid_scan_reprocessed`; srsx manquant | partiel | SpectroChemPy, spa-on-python |
 | Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | sp OK; fsm imaging refuse | partiel | specio |
 | Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
 | Foss / WinISI / DS exports | Foss | `.txt`, `.csv` | exports matrices WinISI/Foss XDS reels | fait | parseur texte |
@@ -89,7 +89,7 @@ passer le format a `fait`.
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert; restent big-endian, vieux headers complets et decision de scope finale pour NMR/FID. |
-| Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/smoke sur le corpus committe; les trois `.srs` locaux SpectroChemPy couvrent TGA_demo, rapid-scan brut en interferogramme/index et rapid-scan reprocessé en absorbance. Reste `.srsx` et davantage de variantes high-speed. |
+| Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/smoke sur le corpus committe; les trois `.srs` locaux SpectroChemPy couvrent les variantes `tg_gc`, `rapid_scan_raw` et `rapid_scan_reprocessed` avec metadata normalisee. Reste `.srsx` et davantage de variantes high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
 | Metrohm Vision / Vision Air | partiel | Le CSV Vision Air synthetique est lu; il manque un export client reel et la base projet native reste fermee. |

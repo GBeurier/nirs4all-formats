@@ -283,6 +283,10 @@ fn reads_local_nicolet_omnic_srs_variants_when_present() {
 
     let records = open_path(tga_demo).expect("open local OMNIC TGA demo");
     assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["series_variant"].as_str(),
+        Some("tg_gc")
+    );
     assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(485));
     let absorbance = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 3_630);
@@ -293,6 +297,10 @@ fn reads_local_nicolet_omnic_srs_variants_when_present() {
 
     let records = open_path(rapid_scan).expect("open local OMNIC rapid scan");
     assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["series_variant"].as_str(),
+        Some("rapid_scan_raw")
+    );
     assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(643));
     let detector_signal = records[0]
         .signals
@@ -304,9 +312,17 @@ fn reads_local_nicolet_omnic_srs_variants_when_present() {
     assert_eq!(detector_signal.signal_type, SignalType::Interferogram);
     assert_eq!(detector_signal.unit.as_deref(), Some("V"));
     assert!((detector_signal.values[0] + 0.05086925998330116).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"nicolet_omnic_srs_rapid_scan_reverse_engineered".to_string()));
 
     let records = open_path(reprocessed).expect("open local OMNIC rapid scan reprocessed");
     assert_eq!(records.len(), 1);
+    assert_eq!(
+        records[0].metadata["series_variant"].as_str(),
+        Some("rapid_scan_reprocessed")
+    );
     assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(643));
     let absorbance = records[0].signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 3_734);
