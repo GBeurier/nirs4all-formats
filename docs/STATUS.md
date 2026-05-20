@@ -74,9 +74,10 @@ Experimental native readers:
   range, linescan, map, two-column, series-row and map-row Raman fixtures.
   Text exports without explicit axis units are inferred as `cm-1`; XML `eV`
   axes are preserved with an energy-axis fallback warning.
-- Renishaw WDF (`.wdf`) single-spectrum fixtures via `WDF1`, `DATA`, `XLST`
-  and `YLST` chunks; map, line, depth, time-series and interrupted
-  acquisitions are recognized but refused until navigation axes are decoded.
+- Renishaw WDF (`.wdf`) spectral payloads via `WDF1`, `DATA`, `XLST` and
+  `YLST` chunks; map, line, depth, time-series and interrupted acquisitions
+  emit one record per stored spectrum while `WMAP`/`ORGN` navigation axes
+  remain pending.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -122,8 +123,8 @@ Immediate next work:
 1. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-2. extend Renishaw WDF beyond single spectra to maps, lines and interrupted
-   acquisitions, then add Excel multi-sheet templates;
+2. extend Renishaw WDF with `WMAP`/`ORGN` navigation axes, then add Excel
+   multi-sheet templates;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;

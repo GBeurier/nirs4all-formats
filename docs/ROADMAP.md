@@ -72,9 +72,9 @@ Deliverables:
 - Horiba LabSpec / JobinYvon reader; experimental for LSX XML single spectra,
   range exports, linescans and maps, plus LabSpec two-column, series-row and
   map-row text exports;
-- Renishaw WDF reader; experimental partial for `WDF1` single-spectrum
-  fixtures using `DATA`, `XLST` and `YLST`, with maps/lines/depth profiles
-  still pending;
+- Renishaw WDF reader; experimental for `WDF1` spectral payloads using `DATA`,
+  `XLST` and `YLST`; maps/lines/depth/time-series records are emitted by
+  stored spectrum index while `WMAP`/`ORGN` navigation axes remain pending;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -172,8 +172,8 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- Renishaw WDF maps/lines/depth profiles, Excel multi-sheet lab templates and
-  WiTec WIP for lab-transfer and adjacent spectroscopy workflows;
+- Renishaw WDF `WMAP`/`ORGN` navigation axes, Excel multi-sheet lab templates
+  and WiTec WIP for lab-transfer and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;

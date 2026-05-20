@@ -37,7 +37,7 @@ fixtures:
 | BUCHI NIRCal | `.nir` | Experimental | `NIRCAL Project File` section reader for 20-sample foliar-transfer fixture; property names are mapped to targets, with the committed zero-valued properties emitted as nulls. |
 | JASCO JWS | `.jws` | Experimental | OLE2 `DataInfo` + `Y-Data` reader for committed FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with semantic labels inferred from JASCO metadata when available. |
 | Horiba LabSpec / JobinYvon | `.xml`, `.txt` LabSpec exports | Experimental | LSX XML single spectra, range exports, linescans and maps plus LabSpec two-column, series-row and map-row text exports. Energy axes currently fall back to `Index` with a warning. |
-| Renishaw WDF | `.wdf` | Experimental partial | `WDF1` chunk reader for single-spectrum fixtures via `DATA`, `XLST` and `YLST`; maps, lines, depth profiles and interrupted acquisitions are detected but refused until `WMAP`/`ORGN` axes are decoded. |
+| Renishaw WDF | `.wdf` | Experimental | `WDF1` chunk reader for spectral payloads via `DATA`, `XLST` and `YLST`; multi-spectrum maps, lines, depth profiles and interrupted acquisitions emit one record per stored spectrum, with `WMAP`/`ORGN` navigation axes still pending. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.
@@ -164,7 +164,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 | `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables; multi-sheet lab templates remain pending. |
-| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Horiba LabSpec XML/text, Renishaw WDF single spectra and JASCO JWS now load experimentally; WiTec WIP remains adjacent-format work. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
+| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Horiba LabSpec XML/text, Renishaw WDF spectral payloads and JASCO JWS now load experimentally; WiTec WIP remains adjacent-format work. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
 
 ---
 

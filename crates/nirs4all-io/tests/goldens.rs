@@ -103,6 +103,14 @@ const CASES: &[(&str, &str)] = &[
         "renishaw_wdf_test_spectrum",
         "samples/raman_renishaw/renishaw_test_spectrum.wdf",
     ),
+    (
+        "renishaw_wdf_test_linescan",
+        "samples/raman_renishaw/renishaw_test_linescan.wdf",
+    ),
+    (
+        "renishaw_wdf_interrupted_acquisition",
+        "samples/raman_renishaw/interrupted_acquisition.wdf",
+    ),
     ("renishaw_wdf_wire_sp", "samples/raman_renishaw/wire_sp.wdf"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),

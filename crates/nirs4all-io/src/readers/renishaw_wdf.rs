@@ -48,6 +48,7 @@ impl Reader for RenishawWdfReader {
 struct WdfBlock {
     name: String,
     payload_offset: usize,
+    payload_len: usize,
 }
 
 struct WdfHeader {
@@ -79,15 +80,15 @@ fn parse_renishaw_wdf(
         ));
     }
     let header = parse_wdf_header(bytes)?;
-    if header.measurement_type != 1 || header.count != 1 {
+    if header.measurement_type == 0 {
         return Err(Error::InvalidRecord(format!(
-            "Renishaw WDF minimal reader supports single-spectrum measurement_type=1 count=1; got measurement_type={} count={}",
-            header.measurement_type, header.count
+            "Renishaw WDF acquisition has undefined measurement_type=0 count={}",
+            header.count
         )));
     }
-    if header.point_count == 0 {
+    if header.point_count == 0 || header.count == 0 {
         return Err(Error::InvalidRecord(
-            "Renishaw WDF point count is zero".to_string(),
+            "Renishaw WDF point or spectrum count is zero".to_string(),
         ));
     }
 
@@ -99,7 +100,15 @@ fn parse_renishaw_wdf(
     let x_data_type = read_u32(bytes, xlist_block.payload_offset)?;
     let x_unit_code = read_u32(bytes, xlist_block.payload_offset + 4)?;
     let axis_values = read_f32_values(bytes, xlist_block.payload_offset + 8, header.point_count)?;
-    let values = read_f32_values(bytes, data_block.payload_offset, header.point_count)?;
+    let spectrum_count = usize::try_from(header.count).map_err(|_| {
+        Error::InvalidRecord("Renishaw WDF spectrum count does not fit usize".to_string())
+    })?;
+    let available_spectra = data_block.payload_len / (header.point_count * 4);
+    if available_spectra < spectrum_count {
+        return Err(Error::InvalidRecord(format!(
+            "Renishaw WDF DATA block contains {available_spectra} spectra but header count is {spectrum_count}"
+        )));
+    }
     let (axis_kind, axis_unit) = wdf_axis_kind_unit(x_unit_code);
 
     let (y_data_type, y_unit_code) = if let Some(block) = ylist_block {
@@ -131,6 +140,10 @@ fn parse_renishaw_wdf(
     metadata.insert(
         "measurement_type".to_string(),
         json!(header.measurement_type),
+    );
+    metadata.insert(
+        "measurement_type_label".to_string(),
+        json!(measurement_type_label(header.measurement_type)),
     );
     metadata.insert(
         "spectral_unit_code".to_string(),
@@ -167,25 +180,41 @@ fn parse_renishaw_wdf(
         metadata.insert("title".to_string(), json!(header.title));
     }
 
-    let record = single_signal_record(
-        "renishaw-wdf",
-        reader,
-        source,
-        SingleSignalSpec {
-            axis_values,
-            axis_unit,
-            axis_kind,
-            values,
-            signal_name: "raw_counts".to_string(),
-            signal_type: SignalType::RawCounts,
-            signal_unit,
-            role: "raw_counts".to_string(),
-        },
-        BTreeMap::new(),
-        metadata,
-        vec!["renishaw_wdf_single_spectrum_subset".to_string()],
-    )?;
-    Ok(vec![record])
+    let mut warnings = vec!["renishaw_wdf_reverse_engineered_chunks".to_string()];
+    if spectrum_count > 1 {
+        warnings.push("renishaw_wdf_navigation_axes_pending".to_string());
+    }
+    if header.capacity > header.count && available_spectra > spectrum_count {
+        warnings.push("renishaw_wdf_interrupted_acquisition_truncated_to_count".to_string());
+    }
+
+    let mut records = Vec::with_capacity(spectrum_count);
+    for spectrum_index in 0..spectrum_count {
+        let offset = data_block.payload_offset + spectrum_index * header.point_count * 4;
+        let values = read_f32_values(bytes, offset, header.point_count)?;
+        let mut record_metadata = metadata.clone();
+        record_metadata.insert("spectrum_index".to_string(), json!(spectrum_index));
+        let record = single_signal_record(
+            "renishaw-wdf",
+            reader,
+            source.clone(),
+            SingleSignalSpec {
+                axis_values: axis_values.clone(),
+                axis_unit: axis_unit.clone(),
+                axis_kind: axis_kind.clone(),
+                values,
+                signal_name: "raw_counts".to_string(),
+                signal_type: SignalType::RawCounts,
+                signal_unit: signal_unit.clone(),
+                role: "raw_counts".to_string(),
+            },
+            BTreeMap::new(),
+            record_metadata,
+            warnings.clone(),
+        )?;
+        records.push(record);
+    }
+    Ok(records)
 }
 
 fn parse_wdf_header(bytes: &[u8]) -> Result<WdfHeader> {
@@ -241,6 +270,7 @@ fn parse_blocks(bytes: &[u8]) -> Result<Vec<WdfBlock>> {
         out.push(WdfBlock {
             name,
             payload_offset: offset + WDF_BLOCK_HEADER_LEN,
+            payload_len: block_size - WDF_BLOCK_HEADER_LEN,
         });
         offset = next;
     }
@@ -287,6 +317,15 @@ fn wdf_signal_unit(unit_code: u32) -> Option<String> {
     match unit_code {
         16 => Some("counts".to_string()),
         _ => None,
+    }
+}
+
+fn measurement_type_label(measurement_type: u32) -> &'static str {
+    match measurement_type {
+        1 => "single",
+        2 => "series",
+        3 => "mapping",
+        _ => "unknown",
     }
 }
 

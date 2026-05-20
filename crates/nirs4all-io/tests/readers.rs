@@ -568,7 +568,7 @@ fn reads_renishaw_wdf_single_spectra() {
     assert!(record
         .provenance
         .warnings
-        .contains(&"renishaw_wdf_single_spectrum_subset".to_string()));
+        .contains(&"renishaw_wdf_reverse_engineered_chunks".to_string()));
     let signal = record.signals.get("raw_counts").expect("raw counts");
     assert_eq!(signal.axis.values.len(), 36);
     assert_eq!(signal.axis.unit, "nm");
@@ -597,13 +597,79 @@ fn reads_renishaw_wdf_single_spectra() {
 }
 
 #[test]
-fn rejects_renishaw_wdf_non_single_modes_for_now() {
+fn reads_renishaw_wdf_multi_spectrum_payloads() {
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_linescan.wdf",
+    ))
+    .expect("open WDF linescan");
+    assert_eq!(records.len(), 5);
+    assert_eq!(
+        records[0].metadata["measurement_type_label"].as_str(),
+        Some("mapping")
+    );
+    assert_eq!(records[4].metadata["spectrum_index"].as_u64(), Some(4));
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"renishaw_wdf_navigation_axes_pending".to_string()));
+    let signal = records[0].signals.get("raw_counts").expect("raw counts");
+    assert_eq!(signal.axis.values.len(), 40);
+    assert_eq!(signal.axis.unit, "nm");
+    assert!((signal.axis.values[0] - 364.6417541503906).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 26.666167).abs() < 0.000001);
+
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/interrupted_acquisition.wdf",
+    ))
+    .expect("open interrupted WDF");
+    assert_eq!(records.len(), 12);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .contains(&"renishaw_wdf_interrupted_acquisition_truncated_to_count".to_string()));
+    let signal = records[0].signals.get("raw_counts").expect("raw counts");
+    assert_eq!(signal.axis.values.len(), 1010);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert!((signal.values[0] - 73.42675018310547).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 168272.582141).abs() < 0.000001);
+}
+
+#[test]
+fn opens_supported_renishaw_wdf_acquisition_counts() {
+    for (relative, expected_count) in [
+        ("samples/raman_renishaw/interrupted_acquisition.wdf", 12),
+        ("samples/raman_renishaw/renishaw_test_exptime10_acc1.wdf", 1),
+        ("samples/raman_renishaw/renishaw_test_focustrack.wdf", 3),
+        (
+            "samples/raman_renishaw/renishaw_test_focustrack_invariant.wdf",
+            10,
+        ),
+        ("samples/raman_renishaw/renishaw_test_linescan.wdf", 5),
+        ("samples/raman_renishaw/renishaw_test_map.wdf", 9),
+        ("samples/raman_renishaw/renishaw_test_map2.wdf", 400),
+        ("samples/raman_renishaw/renishaw_test_spectrum.wdf", 1),
+        ("samples/raman_renishaw/renishaw_test_streamline.wdf", 2205),
+        ("samples/raman_renishaw/renishaw_test_timeseries.wdf", 3),
+        ("samples/raman_renishaw/renishaw_test_zscan.wdf", 40),
+        ("samples/raman_renishaw/wire_Streamline.wdf", 2205),
+        ("samples/raman_renishaw/wire_depth.wdf", 40),
+        ("samples/raman_renishaw/wire_line.wdf", 235),
+        ("samples/raman_renishaw/wire_sp.wdf", 1),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open supported WDF");
+        assert_eq!(records.len(), expected_count, "{relative}");
+        assert!(records[0].signals.contains_key("raw_counts"), "{relative}");
+    }
+}
+
+#[test]
+fn rejects_renishaw_wdf_undefined_modes_for_now() {
     for relative in [
         "samples/raman_renishaw/renishaw_test_undefined.wdf",
-        "samples/raman_renishaw/interrupted_acquisition.wdf",
+        "samples/raman_renishaw/wire_undefined.wdf",
     ] {
-        let err = open_path(workspace_file(relative)).expect_err("non-single WDF should fail");
-        assert!(err.to_string().contains("single-spectrum"));
+        let err = open_path(workspace_file(relative)).expect_err("undefined WDF should fail");
+        assert!(err.to_string().contains("undefined measurement_type=0"));
     }
 }
 
