@@ -1,0 +1,1229 @@
+{
+  "record_count": 36,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5339.013184,
+          "value_last": 1870.669067,
+          "value_sum": 3977907.583984,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6428.101074,
+          "value_last": 2243.358398,
+          "value_sum": 4805472.161621,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5867.593262,
+          "value_last": 1863.446411,
+          "value_sum": 4245423.59314,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6211.702637,
+          "value_last": 2130.684814,
+          "value_sum": 4654884.348389,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5596.208008,
+          "value_last": 2025.234009,
+          "value_sum": 4290315.681152,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5787.773926,
+          "value_last": 2208.689453,
+          "value_sum": 4479355.316162,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6083.991699,
+          "value_last": 2191.355225,
+          "value_sum": 4618620.790527,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5550.090332,
+          "value_last": 1992.009766,
+          "value_sum": 4254097.051147,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6593.060547,
+          "value_last": 2387.811523,
+          "value_sum": 4977585.016602,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6371.34082,
+          "value_last": 2306.917725,
+          "value_sum": 4859850.284668,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5305.312012,
+          "value_last": 1844.66748,
+          "value_sum": 3990718.023682,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 8373.914063,
+          "value_last": 2790.835938,
+          "value_sum": 6141363.706055,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6444.064941,
+          "value_last": 2449.926514,
+          "value_sum": 4996832.492188,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5798.416504,
+          "value_last": 2083.015381,
+          "value_sum": 4348622.001587,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6284.42627,
+          "value_last": 2396.47876,
+          "value_sum": 4894557.977051,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 3194.539063,
+          "value_last": 1149.847534,
+          "value_sum": 2479978.93457,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6422.779785,
+          "value_last": 2519.263916,
+          "value_sum": 5031363.899902,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6525.657715,
+          "value_last": 2474.483398,
+          "value_sum": 5043633.473877,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 2935.570313,
+          "value_last": 1015.506042,
+          "value_sum": 2241457.325256,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6470.671387,
+          "value_last": 2549.599121,
+          "value_sum": 4993605.436768,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 4528.405762,
+          "value_last": 1562.983765,
+          "value_sum": 3464457.715698,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6309.259277,
+          "value_last": 2461.482666,
+          "value_sum": 4977910.38623,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 3116.493652,
+          "value_last": 1066.064697,
+          "value_sum": 2408403.845581,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5347.881836,
+          "value_last": 1954.451904,
+          "value_sum": 4023583.95874,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6316.354004,
+          "value_last": 2410.924072,
+          "value_sum": 4946494.437256,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 4923.953613,
+          "value_last": 1817.221313,
+          "value_sum": 3797273.606689,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6277.331543,
+          "value_last": 2426.813965,
+          "value_sum": 4838700.820313,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6319.901855,
+          "value_last": 2377.699707,
+          "value_sum": 4793017.487061,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6115.919434,
+          "value_last": 2533.709229,
+          "value_sum": 4794104.894287,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6366.019531,
+          "value_last": 2552.488281,
+          "value_sum": 4922060.366699,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6287.974121,
+          "value_last": 2477.372559,
+          "value_sum": 4864162.57373,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6325.223145,
+          "value_last": 2514.93042,
+          "value_sum": 4905745.977783,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6296.842773,
+          "value_last": 2478.817139,
+          "value_sum": 4817359.655273,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6763.341309,
+          "value_last": 2522.153076,
+          "value_sum": 4998956.763184,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 5974.018555,
+          "value_last": 2360.365479,
+          "value_sum": 4559444.914307,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2801.458984,
+          "axis_kind": "wavenumber",
+          "axis_last": 1218.433594,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "counts",
+          "role": "Counts",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 6284.42627,
+          "value_last": 2475.927979,
+          "value_sum": 4900384.282715,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5078be974555fdcd1ffd1a7494bd69b12720afa5634d1cbdf6e24ebf2ef193a3",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

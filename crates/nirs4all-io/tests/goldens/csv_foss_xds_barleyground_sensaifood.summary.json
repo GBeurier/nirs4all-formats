@@ -1,0 +1,285 @@
+{
+  "record_count": 7,
+  "records": [
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.249042,
+          "value_last": 0.511824,
+          "value_sum": 238.886225,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.251351,
+          "value_last": 0.517339,
+          "value_sum": 242.482398,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.252347,
+          "value_last": 0.529065,
+          "value_sum": 251.070578,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.248209,
+          "value_last": 0.507602,
+          "value_sum": 237.720955,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.272276,
+          "value_last": 0.549732,
+          "value_sum": 262.062864,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.260309,
+          "value_last": 0.513703,
+          "value_sum": 238.152318,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.307242,
+          "value_last": 0.574197,
+          "value_sum": 275.022937,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "3645a28dfcdeb15189357ad7a57343e90541d3ece25ea670be4d4f14b35f8af4",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    }
+  ]
+}

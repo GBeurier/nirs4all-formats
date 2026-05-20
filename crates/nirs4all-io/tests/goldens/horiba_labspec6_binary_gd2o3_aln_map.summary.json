@@ -1,0 +1,3317 @@
+{
+  "record_count": 72,
+  "records": [
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 57.0,
+          "value_last": 143.0,
+          "value_sum": 72757.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 39.0,
+          "value_last": 92.0,
+          "value_sum": 54157.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 53.0,
+          "value_last": 75.0,
+          "value_sum": 50403.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 65.0,
+          "value_last": 124.0,
+          "value_sum": 72938.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 20.0,
+          "value_last": 98.0,
+          "value_sum": 61721.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 40.0,
+          "value_last": 98.0,
+          "value_sum": 79668.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 69.0,
+          "value_last": 89.0,
+          "value_sum": 89581.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 61.0,
+          "value_last": 81.0,
+          "value_sum": 83235.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 65.0,
+          "value_last": 89.0,
+          "value_sum": 91008.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 72.0,
+          "value_last": 102.0,
+          "value_sum": 96353.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 78.0,
+          "value_last": 104.0,
+          "value_sum": 99358.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 69.0,
+          "value_last": 139.0,
+          "value_sum": 103278.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 28.0,
+          "value_last": 129.0,
+          "value_sum": 68489.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 30.0,
+          "value_last": 117.0,
+          "value_sum": 62953.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 11.0,
+          "value_last": 112.0,
+          "value_sum": 73159.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 38.0,
+          "value_last": 175.0,
+          "value_sum": 85802.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 43.0,
+          "value_last": 193.0,
+          "value_sum": 103984.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 53.0,
+          "value_last": 130.0,
+          "value_sum": 108320.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 61.0,
+          "value_last": 99.0,
+          "value_sum": 84047.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 75.0,
+          "value_last": 92.0,
+          "value_sum": 88520.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 64.0,
+          "value_last": 103.0,
+          "value_sum": 92059.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 67.0,
+          "value_last": 118.0,
+          "value_sum": 100611.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 70.0,
+          "value_last": 114.0,
+          "value_sum": 102422.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 86.0,
+          "value_last": 144.0,
+          "value_sum": 109356.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 30.0,
+          "value_last": 119.0,
+          "value_sum": 68876.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 2.0,
+          "value_last": 86.0,
+          "value_sum": 60045.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 38.0,
+          "value_last": 226.0,
+          "value_sum": 83549.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 24.0,
+          "value_last": 128.0,
+          "value_sum": 64877.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 29.0,
+          "value_last": 111.0,
+          "value_sum": 63625.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 47.0,
+          "value_last": 127.0,
+          "value_sum": 92859.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 81.0,
+          "value_last": 123.0,
+          "value_sum": 99855.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 64.0,
+          "value_last": 142.0,
+          "value_sum": 111215.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 84.0,
+          "value_last": 113.0,
+          "value_sum": 106586.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 88.0,
+          "value_last": 140.0,
+          "value_sum": 112879.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 92.0,
+          "value_last": 154.0,
+          "value_sum": 125422.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 96.0,
+          "value_last": 176.0,
+          "value_sum": 118476.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 16.0,
+          "value_last": 149.0,
+          "value_sum": 71923.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 36.0,
+          "value_last": 138.0,
+          "value_sum": 71807.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 14.0,
+          "value_last": 91.0,
+          "value_sum": 52734.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 147.0,
+          "value_last": 97.0,
+          "value_sum": 79842.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 40.0,
+          "value_last": 105.0,
+          "value_sum": 85966.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 27.0,
+          "value_last": 115.0,
+          "value_sum": 74639.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 58.0,
+          "value_last": 110.0,
+          "value_sum": 90723.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 85.0,
+          "value_last": 147.0,
+          "value_sum": 112550.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 79.0,
+          "value_last": 158.0,
+          "value_sum": 109438.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 86.0,
+          "value_last": 164.0,
+          "value_sum": 118882.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 98.0,
+          "value_last": 179.0,
+          "value_sum": 130171.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 103.0,
+          "value_last": 204.0,
+          "value_sum": 139938.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 13.0,
+          "value_last": 84.0,
+          "value_sum": 53560.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 5.0,
+          "value_last": 67.0,
+          "value_sum": 52448.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 34.0,
+          "value_last": 117.0,
+          "value_sum": 76855.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 94.0,
+          "value_last": 161.0,
+          "value_sum": 96933.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 16.0,
+          "value_last": 108.0,
+          "value_sum": 72779.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 15.0,
+          "value_last": 96.0,
+          "value_sum": 71515.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 50.0,
+          "value_last": 132.0,
+          "value_sum": 97196.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 103.0,
+          "value_last": 177.0,
+          "value_sum": 132065.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 101.0,
+          "value_last": 175.0,
+          "value_sum": 125103.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 93.0,
+          "value_last": 165.0,
+          "value_sum": 128269.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 100.0,
+          "value_last": 168.0,
+          "value_sum": 126138.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 93.0,
+          "value_last": 169.0,
+          "value_sum": 117946.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 48.0,
+          "value_last": 229.0,
+          "value_sum": 91556.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 18.0,
+          "value_last": 76.0,
+          "value_sum": 48274.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 42.0,
+          "value_last": 96.0,
+          "value_sum": 63937.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 25.0,
+          "value_last": 115.0,
+          "value_sum": 76360.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 47.0,
+          "value_last": 138.0,
+          "value_sum": 98930.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 48.0,
+          "value_last": 147.0,
+          "value_sum": 98990.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 56.0,
+          "value_last": 185.0,
+          "value_sum": 107742.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 105.0,
+          "value_last": 166.0,
+          "value_sum": 127862.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 97.0,
+          "value_last": 156.0,
+          "value_sum": 117305.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 105.0,
+          "value_last": 189.0,
+          "value_sum": 129677.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 86.0,
+          "value_last": 156.0,
+          "value_sum": 120242.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    },
+    {
+      "format": "horiba-labspec6-binary",
+      "metadata_keys": [
+        "axis_layout",
+        "container",
+        "dataset_type",
+        "intensity_payload_offset",
+        "spatial_axis_order",
+        "spatial_axis_source",
+        "spatial_x",
+        "spatial_x_unit",
+        "spatial_y",
+        "spatial_y_unit",
+        "spectral_axis_payload_offset",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 100.166382,
+          "axis_kind": "wavenumber",
+          "axis_last": 1198.541748,
+          "axis_len": 498,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "name": "intensity",
+          "role": "intensity",
+          "signal_type": "raw_counts",
+          "unit": "Cnt",
+          "value_first": 100.0,
+          "value_last": 179.0,
+          "value_sum": 133354.0,
+          "values_len": 498
+        }
+      ],
+      "source_sha256": "0cd864a80e9a1a1d3a7e20de8bfa8ecc203363b692824d7615514af029ee51e3",
+      "target_keys": [],
+      "warnings": [
+        "horiba_labspec6_binary_experimental"
+      ]
+    }
+  ]
+}

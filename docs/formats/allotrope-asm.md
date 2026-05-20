@@ -11,13 +11,18 @@ single-wavelength endpoint readings.
 | Fixture | Records | Axis | Signal |
 |---|---:|---|---|
 | `samples/allotrope_asm/ACSINS_absorbance_spectrum.json` | 360 | wavelength, `nm`, 51 points | `absorbance`, `mAU` |
-| `samples/allotrope_asm/spectrum_emission_data.json` | 1 | wavelength, `nm`, 3 points | `absorbance`, `mAU` |
+| `samples/allotrope_asm/spectrum_emission_data.json` | 1 | wavelength, `nm`, 3 points | `fluorescence`, `mAU` |
 | `samples/allotrope_asm/MD_SMP_absorbance_example.json` | 192 | detector wavelength, `nm`, one point | `absorbance`, `mAU` |
 
 The reader emits one `SpectralRecord` per `measurement document`. Sample
 identifier, well/location, detection type, measurement time, manifest URL,
 converter metadata and selected device-control settings are preserved as
 metadata.
+
+When an ASM cube has an `absorbance` measure concept but the cube key/label and
+source metadata identify fluorescence emission, `nirs4all-io` keeps the
+original measure concept in `metadata.asm_measure_concept`, emits a provenance
+warning and names the signal `fluorescence`.
 
 ## Dispatch Boundaries
 

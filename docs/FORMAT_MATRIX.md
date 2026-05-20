@@ -7,7 +7,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | en-tetes numeriques | fait | pandas, read.table, nirs4all CSVLoader |
 | Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | une colonne axe + signaux | fait | pandas, read.table |
 | Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | un spectre par ligne | fait | pandas, read.table |
-| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | xlsx/xlsm + descripteur axis/data OK; xls manquant | partiel | calamine, openpyxl, pandas, readxl |
+| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` code-path sans fixture; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
 | ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | revisions 1, 6, 7, 8 | partiel | asdreader, prospectr, spectrolab, specdal, pyASDReader |
 | ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | compagnons calibration | bloqué | SPECCHIO, asdreader |
 | Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7 | partiel | lightr |
@@ -29,7 +29,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo synthetique uniquement | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
 | USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
-| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | new LSB golden elargi; old limite; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
+| Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi; old limite; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
 | Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg/TGA-GC srs OK; srsx manquant | partiel | SpectroChemPy, spa-on-python |
 | Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | sp OK; fsm imaging refuse | partiel | specio |
 | Foss NIRSystems / WinISI natif | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | binaire ferme | bloqué | aucune fiable |
@@ -59,7 +59,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | DigitalSurf MountainsMap | DigitalSurf | `.sur`, `.pro` | corpus spectra/maps/surfaces OK; variantes hors corpus | partiel | RosettaSciIO |
 | Hamamatsu HPD-TA IMG | Hamamatsu | `.img` | corpus adjacent 2D OK; hors point-spectra NIRS | partiel | RosettaSciIO |
 | WiTec WIP / WID | WiTec | `.wip`, `.wid`, `.txt` | `WIT_PR06` TDGraph Sa4 decode experimental + ASCII OK; autres layouts refuses | partiel | pynxtools-raman, hySpc.read.Witec, LabberI2A WIPfile |
-| EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y | fait | RosettaSciIO |
+| EMSA/MAS MSA | ISO / EMSA | `.msa` | ISO 22029 XY/Y, notation scientifique, titres multi-lignes | fait | RosettaSciIO |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | hors scope NIRS spectroscopy | pas fait | MNE-NIRS, SNIRF |
 | Consumer Physics SCiO | Consumer Physics | `.csv` (developer app) | 740-1070 nm handheld DLP-MEMS; CSV reel committe (`R`/`S`/`C` sections) | fait | kebasaa/SCIO-read |
 
@@ -70,7 +70,7 @@ passer le format a `fait`.
 
 | Nom | Status nirs4allio | Note / manque |
 |---|---|---|
-| Excel spectral | partiel | Ajouter `.xls` legacy et plus de fixtures multi-feuilles reelles; XLSX axis/data descriptor et handheld UvA sont couverts. |
+| Excel spectral | partiel | Ajouter `.xls` legacy, une fixture `.xlsm` dediee et plus de fixtures multi-feuilles reelles; XLSX axis/data descriptor et handheld UvA sont couverts. |
 | ASD FieldSpec | partiel | Decoder les blocs reference/calibration et couvrir les revisions legacy. |
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS/.IRR/.RMN` et comparaison `lightr`. |
@@ -88,7 +88,7 @@ passer le format a `fait`.
 | Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est qualifie sans reflectance; SR-3500 / SR-6500 firmware specifics restent a couvrir. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
 | USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
-| Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie aux fixtures IR/Raman/UV-vis/NIR ouvertes; restent big-endian, vieux headers complets et decision de scope pour NMR/FID. |
+| Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert; restent big-endian, vieux headers complets et decision de scope finale pour NMR/FID. |
 | Thermo Nicolet OMNIC | partiel | Decoder `.srsx` et variantes rapid-scan/high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Ajouter variantes PE NIR; `.fsm` reste imaging hors v1. |
 | Foss NIRSystems / WinISI natif | bloqué | Format ferme sans lecteur fiable ni fixture binaire de reference. |
@@ -100,7 +100,7 @@ passer le format a `fait`.
 | VIAVI MicroNIR | partiel | Reels CSV/XLSX MicroNIR 1700 committes et verrouilles par tests de lecture + probe (UvA forensic). `.pri` natif reste hors atteinte. |
 | Si-Ware NeoSpectra | partiel | Reels OSSL Woodwell + UvA forensic XLSX committes et verrouilles par tests de lecture + probe; le descripteur OSSL non spectral est refuse explicitement. Reste a couvrir un export NeoSpectra Scanner natif single-measurement. |
 | Spectro Inc. SiWare API | partiel | Les fixtures JSON/CSV sont synthetiques; il manque une reponse API reelle et des variantes de schema. |
-| JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts, y compris fichiers top-level multi-blocs (`nist_sucrose_ir.jdx` -> 2 records). Restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
+| JCAMP-DX | partiel | XYDATA/ASDF/NTUPLES/LINK Ocean Optics sont couverts par goldens elargis, y compris fichiers top-level multi-blocs (`nist_sucrose_ir.jdx` -> 2 records). Restent `LINK` generaux, `PEAK TABLE` apres extension du modele sparse, et plus de variantes NTUPLES. |
 | NetCDF NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique, Microtops MAN, ARM MFRSR local et SURFSPECALB local derive sont couverts; AOSMET est un refus attendu non spectral. Restent schemas NIRS reels generiques, QC NetCDF4/HDF5 plus robuste et validation ACT/xarray. |
 | AnIML | partiel | Le `SeriesSet` spectral synthetique est couvert et les resultats non-spectraux sont refuses; restent schemas spectraux reels, `AutoIncrementedValueSet` et validation XSD. |
 | Allotrope ASM | partiel | Les trois fixtures Benchling spectrales/endpoints sont couvertes; restent conversions vendeurs multiples, cas ASM hors plate-reader et validation contre tooling Allotrope. |
@@ -121,7 +121,7 @@ Dernier sweep CLI apres mise a jour de la matrice:
 
 | Corpus | OK | Refus attendus | Refus inattendus | Notes |
 |---|---:|---:|---:|---|
-| `samples/` | 245 | 18 | 0 | Les refus attendus sont des formats volontairement non-NIRS, des fixtures negatives, des sidecars seuls (`92AV3C.spc`, `92AV3GT.GIS`, header Microtops) ou des descripteurs non spectraux (`neospectra_ossl_column_names.csv`). |
+| `samples/` | 245 | 20 | 0 | Les refus attendus sont des formats volontairement non-NIRS, des fixtures negatives, des sidecars seuls (`92AV3C.spc`, `92AV3GT.GIS`, header Microtops), des workbooks metadata-only accompagnateurs, des rapports cible-seule Foss/Perten ou des descripteurs non spectraux (`neospectra_ossl_column_names.csv`). |
 | `samples_local/` | 11 | 5 | 0 | Lectures OK: Indian Pines MATLAB v5, BUCHI cannabis, ARM MFRSR NetCDF, ARM SURFSPECALB derive, 7 exports Microtops MAN ASCII `.lev*`. Refus attendus: `_gt.mat` sidecar, NOAA `.lev2`, ARM AOSMET et PP Systems indices non raw/derives. |
 
 ## Sweep d'echantillons publics (2026-05-20)

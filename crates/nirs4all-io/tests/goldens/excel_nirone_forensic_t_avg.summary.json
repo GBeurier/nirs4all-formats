@@ -1,0 +1,2419 @@
+{
+  "record_count": 71,
+  "records": [
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.41879,
+          "value_last": 0.502768,
+          "value_sum": 93.785868,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.594466,
+          "value_last": 0.636028,
+          "value_sum": 121.143613,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.495443,
+          "value_last": 0.558424,
+          "value_sum": 101.002251,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.690963,
+          "value_last": 0.745494,
+          "value_sum": 140.288209,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.462988,
+          "value_last": 0.531653,
+          "value_sum": 94.450537,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.415486,
+          "value_last": 0.477078,
+          "value_sum": 84.397609,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.753726,
+          "value_last": 0.81577,
+          "value_sum": 154.0179,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.463841,
+          "value_last": 0.535384,
+          "value_sum": 94.095297,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.416352,
+          "value_last": 0.485626,
+          "value_sum": 87.457598,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.5059,
+          "value_last": 0.575486,
+          "value_sum": 104.114423,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.384492,
+          "value_last": 0.447529,
+          "value_sum": 81.46907,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.48761,
+          "value_last": 0.559781,
+          "value_sum": 101.480102,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.524891,
+          "value_last": 0.571408,
+          "value_sum": 109.690218,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.518805,
+          "value_last": 0.59373,
+          "value_sum": 108.463153,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.485877,
+          "value_last": 0.550944,
+          "value_sum": 100.740419,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.520345,
+          "value_last": 0.603153,
+          "value_sum": 110.479819,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.532804,
+          "value_last": 0.60036,
+          "value_sum": 110.266611,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.468867,
+          "value_last": 0.542482,
+          "value_sum": 97.02057,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.602455,
+          "value_last": 0.600047,
+          "value_sum": 121.000073,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.624879,
+          "value_last": 0.656879,
+          "value_sum": 127.704657,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.52091,
+          "value_last": 0.591841,
+          "value_sum": 107.879708,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.686943,
+          "value_last": 0.717127,
+          "value_sum": 139.330564,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.455761,
+          "value_last": 0.534201,
+          "value_sum": 94.64316,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.409805,
+          "value_last": 0.465757,
+          "value_sum": 83.182562,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.542587,
+          "value_last": 0.599078,
+          "value_sum": 110.434728,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.432782,
+          "value_last": 0.491686,
+          "value_sum": 87.913158,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.612105,
+          "value_last": 0.657527,
+          "value_sum": 123.842628,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.427421,
+          "value_last": 0.494867,
+          "value_sum": 88.099577,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.665412,
+          "value_last": 0.709576,
+          "value_sum": 135.438312,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 1.018055,
+          "value_last": 1.037538,
+          "value_sum": 205.901693,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.440129,
+          "value_last": 0.506004,
+          "value_sum": 89.87868,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.506722,
+          "value_last": 0.576944,
+          "value_sum": 101.635841,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.445357,
+          "value_last": 0.506532,
+          "value_sum": 91.433034,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.449326,
+          "value_last": 0.509964,
+          "value_sum": 92.997397,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.816956,
+          "value_last": 0.87142,
+          "value_sum": 165.301571,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.61852,
+          "value_last": 0.677068,
+          "value_sum": 125.528847,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.843479,
+          "value_last": 0.931652,
+          "value_sum": 173.810938,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.492663,
+          "value_last": 0.567258,
+          "value_sum": 103.322833,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.429287,
+          "value_last": 0.491648,
+          "value_sum": 85.48831,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.640943,
+          "value_last": 0.698079,
+          "value_sum": 128.28469,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.709272,
+          "value_last": 0.775788,
+          "value_sum": 141.797555,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.410377,
+          "value_last": 0.504744,
+          "value_sum": 87.662013,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.518818,
+          "value_last": 0.597657,
+          "value_sum": 103.352728,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.385521,
+          "value_last": 0.441941,
+          "value_sum": 76.82242,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.571097,
+          "value_last": 0.634732,
+          "value_sum": 112.932244,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.465299,
+          "value_last": 0.527992,
+          "value_sum": 91.534702,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.584598,
+          "value_last": 0.652818,
+          "value_sum": 120.760593,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.449231,
+          "value_last": 0.525322,
+          "value_sum": 94.415972,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.391685,
+          "value_last": 0.447728,
+          "value_sum": 78.043848,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.560124,
+          "value_last": 0.609275,
+          "value_sum": 112.040903,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.575317,
+          "value_last": 0.632876,
+          "value_sum": 114.421963,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.465176,
+          "value_last": 0.530365,
+          "value_sum": 92.175264,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.378846,
+          "value_last": 0.439435,
+          "value_sum": 75.848025,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.425019,
+          "value_last": 0.479997,
+          "value_sum": 84.317838,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.548518,
+          "value_last": 0.581647,
+          "value_sum": 110.678438,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.561976,
+          "value_last": 0.629523,
+          "value_sum": 109.849587,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.608015,
+          "value_last": 0.690884,
+          "value_sum": 123.016392,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.663191,
+          "value_last": 0.724118,
+          "value_sum": 131.034514,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.426678,
+          "value_last": 0.48277,
+          "value_sum": 84.501743,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.726619,
+          "value_last": 0.773821,
+          "value_sum": 143.073117,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.461617,
+          "value_last": 0.544906,
+          "value_sum": 98.854496,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.531974,
+          "value_last": 0.616739,
+          "value_sum": 110.801655,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.40379,
+          "value_last": 0.449391,
+          "value_sum": 81.527374,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.366419,
+          "value_last": 0.422067,
+          "value_sum": 76.466529,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.449394,
+          "value_last": 0.508499,
+          "value_sum": 90.118933,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.477704,
+          "value_last": 0.523989,
+          "value_sum": 94.103049,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.398236,
+          "value_last": 0.450947,
+          "value_sum": 77.494866,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.386128,
+          "value_last": 0.439522,
+          "value_sum": 80.944771,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.370603,
+          "value_last": 0.415856,
+          "value_sum": 73.049449,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.603615,
+          "value_last": 0.779034,
+          "value_sum": 135.883518,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1550.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1950.0,
+          "axis_len": 201,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": "a.u.",
+          "value_first": 0.38858,
+          "value_last": 0.474839,
+          "value_sum": 84.476095,
+          "values_len": 201
+        }
+      ],
+      "source_sha256": "9d74210a0298902a61d48f699dfea59e089cd92b6dfd0003021859465f9c2b17",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

@@ -28,6 +28,9 @@ Current committed controls:
 |---|---|---:|---|---|
 | `ISO_22029_2022_compliance.msa` | `XY` | 21 | `520.13 -> 580.50 eV` | `4066 -> 4217` |
 | `ISO_22029_2022_compliance_XY_NCOLUMNS2.msa` | `XY` | 21 | `520.13 -> 580.50 eV` | `4066 -> 4217` |
+| `ISO_22029_2022_compliance_scientific_notation.msa` | `XY` | 21 | scientific notation | golden summary |
+| `ISO_22029_2022_compliance_title_multiple_line.msa` | `XY` | 21 | multi-line title metadata | golden summary |
+| `example1.msa`, `example1_with_seconds.msa`, `example2.msa` | examples | variable | metadata/date variants | golden summaries |
 | `example2_NCOLUMNS5.msa` | `Y` | 80 | `0.0 -> 790.0 eV` | `65.820 -> 49.442` |
 | `minimum_metadata.msa` | minimal | 1 | `0.0 index` | `1.0` |
 

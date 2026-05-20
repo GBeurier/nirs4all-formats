@@ -33,5 +33,6 @@ Sample identifiers are stored as `metadata.sample_id`.
 
 Target-only reports are intentionally not loaded as spectra. The committed
 FOSS DS3 and Perten report fixtures contain properties but no spectral axis,
-so the registry returns `UnsupportedFormat` until the core model has a
-non-spectral report representation.
+so the broad delimited-text fallback now fails explicitly with
+`no numeric spectral headers found` until the core model has a non-spectral
+report representation.

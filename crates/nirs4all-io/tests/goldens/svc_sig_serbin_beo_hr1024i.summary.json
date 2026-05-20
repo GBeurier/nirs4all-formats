@@ -1,0 +1,68 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "svc-ger-sig",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::svc_sig",
+      "record_signal_type": "reflectance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "reference",
+          "role": "reference",
+          "signal_type": "radiance",
+          "unit": null,
+          "value_first": 47928.74,
+          "value_last": 284.77,
+          "value_sum": 88415209.0,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "reflectance",
+          "role": "reflectance",
+          "signal_type": "reflectance",
+          "unit": "%",
+          "value_first": 1.93,
+          "value_last": 7.87,
+          "value_sum": 64378.24,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "target",
+          "role": "target",
+          "signal_type": "radiance",
+          "unit": null,
+          "value_first": 927.27,
+          "value_last": 22.42,
+          "value_sum": 23800157.45,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "4a95131bdfbeea143bc0f66f7a3aeb4508262c86e57ac65a5f74d5a4efc3ef18",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

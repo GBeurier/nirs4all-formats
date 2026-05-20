@@ -1,0 +1,1157 @@
+{
+  "record_count": 32,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 4.61097,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 8.380817,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 28.390809,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 59.460785,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 103.417853,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 124.441237,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 112.633855,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 81.511322,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 47.457994,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 35.486346,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 40.524359,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 56.002448,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 84.387972,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 115.388283,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 160.798059,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 204.311669,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 260.478501,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 307.295429,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 358.392918,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 392.567134,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 418.833713,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 425.957796,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 415.737023,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 392.567134,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 350.501991,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 307.295429,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 250.990377,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 204.311624,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 152.657606,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 115.378463,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 78.863245,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 200.0,
+          "axis_kind": "wavelength",
+          "axis_last": 800.0,
+          "axis_len": 171,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 55.341547,
+          "values_len": 171
+        }
+      ],
+      "source_sha256": "8e8bd1bfc79c5d2f8c6615e0723286b4f266ee312b146a4265e4ed8e6f7f4192",
+      "target_keys": [],
+      "warnings": [
+        "invalid_spc_integer_exponent_255_treated_as_0"
+      ]
+    }
+  ]
+}

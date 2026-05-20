@@ -445,7 +445,7 @@ fn require_type(entry: &WipEntry, expected: u32, name: &str) -> Result<()> {
 
 fn legacy_unsupported(path: &Path) -> Error {
     Error::InvalidRecord(format!(
-        "WiTec WIP/WID binary project files are not supported yet in nirs4all-io: {}. Export spectra from WiTec Project/FIVE as ASCII text and load the .txt export; WiTec ASCII exports are covered by the row-spectral-table reader.",
+        "legacy WiTec WIP/WID WIT^ project layout is not supported by nirs4all-io: {}. The current native subset is limited to the WIT_PR06 TDGraph layout validated by Sa4.wip; export other WiTec projects from WiTec Project/FIVE as ASCII text and load the .txt export.",
         path.display()
     ))
 }
