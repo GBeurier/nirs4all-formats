@@ -95,6 +95,40 @@ fn probes_matrix_and_sun_photometer_exports() {
 }
 
 #[test]
+fn probes_avantes_ascii_and_binary_fixtures() {
+    for (relative, format, confidence) in [
+        (
+            "samples/avantes/avantes_export.ttt",
+            "avantes-ascii",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/irr_820_1941.IRR",
+            "avantes-irradiance-ascii",
+            Confidence::Likely,
+        ),
+        (
+            "samples/avantes/avantes2.TRM",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1904090M1_0003.Raw8",
+            "avantes-avasoft8-binary",
+            Confidence::Definite,
+        ),
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe Avantes");
+        assert!(
+            probes
+                .iter()
+                .any(|probe| probe.format == format && probe.confidence == confidence),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
 fn probes_animl_and_allotrope_asm_documents() {
     let probes = probe_path(workspace_file("samples/animl/synthetic_nirs.animl")).expect("probe");
     assert!(probes

@@ -118,7 +118,7 @@ fn read_wave_table(
             .get(index + 1)
             .cloned()
             .unwrap_or_else(|| format!("signal_{index}"));
-        let signal_type = signal_type_from_label(&label);
+        let signal_type = avantes_signal_type(&label);
         if dominant == SignalType::Unknown
             || matches!(
                 signal_type,
@@ -199,4 +199,11 @@ fn parse_pair(line: &str) -> Option<(f64, f64)> {
     let x = parse_number(parts.next()?)?;
     let y = parse_number(parts.next()?)?;
     Some((x, y))
+}
+
+fn avantes_signal_type(label: &str) -> SignalType {
+    match safe_signal_name(label, "signal").as_str() {
+        "dark" | "ref" | "reference" | "sample" => SignalType::RawCounts,
+        _ => signal_type_from_label(label),
+    }
 }
