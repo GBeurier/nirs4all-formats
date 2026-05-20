@@ -1,0 +1,40 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "usgs-aref-single-column",
+      "metadata_keys": [
+        "axis_note",
+        "record_number",
+        "title"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::usgs_aref",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 23.0,
+          "axis_len": 24,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "reflectance",
+          "role": "reflectance",
+          "signal_type": "reflectance",
+          "unit": null,
+          "value_first": 0.338494,
+          "value_last": 0.515519,
+          "value_sum": 9.48937,
+          "values_len": 24
+        }
+      ],
+      "source_sha256": "5826715c5a853778daf0d239191af9c9caa9363f57821760f492fc2ad72d6c2a",
+      "target_keys": [],
+      "warnings": [
+        "usgs_aref_axis_generated_index"
+      ]
+    }
+  ]
+}

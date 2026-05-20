@@ -287,6 +287,10 @@ const CASES: &[(&str, &str)] = &[
         "samples/specpr/asphalt_gds366.27407.asc",
     ),
     (
+        "usgs_aref_single_column",
+        "samples/envi_sli/usgs_liba_AREF.txt",
+    ),
+    (
         "row_spectral_table_witec_ascii",
         "samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt",
     ),
@@ -305,6 +309,7 @@ const CASES: &[(&str, &str)] = &[
     ("netcdf_synthetic_nirs", "samples/netcdf/synthetic_nirs.nc"),
     ("hdf5_synthetic_nirs", "samples/hdf5/synthetic_nirs.h5"),
     ("hdf5_synthetic_fgi", "samples/fgi/synthetic_fgi.h5"),
+    ("fgi_xml_sidecar", "samples/fgi/synthetic_fgi.xml"),
     (
         "numpy_npy_synthetic_nirs",
         "samples/numpy/synthetic_nirs_X.npy",
@@ -378,6 +383,32 @@ const CASES: &[(&str, &str)] = &[
         "samples/allotrope_asm/MD_SMP_absorbance_example.json",
     ),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
+    (
+        "galactic_spc_barbituates",
+        "samples/galactic_spc/BARBITUATES.SPC",
+    ),
+    (
+        "galactic_spc_drug_sample",
+        "samples/galactic_spc/DRUG_SAMPLE.SPC",
+    ),
+    ("galactic_spc_hcl", "samples/galactic_spc/HCL.SPC"),
+    (
+        "galactic_spc_lc_diode_array",
+        "samples/galactic_spc/LC_DIODE_ARRAY.SPC",
+    ),
+    ("galactic_spc_raman", "samples/galactic_spc/RAMAN.SPC"),
+    (
+        "galactic_spc_resolution_pro",
+        "samples/galactic_spc/resolutionPro.spc",
+    ),
+    (
+        "galactic_spc_cell01_c1",
+        "samples/galactic_spc/cell01_c1.spc",
+    ),
+    (
+        "galactic_spc_cell01_c2",
+        "samples/galactic_spc/cell01_c2.spc",
+    ),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
     (
         "galactic_spc_ocean_optics",
@@ -389,7 +420,15 @@ const CASES: &[(&str, &str)] = &[
         "spectral_evolution_sed",
         "samples/spectral_evolution/1566060_09506_working.sed",
     ),
+    (
+        "spectral_evolution_sed_dn_only",
+        "samples/spectral_evolution/1566060_15025_not_working.sed",
+    ),
     ("svc_sig_moc", "samples/svc_ger/BNL13001_000_moc.sig"),
+    (
+        "svc_sig_declared_bad",
+        "samples/svc_ger/ACPL_D2_P1_B_1_000_BAD.sig",
+    ),
 ];
 
 #[test]
