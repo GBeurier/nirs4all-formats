@@ -8,6 +8,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::parse_number;
+use crate::registry::{cube_window_ranges, ReadOptions};
 use crate::Reader;
 
 const FORMAT: &str = "erdas-lan-aviris";
@@ -51,6 +52,14 @@ impl Reader for ErdasLanReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
+        self.read_path_with_options(path, &ReadOptions::default())
+    }
+
+    fn read_path_with_options(
+        &self,
+        path: &Path,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
         let bytes = std::fs::read(path).map_err(|source| Error::Io {
             path: path.to_path_buf(),
             source,
@@ -83,10 +92,12 @@ impl Reader for ErdasLanReader {
         } else {
             vec![lan_source, spc_source]
         };
+        let (row_range, col_range) =
+            cube_window_ranges(options, header.rows, header.cols, "ERDAS LAN cube")?;
 
-        let mut records = Vec::with_capacity(header.rows * header.cols);
-        for row in 0..header.rows {
-            for col in 0..header.cols {
+        let mut records = Vec::with_capacity(row_range.len() * col_range.len());
+        for row in row_range {
+            for col in col_range.clone() {
                 let values = read_bil_pixel_spectrum(&bytes, &header, row, col)?;
                 let mut metadata = BTreeMap::new();
                 metadata.insert(

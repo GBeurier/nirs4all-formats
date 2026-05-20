@@ -73,10 +73,12 @@ Experimental native readers:
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and
   AvaSoft 8 binaries (`.Raw8`, `.IRR8`) with decoded AVS8 SPC date/time;
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64
-  payloads, and ENVI Standard cubes expanded by pixel with parsed `map info`;
+  payloads, and ENVI Standard cubes expanded by pixel or rectangular ROI with
+  parsed `map info`;
 - AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
-  BIL payload expanded to one raw-count spectrum per pixel, with wavelength
-  axis from `.spc` and optional ground-truth class targets from `.GIS`;
+  BIL payload expanded to one raw-count spectrum per pixel or rectangular ROI,
+  with wavelength axis from `.spc` and optional ground-truth class targets from
+  `.GIS`;
 - Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`,
   `.Master.Transmission`) and `.ProcSpec` ZIP/XML archives with XML-driven
   transmittance/reflectance typing; all committed Ocean fixtures are
@@ -209,8 +211,8 @@ Immediate next work:
 1. decide whether AVIRIS/Indian Pines sample redistribution terms allow keeping
    the committed `.lan/.spc/.GIS` fixtures in public release artifacts, and
    keep the EHU MATLAB cube path local-only unless redistribution terms change;
-2. add ROI/mask extraction for hyperspectral cubes so large NEON/Specim/HySpex/
-   Headwall scenes do not require whole-cube expansion;
+2. add sparse mask extraction for hyperspectral cubes and source large
+   NEON/Specim/HySpex/Headwall scenes beyond the current rectangular ROI path;
 3. continue the open-reader-backed binary batch in this order: OMNIC `.srsx`
    and high-speed variants beyond local SpectroChemPy samples, redistributable
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;

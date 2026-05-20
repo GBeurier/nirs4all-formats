@@ -21,6 +21,9 @@ minimal ENVI Standard cube-to-point-spectra path.
 - Emits one `SpectralRecord` per ENVI Standard pixel, with `pixel_x`,
   `pixel_y`, row-slowest/X-fastest order and optional parsed `map info`
   coordinates in metadata.
+- Supports optional half-open row/column windows through
+  `open_path_with_options()` and the CLI `read-json --rows START:END --cols
+  START:END`, while preserving original pixel coordinates in record metadata.
 
 ## Record Mapping
 
@@ -92,6 +95,9 @@ Cube fixture checks:
 
 - 48 by 48 pixels, 32 spectral bands;
 - header and direct `.img` entry paths both dispatch to `envi-standard-cube`;
+- ROI window `rows=2:4`, `cols=3:6` emits 6 records while preserving
+  `pixel_y2_x3` through `pixel_y3_x5` coordinates and matching the full-cube
+  spectra for those pixels;
 - first pixel first/last values: `100`, `3223`;
 - last pixel first/last values: `152`, `3275`;
 - map coordinates are read from `map info`, with `units=Meters` normalized to
@@ -112,4 +118,5 @@ USGS AVIRIS95 spectral-library checks:
   present in the reverse-engineering environment.
 - Add tests for non-zero `header offset` and big-endian payloads.
 - Add real Specim/HySpex/Headwall/NEON cube fixtures and an explicit
-  mask/ROI extraction API; the current path is whole-cube pixel expansion only.
+  mask extraction API for sparse pixel selection; the current windowed ROI path
+  covers rectangular subsets only.

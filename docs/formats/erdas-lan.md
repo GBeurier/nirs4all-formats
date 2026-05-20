@@ -27,6 +27,8 @@ emitted `SpectralAxis.order` is non-monotonic and records carry warning
 
 - probe/read for `92AV3C.lan`;
 - one `SpectralRecord` per pixel, i.e. 21,025 records;
+- optional half-open row/column windows through `open_path_with_options()` and
+  the CLI `read-json --rows START:END --cols START:END`;
 - `raw_counts` signal with wavelength axis in `nm` and unit `dn`;
 - `sample_id`, `x_index`, `y_index`, `spatial_x`, `spatial_y` metadata;
 - `land_cover_class` target from `92AV3GT.GIS` when present;
@@ -40,10 +42,14 @@ emitted `SpectralAxis.order` is non-monotonic and records carry warning
 | `samples/hyperspectral_cubes/92AV3C.spc` | sidecar | wavelength calibration | First column is used as the spectral axis. |
 | `samples/hyperspectral_cubes/92AV3GT.GIS` | sidecar | class labels | Per-pixel ground truth exposed as `targets.land_cover_class`. |
 
+The semantic test also validates a `rows=10:12`, `cols=20:22` ROI against the
+same pixels from the full 21,025-record expansion.
+
 ## Missing
 
 - generic ERDAS Imagine/LAN metadata parsing;
 - other LAN dimensions, data types and interleaves;
-- ROI/mask API for extracting only selected pixels from large cubes;
+- sparse mask API for extracting non-rectangular selected pixels from large
+  cubes;
 - reference comparison against Spectral Python or rasterio;
 - NEON/Specim/HySpex/Headwall/AVIRIS-NG HDF5 or raw cube layouts.
