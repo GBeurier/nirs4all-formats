@@ -122,7 +122,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `buchi_nircal/` | BUCHI NIRCal `.nir` | ✅ | 1 | prospectr |
 | `csv_tsv/` | CSV / TSV / IDL-ENVI text + real handheld CSV | 🟡 | 6 | synthetic + AuroraNIR handheld (sensAIfood) |
 | `envi_sli/` | ENVI Spectral Library + cube + USGS/ECOSTRESS/ASTER ASCII | ✅ | 13 | synthetic SLI + CubeScope-demo cube + spectralpython USGS/ECOSTRESS + ASTER-Spectral-Library + **real USGS splib06a/07 ENVI libraries (pycoal)** |
-| `excel/` | Excel `.xlsx` | 🟡 | 4 | synthetic + real SCiO / NIRone Excel exports (forensic NIR Figshare) |
+| `excel/` | Excel `.xlsx` / `.xlsm` | 🟡 | 5 | synthetic `.xlsx/.xlsm` + real SCiO / NIRone Excel exports (forensic NIR Figshare) |
 | `fgi/` | FGI HDF5 + XML | ⚪ | 2 | synthetic |
 | `foss_winisi/` | Foss WinISI text export / DS3 CSV report | ✅ | 5 | synthetic + real Foss XDS / NIRSYSTEM-5000 CSV exports (sensAIfood Cordoba) |
 | `galactic_spc/` | Thermo / Galactic GRAMS `.spc` | ✅ | 25 + spec PDF | cheminfo/spc-parser, spectrochempy_data |

@@ -1,12 +1,11 @@
 # Excel Spectral Tables
 
-Status: experimental. The `.xlsx` OOXML spectral-table subset is
-fixture-backed by synthetic, multi-sheet and real handheld exports; `.xlsm`
-still lacks a dedicated fixture and legacy `.xls` remains pending.
+Status: experimental / partial. The `.xlsx` / `.xlsm` OOXML spectral-table
+subset is fixture-backed by synthetic, multi-sheet and real handheld exports;
+legacy `.xls` remains pending.
 
 The Excel reader uses the pure-Rust `calamine` crate. It currently supports
-OOXML workbooks (`.xlsx`, with `.xlsm` covered by the same code path but still
-missing a dedicated fixture) whose selected worksheet contains:
+OOXML workbooks (`.xlsx` and `.xlsm`) whose selected worksheet contains:
 
 - one header row;
 - numeric wavelength headers for spectral columns;
@@ -27,6 +26,7 @@ record metadata, while numeric `references` columns are copied to targets.
 | Fixture | Records | Axis | Signal | Targets |
 |---|---:|---|---|---|
 | `samples/excel/synthetic_nirs.xlsx` | 50 | wavelength, `nm`, 200 points | `absorbance` | `protein` |
+| `samples/excel/synthetic_nirs_macro_compatible.xlsm` | 50 | wavelength, `nm`, 200 points | `absorbance` | `protein` |
 | `samples/excel/synthetic_multisheet_nirs.xlsx` | 4 | wavelength, `nm`, 4 points | `absorbance` | `protein`, `moisture` |
 | `samples/excel/nirone_forensic_T_avg.xlsx` | 71 | wavelength, `nm`, 201 points | `absorbance` | none |
 | `samples/excel/scio_forensic_P_avg.xlsx` | 71 | wavelength, `nm`, 331 points | `raw` | none |
@@ -36,10 +36,9 @@ record metadata, while numeric `references` columns are copied to targets.
 
 ## Dispatch Boundaries
 
-Legacy `.xls` OLE workbooks, fixture-backed `.xlsm` validation,
-caller-selected non-canonical sheet names and
+Legacy `.xls` OLE workbooks, caller-selected non-canonical sheet names and
 workbooks where Excel has coerced wavelengths into dates remain pending. The
 current reader is intentionally limited to numeric spectral headers so malformed
 lab transfers fail clearly instead of silently producing shifted axes. Probe
-tests lock the real handheld workbooks from SCiO, NIRone, NeoSpectra and
-MicroNIR in addition to the synthetic Excel fixtures.
+tests lock the `.xlsx` and `.xlsm` synthetic workbooks plus real handheld
+workbooks from SCiO, NIRone, NeoSpectra and MicroNIR.

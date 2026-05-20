@@ -7,7 +7,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Tables spectrales delimitees | Generique | `.csv`, `.tsv`, `.txt` | en-tetes numeriques | fait | pandas, read.table, nirs4all CSVLoader |
 | Tables axe-first | Generique / exports instrument | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` | une colonne axe + signaux | fait | pandas, read.table |
 | Matrices spectrales | Generique / Foss / Metrohm / VIAVI | `.csv`, `.txt` | un spectre par ligne | fait | pandas, read.table |
-| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` code-path sans fixture; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
+| Excel spectral | Generique / lab | `.xlsx`, `.xlsm`, `.xls` | `.xlsx` reel + descripteur axis/data OK; `.xlsm` fixture-backed; `.xls` manquant | partiel | calamine, openpyxl, pandas, readxl |
 | ASD FieldSpec | ASD / Malvern Panalytical | `.asd` | revisions 1, 6, 7, 8 | partiel | asdreader, prospectr, spectrolab, specdal, pyASDReader |
 | ASD calibration | ASD / Malvern Panalytical | `.ILL`, `.REF`, `.RAW` | compagnons calibration; aucun sample ASD compagnon | bloqué | SPECCHIO, asdreader |
 | Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7; `.IRR` present est ASCII | partiel | lightr |
@@ -70,7 +70,7 @@ passer le format a `fait`.
 
 | Nom | Status nirs4allio | Note / manque |
 |---|---|---|
-| Excel spectral | partiel | Ajouter `.xls` legacy, une fixture `.xlsm` dediee et plus de fixtures multi-feuilles reelles; XLSX axis/data descriptor et handheld UvA sont couverts. |
+| Excel spectral | partiel | `.xlsx` synthetique/multi-feuilles/reels UvA et `.xlsm` OOXML macro-compatible sont golden-backed. Restent `.xls` legacy OLE, un vrai `.xlsm` avec macros si besoin de metadata VBA, plus de fixtures multi-feuilles reelles et les cas ou Excel convertit les longueurs d'onde en dates. |
 | ASD FieldSpec | partiel | Revisions 1/6/7/8 primary spectra couvertes; restent v3/v4/v5 eventuelles, blocs internes secondary/dependent/reference/calibration, audit/signatures et compagnons calibration `.ILL/.REF/.RAW` separes. |
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`; les samples `.asd` actuels ne contiennent pas les compagnons calibration, et le `.REF` present dans `samples/avantes/` est Avantes, pas ASD. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS` et autres modes binaires legacy puis comparaison `lightr`; le `.IRR` present est un export ASCII couvert par Avantes ASCII, pas une preuve du binaire legacy. |

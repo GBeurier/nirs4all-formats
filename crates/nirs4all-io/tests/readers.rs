@@ -2546,25 +2546,38 @@ fn reads_prospectr_nirsoil_rdata_dataset() {
 
 #[test]
 fn reads_synthetic_excel_workbook() {
-    let records =
-        open_path(workspace_file("samples/excel/synthetic_nirs.xlsx")).expect("open xlsx");
+    for relative in [
+        "samples/excel/synthetic_nirs.xlsx",
+        "samples/excel/synthetic_nirs_macro_compatible.xlsm",
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open excel");
 
-    assert_eq!(records.len(), 50);
-    assert_eq!(records[0].provenance.format, "excel-xlsx");
-    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("S000"));
-    assert_eq!(records[0].metadata["sheet"].as_str(), Some("spectra"));
-    assert_eq!(
-        records[0].targets["protein"].as_f64(),
-        Some(10.53211185428271)
-    );
-    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
-    assert_eq!(absorbance.axis.values.len(), 200);
-    assert_eq!(absorbance.axis.unit, "nm");
-    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
-    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
-    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
-    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
-    assert!((absorbance.values[0] - 0.03674271524932157).abs() < 0.000001);
+        assert_eq!(records.len(), 50, "{relative}");
+        assert_eq!(records[0].provenance.format, "excel-xlsx", "{relative}");
+        assert_eq!(
+            records[0].metadata["sample_id"].as_str(),
+            Some("S000"),
+            "{relative}"
+        );
+        assert_eq!(
+            records[0].metadata["sheet"].as_str(),
+            Some("spectra"),
+            "{relative}"
+        );
+        assert_eq!(
+            records[0].targets["protein"].as_f64(),
+            Some(10.53211185428271),
+            "{relative}"
+        );
+        let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+        assert_eq!(absorbance.axis.values.len(), 200, "{relative}");
+        assert_eq!(absorbance.axis.unit, "nm", "{relative}");
+        assert_eq!(absorbance.axis.kind, AxisKind::Wavelength, "{relative}");
+        assert_eq!(absorbance.signal_type, SignalType::Absorbance, "{relative}");
+        assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+        assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+        assert!((absorbance.values[0] - 0.03674271524932157).abs() < 0.000001);
+    }
 }
 
 #[test]
