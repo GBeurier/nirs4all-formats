@@ -120,6 +120,20 @@ fn probes_hdf5_containers() {
     }));
 }
 
+#[test]
+fn probes_matlab_containers() {
+    let probes = probe_path(workspace_file("samples/matlab/synthetic_nirs_v5.mat")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "matlab-v5" && probe.confidence == Confidence::Definite));
+
+    let probes =
+        probe_path(workspace_file("samples/matlab/synthetic_nirs_v73.mat")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "matlab-v73-hdf5" && probe.confidence == Confidence::Likely
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

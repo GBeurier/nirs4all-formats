@@ -155,7 +155,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 
 | Format | Why it matters | Decision |
 |---|---|---|
-| `.mat` (MATLAB) | Many academic NIR datasets are shared as MATLAB files | Already in `nirs4all` via `MatlabLoader`. Reuse. |
+| `.mat` (MATLAB) | Many academic NIR datasets are shared as MATLAB files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`; Eigenvector DSOs need a dedicated mapper. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
 | `.xlsx` | Many lab transfers happen via Excel | Already in `nirs4all`. Reuse. |
 | Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |

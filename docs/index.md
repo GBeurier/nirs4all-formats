@@ -19,6 +19,7 @@ formats/envi-sli
 formats/galactic-spc
 formats/hdf5
 formats/jcamp-dx
+formats/matlab
 formats/msa-iso22029
 formats/netcdf
 formats/ocean-optics

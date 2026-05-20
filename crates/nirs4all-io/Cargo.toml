@@ -10,6 +10,7 @@ repository.workspace = true
 [dependencies]
 nirs4all-io-core.workspace = true
 hdf5-reader = "0.5.0"
+matfile = "0.5.0"
 netcdf-reader = "0.5.0"
 quick-xml = "0.40.1"
 serde.workspace = true
