@@ -1382,6 +1382,49 @@ fn reads_trivista_tvf_modes() {
         records[0].metadata["record_time"].as_str(),
         Some("06/14/2022 13:34:27.453")
     );
+    assert_eq!(records[0].metadata["xdim_length"].as_u64(), Some(1024));
+    assert_eq!(
+        records[0].metadata["spectral_axis_label"].as_str(),
+        Some("Wavelength")
+    );
+    assert_eq!(
+        records[0].metadata["spectral_axis_unit"].as_str(),
+        Some("nm")
+    );
+    assert_eq!(
+        records[0].metadata["spectral_axis_display_unit"].as_str(),
+        Some("Nanometer")
+    );
+    assert_eq!(
+        records[0].metadata["spectral_axis_calibration_type"].as_str(),
+        Some("ValueArray")
+    );
+    assert_eq!(
+        records[0].metadata["spectral_axis_laser_wave"].as_f64(),
+        Some(0.0)
+    );
+    assert_eq!(
+        records[0].metadata["detector_name"].as_str(),
+        Some("Camera1")
+    );
+    assert_eq!(
+        records[0].metadata["detector_size"].as_str(),
+        Some("1024;1")
+    );
+    assert_eq!(
+        records[0].metadata["detector_adc_readout_port"].as_str(),
+        Some("Normal")
+    );
+    assert_eq!(
+        records[0].metadata["detector_adc_rate_resolution"].as_str(),
+        Some("1 MHz")
+    );
+    assert_eq!(records[0].metadata["detector_adc_gain"].as_f64(), Some(2.0));
+    assert_eq!(
+        records[0].metadata["detector_temperature_c"].as_f64(),
+        Some(-25.0)
+    );
+    assert!(!records[0].metadata.contains_key("time_index"));
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.values.len(), 1024);
     assert_eq!(signal.axis.unit, "nm");
@@ -1399,6 +1442,10 @@ fn reads_trivista_tvf_modes() {
         Some("LineScanX")
     );
     assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-0.010));
+    assert_eq!(
+        records[0].metadata["spatial_x_unit"].as_str(),
+        Some("unknown")
+    );
     assert_eq!(records[20].metadata["spatial_x"].as_f64(), Some(0.010));
     assert_eq!(records[20].metadata["spatial_x_index"].as_u64(), Some(20));
     let signal = records[0].signals.get("intensity").expect("intensity");
@@ -1414,16 +1461,54 @@ fn reads_trivista_tvf_modes() {
     );
     assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-0.100));
     assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-0.100));
+    assert_eq!(
+        records[0].metadata["spatial_x_unit"].as_str(),
+        Some("unknown")
+    );
+    assert_eq!(
+        records[0].metadata["spatial_y_unit"].as_str(),
+        Some("unknown")
+    );
     assert_eq!(records[80].metadata["spatial_x"].as_f64(), Some(0.100));
     assert_eq!(records[80].metadata["spatial_y"].as_f64(), Some(0.100));
     assert_eq!(records[80].metadata["spatial_x_index"].as_u64(), Some(8));
     assert_eq!(records[80].metadata["spatial_y_index"].as_u64(), Some(8));
 
     let records = open_path(workspace_file(
+        "samples/raman_trivista/spec_multiple_spectrometers.tvf",
+    ))
+    .expect("open TriVista multi-spectrometer");
+    assert_eq!(records.len(), 1);
+    assert!(!records[0].metadata.contains_key("time_index"));
+    assert_eq!(records[0].metadata["spectrometer_count"].as_u64(), Some(3));
+    assert_eq!(
+        records[0].metadata["spectrometer_serial_numbers"]
+            .as_array()
+            .and_then(|values| values.first())
+            .and_then(|value| value.as_str()),
+        Some("25580419")
+    );
+    assert_eq!(
+        records[0].metadata["spectrometer_models"]
+            .as_array()
+            .and_then(|values| values.get(2))
+            .and_then(|value| value.as_str()),
+        Some("SP-2-750i")
+    );
+    assert_eq!(
+        records[0].metadata["spectrometer_stage_numbers"]
+            .as_array()
+            .and_then(|values| values.get(2))
+            .and_then(|value| value.as_f64()),
+        Some(3.0)
+    );
+
+    let records = open_path(workspace_file(
         "samples/raman_trivista/spec_timeseries_2x1s_delta3s.tvf",
     ))
     .expect("open TriVista time series");
     assert_eq!(records.len(), 2);
+    assert_eq!(records[1].metadata["time_index"].as_u64(), Some(1));
     assert!(
         (records[1].metadata["elapsed_time_seconds"]
             .as_f64()
@@ -1440,11 +1525,14 @@ fn reads_trivista_tvf_modes() {
     assert_eq!(records.len(), 20);
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.values.len(), 18000);
+    assert_eq!(records[0].metadata["xdim_length"].as_u64(), Some(18000));
+    assert!(!records[0].metadata.contains_key("time_index"));
     assert_eq!(
         records[0].metadata["child_document_count"].as_u64(),
         Some(19)
     );
     assert_eq!(records[1].metadata["document_role"].as_str(), Some("child"));
+    assert_eq!(records[1].metadata["xdim_length"].as_u64(), Some(1024));
     let signal = records[1]
         .signals
         .get("intensity")

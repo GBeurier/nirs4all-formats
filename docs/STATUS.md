@@ -127,7 +127,10 @@ Experimental native readers:
   length matches the stored spectrum count.
 - Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
   spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
-  emits one record per frame and preserves Step-and-Glue child windows.
+  emits one record per frame, validates `xDim` lengths, preserves
+  Step-and-Glue child windows, and promotes detector plus numbered
+  spectrometer metadata. Spatial navigation units are no longer guessed when
+  absent in the source metadata.
 - DigitalSurf MountainsMap (`.sur`, `.pro`) spectral/profile/surface payloads
   via fixed headers and zlib-stream compression. Single spectra, multi-spectrum
   profiles and hyperspectral maps emit one record per spectrum or XY point;
