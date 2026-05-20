@@ -1,4 +1,4 @@
-use nirs4all_io::{open_path, AxisKind, AxisOrder, SignalType};
+use nirs4all_io::{open_path, AxisKind, AxisOrder, Error, SignalType};
 
 #[test]
 fn reads_asd_fieldspec_revisions() {
@@ -2282,6 +2282,24 @@ fn reads_galactic_spc_old_lsb_header() {
         .warnings
         .iter()
         .any(|warning| warning.contains("old_spc_header_limited")));
+}
+
+#[test]
+fn refuses_witec_wip_binary_projects() {
+    let mut path = std::env::temp_dir();
+    path.push(format!("nirs4all-io-witec-wip-{}.wip", std::process::id()));
+    std::fs::write(&path, b"WIT^\0\0\0\0synthetic").expect("write synthetic wip");
+
+    let err = open_path(&path).expect_err("WiTec WIP must be refused");
+    let _ = std::fs::remove_file(&path);
+
+    match err {
+        Error::InvalidRecord(message) => {
+            assert!(message.contains("WiTec WIP/WID binary project files are not supported yet"));
+            assert!(message.contains("Export spectra from WiTec Project/FIVE as ASCII text"));
+        }
+        other => panic!("unexpected error: {other}"),
+    }
 }
 
 fn workspace_file(relative: &str) -> std::path::PathBuf {

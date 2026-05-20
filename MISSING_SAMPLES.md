@@ -41,7 +41,7 @@ These have a synthetic file matching the documented shape, but no real vendor bi
 | 13 | FGI HDF5 + XML pairing | (FGI lab spectrometers) | Finnish Geodetic Institute | real FGI-schema HDF5 | ⚪ | Schema is institutional; no public fixture. | A Finnish FGI / NLS researcher. |
 | 14 | UVProbe `.txt` (real) | UV-1900 / UV-2700 | Shimadzu | real customer export | ⚪ | Synthetic only — the actual layout matches Shimadzu docs but no real export was found. | Any UVProbe user. |
 | 15 | JASCO `.txt` Raman export (real) | NRS-4500 / NRS-7500 Raman | JASCO | real Raman text export | ⚪ | Synthetic JASCO V-770 export only — Raman path not exercised. | A JASCO NRS-series owner. |
-| 16 | WiTec `.wip` / `.wid` binary | alpha300 / alpha500 confocal Raman | WiTec | binary project file (any firmware) | 🟡 | No open reader exists; only ASCII export is mirrored on GitHub. | A WiTec confocal Raman customer; alpha300 alpha500 owner. |
+| 16 | WiTec `.wip` / `.wid` binary | alpha300 / alpha500 confocal Raman | WiTec | binary project file (any firmware) | 🟡 | Detection/refusal exists, but native decode has no redistributable fixture; only ASCII export is mirrored on GitHub. | A WiTec confocal Raman customer; alpha300 alpha500 owner. |
 | 17 | Horiba LabSpec `.l6s` / `.l6m` binary | LabRAM HR Evolution / LabRAM Odyssey / XploRA | Horiba (Jobin Yvon) | LabSpec 6 native binary | 🟡 | No open reader. ASCII export from "Save As Spectrum / Map" is the practical path. | A Horiba LabRAM customer. |
 
 ---

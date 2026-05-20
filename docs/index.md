@@ -40,6 +40,7 @@ formats/spectral-matrix
 formats/sun-photometers
 formats/text-readers-001
 formats/trivista-tvf
+formats/witec-wip
 DATA_MODEL
 CONFORMANCE
 REVERSE_ENGINEERING

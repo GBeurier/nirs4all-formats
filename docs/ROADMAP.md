@@ -87,6 +87,9 @@ Deliverables:
 - Hamamatsu HPD-TA `.img` reader; experimental adjacent-format support for
   2D streak-camera `y,x` raw-count signals with time/CCD secondary-axis
   metadata;
+- WiTec WIP/WID detector/refusal path; signed `WIT^` binary project containers
+  are recognized and refused with explicit WiTec Project/FIVE ASCII-export
+  guidance while native parsing waits for a redistributable fixture;
 - mzML detector/refusal path; committed MS fixtures are recognized and rejected
   with explicit `pyteomics` / `pymzML` guidance instead of being coerced into
   optical spectra;
@@ -108,8 +111,9 @@ Gate:
 
 Status: in progress. Single-block `XYDATA`, ASDF PAC/SQZ/DIF/DUP ordinate
 encodings, NMR `NTUPLES` real/imaginary pages and Ocean Optics
-`LINK`/`XYPOINTS` blocks are experimental; `PEAK TABLE` and broader multi-block
-files remain pending.
+`LINK`/`XYPOINTS` blocks are experimental. `PEAK TABLE` is now explicitly
+refused and short `NPOINTS` payloads fail strictly; real peak-list support and
+broader multi-block files remain pending.
 
 Deliverables:
 
@@ -117,7 +121,9 @@ Deliverables:
 - PAC/SQZ/DIF/DUP ASDF decoding; experimental;
 - NMR `NTUPLES` real/imaginary pages; experimental;
 - Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks; experimental;
-- then `PEAK TABLE` and broader multi-block `LINK`;
+- explicit `PEAK TABLE` refusal until a sparse peak-list export model exists;
+- strict short-`NPOINTS` rejection and incompatible-axis `LINK` rejection;
+- then real `PEAK TABLE` support and broader multi-block `LINK`;
 - conformance against open JCAMP readers where possible;
 - adversarial tests for malformed label-data records and compressed archives.
 
@@ -190,8 +196,8 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- WiTec WIP detection/refusal for lab-transfer and adjacent spectroscopy
-  workflows, DigitalSurf richer comment/metadata parsing, TriVista richer
+- WiTec native WIP/WID parsing once a redistributable or private-test binary
+  fixture exists; DigitalSurf richer comment/metadata parsing, TriVista richer
   hardware metadata and later Renishaw WDF `MAP ` dataRange decoding if derived
   analysis maps become part of the export model;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
@@ -200,3 +206,16 @@ Add one family at a time:
 - adjacent formats only when they help disambiguation or user workflows.
 
 Every new format repeats the same lifecycle: Experimental -> Beta -> Done.
+
+## Owner-Requested Documentation Backlog
+
+Keep these items at the bottom of the roadmap until they are scheduled and
+closed:
+
+- rewrite the root `README.md` so it states the Rust-first architecture,
+  binding strategy, current maturity and contribution path clearly;
+- add implementation visualizations for format coverage, probe confidence,
+  maturity level and missing fixture/reference-reader gaps;
+- audit every format page under `docs/formats/` so each one describes the file
+  format, implemented behavior, missing behavior, validation fixtures,
+  reference libraries and conformance status.

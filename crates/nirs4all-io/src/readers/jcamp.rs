@@ -84,6 +84,7 @@ struct ParsedJcampSignal {
 }
 
 fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    reject_peak_table(text)?;
     if is_link_jcamp(text) {
         return parse_link_jcamp_text(text);
     }
@@ -99,6 +100,8 @@ fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
 }
 
 fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    reject_peak_table(text)?;
+
     let mut ldr = BTreeMap::<String, String>::new();
     let mut xy_lines = Vec::new();
     let mut in_xy = false;
@@ -152,7 +155,7 @@ fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     };
     if values.is_empty() {
         return Err(nirs4all_io_core::Error::InvalidRecord(
-            "JCAMP XYDATA contains no plain AFFN values; packed DIF/DUP support is pending"
+            "JCAMP XYDATA contains no decoded ordinate values; supported data tables are XYDATA and XYPOINTS"
                 .to_string(),
         ));
     }
@@ -166,10 +169,10 @@ fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
             values.truncate(expected);
             axis.truncate(expected);
         } else if values.len() < expected {
-            warnings.push(format!(
-                "npoints_mismatch: declared {expected}, parsed {}",
+            return Err(nirs4all_io_core::Error::InvalidRecord(format!(
+                "JCAMP NPOINTS mismatch: declared {expected}, parsed {}",
                 values.len()
-            ));
+            )));
         }
     }
 
@@ -205,6 +208,33 @@ fn is_link_jcamp(text: &str) -> bool {
             return false;
         };
         normalize_key(key) == "data_type" && value.trim().eq_ignore_ascii_case("LINK")
+    })
+}
+
+fn reject_peak_table(text: &str) -> Result<()> {
+    if has_peak_table(text) {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP PEAK TABLE blocks are not supported; expected XYDATA, XYPOINTS, or NTUPLES"
+                .to_string(),
+        ));
+    }
+    Ok(())
+}
+
+fn has_peak_table(text: &str) -> bool {
+    text.lines().any(|line| {
+        let line = line.trim();
+        let Some(body) = line.strip_prefix("##") else {
+            return false;
+        };
+        let Some((key, value)) = body.split_once('=') else {
+            return false;
+        };
+        let normalized = normalize_key(key);
+        matches!(normalized.as_str(), "peak_table" | "peaktable")
+            || (normalized == "data_table" && value.to_ascii_uppercase().contains("PEAK"))
+            || (matches!(normalized.as_str(), "data_type" | "datatype")
+                && value.to_ascii_uppercase().contains("PEAK TABLE"))
     })
 }
 
@@ -999,5 +1029,78 @@ mod tests {
             decode_asdf_values("B254931p506547"),
             vec![2_254_931.0, -5_251_616.0]
         );
+    }
+
+    #[test]
+    fn rejects_peak_table_blocks() {
+        let message = invalid_record_message(parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED SPECTRUM
+##PEAK TABLE=(XY..XY)
+4000, 1.0
+##END=
+",
+        ));
+
+        assert!(message.contains("JCAMP PEAK TABLE blocks are not supported"));
+    }
+
+    #[test]
+    fn rejects_link_child_blocks_with_incompatible_axes() {
+        let message = invalid_record_message(parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=LINK
+##TITLE=linked spectra
+##JCAMP-DX=5.00
+##TITLE=first child
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+100 1 2 3
+##END=
+##JCAMP-DX=5.00
+##TITLE=second child
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=101
+##DELTAX=1
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+101 4 5 6
+##END=
+",
+        ));
+
+        assert!(message.contains("JCAMP LINK child blocks have incompatible axes"));
+    }
+
+    #[test]
+    fn rejects_xydata_with_fewer_points_than_declared() {
+        let message = invalid_record_message(parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED SPECTRUM
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=4
+##XYDATA=(X++(Y..Y))
+100 1 2 3
+##END=
+",
+        ));
+
+        assert!(message.contains("JCAMP NPOINTS mismatch: declared 4, parsed 3"));
+    }
+
+    fn invalid_record_message(result: Result<ParsedJcamp>) -> String {
+        match result {
+            Err(nirs4all_io_core::Error::InvalidRecord(message)) => message,
+            Err(error) => panic!("expected InvalidRecord, got {error:?}"),
+            Ok(_) => panic!("expected InvalidRecord, got parsed JCAMP"),
+        }
     }
 }
