@@ -12,6 +12,7 @@ STATUS
 FORMATS
 formats/avantes
 formats/allotrope-asm
+formats/andi-ms
 formats/animl
 formats/asd
 formats/bruker-opus

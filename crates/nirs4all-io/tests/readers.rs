@@ -1453,13 +1453,20 @@ fn reads_synthetic_nirs_netcdf_dataset() {
 
 #[test]
 fn rejects_non_nirs_netcdf_containers() {
-    for relative in [
-        "samples/andi_ms/gc01_0812_066.cdf",
-        "samples/netcdf/air_temperature.nc",
-    ] {
-        let err = open_path(workspace_file(relative)).expect_err("non-NIRS NetCDF");
-        assert!(err.to_string().contains("no spectra variable"));
-    }
+    let err = open_path(workspace_file("samples/netcdf/air_temperature.nc"))
+        .expect_err("non-NIRS NetCDF");
+    assert!(err.to_string().contains("no spectra variable"));
+}
+
+#[test]
+fn refuses_andi_ms_netcdf_chromatography() {
+    let err = open_path(workspace_file("samples/andi_ms/gc01_0812_066.cdf"))
+        .expect_err("ANDI/MS should be refused");
+    let message = err.to_string();
+    assert!(message.contains("ANDI/MS NetCDF chromatography"));
+    assert!(message.contains("not NIRS spectroscopy"));
+    assert!(message.contains("scan_acquisition_time"));
+    assert!(message.contains("pyteomics.openms.ANDIMS"));
 }
 
 #[test]

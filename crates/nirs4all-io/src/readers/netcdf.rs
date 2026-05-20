@@ -8,6 +8,15 @@ use serde_json::{json, Value};
 use crate::readers::util::{single_signal_record, SingleSignalSpec};
 use crate::Reader;
 
+const ANDI_MS_MARKERS: &[&str] = &[
+    "scan_acquisition_time",
+    "total_intensity",
+    "mass_values",
+    "intensity_values",
+    "point_count",
+];
+const ANDI_MS_MIN_MARKERS: usize = 4;
+
 pub struct NetcdfReader;
 
 impl Reader for NetcdfReader {
@@ -29,6 +38,14 @@ impl Reader for NetcdfReader {
             || head.starts_with(b"CDF\x05")
             || head.starts_with(b"\x89HDF\r\n\x1a\n")
         {
+            if count_andi_ms_markers_in_head(head) >= ANDI_MS_MIN_MARKERS {
+                return Some(FormatProbe::new(
+                    "andi-ms-netcdf",
+                    self.name(),
+                    Confidence::Definite,
+                    "ANDI/MS NetCDF chromatography container; refused on read as non-NIRS",
+                ));
+            }
             Some(FormatProbe::new(
                 "netcdf-container",
                 self.name(),
@@ -53,6 +70,14 @@ fn read_netcdf_records(
     source: SourceFile,
     reader: &str,
 ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+    let andi_ms_markers = andi_ms_markers(file)?;
+    if andi_ms_markers.len() >= ANDI_MS_MIN_MARKERS {
+        return Err(Error::InvalidRecord(format!(
+            "ANDI/MS NetCDF chromatography data is not NIRS spectroscopy; detected variables {}. Use pyteomics.openms.ANDIMS, PyMassSpec or pyOpenMS instead.",
+            andi_ms_markers.join(", ")
+        )));
+    }
+
     let spectra_var = file
         .variable("spectra")
         .map_err(|_| Error::InvalidRecord("NetCDF contains no spectra variable".to_string()))?;
@@ -115,6 +140,17 @@ fn read_netcdf_records(
     Ok(records)
 }
 
+fn andi_ms_markers(file: &NcFile) -> Result<Vec<&'static str>> {
+    let variables = file
+        .variables()
+        .map_err(|error| Error::InvalidRecord(format!("NetCDF metadata error: {error}")))?;
+    Ok(ANDI_MS_MARKERS
+        .iter()
+        .copied()
+        .filter(|marker| variables.iter().any(|variable| variable.name() == *marker))
+        .collect())
+}
+
 fn find_axis_variable(file: &NcFile, band_count: usize) -> Result<(&str, &NcVariable)> {
     for name in ["wavelengths", "wavelength", "wavelength_nm", "x"] {
         if let Ok(variable) = file.variable(name) {
@@ -152,6 +188,20 @@ fn target_columns(
         }
     }
     Ok(targets)
+}
+
+fn count_andi_ms_markers_in_head(head: &[u8]) -> usize {
+    ANDI_MS_MARKERS
+        .iter()
+        .filter(|marker| contains_bytes(head, marker.as_bytes()))
+        .count()
+}
+
+fn contains_bytes(haystack: &[u8], needle: &[u8]) -> bool {
+    !needle.is_empty()
+        && haystack
+            .windows(needle.len())
+            .any(|window| window == needle)
 }
 
 fn base_metadata(file: &NcFile, spectra_var: &NcVariable) -> BTreeMap<String, Value> {
