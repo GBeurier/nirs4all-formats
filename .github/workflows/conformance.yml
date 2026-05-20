@@ -1,0 +1,17 @@
+name: Conformance
+
+on:
+  schedule:
+    - cron: "19 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  placeholder:
+    name: Reference-reader conformance placeholder
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Explain
+        run: |
+          echo "Reference-reader conformance jobs will be enabled as readers reach Beta."
+          test -f docs/CONFORMANCE.md

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nirs4all-reverse-lab"
+version = "0.1.0a0"
+description = "Reverse-engineering helpers for nirs4all-io formats."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "G. Beurier", email = "beurier@cirad.fr" }]
+dependencies = []
+
+[project.scripts]
+nirs4all-reverse-lab = "nirs4all_reverse_lab.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nirs4all_reverse_lab"]

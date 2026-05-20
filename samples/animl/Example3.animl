@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AnIML version="1.0">
+    <SampleSet>
+        <Sample name="Matcha" sampleID="Matcha-00001" />
+    </SampleSet>
+    <ExperimentStepSet>
+        <ExperimentStep experimentStepID="es-1" name="D33 Water (LO / Duplex emulsions)">
+            <Infrastructure>
+                <SampleReferenceSet>
+                    <SampleReference sampleID="Matcha-00001" role="Test Sample" samplePurpose="consumed" />
+                </SampleReferenceSet>
+                <Timestamp>2025-04-23T12:46:41.184+05:30</Timestamp>
+            </Infrastructure>
+            <Method name="D33 Water (LO / Duplex emulsions)">
+                <Device>
+                    <Manufacturer>Bruker</Manufacturer>
+                    <Name>NMR MQ20</Name>
+                </Device>
+            </Method>
+            <Result name="D33 Water (LO / Duplex emulsions)">
+                <Category name="D33 Water (LO / Duplex emulsions)">
+                    <Parameter name="ESigma" parameterType="Float64">
+                        <D>1.58</D>
+                    </Parameter>
+                    <Parameter name="LDelta" parameterType="Float64">
+                        <D>210.0</D>
+                        <Unit label="ms" />
+                    </Parameter>
+                    <Parameter name="D33" parameterType="Float64">
+                        <D>3.31</D>
+                        <Unit label="µm" />
+                    </Parameter>
+                    <Parameter name="D00" parameterType="Float64">
+                        <D>1.8</D>
+                        <Unit label="µm" />
+                    </Parameter>
+                    <Parameter name="2_5%" parameterType="Float64">
+                        <D>1.4</D>
+                        <Unit label="%" />
+                    </Parameter>
+                    <Parameter name="Sigma" parameterType="Float64">
+                        <D>0.46</D>
+                    </Parameter>
+                    <Parameter name="D33 Error" parameterType="Float64">
+                        <D>0.06</D>
+                    </Parameter>
+                    <Parameter name="Sigma Error" parameterType="Float64">
+                        <D>0.05</D>
+                    </Parameter>
+                    <Parameter name="50_0%" parameterType="Float64">
+                        <D>3.3</D>
+                        <Unit label="%" />
+                    </Parameter>
+                    <Parameter name="97_5%" parameterType="Float64">
+                        <D>8.1</D>
+                        <Unit label="%" />
+                    </Parameter>
+                </Category>
+            </Result>
+        </ExperimentStep>
+        <ExperimentStep experimentStepID="es-2" name="External/Free Water Duplex">
+            <Infrastructure>
+                <SampleReferenceSet>
+                    <SampleReference sampleID="Matcha-00001" role="Test Sample" samplePurpose="consumed" />
+                </SampleReferenceSet>
+                <Timestamp>2025-04-23T12:46:41.184+05:30</Timestamp>
+            </Infrastructure>
+            <Method name="External/Free Water Duplex">
+                <Device>
+                    <Manufacturer>Bruker</Manufacturer>
+                    <Name>NMR MQ20</Name>
+                </Device>
+            </Method>
+            <Result name="External/Free Water Duplex">
+                <Category name="External/Free Water Duplex">
+                    <Parameter name="Outer Water Error%" parameterType="Float64">
+                        <D>0.8</D>
+                        <Unit label="%" />
+                    </Parameter>
+                    <Parameter name="LDelta" parameterType="Float64">
+                        <D>210.0</D>
+                        <Unit label="ms" />
+                    </Parameter>
+                    <Parameter name="SDelta" parameterType="Float64">
+                        <D>1.5</D>
+                        <Unit label="ms" />
+                    </Parameter>
+                    <Parameter name="Error" parameterType="Float64">
+                        <D>3.47E-12</D>
+                    </Parameter>
+                    <Parameter name="Diffusion Constant" parameterType="Float64">
+                        <D>3.6682E-10</D>
+                        <Unit label="m²/s" />
+                    </Parameter>
+                    <Parameter name="Outer Water%" parameterType="Float64">
+                        <D>86.7</D>
+                        <Unit label="%" />
+                    </Parameter>
+                </Category>
+            </Result>
+        </ExperimentStep>
+    </ExperimentStepSet>
+</AnIML>

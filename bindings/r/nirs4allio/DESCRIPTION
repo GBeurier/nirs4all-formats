@@ -1,0 +1,12 @@
+Package: nirs4allio
+Title: R Binding for nirs4all-io
+Version: 0.1.0.9000
+Authors@R: person("G.", "Beurier", email = "beurier@cirad.fr", role = c("aut", "cre"))
+Description: Thin R binding for the Rust-first nirs4all-io NIRS file loading core.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

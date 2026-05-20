@@ -1,0 +1,13 @@
+[package]
+name = "nirs4all-io"
+description = "Rust-first NIRS and spectroscopy file loading facade."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+nirs4all-io-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
