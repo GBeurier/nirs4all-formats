@@ -210,8 +210,20 @@ fn reads_nicolet_omnic_srs_tg_gc_series() {
     assert_eq!(records.len(), 1);
     let record = &records[0];
     assert_eq!(record.provenance.format, "nicolet-omnic-srs");
+    assert!(record
+        .provenance
+        .warnings
+        .contains(&"nicolet_omnic_srs_tg_gc_reverse_engineered".to_string()));
     assert_eq!(record.metadata["series_variant"].as_str(), Some("tg_gc"));
     assert_eq!(record.metadata["series_y_len"].as_u64(), Some(788));
+    assert!(
+        (record.metadata["series_y_first_min"].as_f64().unwrap() - 0.025440828874707222).abs()
+            < 0.000001
+    );
+    assert!(
+        (record.metadata["series_y_last_min"].as_f64().unwrap() - 20.047266006469727).abs()
+            < 0.000001
+    );
     assert_eq!(
         record.metadata["omnic_srs_data_header_offset"].as_u64(),
         Some(5_584)
@@ -232,6 +244,7 @@ fn reads_nicolet_omnic_srs_tg_gc_series() {
     assert_eq!(transmittance.axis.kind, AxisKind::Wavenumber);
     assert_eq!(transmittance.axis.order, AxisOrder::Descending);
     assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert_eq!(transmittance.unit.as_deref(), Some("%"));
     assert!((transmittance.axis.values[0] - 3999.704346).abs() < 0.000001);
     assert!((transmittance.axis.values[1_737] - 649.903809).abs() < 0.000001);
     assert!((transmittance.values[0] - 99.701584).abs() < 0.000001);
@@ -246,7 +259,20 @@ fn reads_nicolet_omnic_srs_tgair_series() {
     assert_eq!(records.len(), 1);
     let record = &records[0];
     assert_eq!(record.provenance.format, "nicolet-omnic-srs");
+    assert!(record
+        .provenance
+        .warnings
+        .contains(&"nicolet_omnic_srs_tg_gc_reverse_engineered".to_string()));
+    assert_eq!(record.metadata["series_variant"].as_str(), Some("tg_gc"));
     assert_eq!(record.metadata["series_y_len"].as_u64(), Some(335));
+    assert!(
+        (record.metadata["series_y_first_min"].as_f64().unwrap() - 0.25975024700164795).abs()
+            < 0.000001
+    );
+    assert!(
+        (record.metadata["series_y_last_min"].as_f64().unwrap() - 87.01625061035156).abs()
+            < 0.000001
+    );
     assert_eq!(
         record.metadata["omnic_srs_data_header_offset"].as_u64(),
         Some(14_032)
@@ -262,6 +288,10 @@ fn reads_nicolet_omnic_srs_tgair_series() {
     let absorbance = record.signals.get("absorbance").expect("absorbance");
     assert_eq!(absorbance.axis.values.len(), 1_868);
     assert_eq!(absorbance.values.len(), 625_780);
+    assert_eq!(absorbance.dims, vec!["y".to_string(), "x".to_string()]);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
     assert_eq!(absorbance.signal_type, SignalType::Absorbance);
     assert!((absorbance.axis.values[0] - 3999.706055).abs() < 0.000001);
     assert!((absorbance.axis.values[1_867] - 399.199188).abs() < 0.000001);
