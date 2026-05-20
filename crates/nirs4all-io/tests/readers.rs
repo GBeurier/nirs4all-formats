@@ -323,6 +323,49 @@ fn reads_ocean_optics_jaz_irradiance_export() {
 }
 
 #[test]
+fn reads_ocean_optics_linux_procspec_archive() {
+    let records = open_path(workspace_file(
+        "samples/ocean_optics/OceanOptics_Linux.ProcSpec",
+    ))
+    .expect("open procspec");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "ocean-optics-procspec");
+    assert!(records[0].provenance.warnings.is_empty());
+    let processed = records[0].signals.get("processed").expect("processed");
+    assert_eq!(processed.axis.values.len(), 3_648);
+    assert_eq!(processed.axis.unit, "nm");
+    assert_eq!(processed.axis.kind, AxisKind::Wavelength);
+    assert!((processed.axis.values[0] - 176.3604183).abs() < 0.000001);
+    assert!((processed.axis.values[3_647] - 893.6943397004063).abs() < 0.000001);
+    assert_eq!(processed.signal_type, SignalType::Unknown);
+    assert!((processed.values[0] - 0.0).abs() < 0.000001);
+    assert!((processed.values[3_647] - 125.07433102081265).abs() < 0.000001);
+    assert!(records[0].signals.contains_key("sample"));
+    assert!(records[0].signals.contains_key("dark_reference"));
+    assert!(records[0].signals.contains_key("white_reference"));
+}
+
+#[test]
+fn reads_ocean_optics_windows_and_reference_procspec_archives() {
+    let windows = open_path(workspace_file(
+        "samples/ocean_optics/OceanOptics_Windows.ProcSpec",
+    ))
+    .expect("open windows procspec");
+    let windows_processed = windows[0].signals.get("processed").expect("processed");
+    assert_eq!(windows_processed.axis.values.len(), 2_048);
+    assert!((windows_processed.values[0] - 282.8571428571289).abs() < 0.000001);
+    assert!((windows_processed.values[2_047] - 40.05032131664623).abs() < 0.000001);
+
+    let whiteref =
+        open_path(workspace_file("samples/ocean_optics/whiteref.ProcSpec")).expect("open whiteref");
+    let whiteref_processed = whiteref[0].signals.get("processed").expect("processed");
+    assert_eq!(whiteref_processed.axis.values.len(), 3_648);
+    assert!((whiteref_processed.values[0] - 0.0).abs() < 0.000001);
+    assert!((whiteref_processed.values[3_647] - 97.29425028184893).abs() < 0.000001);
+}
+
+#[test]
 fn rejects_envi_standard_image_cube_for_v1() {
     let err = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
         .expect_err("cube should be out of scope");

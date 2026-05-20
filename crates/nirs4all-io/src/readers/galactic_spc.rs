@@ -22,6 +22,9 @@ impl Reader for GalacticSpcReader {
     }
 
     fn sniff(&self, head: &[u8], _path: &Path) -> Option<FormatProbe> {
+        if head.starts_with(b"PK") {
+            return None;
+        }
         let version = *head.get(1)?;
         match version {
             0x4b if looks_like_new_lsb_spc(head) => Some(FormatProbe::new(

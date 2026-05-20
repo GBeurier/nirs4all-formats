@@ -16,6 +16,18 @@ fn probes_committed_csv_fixture() {
         .any(|probe| probe.format == "delimited-text" && probe.confidence == Confidence::Likely));
 }
 
+#[test]
+fn procspec_zip_does_not_probe_as_galactic_spc() {
+    let probes = probe_path(workspace_file(
+        "samples/ocean_optics/OceanOptics_Linux.ProcSpec",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "ocean-optics-procspec" && probe.confidence == Confidence::Definite
+    }));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

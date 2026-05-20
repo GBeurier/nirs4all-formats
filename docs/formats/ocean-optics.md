@@ -1,6 +1,7 @@
 # Ocean Optics / Ocean Insight
 
-Experimental native Rust reader for Ocean Optics-style ASCII exports.
+Experimental native Rust reader for Ocean Optics-style ASCII exports and
+OceanView `.ProcSpec` archives.
 
 ## Scope Implemented
 
@@ -12,15 +13,17 @@ The current reader covers the committed text fixtures:
 - Jaz ASCII exports (`.jaz`, `.JazIrrad`) with `W/D/R/S/P` columns;
 - CRAIC two-column reflectance text export;
 - simple two-column Ocean-style CSV export.
+- OceanView `.ProcSpec` ZIP archives containing `ps_*.xml`, `OOIVersion.txt`
+  and `OOISignatures.xml`.
 
 The first tranche intentionally does not parse:
 
-- `.ProcSpec` ZIP/XML/binary containers;
 - Ocean Optics `.spc` binary flavor;
 - Ocean Optics JCAMP beyond what the JCAMP reader can already decode.
 
-Those require separate sniffing because `.ProcSpec` is a proprietary mixed
-container and `.spc` collides with Galactic SPC and other vendor families.
+The `.ProcSpec` reader validates the SHA-512 signature when
+`OOISignatures.xml` is present. Ocean Optics `.spc` still requires separate
+sniffing because it collides with Galactic SPC and other vendor families.
 
 ## Record Mapping
 
@@ -41,6 +44,14 @@ For Jaz multichannel exports:
 - `P`: processed signal, mapped to `irradiance` for `Jaz Absolute Irradiance`
   files and to `processed` when the semantic type is not explicit.
 
+For `.ProcSpec` archives:
+
+- `channelWavelengths`: wavelength axis in `nm`;
+- source `pixelValues`: `sample` raw counts;
+- `darkSpectrum/pixelValues`: `dark_reference` raw counts;
+- `referenceSpectrum/pixelValues`: `white_reference` raw counts;
+- `processedPixels`: `processed` signal.
+
 Metadata is preserved under `metadata.vendor` using normalized key names. The
 reader stores the source file name there as well, because some workflows encode
 the measurement type in the extension rather than in the text header.
@@ -58,14 +69,15 @@ Current committed controls:
 | `spec.csv` | 1994 | `processed` | `299.99 -> 700.03 nm` | first `10.013`, last `15.408` |
 | `jazspec.jaz` | 2048 | `dark_reference`, `white_reference`, `sample`, `processed` | `190.8535 -> 886.439331 nm` | processed last `13.679238` |
 | `irrad.JazIrrad` | 2048 | `dark_reference`, `sample`, `irradiance` | `191.016296 -> 891.915466 nm` | irradiance last `3.643908` |
+| `OceanOptics_Linux.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 125.074331` |
+| `OceanOptics_Windows.ProcSpec` | 2048 | `sample`, `dark_reference`, `white_reference`, `processed` | `190.939253 -> 888.233535 nm` | processed `282.857143 -> 40.050321` |
+| `whiteref.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 97.294250` |
 
 `lightr` is the practical external reference for this family, but it remains a
 conformance-only dependency because the Rust core is MIT.
 
 ## Next Work
 
-- Decode `.ProcSpec` enough to expose the processed spectrum and checksum
-  metadata.
 - Disambiguate Ocean Optics `.spc` from Galactic SPC at the sniffer level.
 - Add reference reports against `lightr`.
 - Improve semantic typing of generic `processed` spectra when the export

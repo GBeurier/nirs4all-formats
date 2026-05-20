@@ -60,6 +60,18 @@ const CASES: &[(&str, &str)] = &[
         "ocean_optics_jaz_irradiance",
         "samples/ocean_optics/irrad.JazIrrad",
     ),
+    (
+        "ocean_optics_procspec_linux",
+        "samples/ocean_optics/OceanOptics_Linux.ProcSpec",
+    ),
+    (
+        "ocean_optics_procspec_windows",
+        "samples/ocean_optics/OceanOptics_Windows.ProcSpec",
+    ),
+    (
+        "ocean_optics_procspec_whiteref",
+        "samples/ocean_optics/whiteref.ProcSpec",
+    ),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
     ("jcamp_bruker_sqz", "samples/jcamp_dx/BRUKSQZ.DX"),
     ("jcamp_bruker_dif", "samples/jcamp_dx/BRUKDIF.DX"),

@@ -92,8 +92,8 @@ Deliverables:
 ## Phase 5: Binary Reader Batch
 
 Status: in progress. Galactic SPC, Bruker OPUS native, Avantes binaries, ENVI
-SLI and Ocean Optics ASCII now have experimental readers for their first
-high-value subsets.
+SLI and Ocean Optics text/ProcSpec now have experimental readers for their
+first high-value subsets.
 
 Deliverables:
 
@@ -101,7 +101,8 @@ Deliverables:
 - Bruker OPUS; experimental 1D data/status block pairs;
 - Avantes 6/7 and AvaSoft 8; experimental for committed legacy and AVS8 fixtures;
 - ENVI SLI sidecar handling; experimental for one-band BSQ spectral libraries;
-- Ocean Optics ASCII; experimental for SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV exports;
+- Ocean Optics text and ProcSpec; experimental for SpectraSuite, OceanView,
+  Jaz, CRAIC, two-column CSV exports and OceanView ZIP/XML `.ProcSpec`;
 - performance dashboards for large file and many-small-file scenarios.
 
 ## Phase 6: Packaging and Deployment

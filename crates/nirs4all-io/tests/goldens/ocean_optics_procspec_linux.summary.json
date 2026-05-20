@@ -1,0 +1,84 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "ocean-optics-procspec",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::ocean_optics",
+      "record_signal_type": "unknown",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 176.360418,
+          "axis_kind": "wavelength",
+          "axis_last": 893.69434,
+          "axis_len": 3648,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 32822.795156,
+          "value_last": 1984.481719,
+          "value_sum": 6958022.569781,
+          "values_len": 3648
+        },
+        {
+          "axis_first": 176.360418,
+          "axis_kind": "wavelength",
+          "axis_last": 893.69434,
+          "axis_len": 3648,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "processed",
+          "role": "processed",
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 125.074331,
+          "value_sum": 437393.481908,
+          "values_len": 3648
+        },
+        {
+          "axis_first": 176.360418,
+          "axis_kind": "wavelength",
+          "axis_last": 893.69434,
+          "axis_len": 3648,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 32822.795156,
+          "value_last": 2501.389031,
+          "value_sum": 20273177.703938,
+          "values_len": 3648
+        },
+        {
+          "axis_first": 176.360418,
+          "axis_kind": "wavelength",
+          "axis_last": 893.69434,
+          "axis_len": 3648,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "white_reference",
+          "role": "white_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 32822.795156,
+          "value_last": 2397.761813,
+          "value_sum": 17738985.947625,
+          "values_len": 3648
+        }
+      ],
+      "source_sha256": "058ccab5ba99c8de9367af92ccdbec06657a6101a9aa812f51854345f68de139",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}
