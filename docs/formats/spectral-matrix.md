@@ -18,8 +18,12 @@ It complements:
 | Fixture | Records | Axis | Targets |
 |---|---:|---|---|
 | `samples/foss_winisi/synthetic_winisi_export.txt` | 50 | `Wavelengths:` block, `nm` | `protein` |
+| `samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv` | 7 | numeric `,` headers, `nm` | `Moisture`, `Protein`, `Year` |
+| `samples/foss_winisi/foss_xds_wheat2_sensAIfood.csv` | 2 | numeric `,` headers, `nm` | `Moisture`, `Protein`, `Year` |
 | `samples/metrohm/synthetic_visionair.csv` | 50 | numeric `;` headers, `nm` | `protein`, `moisture`, `fat` |
 | `samples/viavi_micronir/synthetic_micronir.csv` | 20 | numeric `,` headers after instrument metadata, `nm` | none |
+| `samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv` | 86 | numeric `,` headers, `nm` | `Moisture`, `Protein`, `Year` |
+| `samples/siware_neospectra/neospectra_ossl_50samples_slice.csv` | 24 | numeric `,` headers, `nm` | soil reference properties |
 
 The reader emits one `SpectralRecord` per sample row with a single
 `absorbance` signal. Non-spectral numeric columns are stored as `targets`.

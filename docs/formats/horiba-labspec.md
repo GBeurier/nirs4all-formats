@@ -8,10 +8,15 @@ for adjacent spectroscopy disambiguation and ML workflow compatibility:
 - JobinYvon/LabSpec LSX XML exports with `<LSX_Data>`, `<LSX_Tree>` and
   `<LSX_Matrix>` payloads;
 - LabSpec text exports with `#` metadata headers and either two-column,
-  series-row or map-row numeric sections.
+  series-row or map-row numeric sections;
+- one experimental LabSpec 6 `.l6m` binary map layout validated against the
+  paired `labspec6_Gd2O3_AlN_map.txt` export.
 
-Native `.l6s` and `.l6m` LabSpec binary containers remain out of scope until
-public samples and open reverse-engineering evidence are available.
+Native binary support is deliberately narrow. The `.l6m` path scans the
+LabSpec6 container for the main `Intens` float32 payload, the `Spectr` axis
+payload and the matching 2D spatial axes. Unknown LabSpec6 layouts, calibration
+files and `.l6s` variants remain pending until redistributable samples are
+available.
 
 ## Normalization
 
@@ -32,6 +37,10 @@ For XML and text maps, spatial coordinates are stored in metadata as
 axis unit default to `cm-1` with warning
 `horiba_labspec_text_axis_unit_inferred`.
 
+The LabSpec6 binary path emits warning
+`horiba_labspec6_binary_experimental` on every record because it is validated on
+one public `.l6m` fixture only.
+
 ## Supported Fixtures
 
 | Fixture | Records | Axis | Notes |
@@ -49,6 +58,7 @@ axis unit default to `cm-1` with warning
 | `samples/raman_horiba/labspec_serie190214.txt` | 168 | wavenumber, `cm-1`, 1024 points | Time series-row text export |
 | `samples/raman_horiba/labspec_LiNbWO6_pol.txt` | 1 | wavenumber, `cm-1`, 1024 points | Two-column text export |
 | `samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt` | 72 | wavenumber, `cm-1`, 498 points | LabSpec 6 map-row text export |
+| `samples/raman_horiba/AlN_Gd2O3_indepth.l6m` | 72 | wavenumber, `cm-1`, 498 points | Experimental LabSpec6 binary map; intensity payload matches the paired text export |
 
 ## Reference Readers
 
@@ -56,7 +66,8 @@ Reference comparison targets are:
 
 - `rsciio.jobinyvon` for JobinYvon XML;
 - `spectrochempy.read_labspec()` for LabSpec text;
-- `ccoverstreet/horiba-raman` for LabSpec mapping text.
+- `ccoverstreet/horiba-raman` for LabSpec 6 mapping text and the paired `.l6m`
+  fixture.
 
 Those comparisons are planned as isolated conformance jobs; the Rust runtime
 does not import GPL reference-reader code.

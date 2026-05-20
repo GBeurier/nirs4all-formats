@@ -164,7 +164,11 @@ pub fn signal_type_from_label(label: &str) -> SignalType {
         SignalType::Radiance
     } else if lower.contains("irradiance") || lower.contains("irr") {
         SignalType::Irradiance
-    } else if lower.contains("count") || lower.contains("sample") || lower.contains("dn") {
+    } else if lower.contains("raw")
+        || lower.contains("count")
+        || lower.contains("sample")
+        || lower.contains("dn")
+    {
         SignalType::RawCounts
     } else {
         SignalType::Unknown

@@ -5,8 +5,8 @@ use nirs4all_io_core::{AxisKind, Confidence, FormatProbe, Result, SignalType};
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    detect_delimiter, parse_number, read_text_lossy, single_signal_record, split_delimited,
-    SingleSignalSpec,
+    detect_delimiter, normalize_key, parse_number, read_text_lossy, single_signal_record,
+    split_delimited, SingleSignalSpec,
 };
 use crate::Reader;
 
@@ -81,7 +81,7 @@ impl Reader for CsvLikeReader {
                     continue;
                 }
                 let cell = cells.get(index).cloned().unwrap_or_default();
-                if header.eq_ignore_ascii_case("sample_id") || header.eq_ignore_ascii_case("id") {
+                if is_sample_id_header(header) {
                     metadata.insert("sample_id".to_string(), json!(cell));
                 } else if let Some(number) = parse_number(&cell) {
                     targets.insert(header.to_string(), json!(number));
@@ -112,4 +112,12 @@ impl Reader for CsvLikeReader {
         }
         Ok(records)
     }
+}
+
+fn is_sample_id_header(header: &str) -> bool {
+    let normalized = normalize_key(header);
+    matches!(
+        normalized.as_str(),
+        "sample" | "sample_id" | "sampleid" | "id" | "id_layer_uuid_txt"
+    )
 }

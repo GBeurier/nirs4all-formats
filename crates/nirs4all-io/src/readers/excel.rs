@@ -7,7 +7,10 @@ use nirs4all_io_core::{
 };
 use serde_json::{json, Value};
 
-use crate::readers::util::{normalize_key, parse_number, single_signal_record, SingleSignalSpec};
+use crate::readers::util::{
+    normalize_key, parse_number, safe_signal_name, signal_type_from_label, single_signal_record,
+    SingleSignalSpec,
+};
 use crate::Reader as NirsReader;
 
 pub struct ExcelReader;
@@ -149,6 +152,14 @@ fn read_sheet_records(
             })
         })
         .collect::<Result<Vec<_>>>()?;
+    let descriptor = axis_descriptor(&headers, &spectral_columns);
+    let (axis_kind, axis_unit) = axis_kind_unit(descriptor);
+    let signal_label = descriptor
+        .and_then(data_label)
+        .unwrap_or_else(|| "absorbance".to_string());
+    let signal_type = signal_type_from_label(&signal_label);
+    let signal_name = canonical_signal_name(&signal_label, &signal_type);
+    let signal_unit = descriptor.and_then(data_unit);
 
     let mut records = Vec::new();
     for (row_index, row) in rows.iter().enumerate().skip(1) {
@@ -169,6 +180,9 @@ fn read_sheet_records(
         let mut metadata = BTreeMap::new();
         metadata.insert("sheet".to_string(), json!(sheet_name));
         metadata.insert("row_index".to_string(), json!(row_index));
+        if let Some(descriptor) = descriptor {
+            metadata.insert("axis_descriptor".to_string(), json!(descriptor));
+        }
         let mut targets = BTreeMap::new();
         for (column, header) in headers.iter().enumerate() {
             if spectral_columns.contains(&column) {
@@ -179,7 +193,7 @@ fn read_sheet_records(
                 continue;
             }
             let key = normalize_key(header);
-            if is_sample_id_header(header) {
+            if is_sample_id_column(header, column) {
                 metadata.insert("sample_id".to_string(), json!(cell_string(value)));
             } else if let Some(number) = cell_number(value) {
                 targets.insert(key, json!(number));
@@ -194,13 +208,13 @@ fn read_sheet_records(
             source.clone(),
             SingleSignalSpec {
                 axis_values: axis.clone(),
-                axis_unit: "nm".to_string(),
-                axis_kind: AxisKind::Wavelength,
+                axis_unit: axis_unit.clone(),
+                axis_kind: axis_kind.clone(),
                 values,
-                signal_name: "absorbance".to_string(),
-                signal_type: SignalType::Absorbance,
-                signal_unit: None,
-                role: "absorbance".to_string(),
+                signal_name: signal_name.clone(),
+                signal_type: signal_type.clone(),
+                signal_unit: signal_unit.clone(),
+                role: signal_name.clone(),
             },
             targets,
             metadata,
@@ -321,6 +335,80 @@ fn is_sample_id_header(header: &str) -> bool {
         normalize_key(header).as_str(),
         "sample" | "sample_id" | "sampleid" | "id"
     )
+}
+
+fn is_sample_id_column(header: &str, column: usize) -> bool {
+    is_sample_id_header(header) || (column == 0 && is_axis_descriptor(header))
+}
+
+fn axis_descriptor<'a>(headers: &'a [String], spectral_columns: &[usize]) -> Option<&'a str> {
+    let first_spectral_column = *spectral_columns.iter().min()?;
+    headers
+        .iter()
+        .take(first_spectral_column)
+        .find(|header| is_axis_descriptor(header))
+        .map(String::as_str)
+}
+
+fn is_axis_descriptor(header: &str) -> bool {
+    let lower = header.trim().to_ascii_lowercase();
+    lower.starts_with("axis:") || lower.starts_with("axis ")
+}
+
+fn axis_kind_unit(descriptor: Option<&str>) -> (AxisKind, String) {
+    let lower = descriptor.unwrap_or_default().to_ascii_lowercase();
+    if lower.contains("wavenumber") || lower.contains("cm-1") || lower.contains("cm^-1") {
+        (AxisKind::Wavenumber, "cm-1".to_string())
+    } else {
+        (AxisKind::Wavelength, "nm".to_string())
+    }
+}
+
+fn data_label(descriptor: &str) -> Option<String> {
+    descriptor
+        .split('/')
+        .find_map(|part| strip_label_prefix(part, "data:"))
+        .map(|label| label.split('(').next().unwrap_or(label).trim().to_string())
+        .filter(|label| !label.is_empty())
+}
+
+fn data_unit(descriptor: &str) -> Option<String> {
+    let data_part = descriptor
+        .split('/')
+        .find_map(|part| strip_label_prefix(part, "data:"))?;
+    let start = data_part.find('(')?;
+    let end = data_part[start + 1..].find(')')? + start + 1;
+    let unit = data_part[start + 1..end].trim();
+    if unit.is_empty() || unit == "-" {
+        None
+    } else {
+        Some(unit.to_string())
+    }
+}
+
+fn strip_label_prefix<'a>(value: &'a str, prefix: &str) -> Option<&'a str> {
+    let trimmed = value.trim();
+    if trimmed.len() < prefix.len() || !trimmed[..prefix.len()].eq_ignore_ascii_case(prefix) {
+        return None;
+    }
+    Some(trimmed[prefix.len()..].trim())
+}
+
+fn canonical_signal_name(label: &str, signal_type: &SignalType) -> String {
+    match signal_type {
+        SignalType::Absorbance => "absorbance".to_string(),
+        SignalType::Reflectance => "reflectance".to_string(),
+        SignalType::Transmittance => "transmittance".to_string(),
+        SignalType::Radiance => "radiance".to_string(),
+        SignalType::Irradiance => "irradiance".to_string(),
+        SignalType::RawCounts => "raw".to_string(),
+        SignalType::SingleBeam => "single_beam".to_string(),
+        SignalType::Interferogram => "interferogram".to_string(),
+        SignalType::KubelkaMunk => "kubelka_munk".to_string(),
+        SignalType::Derivative => "derivative".to_string(),
+        SignalType::Preprocessed => "preprocessed".to_string(),
+        SignalType::Unknown => safe_signal_name(label, "signal"),
+    }
 }
 
 fn header_number(value: &str) -> Option<f64> {

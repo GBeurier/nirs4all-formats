@@ -19,8 +19,9 @@ Experimental native readers:
 - row-oriented spectral tables with an axis in the first column: Si-Ware CSV,
   MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS/IDL spectrum text,
   JASCO text export, Shimadzu TXT, USGS SPECPR ASCII and WiTec TXT fixtures;
-- spectral matrix exports with one spectrum per row: Foss/WinISI text,
-  Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures;
+- spectral matrix exports with one spectrum per row: Foss/WinISI text, real
+  Foss XDS CSV, AuroraNIR handheld CSV, OSSL NeoSpectra wide CSV, Metrohm Vision
+  Air CSV and VIAVI MicroNIR CSV fixtures;
 - sun photometer channel exports: MFR `.OUT` and Microtops `.TXT` fixtures;
 - AnIML spectral XML: spectral `SeriesSet` fixture with wavelength axis,
   absorbance signal and sample target; non-spectral AnIML result documents are
@@ -40,9 +41,10 @@ Experimental native readers:
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
   fixtures, and prospectr `NIRsoil.RData` RDX3/XZ workspace mapping;
-- Excel workbooks: simple `.xlsx/.xlsm` spectral tables and canonical
-  `spectra`/`metadata`/`references` multi-sheet lab templates with numeric
-  wavelength headers; legacy `.xls` remains pending;
+- Excel workbooks: simple `.xlsx/.xlsm` spectral tables, first-cell
+  `axis: ... / data: ...` descriptors used by UvA handheld XLSX exports, and
+  canonical `spectra`/`metadata`/`references` multi-sheet lab templates with
+  numeric wavelength headers; legacy `.xls` remains pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -76,9 +78,11 @@ Experimental native readers:
   FT/IR transmittance, fluorescence and CD/HT/Abs multi-channel fixtures, with
   metadata-driven semantic channel labels.
 - Horiba LabSpec / JobinYvon XML/text exports for committed single-spectrum,
-  range, linescan, map, two-column, series-row and map-row Raman fixtures.
-  Text exports without explicit axis units are inferred as `cm-1`; XML `eV`
-  axes are preserved with an energy-axis fallback warning.
+  range, linescan, map, two-column, series-row and map-row Raman fixtures, plus
+  an experimental LabSpec6 `.l6m` binary map decoder validated against the
+  paired Gd2O3/AlN text export. Text exports without explicit axis units are
+  inferred as `cm-1`; XML `eV` axes are preserved with an energy-axis fallback
+  warning.
 - Renishaw WDF (`.wdf`) spectral payloads via `WDF1`, `DATA`, `XLST` and
   `YLST` chunks plus `ORGN`/`WMAP` navigation metadata. Map, line, depth,
   FocusTrack, time-series and interrupted acquisitions emit one record per
@@ -97,9 +101,11 @@ Experimental native readers:
   uncalibrated-axis fixtures, preserving the secondary time/CCD axis in
   metadata and warning that the signal is not a point-sample NIR spectrum.
 - WiTec WIP/WID binary project files are detected from `.wip/.wid` plus `WIT^`
-  magic and refused with explicit WiTec Project/FIVE ASCII-export guidance; the
-  committed WiTec TXT export remains covered by the row-oriented spectral table
-  reader.
+  or `WIT_PR06` magic. The committed `Sa4.wip` `WIT_PR06` TDGraph map decodes
+  experimentally into 4410 valid raw-count spectra with a polynomial wavelength
+  axis; legacy `WIT^` and unknown `WIT_PR06` layouts are refused explicitly.
+  The committed WiTec TXT export remains covered by the row-oriented spectral
+  table reader.
 - mzML mass-spectrometry XML is detected and refused with a pointer to
   `pyteomics`, `pymzML` or `pyOpenMS`; committed mzML spectrum/chromatogram
   fixtures cover the refusal path.
@@ -138,11 +144,9 @@ Green locally on 2026-05-20:
 cargo fmt --all --check
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
-python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]"
-python -m pytest tools/reverse-lab/tests bindings/python/tests
-R CMD INSTALL bindings/r/nirs4allio
-Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
-python -m sphinx -b html docs docs/_build/html
+uv run --python 3.11 --with-editable ./tools/reverse-lab --with-editable ./bindings/python --with-editable /home/delete/nirs4all/nirs4all --with pytest pytest tools/reverse-lab/tests bindings/python/tests
+Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); records <- nirs4allio_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allio_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
+uv run sphinx-build -W -b html docs docs/_build/html
 ```
 
 ## Next Agent Prompt
@@ -152,15 +156,17 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. continue the open-reader-backed binary batch in this order: remaining
+1. implement the sample-backed AVIRIS/Indian Pines `.lan/.spc/.GIS` ERDAS LAN
+   reader or a strict probe/refusal if redistribution terms block release;
+2. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-2. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-3. replace Python/R subprocess transport with native PyO3/C ABI paths;
-4. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
+3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+4. replace Python/R subprocess transport with native PyO3/C ABI paths;
+5. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
    only after the shared model can represent sparse peak lists;
-5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
-6. owner-requested documentation tail work: rewrite the root `README.md`,
+6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+7. owner-requested documentation tail work: rewrite the root `README.md`,
    add implementation visualizations for format/probe-confidence/maturity/
    missing-fixture status, and audit every `docs/formats/` page for
    description, implemented behavior, missing behavior and validation status.

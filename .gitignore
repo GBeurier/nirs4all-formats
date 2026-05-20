@@ -12,6 +12,10 @@ target/
 *.pyd
 .coverage
 /samples.zip
+# Local-only sample directory: holds non-redistributable fixtures (license-restricted,
+# login-gated, vendor SDK demos). Tracked manually in samples_local/INDEX.md but never
+# committed. Mirror layout of samples/ (one subdir per format family).
+/samples_local/
 *.dylib
 *.dll
 *.a
