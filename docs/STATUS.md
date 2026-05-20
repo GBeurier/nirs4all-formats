@@ -64,8 +64,9 @@ Experimental native readers:
   support is limited.
 - Thermo Nicolet OMNIC (`.SPA`, `.spg`, `.srs`) single spectra and grouped
   spectra via the reverse-engineered key table, plus TGA/GC `.srs` time-series
-  matrices as 2D `y,x` records; rapid-scan/high-speed `.srs` and `.srsx` remain
-  pending;
+  matrices as 2D `y,x` records; non-TGA/GC `.srs/.srsx` series variants are
+  classified and refused explicitly until a real fixture/reference export is
+  available;
 - Perkin Elmer Spectrum / IR (`.sp`) single spectra via the `PEPE` block
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
