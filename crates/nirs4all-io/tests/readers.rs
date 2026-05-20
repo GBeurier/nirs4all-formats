@@ -3789,10 +3789,10 @@ fn reads_local_allotrope_adf_data_cubes_when_present() {
     assert_eq!(signal.signal_type, SignalType::Absorbance);
     assert_eq!(signal.unit.as_deref(), Some("mAU"));
     assert_eq!(signal.axis.unit, "s");
-    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.axis.kind, AxisKind::Time);
     assert!((signal.axis.values[0] - 0.0).abs() < 0.000001);
     assert!((signal.axis.values[18_000] - 15.002275).abs() < 0.000001);
-    assert!(scaled
+    assert!(!scaled
         .provenance
         .warnings
         .contains(&"allotrope_adf_time_axis_mapped_as_index".to_string()));
@@ -3809,6 +3809,7 @@ fn reads_local_allotrope_adf_data_cubes_when_present() {
     assert_eq!(chromatogram.signal_type, SignalType::Absorbance);
     assert_eq!(chromatogram.unit.as_deref(), Some("mAU"));
     assert_eq!(chromatogram.axis.unit, "s");
+    assert_eq!(chromatogram.axis.kind, AxisKind::Time);
     assert!((chromatogram.axis.values[18_000] - 15.002275).abs() < 0.000001);
 }
 
@@ -4022,7 +4023,7 @@ fn reads_jcamp_ntuples_fid_real_imag_pages() {
     assert_eq!(real.axis.values.len(), 16_384);
     assert_eq!(imaginary.axis.values.len(), 16_384);
     assert_eq!(real.axis.unit, "s");
-    assert_eq!(real.axis.kind, AxisKind::Index);
+    assert_eq!(real.axis.kind, AxisKind::Time);
     assert!((real.axis.values[0] - 0.0).abs() < 0.000001);
     assert!((real.axis.values[16_383] - 0.6815317).abs() < 0.000001);
     assert!((real.values[0] - 2_979.837824796).abs() < 0.000001);

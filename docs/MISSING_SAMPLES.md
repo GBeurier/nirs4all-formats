@@ -23,7 +23,7 @@ unknown layouts and deliberate refusal paths, see
 
 | # | Format | Instrument | Vendor | Version / variant | Status | Why missing | Where it might come from |
 |---|---|---|---|---|---|---|---|
-| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | 🟡 (local) | **Resolved 2026-05-20 round 4, kept local** — `adfsee` GitLab `src/main/resources/instances/example.adf` (3.6 MB HDF5) lives in `samples_local/allotrope_adf/`; the native reader now decodes the numeric `/data-cubes` subset locally and maps a minimal RDF component subset for titles, seconds axes, secondary nm scales and absorbance units. SDK conformance, full ontology mapping and vendor-specific variants (Waters Empower, Sciex OS, Agilent OpenLab) still remain. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device. |
+| 1 | Allotrope ADF `.adf` | (analytical instruments, pharma) | Allotrope Foundation | binary HDF5 + RDF triplestore (any version) | 🟡 (local) | **Resolved 2026-05-20 round 4, kept local** — `adfsee` GitLab `src/main/resources/instances/example.adf` (3.6 MB HDF5) lives in `samples_local/allotrope_adf/`; the native reader now decodes the numeric `/data-cubes` subset locally and maps a minimal RDF component subset for titles, typed seconds axes, secondary nm scales and absorbance units. SDK conformance, full ontology mapping and vendor-specific variants (Waters Empower, Sciex OS, Agilent OpenLab) still remain. | Allotrope Foundation membership; pharma user with an Allotrope-conformant device. |
 
 ---
 

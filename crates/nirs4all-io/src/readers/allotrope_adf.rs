@@ -304,9 +304,6 @@ fn one_record(
     } else {
         warnings.push("allotrope_adf_rdf_semantics_not_resolved".to_string());
     }
-    if axis.component_type.as_deref() == Some("SecondTimeValue") {
-        warnings.push("allotrope_adf_time_axis_mapped_as_index".to_string());
-    }
     if let Some(warning) = context.semantics_warning.as_deref() {
         warnings.push(warning.to_string());
     }
@@ -689,7 +686,7 @@ fn adf_dictionary_value(dictionary: &[String], encoded: i64) -> std::result::Res
 fn axis_mapping_for_component(component_type: &str) -> (String, AxisKind) {
     match component_type {
         "NanometerValue" => ("nm".to_string(), AxisKind::Wavelength),
-        "SecondTimeValue" => ("s".to_string(), AxisKind::Index),
+        "SecondTimeValue" => ("s".to_string(), AxisKind::Time),
         _ => ("index".to_string(), AxisKind::Index),
     }
 }

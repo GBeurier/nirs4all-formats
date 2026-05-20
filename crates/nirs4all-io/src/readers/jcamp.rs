@@ -1019,7 +1019,7 @@ fn axis_kind_unit(raw: &str) -> (AxisKind, String) {
     } else if upper.contains("HZ") {
         (AxisKind::Frequency, "hz".to_string())
     } else if upper.contains("SECOND") || upper == "S" {
-        (AxisKind::Index, "s".to_string())
+        (AxisKind::Time, "s".to_string())
     } else {
         (AxisKind::Index, "index".to_string())
     }
