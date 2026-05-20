@@ -112,6 +112,14 @@ fn probes_netcdf_containers() {
     }));
 }
 
+#[test]
+fn probes_hdf5_containers() {
+    let probes = probe_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "hdf5-nirs-container" && probe.confidence == Confidence::Likely
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

@@ -550,6 +550,53 @@ fn rejects_non_nirs_netcdf_containers() {
 }
 
 #[test]
+fn reads_synthetic_nirs_hdf5_dataset() {
+    let records = open_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("open hdf5");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "hdf5-nirs");
+    assert_eq!(records[0].metadata["container"].as_str(), Some("hdf5"));
+    assert_eq!(records[0].metadata["group_path"].as_str(), Some("/"));
+    assert_eq!(records[0].metadata["sample_index"].as_u64(), Some(0));
+    assert!(records[0].targets.contains_key("protein"));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.036742717027664185).abs() < 0.000001);
+}
+
+#[test]
+fn reads_nested_fgi_hdf5_payload() {
+    let records = open_path(workspace_file("samples/fgi/synthetic_fgi.h5")).expect("open fgi hdf5");
+
+    assert_eq!(records.len(), 50);
+    assert_eq!(records[0].provenance.format, "hdf5-nirs");
+    assert_eq!(
+        records[0].metadata["group_path"].as_str(),
+        Some("/Measurement1")
+    );
+    assert_eq!(
+        records[0].metadata["group_attributes"]["instrument"].as_str(),
+        Some("FGI-mock")
+    );
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 200);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+}
+
+#[test]
+fn rejects_non_nirs_hdf5_containers() {
+    let err =
+        open_path(workspace_file("samples/hdf5/vlen_string_dset.h5")).expect_err("non-NIRS HDF5");
+    assert!(err.to_string().contains("no spectra dataset"));
+}
+
+#[test]
 fn reads_pp_systems_row_tables_with_multiple_signals() {
     let records =
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");

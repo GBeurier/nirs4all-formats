@@ -17,6 +17,7 @@ formats/asd
 formats/bruker-opus
 formats/envi-sli
 formats/galactic-spc
+formats/hdf5
 formats/jcamp-dx
 formats/msa-iso22029
 formats/netcdf

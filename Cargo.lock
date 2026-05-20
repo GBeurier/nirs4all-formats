@@ -419,6 +419,7 @@ dependencies = [
 name = "nirs4all-io"
 version = "0.1.0-alpha.0"
 dependencies = [
+ "hdf5-reader",
  "netcdf-reader",
  "nirs4all-io-core",
  "quick-xml",
