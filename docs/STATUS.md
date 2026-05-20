@@ -29,6 +29,8 @@ Experimental native readers:
   endpoint readings from committed Benchling allotropy fixtures;
 - SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
   `measurement.absorbance` payloads with predictions mapped to targets;
+- NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
+  pure-Rust reader; ANDI/MS and weather NetCDF samples are refused as non-NIRS;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -89,7 +91,7 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue with remaining structured-container samples and adjacency:
-   MATLAB/HDF5/NetCDF, then additional JSON/XML exports as fixtures appear;
+   MATLAB/HDF5, then additional JSON/XML exports as fixtures appear;
 2. continue the binary/open-reader-backed batch with remaining SPC/JCAMP variants;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK` files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM where practical;

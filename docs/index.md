@@ -19,6 +19,7 @@ formats/envi-sli
 formats/galactic-spc
 formats/jcamp-dx
 formats/msa-iso22029
+formats/netcdf
 formats/ocean-optics
 formats/row-spectral-table
 formats/siware-api
