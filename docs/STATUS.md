@@ -109,6 +109,10 @@ Experimental native readers:
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
 
+Untreated formats, missing fixture blockers, unknown binary layouts and
+deliberate refusal paths are now documented in `docs/FORMAT_GAPS.md`, with
+`MISSING_SAMPLES.md` retained as the exact fixture checklist.
+
 Python bridge surfaces now call the Rust CLI rather than implementing parser
 logic in Python:
 

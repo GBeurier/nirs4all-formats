@@ -216,6 +216,8 @@ closed:
   binding strategy, current maturity and contribution path clearly;
 - add implementation visualizations for format coverage, probe confidence,
   maturity level and missing fixture/reference-reader gaps;
+- keep `docs/FORMAT_GAPS.md` current whenever an unsupported, sample-blocked,
+  unknown or deliberately refused format is discovered;
 - audit every format page under `docs/formats/` so each one describes the file
   format, implemented behavior, missing behavior, validation fixtures,
   reference libraries and conformance status.
