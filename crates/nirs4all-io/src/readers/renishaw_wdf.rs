@@ -501,7 +501,7 @@ fn insert_origin_axis_value(
                 if let Some(first) = axis.values.u64(0) {
                     metadata.insert(
                         "elapsed_time_seconds".to_string(),
-                        json!((value as f64 - first as f64) / 10_000_000.0),
+                        json!(elapsed_filetime_seconds(value, first)),
                     );
                     metadata.insert("elapsed_time_unit".to_string(), json!("s"));
                 }
@@ -831,6 +831,14 @@ fn wdf_map_type_label(map_type_code: u32) -> &'static str {
         64 => "surface_profile",
         128 => "xyline",
         _ => "unknown",
+    }
+}
+
+fn elapsed_filetime_seconds(value: u64, first: u64) -> f64 {
+    if value >= first {
+        (value - first) as f64 / 10_000_000.0
+    } else {
+        -((first - value) as f64 / 10_000_000.0)
     }
 }
 

@@ -78,6 +78,9 @@ Experimental native readers:
   `YLST` chunks plus `ORGN`/`WMAP` navigation metadata. Map, line, depth,
   FocusTrack, time-series and interrupted acquisitions emit one record per
   stored spectrum with normalized spatial, elapsed-time and map-index metadata.
+- Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
+  spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
+  emits one record per frame and preserves Step-and-Glue child windows.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.

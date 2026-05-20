@@ -35,6 +35,7 @@ formats/siware-api
 formats/spectral-matrix
 formats/sun-photometers
 formats/text-readers-001
+formats/trivista-tvf
 DATA_MODEL
 CONFORMANCE
 REVERSE_ENGINEERING

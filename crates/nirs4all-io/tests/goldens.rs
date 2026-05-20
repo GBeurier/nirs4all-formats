@@ -112,6 +112,36 @@ const CASES: &[(&str, &str)] = &[
         "samples/raman_renishaw/interrupted_acquisition.wdf",
     ),
     ("renishaw_wdf_wire_sp", "samples/raman_renishaw/wire_sp.wdf"),
+    (
+        "trivista_tvf_single",
+        "samples/raman_trivista/spec_1s_1acc_1frame_average.tvf",
+    ),
+    (
+        "trivista_tvf_two_frames",
+        "samples/raman_trivista/spec_3s_1acc_2frames_average.tvf",
+    ),
+    (
+        "trivista_tvf_two_acc_average",
+        "samples/raman_trivista/spec_3s_2acc_1frame_average.tvf",
+    ),
+    (
+        "trivista_tvf_two_acc_no_average",
+        "samples/raman_trivista/spec_3s_2acc_1frame_no_average.tvf",
+    ),
+    (
+        "trivista_tvf_multiple_spectrometers",
+        "samples/raman_trivista/spec_multiple_spectrometers.tvf",
+    ),
+    (
+        "trivista_tvf_step_and_glue",
+        "samples/raman_trivista/spec_step_and_glue.tvf",
+    ),
+    (
+        "trivista_tvf_timeseries",
+        "samples/raman_trivista/spec_timeseries_2x1s_delta3s.tvf",
+    ),
+    ("trivista_tvf_linescan", "samples/raman_trivista/linescan.tvf"),
+    ("trivista_tvf_map", "samples/raman_trivista/map.tvf"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

@@ -21,4 +21,8 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/trivista/`](https://gith
 ## Parser hints
 
 - Reference reader: [`rsciio.trivista`](https://hyperspy.org/rosettasciio/) — production-quality.
-- Step-and-glue / multi-spectrometer files contain disjoint X axes that the parser must keep separate (similar to `.spc` -XYXY layout).
+- Current native reader: XML frame payloads, wavelength `ValueArray`, X/Y
+  navigation from `InfoSerialized`, timestamps and Step-and-Glue child
+  documents are covered.
+- Step-and-glue / multi-spectrometer files contain disjoint X axes that the
+  parser must keep separate (similar to `.spc` -XYXY layout).

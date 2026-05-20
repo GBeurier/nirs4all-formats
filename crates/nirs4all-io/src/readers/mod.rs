@@ -27,6 +27,7 @@ pub mod spectral_matrix;
 pub mod spectral_table;
 pub mod sun_photometer;
 pub mod svc_sig;
+pub mod trivista_tvf;
 
 mod util;
 
@@ -59,3 +60,4 @@ pub use spectral_matrix::SpectralMatrixReader;
 pub use spectral_table::SpectralTableReader;
 pub use sun_photometer::SunPhotometerReader;
 pub use svc_sig::SvcSigReader;
+pub use trivista_tvf::TrivistaTvfReader;

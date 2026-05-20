@@ -223,6 +223,17 @@ fn probes_renishaw_wdf_files() {
         .any(|probe| probe.format == "renishaw-wdf" && probe.confidence == Confidence::Definite));
 }
 
+#[test]
+fn probes_trivista_tvf_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_trivista/spec_1s_1acc_1frame_average.tvf",
+    ))
+    .expect("probe TriVista TVF");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "trivista-tvf" && probe.confidence == Confidence::Definite));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

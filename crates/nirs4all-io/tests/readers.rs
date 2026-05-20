@@ -741,6 +741,92 @@ fn rejects_renishaw_wdf_undefined_modes_for_now() {
 }
 
 #[test]
+fn reads_trivista_tvf_modes() {
+    let records = open_path(workspace_file(
+        "samples/raman_trivista/spec_1s_1acc_1frame_average.tvf",
+    ))
+    .expect("open TriVista single spectrum");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "trivista-tvf");
+    assert_eq!(
+        records[0].metadata["document_role"].as_str(),
+        Some("primary")
+    );
+    assert_eq!(
+        records[0].metadata["record_time"].as_str(),
+        Some("06/14/2022 13:34:27.453")
+    );
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 1024);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert_eq!(signal.unit.as_deref(), Some("counts"));
+    assert!((signal.axis.values[0] - 794.220731002166).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 28479097.0).abs() < 0.000001);
+
+    let records = open_path(workspace_file("samples/raman_trivista/linescan.tvf"))
+        .expect("open TriVista linescan");
+    assert_eq!(records.len(), 21);
+    assert_eq!(
+        records[0].metadata["experiment_stage_mode"].as_str(),
+        Some("LineScanX")
+    );
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-0.010));
+    assert_eq!(records[20].metadata["spatial_x"].as_f64(), Some(0.010));
+    assert_eq!(records[20].metadata["spatial_x_index"].as_u64(), Some(20));
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 97);
+    assert!((signal.values.iter().sum::<f64>() - 44011.0).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/raman_trivista/map.tvf")).expect("open TriVista map");
+    assert_eq!(records.len(), 81);
+    assert_eq!(
+        records[0].metadata["experiment_stage_mode"].as_str(),
+        Some("MappingXY")
+    );
+    assert_eq!(records[0].metadata["spatial_x"].as_f64(), Some(-0.100));
+    assert_eq!(records[0].metadata["spatial_y"].as_f64(), Some(-0.100));
+    assert_eq!(records[80].metadata["spatial_x"].as_f64(), Some(0.100));
+    assert_eq!(records[80].metadata["spatial_y"].as_f64(), Some(0.100));
+    assert_eq!(records[80].metadata["spatial_x_index"].as_u64(), Some(8));
+    assert_eq!(records[80].metadata["spatial_y_index"].as_u64(), Some(8));
+
+    let records = open_path(workspace_file(
+        "samples/raman_trivista/spec_timeseries_2x1s_delta3s.tvf",
+    ))
+    .expect("open TriVista time series");
+    assert_eq!(records.len(), 2);
+    assert!(
+        (records[1].metadata["elapsed_time_seconds"]
+            .as_f64()
+            .unwrap()
+            - 4.0442314)
+            .abs()
+            < 0.000001
+    );
+
+    let records = open_path(workspace_file(
+        "samples/raman_trivista/spec_step_and_glue.tvf",
+    ))
+    .expect("open TriVista step-and-glue");
+    assert_eq!(records.len(), 20);
+    let signal = records[0].signals.get("intensity").expect("intensity");
+    assert_eq!(signal.axis.values.len(), 18000);
+    assert_eq!(
+        records[0].metadata["child_document_count"].as_u64(),
+        Some(19)
+    );
+    assert_eq!(records[1].metadata["document_role"].as_str(), Some("child"));
+    let signal = records[1]
+        .signals
+        .get("intensity")
+        .expect("child intensity");
+    assert_eq!(signal.axis.values.len(), 1024);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");
