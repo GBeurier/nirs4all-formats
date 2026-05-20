@@ -13,15 +13,20 @@ OOXML workbooks (`.xlsx` / `.xlsm`) whose selected worksheet contains:
 The reader prefers a worksheet named `spectra` and otherwise falls back to the
 first worksheet. It emits one `SpectralRecord` per non-empty data row.
 
+If optional worksheets named `metadata` and/or `references` are present, they
+are joined to the spectral rows by `sample_id`. `metadata` columns are copied to
+record metadata, while numeric `references` columns are copied to targets.
+
 ## Supported Fixtures
 
 | Fixture | Records | Axis | Signal | Targets |
 |---|---:|---|---|---|
 | `samples/excel/synthetic_nirs.xlsx` | 50 | wavelength, `nm`, 200 points | `absorbance` | `protein` |
+| `samples/excel/synthetic_multisheet_nirs.xlsx` | 4 | wavelength, `nm`, 4 points | `absorbance` | `protein`, `moisture` |
 
 ## Dispatch Boundaries
 
-Legacy `.xls` OLE workbooks, multi-sheet metadata/reference layouts and
+Legacy `.xls` OLE workbooks, caller-selected non-canonical sheet names and
 workbooks where Excel has coerced wavelengths into dates remain pending. The
 current reader is intentionally limited to numeric spectral headers so malformed
 lab transfers fail clearly instead of silently producing shifted axes.

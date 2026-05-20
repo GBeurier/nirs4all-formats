@@ -58,6 +58,7 @@ Deliverables:
   Corn, Eigenvector NIR Shootout 2002, SpectroChemPy DSO and SpectroChemPy
   ALS2004 structured MAT fixtures and prospectr `NIRsoil.RData`;
 - Excel workbook reader; experimental for simple `.xlsx/.xlsm` spectral tables
+  and canonical `spectra`/`metadata`/`references` multi-sheet lab templates
   with numeric wavelength headers;
 - Thermo Nicolet OMNIC reader; experimental for `.SPA` single spectra and
   `.spg` grouped spectra and TGA/GC `.srs` time-series matrices, with
@@ -188,10 +189,10 @@ Add one family at a time:
 
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
-- Excel multi-sheet lab templates, WiTec WIP for lab-transfer and adjacent
-  spectroscopy workflows, DigitalSurf richer comment/metadata parsing, TriVista
-  richer hardware metadata and Renishaw WDF hardening for white-light image
-  metadata plus `MAP ` block interpretation;
+- WiTec WIP for lab-transfer and adjacent spectroscopy workflows, DigitalSurf
+  richer comment/metadata parsing, TriVista richer hardware metadata and
+  Renishaw WDF hardening for white-light image metadata plus `MAP ` block
+  interpretation;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;

@@ -1,0 +1,173 @@
+{
+  "record_count": 4,
+  "records": [
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "batch",
+        "instrument_model",
+        "metadata_sheet",
+        "operator",
+        "reference_sheet",
+        "replicate",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1400.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.101,
+          "value_last": 0.171,
+          "value_sum": 0.538,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "ca7c91cf2814797de2df437869986363dab2c7bc7b5f562a6f50db78baf6e4aa",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "batch",
+        "instrument_model",
+        "metadata_sheet",
+        "operator",
+        "reference_sheet",
+        "replicate",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1400.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.098,
+          "value_last": 0.16,
+          "value_sum": 0.514,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "ca7c91cf2814797de2df437869986363dab2c7bc7b5f562a6f50db78baf6e4aa",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "batch",
+        "instrument_model",
+        "metadata_sheet",
+        "operator",
+        "reference_sheet",
+        "replicate",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1400.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.112,
+          "value_last": 0.181,
+          "value_sum": 0.584,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "ca7c91cf2814797de2df437869986363dab2c7bc7b5f562a6f50db78baf6e4aa",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "batch",
+        "instrument_model",
+        "metadata_sheet",
+        "operator",
+        "reference_sheet",
+        "replicate",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::excel",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1400.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "absorbance",
+          "role": "absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.087,
+          "value_last": 0.151,
+          "value_sum": 0.479,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "ca7c91cf2814797de2df437869986363dab2c7bc7b5f562a6f50db78baf6e4aa",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": []
+    }
+  ]
+}

@@ -40,8 +40,9 @@ Experimental native readers:
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
   fixtures, and prospectr `NIRsoil.RData` RDX3/XZ workspace mapping;
-- Excel workbooks: simple `.xlsx/.xlsm` spectral tables with numeric wavelength
-  headers; legacy `.xls` and multi-sheet lab templates remain pending;
+- Excel workbooks: simple `.xlsx/.xlsm` spectral tables and canonical
+  `spectra`/`metadata`/`references` multi-sheet lab templates with numeric
+  wavelength headers; legacy `.xls` remains pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
 - Bruker OPUS native binaries, 1D data/status block pairs;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
@@ -141,8 +142,8 @@ Immediate next work:
 1. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-2. add Excel multi-sheet templates, then continue WDF hardening with white-light
-   image metadata and `MAP ` block interpretation;
+2. continue WDF hardening with white-light image metadata and `MAP ` block
+   interpretation, then WiTec WIP if fixtures are suitable;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
    files and stricter checkpoint validation;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;

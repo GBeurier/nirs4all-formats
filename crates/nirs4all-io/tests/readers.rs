@@ -1751,6 +1751,38 @@ fn reads_synthetic_excel_workbook() {
 }
 
 #[test]
+fn reads_multisheet_excel_workbook() {
+    let records = open_path(workspace_file(
+        "samples/excel/synthetic_multisheet_nirs.xlsx",
+    ))
+    .expect("open multisheet xlsx");
+
+    assert_eq!(records.len(), 4);
+    assert_eq!(records[0].provenance.format, "excel-xlsx");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("MS000"));
+    assert_eq!(records[0].metadata["sheet"].as_str(), Some("spectra"));
+    assert_eq!(
+        records[0].metadata["metadata_sheet"].as_str(),
+        Some("metadata")
+    );
+    assert_eq!(
+        records[0].metadata["reference_sheet"].as_str(),
+        Some("references")
+    );
+    assert_eq!(records[0].metadata["batch"].as_str(), Some("batch-a"));
+    assert_eq!(records[0].metadata["operator"].as_str(), Some("ana"));
+    assert_eq!(records[0].metadata["replicate"].as_f64(), Some(1.0));
+    assert_eq!(records[0].targets["protein"].as_f64(), Some(10.2));
+    assert_eq!(records[0].targets["moisture"].as_f64(), Some(6.1));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values, vec![1100.0, 1200.0, 1300.0, 1400.0]);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert!((absorbance.values[0] - 0.101).abs() < 0.000001);
+    assert!((absorbance.values[3] - 0.171).abs() < 0.000001);
+}
+
+#[test]
 fn reads_pp_systems_row_tables_with_multiple_signals() {
     let records =
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");
