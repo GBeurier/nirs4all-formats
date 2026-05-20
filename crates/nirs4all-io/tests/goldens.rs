@@ -82,6 +82,22 @@ const CASES: &[(&str, &str)] = &[
         "jcamp_ocean_optics_link",
         "samples/ocean_optics/OceanOptics_period.jdx",
     ),
+    (
+        "msa_iso22029_xy",
+        "samples/msa_iso22029/ISO_22029_2022_compliance.msa",
+    ),
+    (
+        "msa_iso22029_xy_ncolumns2",
+        "samples/msa_iso22029/ISO_22029_2022_compliance_XY_NCOLUMNS2.msa",
+    ),
+    (
+        "msa_iso22029_y_ncolumns5",
+        "samples/msa_iso22029/example2_NCOLUMNS5.msa",
+    ),
+    (
+        "msa_iso22029_minimum",
+        "samples/msa_iso22029/minimum_metadata.msa",
+    ),
     ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
     ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
     (

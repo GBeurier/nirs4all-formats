@@ -408,6 +408,53 @@ fn reads_svc_sig_with_overlap_quality_flag() {
 }
 
 #[test]
+fn reads_msa_iso22029_xy_variants() {
+    let records = open_path(workspace_file(
+        "samples/msa_iso22029/ISO_22029_2022_compliance.msa",
+    ))
+    .expect("open msa");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "emsa-mas-msa");
+    let signal = records[0].signals.get("counts").expect("counts");
+    assert_eq!(signal.axis.values.len(), 21);
+    assert_eq!(signal.axis.unit, "eV");
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert!((signal.axis.values[0] - 520.13).abs() < 0.000001);
+    assert!((signal.axis.values[20] - 580.50).abs() < 0.000001);
+    assert_eq!(signal.values[0], 4_066.0);
+    assert_eq!(signal.values[20], 4_217.0);
+
+    let records = open_path(workspace_file(
+        "samples/msa_iso22029/ISO_22029_2022_compliance_XY_NCOLUMNS2.msa",
+    ))
+    .expect("open msa ncolumns");
+    let signal = records[0].signals.get("counts").expect("counts");
+    assert_eq!(signal.axis.values.len(), 21);
+    assert_eq!(signal.values[20], 4_217.0);
+}
+
+#[test]
+fn reads_msa_iso22029_y_axis_reconstruction() {
+    let records = open_path(workspace_file(
+        "samples/msa_iso22029/example2_NCOLUMNS5.msa",
+    ))
+    .expect("open msa y");
+
+    assert_eq!(records.len(), 1);
+    let signal = records[0]
+        .signals
+        .get("x_ray_intensity")
+        .expect("x-ray intensity");
+    assert_eq!(signal.axis.values.len(), 80);
+    assert_eq!(signal.axis.unit, "eV");
+    assert!((signal.axis.values[0] - 0.0).abs() < 0.000001);
+    assert!((signal.axis.values[79] - 790.0).abs() < 0.000001);
+    assert!((signal.values[0] - 65.820).abs() < 0.000001);
+    assert!((signal.values[79] - 49.442).abs() < 0.000001);
+}
+
+#[test]
 fn reads_plain_affn_jcamp_dx() {
     let records =
         open_path(workspace_file("samples/jcamp_dx/nist_water_ir.jdx")).expect("open jcamp");
