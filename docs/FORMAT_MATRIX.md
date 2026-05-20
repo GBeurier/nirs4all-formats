@@ -108,7 +108,7 @@ passer le format a `fait`.
 | HDF5 NIRS generique | partiel | Le schema `spectra+wavelengths` synthetique et les refus non-spectraux sont couverts; il manque schemas reels avec metadata, axes complexes et groupes multi-signaux. |
 | MATLAB MAT / RData | partiel | MAT v5/v7.3 simples, DSO academiques, prospectr `NIRsoil.RData` et cube Indian Pines local-only sont couverts; restent structures MAT/RData generiques, cubes MAT v7.3 et metadata/targets heterogenes. |
 | Renishaw WDF | partiel | Finaliser `MAP` derived data et fixtures par modele. |
-| Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et valide contre l'export texte; restent `.l6s`, autres layouts LabSpec6, metadata complete et axes energy mieux types. |
+| Horiba LabSpec / JobinYvon | partiel | `.l6m` reel Gd₂O₃/AlN map decode en mode experimental et compare integralement contre l'export texte (intensites + coordonnees); restent `.l6s`, autres layouts LabSpec6, metadata complete et axes energy mieux types. |
 | Princeton TriVista TVF | partiel | Durcir metadata multi-frame/Step-and-Glue et comparaisons reference. |
 | DigitalSurf MountainsMap | partiel | Fixtures spectres, maps, surface et zlib compresse/non compresse couverts; restent variantes MountainsMap hors corpus et metadata surfaces plus riche. |
 | Hamamatsu HPD-TA IMG | partiel | Les fixtures HPD-TA 2D adjacentes sont couvertes; rester explicitement adjacent tant qu'aucun export spectral point-sample Hamamatsu n'est cible. |
@@ -169,21 +169,25 @@ github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
 | Hyperspectral cube (AVIRIS Indian Pines) | `samples_local/hyperspectral_cubes/indian_pines_corrected.mat` + `_gt.mat` | [EHU/Grupo de Inteligencia Computacional](http://www.ehu.eus/ccwintco/index.php/Hyperspectral_Remote_Sensing_Scenes) | "academic use" sans SPDX clair → en local seulement | reader MAT v5 local-only teste: 21,025 spectres x 200 bandes + cible `land_cover_class`; la version `92AV3C.lan` plus petite reste committee |
 | Microtops `.lev2` disambiguation | `samples_local/microtops/noaa_lauder_sonde_la20170315.lev2` | [NOAA GML Lauder](https://gml.noaa.gov/aftp/data/ozwv/WaterVapor/Lauder_LEV/) | US Gov public domain MAIS le fichier est en realite un radiosonde water vapour/ozone, pas un sun-photometer Microtops | aide locale a la disambiguation `.lev2`; non commit pour eviter confusion |
 
-### Formats restant fermes (sweep sans resultat exploitable)
+### Formats restant fermes (sweep sans resultat exploitable, apres 3 passages)
 
 | Format | Pourquoi pas trouve |
 |---|---|
-| ASD calibration `.ILL/.REF/.RAW` | Distribution vendeur SDK uniquement; SPECCHIO partiel derriere login partenariat. |
-| Foss `.NIR/.DA/.cal/.eqa` natif | Format ferme, aucune fixture binaire publique trouvee. |
+| ASD calibration `.ILL/.REF/.RAW` | Distribution vendeur SDK uniquement; SPECCHIO partiel derriere login partenariat; aucun GitHub/Wayback/Mendeley sample. |
+| Foss `.NIR/.DA/.cal/.eqa` natif | Format ferme, aucune fixture binaire publique trouvee (Wayback FOSS / NIR-Predictor demos checked). |
 | Perten DA / Inframatic | Pas de fixture native ni CSV reel public (clients only). |
 | Metrohm Vision Air / OMNIS NIR natif | Format ferme, seul l'export CSV est documente publiquement. |
-| Allotrope ADF | Membership Allotrope obligatoire, pas de sample public. |
-| MODTRAN albedo `.dat` reel | Distribution sous licence MODTRAN, pas de fixture publique redistribuable. |
-| MFR-7 / MFRSR `.OUT` reel | ARM Data Center exige compte (gratuit mais non-redistribution claire). |
-| Microtops II `.TXT` reel | AERONET Maritime Aerosol Network derriere login; aucun mirror GitHub trouve. |
-| PP Systems UniSpec `.SPT/.SPU` reel | Outils de processing (ARC-LTER, rUnispecDC) publics, mais aucun raw binaire/text committe. |
-| Bruker OPUS 5/6 legacy | Archives privees, pas de mirror public. |
-| Thermo OMNIC `.srsx` | Pas de fixture publique trouvee; le canal de chargement `.srs` reste couvert via spectrochempy_data. |
-| Shimadzu UVProbe `.spc` natif | Un seul candidat (`uri-t/shimadzu-spc-converter`) sans licence claire. |
-| VIAVI MicroNIR `.pri` natif | Format projet binaire, customer-only. |
+| Allotrope ADF | Membership Allotrope obligatoire; adfsee + adf-explorer-plugins GitLab ne contiennent que du code source Java, pas de `.adf` sample. |
+| MODTRAN albedo `.dat` reel | Distribution sous licence MODTRAN/ONTAR ($2400) ; MIT OCW pcmodwin/RIT tutorials ne shippent que des references USGS deja couvertes. |
+| MFR-7 / MFRSR `.OUT` reel | ARM Data Center exige compte; mitige via `samples_local/mfr/` (ARM-DOE/arm-test-data NetCDF) — non commit. |
+| Microtops II `.TXT` reel | AERONET MAN demande co-authorship; mitige via `samples_local/microtops/` (cruise Okeanos 2019) — non commit. |
+| PP Systems UniSpec `.SPT/.SPU` reel raw | Aucune fixture raw `.spu/.spt` publique; mitige via `samples_local/pp_systems/` (EDI Arctic LTER indices) — non commit. |
+| Bruker OPUS 5/6 legacy | Archives privees, pas de mirror public; OPUS 7/8 couvert via 4 lecteurs independants suffit. |
+| Thermo OMNIC `.srsx` | Pas de fixture publique trouvee (S.T.Japan demo bibliotheques `.spg` derriere formulaire); le canal `.srs` reste couvert. |
+| Shimadzu UVProbe `.spc` natif | Un seul candidat (`uri-t/shimadzu-spc-converter`) sans licence claire; aucune autre source apres sweep. |
+| VIAVI MicroNIR `.pri` natif | Format projet binaire, customer-only; CSV/XLSX exports reels deja couverts via UvA forensic. |
 | Si-Ware NeoSpectra Scanner natif single-measurement | Le pipeline OSSL ne publie que des matrices wide; pas de fixture "1 mesure par CSV" publique. |
+| Specim IQ demo cube | Specim a discontinue le produit (page "end-of-life"); seul l'archive 7z Arabidopsis Zenodo 1345007 (123 MB) existe — trop gros, et le mix raw/processed n'est pas isole. |
+| NEON AOP HDF5 reflectance tile | Tiles 1 km × 1 km demandent inscription neon.science (compte gratuit mais distribution conditionnelle); fichier minimum ~50 MB. |
+| Horiba `.l6s` single-spectrum | Aucune fixture publique trouvee; seul `.l6m` (map) committe. |
+| JASCO V-780 NIR / NRS Raman `.jws` variants | Aucun sample distinct du V-770 IR + V-series UV-Vis deja committes. |
