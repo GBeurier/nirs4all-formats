@@ -1931,6 +1931,18 @@ fn reads_avantes_legacy_transmittance_binary() {
     assert!((transmittance.axis.values[1_441] - 1100.133307).abs() < 0.000001);
     assert!((transmittance.values[0] - 11.840215).abs() < 0.000001);
     assert!((transmittance.values[1_441] + 127.179425).abs() < 0.000001);
+
+    let metadata = &records[0].metadata;
+    assert_eq!(metadata["measurement_mode"].as_str(), Some("transmittance"));
+    assert_eq!(metadata["point_count"].as_u64(), Some(1_442));
+    assert_eq!(metadata["first_pixel"].as_u64(), Some(0));
+    assert_eq!(metadata["last_pixel"].as_u64(), Some(1_441));
+    assert!((metadata["version_id"].as_f64().expect("version_id") - 70.0).abs() < 0.001);
+    assert!(metadata.contains_key("integration_time_ms"));
+    assert!(metadata.contains_key("averages_count"));
+    let raw = &metadata["avantes"];
+    assert_eq!(raw["family"].as_str(), Some("AvaSoft legacy"));
+    assert_eq!(raw["mode"].as_str(), Some("Transmittance"));
 }
 
 #[test]
@@ -1952,18 +1964,35 @@ fn reads_avantes_legacy_alternate_transmittance_binary() {
     assert!((transmittance.axis.values[1_622] - 1100.34788).abs() < 0.000001);
     assert!((transmittance.values[0] - 30.313837).abs() < 0.000001);
     assert!((transmittance.values[1_622] - 54.054054).abs() < 0.000001);
+    // Legacy `.TRM` carries the full triple plus acquisition metadata; the
+    // mode label and acquisition values must be promoted top-level.
+    let metadata = &records[0].metadata;
+    assert_eq!(metadata["measurement_mode"].as_str(), Some("transmittance"));
+    assert_eq!(metadata["point_count"].as_u64(), Some(1_623));
+    assert!(metadata.contains_key("integration_time_ms"));
 }
 
 #[test]
 fn reads_avantes_legacy_raw_reference_binaries() {
-    for (relative, signal_name, first_value) in [
-        ("samples/avantes/avantes_reflect.ROH", "scope", 805.0),
+    for (relative, signal_name, first_value, expected_mode) in [
+        (
+            "samples/avantes/avantes_reflect.ROH",
+            "scope",
+            805.0,
+            "raw_scope",
+        ),
         (
             "samples/avantes/1305084U1.DRK",
             "dark_reference",
             785.900024,
+            "dark_reference",
         ),
-        ("samples/avantes/1305084U1.REF", "white_reference", 856.0),
+        (
+            "samples/avantes/1305084U1.REF",
+            "white_reference",
+            856.0,
+            "white_reference",
+        ),
     ] {
         let records = open_path(workspace_file(relative)).expect("open avantes legacy raw");
         assert_eq!(records.len(), 1);
@@ -1971,6 +2000,23 @@ fn reads_avantes_legacy_raw_reference_binaries() {
         assert_eq!(signal.axis.values.len(), 1_442);
         assert_eq!(signal.signal_type, SignalType::RawCounts);
         assert!((signal.values[0] - first_value).abs() < 0.000001);
+        // Legacy single-channel files only carry one vector; we expect the
+        // top-level harmonized metadata and the provenance warning that flags
+        // the missing companion files.
+        let metadata = &records[0].metadata;
+        assert_eq!(
+            metadata["measurement_mode"].as_str(),
+            Some(expected_mode),
+            "{relative}"
+        );
+        assert_eq!(metadata["point_count"].as_u64(), Some(1_442), "{relative}");
+        let warning =
+            format!("avantes_legacy_single_channel:{expected_mode}:companion_files_required");
+        assert!(
+            records[0].provenance.warnings.contains(&warning),
+            "{relative}: warnings = {:?}",
+            records[0].provenance.warnings
+        );
     }
 }
 
@@ -2000,6 +2046,19 @@ fn reads_avantes_avasoft8_raw_binary() {
         Some("2019-07-06")
     );
     assert_eq!(metadata["spc_date_decoded"]["minute"].as_u64(), Some(48));
+    // Harmonized top-level metadata mirrors the raw block for cross-format
+    // consumers.
+    let top = &records[0].metadata;
+    assert_eq!(top["magic"].as_str(), Some("AVS84"));
+    assert_eq!(top["measurement_mode"].as_str(), Some("raw_scope"));
+    assert_eq!(top["point_count"].as_u64(), Some(1_019));
+    assert_eq!(top["first_pixel"].as_u64(), Some(238));
+    assert_eq!(top["last_pixel"].as_u64(), Some(1_256));
+    assert_eq!(top["instrument_serial"].as_str(), Some("1904090M1"));
+    assert_eq!(top["operator"].as_str(), Some("1904090M1"));
+    assert!(top.contains_key("integration_time_ms"));
+    assert!(top.contains_key("averages_count"));
+    assert!(top.contains_key("integration_delay"));
     let scope = records[0].signals.get("scope").expect("scope");
     assert_eq!(scope.axis.values.len(), 1_019);
     assert_eq!(scope.axis.unit, "nm");
@@ -2050,6 +2109,22 @@ fn reads_avantes_avasoft8_irradiance_binary() {
         .provenance
         .warnings
         .contains(&"avantes_irr8_irradiance_calibration_not_applied".to_string()));
+    // The fourth array in IRR8 mode is the per-pixel irradiance calibration
+    // vector (very large dynamic range), not a raw white scan: it must NOT be
+    // exposed under `white_reference` and must be labelled accordingly.
+    assert!(!records[0].signals.contains_key("white_reference"));
+    let calibration = records[0]
+        .signals
+        .get("irradiance_calibration")
+        .expect("irradiance_calibration");
+    assert_eq!(calibration.axis.values.len(), 1_620);
+    assert_eq!(calibration.signal_type, SignalType::Unknown);
+    assert!(calibration.values[0] > 1.0e9);
+    // Harmonized top-level metadata is promoted for IRR8 too.
+    let top = &records[0].metadata;
+    assert_eq!(top["magic"].as_str(), Some("AVS84"));
+    assert_eq!(top["measurement_mode"].as_str(), Some("irradiance"));
+    assert_eq!(top["point_count"].as_u64(), Some(1_620));
 }
 
 #[test]

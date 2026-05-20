@@ -6,7 +6,17 @@
       "metadata_keys": [
         "acquisition_start_date",
         "acquisition_start_time",
-        "avantes"
+        "avantes",
+        "averages_count",
+        "first_pixel",
+        "instrument_serial",
+        "integration_delay",
+        "integration_time_ms",
+        "last_pixel",
+        "magic",
+        "measurement_mode",
+        "operator",
+        "point_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::avantes_binary",

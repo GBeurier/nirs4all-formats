@@ -66,6 +66,13 @@ Current implementation highlights:
 - SVC/GER `.sig` covers the committed PDA, laptop, matched-overlap and
   resampled field fixtures with promoted instrument, foreoptic, detector,
   factor and overlap metadata.
+- Avantes AvaSoft legacy and AvaSoft 8 binaries promote `measurement_mode`,
+  `point_count`, pixel range, integration time/averages, instrument serial,
+  operator, detector temperature (legacy) and acquisition date/time (AvaSoft
+  8) at the record top level while preserving the raw vendor block under
+  `metadata.avantes`; IRR8 mode now exposes the per-pixel calibration vector
+  as `irradiance_calibration` and a mode/extension mismatch warning is raised
+  when a `.IRR8`/`.Raw8` file disagrees with its `measure_mode`.
 
 ## Development
 

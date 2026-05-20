@@ -4,7 +4,18 @@
     {
       "format": "avantes-legacy-binary",
       "metadata_keys": [
-        "avantes"
+        "avantes",
+        "averages_count",
+        "detector_temperature_c",
+        "first_pixel",
+        "instrument_serial",
+        "integration_delay",
+        "integration_time_ms",
+        "last_pixel",
+        "measurement_mode",
+        "operator",
+        "point_count",
+        "version_id"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::avantes_binary",
@@ -30,7 +41,9 @@
       ],
       "source_sha256": "c78d68d0db3fb12fcf0cdd6ed5344d67a7e8971d5402fd441cf320936286454e",
       "target_keys": [],
-      "warnings": []
+      "warnings": [
+        "avantes_legacy_single_channel:dark_reference:companion_files_required"
+      ]
     }
   ]
 }

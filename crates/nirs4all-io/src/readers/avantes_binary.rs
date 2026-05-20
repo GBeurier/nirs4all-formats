@@ -48,7 +48,7 @@ impl Reader for AvantesBinaryReader {
         })?;
         let source = SourceFile::from_bytes(path, &bytes, "primary");
         if bytes.starts_with(b"AVS82") || bytes.starts_with(b"AVS84") {
-            read_avasoft8(self.name(), source, &bytes)
+            read_avasoft8(self.name(), source, path, &bytes)
         } else {
             read_legacy(self.name(), source, path, &bytes)
         }
@@ -198,6 +198,18 @@ fn read_legacy(
                 "avantes_legacy_unparsed_trailing_floats:{trailing}"
             ));
         }
+        // Raw-mode legacy files only carry a single channel. Flag that
+        // downstream consumers need companion files to recompute processed
+        // signals (transmittance/absorbance/reflectance).
+        if matches!(
+            mode,
+            LegacyMode::RawScope | LegacyMode::DarkReference | LegacyMode::WhiteReference
+        ) {
+            warnings.push(format!(
+                "avantes_legacy_single_channel:{}:companion_files_required",
+                legacy_mode_label(&mode)
+            ));
+        }
     }
 
     let metadata = legacy_metadata(&floats, &coeffs, first_pixel, last_pixel, &mode);
@@ -213,9 +225,58 @@ fn read_legacy(
     Ok(vec![record])
 }
 
+/// Human-readable label for the legacy measurement mode, promoted at the top
+/// level of the record metadata.
+fn legacy_mode_label(mode: &LegacyMode) -> &'static str {
+    match mode {
+        LegacyMode::Absorbance => "absorbance",
+        LegacyMode::Transmittance => "transmittance",
+        LegacyMode::RawScope => "raw_scope",
+        LegacyMode::DarkReference => "dark_reference",
+        LegacyMode::WhiteReference => "white_reference",
+    }
+}
+
+/// Human-readable label for the AvaSoft 8 measurement mode, promoted at the
+/// top level of the record metadata.
+fn avasoft8_mode_label(mode: &Avasoft8Mode) -> &'static str {
+    match mode {
+        Avasoft8Mode::Raw => "raw_scope",
+        Avasoft8Mode::Absorbance => "absorbance",
+        Avasoft8Mode::Transmittance => "transmittance",
+        Avasoft8Mode::Reflectance => "reflectance",
+        Avasoft8Mode::Irradiance => "irradiance",
+    }
+}
+
+/// Map a file extension to the AvaSoft 8 mode it is expected to encode.
+/// Returns `None` for extensions whose mode is not unambiguously implied.
+fn avasoft8_expected_mode(ext: &str) -> Option<Avasoft8Mode> {
+    match ext {
+        "raw8" | "rwd8" => Some(Avasoft8Mode::Raw),
+        "abs8" => Some(Avasoft8Mode::Absorbance),
+        "trm8" => Some(Avasoft8Mode::Transmittance),
+        "rfl8" => Some(Avasoft8Mode::Reflectance),
+        "irr8" | "rir8" => Some(Avasoft8Mode::Irradiance),
+        _ => None,
+    }
+}
+
+fn avasoft8_modes_match(extension: &Avasoft8Mode, observed: &Avasoft8Mode) -> bool {
+    matches!(
+        (extension, observed),
+        (Avasoft8Mode::Raw, Avasoft8Mode::Raw)
+            | (Avasoft8Mode::Absorbance, Avasoft8Mode::Absorbance)
+            | (Avasoft8Mode::Transmittance, Avasoft8Mode::Transmittance)
+            | (Avasoft8Mode::Reflectance, Avasoft8Mode::Reflectance)
+            | (Avasoft8Mode::Irradiance, Avasoft8Mode::Irradiance)
+    )
+}
+
 fn read_avasoft8(
     reader: &str,
     source: SourceFile,
+    path: &Path,
     bytes: &[u8],
 ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
     if bytes.len() < 328 {
@@ -225,6 +286,8 @@ fn read_avasoft8(
     }
     let magic = std::str::from_utf8(&bytes[..5]).unwrap_or("AVS8?");
     let spectra_count = bytes[5] as usize;
+    let extension = lower_extension(path);
+    let expected_mode = avasoft8_expected_mode(&extension);
     let mut offset = 6usize;
     let mut records = Vec::new();
     for index in 0..spectra_count {
@@ -300,22 +363,50 @@ fn read_avasoft8(
             "dark_reference".to_string(),
             make_signal(&x, dark, SignalType::RawCounts, None, "dark_reference")?,
         );
-        signals.insert(
-            "white_reference".to_string(),
-            make_signal(
-                &x,
-                reference,
-                SignalType::RawCounts,
-                None,
-                "white_reference",
-            )?,
-        );
+        // In irradiance mode the fourth array is the per-pixel calibration
+        // vector (values that span ~1e10..1e0), not a raw white reference. We
+        // promote it under its true role and keep `white_reference` for the
+        // reflectance/transmittance/absorbance modes where it really is the
+        // raw white scan.
+        if matches!(mode, Avasoft8Mode::Irradiance) {
+            signals.insert(
+                "irradiance_calibration".to_string(),
+                make_signal(
+                    &x,
+                    reference,
+                    SignalType::Unknown,
+                    None,
+                    "irradiance_calibration",
+                )?,
+            );
+        } else {
+            signals.insert(
+                "white_reference".to_string(),
+                make_signal(
+                    &x,
+                    reference,
+                    SignalType::RawCounts,
+                    None,
+                    "white_reference",
+                )?,
+            );
+        }
 
         let mut warnings = Vec::new();
         if matches!(mode, Avasoft8Mode::Irradiance) {
             warnings.push("avantes_irr8_irradiance_calibration_not_applied".to_string());
         }
-        let metadata = avasoft8_metadata(bytes, offset, magic, length, start_pixel, stop_pixel)?;
+        if let Some(expected) = expected_mode.as_ref() {
+            if !avasoft8_modes_match(expected, &mode) {
+                warnings.push(format!(
+                    "avantes_avasoft8_extension_mode_mismatch:expected={}:observed={}",
+                    avasoft8_mode_label(expected),
+                    avasoft8_mode_label(&mode)
+                ));
+            }
+        }
+        let metadata =
+            avasoft8_metadata(bytes, offset, magic, length, start_pixel, stop_pixel, &mode)?;
         records.push(record_from_signals(
             "avantes-avasoft8-binary",
             reader,
@@ -465,24 +556,69 @@ fn legacy_metadata(
     mode: &LegacyMode,
 ) -> BTreeMap<String, serde_json::Value> {
     let mut metadata = BTreeMap::new();
+    let spec_id = f32_ascii(&floats[1..10]);
+    let user_name = f32_ascii(&floats[10..74]);
+    let trailer_offset = legacy_trailer_offset(first_pixel, last_pixel, mode);
+    let integration_time = floats.get(trailer_offset).copied();
+    let averages = floats.get(trailer_offset + 1).copied();
+    let integration_delay = floats.get(trailer_offset + 2).copied();
+    let detector_temperature = floats.get(99).copied();
+    let point_count = last_pixel - first_pixel + 1;
+    let version_id = floats[0];
+
+    if !spec_id.is_empty() {
+        metadata.insert("instrument_serial".to_string(), json!(spec_id));
+    }
+    if !user_name.is_empty() {
+        metadata.insert("operator".to_string(), json!(user_name));
+    }
+    metadata.insert(
+        "measurement_mode".to_string(),
+        json!(legacy_mode_label(mode)),
+    );
+    if let Some(value) = integration_time {
+        if value.is_finite() {
+            metadata.insert("integration_time_ms".to_string(), json!(value as f64));
+        }
+    }
+    if let Some(value) = averages {
+        if value.is_finite() && value >= 0.0 {
+            metadata.insert("averages_count".to_string(), json!(value.round() as i64));
+        }
+    }
+    if let Some(value) = integration_delay {
+        if value.is_finite() {
+            metadata.insert("integration_delay".to_string(), json!(value as f64));
+        }
+    }
+    if let Some(value) = detector_temperature {
+        if value.is_finite() {
+            metadata.insert("detector_temperature_c".to_string(), json!(value as f64));
+        }
+    }
+    metadata.insert("point_count".to_string(), json!(point_count));
+    metadata.insert("first_pixel".to_string(), json!(first_pixel));
+    metadata.insert("last_pixel".to_string(), json!(last_pixel));
+    metadata.insert("version_id".to_string(), json!(version_id));
+
     metadata.insert(
         "avantes".to_string(),
         json!({
             "family": "AvaSoft legacy",
-            "version_id": floats[0],
-            "spec_id": f32_ascii(&floats[1..10]),
-            "user_name": f32_ascii(&floats[10..74]),
+            "version_id": version_id,
+            "spec_id": spec_id,
+            "user_name": user_name,
             "wavelength_coefficients": coeffs,
             "first_pixel": first_pixel,
             "last_pixel": last_pixel,
             "measure_mode": floats[81],
             "mode": format!("{mode:?}"),
-            "integration_time": floats.get(legacy_trailer_offset(first_pixel, last_pixel, mode)).copied(),
-            "averages": floats.get(legacy_trailer_offset(first_pixel, last_pixel, mode) + 1).copied(),
-            "integration_delay": floats.get(legacy_trailer_offset(first_pixel, last_pixel, mode) + 2).copied(),
+            "integration_time": integration_time,
+            "averages": averages,
+            "integration_delay": integration_delay,
             "smooth_pixels": floats.get(89).copied(),
             "trigger": floats.get(91).copied(),
-            "detector_temperature": floats.get(99).copied(),
+            "detector_temperature": detector_temperature,
         }),
     );
     metadata
@@ -504,14 +640,50 @@ fn avasoft8_metadata(
     length: usize,
     start_pixel: usize,
     stop_pixel: usize,
+    mode: &Avasoft8Mode,
 ) -> Result<BTreeMap<String, serde_json::Value>> {
     let mut metadata = BTreeMap::new();
     let spc_date = u32_at(bytes, offset + 128)?;
     let decoded_date = decode_spc_datetime(spc_date);
+    let spec_id = bytes_ascii(bytes, offset + 8, 10);
+    let user_name = bytes_ascii(bytes, offset + 18, 64);
+    let comment = bytes_ascii(bytes, offset + 192, 130);
+    let integration_time = f32_at(bytes, offset + 87)?;
+    let integration_delay = u32_at(bytes, offset + 91)?;
+    let averages = u32_at(bytes, offset + 95)?;
+    let measure_mode_byte = bytes[offset + 5];
+    let point_count = stop_pixel - start_pixel + 1;
+
     if let Some(datetime) = decoded_date.as_ref() {
         metadata.insert("acquisition_start_date".to_string(), json!(datetime.date));
         metadata.insert("acquisition_start_time".to_string(), json!(datetime.time));
     }
+    if !spec_id.is_empty() {
+        metadata.insert("instrument_serial".to_string(), json!(spec_id));
+    }
+    if !user_name.is_empty() {
+        metadata.insert("operator".to_string(), json!(user_name));
+    }
+    if !comment.is_empty() {
+        metadata.insert("comment".to_string(), json!(comment));
+    }
+    metadata.insert(
+        "measurement_mode".to_string(),
+        json!(avasoft8_mode_label(mode)),
+    );
+    if integration_time.is_finite() {
+        metadata.insert(
+            "integration_time_ms".to_string(),
+            json!(integration_time as f64),
+        );
+    }
+    metadata.insert("averages_count".to_string(), json!(averages));
+    metadata.insert("integration_delay".to_string(), json!(integration_delay));
+    metadata.insert("point_count".to_string(), json!(point_count));
+    metadata.insert("first_pixel".to_string(), json!(start_pixel));
+    metadata.insert("last_pixel".to_string(), json!(stop_pixel));
+    metadata.insert("magic".to_string(), json!(magic));
+
     metadata.insert(
         "avantes".to_string(),
         json!({
@@ -519,20 +691,20 @@ fn avasoft8_metadata(
             "magic": magic,
             "subfile_length": length,
             "sequence": bytes[offset + 4],
-            "measure_mode": bytes[offset + 5],
+            "measure_mode": measure_mode_byte,
             "bitness": bytes[offset + 6],
             "sd_marker": bytes[offset + 7],
-            "spec_id": bytes_ascii(bytes, offset + 8, 10),
-            "user_name": bytes_ascii(bytes, offset + 18, 64),
+            "spec_id": spec_id,
+            "user_name": user_name,
             "status": bytes[offset + 82],
             "first_pixel": start_pixel,
             "last_pixel": stop_pixel,
-            "integration_time": f32_at(bytes, offset + 87)?,
-            "integration_delay": u32_at(bytes, offset + 91)?,
-            "averages": u32_at(bytes, offset + 95)?,
+            "integration_time": integration_time,
+            "integration_delay": integration_delay,
+            "averages": averages,
             "spc_date": spc_date,
             "spc_date_decoded": decoded_date.as_ref().map(AvasoftSpcDate::as_json),
-            "comment": bytes_ascii(bytes, offset + 192, 130),
+            "comment": comment,
         }),
     );
     Ok(metadata)
@@ -660,28 +832,38 @@ fn u32_at(bytes: &[u8], offset: usize) -> Result<u32> {
 }
 
 fn f32_ascii(values: &[f32]) -> String {
-    let bytes = values
-        .iter()
-        .filter_map(|value| {
-            let rounded = value.round();
-            (rounded.is_finite() && rounded > 0.0 && rounded <= u8::MAX as f32)
-                .then_some(rounded as u8)
-        })
-        .collect::<Vec<_>>();
+    let mut bytes = Vec::new();
+    for value in values {
+        let rounded = value.round();
+        if !rounded.is_finite() || rounded <= 0.0 {
+            break;
+        }
+        if rounded <= u8::MAX as f32 {
+            bytes.push(rounded as u8);
+        }
+    }
     trim_ascii(&bytes)
 }
 
 fn bytes_ascii(bytes: &[u8], offset: usize, length: usize) -> String {
     let end = (offset + length).min(bytes.len());
-    trim_ascii(&bytes[offset..end])
+    let slice = &bytes[offset..end];
+    // AvaSoft 8 fixed-length text fields are NUL-terminated C strings; the
+    // trailing bytes after the NUL are uninitialised memory that often
+    // happens to contain ASCII-range bytes. Stop at the first NUL so callers
+    // get the intended label rather than binary trailers.
+    let stop = slice
+        .iter()
+        .position(|byte| *byte == 0)
+        .unwrap_or(slice.len());
+    trim_ascii(&slice[..stop])
 }
 
 fn trim_ascii(bytes: &[u8]) -> String {
     let text = bytes
         .iter()
-        .map(|byte| if *byte == 0 { b' ' } else { *byte })
-        .filter(|byte| byte.is_ascii())
-        .map(char::from)
+        .filter(|byte| byte.is_ascii() && !byte.is_ascii_control())
+        .map(|byte| char::from(*byte))
         .collect::<String>();
     text.trim().to_string()
 }
