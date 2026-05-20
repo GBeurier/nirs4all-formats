@@ -247,6 +247,82 @@ fn reads_envi_spectral_library_from_binary_sidecar() {
 }
 
 #[test]
+fn reads_ocean_optics_spectrasuite_text_export() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/OOusb4000.txt")).expect("open ocean text");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "ocean-optics-text");
+    let signal = records[0].signals.get("processed").expect("processed");
+    assert_eq!(signal.axis.values.len(), 3_648);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert!((signal.axis.values[0] - 178.65).abs() < 0.000001);
+    assert!((signal.axis.values[3_647] - 888.37).abs() < 0.000001);
+    assert!((signal.values[3_647] + 12.792).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_master_transmission_export() {
+    let records = open_path(workspace_file(
+        "samples/ocean_optics/FMNH6834.00000001.Master.Transmission",
+    ))
+    .expect("open master transmission");
+
+    assert_eq!(records.len(), 1);
+    let transmittance = records[0]
+        .signals
+        .get("transmittance")
+        .expect("transmittance");
+    assert_eq!(transmittance.axis.values.len(), 3_648);
+    assert_eq!(transmittance.signal_type, SignalType::Transmittance);
+    assert!((transmittance.axis.values[0] - 178.53).abs() < 0.000001);
+    assert!((transmittance.values[0] - 95.380).abs() < 0.000001);
+    assert!((transmittance.values[3_647] - 25.753).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_craic_reflectance_export() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/CRAIC_export.txt")).expect("open craic");
+
+    assert_eq!(records.len(), 1);
+    let reflectance = records[0].signals.get("reflectance").expect("reflectance");
+    assert_eq!(reflectance.axis.values.len(), 3_761);
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert!((reflectance.axis.values[0] - 280.11).abs() < 0.000001);
+    assert!((reflectance.values[0] - 13.3999).abs() < 0.000001);
+    assert!((reflectance.values[3_760] - 169.6574).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_jaz_multichannel_export() {
+    let records = open_path(workspace_file("samples/ocean_optics/jazspec.jaz")).expect("open jaz");
+
+    assert_eq!(records.len(), 1);
+    assert!(records[0].signals.contains_key("dark_reference"));
+    assert!(records[0].signals.contains_key("white_reference"));
+    assert!(records[0].signals.contains_key("sample"));
+    let processed = records[0].signals.get("processed").expect("processed");
+    assert_eq!(processed.axis.values.len(), 2_048);
+    assert!((processed.axis.values[2_047] - 886.439331).abs() < 0.000001);
+    assert!((processed.values[2_047] - 13.679238).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_jaz_irradiance_export() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/irrad.JazIrrad")).expect("open jaz irrad");
+
+    assert_eq!(records.len(), 1);
+    let irradiance = records[0].signals.get("irradiance").expect("irradiance");
+    assert_eq!(irradiance.axis.values.len(), 2_048);
+    assert_eq!(irradiance.signal_type, SignalType::Irradiance);
+    assert!((irradiance.axis.values[2_047] - 891.915466).abs() < 0.000001);
+    assert!((irradiance.values[2_047] - 3.643908).abs() < 0.000001);
+}
+
+#[test]
 fn rejects_envi_standard_image_cube_for_v1() {
     let err = open_path(workspace_file("samples/envi_sli/cubescope-mini-cube.hdr"))
         .expect_err("cube should be out of scope");

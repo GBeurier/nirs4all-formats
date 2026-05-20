@@ -7,6 +7,7 @@ pub mod csv_like;
 pub mod envi_sli;
 pub mod galactic_spc;
 pub mod jcamp;
+pub mod ocean_optics;
 pub mod sed;
 pub mod svc_sig;
 
@@ -21,5 +22,6 @@ pub use csv_like::CsvLikeReader;
 pub use envi_sli::EnviSliReader;
 pub use galactic_spc::GalacticSpcReader;
 pub use jcamp::JcampReader;
+pub use ocean_optics::OceanOpticsReader;
 pub use sed::SedReader;
 pub use svc_sig::SvcSigReader;

@@ -1,0 +1,36 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "ocean-optics-text",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::ocean_optics",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 187.92,
+          "axis_kind": "wavelength",
+          "axis_last": 2116.5,
+          "axis_len": 2389,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "processed",
+          "role": "processed",
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 18.995,
+          "value_last": 4.6991,
+          "value_sum": -4773.021506,
+          "values_len": 2389
+        }
+      ],
+      "source_sha256": "b85332bd50db454717b2f252561db6e1c23121274e6c4f4cc64622000de351e7",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

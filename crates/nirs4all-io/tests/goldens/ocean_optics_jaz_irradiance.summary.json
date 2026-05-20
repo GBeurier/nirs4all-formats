@@ -1,0 +1,68 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "ocean-optics-text",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::ocean_optics",
+      "record_signal_type": "irradiance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 191.016296,
+          "axis_kind": "wavelength",
+          "axis_last": 891.915466,
+          "axis_len": 2048,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": -19.476574,
+          "value_sum": -51756.556942,
+          "values_len": 2048
+        },
+        {
+          "axis_first": 191.016296,
+          "axis_kind": "wavelength",
+          "axis_last": 891.915466,
+          "axis_len": 2048,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "irradiance",
+          "role": "irradiance",
+          "signal_type": "irradiance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 3.643908,
+          "value_sum": 1972.681356,
+          "values_len": 2048
+        },
+        {
+          "axis_first": 191.016296,
+          "axis_kind": "wavelength",
+          "axis_last": 891.915466,
+          "axis_len": 2048,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "sample",
+          "role": "sample",
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 3598.977539,
+          "value_sum": 19377240.510661,
+          "values_len": 2048
+        }
+      ],
+      "source_sha256": "05c0fd0a00fe89fe28facf288df92279f48c3f3ed85748204f5d24197b29eb69",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

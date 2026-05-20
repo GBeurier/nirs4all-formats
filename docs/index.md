@@ -15,6 +15,7 @@ formats/asd
 formats/bruker-opus
 formats/envi-sli
 formats/galactic-spc
+formats/ocean-optics
 formats/text-readers-001
 DATA_MODEL
 CONFORMANCE
