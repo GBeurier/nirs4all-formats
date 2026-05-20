@@ -55,6 +55,7 @@ Committed smoke and golden coverage currently includes:
 |---|---|---|
 | `BENZENE.SPC` | new LSB, generated X | 1 record, 1842 absorbance points |
 | `s_xy.spc` | new LSB, explicit global X | 1 record, 512 points |
+| `OceanOptics.spc` | new LSB, explicit global X, Ocean Optics export | 1 record, 3648 transmittance points |
 | `nir.spc` | new LSB, multi common-X | 20 records, 700 points each |
 | `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
 | `LC_DIODE_ARRAY.SPC` | old LSB | limited old-header smoke test |
@@ -64,6 +65,8 @@ reader for the new-LSB fixtures. Important controls:
 
 - `BENZENE.SPC`: first Y `0.1015599817`, sum `189.390214`.
 - `s_xy.spc`: first X `1.0866667032`, first Y `45333`, sum `30065112`.
+- `OceanOptics.spc`: first X `176.3604126`, last X `893.6943359`,
+  first Y `0`, last Y `119.4251709`.
 - `nir.spc`: 20 records, first record first Y `0.0002004839`, sum `238.526`.
 - `m_xyxy.spc`: 512 records, first subfile has 8 points, first X
   `16943.600006`, first Y `6823`, sum `45327`.

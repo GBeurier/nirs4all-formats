@@ -22,8 +22,9 @@ The first tranche intentionally does not parse:
 - Ocean Optics JCAMP beyond what the JCAMP reader can already decode.
 
 The `.ProcSpec` reader validates the SHA-512 signature when
-`OOISignatures.xml` is present. Ocean Optics `.spc` still requires separate
-sniffing because it collides with Galactic SPC and other vendor families.
+`OOISignatures.xml` is present. The committed Ocean Optics `.spc` fixture uses
+the Galactic/Thermo new-LSB explicit-X SPC layout, so it is intentionally routed
+through the Galactic SPC reader instead of a duplicate Ocean-specific reader.
 
 ## Record Mapping
 
@@ -72,13 +73,14 @@ Current committed controls:
 | `OceanOptics_Linux.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 125.074331` |
 | `OceanOptics_Windows.ProcSpec` | 2048 | `sample`, `dark_reference`, `white_reference`, `processed` | `190.939253 -> 888.233535 nm` | processed `282.857143 -> 40.050321` |
 | `whiteref.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 97.294250` |
+| `OceanOptics.spc` | 3648 | `transmittance` via Galactic SPC reader | `176.360413 -> 893.694336 nm` | `0.0 -> 119.425171` |
 
 `lightr` is the practical external reference for this family, but it remains a
 conformance-only dependency because the Rust core is MIT.
 
 ## Next Work
 
-- Disambiguate Ocean Optics `.spc` from Galactic SPC at the sniffer level.
+- Add samples for any non-Galactic Ocean Optics `.spc` variant if encountered.
 - Add reference reports against `lightr`.
 - Improve semantic typing of generic `processed` spectra when the export
   records processing mode in metadata rather than column labels.
