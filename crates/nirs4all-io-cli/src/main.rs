@@ -17,6 +17,11 @@ enum Command {
         /// Input file.
         path: PathBuf,
     },
+    /// Read a file and print normalized spectral records as JSON.
+    ReadJson {
+        /// Input file.
+        path: PathBuf,
+    },
 }
 
 fn main() -> anyhow::Result<()> {
@@ -26,6 +31,11 @@ fn main() -> anyhow::Result<()> {
             let probes = nirs4all_io::probe_path(&path)
                 .with_context(|| format!("failed to probe {}", path.display()))?;
             println!("{}", serde_json::to_string_pretty(&probes)?);
+        }
+        Command::ReadJson { path } => {
+            let records = nirs4all_io::open_path(&path)
+                .with_context(|| format!("failed to read {}", path.display()))?;
+            println!("{}", serde_json::to_string_pretty(&records)?);
         }
     }
     Ok(())

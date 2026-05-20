@@ -5,6 +5,23 @@ state of open-source support and the parser strategy we plan to use. Sections
 1–3 capture the formats provided in the original spec; sections 4–6 add formats
 discovered during the web research phase (cf. `DIRECTIONS.md`, Annex A).
 
+## Current Native Coverage
+
+Experimental readers currently implemented in Rust and tested on committed
+fixtures:
+
+| Format family | Extensions / fixture class | Status | Notes |
+|---|---|---|---|
+| Plain delimited spectral tables | `.csv`, `.tsv`, numeric-header `.txt` | Experimental | One record per row, numeric header columns become the spectral axis, numeric non-spectral columns become targets. |
+| Bruker OPUS DPT export | `.dpt` | Experimental | Two-column ASCII, wavenumber axis in `cm-1`. |
+| Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. Binary AvaSoft variants remain pending. |
+| JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Plain AFFN `XYDATA=(X++(Y..Y))` only. DIF/DUP, SQZ/PAC and NTUPLES are pending. |
+| Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |
+| SVC/GER SIG | `.sig` | Experimental | Spectra Vista SIG text fixtures with reference, target and reflectance channels. |
+
+Promotion from Experimental to Beta/Done requires golden JSON conformance,
+reference-loader comparison where available and adversarial tests.
+
 Legend for **Open status**:
 
 | Symbol | Meaning |
