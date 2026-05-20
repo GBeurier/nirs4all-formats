@@ -37,5 +37,7 @@ Not ENVI binaries, but reference spectra in plain ASCII used widely with ENVI. F
   - Python: [`spectral`](https://github.com/spectralpython/spectral) (Spectral Python), `pysptools`
   - R: `RStoolbox::readSLI()`
 - Small ENVI Standard cubes are parsed by expanding each pixel to a point
-  spectrum. Large production cubes still need an explicit mask/ROI extraction
-  API before they should be treated as routine tabular spectra.
+  spectrum with parsed `map info` coordinates, normalized spatial units and
+  row-slowest/X-fastest ordering. Large production cubes still need an
+  explicit mask/ROI extraction API before they should be treated as routine
+  tabular spectra.
