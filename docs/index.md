@@ -10,6 +10,7 @@ DIRECTIONS
 ROADMAP
 STATUS
 FORMATS
+FORMAT_MATRIX
 FORMAT_GAPS
 formats/avantes
 formats/allotrope-asm
