@@ -47,6 +47,23 @@ starts with CSV/TSV, JCAMP-DX, ASD, SVC/GER, Spectral Evolution, Bruker OPUS,
 Galactic SPC, ENVI SLI, Avantes and Excel. Tier B/C formats follow once the
 core validation and reverse-engineering workflow is stable.
 
+The operational status lives in
+[`docs/FORMAT_MATRIX.md`](docs/FORMAT_MATRIX.md): it tracks variant counts,
+validated/partial/planned/blocked states, NIRS coverage, missing impact,
+popularity and the exact files still needed from instrument networks.
+
+Current implementation highlights:
+
+- JCAMP-DX now covers dense `XYDATA`/ASDF, NMR `NTUPLES`, top-level
+  multi-block records, Ocean Optics `LINK`/`XYPOINTS`, and top-level sparse
+  `PEAK TABLE` / `PEAK ASSIGNMENTS` records.
+- Generic HDF5 covers simple spectral schemas plus nested groups, common
+  dataset aliases (`spectra`, `absorbance`, `reflectance`, `data`) and
+  unambiguous transposed matrices.
+- Spectral Evolution `.sed` keeps DN-only files loadable while typing DN,
+  percent/fraction reflectance and promoting instrument/GPS/acquisition
+  metadata.
+
 ## Development
 
 ```bash

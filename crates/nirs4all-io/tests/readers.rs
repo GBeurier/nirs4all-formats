@@ -2395,18 +2395,51 @@ fn reads_spectral_evolution_sed() {
     .expect("open sed");
 
     assert_eq!(records.len(), 1);
-    assert_eq!(records[0].provenance.format, "spectral-evolution-sed");
-    assert!(records[0].signals.keys().any(|key| key.contains("reflect")));
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "spectral-evolution-sed");
+    assert!(record.signals.keys().any(|key| key.contains("reflect")));
     assert_eq!(
-        records[0].metadata["acquisition_start_date"].as_str(),
+        record.metadata["acquisition_start_date"].as_str(),
         Some("2012-10-03")
     );
     assert_eq!(
-        records[0].metadata["acquisition_end_time"].as_str(),
+        record.metadata["acquisition_end_time"].as_str(),
         Some("12:05:44")
     );
-    assert!(!records[0].metadata.contains_key("gps_latitude"));
-    let reflectance = records[0]
+    assert_eq!(
+        record.metadata["instrument"].as_str(),
+        Some("PSR+3500_SN1566060 [3]")
+    );
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("PSR+3500")
+    );
+    assert_eq!(
+        record.metadata["instrument_serial"].as_str(),
+        Some("1566060")
+    );
+    assert_eq!(
+        record.metadata["measurement_mode"].as_str(),
+        Some("reflectance")
+    );
+    assert_eq!(
+        record.metadata["radiometric_calibration"].as_str(),
+        Some("DN")
+    );
+    assert_eq!(record.metadata["point_count"].as_u64(), Some(2_151));
+    let wavelength_range = record.metadata["wavelength_range_nm"]
+        .as_array()
+        .expect("wavelength range");
+    assert_eq!(wavelength_range[0].as_f64(), Some(350.0));
+    assert_eq!(wavelength_range[1].as_f64(), Some(2500.0));
+    assert_sed_signal_units(record, &["DN", "DN", "%"]);
+    assert!(!record.metadata.contains_key("gps_latitude"));
+
+    let reference = record.signals.get("norm__dn_ref_").expect("DN reference");
+    assert_eq!(reference.unit.as_deref(), Some("DN"));
+    let target = record.signals.get("norm__dn_target").expect("DN target");
+    assert_eq!(target.unit.as_deref(), Some("DN"));
+    let reflectance = record
         .signals
         .iter()
         .find(|(key, _)| key.contains("reflect"))
@@ -2414,6 +2447,7 @@ fn reads_spectral_evolution_sed() {
         .expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 2_151);
     assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert_eq!(reflectance.unit.as_deref(), Some("%"));
 }
 
 #[test]
@@ -2447,6 +2481,7 @@ fn flags_spectral_evolution_sed_without_reflectance() {
     assert_eq!(reference.axis.unit, "nm");
     assert_eq!(reference.axis.kind, AxisKind::Wavelength);
     assert_eq!(reference.signal_type, SignalType::RawCounts);
+    assert_eq!(reference.unit.as_deref(), Some("DN"));
     assert!((reference.axis.values[0] - 350.0).abs() < 0.000001);
     assert!((reference.axis.values[2_150] - 2500.0).abs() < 0.000001);
     assert!((reference.values[0] - 5.282287).abs() < 0.000001);
@@ -2457,8 +2492,15 @@ fn flags_spectral_evolution_sed_without_reflectance() {
         .get("norm__dn_target")
         .expect("DN target");
     assert_eq!(target.signal_type, SignalType::RawCounts);
+    assert_eq!(target.unit.as_deref(), Some("DN"));
     assert!((target.values[0] - 1.922703).abs() < 0.000001);
     assert!((target.values[2_150] - 1.271258).abs() < 0.000001);
+    assert_sed_signal_units(&records[0], &["DN", "DN"]);
+    assert_eq!(
+        records[0].metadata["measurement_mode"].as_str(),
+        Some("direct_energy")
+    );
+    assert_eq!(records[0].metadata["point_count"].as_u64(), Some(2_151));
 
     let vendor = &records[0].metadata["vendor"];
     assert_eq!(
@@ -2467,6 +2509,56 @@ fn flags_spectral_evolution_sed_without_reflectance() {
     );
     assert_eq!(vendor["measurement"].as_str(), Some("DIRECT_ENERGY"));
     assert_eq!(vendor["radiometric_calibration"].as_str(), Some("DN"));
+}
+
+#[test]
+fn reads_spectral_evolution_sed_fraction_reflectance_units_and_gps() {
+    let records = open_path(workspace_file(
+        "samples/spectral_evolution/serbinsh_cvars_grape_leaf.sed",
+    ))
+    .expect("open serbin sed");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "spectral-evolution-sed");
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("PSM-3500")
+    );
+    assert_eq!(
+        record.metadata["instrument_serial"].as_str(),
+        Some("1336023")
+    );
+    assert_eq!(
+        record.metadata["measurement_mode"].as_str(),
+        Some("reflectance")
+    );
+    assert_eq!(record.metadata["point_count"].as_u64(), Some(2_151));
+    assert_eq!(record.metadata["gps_time"].as_str(), Some("15:57:11"));
+    assert_eq!(record.metadata["gps_satellites_used"].as_u64(), Some(7));
+    assert_eq!(record.metadata["gps_satellites_visible"].as_u64(), Some(11));
+    assert!((record.metadata["gps_latitude"].as_f64().unwrap() - 33.52465).abs() < 0.000001);
+    assert!((record.metadata["gps_longitude"].as_f64().unwrap() + 116.16258).abs() < 0.000001);
+    assert_sed_signal_units(record, &["DN", "DN", "1"]);
+
+    let reference = record.signals.get("norm__dn_ref_").expect("DN reference");
+    assert_eq!(reference.signal_type, SignalType::RawCounts);
+    assert_eq!(reference.unit.as_deref(), Some("DN"));
+
+    let reflectance = record.signals.get("reflect__1_0").expect("reflectance");
+    assert_eq!(reflectance.signal_type, SignalType::Reflectance);
+    assert_eq!(reflectance.unit.as_deref(), Some("1"));
+    assert!((reflectance.values[0] - 0.18909).abs() < 0.000001);
+}
+
+fn assert_sed_signal_units(record: &nirs4all_io::SpectralRecord, expected: &[&str]) {
+    let units = record.metadata["source_signal_units"]
+        .as_array()
+        .expect("source signal units");
+    assert_eq!(units.len(), expected.len());
+    for (unit, expected) in units.iter().zip(expected) {
+        assert_eq!(unit.as_str(), Some(*expected));
+    }
 }
 
 #[test]
@@ -2994,6 +3086,45 @@ fn reads_synthetic_nirs_hdf5_dataset() {
     assert!((absorbance.axis.values[0] - 1100.0).abs() < 0.000001);
     assert!((absorbance.axis.values[199] - 2500.0).abs() < 0.000001);
     assert!((absorbance.values[0] - 0.036742717027664185).abs() < 0.000001);
+}
+
+#[test]
+fn reads_hdf5_data_group_aliases_and_transposed_matrix() {
+    let records = open_path(workspace_file("samples/hdf5/generic_aliases_data_group.h5"))
+        .expect("open hdf5 aliases");
+
+    assert_eq!(records.len(), 3);
+    assert_eq!(records[0].provenance.format, "hdf5-nirs");
+    assert_eq!(records[0].metadata["group_path"].as_str(), Some("/data"));
+    assert_eq!(
+        records[0].metadata["spectra_dataset"].as_str(),
+        Some("absorbance")
+    );
+    assert_eq!(records[0].metadata["axis_dataset"].as_str(), Some("wn"));
+    assert_eq!(
+        records[0].metadata["matrix_orientation"].as_str(),
+        Some("bands_by_samples")
+    );
+    assert_eq!(
+        records[0].metadata["root_attributes"]["instrument"].as_str(),
+        Some("synthetic-hdf5-aliases")
+    );
+    assert_eq!(records[0].targets["temperature"].as_f64(), Some(21.5));
+
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 4);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 10000.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[3] - 4000.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.10).abs() < 0.000001);
+    assert!((absorbance.values[3] - 0.13).abs() < 0.000001);
+
+    let third = records[2].signals.get("absorbance").expect("absorbance");
+    assert!((third.values[0] - 0.30).abs() < 0.000001);
+    assert!((third.values[3] - 0.33).abs() < 0.000001);
 }
 
 #[test]
@@ -4371,6 +4502,46 @@ fn reads_jcamp_link_xypoints_ocean_optics_blocks() {
         .warnings
         .iter()
         .any(|warning| warning.contains("jcamp_link_processed_zero_denominator")));
+}
+
+#[test]
+fn reads_jcamp_synthetic_peak_assignments_as_sparse_record() {
+    let records = open_path(workspace_file(
+        "samples/jcamp_dx/synthetic_peak_assignments.jdx",
+    ))
+    .expect("open peak-assignments");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "jcamp-dx");
+    assert_eq!(record.signals.len(), 1);
+
+    let signal = record
+        .signals
+        .get("peak_intensity")
+        .expect("peak_intensity signal");
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert_eq!(signal.axis.values, vec![3300.0, 2950.0, 1650.0, 1050.0]);
+    assert_eq!(signal.values, vec![0.42, 0.18, 0.85, 0.55]);
+    // Peaks are listed in descending wavenumber order; the axis recorder must
+    // preserve that order verbatim rather than re-sort the sparse list.
+    assert_eq!(signal.axis.order, AxisOrder::Descending);
+
+    let table = record
+        .metadata
+        .get("jcamp_peak_table")
+        .expect("jcamp_peak_table metadata");
+    assert_eq!(table["kind"], "peak_assignments");
+    assert_eq!(table["sparse"], true);
+    assert_eq!(table["packed"], false);
+    assert_eq!(table["peak_count"], 4);
+    let peaks = table["peaks"].as_array().expect("peaks list");
+    assert_eq!(peaks.len(), 4);
+    assert_eq!(peaks[0]["assignment"], "O-H stretch, broad");
+    assert_eq!(peaks[3]["assignment"], "C-O stretch");
+    assert!(record.provenance.warnings.is_empty());
 }
 
 #[test]

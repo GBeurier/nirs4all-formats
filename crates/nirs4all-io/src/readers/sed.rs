@@ -51,40 +51,42 @@ impl Reader for SedReader {
         })?;
         let headers = split_columns(header_line);
         let mut axis = Vec::new();
-        let mut columns: Vec<Vec<f64>> = vec![Vec::new(); headers.len().saturating_sub(1)];
+        let signal_specs = headers
+            .iter()
+            .skip(1)
+            .map(|label| SedSignalSpec::from_label(label))
+            .collect::<Vec<_>>();
+        let mut columns: Vec<Vec<f64>> = vec![Vec::new(); signal_specs.len()];
         for line in lines.iter().skip(data_idx + 2) {
             let numbers: Vec<f64> = line.split_whitespace().filter_map(parse_number).collect();
-            if numbers.len() < headers.len() {
+            if numbers.len() < signal_specs.len() + 1 {
                 continue;
             }
             axis.push(numbers[0]);
-            for index in 1..headers.len() {
+            for index in 1..=signal_specs.len() {
                 columns[index - 1].push(numbers[index]);
             }
         }
         let mut signals = BTreeMap::new();
         let mut dominant = SignalType::Unknown;
-        for (index, values) in columns.into_iter().enumerate() {
-            let label = headers[index + 1].clone();
-            let signal_type = signal_type_from_label(&label);
+        for (spec, values) in signal_specs.iter().zip(columns) {
+            let signal_type = spec.signal_type.clone();
             if signal_type == SignalType::Reflectance {
                 dominant = SignalType::Reflectance;
             } else if dominant == SignalType::Unknown {
                 dominant = signal_type.clone();
             }
             let axis_obj = SpectralAxis::new(axis.clone(), "nm", AxisKind::Wavelength)?;
-            let unit = label.contains('%').then(|| "%".to_string());
-            let name = safe_signal_name(&label, "signal");
             let signal = SpectralArray::new(
                 axis_obj,
                 values,
                 vec!["x".to_string()],
                 signal_type,
-                unit,
-                &name,
+                spec.unit.clone(),
+                &spec.name,
                 "file",
             )?;
-            signals.insert(name, signal);
+            signals.insert(spec.name.clone(), signal);
         }
         let mut warnings = Vec::new();
         if !signals
@@ -99,7 +101,7 @@ impl Reader for SedReader {
             source,
             signals,
             dominant,
-            sed_metadata(metadata_pairs),
+            sed_metadata(metadata_pairs, &signal_specs),
             warnings,
         )?;
         if !record
@@ -115,6 +117,26 @@ impl Reader for SedReader {
     }
 }
 
+#[derive(Clone, Debug)]
+struct SedSignalSpec {
+    label: String,
+    name: String,
+    signal_type: SignalType,
+    unit: Option<String>,
+}
+
+impl SedSignalSpec {
+    fn from_label(label: &str) -> Self {
+        let signal_type = sed_signal_type(label);
+        Self {
+            label: label.to_string(),
+            name: safe_signal_name(label, "signal"),
+            unit: sed_signal_unit(label),
+            signal_type,
+        }
+    }
+}
+
 fn split_columns(line: &str) -> Vec<String> {
     if line.contains('\t') {
         line.split('\t')
@@ -125,12 +147,28 @@ fn split_columns(line: &str) -> Vec<String> {
     }
 }
 
-fn sed_metadata(pairs: Vec<(String, String)>) -> BTreeMap<String, serde_json::Value> {
+fn sed_metadata(
+    pairs: Vec<(String, String)>,
+    signal_specs: &[SedSignalSpec],
+) -> BTreeMap<String, serde_json::Value> {
     let normalized = pairs
         .iter()
         .map(|(key, value)| (normalize_key(key), value.trim().to_string()))
         .collect::<Vec<_>>();
     let mut metadata = metadata_from_pairs(pairs);
+
+    promote_string(&mut metadata, &normalized, "instrument", "instrument");
+    promote_instrument(&mut metadata, &normalized);
+    promote_measurement_mode(&mut metadata, &normalized);
+    promote_string(
+        &mut metadata,
+        &normalized,
+        "radiometric_calibration",
+        "radiometric_calibration",
+    );
+    promote_u64(&mut metadata, &normalized, "channels", "point_count");
+    promote_wavelength_range(&mut metadata, &normalized);
+    promote_signal_metadata(&mut metadata, signal_specs);
 
     promote_f64(&mut metadata, &normalized, "latitude", "gps_latitude");
     promote_f64(&mut metadata, &normalized, "longitude", "gps_longitude");
@@ -170,6 +208,51 @@ fn sed_metadata(pairs: Vec<(String, String)>) -> BTreeMap<String, serde_json::Va
     metadata
 }
 
+fn sed_signal_type(label: &str) -> SignalType {
+    let lower = label.to_ascii_lowercase();
+    if lower.contains("dn") {
+        SignalType::RawCounts
+    } else {
+        signal_type_from_label(label)
+    }
+}
+
+fn sed_signal_unit(label: &str) -> Option<String> {
+    let lower = label.to_ascii_lowercase();
+    if lower.contains('%') {
+        Some("%".to_string())
+    } else if lower.contains("[1.0]") {
+        Some("1".to_string())
+    } else if lower.contains("dn") {
+        Some("DN".to_string())
+    } else {
+        None
+    }
+}
+
+fn promote_string(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    if let Some(value) = header_value(pairs, source_key) {
+        metadata.insert(target_key.to_string(), serde_json::json!(value));
+    }
+}
+
+fn promote_u64(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    if let Some(value) = header_value(pairs, source_key).and_then(|value| value.parse::<u64>().ok())
+    {
+        metadata.insert(target_key.to_string(), serde_json::json!(value));
+    }
+}
+
 fn promote_f64(
     metadata: &mut BTreeMap<String, serde_json::Value>,
     pairs: &[(String, String)],
@@ -189,6 +272,86 @@ fn promote_time(
 ) {
     if let Some(value) = header_value(pairs, source_key).and_then(normalize_sed_time) {
         metadata.insert(target_key.to_string(), serde_json::json!(value));
+    }
+}
+
+fn promote_measurement_mode(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    if let Some(value) = header_value(pairs, "measurement") {
+        metadata.insert(
+            "measurement_mode".to_string(),
+            serde_json::json!(normalize_key(value)),
+        );
+    }
+}
+
+fn promote_instrument(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some(value) = header_value(pairs, "instrument") else {
+        return;
+    };
+    let Some((model, serial)) = parse_sed_instrument(value) else {
+        return;
+    };
+    metadata.insert("instrument_model".to_string(), serde_json::json!(model));
+    metadata.insert("instrument_serial".to_string(), serde_json::json!(serial));
+}
+
+fn parse_sed_instrument(value: &str) -> Option<(String, String)> {
+    let primary = value.split_whitespace().next().unwrap_or(value);
+    let (model, serial_part) = primary.split_once("_SN")?;
+    let serial = serial_part
+        .chars()
+        .take_while(|ch| ch.is_ascii_alphanumeric())
+        .collect::<String>();
+    if model.is_empty() || serial.is_empty() {
+        return None;
+    }
+    Some((model.to_string(), serial))
+}
+
+fn promote_wavelength_range(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some(value) = header_value(pairs, "wavelength_range") else {
+        return;
+    };
+    let values = split_header_values(value)
+        .into_iter()
+        .filter_map(|value| parse_number(&value))
+        .collect::<Vec<_>>();
+    if values.len() == 2 {
+        metadata.insert("wavelength_range_nm".to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_signal_metadata(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    signal_specs: &[SedSignalSpec],
+) {
+    if signal_specs.is_empty() {
+        return;
+    }
+    let labels = signal_specs
+        .iter()
+        .map(|spec| spec.label.as_str())
+        .collect::<Vec<_>>();
+    metadata.insert(
+        "source_signal_labels".to_string(),
+        serde_json::json!(labels),
+    );
+
+    let units = signal_specs
+        .iter()
+        .filter_map(|spec| spec.unit.as_deref())
+        .collect::<Vec<_>>();
+    if units.len() == signal_specs.len() {
+        metadata.insert("source_signal_units".to_string(), serde_json::json!(units));
     }
 }
 

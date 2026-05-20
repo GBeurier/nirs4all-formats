@@ -8,7 +8,16 @@
         "acquisition_end_time",
         "acquisition_start_date",
         "acquisition_start_time",
-        "vendor"
+        "instrument",
+        "instrument_model",
+        "instrument_serial",
+        "measurement_mode",
+        "point_count",
+        "radiometric_calibration",
+        "source_signal_labels",
+        "source_signal_units",
+        "vendor",
+        "wavelength_range_nm"
       ],
       "quality_flags": [
         "missing_reflectance_signal"
@@ -27,7 +36,7 @@
           "name": "norm__dn_ref_",
           "role": "norm__dn_ref_",
           "signal_type": "raw_counts",
-          "unit": null,
+          "unit": "DN",
           "value_first": 5.282287,
           "value_last": 16.15534,
           "value_sum": 751954.105349,
@@ -43,7 +52,7 @@
           "name": "norm__dn_target",
           "role": "norm__dn_target",
           "signal_type": "raw_counts",
-          "unit": null,
+          "unit": "DN",
           "value_first": 1.922703,
           "value_last": 1.271258,
           "value_sum": 238415.329832,

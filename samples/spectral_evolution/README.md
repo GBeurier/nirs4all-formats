@@ -24,6 +24,9 @@ The `psr_DN_brett` directory hosts Brett's PSR DN test pair — one workable and
 - ASCII with CRLF line terminators.
 - Header section is `key: value` lines until `Data:` (or similar marker).
 - Multi-column data block: `Wvl, Rad. (Ref.), Rad. (Target), Reflect.`
+- Committed fixtures exercise both percent reflectance (`Reflect. %`) and
+  fractional reflectance (`Reflect. [1.0]`), plus normalized DN reference and
+  target channels.
 - Reference readers:
   - R: [`spectrolab::read_spectra(format="sed")`](https://github.com/meireles/spectrolab)
   - Python: [`specdal`](https://github.com/EnSpec/SpecDAL)

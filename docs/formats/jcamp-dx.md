@@ -1,7 +1,7 @@
 # JCAMP-DX
 
-Experimental native Rust reader for common JCAMP-DX `XYDATA` and `NTUPLES`
-records.
+Experimental native Rust reader for common JCAMP-DX `XYDATA`, `NTUPLES`,
+sparse `PEAK TABLE` / `PEAK ASSIGNMENTS`, and Ocean Optics `LINK` records.
 
 ## Scope Implemented
 
@@ -21,16 +21,19 @@ records.
   `dark_reference`, `white_reference` and a computed transmittance signal.
   Child blocks with incompatible axes are rejected instead of silently merging
   mismatched signals.
-- Applies `YFACTOR` to decoded ordinates.
+- Reads sparse `PEAK TABLE` and `PEAK ASSIGNMENTS` blocks as a single
+  `peak_intensity` signal whose axis carries the listed peak positions.
+- Applies `YFACTOR` to decoded ordinates and `XFACTOR` to peak abscissas /
+  widths inside peak tables.
 - Reconstructs the X axis from `FIRSTX` and `DELTAX`, or from `FIRSTX`,
   `LASTX` and `NPOINTS` when `DELTAX` is absent.
 - Uses `XUNITS`/`YUNITS` or NTUPLES `UNITS` to map axis kind/unit and signal
   type.
-- Refuses `PEAK TABLE` blocks explicitly until that table model is implemented.
 
-`XFACTOR` is preserved in metadata but is not applied to the reconstructed axis.
-In the committed Bruker fixtures, `FIRSTX` and `DELTAX` are already in physical
-units while line-level X checkpoints are stored in scaled integer form.
+For `XYDATA` and `NTUPLES` blocks, `XFACTOR` is preserved in metadata but is
+not applied to the reconstructed axis. In the committed Bruker fixtures,
+`FIRSTX` and `DELTAX` are already in physical units while line-level X
+checkpoints are stored in scaled integer form.
 
 ## Packed Data Notes
 
@@ -80,6 +83,94 @@ processed = (sample - dark_reference) / (white_reference - dark_reference) * 100
 When the denominator is zero, the current schema has no missing-value marker, so
 the reader emits `0.0` for that point and records a provenance warning.
 
+### LINK scope decision
+
+The current v1 contract is: **one `##DATA TYPE=LINK` file emits one
+`SpectralRecord`** whose signals must share a common axis. We deliberately
+keep that scope tight rather than generalising LINK now:
+
+- The model already permits per-signal axes, but downstream consumers treat
+  axis-mismatched signals on the same record as ambiguous. Silently merging
+  heterogeneous LINK children would push that ambiguity onto every caller.
+- LINK files in practice come in disjoint varieties (Ocean Optics
+  SpectraSuite, Bruker MULTIPLE SPECTRA, NMR multipulse, etc.) — each is
+  best handled with explicit per-vendor logic rather than a permissive
+  merge. We accept the committed Ocean Optics fixture and reject the
+  rest with a clear error.
+- Promoting `PEAK TABLE` children inside LINK would mix dense spectra with
+  sparse peak lists on a single record, which has no consistent semantics
+  in the current `SpectralRecord` model. LINK files whose children carry
+  `##PEAK TABLE=` (or `##PEAK ASSIGNMENTS=`) are therefore rejected with a
+  pointer to use a standalone peak-table file instead.
+
+Top-level multi-block JCAMP files (multiple `##JCAMP-DX=` headers without
+`##DATA TYPE=LINK`) are unaffected: each block is emitted as its own
+record, including peak-table blocks.
+
+## Peak Tables and Peak Assignments
+
+The reader accepts JCAMP-DX 5.0 sparse peak descriptions, exposed as one
+`peak_intensity` signal whose axis carries the listed peak abscissas (in their
+native order — peaks are not re-sorted, so the resulting `SpectralAxis.order`
+may be `Descending`, `Ascending`, or `NonMonotonic`).
+
+Supported shape headers (parsed via the per-character field list, with `..`
+denoting "many peaks per line"):
+
+| Header                            | Per-peak fields                       | Lines           |
+|-----------------------------------|---------------------------------------|-----------------|
+| `##PEAK TABLE=(XY..XY)`           | `x`, `y`                              | packed          |
+| `##PEAK TABLE=(XYW..XYW)`         | `x`, `y`, `width`                     | packed          |
+| `##PEAK TABLE=(XYM..XYM)`         | `x`, `y`, `multiplicity`              | packed          |
+| `##PEAK ASSIGNMENTS=(XYA)`        | `x`, `y`, `assignment`                | one-per-line    |
+| `##PEAK ASSIGNMENTS=(XYWA)`       | `x`, `y`, `width`, `assignment`       | one-per-line    |
+| `##PEAK ASSIGNMENTS=(XYMA)`       | `x`, `y`, `multiplicity`, `assignment`| one-per-line    |
+| `##DATA TABLE=(XY..XY), PEAK ...` | as above, kind inferred from value    | as above        |
+
+Rules:
+
+- Assignment text is extracted as the first `<…>` substring on a line; the
+  match is non-greedy on the closing `>`. Empty `<>` produces no assignment.
+- Any shape containing the `A` (assignment) field is treated as one peak per
+  line regardless of `..` syntax, because assignment payloads can contain
+  whitespace and punctuation.
+- `XFACTOR` is applied to `x` and `width`; `YFACTOR` is applied to `y`.
+  `multiplicity` is recorded verbatim.
+- If `##NPOINTS=` is present it must equal the decoded peak count; otherwise
+  the reader returns `InvalidRecord` with the expected/actual counts.
+- A shape that lacks `X` is rejected as malformed.
+- A shape that lacks `Y` (e.g. `(XA)`) yields peaks with `y = 0.0` and a
+  provenance warning `jcamp_peak_table_missing_y`.
+- When both `##PEAK TABLE=` and `##PEAK ASSIGNMENTS=` are present in the same
+  block, the ASSIGNMENTS form wins (strictly richer); the other table is
+  preserved in metadata under `jcamp_peak_table_dropped` with a
+  `jcamp_peak_table_multiple_blocks` warning.
+
+The full peak list is also exported into the record metadata under
+`jcamp_peak_table` so downstream code can recover per-peak attributes:
+
+```json
+{
+  "jcamp_peak_table": {
+    "kind": "peak_assignments",
+    "shape": "(XYA)",
+    "fields": ["x", "y", "assignment"],
+    "packed": false,
+    "sparse": true,
+    "peak_count": 4,
+    "peaks": [
+      {"x": 3300.0, "y": 0.42, "assignment": "O-H stretch, broad"},
+      {"x": 2950.0, "y": 0.18, "assignment": "C-H stretch"},
+      {"x": 1650.0, "y": 0.85, "assignment": "C=C stretch"},
+      {"x": 1050.0, "y": 0.55, "assignment": "C-O stretch"}
+    ]
+  }
+}
+```
+
+Peak-table support is currently limited to top-level blocks; LINK children
+carrying peak tables are still rejected (see the LINK section above).
+
 ## Fixtures and Reference Checks
 
 Current committed controls:
@@ -94,6 +185,7 @@ Current committed controls:
 | `BRUKNTUP.DX` | NTUPLES R/I pages | 16384 x 2 | `24038.5 -> 0.0 Hz` | real `2254931 -> 1513177`, imaginary `-6966283 -> -7303022` |
 | `TESTFID.DX` | NTUPLES FID R/I pages | 16384 x 2 | `0.0 -> 0.6815317 s` | real `2979.837825 -> -60241.607962`, imaginary `6214.555864 -> -6063.227393` |
 | `OceanOptics_period.jdx` | LINK + XYPOINTS | 3648 x 4 | `176.36 -> 893.69 nm` | computed transmittance `0.0 -> 171.977070` |
+| `synthetic_peak_assignments.jdx` | PEAK ASSIGNMENTS `(XYA)` | 4 peaks | `3300 -> 1050 cm-1` | absorbance `0.42 -> 0.55`, sum `2.00` |
 
 The current reader is still narrower than mature JCAMP libraries. It is meant
 to cover the high-value NIR/IR `XYDATA` cases first, with warnings where the
@@ -101,8 +193,12 @@ legacy format stores extra line checkpoints.
 
 ## Remaining Work
 
-- Implement `PEAK TABLE` as a real sparse peak-list representation once the
-  shared model can represent it.
-- Add broader `LINK` variants beyond same-axis spectral children.
-- Add stricter line-level X checkpoint verification.
-- Add reference reports against open JCAMP readers for every committed fixture.
+- Wider real-world peak-table coverage: shape parsing handles all documented
+  JCAMP-DX 5.0 variants today, but only one synthetic fixture is committed.
+  Adding NIST WebBook or nzhagen peak-assignment fixtures would harden
+  vendor-specific quirks (e.g. embedded `>` in assignment text,
+  multi-line assignments, peak groups separated by `;`).
+- Broader `LINK` variants beyond same-axis spectral children require a
+  per-record fan-out decision in the public API; see the LINK section.
+- Stricter line-level X checkpoint verification.
+- Reference reports against open JCAMP readers for every committed fixture.

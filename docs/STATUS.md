@@ -49,10 +49,10 @@ Experimental native readers:
   with a SHA-256-guarded MSM114/2 payload fallback; ANDI/MS gets a dedicated
   refusal path and weather/PyrNet/AOSMET NetCDF samples are schema-refused as
   non-NIRS;
-- generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
-  containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
-  and the committed FGI HDF5+XML synthetic pair is mapped with both payload and
-  metadata sidecar in provenance;
+- generic HDF5 NIRS datasets: root or nested spectral groups using a pure-Rust
+  reader, with common spectra/axis aliases and unambiguous transposed matrices;
+  non-spectral HDF5 samples are refused, and the committed FGI HDF5+XML
+  synthetic pair is mapped with both payload and metadata sidecar in provenance;
 - MATLAB MAT datasets: simple MAT v5 and MATLAB v7.3/HDF5 `X` + `wavelengths`
   + optional `y` datasets, plus committed Eigenvector Corn, Eigenvector NIR
   Shootout 2002, SpectroChemPy DSO and SpectroChemPy ALS2004 structured MAT
@@ -81,17 +81,18 @@ Experimental native readers:
   transmittance/reflectance typing; all committed Ocean fixtures are
   golden-backed, Ocean JCAMP is routed through JCAMP-DX and the committed Ocean
   Optics `.spc` sample is covered by the Galactic SPC reader;
-- JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
-  top-level multi-block XYDATA files as multiple records, NMR `NTUPLES`
-  real/imaginary pages with frequency/time axes, and Ocean Optics
-  `LINK`/`XYPOINTS` blocks;
-  `PEAK TABLE` inputs are explicitly refused, incompatible-axis `LINK` children
-  are rejected and short `NPOINTS` payloads fail strictly;
+- JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF
+  decoding, top-level multi-block XYDATA files as multiple records, NMR
+  `NTUPLES` real/imaginary pages with frequency/time axes, Ocean Optics
+  `LINK`/`XYPOINTS` blocks, and top-level sparse `PEAK TABLE` /
+  `PEAK ASSIGNMENTS` records; incompatible-axis `LINK` children are rejected
+  and short `NPOINTS` payloads fail strictly;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files
   with typed energy axes for `eV` data;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
-  flagged when no reflectance signal is present and parseable GPS/date/time
-  headers promoted to canonical metadata;
+  flagged when no reflectance signal is present; DN, percent/fraction
+  reflectance, source-signal labels/units and parseable instrument/GPS/date/time
+  headers are promoted to canonical metadata;
 - SVC/GER SIG (`.sig`), including semantic assertions over the committed
   PDA/laptop/white-reference/matched-overlap fixtures and declared bad
   fixtures flagged in quality metadata.
@@ -214,8 +215,9 @@ Immediate next work:
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
 5. replace Python/R subprocess transport with native PyO3/C ABI paths;
-6. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
-   only after the shared model can represent sparse peak lists;
+6. harden JCAMP line-level X checkpoint validation, source real PEAK
+   TABLE/ASSIGNMENTS fixtures for conformance and decide the public API shape
+   for heterogeneous `LINK` fan-out;
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
 8. owner-requested documentation tail work: rewrite the root `README.md`,
    add implementation visualizations for format/probe-confidence/maturity/

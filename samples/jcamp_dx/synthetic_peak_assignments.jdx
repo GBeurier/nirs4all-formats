@@ -1,0 +1,16 @@
+##TITLE= Synthetic peak-assignments fixture (n4-io tests)
+##JCAMP-DX= 5.00
+##DATA TYPE= INFRARED PEAK ASSIGNMENTS
+##ORIGIN= nirs4all-io test fixture
+##OWNER= Public Domain
+##XUNITS= 1/CM
+##YUNITS= ABSORBANCE
+##XFACTOR= 1.0
+##YFACTOR= 1.0
+##NPOINTS= 4
+##PEAK ASSIGNMENTS=(XYA)
+3300, 0.42 <O-H stretch, broad>
+2950, 0.18 <C-H stretch>
+1650, 0.85 <C=C stretch>
+1050, 0.55 <C-O stretch>
+##END=
