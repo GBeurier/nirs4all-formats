@@ -88,7 +88,27 @@ impl Reader for SedReader {
             )?;
             signals.insert(spec.name.clone(), signal);
         }
+        let metadata = sed_metadata(metadata_pairs, &signal_specs);
         let mut warnings = Vec::new();
+        if let Some(expected) = metadata.get("point_count").and_then(|value| value.as_u64()) {
+            if expected != axis.len() as u64 {
+                warnings.push(format!(
+                    "sed_point_count_mismatch:declared={expected}:parsed={}",
+                    axis.len()
+                ));
+            }
+        }
+        if let Some(expected) = metadata
+            .get("declared_column_count")
+            .and_then(|value| value.as_u64())
+        {
+            let parsed = signal_specs.len() as u64 + 1;
+            if expected != parsed {
+                warnings.push(format!(
+                    "sed_column_count_mismatch:declared={expected}:parsed={parsed}"
+                ));
+            }
+        }
         if !signals
             .values()
             .any(|signal| signal.signal_type == SignalType::Reflectance)
@@ -101,7 +121,7 @@ impl Reader for SedReader {
             source,
             signals,
             dominant,
-            sed_metadata(metadata_pairs, &signal_specs),
+            metadata,
             warnings,
         )?;
         if !record
@@ -167,8 +187,33 @@ fn sed_metadata(
         "radiometric_calibration",
     );
     promote_u64(&mut metadata, &normalized, "channels", "point_count");
+    promote_declared_column_count(&mut metadata, &normalized);
     promote_wavelength_range(&mut metadata, &normalized);
     promote_signal_metadata(&mut metadata, signal_specs);
+    promote_detector_channels(&mut metadata, &normalized);
+    promote_detector_triplets_pair(
+        &mut metadata,
+        &normalized,
+        "temperature_c",
+        "detector_temperatures_reference_celsius",
+        "detector_temperatures_target_celsius",
+    );
+    promote_detector_triplets_pair(
+        &mut metadata,
+        &normalized,
+        "integration",
+        "integration_time_reference_ms",
+        "integration_time_target_ms",
+    );
+    promote_pair_floats(
+        &mut metadata,
+        &normalized,
+        "battery_voltage",
+        "battery_voltages_volts",
+    );
+    promote_pair_u64s(&mut metadata, &normalized, "averages", "scan_averages");
+    promote_string_pair(&mut metadata, &normalized, "dark_mode", "dark_mode");
+    promote_foreoptic(&mut metadata, &normalized);
 
     promote_f64(&mut metadata, &normalized, "latitude", "gps_latitude");
     promote_f64(&mut metadata, &normalized, "longitude", "gps_longitude");
@@ -253,6 +298,27 @@ fn promote_u64(
     }
 }
 
+fn promote_declared_column_count(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some((key, _)) = pairs
+        .iter()
+        .find(|(candidate, _)| candidate.starts_with("columns_"))
+    else {
+        return;
+    };
+    let Some(value) = key.strip_prefix("columns_") else {
+        return;
+    };
+    if let Ok(count) = value.parse::<u64>() {
+        metadata.insert(
+            "declared_column_count".to_string(),
+            serde_json::json!(count),
+        );
+    }
+}
+
 fn promote_f64(
     metadata: &mut BTreeMap<String, serde_json::Value>,
     pairs: &[(String, String)],
@@ -262,6 +328,148 @@ fn promote_f64(
     if let Some(value) = header_value(pairs, source_key).and_then(parse_number) {
         metadata.insert(target_key.to_string(), serde_json::json!(value));
     }
+}
+
+fn promote_detector_channels(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some(value) = header_value(pairs, "detectors") else {
+        return;
+    };
+    let Some(values) = parse_u64_values(value) else {
+        return;
+    };
+    if values.len() == 3 {
+        metadata.insert("detector_channels".to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_detector_triplets_pair(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    reference_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_float_values(value) else {
+        return;
+    };
+    if values.len() != 6 {
+        return;
+    }
+    metadata.insert(
+        reference_key.to_string(),
+        serde_json::json!(values[..3].to_vec()),
+    );
+    metadata.insert(
+        target_key.to_string(),
+        serde_json::json!(values[3..].to_vec()),
+    );
+}
+
+fn promote_pair_floats(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_float_values(value) else {
+        return;
+    };
+    if values.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_pair_u64s(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let Some(values) = parse_u64_values(value) else {
+        return;
+    };
+    if values.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_string_pair(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+    source_key: &str,
+    target_key: &str,
+) {
+    let Some(value) = header_value(pairs, source_key) else {
+        return;
+    };
+    let values = split_header_values(value);
+    if values.len() == 2 {
+        metadata.insert(target_key.to_string(), serde_json::json!(values));
+    }
+}
+
+fn promote_foreoptic(
+    metadata: &mut BTreeMap<String, serde_json::Value>,
+    pairs: &[(String, String)],
+) {
+    let Some(value) = header_value(pairs, "foreoptic") else {
+        return;
+    };
+    let parsed = split_header_values(value)
+        .into_iter()
+        .map(|value| parse_foreoptic_entry(&value))
+        .collect::<Vec<_>>();
+    if parsed.len() != 2 {
+        return;
+    }
+    let optics = parsed
+        .iter()
+        .map(|(optic, _unit)| optic.as_str())
+        .collect::<Vec<_>>();
+    metadata.insert("foreoptic".to_string(), serde_json::json!(optics));
+
+    let units = parsed
+        .iter()
+        .filter_map(|(_optic, unit)| unit.as_deref())
+        .collect::<Vec<_>>();
+    if units.len() == parsed.len() {
+        metadata.insert(
+            "foreoptic_signal_units".to_string(),
+            serde_json::json!(units),
+        );
+    }
+}
+
+fn parse_foreoptic_entry(value: &str) -> (String, Option<String>) {
+    let trimmed = value.trim();
+    let unit = trimmed
+        .split_once('{')
+        .and_then(|(_, tail)| {
+            tail.split_once('}')
+                .map(|(unit, _)| unit.trim().to_string())
+        })
+        .filter(|unit| !unit.is_empty());
+    let optic = trimmed
+        .split_once('{')
+        .map(|(head, _)| head)
+        .unwrap_or(trimmed)
+        .trim()
+        .trim_end_matches(':')
+        .trim()
+        .to_string();
+    (optic, unit)
 }
 
 fn promote_time(
@@ -388,6 +596,20 @@ fn split_header_values(value: &str) -> Vec<String> {
         .map(str::trim)
         .filter(|value| !value.is_empty() && !value.eq_ignore_ascii_case("n/a"))
         .map(ToString::to_string)
+        .collect()
+}
+
+fn parse_float_values(value: &str) -> Option<Vec<f64>> {
+    split_header_values(value)
+        .iter()
+        .map(|item| parse_number(item))
+        .collect()
+}
+
+fn parse_u64_values(value: &str) -> Option<Vec<u64>> {
+    split_header_values(value)
+        .iter()
+        .map(|item| item.parse::<u64>().ok())
         .collect()
 }
 

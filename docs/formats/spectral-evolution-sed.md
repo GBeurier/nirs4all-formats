@@ -25,14 +25,23 @@ Implemented:
 - instrument/model/serial, measurement mode, radiometric calibration, declared
   point count, wavelength range, source signal labels and source signal units
   promoted to top-level metadata.
+- field acquisition metadata promoted from observed PSR headers:
+  `declared_column_count`, `detector_channels`,
+  `detector_temperatures_reference_celsius`,
+  `detector_temperatures_target_celsius`,
+  `integration_time_reference_ms`, `integration_time_target_ms`,
+  `battery_voltages_volts`, `scan_averages`, `dark_mode`, `foreoptic` and
+  `foreoptic_signal_units`.
+- explicit warnings when declared channel or column counts disagree with the
+  parsed spectral table.
 
 ## Fixture Coverage
 
 | Fixture | Variant | Coverage |
 |---|---|---|
 | `1566060_09506_working.sed` | PSR+3500 DN + reflectance | 2151-point axis, raw DN reference/target plus reflectance |
-| `1566060_15025_not_working.sed` | broken-but-valid DN-only export | 2151-point axis, two raw DN signals, `missing_reflectance_signal` quality flag |
-| `serbinsh_cvars_grape_leaf.sed` | PSR-3500 grape-leaf reflectance acquisition | 2151-point axis, firmware/header drift coverage, canonical GPS/date/time metadata |
+| `1566060_15025_not_working.sed` | broken-but-valid DN-only export | 2151-point axis, two raw DN signals, `missing_reflectance_signal` quality flag, declared 3-column table |
+| `serbinsh_cvars_grape_leaf.sed` | PSR-3500 grape-leaf reflectance acquisition | 2151-point axis, firmware/header drift coverage, canonical GPS/date/time metadata, colon-style foreoptic parsing |
 
 The DN-only fixture remains readable because it contains valid spectral raw
 channels. It is not promoted to reflectance: downstream users must handle the
