@@ -43,13 +43,19 @@ parameter blocks are kept under `bruker_opus_params`.
 
 ## Fixtures and Reference Checks
 
-Committed smoke and golden coverage currently includes:
+Committed golden coverage currently includes the full Bruker OPUS corpus in
+`samples/bruker_opus/`:
 
 | Fixture | Expected shape |
 |---|---|
 | `617262_1TP_C-1_A5.0` | 1 record, 5 signals, absorbance has 3578 points |
 | `test_spectra.0` | 1 record, reflectance/sample/reference spectra |
 | `BF_lo_01_soil_cal.1` | duplicate absorbance blocks become `absorbance` and `absorbance_2` |
+| `MMP_2107_Test1.001` | numeric extension variant with 7 decoded signals |
+| `brukeropus_file.0` | MIT `brukeropus` fixture with 6 decoded signals |
+| `issue82_Opus_test.0` | `opusreader2` regression fixture with unusual block layout |
+| `opusreader_test_spectra.0` | independent `opusreader` fixture with 3 decoded signals |
+| `scpdata_background.0`, `scpdata_test.0000` | SpectroChemPy OPUS fixtures, including `.0000` extension |
 | `icr_087266_B2.0`, `icr_087273_G3.0` | AfSIS Bruker MPA soil fixtures, absorbance plus sample/reference spectra and interferogram |
 
 Reference controls were checked against local Python readers `brukeropus`,

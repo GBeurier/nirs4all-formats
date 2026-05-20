@@ -26,6 +26,42 @@ const CASES: &[(&str, &str)] = &[
         "samples/bruker_opus/test_spectra.0",
     ),
     (
+        "bruker_opus_duplicate_absorbance",
+        "samples/bruker_opus/BF_lo_01_soil_cal.1",
+    ),
+    (
+        "bruker_opus_mmp_2107_test1",
+        "samples/bruker_opus/MMP_2107_Test1.001",
+    ),
+    (
+        "bruker_opus_brukeropus_file",
+        "samples/bruker_opus/brukeropus_file.0",
+    ),
+    (
+        "bruker_opus_afsis_icr_087266_b2",
+        "samples/bruker_opus/icr_087266_B2.0",
+    ),
+    (
+        "bruker_opus_afsis_icr_087273_g3",
+        "samples/bruker_opus/icr_087273_G3.0",
+    ),
+    (
+        "bruker_opus_issue82",
+        "samples/bruker_opus/issue82_Opus_test.0",
+    ),
+    (
+        "bruker_opus_pierreroudier_test_spectra",
+        "samples/bruker_opus/opusreader_test_spectra.0",
+    ),
+    (
+        "bruker_opus_scpdata_background",
+        "samples/bruker_opus/scpdata_background.0",
+    ),
+    (
+        "bruker_opus_scpdata_test",
+        "samples/bruker_opus/scpdata_test.0000",
+    ),
+    (
         "nicolet_omnic_spa_baso4",
         "samples/nicolet_omnic/2-BaSO4_0.SPA",
     ),
