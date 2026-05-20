@@ -1,6 +1,47 @@
 use nirs4all_io::{open_path, AxisKind, AxisOrder, SignalType};
 
 #[test]
+fn reads_asd_fieldspec_revisions() {
+    for (relative, signal_name, signal_type, first_value) in [
+        (
+            "samples/asd/3L9257.000",
+            "reflectance",
+            SignalType::Reflectance,
+            0.026823,
+        ),
+        (
+            "samples/asd/v6sample00000.asd",
+            "raw",
+            SignalType::RawCounts,
+            29.311738,
+        ),
+        (
+            "samples/asd/v7_field_44231B009.asd",
+            "reflectance",
+            SignalType::Reflectance,
+            18.622284,
+        ),
+        (
+            "samples/asd/v8sample00001.asd",
+            "raw",
+            SignalType::RawCounts,
+            153.995245,
+        ),
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open asd");
+
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].provenance.format, "asd-fieldspec");
+        let signal = records[0].signals.get(signal_name).expect(signal_name);
+        assert_eq!(signal.axis.values.len(), 2_151);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(signal.signal_type, signal_type);
+        assert!((signal.values[0] - first_value).abs() < 0.000001);
+    }
+}
+
+#[test]
 fn reads_synthetic_delimited_nirs_table() {
     let records =
         open_path(workspace_file("samples/csv_tsv/synthetic_nirs.csv")).expect("open csv");

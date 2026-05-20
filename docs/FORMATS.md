@@ -18,6 +18,7 @@ fixtures:
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Plain AFFN `XYDATA=(X++(Y..Y))` only. DIF/DUP, SQZ/PAC and NTUPLES are pending. |
 | Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |
 | SVC/GER SIG | `.sig` | Experimental | Spectra Vista SIG text fixtures with reference, target and reflectance channels. |
+| ASD FieldSpec | `.asd`, ASD binary files with numeric extensions | Experimental | Revisions 1/6/7/8: fixed header, wavelength axis and primary spectrum. Reference/calibration/dependent blocks are not decoded yet. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.

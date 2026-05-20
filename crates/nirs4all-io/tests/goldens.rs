@@ -5,6 +5,10 @@ use nirs4all_io::{open_path, SpectralRecord};
 use serde_json::{json, Value};
 
 const CASES: &[(&str, &str)] = &[
+    ("asd_legacy_float", "samples/asd/3L9257.000"),
+    ("asd_v6_double", "samples/asd/v6sample00000.asd"),
+    ("asd_v7_field_double", "samples/asd/v7_field_44231B009.asd"),
+    ("asd_v8_double", "samples/asd/v8sample00001.asd"),
     ("csv_synthetic", "samples/csv_tsv/synthetic_nirs.csv"),
     ("bruker_dpt_synthetic", "samples/bruker_dpt/synthetic.dpt"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
