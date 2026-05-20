@@ -66,6 +66,9 @@ Experimental native readers:
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
   for the committed foliar-transfer fixture; non-zero reference properties are
   still pending `targets` extraction.
+- JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
+  single-channel and multi-channel fixtures; semantic channel labels are still
+  pending.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -111,8 +114,8 @@ Immediate next work:
 1. add dedicated MATLAB struct/DSO and `.RData` dataset mappers for Eigenvector
    Corn, NIR Shootout, SpectroChemPy DSO and prospectr NIRsoil;
 2. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets, JASCO
-   `.jws`;
+   Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets and
+   JASCO `.jws` semantic channel labels;
 3. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;

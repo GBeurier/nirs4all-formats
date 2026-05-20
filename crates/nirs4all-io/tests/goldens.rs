@@ -41,6 +41,12 @@ const CASES: &[(&str, &str)] = &[
         "buchi_nircal_foliar_transfer",
         "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
     ),
+    ("jasco_jws_243", "samples/jasco/243.jws"),
+    (
+        "jasco_jws_fluorescence",
+        "samples/jasco/sample_fluorescence.jws",
+    ),
+    ("jasco_jws_cd_ht_abs", "samples/jasco/sample_CD_HT_Abs.jws"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),
