@@ -23,6 +23,9 @@ All files are from [`ropensci/lightr@main/inst/testdata`](https://github.com/rop
 | `1904090M1_0003.Raw8` | Raw scope | `.RAW8` / `.Raw8` |
 | `eg.IRR8` | Irradiance | `.IRR8` |
 
+The Rust reader decodes the packed AvaSoft 8 SPC collection date/time for
+these fixtures while preserving the raw integer under `metadata.avantes`.
+
 ### ASCII exports
 
 | File | Format | Notes |

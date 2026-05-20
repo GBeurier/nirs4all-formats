@@ -506,6 +506,12 @@ fn avasoft8_metadata(
     stop_pixel: usize,
 ) -> Result<BTreeMap<String, serde_json::Value>> {
     let mut metadata = BTreeMap::new();
+    let spc_date = u32_at(bytes, offset + 128)?;
+    let decoded_date = decode_spc_datetime(spc_date);
+    if let Some(datetime) = decoded_date.as_ref() {
+        metadata.insert("acquisition_start_date".to_string(), json!(datetime.date));
+        metadata.insert("acquisition_start_time".to_string(), json!(datetime.time));
+    }
     metadata.insert(
         "avantes".to_string(),
         json!({
@@ -524,11 +530,79 @@ fn avasoft8_metadata(
             "integration_time": f32_at(bytes, offset + 87)?,
             "integration_delay": u32_at(bytes, offset + 91)?,
             "averages": u32_at(bytes, offset + 95)?,
-            "spc_date": i32_at(bytes, offset + 128)?,
+            "spc_date": spc_date,
+            "spc_date_decoded": decoded_date.as_ref().map(AvasoftSpcDate::as_json),
             "comment": bytes_ascii(bytes, offset + 192, 130),
         }),
     );
     Ok(metadata)
+}
+
+struct AvasoftSpcDate {
+    date: String,
+    time: String,
+    year: u32,
+    month: u32,
+    day: u32,
+    hour: u32,
+    minute: u32,
+}
+
+impl AvasoftSpcDate {
+    fn as_json(&self) -> serde_json::Value {
+        json!({
+            "date": &self.date,
+            "time": &self.time,
+            "year": self.year,
+            "month": self.month,
+            "day": self.day,
+            "hour": self.hour,
+            "minute": self.minute,
+        })
+    }
+}
+
+fn decode_spc_datetime(raw: u32) -> Option<AvasoftSpcDate> {
+    if raw == 0 {
+        return None;
+    }
+    let year = (raw >> 20) & 0x0fff;
+    let month = (raw >> 16) & 0x0f;
+    let day = (raw >> 11) & 0x1f;
+    let hour = (raw >> 6) & 0x1f;
+    let minute = raw & 0x3f;
+    if year == 0
+        || !(1..=12).contains(&month)
+        || day == 0
+        || day > days_in_month(year, month)
+        || hour > 23
+        || minute > 59
+    {
+        return None;
+    }
+    Some(AvasoftSpcDate {
+        date: format!("{year:04}-{month:02}-{day:02}"),
+        time: format!("{hour:02}:{minute:02}"),
+        year,
+        month,
+        day,
+        hour,
+        minute,
+    })
+}
+
+fn days_in_month(year: u32, month: u32) -> u32 {
+    match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 if is_leap_year(year) => 29,
+        2 => 28,
+        _ => 0,
+    }
+}
+
+fn is_leap_year(year: u32) -> bool {
+    year.is_multiple_of(4) && (!year.is_multiple_of(100) || year.is_multiple_of(400))
 }
 
 fn wavelengths_from_coefficients(coeffs: &[f32; 5], first_pixel: usize, count: usize) -> Vec<f64> {
@@ -583,13 +657,6 @@ fn u32_at(bytes: &[u8], offset: usize) -> Result<u32> {
         .get(offset..offset + 4)
         .ok_or_else(|| Error::InvalidRecord(format!("missing u32 at byte offset {offset}")))?;
     Ok(u32::from_le_bytes(chunk.try_into().expect("chunk width")))
-}
-
-fn i32_at(bytes: &[u8], offset: usize) -> Result<i32> {
-    let chunk = bytes
-        .get(offset..offset + 4)
-        .ok_or_else(|| Error::InvalidRecord(format!("missing i32 at byte offset {offset}")))?;
-    Ok(i32::from_le_bytes(chunk.try_into().expect("chunk width")))
 }
 
 fn f32_ascii(values: &[f32]) -> String {
