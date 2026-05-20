@@ -14,6 +14,10 @@ column groups are not mistaken for target-only tables.
 | `samples/scio/scio_scans_from_tech_support.csv` | 145 | wavelength, `nm`, 740-1070 | `spectrum`, `wr_raw`, `sample_raw` | Preamble metadata plus grouped `spectrum_*`, `wr_raw_*`, `sample_raw_*` columns. |
 | `samples/scio/scio_calibration_plate_Polypen.csv` | 1 | wavelength, `nm`, 324-790 | `reflectance` | Axis-first calibration table handled by `spectral_table`. |
 
+All three committed SCiO CSV fixtures are golden-backed. The calibration plate
+uses the generic row-table path by design because it is an axis-first spectral
+table rather than a SCiO grouped export.
+
 The developer export preserves scan/sample/device metadata per record. `Protein`
 and `Fat` columns are mapped to targets; temperature and acquisition labels stay
 in metadata.

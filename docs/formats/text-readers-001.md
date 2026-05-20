@@ -10,7 +10,7 @@ Implemented readers:
 
 | Reader | Fixture | Assertion scope |
 |---|---|---|
-| `csv_like` | `samples/csv_tsv/synthetic_nirs.csv` | 50 records, 200-point wavelength axis, `protein` target, `sample_id` metadata. |
+| `csv_like` | `samples/csv_tsv/synthetic_nirs.csv`, `.tsv`, `synthetic_nirs_semicolon.csv` | 50 records, 200-point wavelength axis, `protein` target, `sample_id` metadata; comma CSV, tab TSV and semicolon CSV variants are golden-backed. |
 | `bruker_dpt` | `samples/bruker_dpt/synthetic.dpt`, `RS-1.dpt` | One absorbance record, `cm-1` axis, synthetic descending fixture plus real `lightr` fixture. |
 | `avantes_ascii` | `samples/avantes/avantes_export.ttt` | Transmittance wave table. |
 | `avantes_ascii` | `samples/avantes/irr_820_1941.IRR` | Two-column irradiance export. |

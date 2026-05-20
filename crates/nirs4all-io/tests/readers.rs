@@ -43,17 +43,22 @@ fn reads_asd_fieldspec_revisions() {
 
 #[test]
 fn reads_synthetic_delimited_nirs_table() {
-    let records =
-        open_path(workspace_file("samples/csv_tsv/synthetic_nirs.csv")).expect("open csv");
+    for relative in [
+        "samples/csv_tsv/synthetic_nirs.csv",
+        "samples/csv_tsv/synthetic_nirs.tsv",
+        "samples/csv_tsv/synthetic_nirs_semicolon.csv",
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open delimited table");
 
-    assert_eq!(records.len(), 50);
-    let first = &records[0];
-    let signal = first.signals.get("signal").expect("signal");
-    assert_eq!(signal.axis.values.len(), 200);
-    assert_eq!(signal.axis.unit, "nm");
-    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
-    assert_eq!(first.metadata["sample_id"].as_str(), Some("S000"));
-    assert!(first.targets.contains_key("protein"));
+        assert_eq!(records.len(), 50);
+        let first = &records[0];
+        let signal = first.signals.get("signal").expect("signal");
+        assert_eq!(signal.axis.values.len(), 200);
+        assert_eq!(signal.axis.unit, "nm");
+        assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+        assert_eq!(first.metadata["sample_id"].as_str(), Some("S000"));
+        assert!(first.targets.contains_key("protein"));
+    }
 }
 
 #[test]
@@ -3799,6 +3804,43 @@ fn reads_msa_iso22029_y_axis_reconstruction() {
     assert!((signal.axis.values[79] - 790.0).abs() < 0.000001);
     assert!((signal.values[0] - 65.820).abs() < 0.000001);
     assert!((signal.values[79] - 49.442).abs() < 0.000001);
+}
+
+#[test]
+fn reads_msa_iso22029_nonconformant_metadata_as_preserved_headers() {
+    for relative in [
+        "samples/msa_iso22029/example1_wrong_date.msa",
+        "samples/msa_iso22029/example1_wrong_date_empty_field.msa",
+    ] {
+        let records = open_path(workspace_file(relative)).expect("open msa metadata variant");
+
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].provenance.format, "emsa-mas-msa");
+        let signal = records[0].signals.get("counts").expect("counts");
+        assert_eq!(signal.axis.values.len(), 20);
+        assert_eq!(
+            records[0].metadata["emsa_mas"]["date"][0].as_str(),
+            Some("01-09-1991")
+        );
+        assert_eq!(
+            records[0].metadata["emsa_mas"]["time"][0].as_str(),
+            Some("12:100")
+        );
+        assert_eq!(
+            records[0].provenance.warnings,
+            ["msa_npoints_truncated: declared 20, parsed 21"]
+        );
+        assert!(records[0].quality_flags.is_empty());
+    }
+
+    let records = open_path(workspace_file(
+        "samples/msa_iso22029/example1_wrong_date_empty_field.msa",
+    ))
+    .expect("open msa empty metadata variant");
+    assert_eq!(
+        records[0].metadata["emsa_mas"]["magcam"][0].as_str(),
+        Some("")
+    );
 }
 
 #[test]
