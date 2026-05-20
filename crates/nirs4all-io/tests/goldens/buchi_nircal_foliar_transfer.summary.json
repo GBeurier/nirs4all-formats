@@ -7,7 +7,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -32,9 +33,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -43,7 +67,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -68,9 +93,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -79,7 +127,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -104,9 +153,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -115,7 +187,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -140,9 +213,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -151,7 +247,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -176,9 +273,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -187,7 +307,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -212,9 +333,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -223,7 +367,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -248,9 +393,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -259,7 +427,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -284,9 +453,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -295,7 +487,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -320,9 +513,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -331,7 +547,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -356,9 +573,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -367,7 +607,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -392,9 +633,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -403,7 +667,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -428,9 +693,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -439,7 +727,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -464,9 +753,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -475,7 +787,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -500,9 +813,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -511,7 +847,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -536,9 +873,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -547,7 +907,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -572,9 +933,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -583,7 +967,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -608,9 +993,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -619,7 +1027,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -644,9 +1053,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -655,7 +1087,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -680,9 +1113,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     },
     {
@@ -691,7 +1147,8 @@
         "project_title",
         "record_index",
         "sample_id",
-        "spectrum_offset"
+        "spectrum_offset",
+        "target_property_count"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::buchi_nircal",
@@ -716,9 +1173,32 @@
         }
       ],
       "source_sha256": "81c6e311bc94fc8bc29f28b2b02527049a87ea8381342376fa16b01e57f4df5a",
-      "target_keys": [],
+      "target_keys": [
+        "<<undef>>",
+        "B",
+        "Ca",
+        "Cobre1",
+        "Cu_1",
+        "Cu_2",
+        "Fe_1",
+        "Fe_2",
+        "K",
+        "Manganeso1",
+        "Mg",
+        "Mn_1",
+        "Mn_2",
+        "N",
+        "P",
+        "S_1",
+        "S_2",
+        "Zinc1",
+        "Zn_1",
+        "Zn_2"
+      ],
       "warnings": [
-        "buchi_nircal_reverse_engineered_sections"
+        "buchi_nircal_reverse_engineered_sections",
+        "buchi_nircal_duplicate_property_names_normalized",
+        "buchi_nircal_zero_property_values_as_missing"
       ]
     }
   ]

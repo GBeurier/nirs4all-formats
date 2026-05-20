@@ -65,8 +65,8 @@ Experimental native readers:
 - Perkin Elmer Spectrum / IR (`.sp`) single spectra via the `PEPE` block
   container; `.fsm` Spotlight imaging is detected but out of scope for v1.
 - BUCHI NIRCal (`.nir`) `NIRCAL Project File` spectra and wavenumber sections
-  for the committed foliar-transfer fixture; non-zero reference properties are
-  still pending `targets` extraction.
+  for the committed foliar-transfer fixture, including property target schema
+  extraction with zero values mapped to null targets.
 - JASCO JWS (`.jws`) OLE2 `DataInfo` + `Y-Data` spectra for committed
   single-channel and multi-channel fixtures; semantic channel labels are still
   pending.
@@ -113,8 +113,8 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets and
-   JASCO `.jws` semantic channel labels;
+   Nicolet OMNIC `.srs/.srsx` variants, a non-zero BUCHI NIRCal target fixture
+   when available, and JASCO `.jws` semantic channel labels;
 2. add remaining lab-transfer containers and adjacent spectroscopy readers:
    Excel multi-sheet templates, Renishaw WDF and Horiba / JobinYvon LabSpec
    XML/text;
