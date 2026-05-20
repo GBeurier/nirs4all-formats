@@ -82,7 +82,7 @@ ASCII / lacking native binary) · ⚪ generated synthetic only.
 | `buchi_nircal/` | BUCHI NIRCal `.nir` | ✅ | 1 | prospectr |
 | `csv_tsv/` | CSV / TSV / IDL-ENVI text | ⚪ | 4 | synthetic |
 | `envi_sli/` | ENVI Spectral Library + cube + USGS/ECOSTRESS/ASTER ASCII | 🟡 | 9 | synthetic SLI + CubeScope-demo cube + spectralpython USGS/ECOSTRESS + ASTER-Spectral-Library |
-| `excel/` | Excel `.xlsx` | ⚪ | 1 | synthetic |
+| `excel/` | Excel `.xlsx` | ⚪ | 2 | synthetic |
 | `fgi/` | FGI HDF5 + XML | ⚪ | 2 | synthetic |
 | `foss_winisi/` | Foss WinISI text export / DS3 CSV report | 🟡 | 2 | synthetic (no open native `.NIR` sample exists) |
 | `galactic_spc/` | Thermo / Galactic GRAMS `.spc` | ✅ | 16 + spec PDF | cheminfo/spc-parser, spectrochempy_data |
