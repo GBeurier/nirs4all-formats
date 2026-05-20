@@ -60,7 +60,7 @@ Metadata is preserved under `metadata.vendor` using normalized key names. The
 reader stores the source file name there as well, because some workflows encode
 the measurement type in the extension rather than in the text header.
 
-## Fixtures and Reference Checks
+## Fixtures and Value Controls
 
 Current committed controls:
 
@@ -79,12 +79,20 @@ Current committed controls:
 | `OceanOptics_period.jdx` | 3648 | `sample`, `dark_reference`, `white_reference`, computed `processed` via JCAMP reader | `176.36 -> 893.69 nm` | processed `0.0 -> 171.977070` |
 | `OceanOptics.spc` | 3648 | `transmittance` via Galactic SPC reader | `176.360413 -> 893.694336 nm` | `0.0 -> 119.425171` |
 
+All 12 committed Ocean Optics / Ocean Insight data fixtures are golden-backed.
+Direct semantic tests cover the text, CSV, Jaz, CRAIC, Master.Transmission and
+ProcSpec families. Ocean JCAMP is validated through the JCAMP-DX reader, and
+the committed `.spc` file is validated through the Galactic SPC reader because
+its binary layout is that family rather than a distinct Ocean-only container.
+
 `lightr` is the practical external reference for this family, but it remains a
 conformance-only dependency because the Rust core is MIT.
 
 ## Next Work
 
+- Add QE Pro, Maya and Apex export variants when redistributable samples are
+  available.
 - Add samples for any non-Galactic Ocean Optics `.spc` variant if encountered.
-- Add reference reports against `lightr`.
+- Add reference reports against `lightr` and `pavo`.
 - Improve semantic typing of generic `processed` spectra when the export
   records processing mode in metadata rather than column labels.

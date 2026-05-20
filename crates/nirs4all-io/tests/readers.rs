@@ -160,6 +160,173 @@ fn reads_bruker_opus_duplicate_absorbance_blocks() {
 }
 
 #[test]
+fn reads_bruker_opus_cross_reader_fixture_set() {
+    struct BrukerFixtureCheck<'a> {
+        path: &'a str,
+        signal_count: usize,
+        expected_signals: &'a [&'a str],
+        primary_signal: &'a str,
+        axis_len: usize,
+        first_axis: f64,
+        last_axis: f64,
+        first_value: f64,
+        last_value: f64,
+        warnings: &'a [&'a str],
+    }
+
+    for check in [
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/MMP_2107_Test1.001",
+            signal_count: 7,
+            expected_signals: &[
+                "absorbance",
+                "match",
+                "match_2ch",
+                "reference_interferogram",
+                "reference_spectrum",
+                "sample_interferogram",
+                "sample_spectrum",
+            ],
+            primary_signal: "absorbance",
+            axis_len: 1_899,
+            first_axis: 11_540.0,
+            last_axis: 3_948.0,
+            first_value: 0.0714,
+            last_value: 0.797975,
+            warnings: &["opus_data_block_26_has_no_matching_status_block"],
+        },
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/brukeropus_file.0",
+            signal_count: 6,
+            expected_signals: &[
+                "absorbance",
+                "reference_interferogram",
+                "reference_spectrum",
+                "sample_interferogram",
+                "sample_phase",
+                "sample_spectrum",
+            ],
+            primary_signal: "absorbance",
+            axis_len: 4_927,
+            first_axis: 9_997.720923,
+            last_axis: 499.403996,
+            first_value: 0.008769,
+            last_value: 0.023399,
+            warnings: &[],
+        },
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/issue82_Opus_test.0",
+            signal_count: 5,
+            expected_signals: &[
+                "absorbance",
+                "match",
+                "match_2ch",
+                "reference_spectrum",
+                "sample_spectrum",
+            ],
+            primary_signal: "absorbance",
+            axis_len: 1_112,
+            first_axis: 12_488.0,
+            last_axis: 3_600.0,
+            first_value: 0.998422,
+            last_value: 1.991414,
+            warnings: &[],
+        },
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/opusreader_test_spectra.0",
+            signal_count: 3,
+            expected_signals: &["reference_spectrum", "reflectance", "sample_spectrum"],
+            primary_signal: "reflectance",
+            axis_len: 4_819,
+            first_axis: 7_498.291691,
+            last_axis: 599.920607,
+            first_value: 0.524343,
+            last_value: 0.033849,
+            warnings: &["opus_data_block_19_has_no_matching_status_block"],
+        },
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/scpdata_background.0",
+            signal_count: 2,
+            expected_signals: &["reference_interferogram", "reference_spectrum"],
+            primary_signal: "reference_spectrum",
+            axis_len: 4_096,
+            first_axis: 5_264.701776,
+            last_axis: 0.0,
+            first_value: 0.012417,
+            last_value: 0.012608,
+            warnings: &[],
+        },
+        BrukerFixtureCheck {
+            path: "samples/bruker_opus/scpdata_test.0000",
+            signal_count: 6,
+            expected_signals: &[
+                "absorbance",
+                "reference_interferogram",
+                "reference_spectrum",
+                "sample_interferogram",
+                "sample_phase",
+                "sample_spectrum",
+            ],
+            primary_signal: "absorbance",
+            axis_len: 2_567,
+            first_axis: 3_998.344938,
+            last_axis: 699.388954,
+            first_value: 0.000459,
+            last_value: 0.632425,
+            warnings: &[],
+        },
+    ] {
+        let records = open_path(workspace_file(check.path)).expect("open opus fixture");
+        assert_eq!(records.len(), 1, "{}", check.path);
+        let record = &records[0];
+        assert_eq!(record.provenance.format, "bruker-opus", "{}", check.path);
+        assert_eq!(record.signals.len(), check.signal_count, "{}", check.path);
+        for signal_name in check.expected_signals {
+            assert!(
+                record.signals.contains_key(*signal_name),
+                "{} missing {signal_name}",
+                check.path
+            );
+        }
+        let signal = record
+            .signals
+            .get(check.primary_signal)
+            .expect(check.primary_signal);
+        assert_eq!(signal.axis.values.len(), check.axis_len, "{}", check.path);
+        assert_eq!(signal.axis.unit, "cm-1", "{}", check.path);
+        assert_eq!(signal.axis.kind, AxisKind::Wavenumber, "{}", check.path);
+        assert_eq!(signal.axis.order, AxisOrder::Descending, "{}", check.path);
+        assert!(
+            (signal.axis.values[0] - check.first_axis).abs() < 0.000001,
+            "{}",
+            check.path
+        );
+        assert!(
+            (signal.axis.values[check.axis_len - 1] - check.last_axis).abs() < 0.000001,
+            "{}",
+            check.path
+        );
+        assert!(
+            (signal.values[0] - check.first_value).abs() < 0.000001,
+            "{}",
+            check.path
+        );
+        assert!(
+            (signal.values[check.axis_len - 1] - check.last_value).abs() < 0.000001,
+            "{}",
+            check.path
+        );
+        let warnings = record
+            .provenance
+            .warnings
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
+        assert_eq!(warnings, check.warnings, "{}", check.path);
+    }
+}
+
+#[test]
 fn reads_nicolet_omnic_spa_single_spectrum() {
     let records =
         open_path(workspace_file("samples/nicolet_omnic/2-BaSO4_0.SPA")).expect("open spa");
@@ -816,6 +983,7 @@ fn reads_renishaw_wdf_single_spectra() {
         record.metadata["title"].as_str(),
         Some("Single scan measurement 7")
     );
+    assert!(!record.metadata.contains_key("map_analysis_values"));
     assert!(record
         .provenance
         .warnings
@@ -964,6 +1132,38 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
         .expect("ascii preview")
         .iter()
         .any(|value| value.as_str() == Some("Intensity At Point 357u")));
+    assert_eq!(
+        map_blocks[0]["data_range_encoding"].as_str(),
+        Some("f32le_tail_after_pset")
+    );
+    assert_eq!(
+        map_blocks[0]["data_range_indexed_by"].as_str(),
+        Some("spectrum_index")
+    );
+    assert_eq!(map_blocks[0]["data_range_value_count"].as_u64(), Some(400));
+    assert_eq!(map_blocks[1]["data_range_value_count"].as_u64(), Some(400));
+    let first_map_values = records[0].metadata["map_analysis_values"]
+        .as_array()
+        .expect("map analysis values");
+    assert_eq!(first_map_values.len(), 2);
+    assert!(first_map_values[0]["label"]
+        .as_str()
+        .is_some_and(|label| label.contains("Intensity At Point 357u")));
+    assert!(
+        (first_map_values[0]["value"].as_f64().expect("map value") - 66.674965).abs() < 0.000001
+    );
+    assert!(
+        (first_map_values[1]["value"].as_f64().expect("map value") - 53.033577).abs() < 0.000001
+    );
+    let last_map_values = records[399].metadata["map_analysis_values"]
+        .as_array()
+        .expect("map analysis values");
+    assert!(
+        (last_map_values[0]["value"].as_f64().expect("map value") - 431.030426).abs() < 0.000001
+    );
+    assert!(
+        (last_map_values[1]["value"].as_f64().expect("map value") - 261.486084).abs() < 0.000001
+    );
 
     let records =
         open_path(workspace_file("samples/raman_renishaw/wire_depth.wdf")).expect("open WDF depth");
@@ -985,6 +1185,41 @@ fn reads_renishaw_wdf_multi_spectrum_payloads() {
         .any(|value| value
             .as_str()
             .is_some_and(|text| text.contains("Signal To Baseline from 1550.00"))));
+    assert_eq!(map_blocks[0]["data_range_value_count"].as_u64(), Some(40));
+    assert_eq!(map_blocks[1]["data_range_value_count"].as_u64(), Some(40));
+    let second_depth_values = records[1].metadata["map_analysis_values"]
+        .as_array()
+        .expect("map analysis values");
+    assert!(second_depth_values[0]["label"]
+        .as_str()
+        .is_some_and(|label| label.contains("Signal To Baseline from 1550.00")));
+    assert!(
+        (second_depth_values[0]["value"]
+            .as_f64()
+            .expect("depth value")
+            - 332.154236)
+            .abs()
+            < 0.000001
+    );
+    assert!(
+        (second_depth_values[1]["value"]
+            .as_f64()
+            .expect("depth value")
+            - 1392.108521)
+            .abs()
+            < 0.000001
+    );
+    let last_depth_values = records[39].metadata["map_analysis_values"]
+        .as_array()
+        .expect("map analysis values");
+    assert!(
+        (last_depth_values[0]["value"].as_f64().expect("depth value") - 640.086609).abs()
+            < 0.000001
+    );
+    assert!(
+        (last_depth_values[1]["value"].as_f64().expect("depth value") - 1232.547852).abs()
+            < 0.000001
+    );
 
     let records = open_path(workspace_file(
         "samples/raman_renishaw/renishaw_test_focustrack.wdf",
@@ -1607,6 +1842,44 @@ fn reads_ocean_optics_spectrasuite_text_export() {
     assert!((signal.axis.values[0] - 178.65).abs() < 0.000001);
     assert!((signal.axis.values[3_647] - 888.37).abs() < 0.000001);
     assert!((signal.values[3_647] + 12.792).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_oceanview_text_export() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/OceanView.txt")).expect("open oceanview");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "ocean-optics-text");
+    let signal = records[0].signals.get("processed").expect("processed");
+    assert_eq!(signal.axis.values.len(), 2_389);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.order, AxisOrder::Ascending);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.axis.values[0] - 187.92).abs() < 0.000001);
+    assert!((signal.axis.values[2_388] - 2_116.5).abs() < 0.000001);
+    assert!((signal.values[0] - 18.995).abs() < 0.000001);
+    assert!((signal.values[2_388] - 4.6991).abs() < 0.000001);
+}
+
+#[test]
+fn reads_ocean_optics_two_column_csv_export() {
+    let records =
+        open_path(workspace_file("samples/ocean_optics/spec.csv")).expect("open ocean csv");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "ocean-optics-two-column-csv");
+    let signal = records[0].signals.get("processed").expect("processed");
+    assert_eq!(signal.axis.values.len(), 1_994);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.order, AxisOrder::Ascending);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.axis.values[0] - 299.99).abs() < 0.000001);
+    assert!((signal.axis.values[1_993] - 700.03).abs() < 0.000001);
+    assert!((signal.values[0] - 10.013).abs() < 0.000001);
+    assert!((signal.values[1_993] - 15.408).abs() < 0.000001);
 }
 
 #[test]

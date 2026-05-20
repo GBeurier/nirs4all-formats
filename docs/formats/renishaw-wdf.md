@@ -12,8 +12,8 @@ files:
 - `ORGN` navigation axes for spatial X/Y/Z, FocusTrack Z and acquisition time;
 - `WMAP` map dimensions, map type, offsets and scales;
 - `WHTL` white-light image metadata without embedding the image payload;
-- `MAP ` analysis-block inventory without treating derived PSET payloads as
-  spectra;
+- `MAP ` analysis-block inventory plus bounded `dataRange` extraction for the
+  observed PSET tail layout, without treating derived PSET payloads as spectra;
 - fixed-header metadata such as point count, scan type, measurement type,
   accumulation count, application version, laser wavenumber, user and title.
 
@@ -27,9 +27,11 @@ spectrum. `ORGN` values are copied to normalized per-record metadata such as
 `white_light_image` metadata object with JPEG MIME type, byte length, SHA-256,
 image dimensions, precision/component count, JFIF density and basic EXIF
 make/description fields. `MAP ` blocks add `map_analysis_blocks` entries with
-block UID, byte length, SHA-256, PSET length and a short printable-string
-preview so derived analysis payloads are discoverable without silently
-promoting them to spectra. Undefined
+block UID, byte length, SHA-256, PSET length, a short printable-string preview
+and `data_range_*` fields when the observed PSET tail can be decoded as
+float32 values. When the decoded `dataRange` length exactly matches the stored
+spectrum count, each emitted record also receives `map_analysis_values`
+entries keyed by block UID and label. Undefined
 `measurement_type=0` containers are still refused.
 
 ## Supported Fixtures
@@ -39,7 +41,7 @@ promoting them to spectra. Undefined
 | `samples/raman_renishaw/renishaw_test_spectrum.wdf` | 1 | wavelength, `nm`, 36 points | RosettaSciIO single-point spectrum |
 | `samples/raman_renishaw/renishaw_test_linescan.wdf` | 5 | wavelength, `nm`, 40 points | Diagonal `xyline`; exposes X/Y and distance metadata |
 | `samples/raman_renishaw/renishaw_test_map.wdf` | 9 | wavelength, `nm`, 40 points | 3 x 3 regular map with WMAP-derived X/Y indices |
-| `samples/raman_renishaw/renishaw_test_map2.wdf` | 400 | wavelength, `nm`, 40 points | 20 x 20 map plus `MAP ` PSET analysis-block inventory |
+| `samples/raman_renishaw/renishaw_test_map2.wdf` | 400 | wavelength, `nm`, 40 points | 20 x 20 map plus two `MAP ` PSET `dataRange` analysis maps |
 | `samples/raman_renishaw/renishaw_test_streamline.wdf` | 2,205 | wavelength, `nm`, 1,015 points | StreamLine map, emitted as one record per stored spectrum |
 | `samples/raman_renishaw/renishaw_test_focustrack.wdf` | 3 | wavelength, `nm`, 1,015 points | FocusTrack Z metadata |
 | `samples/raman_renishaw/renishaw_test_focustrack_invariant.wdf` | 10 | wavelength, `nm`, 1,015 points | FocusTrack invariant navigation variant |
@@ -48,7 +50,7 @@ promoting them to spectra. Undefined
 | `samples/raman_renishaw/renishaw_test_zscan.wdf` | 40 | wavelength, `nm`, 1,015 points | Z-depth navigation regression |
 | `samples/raman_renishaw/interrupted_acquisition.wdf` | 12 | wavenumber, `cm-1`, 1010 points | Reads stored count, preserves X/Y map positions and warns about truncated capacity |
 | `samples/raman_renishaw/wire_sp.wdf` | 1 | wavenumber, `cm-1`, 1015 points | SpectroChemPy real-world single spectrum |
-| `samples/raman_renishaw/wire_depth.wdf` | 40 | wavenumber, `cm-1`, 1,015 points | SpectroChemPy depth profile with elapsed time and `MAP ` analysis inventory |
+| `samples/raman_renishaw/wire_depth.wdf` | 40 | wavenumber, `cm-1`, 1,015 points | SpectroChemPy depth profile with elapsed time and two `MAP ` PSET `dataRange` analysis maps |
 | `samples/raman_renishaw/wire_line.wdf` | 235 | wavenumber, `cm-1`, 1,015 points | Real-world `xyline` path with distance and X/Y normalization |
 | `samples/raman_renishaw/wire_Streamline.wdf` | 2,205 | wavenumber, `cm-1`, 1,015 points | Real-world StreamLine map |
 
@@ -100,9 +102,12 @@ container metadata only; it does not store or decode pixels into
 
 `MAP ` payloads in committed fixtures start with `PSET` and describe WiRE
 derived analysis maps, such as intensity-at-point and signal-to-baseline
-windows. The reader records an inventory only. Decoding `dataRange` into a
-derived non-spectral signal remains a separate decision because the payload is
-analysis output, not primary spectral acquisition data.
+windows. The observed layout stores float32 `dataRange` values in the payload
+tail after `8 + pset_declared_len + 8` bytes. The reader decodes that layout
+only when the value stream is finite and 4-byte aligned. It records the values
+as per-record metadata, not as spectral signals, because they are derived
+analysis output rather than primary acquisition data. Other `MAP ` layouts
+remain inventory-only until covered by fixtures or a reference implementation.
 
 ## Reference Readers
 
