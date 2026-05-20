@@ -1,0 +1,103 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "bruker-opus",
+      "metadata_keys": [
+        "bruker_opus",
+        "bruker_opus_history",
+        "bruker_opus_params",
+        "bruker_opus_signal_params"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::bruker_opus",
+      "record_signal_type": "absorbance",
+      "signal_count": 5,
+      "signals": [
+        {
+          "axis_first": 7497.697861,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.738692,
+          "axis_len": 3578,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "absorbance",
+          "role": "Absorbance",
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.552473,
+          "value_last": 1.476038,
+          "value_sum": 2639.879737,
+          "values_len": 3578
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 29455.0,
+          "axis_len": 29456,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "reference_interferogram",
+          "role": "Reference Interferogram",
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": 0.000075,
+          "value_last": 0.000153,
+          "value_sum": -4.510567,
+          "values_len": 29456
+        },
+        {
+          "axis_first": 7505.411542,
+          "axis_kind": "wavenumber",
+          "axis_last": 595.881852,
+          "axis_len": 3584,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "reference_spectrum",
+          "role": "Reference Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.003258,
+          "value_last": 0.01024,
+          "value_sum": 177.336913,
+          "values_len": 3584
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 29455.0,
+          "axis_len": 29456,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "name": "sample_interferogram",
+          "role": "Sample Interferogram",
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": -0.000145,
+          "value_last": -0.000119,
+          "value_sum": -4.676932,
+          "values_len": 29456
+        },
+        {
+          "axis_first": 7497.697861,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.738692,
+          "axis_len": 3578,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "sample_spectrum",
+          "role": "Sample Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.000862,
+          "value_last": 0.000357,
+          "value_sum": 35.35597,
+          "values_len": 3578
+        }
+      ],
+      "source_sha256": "227a883fb9867aead90a6e71f05e77634bc87115520e0b3d23a1f75e80ecebb2",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

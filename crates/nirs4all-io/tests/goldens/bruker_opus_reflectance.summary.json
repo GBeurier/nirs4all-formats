@@ -1,0 +1,73 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "bruker-opus",
+      "metadata_keys": [
+        "bruker_opus",
+        "bruker_opus_history",
+        "bruker_opus_params",
+        "bruker_opus_signal_params"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::bruker_opus",
+      "record_signal_type": "single_beam",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 7504.018857,
+          "axis_kind": "wavenumber",
+          "axis_last": 597.057024,
+          "axis_len": 4825,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "reference_spectrum",
+          "role": "Reference Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.00779,
+          "value_last": 0.242963,
+          "value_sum": 1454.273662,
+          "values_len": 4825
+        },
+        {
+          "axis_first": 7498.291691,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.920607,
+          "axis_len": 4819,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "reflectance",
+          "role": "Reflectance",
+          "signal_type": "reflectance",
+          "unit": null,
+          "value_first": 0.524343,
+          "value_last": 0.033849,
+          "value_sum": 1658.359604,
+          "values_len": 4819
+        },
+        {
+          "axis_first": 7498.291691,
+          "axis_kind": "wavenumber",
+          "axis_last": 599.920607,
+          "axis_len": 4819,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "name": "sample_spectrum",
+          "role": "Sample Spectrum",
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.00412,
+          "value_last": 0.008531,
+          "value_sum": 244.663427,
+          "values_len": 4819
+        }
+      ],
+      "source_sha256": "29e42e9c6653ffea37848e43a944c976e2eb81b15cede63848f6a08dddaeecde",
+      "target_keys": [],
+      "warnings": [
+        "opus_data_block_19_has_no_matching_status_block"
+      ]
+    }
+  ]
+}
