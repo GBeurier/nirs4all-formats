@@ -363,6 +363,10 @@ const CASES: &[(&str, &str)] = &[
         "samples/ocean_optics/OceanOptics_period.jdx",
     ),
     (
+        "jcamp_synthetic_peak_assignments",
+        "samples/jcamp_dx/synthetic_peak_assignments.jdx",
+    ),
+    (
         "msa_iso22029_xy",
         "samples/msa_iso22029/ISO_22029_2022_compliance.msa",
     ),

@@ -14,6 +14,45 @@ use crate::readers::util::{
 use crate::Reader;
 
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
+const SPECTRA_DATASET_NAMES: &[&str] = &[
+    "spectra",
+    "spectrum",
+    "X",
+    "x",
+    "absorbance",
+    "absorbances",
+    "reflectance",
+    "reflectances",
+    "transmittance",
+    "transmission",
+    "intensity",
+    "intensities",
+    "raw",
+    "counts",
+    "data",
+];
+const AXIS_DATASET_NAMES: &[&str] = &[
+    "wavelengths",
+    "wavelength",
+    "wavelength_nm",
+    "wavelengths_nm",
+    "wl",
+    "wl_nm",
+    "lambda",
+    "lambda_nm",
+    "wavenumbers",
+    "wavenumber",
+    "wavenumber_cm-1",
+    "wavenumber_cm_1",
+    "wavenumbers_cm-1",
+    "wavenumbers_cm_1",
+    "wn",
+    "wn_cm-1",
+    "wn_cm_1",
+    "x",
+    "x_axis",
+    "axis",
+];
 
 pub struct Hdf5Reader;
 
@@ -65,16 +104,9 @@ pub(crate) fn read_hdf5_records(
         )
     })?;
 
-    let spectra_shape = candidate.spectra.shape();
-    if spectra_shape.len() != 2 {
-        return Err(Error::InvalidRecord(
-            "HDF5 spectra dataset is not 2-D".to_string(),
-        ));
-    }
-    let sample_count = usize::try_from(spectra_shape[0])
-        .map_err(|_| Error::InvalidRecord("HDF5 sample dimension is too large".to_string()))?;
-    let band_count = usize::try_from(spectra_shape[1])
-        .map_err(|_| Error::InvalidRecord("HDF5 wavelength dimension is too large".to_string()))?;
+    let layout = candidate.layout;
+    let sample_count = layout.sample_count;
+    let band_count = layout.band_count;
 
     let axis = read_numeric_vec(&candidate.axis, "wavelength axis")?;
     if axis.len() != band_count {
@@ -93,21 +125,24 @@ pub(crate) fn read_hdf5_records(
         &candidate.group,
         sample_count,
         &candidate.axis_name,
-        candidate.spectra.name(),
+        &candidate.spectra_name,
     )?;
     let group_attributes =
         attribute_map(candidate.group.attributes().map_err(|error| {
             Error::InvalidRecord(format!("HDF5 group attribute error: {error}"))
         })?);
+    let axis_kind = axis_kind(&candidate.axis_name, &candidate.axis);
+    let axis_unit = attr_string(&candidate.axis, "units")
+        .unwrap_or_else(|| default_axis_unit(&candidate.axis_name, &axis_kind));
     let signal_unit = attr_string(&candidate.spectra, "units");
-    let signal_label = signal_unit.as_deref().unwrap_or("absorbance");
+    let signal_label = signal_unit
+        .as_deref()
+        .unwrap_or_else(|| default_signal_label(&candidate.spectra_name));
     let signal_type = signal_type_from_label(signal_label);
     let signal_name = safe_signal_name(signal_label, "absorbance");
 
     let mut records = Vec::with_capacity(sample_count);
     for sample_index in 0..sample_count {
-        let start = sample_index * band_count;
-        let end = start + band_count;
         let mut metadata = base_metadata(
             &candidate,
             &root_attributes,
@@ -126,15 +161,9 @@ pub(crate) fn read_hdf5_records(
             source.clone(),
             SingleSignalSpec {
                 axis_values: axis.clone(),
-                axis_unit: attr_string(&candidate.axis, "units").unwrap_or_else(|| {
-                    if candidate.axis_name.contains("wavenumber") {
-                        "cm-1".to_string()
-                    } else {
-                        "nm".to_string()
-                    }
-                }),
-                axis_kind: axis_kind(&candidate.axis_name, &candidate.axis),
-                values: spectra[start..end].to_vec(),
+                axis_unit: axis_unit.clone(),
+                axis_kind: axis_kind.clone(),
+                values: sample_values(&spectra, layout, sample_index),
                 signal_name: signal_name.clone(),
                 signal_type: signal_type.clone(),
                 signal_unit: signal_unit.clone(),
@@ -151,9 +180,11 @@ pub(crate) fn read_hdf5_records(
 struct CandidateGroup {
     group_path: String,
     group: Group,
+    spectra_name: String,
     spectra: Dataset,
     axis_name: String,
     axis: Dataset,
+    layout: SpectraLayout,
 }
 
 fn find_candidate_group(
@@ -161,28 +192,8 @@ fn find_candidate_group(
     group_path: &str,
     depth: usize,
 ) -> Result<Option<CandidateGroup>> {
-    if let Ok(spectra) = group.dataset("spectra") {
-        let shape = spectra.shape();
-        if shape.len() != 2 {
-            return Err(Error::InvalidRecord(
-                "HDF5 spectra dataset is not 2-D".to_string(),
-            ));
-        }
-        let band_count = usize::try_from(shape[1]).map_err(|_| {
-            Error::InvalidRecord("HDF5 wavelength dimension is too large".to_string())
-        })?;
-        if let Some((axis_name, axis)) = find_axis_dataset(group, band_count)? {
-            return Ok(Some(CandidateGroup {
-                group_path: group_path.to_string(),
-                group: group.clone(),
-                spectra,
-                axis_name,
-                axis,
-            }));
-        }
-        return Err(Error::InvalidRecord(
-            "HDF5 contains no 1-D wavelength axis matching spectra bands".to_string(),
-        ));
+    if let Some(candidate) = find_candidate_in_group(group, group_path)? {
+        return Ok(Some(candidate));
     }
 
     if depth >= 4 {
@@ -200,23 +211,104 @@ fn find_candidate_group(
     Ok(None)
 }
 
-fn find_axis_dataset(group: &Group, band_count: usize) -> Result<Option<(String, Dataset)>> {
-    for name in [
-        "wavelengths",
-        "wavelength",
-        "wavelength_nm",
-        "wavenumbers",
-        "wavenumber",
-        "x",
-    ] {
-        let Ok(dataset) = group.dataset(name) else {
+fn find_candidate_in_group(group: &Group, group_path: &str) -> Result<Option<CandidateGroup>> {
+    for spectra_name in SPECTRA_DATASET_NAMES {
+        let Ok(spectra) = group.dataset(spectra_name) else {
             continue;
         };
-        if dataset.ndim() == 1 && dataset.num_elements() == band_count as u64 {
-            return Ok(Some((name.to_string(), dataset)));
+        if spectra.ndim() != 2 {
+            continue;
+        }
+        if let Some((axis_name, axis, layout)) = find_axis_dataset(group, &spectra)? {
+            return Ok(Some(CandidateGroup {
+                group_path: group_path.to_string(),
+                group: group.clone(),
+                spectra_name: (*spectra_name).to_string(),
+                spectra,
+                axis_name,
+                axis,
+                layout,
+            }));
         }
     }
     Ok(None)
+}
+
+fn find_axis_dataset(
+    group: &Group,
+    spectra: &Dataset,
+) -> Result<Option<(String, Dataset, SpectraLayout)>> {
+    let shape = spectra.shape();
+    if shape.len() != 2 {
+        return Ok(None);
+    }
+    let rows = usize::try_from(shape[0])
+        .map_err(|_| Error::InvalidRecord("HDF5 spectra row dimension is too large".to_string()))?;
+    let cols = usize::try_from(shape[1]).map_err(|_| {
+        Error::InvalidRecord("HDF5 spectra column dimension is too large".to_string())
+    })?;
+
+    for name in AXIS_DATASET_NAMES {
+        let Ok(dataset) = group.dataset(name) else {
+            continue;
+        };
+        if dataset.ndim() != 1 {
+            continue;
+        }
+        let axis_len = usize::try_from(dataset.num_elements())
+            .map_err(|_| Error::InvalidRecord("HDF5 axis dimension is too large".to_string()))?;
+        if let Some(layout) = infer_spectra_layout(rows, cols, axis_len) {
+            return Ok(Some(((*name).to_string(), dataset, layout)));
+        }
+    }
+    Ok(None)
+}
+
+#[derive(Clone, Copy)]
+struct SpectraLayout {
+    sample_count: usize,
+    band_count: usize,
+    storage: SpectraStorage,
+    name: &'static str,
+}
+
+#[derive(Clone, Copy)]
+enum SpectraStorage {
+    SamplesByBands,
+    BandsBySamples,
+}
+
+fn infer_spectra_layout(rows: usize, cols: usize, axis_len: usize) -> Option<SpectraLayout> {
+    if rows == 0 || cols == 0 || axis_len == 0 {
+        return None;
+    }
+    match (cols == axis_len, rows == axis_len) {
+        (true, false) => Some(SpectraLayout {
+            sample_count: rows,
+            band_count: cols,
+            storage: SpectraStorage::SamplesByBands,
+            name: "samples_by_bands",
+        }),
+        (false, true) => Some(SpectraLayout {
+            sample_count: cols,
+            band_count: rows,
+            storage: SpectraStorage::BandsBySamples,
+            name: "bands_by_samples",
+        }),
+        _ => None,
+    }
+}
+
+fn sample_values(matrix: &[f64], layout: SpectraLayout, sample_index: usize) -> Vec<f64> {
+    match layout.storage {
+        SpectraStorage::SamplesByBands => {
+            let start = sample_index * layout.band_count;
+            matrix[start..start + layout.band_count].to_vec()
+        }
+        SpectraStorage::BandsBySamples => (0..layout.band_count)
+            .map(|band_index| matrix[band_index * layout.sample_count + sample_index])
+            .collect(),
+    }
 }
 
 fn target_columns(
@@ -233,10 +325,7 @@ fn target_columns(
         let name = dataset.name();
         if name == spectra_name
             || name == axis_name
-            || matches!(
-                name,
-                "wavelengths" | "wavelength" | "wavelength_nm" | "wavenumbers" | "wavenumber" | "x"
-            )
+            || is_axis_dataset_name(name)
             || dataset.ndim() != 1
             || dataset.num_elements() != sample_count as u64
         {
@@ -258,6 +347,18 @@ fn base_metadata(
     let mut metadata = BTreeMap::new();
     metadata.insert("container".to_string(), json!("hdf5"));
     metadata.insert("group_path".to_string(), json!(candidate.group_path));
+    if candidate.spectra_name != "spectra" {
+        metadata.insert("spectra_dataset".to_string(), json!(candidate.spectra_name));
+    }
+    if candidate.axis_name != "wavelengths" {
+        metadata.insert("axis_dataset".to_string(), json!(candidate.axis_name));
+    }
+    if candidate.layout.name != "samples_by_bands" {
+        metadata.insert(
+            "matrix_orientation".to_string(),
+            json!(candidate.layout.name),
+        );
+    }
     if !root_attributes.is_empty() {
         metadata.insert("root_attributes".to_string(), json!(root_attributes));
     }
@@ -356,13 +457,56 @@ fn axis_kind(axis_name: &str, axis: &Dataset) -> AxisKind {
         .unwrap_or_default()
         .to_ascii_lowercase();
     let name = axis_name.to_ascii_lowercase();
-    if name.contains("wavenumber") || unit.contains("cm") {
+    let compact_name = name.replace([' ', '_', '-'], "");
+    let compact_unit = unit.replace([' ', '_'], "");
+    if name.contains("wavenumber")
+        || compact_name == "wn"
+        || compact_name.starts_with("wncm")
+        || compact_unit.contains("cm-1")
+        || compact_unit.contains("cm^-1")
+        || compact_unit.contains("1/cm")
+        || unit.contains("cm")
+    {
         AxisKind::Wavenumber
-    } else if name.contains("wavelength") || unit.contains("nm") {
+    } else if name.contains("wavelength")
+        || compact_name == "wl"
+        || compact_name.starts_with("wlnm")
+        || compact_name.contains("lambda")
+        || unit.contains("nm")
+        || unit.contains("um")
+    {
         AxisKind::Wavelength
     } else {
         AxisKind::Index
     }
+}
+
+fn default_axis_unit(axis_name: &str, axis_kind: &AxisKind) -> String {
+    match axis_kind {
+        AxisKind::Wavenumber => "cm-1".to_string(),
+        AxisKind::Wavelength => "nm".to_string(),
+        AxisKind::Index if axis_name == "x" => "nm".to_string(),
+        _ => String::new(),
+    }
+}
+
+fn default_signal_label(spectra_name: &str) -> &'static str {
+    let name = spectra_name.to_ascii_lowercase();
+    if name.contains("reflect") {
+        "reflectance"
+    } else if name.contains("trans") {
+        "transmittance"
+    } else if name.contains("raw") || name.contains("count") {
+        "raw_counts"
+    } else if name.contains("intens") {
+        "intensity"
+    } else {
+        "absorbance"
+    }
+}
+
+fn is_axis_dataset_name(name: &str) -> bool {
+    AXIS_DATASET_NAMES.contains(&name)
 }
 
 fn attr_string(dataset: &Dataset, name: &str) -> Option<String> {

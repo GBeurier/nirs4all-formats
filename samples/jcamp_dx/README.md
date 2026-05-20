@@ -46,11 +46,26 @@ Single-compound IR spectra under [`nzhagen/jcamp/data/infrared_spectra/`](https:
 | `acetone_ir.jdx` | Acetone |
 | `carbon_dioxide_ir.jdx` | CO₂ |
 
+## Synthetic peak-assignments fixture
+
+`synthetic_peak_assignments.jdx` is a hand-crafted minimal `##PEAK
+ASSIGNMENTS=(XYA)` block (4 peaks, IR-style cm⁻¹ axis, absorbance ordinate).
+It exercises the sparse peak-table decoder end-to-end (per-peak `<…>`
+assignment extraction, NPOINTS exact-match check, descending axis ordering,
+metadata schema). It carries no IUPAC provenance — it exists purely as a
+deterministic regression fixture for the Rust reader because no public
+peak-table sample is currently mirrored here.
+
 ## Parser hints
 
 - Header tags begin with `##` (e.g. `##TITLE=`, `##JCAMP-DX=`, `##XUNITS=`, `##YUNITS=`, `##NPOINTS=`, `##FIRSTX=`, `##LASTX=`).
-- Data block follows `##XYDATA=` or `##XYPOINTS=` or `##NTUPLES=` and is terminated by `##END=`.
+- Data block follows `##XYDATA=`, `##XYPOINTS=`, `##NTUPLES=`, `##PEAK TABLE=`, or `##PEAK ASSIGNMENTS=`, and is terminated by `##END=`.
 - DIF/DUP/SQZ are digit-substitution encodings; AFFN is plain numbers. NTUPLES is for multi-dimensional data.
+- Peak-table shapes (`XY`, `XYW`, `XYM`, `XYA`, `XYWA`, `XYMA`) are parsed
+  field-by-field. `..` inside the shape (e.g. `(XY..XY)`) means "many peaks
+  per line"; any shape carrying the `A` field is read one peak per line so
+  the `<…>` assignment payload is unambiguous. See
+  [`docs/formats/jcamp-dx.md`](../../docs/formats/jcamp-dx.md).
 - Reference readers:
   - Python: [`jcamp`](https://github.com/nzhagen/jcamp) (covers AFFN/XYDATA/DIF/DUP), [`spectrochempy.read_jcamp()`](https://www.spectrochempy.fr/reference/generated/spectrochempy.read_jcamp.html), `nmrglue`
   - R: `ChemoSpec`, `hyperSpec`

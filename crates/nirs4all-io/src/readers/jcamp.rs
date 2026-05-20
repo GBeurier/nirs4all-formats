@@ -115,9 +115,11 @@ fn jcamp_record_from_parsed(
 }
 
 fn parse_jcamp_text(text: &str) -> Result<ParsedJcamp> {
-    reject_peak_table(text)?;
     if is_link_jcamp(text) {
         return parse_link_jcamp_text(text);
+    }
+    if has_peak_table(text) {
+        return parse_peak_table_jcamp_text(text);
     }
     if text.lines().any(|line| {
         line.trim().strip_prefix("##").is_some_and(|body| {
@@ -152,7 +154,12 @@ fn top_level_jcamp_chunks(text: &str) -> Vec<String> {
 }
 
 fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
-    reject_peak_table(text)?;
+    if has_peak_table(text) {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP LINK child PEAK TABLE blocks are not supported; expected XYDATA or XYPOINTS"
+                .to_string(),
+        ));
+    }
 
     let mut ldr = BTreeMap::<String, String>::new();
     let mut xy_lines = Vec::new();
@@ -263,16 +270,6 @@ fn is_link_jcamp(text: &str) -> bool {
     })
 }
 
-fn reject_peak_table(text: &str) -> Result<()> {
-    if has_peak_table(text) {
-        return Err(nirs4all_io_core::Error::InvalidRecord(
-            "JCAMP PEAK TABLE blocks are not supported; expected XYDATA, XYPOINTS, or NTUPLES"
-                .to_string(),
-        ));
-    }
-    Ok(())
-}
-
 fn has_peak_table(text: &str) -> bool {
     text.lines().any(|line| {
         let line = line.trim();
@@ -283,11 +280,475 @@ fn has_peak_table(text: &str) -> bool {
             return false;
         };
         let normalized = normalize_key(key);
-        matches!(normalized.as_str(), "peak_table" | "peaktable")
-            || (normalized == "data_table" && value.to_ascii_uppercase().contains("PEAK"))
+        matches!(
+            normalized.as_str(),
+            "peak_table" | "peaktable" | "peak_assignments" | "peakassignments"
+        ) || (normalized == "data_table" && value.to_ascii_uppercase().contains("PEAK"))
             || (matches!(normalized.as_str(), "data_type" | "datatype")
                 && value.to_ascii_uppercase().contains("PEAK TABLE"))
     })
+}
+
+/// Per-peak attribute slot inside a JCAMP-DX PEAK TABLE / PEAK ASSIGNMENTS shape.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum PeakField {
+    X,
+    Y,
+    Width,
+    Multiplicity,
+    Assignment,
+}
+
+impl PeakField {
+    fn as_str(&self) -> &'static str {
+        match self {
+            PeakField::X => "x",
+            PeakField::Y => "y",
+            PeakField::Width => "width",
+            PeakField::Multiplicity => "multiplicity",
+            PeakField::Assignment => "assignment",
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum PeakTableKind {
+    Table,
+    Assignments,
+}
+
+impl PeakTableKind {
+    fn as_str(&self) -> &'static str {
+        match self {
+            PeakTableKind::Table => "peak_table",
+            PeakTableKind::Assignments => "peak_assignments",
+        }
+    }
+
+    fn priority(&self) -> u8 {
+        // Lower is preferred. ASSIGNMENTS carry more information than TABLE.
+        match self {
+            PeakTableKind::Assignments => 0,
+            PeakTableKind::Table => 1,
+        }
+    }
+}
+
+#[derive(Debug)]
+struct PeakTableBlock {
+    kind: PeakTableKind,
+    shape_raw: String,
+    fields: Vec<PeakField>,
+    packed: bool,
+    lines: Vec<String>,
+}
+
+#[derive(Debug, Default, Clone)]
+struct Peak {
+    x: f64,
+    y: Option<f64>,
+    width: Option<f64>,
+    multiplicity: Option<f64>,
+    assignment: Option<String>,
+}
+
+impl Peak {
+    fn to_json(&self) -> Value {
+        let mut map = serde_json::Map::new();
+        map.insert("x".to_string(), json!(self.x));
+        if let Some(y) = self.y {
+            map.insert("y".to_string(), json!(y));
+        }
+        if let Some(w) = self.width {
+            map.insert("width".to_string(), json!(w));
+        }
+        if let Some(m) = self.multiplicity {
+            map.insert("multiplicity".to_string(), json!(m));
+        }
+        if let Some(a) = &self.assignment {
+            map.insert("assignment".to_string(), json!(a));
+        }
+        Value::Object(map)
+    }
+}
+
+fn parse_peak_table_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    let ldr = collect_ldr(text);
+    let mut blocks = collect_peak_table_blocks(text);
+    if blocks.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP PEAK TABLE block contains no parseable shape".to_string(),
+        ));
+    }
+
+    // Prefer ASSIGNMENTS (richer) when multiple peak-style blocks are present.
+    blocks.sort_by_key(|block| block.kind.priority());
+    let primary = blocks.remove(0);
+    let extras = blocks;
+
+    let xfactor = get_f64(&ldr, "xfactor").unwrap_or(1.0);
+    let yfactor = get_f64(&ldr, "yfactor").unwrap_or(1.0);
+    let mut warnings = Vec::new();
+
+    let peaks = decode_peak_block(&primary, xfactor, yfactor, &mut warnings);
+    if peaks.is_empty() {
+        return Err(nirs4all_io_core::Error::InvalidRecord(format!(
+            "JCAMP {} block decoded no peaks",
+            primary.kind.as_str()
+        )));
+    }
+
+    if let Some(expected) = get_f64(&ldr, "npoints").map(|value| value as usize) {
+        if expected != peaks.len() {
+            return Err(nirs4all_io_core::Error::InvalidRecord(format!(
+                "JCAMP {} NPOINTS mismatch: declared {expected}, parsed {}",
+                primary.kind.as_str(),
+                peaks.len()
+            )));
+        }
+    }
+
+    let axis: Vec<f64> = peaks.iter().map(|peak| peak.x).collect();
+    let values: Vec<f64> = peaks.iter().map(|peak| peak.y.unwrap_or(0.0)).collect();
+    let missing_y_count = peaks.iter().filter(|peak| peak.y.is_none()).count();
+    if missing_y_count > 0 {
+        warnings.push(format!(
+            "jcamp_peak_table_missing_y: {missing_y_count} of {} peaks lacked an ordinate; filled with 0.0",
+            peaks.len()
+        ));
+    }
+
+    let xunits = ldr.get("xunits").map(String::as_str).unwrap_or("index");
+    let (axis_kind, axis_unit) = axis_kind_unit(xunits);
+    let yunits = ldr.get("yunits").map(String::as_str).unwrap_or("");
+
+    let mut metadata = BTreeMap::new();
+    metadata.insert("jcamp".to_string(), json!(ldr));
+    metadata.insert(
+        "jcamp_peak_table".to_string(),
+        json!({
+            "kind": primary.kind.as_str(),
+            "shape": primary.shape_raw,
+            "fields": primary.fields.iter().map(PeakField::as_str).collect::<Vec<_>>(),
+            "packed": primary.packed,
+            "sparse": true,
+            "peak_count": peaks.len(),
+            "peaks": peaks.iter().map(Peak::to_json).collect::<Vec<_>>(),
+        }),
+    );
+    if !extras.is_empty() {
+        warnings.push(format!(
+            "jcamp_peak_table_multiple_blocks: kept {}, dropped {} secondary",
+            primary.kind.as_str(),
+            extras.len()
+        ));
+        metadata.insert(
+            "jcamp_peak_table_dropped".to_string(),
+            json!(extras
+                .iter()
+                .map(|block| json!({
+                    "kind": block.kind.as_str(),
+                    "shape": block.shape_raw,
+                    "fields": block.fields.iter().map(PeakField::as_str).collect::<Vec<_>>(),
+                    "packed": block.packed,
+                    "line_count": block.lines.len(),
+                }))
+                .collect::<Vec<_>>()),
+        );
+    }
+
+    Ok(ParsedJcamp {
+        axis,
+        axis_unit,
+        axis_kind,
+        signals: vec![ParsedJcampSignal {
+            name: "peak_intensity".to_string(),
+            values,
+            signal_type: signal_type_from_yunits(yunits),
+            signal_unit: (!yunits.is_empty()).then(|| yunits.to_string()),
+            role: "peak_intensity".to_string(),
+        }],
+        metadata,
+        warnings,
+    })
+}
+
+fn collect_peak_table_blocks(text: &str) -> Vec<PeakTableBlock> {
+    let mut blocks = Vec::<PeakTableBlock>::new();
+    let mut current: Option<PeakTableBlock> = None;
+
+    for raw in text.lines() {
+        let line = raw.trim();
+        if line.starts_with("$$") || line.is_empty() {
+            continue;
+        }
+        if let Some(body) = line.strip_prefix("##") {
+            if body.to_ascii_uppercase().starts_with("END") {
+                if let Some(block) = current.take() {
+                    blocks.push(block);
+                }
+                break;
+            }
+            if let Some(block) = current.take() {
+                blocks.push(block);
+            }
+            let Some((key, value)) = body.split_once('=') else {
+                continue;
+            };
+            let normalized = normalize_key(key);
+            let value = strip_inline_comment(value).trim();
+            if let Some((kind, shape_raw, fields, packed)) = peak_table_header(&normalized, value) {
+                current = Some(PeakTableBlock {
+                    kind,
+                    shape_raw,
+                    fields,
+                    packed,
+                    lines: Vec::new(),
+                });
+            }
+        } else if let Some(block) = current.as_mut() {
+            block.lines.push(line.to_string());
+        }
+    }
+    if let Some(block) = current.take() {
+        blocks.push(block);
+    }
+    blocks
+}
+
+/// Recognise a PEAK TABLE / PEAK ASSIGNMENTS / DATA TABLE header line and return
+/// the structured shape parsed from its value (e.g. `(XY..XY)` -> `[X, Y]`, packed).
+fn peak_table_header(
+    normalized_key: &str,
+    value: &str,
+) -> Option<(PeakTableKind, String, Vec<PeakField>, bool)> {
+    let kind = match normalized_key {
+        "peak_table" | "peaktable" => PeakTableKind::Table,
+        "peak_assignments" | "peakassignments" => PeakTableKind::Assignments,
+        "data_table" => {
+            let upper = value.to_ascii_uppercase();
+            if !upper.contains("PEAK") {
+                return None;
+            }
+            if upper.contains("ASSIGN") {
+                PeakTableKind::Assignments
+            } else {
+                PeakTableKind::Table
+            }
+        }
+        _ => return None,
+    };
+    let (fields, packed) = parse_peak_shape(value)?;
+    Some((kind, value.to_string(), fields, packed))
+}
+
+/// Parse a JCAMP-DX peak-table shape token such as `(XY..XY)`, `(XYA)`, or
+/// `(XYWA)`. Returns the per-peak field order and whether peaks are packed
+/// (`..` syntax) into multiple peaks per line.
+fn parse_peak_shape(raw: &str) -> Option<(Vec<PeakField>, bool)> {
+    let trimmed = raw.trim();
+    let inner = if let Some(start) = trimmed.find('(') {
+        let after_open = &trimmed[start + 1..];
+        if let Some(end) = after_open.find(')') {
+            &after_open[..end]
+        } else {
+            after_open
+        }
+    } else {
+        trimmed
+    };
+    let upper = inner.to_ascii_uppercase();
+    let head = upper.split("..").next().unwrap_or("");
+    let packed = upper.contains("..");
+    let mut fields = Vec::new();
+    for ch in head.chars() {
+        if ch.is_whitespace() || ch == ',' {
+            continue;
+        }
+        match ch {
+            'X' => fields.push(PeakField::X),
+            'Y' => fields.push(PeakField::Y),
+            'W' => fields.push(PeakField::Width),
+            'M' => fields.push(PeakField::Multiplicity),
+            'A' => fields.push(PeakField::Assignment),
+            _ => return None,
+        }
+    }
+    if fields.is_empty() || !fields.contains(&PeakField::X) {
+        return None;
+    }
+    Some((fields, packed))
+}
+
+fn decode_peak_block(
+    block: &PeakTableBlock,
+    xfactor: f64,
+    yfactor: f64,
+    warnings: &mut Vec<String>,
+) -> Vec<Peak> {
+    let has_assignment = block.fields.contains(&PeakField::Assignment);
+    // Assignment text contains arbitrary characters; packing multiple peaks
+    // per line with an assignment field is ambiguous, so we treat it as one
+    // peak per line regardless of the `..` marker.
+    let one_per_line = has_assignment || !block.packed;
+    let mut peaks = Vec::new();
+    let mut malformed_lines = 0usize;
+
+    for line in &block.lines {
+        if one_per_line {
+            match decode_single_peak_line(line, &block.fields, xfactor, yfactor) {
+                Some(peak) => peaks.push(peak),
+                None => malformed_lines += 1,
+            }
+        } else {
+            let line_peaks = decode_packed_peak_line(line, &block.fields, xfactor, yfactor);
+            if line_peaks.is_empty() && line_has_numeric(line) {
+                malformed_lines += 1;
+            }
+            peaks.extend(line_peaks);
+        }
+    }
+
+    if malformed_lines > 0 {
+        warnings.push(format!(
+            "jcamp_peak_table_malformed_lines: {malformed_lines}"
+        ));
+    }
+    peaks
+}
+
+fn decode_single_peak_line(
+    line: &str,
+    fields: &[PeakField],
+    xfactor: f64,
+    yfactor: f64,
+) -> Option<Peak> {
+    let (assignment, remainder) = extract_assignment(line);
+    let numeric_tokens: Vec<f64> = remainder
+        .split(|ch: char| ch.is_whitespace() || matches!(ch, ',' | ';'))
+        .filter_map(|token| {
+            let trimmed = token.trim();
+            if trimmed.is_empty() {
+                None
+            } else {
+                parse_number(trimmed)
+            }
+        })
+        .collect();
+
+    let mut peak = Peak::default();
+    let mut have_x = false;
+    let mut numeric_iter = numeric_tokens.into_iter();
+    for field in fields {
+        match field {
+            PeakField::X => match numeric_iter.next() {
+                Some(value) => {
+                    peak.x = value * xfactor;
+                    have_x = true;
+                }
+                None => return None,
+            },
+            PeakField::Y => {
+                if let Some(value) = numeric_iter.next() {
+                    peak.y = Some(value * yfactor);
+                }
+            }
+            PeakField::Width => {
+                if let Some(value) = numeric_iter.next() {
+                    peak.width = Some(value * xfactor);
+                }
+            }
+            PeakField::Multiplicity => {
+                if let Some(value) = numeric_iter.next() {
+                    peak.multiplicity = Some(value);
+                }
+            }
+            PeakField::Assignment => {
+                peak.assignment = assignment.clone();
+            }
+        }
+    }
+    have_x.then_some(peak)
+}
+
+fn decode_packed_peak_line(
+    line: &str,
+    fields: &[PeakField],
+    xfactor: f64,
+    yfactor: f64,
+) -> Vec<Peak> {
+    let numerics: Vec<f64> = line
+        .split(|ch: char| ch.is_whitespace() || matches!(ch, ',' | ';' | '(' | ')'))
+        .filter_map(|token| {
+            let trimmed = token.trim();
+            if trimmed.is_empty() {
+                None
+            } else {
+                parse_number(trimmed)
+            }
+        })
+        .collect();
+    let group = fields.len();
+    if group == 0 {
+        return Vec::new();
+    }
+    let mut peaks = Vec::new();
+    for chunk in numerics.chunks_exact(group) {
+        let mut peak = Peak::default();
+        let mut have_x = false;
+        for (field, value) in fields.iter().zip(chunk.iter().copied()) {
+            match field {
+                PeakField::X => {
+                    peak.x = value * xfactor;
+                    have_x = true;
+                }
+                PeakField::Y => peak.y = Some(value * yfactor),
+                PeakField::Width => peak.width = Some(value * xfactor),
+                PeakField::Multiplicity => peak.multiplicity = Some(value),
+                PeakField::Assignment => {
+                    // Should never happen in packed mode (caller filters), but
+                    // keep the arm defensive so adding a new field cannot
+                    // silently drop data.
+                }
+            }
+        }
+        if have_x {
+            peaks.push(peak);
+        }
+    }
+    peaks
+}
+
+/// Extract the first JCAMP-DX assignment text enclosed in angle brackets and
+/// return `(assignment, remainder)` where the remainder is the original line
+/// with the matched `<...>` substring replaced by whitespace. JCAMP-DX 5.0
+/// states assignment text is delimited by `<` and `>` and contains no nested
+/// angle brackets, so we apply that rule literally and tolerate missing
+/// brackets by returning `None` for the assignment.
+fn extract_assignment(line: &str) -> (Option<String>, String) {
+    let bytes = line.as_bytes();
+    if let Some(open) = bytes.iter().position(|&b| b == b'<') {
+        if let Some(rel_close) = bytes[open + 1..].iter().position(|&b| b == b'>') {
+            let close = open + 1 + rel_close;
+            let assignment = line[open + 1..close].trim().to_string();
+            let mut remainder = String::with_capacity(line.len());
+            remainder.push_str(&line[..open]);
+            remainder.push(' ');
+            remainder.push_str(&line[close + 1..]);
+            let assignment = if assignment.is_empty() {
+                None
+            } else {
+                Some(assignment)
+            };
+            return (assignment, remainder);
+        }
+    }
+    (None, line.to_string())
+}
+
+fn line_has_numeric(line: &str) -> bool {
+    line.split(|ch: char| ch.is_whitespace() || matches!(ch, ',' | ';' | '(' | ')'))
+        .any(|token| parse_number(token.trim()).is_some())
 }
 
 fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
@@ -1086,17 +1547,215 @@ mod tests {
     }
 
     #[test]
-    fn rejects_peak_table_blocks() {
+    fn parses_packed_peak_table_xy_pairs_with_yfactor() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED PEAK TABLE
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##YFACTOR=0.5
+##NPOINTS=4
+##PEAK TABLE=(XY..XY)
+4000.0,2.0; 3500.0,4.0
+3000.0,6.0
+2500.0,8.0
+##END=
+",
+        )
+        .expect("parse peak table");
+
+        assert_eq!(parsed.axis, vec![4000.0, 3500.0, 3000.0, 2500.0]);
+        assert_eq!(parsed.signals.len(), 1);
+        assert_eq!(parsed.signals[0].name, "peak_intensity");
+        assert_eq!(parsed.signals[0].values, vec![1.0, 2.0, 3.0, 4.0]);
+        assert_eq!(parsed.axis_unit, "cm-1");
+        assert_eq!(parsed.axis_kind, AxisKind::Wavenumber);
+        assert_eq!(parsed.signals[0].signal_type, SignalType::Absorbance);
+
+        let table_meta = parsed
+            .metadata
+            .get("jcamp_peak_table")
+            .expect("jcamp_peak_table metadata");
+        assert_eq!(table_meta["kind"], json!("peak_table"));
+        assert_eq!(table_meta["packed"], json!(true));
+        assert_eq!(table_meta["fields"], json!(["x", "y"]));
+        assert_eq!(table_meta["peak_count"], json!(4));
+        let peaks = table_meta["peaks"].as_array().expect("peaks array");
+        assert_eq!(peaks.len(), 4);
+        assert_eq!(peaks[0]["x"], json!(4000.0));
+        assert_eq!(peaks[0]["y"], json!(1.0));
+    }
+
+    #[test]
+    fn parses_data_table_peak_table_shape_with_suffix() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED PEAK TABLE
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##NPOINTS=2
+##DATA TABLE=(XY..XY), PEAK TABLE
+3300,0.4; 1700,0.9
+##END=
+",
+        )
+        .expect("parse data table peak header");
+
+        assert_eq!(parsed.axis, vec![3300.0, 1700.0]);
+        assert_eq!(parsed.signals[0].values, vec![0.4, 0.9]);
+        let table_meta = parsed
+            .metadata
+            .get("jcamp_peak_table")
+            .expect("jcamp_peak_table metadata");
+        assert_eq!(table_meta["kind"], json!("peak_table"));
+        assert_eq!(table_meta["fields"], json!(["x", "y"]));
+        assert_eq!(table_meta["packed"], json!(true));
+    }
+
+    #[test]
+    fn parses_peak_assignments_with_angle_bracket_text() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED PEAK ASSIGNMENTS
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##NPOINTS=3
+##PEAK ASSIGNMENTS=(XYA)
+3300, 0.42 <O-H stretch, broad>
+2950, 0.18 <C-H stretch>
+1650, 0.85 <C=C stretch>
+##END=
+",
+        )
+        .expect("parse peak assignments");
+
+        assert_eq!(parsed.axis, vec![3300.0, 2950.0, 1650.0]);
+        assert_eq!(parsed.signals[0].values, vec![0.42, 0.18, 0.85]);
+
+        let table_meta = parsed
+            .metadata
+            .get("jcamp_peak_table")
+            .expect("jcamp_peak_table metadata");
+        assert_eq!(table_meta["kind"], json!("peak_assignments"));
+        assert_eq!(table_meta["packed"], json!(false));
+        assert_eq!(table_meta["fields"], json!(["x", "y", "assignment"]));
+        let peaks = table_meta["peaks"].as_array().expect("peaks array");
+        assert_eq!(peaks[0]["assignment"], json!("O-H stretch, broad"));
+        assert_eq!(peaks[1]["assignment"], json!("C-H stretch"));
+        assert_eq!(peaks[2]["assignment"], json!("C=C stretch"));
+    }
+
+    #[test]
+    fn parses_peak_assignments_xywa_with_width_and_multiplicity_uses_xfactor() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=NMR PEAK ASSIGNMENTS
+##XUNITS=HZ
+##YUNITS=ARBITRARY
+##XFACTOR=2.0
+##YFACTOR=10.0
+##NPOINTS=2
+##PEAK ASSIGNMENTS=(XYWA)
+100.0 5.0 0.5 <peak alpha>
+200.0 2.5 1.0 <peak beta>
+##END=
+",
+        )
+        .expect("parse XYWA assignments");
+
+        assert_eq!(parsed.axis, vec![200.0, 400.0]);
+        assert_eq!(parsed.signals[0].values, vec![50.0, 25.0]);
+
+        let table_meta = parsed
+            .metadata
+            .get("jcamp_peak_table")
+            .expect("jcamp_peak_table metadata");
+        assert_eq!(
+            table_meta["fields"],
+            json!(["x", "y", "width", "assignment"])
+        );
+        let peaks = table_meta["peaks"].as_array().expect("peaks array");
+        assert_eq!(peaks[0]["width"], json!(1.0));
+        assert_eq!(peaks[1]["width"], json!(2.0));
+        assert_eq!(peaks[0]["assignment"], json!("peak alpha"));
+    }
+
+    #[test]
+    fn parses_peak_table_xyw_packed_triples() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED PEAK TABLE
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##NPOINTS=2
+##PEAK TABLE=(XYW..XYW)
+3300 0.4 25; 1700 0.9 12
+##END=
+",
+        )
+        .expect("parse XYW packed");
+
+        assert_eq!(parsed.axis, vec![3300.0, 1700.0]);
+        let table_meta = parsed.metadata.get("jcamp_peak_table").expect("metadata");
+        assert_eq!(table_meta["fields"], json!(["x", "y", "width"]));
+        let peaks = table_meta["peaks"].as_array().expect("peaks");
+        assert_eq!(peaks[0]["width"], json!(25.0));
+        assert_eq!(peaks[1]["width"], json!(12.0));
+    }
+
+    #[test]
+    fn prefers_peak_assignments_when_both_blocks_are_present() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED PEAK ASSIGNMENTS
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##NPOINTS=2
+##PEAK TABLE=(XY..XY)
+3300, 0.40; 1700, 0.90
+##PEAK ASSIGNMENTS=(XYA)
+3300, 0.42 <O-H stretch>
+1700, 0.91 <C=C stretch>
+##END=
+",
+        )
+        .expect("parse with both tables");
+
+        assert_eq!(parsed.signals[0].values, vec![0.42, 0.91]);
+        let table_meta = parsed.metadata.get("jcamp_peak_table").expect("metadata");
+        assert_eq!(table_meta["kind"], json!("peak_assignments"));
+        let dropped = parsed
+            .metadata
+            .get("jcamp_peak_table_dropped")
+            .expect("dropped metadata")
+            .as_array()
+            .expect("array");
+        assert_eq!(dropped.len(), 1);
+        assert_eq!(dropped[0]["kind"], json!("peak_table"));
+        assert!(parsed
+            .warnings
+            .iter()
+            .any(|warning| warning.contains("jcamp_peak_table_multiple_blocks")));
+    }
+
+    #[test]
+    fn rejects_peak_table_with_count_mismatch() {
         let message = invalid_record_message(parse_jcamp_text(
             "##JCAMP-DX=5.00
-##DATA TYPE=INFRARED SPECTRUM
+##DATA TYPE=INFRARED PEAK TABLE
+##XUNITS=1/CM
+##YUNITS=ABSORBANCE
+##NPOINTS=4
 ##PEAK TABLE=(XY..XY)
-4000, 1.0
+4000.0,1.0
 ##END=
 ",
         ));
 
-        assert!(message.contains("JCAMP PEAK TABLE blocks are not supported"));
+        assert!(
+            message.contains("peak_table NPOINTS mismatch"),
+            "unexpected message: {message}"
+        );
     }
 
     #[test]

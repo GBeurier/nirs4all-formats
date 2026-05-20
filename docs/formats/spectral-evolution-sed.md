@@ -15,11 +15,16 @@ Implemented:
 - one normalized signal per data column after `Wvl`;
 - reflectance columns typed as `reflectance`;
 - DN/reference/target columns typed as `raw_counts`;
+- signal units inferred from observed column labels: `DN` for normalized DN
+  columns, `%` for `Reflect. %`, and `1` for `Reflect. [1.0]`;
 - explicit warning and quality flag when the file contains only DN channels and
   no reflectance signal.
 - parseable GPS latitude/longitude/altitude, acquisition date/time, GPS time
   and satellite counts promoted to canonical top-level metadata while the raw
-  header remains preserved under `vendor`.
+  header remains preserved under `vendor`;
+- instrument/model/serial, measurement mode, radiometric calibration, declared
+  point count, wavelength range, source signal labels and source signal units
+  promoted to top-level metadata.
 
 ## Fixture Coverage
 
@@ -37,7 +42,8 @@ workflow.
 ## Known Gaps
 
 - SR-3500 / SR-6500 firmware-specific headers remain under-covered.
-- Unit fields beyond signal units are still preserved as vendor metadata.
+- Signal-unit inference is limited to column labels observed in committed
+  fixtures.
 - The reader does not reconstruct reflectance from DN-only acquisitions.
 - Automated conformance reports against `spectrolab` / `specdal` are still
   pending in the reverse-engineering lab.
