@@ -14,6 +14,10 @@ const CASES: &[(&str, &str)] = &[
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("jcamp_nist_water", "samples/jcamp_dx/nist_water_ir.jdx"),
+    ("galactic_spc_benzene", "samples/galactic_spc/BENZENE.SPC"),
+    ("galactic_spc_s_xy", "samples/galactic_spc/s_xy.spc"),
+    ("galactic_spc_nir_multi", "samples/galactic_spc/nir.spc"),
+    ("galactic_spc_m_xyxy", "samples/galactic_spc/m_xyxy.spc"),
     (
         "spectral_evolution_sed",
         "samples/spectral_evolution/1566060_09506_working.sed",

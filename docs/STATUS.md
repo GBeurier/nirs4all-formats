@@ -22,6 +22,9 @@ Experimental native readers:
 - Spectral Evolution SED (`.sed`);
 - SVC/GER SIG (`.sig`).
 - ASD FieldSpec (`.asd` and ASD binaries with numeric extensions), revisions 1/6/7/8.
+- Thermo / Galactic GRAMS SPC (`.spc`, `.SPC`), new little-endian generated-X,
+  explicit-X, multi common-X and `-XYXY` directory layouts; old little-endian
+  support is limited.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -54,6 +57,7 @@ python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]"
 python -m pytest tools/reverse-lab/tests bindings/python/tests
 R CMD INSTALL bindings/r/nirs4allio
 Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
+python -m sphinx -b html docs docs/_build/html
 ```
 
 ## Next Agent Prompt
@@ -63,8 +67,8 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
-2. continue the binary/open-reader-backed batch with Galactic SPC;
-3. add direct external reference-reader conformance for JCAMP/SED/SIG where practical;
+1. continue the binary/open-reader-backed batch with Bruker OPUS native;
+2. harden JCAMP beyond plain AFFN: DIF/DUP, SQZ/PAC and NTUPLES;
+3. add direct external reference-reader conformance for SPC/JCAMP/SED/SIG where practical;
 4. replace Python/R subprocess transport with native PyO3/C ABI paths;
 5. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
