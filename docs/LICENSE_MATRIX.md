@@ -6,6 +6,10 @@ tracked per format under `samples/`.
 ## Runtime Rule
 
 The Rust crates, Python package, R package and reverse-lab code are MIT.
+Runtime parser dependencies must remain permissive. Current container helpers
+include pure-Rust crates such as `calamine`, `hdf5-reader`, `matfile` and
+`cfb`; the added `cfb` OLE2 reader is MIT, with immediate transitive
+dependencies under MIT / Apache-2.0-compatible terms.
 
 ## Reference Reader Rule
 

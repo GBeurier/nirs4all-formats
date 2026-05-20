@@ -276,6 +276,77 @@ fn reads_buchi_nircal_project_spectra() {
 }
 
 #[test]
+fn reads_jasco_jws_single_channel_files() {
+    let records = open_path(workspace_file("samples/jasco/243.jws")).expect("open jws");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "jasco-jws");
+    assert_eq!(record.metadata["channel_count"].as_u64(), Some(1));
+    assert_eq!(record.metadata["point_count"].as_u64(), Some(7_729));
+    let signal = record.signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 7_729);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.axis.order, AxisOrder::Ascending);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.axis.values[0] - 349.0525166555562).abs() < 0.000001);
+    assert!((signal.axis.values[7_728] - 7800.6487838216835).abs() < 0.000001);
+    assert!((signal.values[0] - 38.420169830322266).abs() < 0.000001);
+    assert!((signal.values[7_728] - 35.47404479980469).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 316_675.31128692627).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/jasco/sample_fluorescence.jws")).expect("open jws");
+    assert_eq!(records.len(), 1);
+    let signal = records[0].signals.get("signal").expect("signal");
+    assert_eq!(signal.axis.values.len(), 301);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.order, AxisOrder::Ascending);
+    assert!((signal.axis.values[0] - 400.0).abs() < 0.000001);
+    assert!((signal.axis.values[300] - 700.0).abs() < 0.000001);
+    assert!((signal.values[0] - 18.799175262451172).abs() < 0.000001);
+    assert!((signal.values[300] - 5.624600887298584).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 75_506.5075211525).abs() < 0.000001);
+}
+
+#[test]
+fn reads_jasco_jws_multichannel_file() {
+    let records =
+        open_path(workspace_file("samples/jasco/sample_CD_HT_Abs.jws")).expect("open jws");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "jasco-jws");
+    assert_eq!(record.metadata["channel_count"].as_u64(), Some(3));
+    assert_eq!(record.metadata["point_count"].as_u64(), Some(1_501));
+    assert_eq!(record.signal_type, SignalType::Unknown);
+
+    let channel_1 = record.signals.get("channel_1").expect("channel_1");
+    assert_eq!(channel_1.axis.values.len(), 1_501);
+    assert_eq!(channel_1.axis.unit, "nm");
+    assert_eq!(channel_1.axis.kind, AxisKind::Wavelength);
+    assert_eq!(channel_1.axis.order, AxisOrder::Descending);
+    assert_eq!(channel_1.signal_type, SignalType::Unknown);
+    assert!((channel_1.axis.values[0] - 350.0).abs() < 0.000001);
+    assert!((channel_1.axis.values[1_500] - 200.0).abs() < 0.000001);
+    assert!((channel_1.values[0] - 0.3416369557380676).abs() < 0.000001);
+    assert!((channel_1.values[1_500] - 6.220218658447266).abs() < 0.000001);
+    assert!((channel_1.values.iter().sum::<f64>() - 3706.048405816895).abs() < 0.000001);
+
+    let channel_2 = record.signals.get("channel_2").expect("channel_2");
+    assert!((channel_2.values[0] - 250.94847106933594).abs() < 0.000001);
+    assert!((channel_2.values[1_500] - 364.5225830078125).abs() < 0.000001);
+    assert!((channel_2.values.iter().sum::<f64>() - 401_403.0902252197).abs() < 0.000001);
+
+    let channel_3 = record.signals.get("channel_3").expect("channel_3");
+    assert!((channel_3.values[0] - 0.7128385901451111).abs() < 0.000001);
+    assert!((channel_3.values[1_500] - 1.899193286895752).abs() < 0.000001);
+    assert!((channel_3.values.iter().sum::<f64>() - 1356.2173843979836).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");

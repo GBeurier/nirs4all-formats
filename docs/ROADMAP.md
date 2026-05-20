@@ -63,6 +63,9 @@ Deliverables:
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`
   spectra/wavenumber sections, with non-zero reference properties still pending;
+- JASCO JWS reader; experimental for OLE2 `DataInfo` + `Y-Data`
+  single-channel and multi-channel fixtures, with semantic channel labels still
+  pending;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -161,8 +164,8 @@ Add one family at a time:
 - MATLAB struct/DSO and `.RData` academic dataset mappers after the simple
   MAT v5/v7.3 matrix path;
 - remaining Nicolet OMNIC `.srs/.srsx` variants, BUCHI NIRCal property targets
-  and JASCO `.jws`, each validated against an open reference reader when
-  possible;
+  and JASCO `.jws` semantic channel labels, each validated against an open
+  reference reader when possible;
 - Excel multi-sheet lab templates, Renishaw WDF and Horiba / JobinYvon
   LabSpec XML/text for lab-transfer and adjacent spectroscopy workflows;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;

@@ -1,0 +1,39 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jasco-jws",
+      "metadata_keys": [
+        "channel_count",
+        "point_count"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::jasco_jws",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 301,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "name": "signal",
+          "role": "signal",
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 18.799175,
+          "value_last": 5.624601,
+          "value_sum": 75506.507521,
+          "values_len": 301
+        }
+      ],
+      "source_sha256": "0e8b0c47d189820189ec4499d203aef702ba3bb6bc125ed27a8f480e7bc65b68",
+      "target_keys": [],
+      "warnings": [
+        "jasco_jws_reverse_engineered_data_info"
+      ]
+    }
+  ]
+}

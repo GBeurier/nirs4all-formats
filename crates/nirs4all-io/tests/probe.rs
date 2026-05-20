@@ -175,6 +175,14 @@ fn probes_buchi_nircal_files() {
         .any(|probe| probe.format == "buchi-nircal" && probe.confidence == Confidence::Definite));
 }
 
+#[test]
+fn probes_jasco_jws_files() {
+    let probes = probe_path(workspace_file("samples/jasco/243.jws")).expect("probe jws");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "jasco-jws" && probe.confidence == Confidence::Likely));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
