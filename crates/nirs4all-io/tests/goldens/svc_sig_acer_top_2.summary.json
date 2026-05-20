@@ -4,6 +4,20 @@
     {
       "format": "svc-ger-sig",
       "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
+        "gps_end_latitude",
+        "gps_end_longitude",
+        "gps_end_time",
+        "gps_latitude",
+        "gps_longitude",
+        "gps_start_latitude",
+        "gps_start_longitude",
+        "gps_start_time",
+        "gps_time",
+        "source_signal_units",
         "vendor"
       ],
       "quality_flags": [],

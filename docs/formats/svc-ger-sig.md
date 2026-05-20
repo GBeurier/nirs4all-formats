@@ -16,8 +16,13 @@ Implemented:
 - normalized wavelength axis in `nm`;
 - three signals per record: `reference`, `target` and `reflectance`;
 - `%` unit on the reflectance channel;
-- `matched_overlap_corrected` quality flag for matched-overlap-corrected
-  exports;
+- canonical `acquisition_start_*` / `acquisition_end_*` metadata from
+  firmware `time` fields;
+- canonical GPS latitude, longitude and GPS time metadata from SVC
+  `ddmm.mmmmN` / `dddmm.mmmmW` fields when present;
+- `source_signal_units` metadata from the vendor `units` header;
+- `matched_overlap_corrected`, `overlap_removed` and `resampled_export`
+  quality flags when the header or filename exposes those processing steps;
 - `declared_bad_fixture` quality flag and warning for intentionally bad
   fixture filenames.
 
@@ -31,14 +36,12 @@ Implemented:
 | `BNL13001_000_laptop.sig`, `BNL13002_000_laptop.sig` | laptop firmware | Golden-backed; both laptop fixtures have semantic assertions for reference/target/reflectance and no quality flags |
 | `BNL13001_000_moc.sig` | matched overlap corrected | Golden-backed with semantic test for overlap quality flag |
 | `serbinsh_gr070214_003.sig` | GER 3700 PDA | Golden and real-sample tests |
-| `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | HR-1024i field resampled export | Golden and real-sample tests |
+| `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | HR-1024i field resampled export | Golden and real-sample tests for resampling, overlap removal and GPS metadata |
 
 ## Known Gaps
 
-- Firmware-specific GPS/date/unit fields are preserved as raw vendor metadata
-  but are not yet promoted into canonical metadata.
 - HR-1024i firmware >=3.0 variants need more independent samples.
-- Resampled exports are not distinguished from raw acquisitions beyond the
-  vendor comment text.
+- Unit parsing still identifies the reference/target channels as radiance by
+  label; physical radiance units are not provided by the observed SIG headers.
 - Conformance reports against `spectrolab` / `specdal` still need to be wired
   into the reverse-engineering lab.

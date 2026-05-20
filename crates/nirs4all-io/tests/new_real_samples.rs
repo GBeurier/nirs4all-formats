@@ -121,6 +121,34 @@ fn reads_additional_bruker_opus_sed_and_sig_samples() {
         assert_close(reflectance.axis.values[axis_len - 1], last_axis);
         assert_close(reflectance.values[0], first_reflectance);
     }
+
+    let beo = open_path(workspace_file(
+        "samples/svc_ger/serbinsh_BEO_CakeEater_Pheno_026_resamp.sig",
+    ))
+    .expect("open BEO SIG");
+    assert!(beo[0]
+        .quality_flags
+        .contains(&"matched_overlap_corrected".to_string()));
+    assert!(beo[0]
+        .quality_flags
+        .contains(&"overlap_removed".to_string()));
+    assert!(beo[0]
+        .quality_flags
+        .contains(&"resampled_export".to_string()));
+    assert_eq!(
+        beo[0].metadata["acquisition_start_date"].as_str(),
+        Some("2014-07-11")
+    );
+    assert_eq!(
+        beo[0].metadata["acquisition_start_time"].as_str(),
+        Some("21:41:35")
+    );
+    assert_eq!(beo[0].metadata["gps_time"].as_str(), Some("01:23:37"));
+    assert_close(beo[0].metadata["gps_latitude"].as_f64().unwrap(), 71.27526);
+    assert_close(
+        beo[0].metadata["gps_longitude"].as_f64().unwrap(),
+        -156.64116,
+    );
 }
 
 #[test]

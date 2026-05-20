@@ -2228,6 +2228,9 @@ fn reads_svc_sig_with_overlap_quality_flag() {
     assert!(records[0]
         .quality_flags
         .contains(&"matched_overlap_corrected".to_string()));
+    assert!(records[0]
+        .quality_flags
+        .contains(&"overlap_removed".to_string()));
 }
 
 #[test]
@@ -2242,6 +2245,20 @@ fn reads_svc_sig_laptop_firmware_variant() {
     for name in ["reference", "target", "reflectance"] {
         assert!(records[0].signals.contains_key(name), "missing {name}");
     }
+    assert_svc_signal_units(&records[0]);
+    assert_eq!(
+        records[0].metadata["acquisition_start_date"].as_str(),
+        Some("2017-07-29")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_start_time"].as_str(),
+        Some("01:54:23")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_end_time"].as_str(),
+        Some("01:55:32")
+    );
+    assert!(!records[0].metadata.contains_key("gps_latitude"));
 
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 1_024);
@@ -2288,6 +2305,25 @@ fn reads_svc_sig_clean_acer_pda_variant() {
     assert_eq!(records[0].provenance.format, "svc-ger-sig");
     assert!(records[0].quality_flags.is_empty());
     assert!(records[0].provenance.warnings.is_empty());
+    assert_svc_signal_units(&records[0]);
+    assert_eq!(
+        records[0].metadata["acquisition_start_date"].as_str(),
+        Some("2015-08-06")
+    );
+    assert_eq!(
+        records[0].metadata["acquisition_end_time"].as_str(),
+        Some("09:37:15")
+    );
+    assert_eq!(records[0].metadata["gps_time"].as_str(), Some("14:32:23"));
+    assert_eq!(
+        records[0].metadata["gps_end_time"].as_str(),
+        Some("14:37:08")
+    );
+    assert!((records[0].metadata["gps_latitude"].as_f64().unwrap() - 46.679205).abs() < 0.000001);
+    assert!(
+        (records[0].metadata["gps_longitude"].as_f64().unwrap() + 92.51937833333333).abs()
+            < 0.000001
+    );
     let reflectance = records[0].signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.axis.values.len(), 1_024);
     assert_eq!(reflectance.axis.unit, "nm");
@@ -2400,6 +2436,17 @@ fn assert_svc_sig_triplet_record(
     }
     let reflectance = record.signals.get("reflectance").expect("reflectance");
     assert_eq!(reflectance.unit.as_deref(), Some("%"));
+    assert_svc_signal_units(record);
+}
+
+fn assert_svc_signal_units(record: &nirs4all_io::SpectralRecord) {
+    let units = record.metadata["source_signal_units"]
+        .as_array()
+        .expect("source signal units");
+    assert_eq!(units.len(), 3);
+    assert_eq!(units[0].as_str(), Some("Radiance"));
+    assert_eq!(units[1].as_str(), Some("Radiance"));
+    assert_eq!(units[2].as_str(), Some("%"));
 }
 
 #[test]
