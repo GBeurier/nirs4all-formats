@@ -1,0 +1,57 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "renishaw-wdf",
+      "metadata_keys": [
+        "accumulation_count",
+        "application_name",
+        "application_version",
+        "capacity",
+        "container",
+        "laser_wavenumber",
+        "measurement_type",
+        "other_data_count",
+        "point_count",
+        "scan_type",
+        "spectral_unit_code",
+        "spectrum_count",
+        "title",
+        "username",
+        "x_data_type",
+        "x_size",
+        "x_unit_code",
+        "y_data_type",
+        "y_size",
+        "y_unit_code"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::renishaw_wdf",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 328.980774,
+          "axis_kind": "wavelength",
+          "axis_last": 326.016327,
+          "axis_len": 36,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "name": "raw_counts",
+          "role": "raw_counts",
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 68.102852,
+          "value_last": 65.366173,
+          "value_sum": 2606.160828,
+          "values_len": 36
+        }
+      ],
+      "source_sha256": "9a7a8489b7e5360bcc76df6e74c8a3f88e40ef8fdbee62db7b18490d4ca76d73",
+      "target_keys": [],
+      "warnings": [
+        "renishaw_wdf_single_spectrum_subset"
+      ]
+    }
+  ]
+}

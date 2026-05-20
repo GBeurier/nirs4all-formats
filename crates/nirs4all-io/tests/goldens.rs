@@ -99,6 +99,11 @@ const CASES: &[(&str, &str)] = &[
         "horiba_labspec_gd2o3_aln_map",
         "samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt",
     ),
+    (
+        "renishaw_wdf_test_spectrum",
+        "samples/raman_renishaw/renishaw_test_spectrum.wdf",
+    ),
+    ("renishaw_wdf_wire_sp", "samples/raman_renishaw/wire_sp.wdf"),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

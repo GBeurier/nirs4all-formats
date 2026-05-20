@@ -29,6 +29,7 @@ formats/netcdf
 formats/nicolet-omnic
 formats/ocean-optics
 formats/perkin-elmer
+formats/renishaw-wdf
 formats/row-spectral-table
 formats/siware-api
 formats/spectral-matrix

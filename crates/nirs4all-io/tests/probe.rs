@@ -212,6 +212,17 @@ fn probes_horiba_labspec_files() {
     }));
 }
 
+#[test]
+fn probes_renishaw_wdf_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_spectrum.wdf",
+    ))
+    .expect("probe wdf");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "renishaw-wdf" && probe.confidence == Confidence::Definite));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

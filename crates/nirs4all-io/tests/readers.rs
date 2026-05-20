@@ -551,6 +551,63 @@ fn reads_horiba_labspec_text_exports() {
 }
 
 #[test]
+fn reads_renishaw_wdf_single_spectra() {
+    let records = open_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_spectrum.wdf",
+    ))
+    .expect("open wdf");
+
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "renishaw-wdf");
+    assert_eq!(record.metadata["application_name"].as_str(), Some("WiRE"));
+    assert_eq!(
+        record.metadata["title"].as_str(),
+        Some("Single scan measurement 7")
+    );
+    assert!(record
+        .provenance
+        .warnings
+        .contains(&"renishaw_wdf_single_spectrum_subset".to_string()));
+    let signal = record.signals.get("raw_counts").expect("raw counts");
+    assert_eq!(signal.axis.values.len(), 36);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.order, AxisOrder::Descending);
+    assert_eq!(signal.signal_type, SignalType::RawCounts);
+    assert_eq!(signal.unit.as_deref(), Some("counts"));
+    assert!((signal.axis.values[0] - 328.98077392578125).abs() < 0.000001);
+    assert!((signal.axis.values[35] - 326.0163269042969).abs() < 0.000001);
+    assert!((signal.values[0] - 68.10285186767578).abs() < 0.000001);
+    assert!((signal.values[35] - 65.36617279052734).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 2606.160828).abs() < 0.000001);
+
+    let records =
+        open_path(workspace_file("samples/raman_renishaw/wire_sp.wdf")).expect("open wire wdf");
+    let signal = records[0].signals.get("raw_counts").expect("raw counts");
+    assert_eq!(signal.axis.values.len(), 1015);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.axis.order, AxisOrder::Descending);
+    assert!((signal.axis.values[0] - 2787.514404296875).abs() < 0.000001);
+    assert!((signal.axis.values[1014] - 1226.2752685546875).abs() < 0.000001);
+    assert!((signal.values[0] - 47.092708587646484).abs() < 0.000001);
+    assert!((signal.values[1014] - 21.815458297729492).abs() < 0.000001);
+    assert!((signal.values.iter().sum::<f64>() - 107421.227566).abs() < 0.000001);
+}
+
+#[test]
+fn rejects_renishaw_wdf_non_single_modes_for_now() {
+    for relative in [
+        "samples/raman_renishaw/renishaw_test_undefined.wdf",
+        "samples/raman_renishaw/interrupted_acquisition.wdf",
+    ] {
+        let err = open_path(workspace_file(relative)).expect_err("non-single WDF should fail");
+        assert!(err.to_string().contains("single-spectrum"));
+    }
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");
