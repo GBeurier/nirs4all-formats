@@ -252,6 +252,30 @@ fn reads_perkin_elmer_sp_single_spectrum() {
 }
 
 #[test]
+fn reads_buchi_nircal_project_spectra() {
+    let records = open_path(workspace_file(
+        "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
+    ))
+    .expect("open nircal");
+
+    assert_eq!(records.len(), 20);
+    assert_eq!(records[0].provenance.format, "buchi-nircal");
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("105/78G"));
+    assert_eq!(records[19].metadata["sample_id"].as_str(), Some("105/59"));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 1_501);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.order, AxisOrder::Ascending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 4000.0).abs() < 0.000001);
+    assert!((absorbance.axis.values[1_500] - 10000.0).abs() < 0.000001);
+    assert!((absorbance.values[0] - 0.1812854070008529).abs() < 0.000001);
+    assert!((absorbance.values[1_500] - 0.667603536333019).abs() < 0.000001);
+    assert!((absorbance.values.iter().sum::<f64>() - 787.4193555920597).abs() < 0.000001);
+}
+
+#[test]
 fn reads_avantes_wave_table() {
     let records = open_path(workspace_file("samples/avantes/avantes_export.ttt"))
         .expect("open avantes table");
