@@ -13,7 +13,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Avantes AvaSoft 6/7 binaire | Avantes | `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF` | legacy 6/7; `.IRR` present est ASCII | partiel | lightr |
 | Avantes AvaSoft 8 binaire | Avantes | `.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8` | AVS8 `.Raw8/.IRR8` fixture-backed | partiel | lightr, manuel AvaSoft |
 | Avantes ASCII | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | wave-table mono/multi-colonnes, irradiance deux-colonnes, AvaSoft 8 text | fait | pandas, read.table |
-| Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS | fait | pandas, read.table |
+| Bruker OPUS DPT | Bruker | `.dpt` | export ASCII OPUS synthetique + RS-1 `lightr` reel | fait | pandas, read.table, lightr |
 | Bruker OPUS natif | Bruker | `.0`, `.1`, `.001`, `.0000`, sans extension fixe | corpus OPUS 7/8 complet golden-backed + tests semantiques cross-reader (4 lecteurs) + Bruker MPA AfSIS soils; OPUS 5/6 manquant | partiel | opusreader2, hyperSpec.utils, brukeropusreader, brukeropus, opusFC, SpectroChemPy |
 | Bruker Tango / MPA / Matrix | Bruker | OPUS natif | meme famille OPUS | partiel | opusreader2, SpectroChemPy |
 | ENVI Spectral Library | L3Harris / ENVI | `.sli` + `.hdr` | BSQ float32/float64; USGS splib06/07 vendeur reels (AVIRIS95 grid); `.slb` non fixture | fait | spectral, RStoolbox, pysptools |
@@ -28,7 +28,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | Spectral Evolution / PSR | Spectral Evolution | `.sed` | PSR DN brett + PSR-3500 grape leaf reels; DN-only semantic flag tested | partiel | spectrolab, specdal |
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | sortie albedo synthetique uniquement | partiel | parseur texte |
 | IDL / ENVI texte | IDL / ENVI | `.txt` | export axe-first | fait | parseur texte |
-| USGS SPECPR / PRISM | USGS | `SPECPR`, `.asc`, `.txt` | ASCII `.asc` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
+| USGS SPECPR / PRISM / ECOSTRESS text | USGS / JHU / ECOSTRESS | `SPECPR`, `.asc`, `.txt`, `.spectrum.txt` | ASCII `.asc` + ECOSTRESS/ASTER `.spectrum.txt` + AREF single-column; binaire manquant | partiel | convertisseur USGS |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc`, `.SPC` | corpus new LSB golden elargi + tests semantiques; old LSB partiel; BE manquant | partiel | spc-spectra, rohanisaac/spc, specio, SpectroChemPy, xylib, spc-parser |
 | Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs`, `.srsx` | spa/spg corpus elargi + `.srs` `tg_gc`, `rapid_scan_raw`, `rapid_scan_reprocessed`; srsx manquant | partiel | SpectroChemPy, spa-on-python |
 | Perkin Elmer Spectrum / IR | PerkinElmer | `.sp`, `.fsm` | `.sp` PEPE mono golden-backed; `.fsm` imaging refuse/out of scope | partiel | specio |
@@ -70,7 +70,7 @@ passer le format a `fait`.
 
 | Nom | Status nirs4allio | Note / manque |
 |---|---|---|
-| Excel spectral | partiel | `.xlsx` synthetique/multi-feuilles/reels UvA et `.xlsm` OOXML macro-compatible sont golden-backed. Restent `.xls` legacy OLE, un vrai `.xlsm` avec macros si besoin de metadata VBA, plus de fixtures multi-feuilles reelles et les cas ou Excel convertit les longueurs d'onde en dates. |
+| Excel spectral | partiel | `.xlsx` synthetique/multi-feuilles/reels UvA et `.xlsm` OOXML macro-compatible sont golden-backed; workbooks metadata-only AuroraNIR/Foss XDS refuses explicitement. Restent `.xls` legacy OLE, un vrai `.xlsm` avec macros si besoin de metadata VBA, plus de fixtures multi-feuilles reelles et les cas ou Excel convertit les longueurs d'onde en dates. |
 | ASD FieldSpec | partiel | Revisions 1/6/7/8 primary spectra couvertes; restent v3/v4/v5 eventuelles, blocs internes secondary/dependent/reference/calibration, audit/signatures et compagnons calibration `.ILL/.REF/.RAW` separes. |
 | ASD calibration | bloqué | Obtenir un jeu redistribuable `.asd` + `.ILL/.REF/.RAW`; les samples `.asd` actuels ne contiennent pas les compagnons calibration, et le `.REF` present dans `samples/avantes/` est Avantes, pas ASD. |
 | Avantes AvaSoft 6/7 binaire | partiel | Ajouter fixtures `.ABS` et autres modes binaires legacy puis comparaison `lightr`; le `.IRR` present est un export ASCII couvert par Avantes ASCII, pas une preuve du binaire legacy. |
@@ -87,7 +87,7 @@ passer le format a `fait`.
 | SVC / GER SIG | partiel | Les 15 fixtures committes sont golden-backed: SVC laptop, SVC PDA Acer clean, matched-overlap-corrected, deux BAD declares, GER 3700 PDA et BEO HR-1024i field. Restent les firmware HR-1024i >=3.0, la promotion GPS/date/unites et les comparaisons automatisees `spectrolab`/`specdal`. |
 | Spectral Evolution / PSR | partiel | PSR DN brett + PSR-3500 grape leaf reels committes; le fichier DN-only broken-but-valid est teste comme deux signaux raw avec `sed_missing_reflectance_signal` / `missing_reflectance_signal`. Restent SR-3500 / SR-6500 firmware specifics, promotion GPS/date/unites et conformance `spectrolab`/`specdal`. |
 | MODTRAN albedo | partiel | Le `.dat` synthetique valide l'axe-first; il manque une sortie MODTRAN redistribuable sous licence claire. |
-| USGS SPECPR / PRISM | partiel | ASCII `.asc` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
+| USGS SPECPR / PRISM / ECOSTRESS text | partiel | ASCII `.asc`, ECOSTRESS/ASTER `.spectrum.txt` et AREF single-column sont couverts; restent le binaire SPECPR et les axes vrais pour dumps AREF sans sidecar. |
 | Thermo / Galactic GRAMS SPC | partiel | Golden coverage elargie au corpus IR/Raman/UV-vis/NIR/NMR-FID ouvert, avec tests semantiques directs pour multi-subfile generated-X, directory-backed `TXYXYS`, old ordered-Z limite et NMR/FID adjacent. Restent new big-endian `0x4C`, vieux headers/logs complets et decision de scope finale pour NMR/FID. |
 | Thermo Nicolet OMNIC | partiel | SPA/SPG/SRS TGA-GC sont verrouilles par goldens/tests semantiques sur le corpus committe, y compris matrice 2D, offsets et metadata `series_y_*`; les trois `.srs` locaux SpectroChemPy couvrent `tg_gc`, `rapid_scan_raw` et `rapid_scan_reprocessed`. Reste `.srsx` et davantage de variantes high-speed. |
 | Perkin Elmer Spectrum / IR | partiel | Le `.sp` PEPE mono-spectre reel `specio` est golden-backed et teste semantiquement. Le statut reste partiel parce que la ligne inclut `.fsm` Spotlight imaging, detecte/refuse comme hors v1, et parce qu'il manque des variantes PE NIR/Lambda; une separation future `.sp` vs `.fsm` permettrait de promouvoir le sous-ensemble `.sp`. |

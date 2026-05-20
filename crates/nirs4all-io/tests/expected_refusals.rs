@@ -43,6 +43,14 @@ fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
             "samples/siware_neospectra/neospectra_ossl_column_names.csv",
             "no numeric spectral headers found",
         ),
+        (
+            "samples/csv_tsv/auroranir_handheld_barley_sensAIfood_metadata.xlsx",
+            "Excel worksheet contains no numeric spectral headers",
+        ),
+        (
+            "samples/foss_winisi/foss_xds_wheat2_sensAIfood_metadata.xlsx",
+            "Excel worksheet contains no numeric spectral headers",
+        ),
     ] {
         assert_refusal(relative, expected);
     }

@@ -6,7 +6,7 @@ Two-column ASCII export from OPUS software (`Save → Save as → Data Point Tab
 
 | File | Size | Source | License | Notes |
 |---|---|---|---|---|
-| `RS-1.dpt` | 67 KB | [`ropensci/lightr`](https://github.com/ropensci/lightr/blob/main/inst/testdata/RS-1.dpt) | GPL-3 | A real `.dpt` export. Headerless, comma-separated, wavenumber-decreasing. |
+| `RS-1.dpt` | 67 KB | [`ropensci/lightr`](https://github.com/ropensci/lightr/blob/main/inst/testdata/RS-1.dpt) | GPL-3 | A real `.dpt` export. Headerless, comma-separated, wavenumber-increasing in this fixture. |
 | `synthetic.dpt` | ~5 KB | Generated locally | CC-0 | Synthetic NIR spectrum, 200 points, wavenumber-decreasing (`{cm⁻¹}, {absorbance}`). Useful as a known-good shape reference. |
 
 ## Parser hints

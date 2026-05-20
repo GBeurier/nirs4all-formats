@@ -41,4 +41,6 @@ workbooks where Excel has coerced wavelengths into dates remain pending. The
 current reader is intentionally limited to numeric spectral headers so malformed
 lab transfers fail clearly instead of silently producing shifted axes. Probe
 tests lock the `.xlsx` and `.xlsm` synthetic workbooks plus real handheld
-workbooks from SCiO, NIRone, NeoSpectra and MicroNIR.
+workbooks from SCiO, NIRone, NeoSpectra and MicroNIR. Metadata-only companion
+workbooks from the sensAIfood AuroraNIR and Foss XDS datasets are explicit
+refusals because they contain methods/settings, not spectral matrices.

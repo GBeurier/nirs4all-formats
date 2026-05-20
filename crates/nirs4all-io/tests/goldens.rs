@@ -17,6 +17,7 @@ const CASES: &[(&str, &str)] = &[
         "samples/csv_tsv/auroranir_handheld_barley_sensAIfood.csv",
     ),
     ("bruker_dpt_synthetic", "samples/bruker_dpt/synthetic.dpt"),
+    ("bruker_dpt_rs1_lightr", "samples/bruker_dpt/RS-1.dpt"),
     (
         "bruker_opus_absorbance_multi",
         "samples/bruker_opus/617262_1TP_C-1_A5.0",
@@ -388,6 +389,14 @@ const CASES: &[(&str, &str)] = &[
     (
         "row_spectral_table_envi_ecostress",
         "samples/envi_sli/ecostress_b.spectrum.txt",
+    ),
+    (
+        "row_spectral_table_envi_ecostress_a",
+        "samples/envi_sli/ecostress_a.spectrum.txt",
+    ),
+    (
+        "row_spectral_table_aster_granite",
+        "samples/envi_sli/aster_granite.spectrum.txt",
     ),
     (
         "row_spectral_table_shimadzu_uvprobe",

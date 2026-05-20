@@ -114,6 +114,21 @@ fn reads_bruker_dpt_export() {
     assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
     assert_eq!(signal.axis.order, AxisOrder::Descending);
     assert_eq!(signal.signal_type, SignalType::Absorbance);
+
+    let records = open_path(workspace_file("samples/bruker_dpt/RS-1.dpt")).expect("open real dpt");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "bruker-dpt");
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 3_439);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.axis.order, AxisOrder::Ascending);
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert!((signal.axis.values[0] - 800.44463).abs() < 0.000001);
+    assert!((signal.axis.values[3_438] - 2_500.13516).abs() < 0.000001);
+    assert!((signal.values[0] - 1.11622).abs() < 0.000001);
+    assert!((signal.values[3_438] - 2.20339).abs() < 0.000001);
 }
 
 #[test]
@@ -2274,6 +2289,24 @@ fn reads_row_oriented_spectral_tables() {
             SignalType::Reflectance,
             0.35,
             1.471,
+        ),
+        (
+            "samples/envi_sli/ecostress_a.spectrum.txt",
+            "reflectance",
+            "um",
+            561,
+            SignalType::Reflectance,
+            0.3,
+            8.82,
+        ),
+        (
+            "samples/envi_sli/aster_granite.spectrum.txt",
+            "reflectance",
+            "um",
+            2_844,
+            SignalType::Reflectance,
+            14.0112,
+            7.2712,
         ),
         (
             "samples/shimadzu/synthetic_uvprobe.txt",
