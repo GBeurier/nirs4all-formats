@@ -9,8 +9,8 @@ use crate::readers::{
     DigitalSurfReader, EnviSliReader, ErdasLanReader, ExcelReader, FgiXmlReader, GalacticSpcReader,
     HamamatsuImgReader, Hdf5Reader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader,
     MsaReader, MzmlReader, NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader,
-    ParquetReader, PerkinElmerReader, RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader,
-    SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
+    ParquetReader, PerkinElmerReader, PpSystemsReader, RenishawWdfReader, ScioCsvReader, SedReader,
+    SiwareApiReader, SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
     TrivistaTvfReader, UsgsArefReader, WitecWipReader,
 };
 
@@ -135,6 +135,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(AnimlReader),
         Box::new(SiwareApiReader),
         Box::new(AllotropeAsmReader),
+        Box::new(PpSystemsReader),
         Box::new(ExcelReader),
         Box::new(ScioCsvReader),
         Box::new(UsgsArefReader),

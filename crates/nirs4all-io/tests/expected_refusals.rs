@@ -73,11 +73,11 @@ fn refuses_local_non_spectral_sidecars_and_derived_products_when_present() {
         ),
         (
             "samples_local/pp_systems/arc_lter_unispec_dc_2007_2019_indices.csv",
-            "no numeric spectral headers found",
+            "derived vegetation-index product",
         ),
         (
             "samples_local/pp_systems/arc_lter_unispec_dc_2007_2019_indices.xlsx",
-            "Excel worksheet contains no numeric spectral headers",
+            "raw .SPT/.SPU files or the referenced reflectance data scan table",
         ),
         (
             "samples_local/microtops/noaa_lauder_sonde_la20170315.lev2",

@@ -27,7 +27,10 @@ alone.
 
 The local Arctic LTER UniSpec-DC CSV/XLSX files are vegetation-index products
 (`NDVI`, `EVI`, `PRI`, etc.), not raw `.SPT/.SPU` spectra. They remain expected
-refusals and do not change the raw UniSpec coverage status.
+refusals with a dedicated `pp-systems-unispec-derived-indices` diagnostic and
+do not change the raw UniSpec coverage status. The workbook metadata points to
+a separate reflectance data scan file; that wavelength-indexed table is not
+present in `samples_local/pp_systems/`.
 
 ## Remaining Gaps
 
