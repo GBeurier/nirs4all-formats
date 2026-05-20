@@ -448,6 +448,9 @@ fn records_from_hyperspectral_map(
             metadata.insert("spectrum_index".to_string(), json!(spectrum_index));
             metadata.insert("map_width".to_string(), json!(width));
             metadata.insert("map_height".to_string(), json!(height));
+            metadata.insert("map_axis_order".to_string(), json!("y_slowest_x_fastest"));
+            metadata.insert("map_x_index".to_string(), json!(x));
+            metadata.insert("map_y_index".to_string(), json!(y));
             metadata.insert("spatial_x_index".to_string(), json!(x));
             metadata.insert("spatial_y_index".to_string(), json!(y));
             metadata.insert(
@@ -503,12 +506,18 @@ fn records_from_surface(
         let mut metadata = base_metadata(header);
         metadata.insert("spectrum_index".to_string(), json!(row));
         metadata.insert("surface_row_index".to_string(), json!(row));
+        metadata.insert("spatial_y_index".to_string(), json!(row));
         metadata.insert("surface_width".to_string(), json!(width));
         metadata.insert("surface_height".to_string(), json!(height));
+        metadata.insert(
+            "surface_axis_order".to_string(),
+            json!("row_profiles_y_slowest_x_fastest"),
+        );
         metadata.insert(
             "spatial_y".to_string(),
             json!(axis_value(header.y_offset, header.y_spacing, row)),
         );
+        metadata.insert("spatial_x_unit".to_string(), json!(&axis.unit));
         metadata.insert("spatial_y_unit".to_string(), json!(header.y_step_unit));
         insert_axis_metadata(&mut metadata, "profile_axis", &axis);
 

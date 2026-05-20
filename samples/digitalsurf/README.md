@@ -20,3 +20,6 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/digitalsurf/`](https://g
 - `DSCOMPRESSED` payloads in these fixtures use a small zlib-stream directory, not RLE.
 - Reference reader: [`rsciio.digitalsurf`](https://hyperspy.org/rosettasciio/).
 - For hyperspectral maps the spectral axis is encoded in the W (channel) dimension; the loader has to detect this and expose the spectra rather than treating it as a 3-D image.
+- Hyperspectral maps are emitted in `y_slowest_x_fastest` order with
+  normalized `map_x_index` / `map_y_index`; surfaces are emitted as row
+  profiles with `spatial_y_index` and explicit X/Y units.

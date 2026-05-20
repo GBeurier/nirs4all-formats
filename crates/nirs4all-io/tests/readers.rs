@@ -1587,6 +1587,14 @@ fn reads_digitalsurf_sur_pro_modes() {
     );
     assert_eq!(records[0].metadata["map_width"].as_u64(), Some(10));
     assert_eq!(records[0].metadata["map_height"].as_u64(), Some(12));
+    assert_eq!(
+        records[0].metadata["map_axis_order"].as_str(),
+        Some("y_slowest_x_fastest")
+    );
+    assert_eq!(records[0].metadata["map_x_index"].as_u64(), Some(0));
+    assert_eq!(records[0].metadata["map_y_index"].as_u64(), Some(0));
+    assert_eq!(records[119].metadata["map_x_index"].as_u64(), Some(9));
+    assert_eq!(records[119].metadata["map_y_index"].as_u64(), Some(11));
     assert!(
         (records[119].metadata["spatial_x"].as_f64().unwrap() - 0.007757065512123518).abs()
             < 0.000001
@@ -1608,6 +1616,14 @@ fn reads_digitalsurf_sur_pro_modes() {
     ))
     .expect("open compressed spectral map");
     assert_eq!(records.len(), 120);
+    assert_eq!(records[0].metadata["map_width"].as_u64(), Some(10));
+    assert_eq!(records[0].metadata["map_height"].as_u64(), Some(12));
+    assert_eq!(
+        records[0].metadata["map_axis_order"].as_str(),
+        Some("y_slowest_x_fastest")
+    );
+    assert_eq!(records[119].metadata["map_x_index"].as_u64(), Some(9));
+    assert_eq!(records[119].metadata["map_y_index"].as_u64(), Some(11));
     assert!(records[0]
         .provenance
         .warnings
@@ -1626,6 +1642,16 @@ fn reads_digitalsurf_sur_pro_modes() {
         records[0].metadata["object_type_label"].as_str(),
         Some("_SURFACE")
     );
+    assert_eq!(records[0].metadata["surface_width"].as_u64(), Some(128));
+    assert_eq!(records[0].metadata["surface_height"].as_u64(), Some(128));
+    assert_eq!(
+        records[0].metadata["surface_axis_order"].as_str(),
+        Some("row_profiles_y_slowest_x_fastest")
+    );
+    assert_eq!(records[0].metadata["spatial_y_index"].as_u64(), Some(0));
+    assert_eq!(records[127].metadata["spatial_y_index"].as_u64(), Some(127));
+    assert_eq!(records[0].metadata["spatial_x_unit"].as_str(), Some("mm"));
+    assert_eq!(records[0].metadata["spatial_y_unit"].as_str(), Some("mm"));
     let signal = records[0].signals.get("intensity").expect("intensity");
     assert_eq!(signal.axis.values.len(), 128);
     assert_eq!(signal.axis.kind, AxisKind::Index);

@@ -181,10 +181,18 @@ const CASES: &[(&str, &str)] = &[
         "samples/raman_renishaw/renishaw_test_linescan.wdf",
     ),
     (
+        "renishaw_wdf_test_map2",
+        "samples/raman_renishaw/renishaw_test_map2.wdf",
+    ),
+    (
         "renishaw_wdf_interrupted_acquisition",
         "samples/raman_renishaw/interrupted_acquisition.wdf",
     ),
     ("renishaw_wdf_wire_sp", "samples/raman_renishaw/wire_sp.wdf"),
+    (
+        "renishaw_wdf_wire_depth",
+        "samples/raman_renishaw/wire_depth.wdf",
+    ),
     (
         "trivista_tvf_single",
         "samples/raman_trivista/spec_1s_1acc_1frame_average.tvf",
