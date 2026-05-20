@@ -56,7 +56,8 @@ Current implementation highlights:
 
 - JCAMP-DX now covers dense `XYDATA`/ASDF, NMR `NTUPLES`, top-level
   multi-block records, Ocean Optics `LINK`/`XYPOINTS`, and top-level sparse
-  `PEAK TABLE` / `PEAK ASSIGNMENTS` records.
+  `PEAK TABLE` / `PEAK ASSIGNMENTS` records, with `XYDATA` line-start X
+  checkpoint warnings for malformed blocks.
 - Generic HDF5 covers simple spectral schemas, multi-signal groups sharing one
   axis, nested groups, common dataset aliases (`spectra`, `absorbance`,
   `reflectance`, `data`) and unambiguous transposed matrices.

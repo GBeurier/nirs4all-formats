@@ -189,6 +189,7 @@ fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
     }
 
     let yfactor = get_f64(&ldr, "yfactor").unwrap_or(1.0);
+    let xfactor = get_f64(&ldr, "xfactor").unwrap_or(1.0);
 
     let mut warnings = Vec::new();
     let (mut axis, mut values) = if has_xypoints {
@@ -206,7 +207,15 @@ fn parse_xy_jcamp_text(text: &str) -> Result<ParsedJcamp> {
                 (lastx - firstx) / (npoints - 1.0)
             }
         });
-        let values = decode_xy_lines(&xy_lines, yfactor, "signal", &mut warnings);
+        let values = decode_xy_lines_with_x_checkpoints(
+            &xy_lines,
+            firstx,
+            deltax,
+            xfactor,
+            yfactor,
+            "signal",
+            &mut warnings,
+        );
         let axis: Vec<f64> = (0..values.len())
             .map(|idx| firstx + deltax * idx as f64)
             .collect();
@@ -1169,6 +1178,180 @@ fn decode_xy_lines(
     values
 }
 
+fn decode_xy_lines_with_x_checkpoints(
+    xy_lines: &[String],
+    firstx: f64,
+    deltax: f64,
+    xfactor: f64,
+    yfactor: f64,
+    context: &str,
+    warnings: &mut Vec<String>,
+) -> Vec<f64> {
+    let mut values = Vec::new();
+    let mut last_raw_y: Option<f64> = None;
+    let mut x_scale_mode = None;
+    let mut previous_x_checkpoint = None;
+    let mut checked_x = 0usize;
+    let mut mismatched_x = 0usize;
+    let mut first_mismatch = None;
+
+    for line in xy_lines {
+        let line_x = xy_line_start_x(line);
+        let has_dif = xy_line_has_dif(line);
+        let mut line_values = values_from_xy_line(line);
+        if has_dif && last_raw_y.is_some() && !line_values.is_empty() {
+            let checkpoint = line_values.remove(0);
+            if let Some(previous) = last_raw_y {
+                let tolerance = previous.abs().max(1.0) * 1e-6;
+                if (checkpoint - previous).abs() > tolerance {
+                    warnings.push(format!(
+                        "jcamp_dif_checkpoint_mismatch: {context} previous {previous}, checkpoint {checkpoint}"
+                    ));
+                }
+            }
+        }
+        let emitted_count = line_values.len();
+        if let Some(line_x) = line_x {
+            checked_x += 1;
+            let expected_x = expected_x_checkpoints(firstx, deltax, previous_x_checkpoint);
+            let evaluation =
+                evaluate_x_checkpoint(line_x, xfactor, x_scale_mode, expected_x, deltax);
+            x_scale_mode.get_or_insert(evaluation.scale);
+            if !evaluation.matched {
+                mismatched_x += 1;
+                let closest_expected_x = closest_expected_x(evaluation.physical_x, expected_x);
+                first_mismatch.get_or_insert((line_x, closest_expected_x));
+            }
+            previous_x_checkpoint = Some((evaluation.physical_x, emitted_count));
+        }
+        for raw_y in line_values {
+            last_raw_y = Some(raw_y);
+            values.push(raw_y * yfactor);
+        }
+    }
+
+    if mismatched_x > 0 {
+        let (line_x, expected_x) = first_mismatch.expect("mismatch count implies example");
+        warnings.push(format!(
+            "jcamp_x_checkpoint_mismatch: {context} {mismatched_x}/{checked_x} line starts mismatched; first line_x {line_x}, expected {expected_x}"
+        ));
+    }
+
+    values
+}
+
+fn xy_line_start_x(line: &str) -> Option<f64> {
+    let (raw_x, _) = split_xy_line(line)?;
+    parse_number(raw_x)
+}
+
+fn expected_x_checkpoints(
+    firstx: f64,
+    deltax: f64,
+    previous_x_checkpoint: Option<(f64, usize)>,
+) -> [Option<f64>; 2] {
+    if let Some((previous_x, previous_count)) = previous_x_checkpoint {
+        [
+            Some(previous_x + deltax * previous_count as f64),
+            (previous_count > 0).then(|| previous_x + deltax * (previous_count - 1) as f64),
+        ]
+    } else {
+        [Some(firstx), None]
+    }
+}
+
+fn evaluate_x_checkpoint(
+    line_x: f64,
+    xfactor: f64,
+    scale_mode: Option<XCheckpointScale>,
+    expected_x: [Option<f64>; 2],
+    deltax: f64,
+) -> XCheckpointEvaluation {
+    if let Some(scale_mode) = scale_mode {
+        return evaluate_x_checkpoint_scale(line_x, xfactor, scale_mode, expected_x, deltax);
+    }
+
+    let raw =
+        evaluate_x_checkpoint_scale(line_x, xfactor, XCheckpointScale::Raw, expected_x, deltax);
+    if xfactor == 1.0 {
+        return raw;
+    }
+
+    let scaled = evaluate_x_checkpoint_scale(
+        line_x,
+        xfactor,
+        XCheckpointScale::ScaledByXfactor,
+        expected_x,
+        deltax,
+    );
+    if scaled.error < raw.error {
+        scaled
+    } else {
+        raw
+    }
+}
+
+fn evaluate_x_checkpoint_scale(
+    line_x: f64,
+    xfactor: f64,
+    scale: XCheckpointScale,
+    expected_x: [Option<f64>; 2],
+    deltax: f64,
+) -> XCheckpointEvaluation {
+    let physical_x = match scale {
+        XCheckpointScale::Raw => line_x,
+        XCheckpointScale::ScaledByXfactor => line_x * xfactor,
+    };
+    let error = expected_x
+        .iter()
+        .flatten()
+        .map(|expected| (physical_x - *expected).abs())
+        .fold(f64::INFINITY, f64::min);
+    let matched = expected_x
+        .iter()
+        .flatten()
+        .any(|expected| nearly_equal_x(physical_x, *expected, deltax));
+    XCheckpointEvaluation {
+        physical_x,
+        scale,
+        error,
+        matched,
+    }
+}
+
+fn closest_expected_x(physical_x: f64, expected_x: [Option<f64>; 2]) -> f64 {
+    expected_x
+        .iter()
+        .flatten()
+        .min_by(|left, right| {
+            let left_error = (physical_x - **left).abs();
+            let right_error = (physical_x - **right).abs();
+            left_error.total_cmp(&right_error)
+        })
+        .copied()
+        .unwrap_or(physical_x)
+}
+
+fn nearly_equal_x(left: f64, right: f64, deltax: f64) -> bool {
+    let relative = right.abs().max(left.abs()).max(1.0) * 1e-5;
+    let line_rounding = deltax.abs() * 2.0;
+    (left - right).abs() <= relative.max(line_rounding)
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum XCheckpointScale {
+    Raw,
+    ScaledByXfactor,
+}
+
+#[derive(Clone, Copy)]
+struct XCheckpointEvaluation {
+    physical_x: f64,
+    scale: XCheckpointScale,
+    error: f64,
+    matched: bool,
+}
+
 fn get_f64(map: &BTreeMap<String, String>, key: &str) -> Option<f64> {
     map.get(key).and_then(|value| parse_number(value))
 }
@@ -1807,6 +1990,32 @@ mod tests {
         ));
 
         assert!(message.contains("JCAMP NPOINTS mismatch: declared 4, parsed 3"));
+    }
+
+    #[test]
+    fn warns_on_xydata_line_x_checkpoint_mismatch() {
+        let parsed = parse_jcamp_text(
+            "##JCAMP-DX=5.00
+##DATA TYPE=INFRARED SPECTRUM
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=4
+##XYDATA=(X++(Y..Y))
+100 1 2
+105 3 4
+##END=
+",
+        )
+        .expect("parse checkpoint mismatch fixture");
+
+        assert_eq!(parsed.axis, vec![100.0, 101.0, 102.0, 103.0]);
+        assert_eq!(parsed.signals[0].values, vec![1.0, 2.0, 3.0, 4.0]);
+        assert!(parsed
+            .warnings
+            .iter()
+            .any(|warning| warning.contains("jcamp_x_checkpoint_mismatch")));
     }
 
     fn invalid_record_message(result: Result<ParsedJcamp>) -> String {
