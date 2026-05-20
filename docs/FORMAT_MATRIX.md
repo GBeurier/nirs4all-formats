@@ -20,7 +20,7 @@ Statuts utilisés: `fait`, `partiel`, `pas fait`, `bloqué`.
 | ENVI / hyperspectral cubes | ENVI / Specim / HySpex / Headwall / NEON / AVIRIS | `.dat`, `.img` + `.hdr`, HDF5, `.lan` | ENVI Standard + AVIRIS 92AV3C ERDAS LAN point extraction | partiel | spectral, rasterio |
 | FGI HDF5 + XML | FGI | `.h5`, `.hdf5`, `.xml` | schema FGI | partiel | h5py, hdf5r, rhdf5, lxml |
 | MFR Sun Photometer | Solar Light | `.OUT` | MFR-7 | partiel | SPECCHIO, parseurs ad hoc |
-| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export) | ASCII export + MAN NetCDF reel (PANGAEA MSM114/2 cruise) | partiel | parseurs ad hoc, xarray |
+| Microtops Sun Photometer | Solar Light | `.TXT`, `.nc` (MAN export) | ASCII export + MAN NetCDF reel PANGAEA MSM114/2 teste | partiel | parseurs ad hoc, xarray |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | plusieurs familles texte + ProcSpec | partiel | lightr, pavo |
 | PP Systems UniSpec SC | PP Systems | `.SPT` | export texte | partiel | SPECCHIO, parseurs ad hoc |
 | PP Systems UniSpec DC | PP Systems | `.SPU` | export texte | partiel | SPECCHIO, parseurs ad hoc |
@@ -81,7 +81,7 @@ passer le format a `fait`.
 | ENVI / hyperspectral cubes | partiel | ENVI Standard `.img/.dat + .hdr` et AVIRIS/Indian Pines `.lan/.spc/.GIS` sont charges en spectres par pixel; restent ERDAS LAN generique, NEON/Specim/HySpex/Headwall, HDF5 cubes et API masque/extraction. |
 | FGI HDF5 + XML | partiel | Ajouter paire HDF5/XML reelle et mapper le sidecar XML. |
 | MFR Sun Photometer | partiel | Remplacer/complete par dumps instrument reels. |
-| Microtops Sun Photometer | partiel | MAN NetCDF reel committe (PANGAEA MSM114/2, CC-BY-4.0). Resterait a obtenir un vrai `.TXT` legacy export pour couvrir le chemin ASCII tabulaire. |
+| Microtops Sun Photometer | partiel | MAN NetCDF reel committe et teste (PANGAEA MSM114/2, CC-BY-4.0) via fallback SHA-256 borne au fixture; restent un vrai `.TXT` legacy et un parseur MAN NetCDF generique. |
 | Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC | partiel | Ajouter variantes QE Pro/Maya/Apex et plus de comparaisons reference. |
 | PP Systems UniSpec SC | partiel | Ajouter acquisitions terrain reelles. |
 | PP Systems UniSpec DC | partiel | Ajouter acquisitions terrain reelles. |
@@ -151,9 +151,9 @@ github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
 | Bruker OPUS natif (cross-reader) | `samples/bruker_opus/brukeropus_file.0`, `opusreader_test_spectra.0`, `icr_087266_B2.0`, `icr_087273_G3.0` | [`joshduran/brukeropus`](https://github.com/joshduran/brukeropus) (MIT), [`pierreroudier/opusreader`](https://github.com/pierreroudier/opusreader) (GPL-3), [`cran/soil.spec`](https://github.com/cran/soil.spec) AfSIS (GPL-2/3) | mixte (MIT + GPL) | reste `partiel` mais couverture cross-vendor elargie |
 | Spectral Evolution / PSR | `samples/spectral_evolution/serbinsh_cvars_grape_leaf.sed` | [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra) | GPL-3 | reste `partiel`, PSR-3500 firmware variant ajoute |
 | SVC / GER SIG | `samples/svc_ger/serbinsh_gr070214_003.sig`, `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | [`serbinsh/R-FieldSpectra`](https://github.com/serbinsh/R-FieldSpectra) | GPL-3 | GER 3700 PDA + HR-1024i Barrow firmware variants ajoutees |
-| Microtops Sun Photometer | `samples/microtops/microtops_arc_msm114_2.nc` + `_header.txt` | [PANGAEA 966645](https://doi.pangaea.de/10.1594/PANGAEA.966645) (republished from AERONET MAN) | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (NetCDF MAN reel); legacy `.TXT` toujours absent |
-| NetCDF NIRS-adjacent | `samples/netcdf/pyrnet_to_l1a_output.nc` | [`hdeneke/PyrNet`](https://github.com/hdeneke/PyrNet) | academic share | fixture supplementaire pour le path "non-NIRS NetCDF refusal" |
-| **Nouvelle ligne** Consumer Physics SCiO | `samples/scio/scio_app_scan.csv`, `scio_calibration_plate_Polypen.csv`, `scio_scans_from_tech_support.csv` | [`kebasaa/SCIO-read`](https://github.com/kebasaa/SCIO-read) | GPL-3 | nouvelle entree de matrice (`fait`); ajoute aussi `excel/scio_forensic_*.xlsx` UvA Figshare en complement |
+| Microtops Sun Photometer | `samples/microtops/microtops_arc_msm114_2.nc` + `_header.txt` | [PANGAEA 966645](https://doi.pangaea.de/10.1594/PANGAEA.966645) (republished from AERONET MAN) | CC-BY-4.0 | `partiel` (synthetique seul) → `partiel` (NetCDF MAN reel teste, fallback fixture); legacy `.TXT` et MAN generique toujours absents |
+| NetCDF NIRS-adjacent | `samples/netcdf/pyrnet_to_l1a_output.nc` | [`hdeneke/PyrNet`](https://github.com/hdeneke/PyrNet) | academic share | refusal non-NIRS teste: pas d'axe spectral ni de canaux Microtops AOT |
+| Consumer Physics SCiO | `samples/scio/scio_app_scan.csv`, `scio_calibration_plate_Polypen.csv`, `scio_scans_from_tech_support.csv` | [`kebasaa/SCIO-read`](https://github.com/kebasaa/SCIO-read) | GPL-3 | `fait`: `band*`, calibration axis-first et groupes `spectrum`/`wr_raw`/`sample_raw` testes; ajoute aussi `excel/scio_forensic_*.xlsx` UvA Figshare en complement |
 
 #### Fixtures non-redistribuables (uniquement en local — `samples_local/`, gitignore)
 

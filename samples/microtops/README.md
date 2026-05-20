@@ -13,5 +13,5 @@ Text format but rich metadata (geo, sun angle, pressure, water vapor). Parser mu
 
 - **Legacy `.TXT` export**: header is a single row of comma-separated column names. Many fixed columns plus `AOT_<wavelength>` band columns. Metadata fields (DATE, TIME, LAT, LON, ALT, SZA, …) must go into `metadata`; AOT values are the spectral observations.
 - AOT bands are sparse (typically 5–6 wavelengths), not a continuous spectrum — store the wavelength axis from column names.
-- **NetCDF MAN export** (PANGAEA fixture): `time` is the master dimension; each AOT wavelength is a separate variable (`aot_380`, …, `aot_870`). The loader should fold these into a single spectral signal with axis `[380, 440, 500, 675, 870]` nm; lat/lon/time/air_mass live in metadata.
+- **NetCDF MAN export** (PANGAEA fixture): `time` is the master dimension; each AOT wavelength is a separate variable (`aot_380`, …, `aot_870`). The loader folds these into `aot` and `aot_std` signals with axis `[380, 440, 500, 675, 870]` nm; lat/lon/time/air_mass live in metadata. The current Rust path is SHA-256-guarded to this fixture because generic pure-Rust NetCDF4/HDF5 metadata reconstruction still fails on the file.
 - Reference reader: open implementations exist (e.g. NERC's PyMicrotops3 for `.TXT`); MAN NetCDF is direct with `xarray` / `netcdf-reader`.

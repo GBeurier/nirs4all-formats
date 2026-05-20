@@ -22,6 +22,7 @@ formats/bruker-opus
 formats/buchi-nircal
 formats/digitalsurf
 formats/envi-sli
+formats/erdas-lan
 formats/excel
 formats/foss-winisi
 formats/galactic-spc
@@ -41,6 +42,7 @@ formats/perkin-elmer
 formats/numpy
 formats/renishaw-wdf
 formats/row-spectral-table
+formats/scio-csv
 formats/siware-neospectra
 formats/siware-api
 formats/spectral-matrix

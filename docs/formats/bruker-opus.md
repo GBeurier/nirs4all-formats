@@ -50,6 +50,7 @@ Committed smoke and golden coverage currently includes:
 | `617262_1TP_C-1_A5.0` | 1 record, 5 signals, absorbance has 3578 points |
 | `test_spectra.0` | 1 record, reflectance/sample/reference spectra |
 | `BF_lo_01_soil_cal.1` | duplicate absorbance blocks become `absorbance` and `absorbance_2` |
+| `icr_087266_B2.0`, `icr_087273_G3.0` | AfSIS Bruker MPA soil fixtures, absorbance plus sample/reference spectra and interferogram |
 
 Reference controls were checked against local Python readers `brukeropus`,
 `opusFC` and `brukeropusreader`:

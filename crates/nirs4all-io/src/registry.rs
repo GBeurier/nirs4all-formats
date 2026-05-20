@@ -5,11 +5,12 @@ use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
 use crate::readers::{
     AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
     BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
-    EnviSliReader, ExcelReader, GalacticSpcReader, HamamatsuImgReader, Hdf5Reader,
+    EnviSliReader, ErdasLanReader, ExcelReader, GalacticSpcReader, HamamatsuImgReader, Hdf5Reader,
     HoribaLabSpecReader, JascoJwsReader, JcampReader, MatlabReader, MsaReader, MzmlReader,
     NetcdfReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader, ParquetReader,
-    PerkinElmerReader, RenishawWdfReader, SedReader, SiwareApiReader, SpectralMatrixReader,
-    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, WitecWipReader,
+    PerkinElmerReader, RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader,
+    SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
+    TrivistaTvfReader, WitecWipReader,
 };
 
 /// Contract implemented by every native reader.
@@ -31,6 +32,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(RenishawWdfReader),
         Box::new(TrivistaTvfReader),
         Box::new(DigitalSurfReader),
+        Box::new(ErdasLanReader),
         Box::new(HamamatsuImgReader),
         Box::new(WitecWipReader),
         Box::new(GalacticSpcReader),
@@ -49,6 +51,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(SiwareApiReader),
         Box::new(AllotropeAsmReader),
         Box::new(ExcelReader),
+        Box::new(ScioCsvReader),
         Box::new(SpectralTableReader),
         Box::new(SpectralMatrixReader),
         Box::new(SunPhotometerReader),

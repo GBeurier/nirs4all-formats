@@ -300,6 +300,15 @@ fn probes_envi_standard_cube_sidecar() {
 }
 
 #[test]
+fn probes_aviris_erdas_lan_cube() {
+    let probes =
+        probe_path(workspace_file("samples/hyperspectral_cubes/92AV3C.lan")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "erdas-lan-aviris" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
 fn probes_witec_wip_magic() {
     let probes = builtin_probes(b"WIT^\0\0\0\0", Path::new("sample.wip"));
     assert!(probes

@@ -19,10 +19,11 @@ fixtures:
 | Plain delimited spectral tables | `.csv`, `.tsv`, numeric-header `.txt` | Experimental | One record per row, numeric header columns become the spectral axis, numeric non-spectral columns become targets. Covers real AuroraNIR, Foss XDS and OSSL NeoSpectra wide CSV fixtures. |
 | Row-oriented spectral tables | `.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU` with axis-first content | Experimental | One record per file, first numeric column is the spectral axis, following numeric columns become named signals. Covers committed Si-Ware, MODTRAN, PP Systems, ENVI/ECOSTRESS/IDL text, JASCO text export, Shimadzu text, USGS SPECPR ASCII and WiTec ASCII fixtures. |
 | Spectral matrix exports | `.csv`, `.txt` with one spectrum per sample row | Experimental | Numeric spectral headers or a `Wavelengths:` block become the axis. Covers committed Foss/WinISI text, Metrohm Vision Air CSV and VIAVI MicroNIR CSV fixtures. Target-only reports are detected as unsupported. |
-| Sun photometer text exports | `.OUT`, `.TXT` | Experimental | MFR and Microtops channel columns become short wavelength axes, one observation per record. |
+| Sun photometer text / MAN exports | `.OUT`, `.TXT`, `.nc` | Experimental | MFR and Microtops channel columns become short wavelength axes, one observation per record; the committed PANGAEA MAN NetCDF fixture emits AOT and AOT-STD signals. |
 | AnIML spectral XML | `.animl` | Experimental | Spectral `SeriesSet` documents with wavelength/wavenumber axis series and same-length signal series. Non-spectral AnIML result documents are refused. |
 | Allotrope ASM plate-reader JSON | `.json` with `$asm.manifest` | Experimental | Plate-reader ASM spectral data cubes and detector-wavelength endpoint readings. Covers committed Benchling allotropy fluorescence/absorbance ASM fixtures. |
 | SiWare API JSON | `.json` with `measurement.wavelengths` / `measurement.absorbance` | Experimental | One-measurement NeoSpectra-style JSON payloads; predictions become targets. |
+| Consumer Physics SCiO CSV | `.csv` | Experimental | Developer-app `band*` exports and grouped `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm. |
 | NetCDF NIRS datasets | `.nc`, `.cdf` with `spectra` + `wavelengths` variables | Experimental | Pure-Rust NetCDF reader for simple sample-by-wavelength datasets; ANDI/MS gets a dedicated non-NIRS refusal path and other adjacent NetCDF files are schema-refused. |
 | Parquet NIRS tables | `.parquet` | Experimental | Arrow-backed reader for canonical NIRS tables whose spectral columns are numeric wavelength names; generic non-spectral Parquet files are schema-refused. |
 | NumPy datasets | `.npy`, `.npz` | Experimental | NPY matrix reader with generated index axis and NPZ canonical `X`/`wavelengths`/`y`/`sample_ids` reader for ML datasets. |
@@ -31,6 +32,7 @@ fixtures:
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR` | Experimental | Wave tables and two-column irradiance export. |
 | Avantes AvaSoft binary | `.TRM`, `.ROH`, `.DRK`, `.REF`, `.ABS`, `.Raw8`, `.IRR8` | Experimental | Legacy AvaSoft 7 float32 headers and AVS82/AVS84 subfiles. `.ABS` and additional AVS8 modes are implemented by layout but still need fixtures. |
 | ENVI Spectral Library / Standard cubes | `.sli` + `.hdr`, `.img`/`.dat` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads, plus ENVI Standard BSQ/BIL/BIP cube expansion to one point spectrum per pixel. |
+| ERDAS LAN / AVIRIS 92AV3C | `.lan` + `.spc` + optional `.GIS` | Experimental partial | Classic Indian Pines AVIRIS cube, 145 x 145 x 220 u16 BIL payload, expanded to one raw-count spectrum per pixel with ground-truth class labels when present. |
 | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | Experimental | SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV text exports, plus OceanView `.ProcSpec` ZIP/XML archives with SHA-512 signature validation. The committed Ocean Optics `.spc` fixture is a Galactic/Thermo new-LSB explicit-X SPC file and is routed through that reader. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Single-block `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF ordinate decoding, NMR `NTUPLES` real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks. `PEAK TABLE` is explicitly refused until the shared model can represent sparse peak lists; broader `LINK` variants are pending. |
 | EMSA/MAS MSA (ISO 22029) | `.msa` | Experimental | Standards-track single-spectrum text format. `XY` and `Y` payloads are supported with axis reconstruction from `OFFSET`, `XPERCHAN` and `CHOFFSET`. Reference reader: `rsciio.msa`. |
@@ -155,15 +157,18 @@ hyperspectral-imaging users may want to extract pixel spectra:
 
 - ENVI image cubes (`.dat`/`.img` + `.hdr`) — supported by Spectral Python.
 - ENVI Spectral Library (`.sli`) — already in section 1.
+- Legacy AVIRIS/Indian Pines ERDAS LAN (`.lan` + `.spc` + `.GIS`) — a
+  sample-backed subset is loaded experimentally.
 - Specim / HySpex / Headwall raw cubes (often ENVI-compatible).
 - BIL/BIP/BSQ raw with sidecar header.
 - HDF5-based imaging (NEON AOP, AVIRIS-NG).
 
-Current policy: accept ENVI Standard sidecars by expanding each pixel to a
-point spectrum when the wavelength axis is present, while keeping broader
-imaging workflows partial. A future `extract_point_spectra(cube, mask)` helper
-is still needed for ROI/mask workflows and for larger NEON, Specim, HySpex,
-Headwall and AVIRIS-NG payloads where whole-cube expansion is not practical.
+Current policy: accept small ENVI Standard and AVIRIS LAN sidecars by expanding
+each pixel to a point spectrum when the wavelength axis is present, while
+keeping broader imaging workflows partial. A future
+`extract_point_spectra(cube, mask)` helper is still needed for ROI/mask
+workflows and for larger NEON, Specim, HySpex, Headwall and AVIRIS-NG payloads
+where whole-cube expansion is not practical.
 
 ---
 

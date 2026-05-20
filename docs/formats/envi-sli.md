@@ -56,6 +56,10 @@ Current fixture:
 - `samples/envi_sli/synthetic_lib.sli`
 - `samples/envi_sli/cubescope-mini-cube.hdr`
 - `samples/envi_sli/cubescope-mini-cube.img`
+- `samples/envi_sli/usgs_splib06a_aviris95_envi.hdr`
+- `samples/envi_sli/usgs_splib06a_aviris95_envi.sli`
+- `samples/envi_sli/usgs_splib07_aviris95_envi.hdr`
+- `samples/envi_sli/usgs_splib07_aviris95_envi.sli`
 
 Expected shape:
 
@@ -85,11 +89,19 @@ Cube fixture checks:
 - last pixel first/last values: `152`, `3275`;
 - map coordinates are read from `map info`.
 
+USGS AVIRIS95 spectral-library checks:
+
+- `splib06a`: 1365 records, 224 wavelength points, `um` axis
+  `0.38315..2.5082`, first sample `Acmite NMNH133746 Pyroxene s06av95a=a`.
+- `splib07`: 3139 records, same 224-point axis, first two rows are wavelength
+  and resolution metadata spectra as stored in the upstream library.
+- `data ignore value` sentinels are currently preserved as numeric values
+  rather than converted to missing values.
+
 ## Next Work
 
 - Add conformance output from Spectral Python once the optional dependency is
   present in the reverse-engineering environment.
-- Add a real USGS/ECOSTRESS `.sli` fixture if license-compatible.
-- Add tests for non-zero `header offset`, big-endian payloads and `float64`.
+- Add tests for non-zero `header offset` and big-endian payloads.
 - Add real Specim/HySpex/Headwall/NEON cube fixtures and an explicit
   mask/ROI extraction API; the current path is whole-cube pixel expansion only.

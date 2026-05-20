@@ -22,7 +22,8 @@ Experimental native readers:
 - spectral matrix exports with one spectrum per row: Foss/WinISI text, real
   Foss XDS CSV, AuroraNIR handheld CSV, OSSL NeoSpectra wide CSV, Metrohm Vision
   Air CSV and VIAVI MicroNIR CSV fixtures;
-- sun photometer channel exports: MFR `.OUT` and Microtops `.TXT` fixtures;
+- sun photometer channel exports: MFR `.OUT`, Microtops `.TXT`, and the
+  committed Microtops MAN NetCDF AOT fixture;
 - AnIML spectral XML: spectral `SeriesSet` fixture with wavelength axis,
   absorbance signal and sample target; non-spectral AnIML result documents are
   refused;
@@ -30,9 +31,12 @@ Experimental native readers:
   endpoint readings from committed Benchling allotropy fixtures;
 - SiWare API JSON: NeoSpectra-style `measurement.wavelengths` and
   `measurement.absorbance` payloads with predictions mapped to targets;
+- Consumer Physics SCiO CSV: plain `band*` developer-app scans and grouped
+  `spectrum_*` / `wr_raw_*` / `sample_raw_*` exports at 740-1070 nm;
 - NetCDF NIRS datasets: simple `spectra` + `wavelengths` containers using a
-  pure-Rust reader; ANDI/MS gets a dedicated refusal path and weather NetCDF
-  samples are schema-refused as non-NIRS;
+  pure-Rust reader, plus a SHA-256-guarded Microtops MAN NetCDF fixture path;
+  ANDI/MS gets a dedicated refusal path and weather/PyrNet NetCDF samples are
+  schema-refused as non-NIRS;
 - generic HDF5 NIRS datasets: root or nested-group `spectra` + `wavelengths`
   containers using a pure-Rust reader; non-spectral HDF5 samples are refused,
   and the committed FGI HDF5 payload is covered while XML sidecar mapping stays
@@ -50,6 +54,9 @@ Experimental native readers:
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64 payloads;
+- AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
+  BIL payload expanded to one raw-count spectrum per pixel, with wavelength
+  axis from `.spc` and optional ground-truth class targets from `.GIS`;
 - Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`)
   and `.ProcSpec` ZIP/XML archives; the committed Ocean Optics `.spc` sample is
   covered by the Galactic SPC reader;
@@ -156,17 +163,19 @@ core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
 
-1. implement the sample-backed AVIRIS/Indian Pines `.lan/.spc/.GIS` ERDAS LAN
-   reader or a strict probe/refusal if redistribution terms block release;
-2. continue the open-reader-backed binary batch in this order: remaining
+1. decide whether AVIRIS/Indian Pines sample redistribution terms allow keeping
+   the committed `.lan/.spc/.GIS` fixtures in public release artifacts;
+2. add ROI/mask extraction for hyperspectral cubes so large NEON/Specim/HySpex/
+   Headwall scenes do not require whole-cube expansion;
+3. continue the open-reader-backed binary batch in this order: remaining
    Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
    fixture when available;
-3. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-4. replace Python/R subprocess transport with native PyO3/C ABI paths;
-5. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
+4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+5. replace Python/R subprocess transport with native PyO3/C ABI paths;
+6. harden JCAMP line-level X checkpoint validation and implement `PEAK TABLE`
    only after the shared model can represent sparse peak lists;
-6. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
-7. owner-requested documentation tail work: rewrite the root `README.md`,
+7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+8. owner-requested documentation tail work: rewrite the root `README.md`,
    add implementation visualizations for format/probe-confidence/maturity/
    missing-fixture status, and audit every `docs/formats/` page for
    description, implemented behavior, missing behavior and validation status.
