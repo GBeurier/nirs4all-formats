@@ -78,6 +78,9 @@ Deliverables:
   metadata;
 - Princeton TriVista TVF reader; experimental for XML frame payloads, X/Y
   navigation axes, time-series timestamps and Step-and-Glue child windows;
+- DigitalSurf MountainsMap reader; experimental for fixed-header `.sur/.pro`
+  spectra, multi-spectrum profiles, hyperspectral maps, surface profiles and
+  `DSCOMPRESSED` zlib payloads;
 - Bruker DPT reader; experimental;
 - Avantes ASCII exports; experimental;
 - golden JSON writer/validator; golden summaries implemented;
@@ -176,8 +179,9 @@ Add one family at a time:
 - remaining Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal
   target fixture, each validated against an open reference reader when possible;
 - Excel multi-sheet lab templates, WiTec WIP for lab-transfer and adjacent
-  spectroscopy workflows, TriVista richer hardware metadata and Renishaw WDF
-  hardening for white-light image metadata plus `MAP ` block interpretation;
+  spectroscopy workflows, DigitalSurf richer comment/metadata parsing, TriVista
+  richer hardware metadata and Renishaw WDF hardening for white-light image
+  metadata plus `MAP ` block interpretation;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
 - Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
   evidence become available;

@@ -39,6 +39,7 @@ fixtures:
 | Horiba LabSpec / JobinYvon | `.xml`, `.txt` LabSpec exports | Experimental | LSX XML single spectra, range exports, linescans and maps plus LabSpec two-column, series-row and map-row text exports. Energy axes currently fall back to `Index` with a warning. |
 | Renishaw WDF | `.wdf` | Experimental | `WDF1` chunk reader for spectral payloads via `DATA`, `XLST` and `YLST`; `ORGN`/`WMAP` navigation metadata adds spatial X/Y/Z, FocusTrack Z, elapsed time, map dimensions and map indices for committed map, line, depth, time-series and interrupted acquisitions. |
 | Princeton TriVista TVF | `.tvf` | Experimental | XML `Frame` payload reader for committed single spectra, multi-frame spectra, line scans, maps, time series and Step-and-Glue acquisitions. `InfoSerialized` X/Y axes become spatial metadata; Step-and-Glue emits the glued primary plus child windows. |
+| DigitalSurf MountainsMap | `.sur`, `.pro` | Experimental | Fixed-header object reader for committed spectra, multi-spectrum profiles, hyperspectral maps and surface profiles, including `DSCOMPRESSED` zlib stream payloads. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.
@@ -165,7 +166,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 | `.mat` (MATLAB) / `.RData` | Many academic NIR datasets are shared as MATLAB or R workspace files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`, committed Eigenvector Corn, NIR Shootout 2002, SpectroChemPy DSO and ALS2004 structured MAT fixtures, and prospectr `NIRsoil.RData`. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
 | `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables; multi-sheet lab templates remain pending. |
-| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, TriVista TVF, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Horiba LabSpec XML/text, Renishaw WDF spectral payloads, TriVista TVF XML and JASCO JWS now load experimentally; WiTec WIP remains adjacent-format work. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
+| Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, TriVista TVF, DigitalSurf, WiTec WIP, JASCO) | Same `.spc`/`.jws` or spectral-map workflows, often confused with NIR | Horiba LabSpec XML/text, Renishaw WDF spectral payloads, TriVista TVF XML, DigitalSurf `.sur/.pro` and JASCO JWS now load experimentally; WiTec WIP remains adjacent-format work. Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
 
 ---
 

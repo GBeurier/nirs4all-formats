@@ -234,6 +234,21 @@ fn probes_trivista_tvf_files() {
         .any(|probe| probe.format == "trivista-tvf" && probe.confidence == Confidence::Definite));
 }
 
+#[test]
+fn probes_digitalsurf_sur_pro_files() {
+    let probes = probe_path(workspace_file("samples/digitalsurf/test_spectrum.pro"))
+        .expect("probe DigitalSurf PRO");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "digitalsurf-sur-pro" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/digitalsurf/test_spectral_map.sur"))
+        .expect("probe DigitalSurf SUR");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "digitalsurf-sur-pro" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

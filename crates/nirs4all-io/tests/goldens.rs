@@ -140,8 +140,31 @@ const CASES: &[(&str, &str)] = &[
         "trivista_tvf_timeseries",
         "samples/raman_trivista/spec_timeseries_2x1s_delta3s.tvf",
     ),
-    ("trivista_tvf_linescan", "samples/raman_trivista/linescan.tvf"),
+    (
+        "trivista_tvf_linescan",
+        "samples/raman_trivista/linescan.tvf",
+    ),
     ("trivista_tvf_map", "samples/raman_trivista/map.tvf"),
+    (
+        "digitalsurf_spectrum",
+        "samples/digitalsurf/test_spectrum.pro",
+    ),
+    (
+        "digitalsurf_spectra",
+        "samples/digitalsurf/test_spectra.pro",
+    ),
+    (
+        "digitalsurf_spectral_map",
+        "samples/digitalsurf/test_spectral_map.sur",
+    ),
+    (
+        "digitalsurf_spectral_map_compressed",
+        "samples/digitalsurf/test_spectral_map_compressed.sur",
+    ),
+    (
+        "digitalsurf_surface",
+        "samples/digitalsurf/test_surface.sur",
+    ),
     ("avantes_wave_table", "samples/avantes/avantes_export.ttt"),
     ("avantes_irradiance", "samples/avantes/irr_820_1941.IRR"),
     ("avantes_legacy_trm", "samples/avantes/avantes2.TRM"),

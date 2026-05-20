@@ -81,6 +81,10 @@ Experimental native readers:
 - Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
   spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
   emits one record per frame and preserves Step-and-Glue child windows.
+- DigitalSurf MountainsMap (`.sur`, `.pro`) spectral/profile/surface payloads
+  via fixed headers and zlib-stream compression. Single spectra, multi-spectrum
+  profiles and hyperspectral maps emit one record per spectrum or XY point;
+  plain surfaces emit one spatial-profile record per row with a warning.
 
 Golden-summary conformance exists for the fixtures above under
 `crates/nirs4all-io/tests/goldens/`.
@@ -124,8 +128,9 @@ core. Do not implement parser logic in Python or R bindings.
 Immediate next work:
 
 1. continue the open-reader-backed binary batch in this order: remaining
-   Nicolet OMNIC `.srs/.srsx` variants and a non-zero BUCHI NIRCal target
-   fixture when available;
+   sample-backed adjacent formats such as Hamamatsu `.img` or mzML where they
+   can be cleanly mapped/refused, then remaining Nicolet OMNIC `.srs/.srsx`
+   variants and a non-zero BUCHI NIRCal target fixture when available;
 2. add Excel multi-sheet templates, then continue WDF hardening with white-light
    image metadata and `MAP ` block interpretation;
 3. harden JCAMP beyond current coverage: `PEAK TABLE`, incompatible-axis `LINK`
