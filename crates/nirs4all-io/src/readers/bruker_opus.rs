@@ -736,7 +736,7 @@ fn axis_kind_and_unit(dxu: &str) -> (AxisKind, String) {
         "WN" => (AxisKind::Wavenumber, "cm-1".to_string()),
         "MI" => (AxisKind::Wavelength, "um".to_string()),
         "PNT" => (AxisKind::Index, "index".to_string()),
-        "MIN" => (AxisKind::Index, "min".to_string()),
+        "MIN" => (AxisKind::Time, "min".to_string()),
         "LGW" => (AxisKind::Wavenumber, "log_cm-1".to_string()),
         _ => (AxisKind::Index, "index".to_string()),
     }
@@ -911,4 +911,21 @@ fn le_f64(bytes: &[u8], offset: usize) -> Result<f64> {
     Ok(f64::from_le_bytes(
         data.try_into().expect("slice length checked"),
     ))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn opus_minutes_axis_is_typed_as_time() {
+        assert_eq!(
+            axis_kind_and_unit("MIN"),
+            (AxisKind::Time, "min".to_string())
+        );
+        assert_eq!(
+            axis_kind_and_unit("PNT"),
+            (AxisKind::Index, "index".to_string())
+        );
+    }
 }
