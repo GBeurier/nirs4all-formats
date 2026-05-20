@@ -98,6 +98,68 @@ visible (`Suivi actuel`, `Corpus` ou `Format`).
 | mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | 2 | 1 | 0 | 0 | 1 | adjacent | hors périmètre | adjacent | P3 surveiller | Refus non-NIRS; `.mzMLb` seulement documenté. | pyteomics, pymzML, pyOpenMS |
 | fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors périmètre | hors-scope | P3 hors-scope | Physiologie non ciblée par nirs4all-io spectroscopy. | MNE-NIRS, SNIRF |
 
+## Fichiers a sourcer pour continuer
+
+Cette liste est la demande externe a transmettre a un collegue disposant
+d'acces machines. Chaque lot utile doit contenir, si possible, le fichier brut
+original, un export lisible produit par le logiciel vendeur (`.csv`, `.txt`,
+`.xlsx`, JCAMP-DX, etc.), le nom du logiciel et sa version, le modele
+instrument, le mode de mesure (raw, absorbance, reflectance, transmittance,
+radiance, irradiance), et quelques longueurs d'onde/valeurs verifiables. Les
+donnees peuvent etre anonymisees; il faut surtout conserver le format original
+et les metadata structurelles. Les lots sont tries par priorite projet.
+
+| Priorite | Format / machine | Fichiers a demander | Pourquoi |
+|---|---|---|---|
+| P0 | Foss NIRSystems / WinISI / ISIscan | Fichiers natifs `.NIR`, `.DA`, `.cal`, `.eqa`; idealement aussi export CSV/TXT du meme jeu et capture/version WinISI/ISIscan. | Format industriel cle; aucun vrai binaire natif exploitable actuellement. |
+| P0 | Perten DA / Inframatic | Fichier natif vendeur spectral, plus export CSV/XLSX contenant les colonnes de longueurs d'onde et les valeurs spectrales; eviter les rapports cible-seule. | Format industriel cle; aucun sample spectral natif/export exploitable. |
+| P1 | ASD FieldSpec calibration | Jeux complets `.asd` + compagnons `.ILL`, `.REF`, `.RAW`; si possible avec white/dark/reference et export ASCII correspondant. | Debloque les fichiers compagnons de calibration actuellement absents. |
+| P1 | ASD FieldSpec revisions manquantes | `.asd` revisions v3/v4/v5, fichiers avec blocs internes secondary/dependent/reference/calibration, audit ou signatures. | Les revisions principales recentes sont lues, mais ces variants restent a confirmer. |
+| P1 | Avantes AvaSoft 8 | `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8`; si possible un jeu multi-subfile et un `.IRR8` avec calibration irradiance complete. | Beaucoup de suffixes AVS8 actifs n'ont pas encore de fixture. |
+| P1 | Avantes AvaSoft 6/7 binaire | `.ABS` binaire legacy, plus tout autre mode legacy non export ASCII; joindre export AvaSoft lisible si disponible. | Le binaire `.ABS` est le trou restant du lecteur legacy. |
+| P1 | BUCHI NIRCal / NIRMaster | `.nir` redistribuable avec proprietes/cibles non nulles, fichiers `.cal` calibration-only, exports JCAMP-DX et variants NIRMaster. | Le reader lit le `.nir`, mais manque une fixture publique riche en cibles et variants. |
+| P1 | HDF5 NIRS generique | `.h5`/`.hdf5` reels issus de spectrometres ou pipelines NIRS, avec datasets spectra + wavelengths + metadata; plusieurs organisations de groupes bienvenues. | Necessaire pour coder les schemas HDF5 spectraux heterogenes au-dela du schema canonique. |
+| P1 | JCAMP-DX spectral | `.jdx`, `.dx`, `.jcm`, `.jcamp` avec `LINK` multi-blocs generaux, `PEAK TABLE`, NTUPLES spectroscopiques non deja couverts; joindre export vendeur si possible. | Le coeur XYDATA/NTUPLES fonctionne; il manque des variants d'echange courants. |
+| P1 | Metrohm Vision / Vision Air / OMNIS NIR | Exports Vision Air reels CSV/XLSX avec axe spectral, base/projet natif si possible, et tout export OMNIS NIR. | CSV synthetique seulement; la base/projet native reste fermee. |
+| P1 | PP Systems UniSpec SC | Acquisition terrain brute `.SPT` issue d'un UniSpec SC, avec metadata header et export eventuel. | Le parser est valide seulement sur synthetic. |
+| P1 | PP Systems UniSpec DC | Acquisition terrain brute `.SPU` issue d'un UniSpec DC deux canaux, avec metadata header et export eventuel. | Le parser deux canaux est valide seulement sur synthetic. |
+| P1 | Si-Ware NeoSpectra Scanner | Export single-measurement NeoSpectra Scanner, CSV/XLSX ou autre format app, distinct des matrices OSSL wide. | Les matrices reelles sont couvertes; le format une mesure par fichier manque. |
+| P1 | Spectral Evolution / PSR / SR | `.sed` de SR-3500, SR-6500 et firmwares recents, avec reflectance et/ou radiance/DN, units explicites, GPS si disponible. | Couverture terrain utile, mais variants SR et typage unite restent a elargir. |
+| P1 | Spectro Inc. SiWare API | Reponses API JSON reelles et exports CSV associes, avec wavelengths, absorbance/reflectance, predictions et metadata optionnelles. | Les fixtures actuelles sont synthetiques. |
+| P1 | SVC / GER SIG | `.sig` HR-1024i firmware >= 3.0, fichiers avec radiance physique explicite, white-reference/target et exports specdal/spectrolab si possible. | Les principaux variants terrain passent; ces fichiers ameliorent la conformance et les unites. |
+| P1 | VIAVI MicroNIR | Fichier projet natif `.pri` MicroNIR, plus exports CSV/XLSX du meme scan. | Les exports reels passent, mais le natif `.pri` reste customer-only. |
+| P2 | Allotrope ADF vendeur | `.adf` instrumentaux vendeurs (Waters, Sciex, Agilent, Bruker ou autre), idealement spectraux, avec ontologie/unites et export equivalent. | L'ADF local prouve la detection; il manque des ADF instrumentaux et validation SDK. |
+| P2 | Allotrope ASM | JSON ASM issus de conversions vendeurs multiples, pas seulement Benchling/plate-reader; inclure cas spectraux si disponibles. | Benchling est couvert; il faut valider la diversite industrielle. |
+| P2 | AnIML | Vrais `.animl` spectraux avec XSD/conformance, indices segmentes non-zero et plusieurs SeriesSet. | Les exemples spectraux actuels sont synthetiques ou non spectraux. |
+| P2 | Bruker OPUS legacy | OPUS 5/6 archives `.0`, `.1`, `.001`, `.0000` ou sans extension; blocs 2D/imaging si disponibles. | OPUS 7/8 et MPA sont bien couverts; legacy et imaging restent secondaires. |
+| P2 | Bruker Tango / Matrix | Fichiers OPUS natifs issus de Tango FT-NIR et Matrix, avec export DPT/CSV du meme scan. | MPA est couvert; il manque des fixtures dediees Tango/Matrix. |
+| P2 | ENVI / cubes hyperspectraux | Jeux `.hdr` + `.dat/.img` Specim, HySpex, Headwall; cubes NEON AOP HDF5; Specim IQ si archive exploitable; HDF5 cubes avec metadata. | ENVI/AVIRIS fonctionne; ces familles HSI restent a sourcer. |
+| P2 | FGI HDF5 + XML | Paire reelle `.h5`/`.hdf5` + sidecar `.xml` FGI, avec schema XML complet. | Le mapping actuel est synthetic seulement. |
+| P2 | Horiba LabSpec / JobinYvon | `.l6s` single-spectrum, autres `.l6m` LabSpec6, et paire export texte/XML correspondant. | `.l6m` map experimental et XML/TXT sont couverts; single-spectrum manque. |
+| P2 | JASCO JWS | `.jws` V-780/V-series NIR et NRS Raman, streams alternatifs `Data`, `Header`, `XdataValue`; joindre export texte JASCO. | Les streams publics actuels passent, mais pas ces variants lab/NIR/Raman. |
+| P2 | MATLAB MAT / RData spectraux | `.mat` v5/v7.3 et `.RData` reels avec structures heterogenes, metadata, targets, cubes ou multi-signaux. | Couverture ML utile; structures arbitraires a elargir. |
+| P2 | MFR-7 / MFRSR | `.OUT` MFR-7/MFRSR reel redistribuable et NetCDF ARM supplementaires avec calibration, `_FillValue`, filtres et QC. | NetCDF ARM local seulement; `.OUT` redistribuable absent. |
+| P2 | Microtops II / MAN | `.TXT` legacy Microtops II redistribuable, exports MAN ASCII/NetCDF generiques sans politique restrictive, et header complet. | MAN local fonctionne, mais pas de `.TXT` legacy public ni lecteur NetCDF generique sans fallback. |
+| P2 | NetCDF NIRS generique | `.nc`/`.cdf` spectraux reels avec wavelengths, spectra, metadata, QC, groupes multi-signaux. | Les schemas dedies passent; il faut elargir les schemas NIRS reels. |
+| P2 | Ocean Optics / Ocean Insight | Exports QE Pro, Maya, Apex; vrai `.spc` Ocean non-Galactic; textes Jaz/OceanView avec metadata explicite. | Large couverture active, mais plusieurs appareils recents restent sans fixture. |
+| P2 | PerkinElmer Spectrum / Lambda / Spotlight | `.sp` PerkinElmer NIR/Lambda, `.fsm` Spotlight imaging, et exports CSV/TXT du meme scan. | `.sp` mono-spectre passe; imaging et variants NIR/Lambda restent a sourcer. |
+| P2 | Renishaw WDF | `.wdf` InVia Qontor/Apollo, autres layouts `MAP `, maps/depth/time-series avec export CSV/ASCII equivalent. | Couverture Raman adjacente forte; il manque certains layouts et conformance full-array. |
+| P2 | Shimadzu UVProbe | Vrai `.spc` natif Shimadzu et vrai `.txt` UVProbe, avec export compare si possible. | Le `.txt` actuel est synthetique; le natif `.spc` manque. |
+| P2 | Specim IQ / cubes terrain | Archive Specim IQ exploitable reduite, avec raw/processed identifies et licence claire. | Mentionne dans le sweep comme source possible mais trop grosse/non isolee pour l'instant. |
+| P2 | Thermo / Galactic GRAMS SPC | `.spc` new big-endian, vieux headers/logs, fichiers IR/NIR multi-subfile atypiques; exclure si possible NMR/FID pur. | Les variants LSB utiles passent; BE et vieux logs restent secondaires. |
+| P2 | Thermo Nicolet OMNIC | `.srsx`, autres `.srs` high-speed/rapid-scan, et variants `.spa/.spg` avec export ASCII. | SPA/SPG/SRS sont utiles; `.srsx` reste absent. |
+| P2 | WiTec WIP / WID | `.wip`, `.wid` de layouts WiTec varies, avec coordonnees physiques, Raman-shift et export ASCII equivalent. | Un layout WIP est decode; les layouts generaux restent a coder/sourcer. |
+| P3 | ENVI Spectral Library legacy | `.slb` accompagne de `.hdr` si disponible. | Faible impact NIRS, mais ferme le variant legacy. |
+| P3 | Excel legacy | `.xls` OLE spectral, vrai `.xlsm` avec macros, workbooks multi-feuilles reels, cas ou Excel convertit les longueurs d'onde en dates. | Non bloquant pour diffusion moderne, utile pour robustesse import. |
+| P3 | MODTRAN albedo | Sortie `.dat` MODTRAN/ONTAR redistribuable sous licence claire. | Hors coeur NIRS; sample reel absent. |
+| P3 | USGS SPECPR | Binaire SPECPR original et dumps AREF avec axes verifiables. | Les textes USGS/ECOSTRESS sont couverts; le binaire manque. |
+
+Ne pas sourcer en priorite pour ce projet: fNIRS neuroscience (`.snirf`,
+`.nirs`, `.wl1/.wl2`), ANDI/mzML/mzMLb MS, Hamamatsu HPD-TA, DigitalSurf
+MountainsMap et Princeton TriVista, sauf si l'objectif change explicitement
+vers physiologie, MS ou Raman/AFM adjacent. Ces formats sont hors perimetre ou
+deja suffisamment couverts pour l'usage NIRS actuel.
+
 ## Notes pour les lignes non finalisées
 
 Les lignes `Couverture NIRS = diffusable` peuvent rester listees quand il
