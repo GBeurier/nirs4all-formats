@@ -153,6 +153,7 @@ const CASES: &[(&str, &str)] = &[
         "matlab_synthetic_v73",
         "samples/matlab/synthetic_nirs_v73.mat",
     ),
+    ("excel_synthetic_nirs", "samples/excel/synthetic_nirs.xlsx"),
     (
         "spectral_matrix_foss_winisi",
         "samples/foss_winisi/synthetic_winisi_export.txt",

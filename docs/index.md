@@ -16,6 +16,7 @@ formats/animl
 formats/asd
 formats/bruker-opus
 formats/envi-sli
+formats/excel
 formats/galactic-spc
 formats/hdf5
 formats/jcamp-dx

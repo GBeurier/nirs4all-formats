@@ -75,7 +75,7 @@ Legend for **Container**:
 | Bruker OPUS native | no fixed ext. (often `.0`, `.0000`, …) | bin | ✅ | R: `opusreader2`, `hyperSpec.utils::read_opus()`; Py: `brukeropusreader`, `brukeropus`, `opusFC`, `spectrochempy.read_opus()` | Proprietary, reverse-engineered. Block-based file with parameter blocks + spectral blocks. Several Python readers diverge in completeness. |
 | ENVI Spectral Library | `.sli` + `.hdr` (sometimes `.slb`) | mixed (hdr ascii + sli bin) | ✅ | R: `RStoolbox::readSLI()`; Py: `spectral` (Spectral Python), `pysptools` | Well documented. Reference for our internal representation: paired metadata + binary block. |
 | FGI HDF5 + XML | `.h5`, `.hdf5`, `.xml` | hdf5 + xml | 🟡 | R: `rhdf5`, `hdf5r`, `xml2`; Py: `h5py`, `lxml` | Generic HDF5 payload is covered for committed nested `spectra` + `wavelengths` fixture; XML sidecar mapping remains pending. |
-| Excel spectral tables | `.xls`, `.xlsx` | tabular | ✅ | `readxl`, `openpyxl`, `pandas.read_excel()` | `.xlsx` is ZIP/XML, `.xls` is OLE/CFB. Trivial if header convention is documented. |
+| Excel spectral tables | `.xls`, `.xlsx` | tabular | ✅ | `readxl`, `openpyxl`, `pandas.read_excel()`; Rust: `calamine` | Current native reader covers `.xlsx/.xlsm` single-sheet spectral tables with numeric wavelength headers; legacy `.xls` and multi-sheet schemas remain pending. |
 | MFR Sun Photometer | `.OUT` | ascii | 🟠 | Ad-hoc parser; SPECCHIO | Regular fixed-width text; committed MFR fixture is covered by `sun_photometer`. |
 | Ocean Optics SpectraSuite | `.csv` (non-comma) | ascii | ✅ | R: `lightr`, `pavo::getspec()`; Py: ad-hoc | Variant CSV with `;` or tab separator + multi-line header. |
 | Ocean Optics OceanView | `.txt`, `.ProcSpec`, `.spc` (Ocean Optics flavour, not Galactic) | mixed | 🟡 | R: [`lightr::lr_parse_procspec()`](https://www.rdocumentation.org/packages/lightr/versions/1.9.0/topics/lr_parse_procspec) | `.ProcSpec` is a proprietary container (XML + binary payload, optionally archived) with a checksum that `lightr` validates. Layout drifts across OceanView versions. |
@@ -157,7 +157,7 @@ the same `SpectralRecord` schema as point spectroradiometers.
 |---|---|---|
 | `.mat` (MATLAB) | Many academic NIR datasets are shared as MATLAB files | Current native reader covers simple MAT v5 and v7.3 `X` + `wavelengths` + optional `y`; Eigenvector DSOs need a dedicated mapper. |
 | `.npy` / `.npz` | Common in ML workflows | Already in `nirs4all`. Reuse. |
-| `.xlsx` | Many lab transfers happen via Excel | Already in `nirs4all`. Reuse. |
+| `.xlsx` | Many lab transfers happen via Excel | Current native reader covers simple `.xlsx/.xlsm` spectral tables; multi-sheet lab templates remain pending. |
 | Raman / UV-Vis "look-alikes" (Renishaw WDF, Horiba LabSpec, WiTec WIP, JASCO) | Same `.spc`/`.jws` family, often confused with NIR | Detect, report instrument type, refuse only if explicitly NIRS-only mode is requested. |
 
 ---
