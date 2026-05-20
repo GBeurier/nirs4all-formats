@@ -1,9 +1,9 @@
 # Renishaw WDF
 
-Status: experimental partial.
+Status: experimental.
 
-The Renishaw WDF reader covers the minimal single-spectrum subset of WiRE
-`.wdf` files:
+The Renishaw WDF reader covers the spectral payload subset of WiRE `.wdf`
+files:
 
 - `WDF1` chunk header and block table validation;
 - `DATA` float32 ordinate payload;
@@ -12,21 +12,25 @@ The Renishaw WDF reader covers the minimal single-spectrum subset of WiRE
 - fixed-header metadata such as point count, scan type, measurement type,
   accumulation count, application version, laser wavenumber, user and title.
 
-Maps, line scans, depth profiles, time series, StreamLine acquisitions,
-white-light images and interrupted acquisitions are recognized by the same WDF
-sniffer but refused by the current reader until `WMAP` and `ORGN` navigation
-axes are decoded.
+Maps, line scans, depth profiles, time series, StreamLine acquisitions and
+interrupted acquisitions are emitted as one `SpectralRecord` per stored
+spectrum. Navigation axes from `WMAP` and `ORGN` are not decoded yet, so those
+multi-spectrum records carry `spectrum_index` and warning
+`renishaw_wdf_navigation_axes_pending`. Undefined `measurement_type=0`
+containers are still refused.
 
 ## Supported Fixtures
 
 | Fixture | Records | Axis | Notes |
 |---|---:|---|---|
 | `samples/raman_renishaw/renishaw_test_spectrum.wdf` | 1 | wavelength, `nm`, 36 points | RosettaSciIO single-point spectrum |
+| `samples/raman_renishaw/renishaw_test_linescan.wdf` | 5 | wavelength, `nm`, 40 points | Linescan payload; navigation axes pending |
+| `samples/raman_renishaw/interrupted_acquisition.wdf` | 12 | wavenumber, `cm-1`, 1010 points | Reads stored count and warns about truncated capacity |
 | `samples/raman_renishaw/wire_sp.wdf` | 1 | wavenumber, `cm-1`, 1015 points | SpectroChemPy real-world single spectrum |
 
-Known negative fixtures include `renishaw_test_undefined.wdf` and
-`interrupted_acquisition.wdf`; they fail with a clear single-spectrum subset
-message rather than silently flattening map or partial-acquisition data.
+The full committed WDF fixture set is covered by count-level tests except
+`renishaw_test_undefined.wdf` and `wire_undefined.wdf`, which fail with a clear
+undefined-measurement message.
 
 ## Binary Notes
 

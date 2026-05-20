@@ -11,11 +11,13 @@
         "container",
         "laser_wavenumber",
         "measurement_type",
+        "measurement_type_label",
         "other_data_count",
         "point_count",
         "scan_type",
         "spectral_unit_code",
         "spectrum_count",
+        "spectrum_index",
         "title",
         "username",
         "x_data_type",
@@ -50,7 +52,7 @@
       "source_sha256": "9a7a8489b7e5360bcc76df6e74c8a3f88e40ef8fdbee62db7b18490d4ca76d73",
       "target_keys": [],
       "warnings": [
-        "renishaw_wdf_single_spectrum_subset"
+        "renishaw_wdf_reverse_engineered_chunks"
       ]
     }
   ]
