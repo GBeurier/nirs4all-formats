@@ -23,6 +23,7 @@ formats/jcamp-dx
 formats/matlab
 formats/msa-iso22029
 formats/netcdf
+formats/nicolet-omnic
 formats/ocean-optics
 formats/row-spectral-table
 formats/siware-api
