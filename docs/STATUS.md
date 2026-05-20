@@ -24,7 +24,8 @@ Experimental native readers:
   Air CSV and VIAVI MicroNIR CSV fixtures;
 - sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF with
   optional ARM QC YAML sidecar ranges, Microtops `.TXT`, the committed
-  Microtops MAN NetCDF AOT fixture, and
+  Microtops MAN NetCDF AOT fixture with typed aerosol-optical-thickness
+  signals, and
   local-only AERONET MAN ASCII `.lev10/.lev15/.lev20` exports;
 - AnIML spectral XML: spectral `SeriesSet` fixtures with explicit values or
   uniform `AutoIncrementedValueSet` wavelength axes, absorbance signal and
