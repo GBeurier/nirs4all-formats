@@ -62,16 +62,19 @@ Experimental native readers:
   canonical `spectra`/`metadata`/`references` multi-sheet lab templates with
   numeric wavelength headers; legacy `.xls` remains pending;
 - Bruker OPUS DPT ASCII export (`.dpt`);
-- Bruker OPUS native binaries, 1D data/status block pairs;
+- Bruker OPUS native binaries, 1D data/status block pairs and cross-reader
+  fixtures with semantic tests over the committed OPUS corpus;
 - Avantes AvaSoft ASCII wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) and two-column irradiance export (`.IRR`);
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and AvaSoft 8 binaries (`.Raw8`, `.IRR8`);
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64 payloads;
 - AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
   BIL payload expanded to one raw-count spectrum per pixel, with wavelength
   axis from `.spc` and optional ground-truth class targets from `.GIS`;
-- Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`)
-  and `.ProcSpec` ZIP/XML archives; the committed Ocean Optics `.spc` sample is
-  covered by the Galactic SPC reader;
+- Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`,
+  `.Master.Transmission`) and `.ProcSpec` ZIP/XML archives; all committed
+  Ocean fixtures are golden-backed, Ocean JCAMP is routed through JCAMP-DX and
+  the committed Ocean Optics `.spc` sample is covered by the Galactic SPC
+  reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
   top-level multi-block XYDATA files as multiple records, NMR `NTUPLES`
   real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;
@@ -111,8 +114,9 @@ Experimental native readers:
   `YLST` chunks plus `ORGN`/`WMAP` navigation metadata. Map, line, depth,
   FocusTrack, time-series and interrupted acquisitions emit one record per
   stored spectrum with normalized spatial, elapsed-time and map-index metadata;
-  `WHTL` JPEG white-light image metadata and `MAP ` PSET analysis-block
-  inventories are preserved without decoding derived images as spectra.
+  `WHTL` JPEG white-light image metadata is preserved, and observed `MAP `
+  PSET `dataRange` tails are decoded as per-record derived metadata when their
+  length matches the stored spectrum count.
 - Princeton TriVista TVF (`.tvf`) XML frame payloads for committed single
   spectra, line scans, maps, time-series and Step-and-Glue fixtures. The reader
   emits one record per frame and preserves Step-and-Glue child windows.

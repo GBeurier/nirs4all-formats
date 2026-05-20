@@ -44,7 +44,9 @@ parameter blocks are kept under `bruker_opus_params`.
 ## Fixtures and Reference Checks
 
 Committed golden coverage currently includes the full Bruker OPUS corpus in
-`samples/bruker_opus/`:
+`samples/bruker_opus/`. Direct semantic tests now cover the cross-reader
+fixtures from `spectral-cockpit/opusreader2`, `pierreroudier/opusreader`,
+`joshduran/brukeropus`, SpectroChemPy and AfSIS Bruker MPA samples:
 
 | Fixture | Expected shape |
 |---|---|

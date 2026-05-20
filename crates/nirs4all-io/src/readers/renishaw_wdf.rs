@@ -218,7 +218,8 @@ fn parse_renishaw_wdf(
         metadata.insert("title".to_string(), json!(header.title));
     }
     insert_navigation_metadata(&mut metadata, &navigation);
-    insert_auxiliary_block_metadata(&mut metadata, bytes, &blocks);
+    let map_analysis_ranges =
+        insert_auxiliary_block_metadata(&mut metadata, bytes, &blocks, spectrum_count);
 
     let mut warnings = vec!["renishaw_wdf_reverse_engineered_chunks".to_string()];
     warnings.extend(navigation.warnings.iter().cloned());
@@ -236,6 +237,7 @@ fn parse_renishaw_wdf(
         let mut record_metadata = metadata.clone();
         record_metadata.insert("spectrum_index".to_string(), json!(spectrum_index));
         insert_record_navigation(&mut record_metadata, &navigation, spectrum_index);
+        insert_record_map_analysis(&mut record_metadata, &map_analysis_ranges, spectrum_index);
         let record = single_signal_record(
             "renishaw-wdf",
             reader,
@@ -468,7 +470,8 @@ fn insert_auxiliary_block_metadata(
     metadata: &mut BTreeMap<String, Value>,
     bytes: &[u8],
     blocks: &[WdfBlock],
-) {
+    spectrum_count: usize,
+) -> Vec<WdfMapAnalysisDataRange> {
     if let Some(block) = blocks.iter().find(|block| block.name == "WHTL") {
         metadata.insert(
             "white_light_image".to_string(),
@@ -476,18 +479,27 @@ fn insert_auxiliary_block_metadata(
         );
     }
 
-    let map_blocks = blocks
+    let parsed_map_blocks = blocks
         .iter()
         .filter(|block| block.name == "MAP ")
-        .map(|block| map_analysis_block_metadata(bytes, block))
+        .map(|block| map_analysis_block(bytes, block))
         .collect::<Vec<_>>();
-    if !map_blocks.is_empty() {
+    if !parsed_map_blocks.is_empty() {
+        let map_blocks = parsed_map_blocks
+            .iter()
+            .map(|block| block.metadata.clone())
+            .collect::<Vec<_>>();
         metadata.insert(
             "map_analysis_block_count".to_string(),
             json!(map_blocks.len()),
         );
-        metadata.insert("map_analysis_blocks".to_string(), json!(map_blocks));
+        metadata.insert("map_analysis_blocks".to_string(), Value::Array(map_blocks));
     }
+    parsed_map_blocks
+        .into_iter()
+        .filter_map(|block| block.data_range)
+        .filter(|range| range.values.len() == spectrum_count)
+        .collect()
 }
 
 fn white_light_image_metadata(bytes: &[u8], block: &WdfBlock) -> Value {
@@ -534,30 +546,113 @@ fn white_light_image_metadata(bytes: &[u8], block: &WdfBlock) -> Value {
     Value::Object(object)
 }
 
-fn map_analysis_block_metadata(bytes: &[u8], block: &WdfBlock) -> Value {
+struct WdfMapAnalysisBlock {
+    metadata: Value,
+    data_range: Option<WdfMapAnalysisDataRange>,
+}
+
+struct WdfMapAnalysisDataRange {
+    block_uid: u32,
+    label: Option<String>,
+    values: Vec<f64>,
+}
+
+fn map_analysis_block(bytes: &[u8], block: &WdfBlock) -> WdfMapAnalysisBlock {
     let payload = block_payload(bytes, block);
     let mut object = serde_json::Map::new();
     object.insert("block_uid".to_string(), json!(block.block_uid));
     object.insert("byte_len".to_string(), json!(payload.len()));
     object.insert("sha256".to_string(), json!(sha256_hex(payload)));
+    let mut pset_declared_len = None;
     if payload.starts_with(b"PSET") {
         object.insert("payload_kind".to_string(), json!("pset"));
         if payload.len() >= 8 {
-            object.insert(
-                "pset_declared_len".to_string(),
-                json!(u32::from_le_bytes([
-                    payload[4], payload[5], payload[6], payload[7]
-                ])),
-            );
+            let declared_len =
+                u32::from_le_bytes([payload[4], payload[5], payload[6], payload[7]]) as usize;
+            pset_declared_len = Some(declared_len);
+            object.insert("pset_declared_len".to_string(), json!(declared_len));
         }
     } else {
         object.insert("payload_kind".to_string(), json!("unknown"));
     }
     let preview_strings = printable_ascii_strings(payload, 4, 8);
+    let label = map_analysis_label(&preview_strings);
     if !preview_strings.is_empty() {
         object.insert("ascii_preview".to_string(), json!(preview_strings));
     }
-    Value::Object(object)
+    let data_range = pset_declared_len.and_then(|declared_len| {
+        parse_map_analysis_data_range(payload, declared_len).map(|values| {
+            object.insert("data_range_value_count".to_string(), json!(values.len()));
+            object.insert(
+                "data_range_encoding".to_string(),
+                json!("f32le_tail_after_pset"),
+            );
+            object.insert("data_range_indexed_by".to_string(), json!("spectrum_index"));
+            if let Some(first) = values.first() {
+                object.insert("data_range_first".to_string(), json!(first));
+            }
+            if let Some(last) = values.last() {
+                object.insert("data_range_last".to_string(), json!(last));
+            }
+            WdfMapAnalysisDataRange {
+                block_uid: block.block_uid,
+                label,
+                values,
+            }
+        })
+    });
+    WdfMapAnalysisBlock {
+        metadata: Value::Object(object),
+        data_range,
+    }
+}
+
+fn parse_map_analysis_data_range(payload: &[u8], pset_declared_len: usize) -> Option<Vec<f64>> {
+    if !payload
+        .windows(b"dataRange".len())
+        .any(|window| window == b"dataRange")
+    {
+        return None;
+    }
+    let value_start = 8usize.checked_add(pset_declared_len)?.checked_add(8)?;
+    let value_bytes = payload.get(value_start..)?;
+    if value_bytes.is_empty() || value_bytes.len() % 4 != 0 {
+        return None;
+    }
+    let value_count = value_bytes.len() / 4;
+    let mut values = Vec::with_capacity(value_count);
+    for chunk in value_bytes.chunks_exact(4) {
+        let value = f32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]) as f64;
+        if !value.is_finite() {
+            return None;
+        }
+        values.push(value);
+    }
+    Some(values)
+}
+
+fn map_analysis_label(preview_strings: &[String]) -> Option<String> {
+    preview_strings
+        .iter()
+        .find(|value| {
+            value.as_str() != "PSET"
+                && value.as_str() != "dataRange"
+                && !value.starts_with("dataRange")
+                && !value.contains('{')
+                && value.contains(' ')
+        })
+        .cloned()
+        .or_else(|| {
+            preview_strings
+                .iter()
+                .find(|value| {
+                    value.as_str() != "PSET"
+                        && value.as_str() != "dataRange"
+                        && !value.starts_with("dataRange")
+                        && !value.contains('{')
+                })
+                .cloned()
+        })
 }
 
 fn block_payload<'a>(bytes: &'a [u8], block: &WdfBlock) -> &'a [u8] {
@@ -774,6 +869,31 @@ fn insert_record_navigation(
     }
     if let Some(map) = &navigation.map {
         insert_map_indices(metadata, map, spectrum_index);
+    }
+}
+
+fn insert_record_map_analysis(
+    metadata: &mut BTreeMap<String, Value>,
+    ranges: &[WdfMapAnalysisDataRange],
+    spectrum_index: usize,
+) {
+    let values = ranges
+        .iter()
+        .filter_map(|range| {
+            range.values.get(spectrum_index).map(|value| {
+                let mut object = serde_json::Map::new();
+                object.insert("block_uid".to_string(), json!(range.block_uid));
+                if let Some(label) = &range.label {
+                    object.insert("label".to_string(), json!(label));
+                }
+                object.insert("value".to_string(), json!(value));
+                object.insert("source".to_string(), json!("MAP dataRange"));
+                Value::Object(object)
+            })
+        })
+        .collect::<Vec<_>>();
+    if !values.is_empty() {
+        metadata.insert("map_analysis_values".to_string(), Value::Array(values));
     }
 }
 
