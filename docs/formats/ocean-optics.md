@@ -54,7 +54,9 @@ For `.ProcSpec` archives:
 - source `pixelValues`: `sample` raw counts;
 - `darkSpectrum/pixelValues`: `dark_reference` raw counts;
 - `referenceSpectrum/pixelValues`: `white_reference` raw counts;
-- `processedPixels`: `processed` signal.
+- `processedPixels`: `transmittance`, `reflectance`, `absorbance` or
+  `processed`, based on the OceanView core processor / `yUnits` class when
+  available.
 
 Metadata is preserved under `metadata.vendor` using normalized key names. The
 reader stores the source file name there as well, because some workflows encode
@@ -73,9 +75,9 @@ Current committed controls:
 | `spec.csv` | 1994 | `processed` | `299.99 -> 700.03 nm` | first `10.013`, last `15.408` |
 | `jazspec.jaz` | 2048 | `dark_reference`, `white_reference`, `sample`, `processed` | `190.8535 -> 886.439331 nm` | processed last `13.679238` |
 | `irrad.JazIrrad` | 2048 | `dark_reference`, `sample`, `irradiance` | `191.016296 -> 891.915466 nm` | irradiance last `3.643908` |
-| `OceanOptics_Linux.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 125.074331` |
-| `OceanOptics_Windows.ProcSpec` | 2048 | `sample`, `dark_reference`, `white_reference`, `processed` | `190.939253 -> 888.233535 nm` | processed `282.857143 -> 40.050321` |
-| `whiteref.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `processed` | `176.360418 -> 893.694340 nm` | processed `0.0 -> 97.294250` |
+| `OceanOptics_Linux.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `transmittance` | `176.360418 -> 893.694340 nm` | transmittance `0.0 -> 125.074331` |
+| `OceanOptics_Windows.ProcSpec` | 2048 | `sample`, `dark_reference`, `white_reference`, `transmittance` | `190.939253 -> 888.233535 nm` | transmittance `282.857143 -> 40.050321` |
+| `whiteref.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `reflectance` | `176.360418 -> 893.694340 nm` | reflectance `0.0 -> 97.294250` |
 | `OceanOptics_period.jdx` | 3648 | `sample`, `dark_reference`, `white_reference`, computed `processed` via JCAMP reader | `176.36 -> 893.69 nm` | processed `0.0 -> 171.977070` |
 | `OceanOptics.spc` | 3648 | `transmittance` via Galactic SPC reader | `176.360413 -> 893.694336 nm` | `0.0 -> 119.425171` |
 
@@ -94,5 +96,5 @@ conformance-only dependency because the Rust core is MIT.
   available.
 - Add samples for any non-Galactic Ocean Optics `.spc` variant if encountered.
 - Add reference reports against `lightr` and `pavo`.
-- Improve semantic typing of generic `processed` spectra when the export
-  records processing mode in metadata rather than column labels.
+- Improve semantic typing of generic text/Jaz `processed` spectra when the
+  export records processing mode in metadata rather than column labels.

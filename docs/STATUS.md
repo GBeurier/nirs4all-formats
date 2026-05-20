@@ -75,10 +75,10 @@ Experimental native readers:
   BIL payload expanded to one raw-count spectrum per pixel, with wavelength
   axis from `.spc` and optional ground-truth class targets from `.GIS`;
 - Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`,
-  `.Master.Transmission`) and `.ProcSpec` ZIP/XML archives; all committed
-  Ocean fixtures are golden-backed, Ocean JCAMP is routed through JCAMP-DX and
-  the committed Ocean Optics `.spc` sample is covered by the Galactic SPC
-  reader;
+  `.Master.Transmission`) and `.ProcSpec` ZIP/XML archives with XML-driven
+  transmittance/reflectance typing; all committed Ocean fixtures are
+  golden-backed, Ocean JCAMP is routed through JCAMP-DX and the committed Ocean
+  Optics `.spc` sample is covered by the Galactic SPC reader;
 - JCAMP-DX `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF decoding,
   top-level multi-block XYDATA files as multiple records, NMR `NTUPLES`
   real/imaginary pages, and Ocean Optics `LINK`/`XYPOINTS` blocks;

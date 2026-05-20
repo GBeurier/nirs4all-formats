@@ -8,7 +8,7 @@
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::ocean_optics",
-      "record_signal_type": "unknown",
+      "record_signal_type": "reflectance",
       "signal_count": 4,
       "signals": [
         {
@@ -34,10 +34,10 @@
           "axis_len": 3648,
           "axis_order": "ascending",
           "axis_unit": "nm",
-          "name": "processed",
-          "role": "processed",
-          "signal_type": "unknown",
-          "unit": null,
+          "name": "reflectance",
+          "role": "reflectance",
+          "signal_type": "reflectance",
+          "unit": "%",
           "value_first": 0.0,
           "value_last": 97.29425,
           "value_sum": 350816.045468,
