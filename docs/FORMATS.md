@@ -19,6 +19,7 @@ fixtures:
 | Spectral Evolution SED | `.sed` | Experimental | Header key/value metadata plus wavelength and signal columns. |
 | SVC/GER SIG | `.sig` | Experimental | Spectra Vista SIG text fixtures with reference, target and reflectance channels. |
 | ASD FieldSpec | `.asd`, ASD binary files with numeric extensions | Experimental | Revisions 1/6/7/8: fixed header, wavelength axis and primary spectrum. Reference/calibration/dependent blocks are not decoded yet. |
+| Thermo / Galactic GRAMS SPC | `.spc`, `.SPC` | Experimental | New little-endian `0x4B` headers with generated X, explicit X, multi common-X, and `-XYXY` directory layouts; old little-endian `0x4D` is limited. New big-endian `0x4C` is detected but not decoded. |
 
 Promotion from Experimental to Beta/Done requires golden JSON conformance,
 reference-loader comparison where available and adversarial tests.

@@ -140,6 +140,77 @@ fn reads_plain_affn_jcamp_dx() {
     assert_eq!(signal.signal_type, SignalType::Transmittance);
 }
 
+#[test]
+fn reads_galactic_spc_single_even_axis() {
+    let records = open_path(workspace_file("samples/galactic_spc/BENZENE.SPC")).expect("open spc");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "galactic-spc");
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 1_842);
+    assert_eq!(signal.axis.unit, "cm-1");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.signal_type, SignalType::Absorbance);
+    assert!((signal.values[0] - 0.1015599817).abs() < 0.000001);
+}
+
+#[test]
+fn reads_galactic_spc_explicit_x_axis() {
+    let records = open_path(workspace_file("samples/galactic_spc/s_xy.spc")).expect("open spc");
+
+    assert_eq!(records.len(), 1);
+    let signal = records[0]
+        .signals
+        .get("arbitrary_intensity")
+        .expect("arbitrary intensity");
+    assert_eq!(signal.axis.values.len(), 512);
+    assert_eq!(signal.axis.unit, "min");
+    assert!((signal.axis.values[0] - 1.0866667032).abs() < 0.000001);
+    assert_eq!(signal.values[0], 45_333.0);
+}
+
+#[test]
+fn reads_galactic_spc_multi_common_axis() {
+    let records = open_path(workspace_file("samples/galactic_spc/nir.spc")).expect("open spc");
+
+    assert_eq!(records.len(), 20);
+    let signal = records[0].signals.get("kubelka_munk").expect("km");
+    assert_eq!(signal.axis.values.len(), 700);
+    assert_eq!(signal.axis.unit, "nm");
+    assert_eq!(signal.signal_type, SignalType::KubelkaMunk);
+    assert_eq!(records[0].metadata["sample_id"].as_str(), Some("1"));
+}
+
+#[test]
+fn reads_galactic_spc_xyxy_directory() {
+    let records = open_path(workspace_file("samples/galactic_spc/m_xyxy.spc")).expect("open spc");
+
+    assert_eq!(records.len(), 512);
+    let signal = records[0].signals.get("abundance").expect("abundance");
+    assert_eq!(signal.axis.values.len(), 8);
+    assert_eq!(signal.axis.unit, "m/z");
+    assert!((signal.axis.values[0] - 16_943.600006).abs() < 0.000001);
+    assert_eq!(signal.values[0], 6_823.0);
+}
+
+#[test]
+fn reads_galactic_spc_old_lsb_header() {
+    let records =
+        open_path(workspace_file("samples/galactic_spc/LC_DIODE_ARRAY.SPC")).expect("open spc");
+
+    assert!(!records.is_empty());
+    let signal = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(signal.axis.values.len(), 181);
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    assert_eq!(signal.axis.unit, "nm");
+    assert!((signal.values[0] - 0.0040779736).abs() < 0.000001);
+    assert!(records[0]
+        .provenance
+        .warnings
+        .iter()
+        .any(|warning| warning.contains("old_spc_header_limited")));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

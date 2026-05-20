@@ -11,6 +11,7 @@ ROADMAP
 STATUS
 FORMATS
 formats/asd
+formats/galactic-spc
 formats/text-readers-001
 DATA_MODEL
 CONFORMANCE
