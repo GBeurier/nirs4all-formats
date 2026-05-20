@@ -1,3 +1,4 @@
+pub mod allotrope_adf;
 pub mod allotrope_asm;
 pub mod animl;
 pub mod asd;
@@ -41,6 +42,7 @@ pub mod witec_wip;
 
 mod util;
 
+pub use allotrope_adf::AllotropeAdfReader;
 pub use allotrope_asm::AllotropeAsmReader;
 pub use animl::AnimlReader;
 pub use asd::AsdReader;

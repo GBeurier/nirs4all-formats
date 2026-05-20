@@ -271,6 +271,51 @@ fn reads_nicolet_omnic_srs_tgair_series() {
 }
 
 #[test]
+fn reads_local_nicolet_omnic_srs_variants_when_present() {
+    let tga_demo = workspace_file("samples_local/nicolet_omnic/spectrochempy_TGA_demo.srs");
+    let rapid_scan = workspace_file("samples_local/nicolet_omnic/spectrochempy_rapid_scan.srs");
+    let reprocessed =
+        workspace_file("samples_local/nicolet_omnic/spectrochempy_rapid_scan_reprocessed.srs");
+    if !tga_demo.exists() || !rapid_scan.exists() || !reprocessed.exists() {
+        eprintln!("skipping local-only OMNIC SRS variant samples");
+        return;
+    }
+
+    let records = open_path(tga_demo).expect("open local OMNIC TGA demo");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(485));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 3_630);
+    assert_eq!(absorbance.values.len(), 1_760_550);
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert!((absorbance.axis.values[0] - 3999.7041015625).abs() < 0.000001);
+    assert!((absorbance.axis.values[3_629] - 500.4451599121094).abs() < 0.000001);
+
+    let records = open_path(rapid_scan).expect("open local OMNIC rapid scan");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(643));
+    let detector_signal = records[0]
+        .signals
+        .get("detector_signal")
+        .expect("detector signal");
+    assert_eq!(detector_signal.axis.values.len(), 4_160);
+    assert_eq!(detector_signal.values.len(), 2_674_880);
+    assert_eq!(detector_signal.axis.kind, AxisKind::Index);
+    assert_eq!(detector_signal.signal_type, SignalType::Interferogram);
+    assert_eq!(detector_signal.unit.as_deref(), Some("V"));
+    assert!((detector_signal.values[0] + 0.05086925998330116).abs() < 0.000001);
+
+    let records = open_path(reprocessed).expect("open local OMNIC rapid scan reprocessed");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].metadata["series_y_len"].as_u64(), Some(643));
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 3_734);
+    assert_eq!(absorbance.values.len(), 2_400_962);
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert!((absorbance.values[0] - 0.0832669734954834).abs() < 0.000001);
+}
+
+#[test]
 fn reads_perkin_elmer_sp_single_spectrum() {
     let records = open_path(workspace_file("samples/perkin_elmer/spectra.sp")).expect("open sp");
 
@@ -2753,6 +2798,49 @@ fn reads_allotrope_asm_spectrum_cubes_and_endpoints() {
     assert_eq!(endpoint.axis.values, vec![450.0]);
     assert_eq!(endpoint.unit.as_deref(), Some("mAU"));
     assert!((endpoint.values[0] - 3.41797666666667).abs() < 0.000001);
+}
+
+#[test]
+fn reads_local_allotrope_adf_data_cubes_when_present() {
+    let path = workspace_file("samples_local/allotrope_adf/adfsee_example.adf");
+    if !path.exists() {
+        return;
+    }
+
+    let records = open_path(path).expect("open local ADF");
+    assert_eq!(records.len(), 4);
+
+    let first = &records[0];
+    assert_eq!(first.provenance.format, "allotrope-adf");
+    assert_eq!(
+        first.metadata["cube_id"].as_str(),
+        Some("146cc0ae-64c5-4577-997b-bb56a2bab545")
+    );
+    assert_eq!(
+        first.metadata["axis_source"].as_str(),
+        Some("generated_index")
+    );
+    let signal = first.signals.values().next().expect("ADF measure signal");
+    assert_eq!(signal.axis.values.len(), 18_001);
+    assert_eq!(signal.axis.unit, "index");
+    assert_eq!(signal.axis.kind, AxisKind::Index);
+    assert_eq!(signal.signal_type, SignalType::Unknown);
+    assert!((signal.values[0] - 0.0).abs() < 0.000001);
+    assert!((signal.values[18_000] - 0.147371).abs() < 0.000001);
+    assert!(first
+        .provenance
+        .warnings
+        .contains(&"allotrope_adf_rdf_semantics_not_resolved".to_string()));
+
+    let scaled = &records[1];
+    assert_eq!(
+        scaled.metadata["axis_source"].as_str(),
+        Some("scale_dataset")
+    );
+    assert_eq!(scaled.metadata["secondary_index"].as_u64(), Some(0));
+    let signal = scaled.signals.values().next().expect("scaled ADF signal");
+    assert!((signal.axis.values[0] - 0.0).abs() < 0.000001);
+    assert!((signal.axis.values[18_000] - 15.002275).abs() < 0.000001);
 }
 
 #[test]

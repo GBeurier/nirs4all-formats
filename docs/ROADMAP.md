@@ -46,6 +46,8 @@ Deliverables:
   fixtures and refusal of non-spectral AnIML results;
 - Allotrope ASM JSON bridge; experimental for plate-reader spectral data cubes
   and detector-wavelength endpoint readings;
+- Allotrope ADF reader; experimental local-only subset for numeric HDF5
+  `/data-cubes`, without RDF/ontology resolution yet;
 - SiWare API JSON reader; experimental for one-measurement NeoSpectra-style
   payloads;
 - NetCDF NIRS reader; experimental for simple `spectra` + `wavelengths`
@@ -60,9 +62,10 @@ Deliverables:
 - Excel workbook reader; experimental for simple `.xlsx/.xlsm` spectral tables
   and canonical `spectra`/`metadata`/`references` multi-sheet lab templates
   with numeric wavelength headers;
-- Thermo Nicolet OMNIC reader; experimental for `.SPA` single spectra and
-  `.spg` grouped spectra and TGA/GC `.srs` time-series matrices, with
-  rapid-scan/high-speed `.srs` and `.srsx` still pending;
+- Thermo Nicolet OMNIC reader; experimental for `.SPA` single spectra,
+  `.spg` grouped spectra, committed TGA/GC `.srs` time-series matrices and
+  local-only rapid-scan raw/reprocessed `.srs`; `.srsx` and broader high-speed
+  variants still pending;
 - Perkin Elmer Spectrum / IR reader; experimental for single-spectrum `.sp`
   `PEPE` block files, with `.fsm` imaging refused for v1;
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`

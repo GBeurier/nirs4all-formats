@@ -18,11 +18,11 @@ refusal, or a documented text/CSV export path. Extension-only routing is not
 accepted for collision-prone families such as `.spc`, `.nir`, `.dat`, `.txt`,
 `.spa` and `.srs`.
 
-## No Sample At All
+## Local-Only Or No Redistributable Sample
 
 | Format | Current behavior | Why blocked | What unlocks it |
 |---|---|---|---|
-| Allotrope ADF `.adf` | Not implemented; not a v1 target. | Membership-gated HDF5/RDF stack; no public fixture. | A redistributable ADF or an Allotrope-member validation fixture plus schema notes. |
+| Allotrope ADF `.adf` | Local-only `adfsee` fixture decodes numeric `/data-cubes`; RDF semantics are not resolved. | No redistributable fixture in `samples/`, no SDK/reference validation, vendor ADFs remain customer-only. | Redistributable ADF fixtures, RDF/ontology mapping, and SDK/reference-reader conformance. |
 
 ## Native Binary Blocked By Missing Fixtures
 
@@ -68,7 +68,7 @@ variants remain untreated until a sample or reference comparison is available.
 | ASD `.asd` | Revisions 1, 6, 7 and 8 primary spectra. | Legacy v3/v4/v5 and calibration companion workflows. |
 | Bruker OPUS | Modern OPUS native 1D spectral/status blocks and DPT exports. | OPUS 5/6 archives, Tango-specific metadata blocks, additional 2D/imaging blocks. |
 | Galactic / Thermo SPC | New little-endian generated-X, explicit-X, common-X multi and `-XYXY`; old LSB limited. | New big-endian `0x4C`, more old-header layouts, real multi-channel instrument fixtures. |
-| Thermo Nicolet OMNIC | `.spa`, `.spg`, TGA/GC `.srs` time-series matrices. | `.srsx`, rapid-scan/high-speed `.srs`, additional OMNIC release layouts. |
+| Thermo Nicolet OMNIC | `.spa`, `.spg`, committed TGA/GC `.srs` matrices and local rapid-scan raw/reprocessed `.srs` matrices. | `.srsx`, high-speed variants beyond the local SpectroChemPy fixtures, additional OMNIC release layouts. |
 | Perkin Elmer | `.sp` single spectra. | `.fsm` Spotlight imaging is intentionally out of v1; PE Lambda NIR-specific variants need fixtures. |
 | BUCHI NIRCal | One committed `.nir` transfer file with spectra/wavenumbers/property schema, plus a local-only cannabis `.nir` validating non-zero `CBDA`/`THCA` targets. | Redistributable non-zero target fixture, `.cal` calibration-only files, NIRMaster variants. |
 | Avantes AvaSoft | Legacy `.TRM/.ROH/.DRK/.REF/.ABS`, AvaSoft 8 `.Raw8/.IRR8`, ASCII exports. | Legacy `.IRR/.RMN`, AvaSoft 8 `.RWD8/.ABS8/.TRM8/.RFL8/.RIR8/.RMN8/.RMD8` fixtures. |

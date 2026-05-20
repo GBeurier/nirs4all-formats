@@ -1,17 +1,24 @@
-# Allotrope ADF `.adf` — NOT FOUND
+# Allotrope ADF `.adf` — local-only sample
 
-The Allotrope Data Format (ADF) is a binary HDF5 file paired with an RDF triplestore. Production-grade pharma-track standard.
+The Allotrope Data Format (ADF) is a binary HDF5 file paired with an RDF
+triplestore. Production ADF files are still pharma/vendor gated, but the
+`adfsee` inspection tool ships one demo file that is useful for local
+reverse-engineering:
 
-## Status: no permissively-licensed open sample exists
+- `samples_local/allotrope_adf/adfsee_example.adf`
+- upstream: `allotrope-open-source/adfsee`, `src/main/resources/instances/example.adf`
+- sha256: `5bfee7f64016187ad18dcbbf832c776881869f4ea26590930a48e09c1bb55c39`
 
-After exhaustive search (Benchling-Open-Source/allotropy, AllotropeFoundation/*, allotrope-open-source/*, allotrope.org direct URLs, GitHub code search), **no public `.adf` binary fixture is available**. Real ADF files are gated behind the Allotrope Foundation membership and per-instrument vendor SDKs.
+The fixture is kept out of committed `samples/` because the data package and
+ontologies are still governed by Allotrope terms. It can be placed in
+`samples_local/` for local validation.
 
-## What we have instead
+## Current parser scope
 
-See `allotrope_asm/` — Allotrope **Simple Model** (ASM JSON) is the practical Allotrope path used by [Benchling/allotropy](https://github.com/Benchling-Open-Source/allotropy) and ships many open fixtures.
+The native reader detects `.adf` HDF5 containers and validates the core ADF
+groups (`/data-cubes`, `/data-description`, `/data-package`, `/named-graphs`).
+It currently extracts numeric `/data-cubes/*/measures/*` payloads and uses a
+matching `/scales/*` dataset as the x axis when available.
 
-## Recommendations for the parser
-
-- **Detection**: ADF is HDF5 (magic `\x89HDF\r\n\x1a\n`) with specific Allotrope groups (`/Allotrope`, `/DataPackage`, etc.). Probe these groups, and refuse with a pointer to `allotropy` if found.
-- **Stub for tests**: if a refusal-path test is needed, generate a synthetic HDF5 with an empty `/Allotrope` group — that's enough to validate the detection logic.
-- **Real samples**: request from allotrope.org (membership-gated) or from a downstream pharma user. Update this README when a real fixture is added.
+This is not a complete ADF implementation. RDF dictionary/quads, ontology
+semantics, vendor method metadata and SDK conformance are still open work.
