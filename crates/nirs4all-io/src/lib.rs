@@ -12,7 +12,7 @@ pub use nirs4all_io_core::{
     SourceFile, SpectralArray, SpectralAxis, SpectralRecord,
 };
 pub use registry::{
-    builtin_probes, open_path, open_path_with_options, probe_path, CubeMask, CubeSelection,
-    CubeWindow, ReadOptions, Reader,
+    builtin_probes, open_bytes, open_bytes_with_options, open_path, open_path_with_options,
+    probe_path, CubeMask, CubeSelection, CubeWindow, ReadOptions, Reader,
 };
 pub use walker::{walk_path, WalkEntry, WalkOptions, WalkOutcome, WalkStats};

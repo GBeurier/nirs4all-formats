@@ -6,8 +6,9 @@ use nirs4all_io_core::{
 };
 
 use crate::readers::util::{
-    metadata_from_pairs, parse_number, read_text_lossy, record_from_signals, safe_signal_name,
-    signal_type_from_label, single_signal_record, split_delimited, SingleSignalSpec,
+    metadata_from_pairs, parse_number, read_bytes, record_from_signals, safe_signal_name,
+    signal_type_from_label, single_signal_record, split_delimited, text_lossy_from_bytes,
+    SingleSignalSpec,
 };
 use crate::Reader;
 
@@ -52,7 +53,16 @@ impl Reader for AvantesAsciiReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         if let Some(record) = read_wave_table(self.name(), source.clone(), &text)? {
             return Ok(vec![record]);
         }

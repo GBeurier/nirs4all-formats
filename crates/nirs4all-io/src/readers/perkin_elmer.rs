@@ -60,6 +60,10 @@ impl Reader for PerkinElmerReader {
             path: path.to_path_buf(),
             source,
         })?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
         let ext = path
             .extension()
             .and_then(|value| value.to_str())
@@ -71,8 +75,8 @@ impl Reader for PerkinElmerReader {
                     .to_string(),
             ));
         }
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        parse_perkin_elmer_sp(&bytes, source, self.name())
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        parse_perkin_elmer_sp(bytes, source, self.name())
     }
 }
 

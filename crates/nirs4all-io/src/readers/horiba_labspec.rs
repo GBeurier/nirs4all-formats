@@ -72,12 +72,16 @@ impl Reader for HoribaLabSpecReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        if looks_like_labspec6_binary(&bytes) {
-            return read_labspec6_binary(&bytes, source, self.name());
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        if looks_like_labspec6_binary(bytes) {
+            return read_labspec6_binary(bytes, source, self.name());
         }
 
-        let text = String::from_utf8_lossy(&bytes).replace('\0', " ");
+        let text = String::from_utf8_lossy(bytes).replace('\0', " ");
         if text.contains("<LSX_Data") && text.contains("<LSX_Tree") {
             read_lsx_xml(&text, source, self.name())
         } else if looks_like_labspec_text(&text) {

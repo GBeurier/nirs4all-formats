@@ -12,7 +12,8 @@ use sha2::{Digest, Sha512};
 use zip::ZipArchive;
 
 use crate::readers::util::{
-    metadata_from_pairs, parse_number, read_text_lossy, record_from_signals, safe_signal_name,
+    metadata_from_pairs, parse_number, read_bytes, record_from_signals, safe_signal_name,
+    text_lossy_from_bytes,
 };
 use crate::Reader;
 
@@ -83,12 +84,21 @@ impl Reader for OceanOpticsReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
         if path
             .extension()
             .and_then(|value| value.to_str())
             .is_some_and(|ext| ext.eq_ignore_ascii_case("procspec"))
         {
-            let (source, parsed) = parse_procspec_archive(path)?;
+            let (source, parsed) = parse_procspec_archive(path, bytes)?;
             let dominant = parsed
                 .signals
                 .get("processed")
@@ -106,7 +116,7 @@ impl Reader for OceanOpticsReader {
             return Ok(vec![record]);
         }
 
-        let (text, source) = read_text_lossy(path)?;
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         let parsed = parse_ocean_text(&text, path)?;
         let signals = signals_from_columns(&parsed)?;
         let dominant = dominant_signal_type(&signals);
@@ -147,13 +157,9 @@ struct ProcSpecXml {
     metadata: BTreeMap<String, String>,
 }
 
-fn parse_procspec_archive(path: &Path) -> Result<(SourceFile, ParsedProcSpec)> {
-    let bytes = std::fs::read(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    let source = SourceFile::from_bytes(path, &bytes, "primary");
-    let mut archive = ZipArchive::new(Cursor::new(bytes.as_slice())).map_err(|error| {
+fn parse_procspec_archive(path: &Path, bytes: &[u8]) -> Result<(SourceFile, ParsedProcSpec)> {
+    let source = SourceFile::from_bytes(path, bytes, "primary");
+    let mut archive = ZipArchive::new(Cursor::new(bytes)).map_err(|error| {
         Error::InvalidRecord(format!("Ocean Optics ProcSpec ZIP error: {error}"))
     })?;
 

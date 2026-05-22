@@ -5,8 +5,8 @@
 
 use extendr_api::prelude::*;
 use nirs4all_io::{
-    open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow, ReadOptions, WalkOptions,
-    WalkOutcome,
+    open_bytes_with_options, open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow,
+    ReadOptions, WalkOptions, WalkOutcome,
 };
 
 fn to_string<T: serde::Serialize>(value: &T) -> std::result::Result<String, Error> {
@@ -42,6 +42,25 @@ fn nirs4allio_native_read(
     let pixels_opt = pixels_from_matrix(pixels)?;
     let options = build_options(rows_opt, cols_opt, pixels_opt)?;
     let records = open_path_with_options(path, &options).map_err(map_io_err)?;
+    to_string(&records)
+}
+
+/// Decode raw bytes through the native registry and return JSON-encoded
+/// records. The file name drives extension-based sniffing and provenance.
+/// @export
+#[extendr]
+fn nirs4allio_native_read_bytes(
+    name: &str,
+    bytes: &[u8],
+    rows: Nullable<Integers>,
+    cols: Nullable<Integers>,
+    pixels: Nullable<RMatrix<i32>>,
+) -> Result<String> {
+    let rows_opt = window_from_integers(rows, "rows")?;
+    let cols_opt = window_from_integers(cols, "cols")?;
+    let pixels_opt = pixels_from_matrix(pixels)?;
+    let options = build_options(rows_opt, cols_opt, pixels_opt)?;
+    let records = open_bytes_with_options(name, bytes, &options).map_err(map_io_err)?;
     to_string(&records)
 }
 
@@ -176,5 +195,6 @@ extendr_module! {
     mod nirs4allio_r;
     fn nirs4allio_native_probe;
     fn nirs4allio_native_read;
+    fn nirs4allio_native_read_bytes;
     fn nirs4allio_native_walk;
 }

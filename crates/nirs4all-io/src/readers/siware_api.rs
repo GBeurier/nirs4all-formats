@@ -4,7 +4,9 @@ use std::path::Path;
 use nirs4all_io_core::{AxisKind, Confidence, Error, FormatProbe, Result, SignalType};
 use serde_json::{json, Value};
 
-use crate::readers::util::{read_text_lossy, single_signal_record, SingleSignalSpec};
+use crate::readers::util::{
+    read_bytes, single_signal_record, text_lossy_from_bytes, SingleSignalSpec,
+};
 use crate::Reader;
 
 pub struct SiwareApiReader;
@@ -37,7 +39,16 @@ impl Reader for SiwareApiReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         let root = serde_json::from_str::<Value>(&text)
             .map_err(|error| Error::InvalidRecord(format!("SiWare API JSON error: {error}")))?;
         let measurement = root

@@ -59,4 +59,45 @@ console.log('features:', wasm.features());
   assert.equal(probes.length, 0);
 }
 
-console.log('OK: WASM probe smoke tests passed');
+// openBytes: full decode in WASM for a CSV fixture
+{
+  const bytes = readSample('samples/csv_tsv/synthetic_nirs.csv');
+  const records = wasm.openBytes('synthetic_nirs.csv', bytes);
+  console.log('csv records:', records.length, 'first signal keys:', Object.keys(records[0].signals));
+  assert.equal(records.length, 50);
+  const signalKey = Object.keys(records[0].signals)[0];
+  assert.ok(Array.isArray(records[0].signals[signalKey].values));
+  assert.equal(records[0].signals[signalKey].values.length, 200);
+}
+
+// openBytes: JCAMP-DX decode
+{
+  const bytes = readSample('samples/jcamp_dx/TESTSPEC.DX');
+  const records = wasm.openBytes('TESTSPEC.DX', bytes);
+  console.log('jcamp records:', records.length);
+  assert.ok(records.length >= 1);
+  assert.equal(records[0].provenance.format, 'jcamp-dx');
+}
+
+// openBytes: ASD binary decode
+{
+  const bytes = readSample('samples/asd/soil.asd');
+  const records = wasm.openBytes('soil.asd', bytes);
+  console.log('asd records:', records.length);
+  assert.equal(records.length, 1);
+  assert.equal(records[0].provenance.format, 'asd-fieldspec');
+}
+
+// openBytes refuses ERDAS LAN (sidecar needed)
+{
+  const bytes = new Uint8Array(128);
+  Buffer.from('HEAD74').copy(bytes, 0);
+  try {
+    wasm.openBytes('synthetic.lan', bytes);
+    assert.fail('ERDAS LAN should error without sidecar');
+  } catch (err) {
+    console.log('ERDAS LAN refusal:', String(err).slice(0, 80));
+  }
+}
+
+console.log('OK: WASM smoke tests passed (probe + open_bytes)');

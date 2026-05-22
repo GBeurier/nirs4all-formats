@@ -1,5 +1,5 @@
 use std::collections::BTreeMap;
-use std::io::Read;
+use std::io::{Cursor, Read};
 use std::path::Path;
 
 use nirs4all_io_core::{
@@ -8,7 +8,9 @@ use nirs4all_io_core::{
 };
 use serde_json::json;
 
-use crate::readers::util::{record_from_signals, single_signal_record, SingleSignalSpec};
+use crate::readers::util::{
+    read_bytes as read_path_bytes, record_from_signals, single_signal_record, SingleSignalSpec,
+};
 use crate::Reader;
 
 const OLE_MAGIC: &[u8] = b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1";
@@ -39,8 +41,13 @@ impl Reader for JascoJwsReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let source = SourceFile::from_path(path, "primary")?;
-        let mut comp = cfb::open(path)
+        let bytes = read_path_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        let mut comp = cfb::CompoundFile::open(Cursor::new(bytes.to_vec()))
             .map_err(|error| Error::InvalidRecord(format!("JASCO JWS open error: {error}")))?;
         let data_info = read_stream(&mut comp, "DataInfo")?;
         let y_data = read_stream(&mut comp, "Y-Data")?;
@@ -49,19 +56,19 @@ impl Reader for JascoJwsReader {
             source_path: base_info.as_deref().and_then(extract_base_path),
             module_strings: read_stream(&mut comp, "ModuleInfo")
                 .ok()
-                .map(|bytes| extract_utf16le_strings(&bytes))
+                .map(|stream| extract_utf16le_strings(&stream))
                 .unwrap_or_default(),
             sample_strings: read_stream(&mut comp, "SampleInfo")
                 .ok()
-                .map(|bytes| extract_utf16le_strings(&bytes))
+                .map(|stream| extract_utf16le_strings(&stream))
                 .unwrap_or_default(),
             user_strings: read_stream(&mut comp, "UserInfo")
                 .ok()
-                .map(|bytes| extract_utf16le_strings(&bytes))
+                .map(|stream| extract_utf16le_strings(&stream))
                 .unwrap_or_default(),
             measurement_parameters: read_stream(&mut comp, "MeasParam")
                 .ok()
-                .map(|bytes| extract_utf16le_strings(&bytes))
+                .map(|stream| extract_utf16le_strings(&stream))
                 .unwrap_or_default(),
         };
         parse_jws_streams(&data_info, &y_data, hints, source, self.name())

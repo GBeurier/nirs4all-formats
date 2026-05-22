@@ -34,8 +34,16 @@ impl Reader for AsdReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        let parsed = parse_asd_bytes(&bytes)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        let parsed = parse_asd_bytes(bytes)?;
         let record = single_signal_record(
             "asd-fieldspec",
             self.name(),

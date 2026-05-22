@@ -1,15 +1,16 @@
 use std::collections::BTreeMap;
+use std::io::Cursor;
 use std::path::Path;
 
-use calamine::{open_workbook_auto, Data, DataType, Reader};
+use calamine::{open_workbook_auto_from_rs, Data, DataType, Reader};
 use nirs4all_io_core::{
     AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralRecord,
 };
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    normalize_key, parse_number, safe_signal_name, signal_type_from_label, single_signal_record,
-    SingleSignalSpec,
+    normalize_key, parse_number, read_bytes as read_path_bytes, safe_signal_name,
+    signal_type_from_label, single_signal_record, SingleSignalSpec,
 };
 use crate::Reader as NirsReader;
 
@@ -38,8 +39,13 @@ impl NirsReader for ExcelReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let source = SourceFile::from_path(path, "primary")?;
-        let mut workbook = open_workbook_auto(path)
+        let bytes = read_path_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        let mut workbook = open_workbook_auto_from_rs(Cursor::new(bytes.to_vec()))
             .map_err(|error| Error::InvalidRecord(format!("Excel open error: {error}")))?;
         let sheet_name = choose_sheet(&workbook)?;
         let range = workbook

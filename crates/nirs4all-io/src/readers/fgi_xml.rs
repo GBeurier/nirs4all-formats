@@ -8,7 +8,7 @@ use quick_xml::Reader as XmlReader;
 use serde_json::{json, Value};
 
 use crate::readers::hdf5::read_hdf5_records;
-use crate::readers::util::{normalize_key, read_text_lossy};
+use crate::readers::util::{normalize_key, read_bytes, text_lossy_from_bytes};
 use crate::Reader;
 
 pub struct FgiXmlReader;
@@ -39,7 +39,8 @@ impl Reader for FgiXmlReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let (text, mut xml_source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        let (text, mut xml_source) = text_lossy_from_bytes(path, &bytes);
         xml_source.role = "metadata_sidecar".to_string();
         let parsed = parse_fgi_xml(&text)?;
         let hdf5_path = resolve_data_reference(path, &parsed.data_reference);

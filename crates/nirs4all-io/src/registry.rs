@@ -23,6 +23,7 @@ pub trait Reader: Send + Sync {
     fn name(&self) -> &'static str;
     fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe>;
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>>;
+
     fn read_path_with_options(
         &self,
         path: &Path,
@@ -35,6 +36,35 @@ pub trait Reader: Send + Sync {
             )));
         }
         self.read_path(path)
+    }
+
+    /// Decode an in-memory byte slice. `name` is the input file name and is
+    /// used for sniffing and provenance. The default implementation declares
+    /// the reader path-only; readers should override this whenever their
+    /// decoder is filesystem-free, both for performance and to support
+    /// no-fs targets like wasm32-unknown-unknown.
+    fn read_bytes(&self, name: &Path, _bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let _ = name;
+        Err(Error::InvalidRecord(format!(
+            "{} does not support in-memory reads (needs filesystem sidecars)",
+            self.name()
+        )))
+    }
+
+    /// Bytes-based counterpart of `read_path_with_options`.
+    fn read_bytes_with_options(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        if options.has_reader_options() {
+            return Err(Error::InvalidRecord(format!(
+                "{} does not support read options",
+                self.name()
+            )));
+        }
+        self.read_bytes(name, bytes)
     }
 }
 
@@ -271,6 +301,40 @@ pub fn open_path_with_options(
         });
     };
     reader.read_path_with_options(path_ref, options)
+}
+
+/// Open an in-memory byte slice through the native registry. `name` is the
+/// input file name, used for sniffing and provenance only.
+pub fn open_bytes(name: impl AsRef<Path>, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+    open_bytes_with_options(name, bytes, &ReadOptions::default())
+}
+
+/// Open an in-memory byte slice with read options. Sidecar-bearing formats
+/// (ENVI Standard, AVIRIS LAN, FGI HDF5+XML, ...) still need a real path
+/// today and return an error here; refactor those readers to take a sidecar
+/// resolver if you need them on no-fs targets.
+pub fn open_bytes_with_options(
+    name: impl AsRef<Path>,
+    bytes: &[u8],
+    options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
+    let name_ref = name.as_ref();
+    let head = &bytes[..bytes.len().min(8192)];
+    let mut candidates: Vec<(FormatProbe, Box<dyn Reader>)> = readers()
+        .into_iter()
+        .filter_map(|reader| reader.sniff(head, name_ref).map(|probe| (probe, reader)))
+        .collect();
+    candidates.sort_by(|a, b| {
+        b.0.confidence
+            .cmp(&a.0.confidence)
+            .then(a.0.format.cmp(&b.0.format))
+    });
+    let Some((_, reader)) = candidates.into_iter().next() else {
+        return Err(Error::UnsupportedFormat {
+            path: name_ref.to_path_buf(),
+        });
+    };
+    reader.read_bytes_with_options(name_ref, bytes, options)
 }
 
 /// Built-in format sniffers backed by the native readers.

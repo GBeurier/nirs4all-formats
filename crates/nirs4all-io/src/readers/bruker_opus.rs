@@ -47,8 +47,12 @@ impl Reader for BrukerOpusReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        parse_opus_bytes(&bytes, path, source, self.name())
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        parse_opus_bytes(bytes, path, source, self.name())
     }
 }
 

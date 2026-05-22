@@ -6,8 +6,8 @@ use nirs4all_io_core::{
 };
 
 use crate::readers::util::{
-    metadata_from_pairs, normalize_key, parse_number, read_text_lossy, record_from_signals,
-    safe_signal_name, signal_type_from_label,
+    metadata_from_pairs, normalize_key, parse_number, read_bytes, record_from_signals,
+    safe_signal_name, signal_type_from_label, text_lossy_from_bytes,
 };
 use crate::Reader;
 
@@ -32,7 +32,16 @@ impl Reader for SedReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         let lines: Vec<&str> = text.lines().collect();
         let data_idx = lines
             .iter()

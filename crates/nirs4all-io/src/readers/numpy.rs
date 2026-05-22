@@ -44,7 +44,11 @@ impl Reader for NumpyReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
         match path
             .extension()
             .and_then(|value| value.to_str())
@@ -52,8 +56,8 @@ impl Reader for NumpyReader {
             .to_ascii_lowercase()
             .as_str()
         {
-            "npy" => read_npy_file(self.name(), source, &bytes),
-            "npz" => read_npz_file(self.name(), source, &bytes),
+            "npy" => read_npy_file(self.name(), source, bytes),
+            "npz" => read_npz_file(self.name(), source, bytes),
             _ => Err(Error::UnsupportedFormat {
                 path: path.to_path_buf(),
             }),
