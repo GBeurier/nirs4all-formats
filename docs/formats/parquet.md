@@ -16,6 +16,10 @@ Parquet.
   `sample_id`.
 - Refuses non-spectral Parquet files, including the Apache
   `alltypes_plain.parquet` fixture.
+- Decodes from both `read_path` (filesystem) and `read_bytes` /
+  `open_bytes` (in-memory `bytes::Bytes`) via the same shared code
+  path. Sidecar-less, so `open_bytes` works without a resolver
+  (M4 follow-up 2026-05-23).
 
 ## Record Mapping
 

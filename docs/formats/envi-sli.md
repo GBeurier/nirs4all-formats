@@ -8,12 +8,16 @@ minimal ENVI Standard cube-to-point-spectra path.
 - Sniffs `.hdr` files whose header starts with `ENVI` and declares
   `file type = ENVI Spectral Library` or `file type = ENVI Standard`.
 - Opens either the `.hdr` path or the paired `.sli` / `.img` binary path.
-- Resolves the binary payload from `data file = ...` when present, otherwise
-  from the sibling `.sli`/`.SLI`, `.img` or `.dat` file.
-- Decodes one-band BSQ spectral-library payloads with ENVI `data type = 4`
-  (`float32`) and `data type = 5` (`float64`), little- or big-endian.
-- Decodes ENVI Standard BSQ/BIL/BIP cubes from `.img` or `.dat` sidecars with
-  integer and float ENVI scalar dtypes currently used by the fixtures.
+- Resolves the binary payload from `data file = ...` when present,
+  otherwise from the sibling file:
+  - **SLI**: fallback extensions `.sli` / `.SLI` only (the `data file`
+    LDR is honoured first for explicit overrides).
+  - **Standard**: fallback extensions `.img` / `.IMG` / `.dat` / `.DAT`.
+- Decodes payloads via the shared `decode_numeric_payload` helper, which
+  covers ENVI scalar `data type` values 1, 2, 3, 4, 5, 12, 13, 14 and 15
+  (u8 / i16 / i32 / f32 / f64 / u16 / u32 / i64 / u64) in either byte
+  order. The SLI path additionally requires `bands == 1` and
+  `interleave == bsq`; ENVI Standard supports BSQ/BIL/BIP.
 - Uses `wavelength = { ... }` plus `wavelength units` to build the spectral
   axis.
 - Emits one `SpectralRecord` per `spectra names` entry, with one `spectrum`
@@ -120,10 +124,22 @@ USGS AVIRIS95 spectral-library checks:
 - `data ignore value` sentinels are currently preserved as numeric values
   rather than converted to missing values.
 
+## Sidecar contract (M1, 2026-05-22)
+
+ENVI is a sidecar-bearing format: the `.hdr` header and the binary
+payload travel as a pair. Three entry points cover decoding:
+
+- `open_path(path)` reads the `.hdr` + binary from disk.
+- `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` decodes
+  from in-memory bytes; pass either the `.hdr` text or the `.sli`/`.img`
+  binary as the primary and supply the companion in the resolver.
+- `open_bytes(name, bytes)` returns `Error::UnsupportedSidecar`.
+
 ## Next Work
 
-- Add conformance output from Spectral Python once the optional dependency is
-  present in the reverse-engineering environment.
+- Add conformance output from Spectral Python once the optional
+  dependency is present in the reverse-engineering environment.
 - Add tests for non-zero `header offset` and big-endian payloads.
-- Add real Specim/HySpex/Headwall/NEON cube fixtures to exercise the rectangular
-  and sparse-mask extraction paths on production-scale layouts.
+- Add real Specim/HySpex/Headwall/NEON cube fixtures to exercise the
+  rectangular and sparse-mask extraction paths on production-scale
+  layouts.

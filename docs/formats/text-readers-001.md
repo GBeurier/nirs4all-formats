@@ -34,10 +34,15 @@ Known limitations:
   except the dedicated USGS AREF single-column path, which emits an index axis
   with a warning because no wavelength vector is present in the file.
 - Target-only reports without spectra are not loaded into `SpectralRecord`.
-- JCAMP `PEAK TABLE` and broader multi-block `LINK` variants are not decoded
-  yet; top-level multi-block `XYDATA` files are covered.
-- The Python bridge uses `nirs4all-io read-json` as temporary transport; native
-  PyO3/C ABI transport is still planned.
+- JCAMP `PEAK TABLE` / `PEAK ASSIGNMENTS` (sparse top-level), top-level
+  multi-block `XYDATA`, and `##DATA TYPE=LINK` files are decoded:
+  same-axis LINKs collapse into a single composite record while
+  heterogeneous LINKs fan out (one record per child plus `link_*`
+  metadata) since M3 (2026-05-23). See `docs/formats/jcamp-dx.md` for
+  the full LINK contract.
+- Python and R bindings ship a native PyO3 / extendr-api static library
+  (M1 2026-05-22) with the legacy `nirs4all-io read-json` CLI subprocess
+  retained as a fallback when the native module is unavailable.
 
 Green gate:
 

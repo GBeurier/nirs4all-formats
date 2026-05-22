@@ -309,9 +309,14 @@ Immediate next work:
    MFRSR NetCDF (QC YAML) and Allotrope ADF all decode from in-memory
    `Map<filename, bytes>` payloads. PyO3, R extendr, WASM (ENVI/ERDAS,
    no HDF5 until `fmt-hdf5` is re-enabled in wasm) and the CLI
-   `--sidecar key=path` flag expose the new entry point. Follow-up:
-   convert the path-only Parquet reader and re-enable `fmt-hdf5` for
-   WASM.
+   `--sidecar key=path` flag expose the new entry point. Follow-up
+   2026-05-23: ParquetReader now overrides `read_bytes` via
+   `bytes::Bytes` (commit P1) so the committed `synthetic_nirs.parquet`
+   fixture decodes in-memory through `open_bytes`. Re-enabling
+   `fmt-hdf5` in the WASM crate is blocked on an upstream
+   `hdf5-reader` 0.5.0 compile error on `wasm32-unknown-unknown`; the
+   four-line patch and the workaround path live in
+   `docs/dev/SIDECAR_RESOLVER.md`.
 6. **DONE (M3, 2026-05-23)** — heterogeneous JCAMP `LINK` fan-out API
    shipped: one record per child plus `link_parent_id` / `link_index` /
    `link_total` / `link_relation` metadata. Top-level multi-block files

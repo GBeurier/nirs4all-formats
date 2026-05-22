@@ -50,6 +50,42 @@ same pixels from the full 21,025-record expansion, plus a sparse mask reading
 `[(0,0), (72,36), (144,144), (10,20)]` to confirm caller-ordered selection and
 the refusal paths for empty and out-of-bounds masks.
 
+## Sidecar contract (M1, 2026-05-22)
+
+ERDAS LAN is a sidecar-bearing format: every record carries the
+`<stem>.spc` axis sidecar and, when present, the `92AV3GT.GIS`
+ground-truth file. Three entry points cover decoding:
+
+- `open_path(path)` reads the `.lan` plus both sidecars from disk.
+- `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` decodes
+  the cube from in-memory bytes; the resolver serves the `.spc` axis
+  and the optional `.GIS` ground-truth.
+- `open_bytes(name, bytes)` returns `Error::UnsupportedSidecar` because
+  the axis sidecar is mandatory.
+
+The ground-truth filename is the literal `92AV3GT.GIS`, regardless of
+the LAN file's stem. A user supplying their own LAN file paired with
+e.g. `MYCUBE_gt.GIS` would not get the ground-truth lookup — that's an
+intentional narrowing to the canonical AVIRIS Indian Pines layout.
+
+## Metadata surface
+
+Every emitted pixel record carries:
+
+- `sample_id` = `pixel_y{row}_x{col}`;
+- `x_index`, `y_index`, `spatial_x`, `spatial_y` (= column / row in
+  pixel coordinates);
+- `spatial_unit = "pixel"`;
+- `rows`, `cols`, `bands`, `interleave = "bil"`;
+- `targets["land_cover_class"] = <class>` when the `.GIS` ground-truth
+  sidecar is present.
+
+Provenance warnings: every record carries the
+`erdas_lan_aviris_experimental` warning (the layout is still scoped to
+the 145x145x220 AVIRIS 92AV3C fixture) plus
+`erdas_lan_spc_axis_non_monotonic_native_order` when the `.spc` axis is
+out of order.
+
 ## Missing
 
 - generic ERDAS Imagine/LAN metadata parsing;

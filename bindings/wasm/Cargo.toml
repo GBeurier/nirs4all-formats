@@ -13,6 +13,14 @@ name = "nirs4all_io_wasm"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+# `fmt-hdf5` stays off in the default WASM build because `hdf5-reader`
+# 0.5.0 hard-codes `read_exact_at` only under `#[cfg(unix)]` and
+# `#[cfg(windows)]`. On `wasm32-unknown-unknown` neither cfg matches and
+# `FileStorage::read_range` references an undeclared function, so the
+# crate fails to compile even when we only use `BytesStorage`. Upstream
+# fix tracked in docs/dev/SIDECAR_RESOLVER.md; the rest of the WASM
+# surface (ENVI Standard / ENVI SLI / AVIRIS LAN sidecars) works
+# already.
 nirs4all-io = { path = "../../crates/nirs4all-io", default-features = false }
 nirs4all-io-core = { path = "../../crates/nirs4all-io-core" }
 wasm-bindgen = "0.2"

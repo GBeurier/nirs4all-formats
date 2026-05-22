@@ -22,7 +22,11 @@ Implemented:
 
 Not implemented yet:
 
-- OPUS old magic (`0a 0a 1a 1a`);
+- OPUS old magic (`0a 0a 1a 1a`) — the sniff path emits a
+  `Confidence::Possible` candidate so dispatch still routes here, but
+  the decoder then errors with "unsupported or missing Bruker OPUS
+  magic"; old-magic files are explicitly refused rather than silently
+  routed to another reader;
 - 3D/time-resolved data series;
 - report/subreport tables as structured targets;
 - image blocks and embedded visual data;

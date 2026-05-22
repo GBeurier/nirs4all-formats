@@ -27,11 +27,14 @@ pub trait Reader: Send + Sync {
 
     /// Sniff a primary file with access to companion sidecars.
     ///
-    /// Default implementation forwards to [`Reader::sniff`]; readers whose
-    /// detection depends on an external header (ENVI Standard, ENVI SLI,
-    /// FGI XML+HDF5) override this so dispatch through
-    /// [`open_with_sidecars`] still resolves them when no filesystem is
-    /// available.
+    /// Default implementation forwards to [`Reader::sniff`]. Readers
+    /// whose detection depends on a companion file the primary alone
+    /// cannot disambiguate override this — currently only ENVI SLI /
+    /// ENVI Standard, because a `.sli`/`.img`/`.dat` primary needs the
+    /// `.hdr` header to read the `file type` line. Other sidecar-bearing
+    /// readers (FGI XML+HDF5, MATLAB Indian Pines, ARM MFRSR NetCDF)
+    /// sniff from the primary's head bytes alone and inherit the
+    /// default.
     fn sniff_with_sidecars(
         &self,
         head: &[u8],

@@ -103,6 +103,18 @@ fn open_bytes_matches_open_path_for_excel_workbooks() {
     }
 }
 
+#[cfg(feature = "fmt-parquet")]
+#[test]
+fn open_bytes_matches_open_path_for_parquet() {
+    // ParquetReader gained a bytes-mode entry point in the M4 follow-up
+    // (commit P1), so the committed NIRS parquet table now decodes from
+    // RAM as well as from disk.
+    let relative = "samples/parquet/synthetic_nirs.parquet";
+    if workspace_file(relative).exists() {
+        assert_bytes_match(relative);
+    }
+}
+
 #[test]
 fn open_bytes_refuses_envi_standard_cube_without_sidecar() {
     // ENVI Standard cubes need the `.hdr` companion; `open_bytes` uses the
@@ -128,6 +140,26 @@ fn open_bytes_refuses_erdas_lan_without_sidecar() {
     }
     let bytes = std::fs::read(&path).expect("read");
     let err = open_bytes(&path, &bytes).expect_err("ERDAS LAN must require sidecar");
+    let message = err.to_string();
+    assert!(
+        message.contains("sidecar") && message.contains("no sidecar resolver was supplied"),
+        "unexpected error: {message}"
+    );
+}
+
+#[cfg(feature = "fmt-hdf5")]
+#[test]
+fn open_bytes_refuses_fgi_xml_without_hdf5_sidecar() {
+    // The FGI XML+HDF5 reader points at its HDF5 payload through
+    // `<DataReference path="...">`. Without a resolver, the lookup goes
+    // through NoSidecars and surfaces UnsupportedSidecar instead of a
+    // generic "missing companion file" message.
+    let path = workspace_file("samples/fgi/synthetic_fgi.xml");
+    if !path.exists() {
+        return;
+    }
+    let bytes = std::fs::read(&path).expect("read");
+    let err = open_bytes(&path, &bytes).expect_err("FGI XML must require HDF5 sidecar");
     let message = err.to_string();
     assert!(
         message.contains("sidecar") && message.contains("no sidecar resolver was supplied"),
