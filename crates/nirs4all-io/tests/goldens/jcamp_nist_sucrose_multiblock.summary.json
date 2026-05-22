@@ -5,7 +5,11 @@
       "format": "jcamp-dx",
       "metadata_keys": [
         "jcamp",
-        "jcamp_block_index"
+        "jcamp_block_index",
+        "link_index",
+        "link_parent_id",
+        "link_relation",
+        "link_total"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::jcamp",
@@ -37,7 +41,11 @@
       "format": "jcamp-dx",
       "metadata_keys": [
         "jcamp",
-        "jcamp_block_index"
+        "jcamp_block_index",
+        "link_index",
+        "link_parent_id",
+        "link_relation",
+        "link_total"
       ],
       "quality_flags": [],
       "reader": "nirs4all_io::readers::jcamp",
