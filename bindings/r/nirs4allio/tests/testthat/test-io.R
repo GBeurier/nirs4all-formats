@@ -22,3 +22,18 @@ test_that("dataset converts to matrix and data.frame", {
   expect_equal(dataset$sample_ids[[1]], "S000")
   expect_equal(names(dataset$targets), "protein")
 })
+
+test_that("probe_path returns candidate readers", {
+  probes <- nirs4allio_probe_path(sample_path("samples/csv_tsv/synthetic_nirs.csv"))
+  expect_true(length(probes) >= 1L)
+  expect_equal(probes[[1]]$format, "delimited-text")
+})
+
+test_that("walk_path returns parsed entries", {
+  entries <- nirs4allio_walk_path(sample_path("samples/asd"))
+  expect_true(length(entries) >= 5L)
+  for (entry in entries) {
+    expect_equal(entry$status, "parsed")
+    expect_equal(entry$format, "asd-fieldspec")
+  }
+})

@@ -1,0 +1,33 @@
+[package]
+name = "nirs4all-io-wasm"
+description = "WebAssembly bindings for nirs4all-io."
+version = "0.1.0-alpha.0"
+edition = "2021"
+license = "MIT"
+authors = ["G. Beurier <beurier@cirad.fr>"]
+repository = "https://github.com/GBeurier/nirs4all-io"
+publish = false
+
+[lib]
+name = "nirs4all_io_wasm"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+nirs4all-io = { path = "../../crates/nirs4all-io", default-features = false }
+nirs4all-io-core = { path = "../../crates/nirs4all-io-core" }
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde-wasm-bindgen = "0.6"
+console_error_panic_hook = { version = "0.1", optional = true }
+
+[features]
+default = []
+console-errors = ["dep:console_error_panic_hook"]
+
+[profile.release]
+opt-level = "s"
+lto = "thin"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-Os"]

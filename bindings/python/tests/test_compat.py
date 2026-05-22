@@ -7,10 +7,13 @@ from nirs4all_io import (
     NirsDataset,
     open_dataset,
     open_records,
+    probe_path,
     to_nirs4all_spectrodataset,
     to_numpy_matrix,
     to_sklearn_bunch,
+    walk_path,
 )
+from nirs4all_io._compat import _native
 
 
 def test_dataset_shape_contract() -> None:
@@ -67,6 +70,29 @@ def test_nirs4all_spectrodataset_when_checkout_is_available() -> None:
 
     assert type(spectro_dataset).__name__ == "SpectroDataset"
     assert spectro_dataset.x(None).shape == (50, 200)
+
+
+def test_probe_path_returns_candidates() -> None:
+    probes = probe_path(sample("samples/csv_tsv/synthetic_nirs.csv"))
+    assert probes
+    assert probes[0]["format"] == "delimited-text"
+
+
+def test_walk_path_returns_outcomes() -> None:
+    entries = walk_path(sample("samples/asd"))
+    assert entries
+    assert all(entry["status"] == "parsed" for entry in entries)
+    assert {entry["format"] for entry in entries} == {"asd-fieldspec"}
+
+
+def test_native_extension_is_built_for_this_wheel() -> None:
+    assert _native is not None, "native PyO3 extension was not built"
+    records = _native.open_path(
+        str(sample("samples/hyperspectral_cubes/92AV3C.lan")),
+        pixels=[(0, 0), (10, 10)],
+    )
+    assert len(records) == 2
+    assert records[0]["metadata"]["sample_id"] == "pixel_y0_x0"
 
 
 def sample(relative: str) -> Path:

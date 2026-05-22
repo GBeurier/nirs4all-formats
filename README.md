@@ -95,8 +95,9 @@ Current implementation highlights:
 - SVC/GER `.sig` covers the committed PDA, laptop, matched-overlap and
   resampled field fixtures with promoted instrument, foreoptic, detector,
   factor and overlap metadata.
-- ENVI Standard and AVIRIS/ERDAS LAN cube readers can emit full pixel spectra
-  or rectangular row/column ROI windows from the Rust API and CLI.
+- ENVI Standard and AVIRIS/ERDAS LAN cube readers can emit full pixel spectra,
+  rectangular row/column ROI windows, or caller-ordered sparse `(row, col)`
+  pixel masks from the Rust API and CLI.
 - WiTec `WIT_PR06` TDGraph maps are decoded experimentally for the committed
   `Sa4.wip` fixture, including Raman-shift axis derivation and physical map
   coordinate metadata; unknown WiTec project layouts are still refused

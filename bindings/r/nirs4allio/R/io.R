@@ -101,13 +101,72 @@ nirs4allio_as_tibble <- function(dataset) {
 }
 
 nirs4allio_run_reader <- function(path) {
+  resolved <- normalizePath(path, mustWork = TRUE)
+  payload <- nirs4allio_native_call(
+    "nirs4allio_native_read",
+    resolved,
+    NULL,
+    NULL,
+    NULL
+  )
+  if (!is.null(payload)) {
+    return(payload)
+  }
+  nirs4allio_run_cli(c("read-json", resolved))
+}
+
+nirs4allio_probe_path <- function(path) {
+  resolved <- normalizePath(path, mustWork = TRUE)
+  payload <- nirs4allio_native_call("nirs4allio_native_probe", resolved)
+  if (is.null(payload)) {
+    payload <- nirs4allio_run_cli(c("probe", resolved))
+  }
+  jsonlite::fromJSON(payload, simplifyVector = FALSE)
+}
+
+nirs4allio_walk_path <- function(path,
+                                  max_depth = NULL,
+                                  include_hidden = FALSE,
+                                  follow_symlinks = FALSE,
+                                  include_unsupported = FALSE) {
+  resolved <- normalizePath(path, mustWork = TRUE)
+  payload <- nirs4allio_native_call(
+    "nirs4allio_native_walk",
+    resolved,
+    if (is.null(max_depth)) NULL else as.integer(max_depth),
+    isTRUE(include_hidden),
+    isTRUE(follow_symlinks),
+    isTRUE(include_unsupported)
+  )
+  if (!is.null(payload)) {
+    return(jsonlite::fromJSON(payload, simplifyVector = FALSE))
+  }
+  args <- c("scan", resolved)
+  if (!is.null(max_depth)) {
+    args <- c(args, "--max-depth", as.character(as.integer(max_depth)))
+  }
+  if (isTRUE(include_hidden)) {
+    args <- c(args, "--include-hidden")
+  }
+  if (isTRUE(follow_symlinks)) {
+    args <- c(args, "--follow-symlinks")
+  }
+  if (isTRUE(include_unsupported)) {
+    args <- c(args, "--include-unsupported")
+  }
+  args <- c(args, "--json")
+  parsed <- jsonlite::fromJSON(nirs4allio_run_cli(args), simplifyVector = FALSE)
+  parsed$entries %||% list()
+}
+
+nirs4allio_run_cli <- function(args) {
   command <- nirs4allio_reader_command()
   stdout <- tempfile("nirs4allio-stdout-")
   stderr <- tempfile("nirs4allio-stderr-")
   on.exit(unlink(c(stdout, stderr)), add = TRUE)
   status <- system2(
     command[[1]],
-    c(command[-1], "read-json", normalizePath(path, mustWork = TRUE)),
+    c(command[-1], args),
     stdout = stdout,
     stderr = stderr
   )

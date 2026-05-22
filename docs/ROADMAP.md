@@ -151,19 +151,25 @@ Deliverables:
 
 ## Phase 4: First Bindings
 
-Starts after three readers reach `Done`. A temporary Python bridge already
-routes through the Rust CLI so downstream integration work can start without
-duplicating parsers.
+Status: in progress. Native PyO3, native extendr-api R and a wasm-bindgen JS
+target are all wired in. The CLI subprocess remains as a fallback when the
+native module is not available at load time.
 
 Deliverables:
 
-- native Python binding backed by Rust; CLI bridge experimental, native extension pending;
+- native Python binding backed by PyO3 + maturin (`bindings/python/`);
+  experimental;
 - numpy and pandas exports; experimental;
 - sklearn-compatible dataset provider; experimental;
 - torch dataset adapter; experimental;
 - nirs4all `SpectroDataset` adapter; experimental;
-- R package backed by Rust/C ABI; CLI bridge experimental, C ABI pending;
+- R package backed by extendr-api static lib (`bindings/r/nirs4allio/src/rust/`)
+  built at `R CMD INSTALL` time, with CLI fallback; experimental;
 - R matrix/data.frame/tibble-compatible exports; experimental;
+- JS/WASM binding (`bindings/wasm/`) built with `wasm-pack` exposing
+  `probeBytes(filename, Uint8Array)`; experimental;
+- auto-discovery `walk_path` API and `nirs4all-io scan` subcommand;
+  experimental;
 - cross-binding fixtures for every `Done` reader.
 
 ## Phase 5: Binary Reader Batch

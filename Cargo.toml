@@ -6,6 +6,10 @@ members = [
     "crates/nirs4all-io-capi",
     "crates/nirs4all-io-cli",
 ]
+exclude = [
+    "bindings/python",
+    "bindings/wasm",
+]
 
 [workspace.package]
 version = "0.1.0-alpha.0"

@@ -29,6 +29,9 @@ emitted `SpectralAxis.order` is non-monotonic and records carry warning
 - one `SpectralRecord` per pixel, i.e. 21,025 records;
 - optional half-open row/column windows through `open_path_with_options()` and
   the CLI `read-json --rows START:END --cols START:END`;
+- optional sparse pixel mask through `ReadOptions::with_cube_mask(CubeMask::new(...))`
+  and the CLI `read-json --pixel ROW,COL ...` / `--pixels-file PATH`, preserving
+  the order of pixels supplied by the caller (duplicates allowed);
 - `raw_counts` signal with wavelength axis in `nm` and unit `dn`;
 - `sample_id`, `x_index`, `y_index`, `spatial_x`, `spatial_y` metadata;
 - `land_cover_class` target from `92AV3GT.GIS` when present;
@@ -43,13 +46,13 @@ emitted `SpectralAxis.order` is non-monotonic and records carry warning
 | `samples/hyperspectral_cubes/92AV3GT.GIS` | sidecar | class labels | Per-pixel ground truth exposed as `targets.land_cover_class`. |
 
 The semantic test also validates a `rows=10:12`, `cols=20:22` ROI against the
-same pixels from the full 21,025-record expansion.
+same pixels from the full 21,025-record expansion, plus a sparse mask reading
+`[(0,0), (72,36), (144,144), (10,20)]` to confirm caller-ordered selection and
+the refusal paths for empty and out-of-bounds masks.
 
 ## Missing
 
 - generic ERDAS Imagine/LAN metadata parsing;
 - other LAN dimensions, data types and interleaves;
-- sparse mask API for extracting non-rectangular selected pixels from large
-  cubes;
 - reference comparison against Spectral Python or rasterio;
 - NEON/Specim/HySpex/Headwall/AVIRIS-NG HDF5 or raw cube layouts.
