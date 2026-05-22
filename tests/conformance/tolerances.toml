@@ -1,0 +1,71 @@
+# Per-format equivalence tolerances for the external reference-reader
+# conformance harness.
+#
+# The check used by every test:
+#
+#     ok = abs(a - b) <= max(abs_tol, rel_tol * max(|a|, |b|))
+#
+# Tolerances are deliberately tight by default; per-fixture relaxations are
+# the responsibility of `known_skips.toml`.
+
+[opus]
+# OPUS axis is reconstructed from FXV/LXV/NPT (linear); brukeropus uses the
+# same formula. Floats are produced from a 64-bit endian-swap of the same
+# bytes — bit-identical modulo arithmetic ordering.
+axis_abs_tol = 0.0
+axis_rel_tol = 1e-12
+# Values absorb the OPUS CSF scaling. brukeropus also applies CSF; any
+# residual delta should sit well below 1e-6 once double-precision rounding
+# is accounted for.
+values_abs_tol = 1e-7
+values_rel_tol = 1e-6
+
+[spc]
+# spc-spectra reads explicit-X float32 axes verbatim; the round-trip is
+# bit-identical when both readers agree on the scaling.
+axis_abs_tol = 1e-6
+axis_rel_tol = 1e-7
+values_abs_tol = 1e-6
+values_rel_tol = 1e-6
+
+[jcamp]
+# `jcamp` decodes ASDF integer ordinates exactly; the axis is rebuilt
+# differently between readers: nirs4all-io uses `FIRSTX + i*DELTAX`
+# linearly, while the Python `jcamp` library quantises each Xi to the
+# rounded textual precision recorded in the file (often ~0.01). The
+# worst observed drift on the committed NIST fixtures is ~6e-3 absolute
+# / ~2e-6 relative at the high end of a 7500-point spectrum — that is
+# the reference reader's choice, not nirs4all-io drift. Values stay
+# tight: ASDF ordinates are exact integers scaled by YFACTOR.
+axis_abs_tol = 1e-1
+axis_rel_tol = 5e-4
+values_abs_tol = 0.0
+values_rel_tol = 1e-9
+
+[sed]
+# SED axis is read from ASCII text by both nirs4all-io and spectrolab.
+axis_abs_tol = 0.0
+axis_rel_tol = 1e-6
+values_abs_tol = 0.0
+values_rel_tol = 1e-6
+
+[sig]
+# Same shape as SED.
+axis_abs_tol = 0.0
+axis_rel_tol = 1e-6
+values_abs_tol = 0.0
+values_rel_tol = 1e-6
+
+[asm]
+# Allotrope ASM stores data cubes as plain JSON arrays.
+axis_abs_tol = 0.0
+axis_rel_tol = 1e-12
+values_abs_tol = 0.0
+values_rel_tol = 1e-12
+
+[hdf5]
+# Bit-identical against h5py.
+axis_abs_tol = 0.0
+axis_rel_tol = 0.0
+values_abs_tol = 0.0
+values_rel_tol = 0.0
