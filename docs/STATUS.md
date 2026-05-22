@@ -292,7 +292,15 @@ Immediate next work:
 3. continue the open-reader-backed binary batch in this order: OMNIC `.srsx`
    and high-speed variants beyond local SpectroChemPy samples, redistributable
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
-4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
+4. **DONE (M2, 2026-05-23)** — external reference-reader conformance
+   harness under `tests/conformance/`: `brukeropus` for OPUS,
+   `spc-spectra` for SPC, `jcamp` for JCAMP-DX, `spectrolab` (R,
+   subprocess-isolated) for SED/SIG, canonical ASM JSON for Allotrope,
+   `h5py` for HDF5. Initial run on the committed corpus passes 67 /
+   skips 16 / fails 0. Tolerances per format documented in
+   `docs/CONFORMANCE.md` and `tests/conformance/tolerances.toml`. The
+   `.github/workflows/conformance.yml` placeholder is replaced with a
+   real weekly + workflow_dispatch job;
 5. **DONE (M1, 2026-05-22)** — sidecar resolver wired into
    `Reader::read_bytes` via the new `SidecarResolver` trait (core) plus
    `FsSidecars`/`InMemorySidecars`/`NoSidecars` implementations. ENVI SLI,

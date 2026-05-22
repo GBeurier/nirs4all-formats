@@ -1,0 +1,28 @@
+# Python reference readers for the conformance harness.
+# Install in the same virtualenv as the nirs4all-io PyO3 binding:
+#
+#   pip install -r tests/conformance/requirements.txt
+#
+# GPL-licensed readers (opusreader2, spectrolab) are isolated through
+# subprocess and stay optional; the harness skips the matching tests when
+# they are not installed.
+
+# OPUS conformance (MIT, used as the default cross-check).
+brukeropus>=1.3.0
+
+# Galactic SPC conformance (MIT).
+spc-spectra>=0.4.0
+
+# JCAMP-DX conformance (MIT).
+jcamp>=1.2.2
+
+# Allotrope ASM conformance (MIT, Benchling).
+allotropy>=0.1.61
+
+# Generic HDF5 conformance (BSD).
+h5py>=3.10
+numpy>=1.24
+
+# pytest runner (already in the dev environment but pinned here for
+# reproducibility when running the conformance suite standalone).
+pytest>=8.0

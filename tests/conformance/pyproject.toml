@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+testpaths = ["."]
+addopts = "-ra"
+markers = [
+    "conformance: external reference-reader conformance checks (slow; require optional third-party readers)",
+]

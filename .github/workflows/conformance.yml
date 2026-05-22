@@ -9,12 +9,36 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  placeholder:
-    name: Reference-reader conformance placeholder
+  reference-readers:
+    name: Reference-reader conformance
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Explain
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install Python reference readers
         run: |
-          echo "Reference-reader conformance jobs will be enabled as readers reach Beta."
-          test -f docs/CONFORMANCE.md
+          python -m pip install --upgrade pip
+          python -m pip install setuptools
+          python -m pip install --no-build-isolation spc-spectra
+          python -m pip install -r tests/conformance/requirements.txt
+
+      - name: Install R spectrolab reference reader
+        run: |
+          Rscript -e 'install.packages(c("spectrolab", "jsonlite"), repos="https://cloud.r-project.org", quiet=TRUE)'
+
+      - name: Build nirs4all-io Python binding
+        run: |
+          python -m pip install maturin
+          (cd bindings/python && maturin develop --release --quiet)
+
+      - name: Run conformance suite
+        run: |
+          python -m pytest -m conformance tests/conformance/ -ra
