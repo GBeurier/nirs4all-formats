@@ -1,6 +1,6 @@
 # Implementation Dashboard
 
-Last updated: 2026-05-20.
+Last updated: 2026-05-22.
 
 This page is the compact, visual companion to `FORMAT_MATRIX.md`. The matrix is
 still the source of truth; this page makes the implementation maturity and

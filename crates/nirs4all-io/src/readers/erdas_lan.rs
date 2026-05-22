@@ -8,7 +8,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::parse_number;
-use crate::registry::{cube_window_ranges, ReadOptions};
+use crate::registry::{cube_pixels, ReadOptions};
 use crate::Reader;
 
 const FORMAT: &str = "erdas-lan-aviris";
@@ -92,44 +92,41 @@ impl Reader for ErdasLanReader {
         } else {
             vec![lan_source, spc_source]
         };
-        let (row_range, col_range) =
-            cube_window_ranges(options, header.rows, header.cols, "ERDAS LAN cube")?;
+        let pixels = cube_pixels(options, header.rows, header.cols, "ERDAS LAN cube")?;
 
-        let mut records = Vec::with_capacity(row_range.len() * col_range.len());
-        for row in row_range {
-            for col in col_range.clone() {
-                let values = read_bil_pixel_spectrum(&bytes, &header, row, col)?;
-                let mut metadata = BTreeMap::new();
-                metadata.insert(
-                    "sample_id".to_string(),
-                    json!(format!("pixel_y{row}_x{col}")),
-                );
-                metadata.insert("x_index".to_string(), json!(col));
-                metadata.insert("y_index".to_string(), json!(row));
-                metadata.insert("spatial_x".to_string(), json!(col));
-                metadata.insert("spatial_y".to_string(), json!(row));
-                metadata.insert("spatial_unit".to_string(), json!("pixel"));
-                metadata.insert("rows".to_string(), json!(header.rows));
-                metadata.insert("cols".to_string(), json!(header.cols));
-                metadata.insert("bands".to_string(), json!(header.bands));
-                metadata.insert("interleave".to_string(), json!("bil"));
+        let mut records = Vec::with_capacity(pixels.len());
+        for (row, col) in pixels {
+            let values = read_bil_pixel_spectrum(&bytes, &header, row, col)?;
+            let mut metadata = BTreeMap::new();
+            metadata.insert(
+                "sample_id".to_string(),
+                json!(format!("pixel_y{row}_x{col}")),
+            );
+            metadata.insert("x_index".to_string(), json!(col));
+            metadata.insert("y_index".to_string(), json!(row));
+            metadata.insert("spatial_x".to_string(), json!(col));
+            metadata.insert("spatial_y".to_string(), json!(row));
+            metadata.insert("spatial_unit".to_string(), json!("pixel"));
+            metadata.insert("rows".to_string(), json!(header.rows));
+            metadata.insert("cols".to_string(), json!(header.cols));
+            metadata.insert("bands".to_string(), json!(header.bands));
+            metadata.insert("interleave".to_string(), json!("bil"));
 
-                let mut targets = BTreeMap::new();
-                if let Some(labels) = &labels {
-                    let label = labels[row * header.cols + col];
-                    targets.insert("land_cover_class".to_string(), json!(label));
-                }
-
-                records.push(make_record(
-                    self.name(),
-                    sources.clone(),
-                    axis.clone(),
-                    values,
-                    metadata,
-                    targets,
-                    axis_warnings.clone(),
-                )?);
+            let mut targets = BTreeMap::new();
+            if let Some(labels) = &labels {
+                let label = labels[row * header.cols + col];
+                targets.insert("land_cover_class".to_string(), json!(label));
             }
+
+            records.push(make_record(
+                self.name(),
+                sources.clone(),
+                axis.clone(),
+                values,
+                metadata,
+                targets,
+                axis_warnings.clone(),
+            )?);
         }
         Ok(records)
     }

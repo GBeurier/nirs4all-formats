@@ -8,7 +8,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::normalize_key;
-use crate::registry::{cube_window_ranges, ReadOptions};
+use crate::registry::{cube_pixels, ReadOptions};
 use crate::Reader;
 
 pub struct EnviSliReader;
@@ -539,44 +539,35 @@ fn read_standard_cube(
     }
     let (axis_values, axis_unit, axis_kind) = axis_from_header(header, bands, &mut warnings)?;
     let map_info = parse_map_info(header);
-    let (row_range, col_range) = cube_window_ranges(options, lines, samples, "ENVI Standard cube")?;
+    let pixels = cube_pixels(options, lines, samples, "ENVI Standard cube")?;
 
-    let mut records = Vec::with_capacity(row_range.len() * col_range.len());
-    for row in row_range {
-        for col in col_range.clone() {
-            let spectrum = (0..bands)
-                .map(|band| {
-                    let index = cube_value_index(
-                        interleave.as_str(),
-                        samples,
-                        lines,
-                        bands,
-                        row,
-                        col,
-                        band,
-                    );
-                    values[index]
-                })
-                .collect::<Vec<_>>();
-            records.push(make_cube_record(
-                reader,
-                header_source.clone(),
-                data_source.clone(),
-                row * samples + col,
-                row,
-                col,
-                samples,
-                lines,
-                bands,
-                header,
-                map_info.as_ref(),
-                &axis_values,
-                &axis_unit,
-                axis_kind.clone(),
-                spectrum,
-                warnings.clone(),
-            )?);
-        }
+    let mut records = Vec::with_capacity(pixels.len());
+    for (row, col) in pixels {
+        let spectrum = (0..bands)
+            .map(|band| {
+                let index =
+                    cube_value_index(interleave.as_str(), samples, lines, bands, row, col, band);
+                values[index]
+            })
+            .collect::<Vec<_>>();
+        records.push(make_cube_record(
+            reader,
+            header_source.clone(),
+            data_source.clone(),
+            row * samples + col,
+            row,
+            col,
+            samples,
+            lines,
+            bands,
+            header,
+            map_info.as_ref(),
+            &axis_values,
+            &axis_unit,
+            axis_kind.clone(),
+            spectrum,
+            warnings.clone(),
+        )?);
     }
     Ok(records)
 }

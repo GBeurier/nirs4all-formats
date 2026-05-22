@@ -24,6 +24,11 @@ minimal ENVI Standard cube-to-point-spectra path.
 - Supports optional half-open row/column windows through
   `open_path_with_options()` and the CLI `read-json --rows START:END --cols
   START:END`, while preserving original pixel coordinates in record metadata.
+- Supports optional sparse pixel masks through
+  `ReadOptions::with_cube_mask(CubeMask::new(...))` and the CLI
+  `read-json --pixel ROW,COL ...` / `--pixels-file PATH`. Pixels are emitted in
+  caller order; duplicates are preserved so callers can describe ordered sample
+  paths.
 
 ## Record Mapping
 
@@ -98,6 +103,9 @@ Cube fixture checks:
 - ROI window `rows=2:4`, `cols=3:6` emits 6 records while preserving
   `pixel_y2_x3` through `pixel_y3_x5` coordinates and matching the full-cube
   spectra for those pixels;
+- sparse mask `[(47,47), (0,0), (12,7)]` emits 3 records in caller order whose
+  values match the corresponding pixels from the full-cube expansion, while the
+  empty-mask and out-of-bounds-pixel paths return descriptive errors;
 - first pixel first/last values: `100`, `3223`;
 - last pixel first/last values: `152`, `3275`;
 - map coordinates are read from `map info`, with `units=Meters` normalized to
@@ -117,6 +125,5 @@ USGS AVIRIS95 spectral-library checks:
 - Add conformance output from Spectral Python once the optional dependency is
   present in the reverse-engineering environment.
 - Add tests for non-zero `header offset` and big-endian payloads.
-- Add real Specim/HySpex/Headwall/NEON cube fixtures and an explicit
-  mask extraction API for sparse pixel selection; the current windowed ROI path
-  covers rectangular subsets only.
+- Add real Specim/HySpex/Headwall/NEON cube fixtures to exercise the rectangular
+  and sparse-mask extraction paths on production-scale layouts.

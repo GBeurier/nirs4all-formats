@@ -2,7 +2,12 @@ Package: nirs4allio
 Title: R Binding for nirs4all-io
 Version: 0.1.0.9000
 Authors@R: person("G.", "Beurier", email = "beurier@cirad.fr", role = c("aut", "cre"))
-Description: Thin R binding for the Rust-first nirs4all-io NIRS file loading core.
+Description: Thin R binding for the Rust-first nirs4all-io NIRS file loading
+    core. When installed via R CMD INSTALL with Cargo available the package
+    compiles a native extendr-api static library from src/rust/ and dispatches
+    probe/read/walk calls directly through Rust. Without Cargo the package
+    falls back to invoking the nirs4all-io CLI binary.
+SystemRequirements: Cargo (Rust's package manager), rustc
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:

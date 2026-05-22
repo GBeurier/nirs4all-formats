@@ -1,0 +1,21 @@
+TARGET_DIR = $(CURDIR)/rust/target
+LIBDIR = $(TARGET_DIR)/release
+STATLIB = $(LIBDIR)/libnirs4allio_r.a
+PKG_LIBS = -L$(LIBDIR) -lnirs4allio_r
+PKG_CFLAGS = -I$(CURDIR)/rust/src
+
+all: C_clean
+
+$(SHLIB): $(STATLIB)
+
+$(STATLIB):
+	@if ! command -v cargo >/dev/null; then \
+		echo "Cargo is required to build nirs4allio. Install Rust from https://rustup.rs."; \
+		exit 1; \
+	fi
+	cd rust && cargo build --release --offline 2>/dev/null || cd rust && cargo build --release
+
+C_clean:
+	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR)
+
+clean: C_clean

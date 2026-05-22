@@ -1,5 +1,5 @@
 use nirs4all_io::{
-    open_path, open_path_with_options, AxisKind, CubeWindow, ReadOptions, SignalType,
+    open_path, open_path_with_options, AxisKind, CubeMask, CubeWindow, ReadOptions, SignalType,
 };
 
 #[test]
@@ -77,6 +77,60 @@ fn reads_aviris_indian_pines_erdas_lan_cube() {
         roi.last().unwrap().metadata["sample_id"].as_str(),
         Some("pixel_y11_x21")
     );
+}
+
+#[test]
+fn reads_aviris_indian_pines_erdas_lan_sparse_mask() {
+    let path = workspace_file("samples/hyperspectral_cubes/92AV3C.lan");
+    let full = open_path(&path).expect("open AVIRIS LAN");
+
+    let pixels = vec![(0, 0), (72, 36), (144, 144), (10, 20)];
+    let mask = CubeMask::new(pixels.clone());
+    let options = ReadOptions::default().with_cube_mask(mask);
+    let records = open_path_with_options(&path, &options).expect("open AVIRIS LAN mask");
+
+    assert_eq!(records.len(), pixels.len());
+    for (record, &(row, col)) in records.iter().zip(&pixels) {
+        assert_eq!(
+            record.metadata["sample_id"].as_str(),
+            Some(format!("pixel_y{row}_x{col}").as_str())
+        );
+        assert_eq!(record.metadata["x_index"].as_u64(), Some(col as u64));
+        assert_eq!(record.metadata["y_index"].as_u64(), Some(row as u64));
+        let full_index = row * 145 + col;
+        assert_eq!(
+            record.signals["raw_counts"].values,
+            full[full_index].signals["raw_counts"].values
+        );
+        assert_eq!(
+            record.targets["land_cover_class"],
+            full[full_index].targets["land_cover_class"]
+        );
+    }
+
+    let duplicated =
+        ReadOptions::default().with_cube_mask(CubeMask::new(vec![(5, 5), (5, 5), (5, 6)]));
+    let dup_records = open_path_with_options(&path, &duplicated).expect("open AVIRIS LAN dup mask");
+    assert_eq!(dup_records.len(), 3);
+    assert_eq!(
+        dup_records[0].signals["raw_counts"].values,
+        dup_records[1].signals["raw_counts"].values
+    );
+    assert_ne!(
+        dup_records[0].signals["raw_counts"].values,
+        dup_records[2].signals["raw_counts"].values
+    );
+
+    let empty = ReadOptions::default().with_cube_mask(CubeMask::new(Vec::new()));
+    let err = open_path_with_options(&path, &empty).expect_err("empty mask");
+    assert!(err.to_string().contains("ERDAS LAN cube mask is empty"));
+
+    let out_of_bounds =
+        ReadOptions::default().with_cube_mask(CubeMask::new(vec![(0, 0), (145, 0)]));
+    let err = open_path_with_options(path, &out_of_bounds).expect_err("out of bounds mask");
+    assert!(err
+        .to_string()
+        .contains("mask pixel (145, 0) is outside 0..145 x 0..145"));
 }
 
 fn workspace_file(relative: &str) -> std::path::PathBuf {

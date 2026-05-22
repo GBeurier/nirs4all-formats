@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-05-20.
+Last updated: 2026-05-22.
 
 ## Current Checkpoint
 
@@ -74,12 +74,12 @@ Experimental native readers:
 - Avantes AvaSoft legacy binaries (`.TRM`, `.ROH`, `.DRK`, `.REF`) and
   AvaSoft 8 binaries (`.Raw8`, `.IRR8`) with decoded AVS8 SPC date/time;
 - ENVI Spectral Library sidecars (`.sli` + `.hdr`), one-band BSQ float32/float64
-  payloads, and ENVI Standard cubes expanded by pixel or rectangular ROI with
-  parsed `map info`;
+  payloads, and ENVI Standard cubes expanded by pixel, rectangular ROI or
+  caller-ordered sparse `(row, col)` mask, with parsed `map info`;
 - AVIRIS / ERDAS LAN (`92AV3C.lan`) Indian Pines cube: 145 x 145 x 220 u16
-  BIL payload expanded to one raw-count spectrum per pixel or rectangular ROI,
-  with wavelength axis from `.spc` and optional ground-truth class targets from
-  `.GIS`;
+  BIL payload expanded to one raw-count spectrum per pixel, rectangular ROI or
+  caller-ordered sparse `(row, col)` mask, with wavelength axis from `.spc` and
+  optional ground-truth class targets from `.GIS`;
 - Ocean Optics / Ocean Insight exports (`.txt`, `.csv`, `.jaz`, `.JazIrrad`,
   `.Master.Transmission`) and `.ProcSpec` ZIP/XML archives with XML-driven
   transmittance/reflectance typing; all committed Ocean fixtures are
@@ -176,32 +176,62 @@ Untreated formats, missing fixture blockers, unknown binary layouts and
 deliberate refusal paths are now documented in `docs/FORMAT_GAPS.md`, with
 `MISSING_SAMPLES.md` retained as the exact fixture checklist.
 
-Python bridge surfaces now call the Rust CLI rather than implementing parser
-logic in Python:
+Auto-discovery walker:
 
-- raw record access;
-- tabular `NirsDataset`;
-- numpy, pandas and sklearn-style exports;
+- `walk_path()` / `WalkOptions` in `nirs4all-io` recursively traverse a
+  directory, probe each file by head bytes and either decode it through the
+  registry or mark it `Unsupported` / `Error`. The CLI exposes the same path as
+  `nirs4all-io scan PATH [--max-depth N] [--include-unsupported] [--json]`.
+
+Python bridge — native PyO3 extension `nirs4all_io._native` built with
+maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
+when the native module is not available:
+
+- `probe_path`, `open_records`, `walk_path` directly via PyO3 (no JSON
+  roundtrip);
+- tabular `NirsDataset`, numpy / pandas / sklearn-style exports;
 - torch dataset adapter;
 - `nirs4all.data.SpectroDataset` adapter.
 
-R bridge surfaces also call the Rust CLI and expose:
+R bridge — `nirs4allio_*` functions try a native extendr-api static library
+shipped under `bindings/r/nirs4allio/src/rust/` (built at install time by
+`R CMD INSTALL` when Cargo is present) and fall back to the `nirs4all-io`
+CLI when the native symbols are absent:
 
-- raw record access;
-- `nirs4allio_dataset`;
+- `nirs4allio_open_records`, `nirs4allio_open_dataset`,
+  `nirs4allio_probe_path`, `nirs4allio_walk_path`;
 - `matrix`, `data.frame` and optional tibble conversion.
+
+JS / WebAssembly bridge — new `bindings/wasm/` crate built with `wasm-pack`
+for `target web` / `target nodejs`. Compiles `nirs4all-io` with the heavy C
+deps gated off (`fmt-hdf5`, `fmt-matlab`, `fmt-parquet` features) and exposes:
+
+- `version()`, `features()`;
+- `probeBytes(filename, Uint8Array)` returning the ordered candidate readers.
+
+Full reads through WASM still need a path-free `Reader::read_bytes` entry
+point.
 
 ## Last Green Gate
 
-Green locally on 2026-05-20:
+Green locally on 2026-05-22:
 
 ```bash
 . "$HOME/.cargo/env"
 cargo fmt --all --check
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
-uv run --python 3.11 --with-editable ./tools/reverse-lab --with-editable ./bindings/python --with-editable /home/delete/nirs4all/nirs4all --with pytest pytest tools/reverse-lab/tests bindings/python/tests
-Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); records <- nirs4allio_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allio_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
+cargo build -p nirs4all-io --no-default-features
+cargo build -p nirs4all-io --no-default-features --target wasm32-unknown-unknown
+(cd bindings/wasm && cargo clippy --all-targets -- -D warnings)
+(cd bindings/python && cargo clippy --all-targets -- -D warnings)
+unset CONDA_DEFAULT_ENV CONDA_PREFIX CONDA_PYTHON_EXE
+. .venv/bin/activate
+(cd bindings/python && maturin develop --release --quiet)
+python -m pytest bindings/python/tests/ tools/reverse-lab/tests
+Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); source("bindings/r/nirs4allio/R/version.R"); source("bindings/r/nirs4allio/R/io.R"); source("bindings/r/nirs4allio/R/native.R"); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
+(cd bindings/wasm && wasm-pack build --target nodejs --release --out-dir pkg-node)
+node bindings/wasm/tests/smoke.js
 uv run sphinx-build -W -b html docs docs/_build/html
 git diff --check
 ```
@@ -219,13 +249,16 @@ Immediate next work:
 1. decide whether AVIRIS/Indian Pines sample redistribution terms allow keeping
    the committed `.lan/.spc/.GIS` fixtures in public release artifacts, and
    keep the EHU MATLAB cube path local-only unless redistribution terms change;
-2. add sparse mask extraction for hyperspectral cubes and source large
-   NEON/Specim/HySpex/Headwall scenes beyond the current rectangular ROI path;
+2. source large NEON/Specim/HySpex/Headwall scenes so the rectangular ROI and
+   sparse `(row, col)` mask paths can be exercised on production-scale cubes;
 3. continue the open-reader-backed binary batch in this order: OMNIC `.srsx`
    and high-speed variants beyond local SpectroChemPy samples, redistributable
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-5. replace Python/R subprocess transport with native PyO3/C ABI paths;
+5. expose `Reader::read_bytes` so the WASM binding (and future browser
+   workflows) can decode multi-file sidecar formats without a path; PyO3 and
+   the extendr-api R static lib now ship as the default native transport with
+   the CLI subprocess as a fallback;
 6. source real JCAMP PEAK TABLE/ASSIGNMENTS fixtures for conformance and decide
    the public API shape for heterogeneous `LINK` fan-out;
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

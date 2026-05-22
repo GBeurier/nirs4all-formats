@@ -32,8 +32,8 @@ fixtures:
 | Bruker OPUS native | numeric extensions such as `.0`, `.1`, `.001`, `.0000` | Experimental | New OPUS magic, directory, parameter blocks and 1D data/status block pairs. Multi-signal files expose absorbance, reflectance, sample/reference spectra, interferograms and phase when present. |
 | Avantes AvaSoft ASCII | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt` | Experimental | Wave tables, AvaSoft 8 text exports and two-column irradiance export. |
 | Avantes AvaSoft binary | `.TRM`, `.ROH`, `.DRK`, `.REF`, `.ABS`, `.Raw8`, `.IRR8` | Experimental | Legacy AvaSoft 7 float32 headers and AVS82/AVS84 subfiles. `.ABS` and additional AVS8 modes are implemented by layout but still need fixtures. |
-| ENVI Spectral Library / Standard cubes | `.sli` + `.hdr`, `.img`/`.dat` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads, plus ENVI Standard BSQ/BIL/BIP cube expansion to one point spectrum per pixel with optional rectangular ROI windows. |
-| ERDAS LAN / AVIRIS 92AV3C | `.lan` + `.spc` + optional `.GIS` | Experimental partial | Classic Indian Pines AVIRIS cube, 145 x 145 x 220 u16 BIL payload, expanded to one raw-count spectrum per pixel with optional rectangular ROI windows and ground-truth class labels when present. |
+| ENVI Spectral Library / Standard cubes | `.sli` + `.hdr`, `.img`/`.dat` + `.hdr` | Experimental | Paired sidecar reader for `file type = ENVI Spectral Library`, one-band BSQ float32/float64 payloads, plus ENVI Standard BSQ/BIL/BIP cube expansion to one point spectrum per pixel with optional rectangular ROI windows or sparse `(row, col)` pixel masks. |
+| ERDAS LAN / AVIRIS 92AV3C | `.lan` + `.spc` + optional `.GIS` | Experimental partial | Classic Indian Pines AVIRIS cube, 145 x 145 x 220 u16 BIL payload, expanded to one raw-count spectrum per pixel with optional rectangular ROI windows or sparse `(row, col)` pixel masks, plus ground-truth class labels when present. |
 | Ocean Optics / Ocean Insight | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec`, `.spc` | Experimental | SpectraSuite, OceanView, Jaz, CRAIC and two-column CSV text exports, plus OceanView `.ProcSpec` ZIP/XML archives with SHA-512 signature validation and XML-driven transmittance/reflectance typing. The committed Ocean Optics `.spc` fixture is a Galactic/Thermo new-LSB explicit-X SPC file and is routed through that reader. |
 | JCAMP-DX | `.jdx`, `.dx`, `.jcm` | Experimental partial | Single-block `XYDATA=(X++(Y..Y))` with plain AFFN plus PAC/SQZ/DIF/DUP ASDF ordinate decoding and line-start X checkpoint warnings, NMR `NTUPLES` real/imaginary pages with frequency/time axes, Ocean Optics `LINK`/`XYPOINTS` sample-dark-reference blocks, and top-level sparse `PEAK TABLE` / `PEAK ASSIGNMENTS` records. Broader heterogeneous `LINK` variants are pending. |
 | EMSA/MAS MSA (ISO 22029) | `.msa` | Experimental | Standards-track single-spectrum text format. `XY` and `Y` payloads are supported with axis reconstruction from `OFFSET`, `XPERCHAN` and `CHOFFSET`; `eV` axes are typed as `Energy`. Reference reader: `rsciio.msa`. |
@@ -170,10 +170,11 @@ hyperspectral-imaging users may want to extract pixel spectra:
 Current policy: accept small ENVI Standard, AVIRIS LAN and local-only MATLAB
 cube fixtures by expanding each pixel to a point spectrum when enough axis or
 band metadata is present, while keeping broader imaging workflows partial. ENVI
-Standard and AVIRIS LAN now support rectangular row/column windows through the
-Rust options API and CLI. A future sparse mask helper is still needed for
-non-rectangular extraction and for larger NEON, Specim, HySpex, Headwall and
-AVIRIS-NG payloads where whole-cube expansion is not practical.
+Standard and AVIRIS LAN now support both rectangular row/column windows and
+sparse `(row, col)` pixel masks through the Rust options API and CLI, so
+callers can extract arbitrary subsets without materializing the full cube.
+Real-scale NEON, Specim, HySpex, Headwall and AVIRIS-NG fixtures still need to
+be sourced before promoting these readers further.
 
 ---
 

@@ -12,6 +12,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+try:  # native PyO3 extension built by maturin
+    from . import _native  # type: ignore[attr-defined]
+except ImportError:  # pragma: no cover - fallback when the wheel was not built
+    _native = None  # type: ignore[assignment]
+
 
 @dataclass(frozen=True)
 class NirsDataset:
@@ -30,11 +35,77 @@ class NirsDataset:
 def open_records(path: str | Path) -> list[dict[str, Any]]:
     """Read a file through the Rust backend and return normalized records."""
 
+    if _native is not None:
+        records = _native.open_path(str(path))
+        if not isinstance(records, list):
+            raise RuntimeError("native reader returned a non-list payload")
+        return [record for record in records if isinstance(record, dict)]
+
     raw = _run_rust_reader(path)
     records = json.loads(raw)
     if not isinstance(records, list):
         raise RuntimeError("Rust reader returned a non-list JSON payload")
     return [record for record in records if isinstance(record, dict)]
+
+
+def probe_path(path: str | Path) -> list[dict[str, Any]]:
+    """Return ordered candidate readers without parsing the full file."""
+
+    if _native is not None:
+        probes = _native.probe_path(str(path))
+        if not isinstance(probes, list):
+            raise RuntimeError("native probe_path returned a non-list payload")
+        return [probe for probe in probes if isinstance(probe, dict)]
+
+    raw = _run_rust_reader_command(["probe", str(path)])
+    probes = json.loads(raw)
+    if not isinstance(probes, list):
+        raise RuntimeError("probe returned a non-list payload")
+    return [probe for probe in probes if isinstance(probe, dict)]
+
+
+def walk_path(
+    path: str | Path,
+    *,
+    max_depth: int | None = None,
+    include_hidden: bool = False,
+    follow_symlinks: bool = False,
+    include_unsupported: bool = False,
+) -> list[dict[str, Any]]:
+    """Recursively scan a tree and return per-file outcomes.
+
+    Each entry is a dict with at least `path` and `status` ∈ {`parsed`,
+    `error`, `unsupported`}. Parsed entries also carry `format` and `records`.
+    """
+
+    if _native is not None:
+        entries = _native.walk_path(
+            str(path),
+            max_depth=max_depth,
+            include_hidden=include_hidden,
+            follow_symlinks=follow_symlinks,
+            include_unsupported=include_unsupported,
+        )
+        if not isinstance(entries, list):
+            raise RuntimeError("native walk_path returned a non-list payload")
+        return [entry for entry in entries if isinstance(entry, dict)]
+
+    args = ["scan", str(path)]
+    if max_depth is not None:
+        args.extend(["--max-depth", str(max_depth)])
+    if include_hidden:
+        args.append("--include-hidden")
+    if follow_symlinks:
+        args.append("--follow-symlinks")
+    if include_unsupported:
+        args.append("--include-unsupported")
+    args.append("--json")
+    raw = _run_rust_reader_command(args)
+    payload = json.loads(raw)
+    entries = payload.get("entries") if isinstance(payload, Mapping) else None
+    if not isinstance(entries, list):
+        raise RuntimeError("scan returned no entries array")
+    return [entry for entry in entries if isinstance(entry, dict)]
 
 
 def open_dataset(path: str | Path, *, signal: str | None = None) -> NirsDataset:
@@ -237,9 +308,13 @@ def to_nirs4all_spectrodataset(
 
 
 def _run_rust_reader(path: str | Path) -> str:
+    return _run_rust_reader_command(["read-json", str(path)])
+
+
+def _run_rust_reader_command(args: Sequence[str]) -> str:
     command = _reader_command()
     process = subprocess.run(
-        [*command, "read-json", str(path)],
+        [*command, *args],
         check=False,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

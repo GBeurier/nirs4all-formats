@@ -1,3 +1,4 @@
+#[cfg(feature = "fmt-hdf5")]
 pub mod allotrope_adf;
 pub mod allotrope_asm;
 pub mod animl;
@@ -12,20 +13,25 @@ pub mod digitalsurf;
 pub mod envi_sli;
 pub mod erdas_lan;
 pub mod excel;
+#[cfg(feature = "fmt-hdf5")]
 pub mod fgi_xml;
 pub mod galactic_spc;
 pub mod hamamatsu_img;
+#[cfg(feature = "fmt-hdf5")]
 pub mod hdf5;
 pub mod horiba_labspec;
 pub mod jasco_jws;
 pub mod jcamp;
+#[cfg(feature = "fmt-matlab")]
 pub mod matlab;
 pub mod msa;
 pub mod mzml;
+#[cfg(feature = "fmt-hdf5")]
 pub mod netcdf;
 pub mod nicolet_omnic;
 pub mod numpy;
 pub mod ocean_optics;
+#[cfg(feature = "fmt-parquet")]
 pub mod parquet;
 pub mod perkin_elmer;
 pub mod pp_systems;
@@ -43,6 +49,7 @@ pub mod witec_wip;
 
 mod util;
 
+#[cfg(feature = "fmt-hdf5")]
 pub use allotrope_adf::AllotropeAdfReader;
 pub use allotrope_asm::AllotropeAsmReader;
 pub use animl::AnimlReader;
@@ -57,20 +64,25 @@ pub use digitalsurf::DigitalSurfReader;
 pub use envi_sli::EnviSliReader;
 pub use erdas_lan::ErdasLanReader;
 pub use excel::ExcelReader;
+#[cfg(feature = "fmt-hdf5")]
 pub use fgi_xml::FgiXmlReader;
 pub use galactic_spc::GalacticSpcReader;
 pub use hamamatsu_img::HamamatsuImgReader;
+#[cfg(feature = "fmt-hdf5")]
 pub use hdf5::Hdf5Reader;
 pub use horiba_labspec::HoribaLabSpecReader;
 pub use jasco_jws::JascoJwsReader;
 pub use jcamp::JcampReader;
+#[cfg(feature = "fmt-matlab")]
 pub use matlab::MatlabReader;
 pub use msa::MsaReader;
 pub use mzml::MzmlReader;
+#[cfg(feature = "fmt-hdf5")]
 pub use netcdf::NetcdfReader;
 pub use nicolet_omnic::NicoletOmnicReader;
 pub use numpy::NumpyReader;
 pub use ocean_optics::OceanOpticsReader;
+#[cfg(feature = "fmt-parquet")]
 pub use parquet::ParquetReader;
 pub use perkin_elmer::PerkinElmerReader;
 pub use pp_systems::PpSystemsReader;

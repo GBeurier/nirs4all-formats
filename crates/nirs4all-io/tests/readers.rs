@@ -1,6 +1,6 @@
 use nirs4all_io::{
-    open_path, open_path_with_options, AxisKind, AxisOrder, CubeWindow, Error, ReadOptions,
-    SignalType,
+    open_path, open_path_with_options, AxisKind, AxisOrder, CubeMask, CubeWindow, Error,
+    ReadOptions, SignalType,
 };
 use serde_json::Value;
 
@@ -2724,6 +2724,41 @@ fn reads_envi_standard_image_cube_window() {
         ReadOptions::default().with_cube_window(CubeWindow::new(47, Some(49), 0, Some(1)));
     let err = open_path_with_options(path, &invalid).expect_err("invalid cube window");
     assert!(err.to_string().contains("row window 47..49"));
+}
+
+#[test]
+fn reads_envi_standard_image_cube_sparse_mask() {
+    let path = workspace_file("samples/envi_sli/cubescope-mini-cube.hdr");
+    let full = open_path(&path).expect("open full ENVI cube");
+
+    let pixels = vec![(47, 47), (0, 0), (12, 7)];
+    let mask = ReadOptions::default().with_cube_mask(CubeMask::new(pixels.clone()));
+    let records = open_path_with_options(&path, &mask).expect("open ENVI cube mask");
+
+    assert_eq!(records.len(), pixels.len());
+    for (record, &(row, col)) in records.iter().zip(&pixels) {
+        assert_eq!(
+            record.metadata["sample_id"].as_str(),
+            Some(format!("pixel_y{row}_x{col}").as_str())
+        );
+        assert_eq!(record.metadata["pixel_x"].as_u64(), Some(col as u64));
+        assert_eq!(record.metadata["pixel_y"].as_u64(), Some(row as u64));
+        let full_index = row * 48 + col;
+        assert_eq!(
+            record.signals["spectrum"].values,
+            full[full_index].signals["spectrum"].values
+        );
+    }
+
+    let empty = ReadOptions::default().with_cube_mask(CubeMask::new(Vec::new()));
+    let err = open_path_with_options(&path, &empty).expect_err("empty mask");
+    assert!(err.to_string().contains("ENVI Standard cube mask is empty"));
+
+    let out_of_bounds = ReadOptions::default().with_cube_mask(CubeMask::new(vec![(0, 48)]));
+    let err = open_path_with_options(path, &out_of_bounds).expect_err("out of bounds mask");
+    assert!(err
+        .to_string()
+        .contains("mask pixel (0, 48) is outside 0..48 x 0..48"));
 }
 
 #[test]
