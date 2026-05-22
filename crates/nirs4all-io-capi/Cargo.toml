@@ -13,3 +13,6 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 [dependencies]
 nirs4all-io.workspace = true
 serde_json.workspace = true
+
+[build-dependencies]
+cbindgen = "0.27"

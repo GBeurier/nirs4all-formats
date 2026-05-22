@@ -34,3 +34,34 @@ target-version = "py310"
 [tool.mypy]
 python_version = "3.10"
 strict = true
+
+# ---------------------------------------------------------------------------
+# cibuildwheel configuration for the Phase 6 release pipeline (M4).
+#
+# The default build targets manylinux2014 on Linux (x86_64 + aarch64),
+# macOS (x86_64 + arm64) and Windows (x86_64). Each wheel is built with the
+# full feature set; the pure-Rust hdf5-reader / netcdf-reader make this
+# portable without C dependencies. If a future feature breaks a specific
+# platform, document the fallback in `docs/RELEASE.md` and disable it via
+# `[tool.cibuildwheel.overrides]` rather than pre-emptively in this block.
+# ---------------------------------------------------------------------------
+
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-* cp313-*"
+# Skip 32-bit Windows and musllinux for the initial release; the audience
+# is server-side / data-science where manylinux + glibc is the norm.
+skip = "*-win32 *-musllinux* pp*"
+test-command = "python -m pytest {project}/bindings/python/tests"
+test-extras = ["numpy"]
+before-all = "pip install maturin"
+
+[tool.cibuildwheel.linux]
+manylinux-x86_64-image = "manylinux2014"
+manylinux-aarch64-image = "manylinux2014"
+before-all = "yum install -y openssl-devel || apt-get install -y libssl-dev || true"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
