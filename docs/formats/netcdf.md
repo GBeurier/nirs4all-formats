@@ -83,9 +83,35 @@ signal.
 ## Dispatch Boundaries
 
 NetCDF is a container. The reader probes NetCDF classic and HDF5-backed
-containers, then validates the NIRS schema at read time. ANDI/MS containers are
-detected by their chromatography/MS variable set and refused with a dedicated
-message. Other non-NIRS NetCDF files, such as weather datasets and the
-committed PyrNet pyranometer fixture, are refused because they do not contain a
-supported NIRS schema or known sun-photometer channel set. Local ARM AOSMET is a
-weather product and remains a refusal case.
+containers, then validates the NIRS schema at read time. ANDI/MS
+containers are detected via the strict `NcFile::from_bytes` path
+(`netcdf.rs:1526`); the HDF5-backed fallback at
+`read_netcdf4_hdf5_records` does not currently re-run the ANDI markers
+check, so a NetCDF4-classic file that wraps an HDF5 container with the
+canonical ANDI variable set would surface as "is not a supported NIRS
+spectroscopy schema" rather than the canonical pyteomics/pyOpenMS
+pointer. Other non-NIRS NetCDF files, such as weather datasets and the
+committed PyrNet pyranometer fixture, are refused because they do not
+contain a supported NIRS schema or known sun-photometer channel set.
+Local ARM AOSMET is a weather product and remains a refusal case.
+
+## Sidecar contract (M1, 2026-05-22)
+
+NetCDF is decoded through `NcFile::from_bytes_with_options` in the
+lossy fallback and `NcFile::from_bytes` in the strict path. The only
+true companion file is the optional ARM MFRSR `<stem>.yaml` QC
+sidecar:
+
+- `open_path(path)` reads the NetCDF plus the optional YAML from disk.
+- `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` decodes
+  from in-memory bytes; the resolver may serve a `<stem>.yaml` or
+  `<prefix>.yaml` (where the trailing `_YYYYMMDD` is stripped) entry.
+  Absence of the YAML is silent — QC just doesn't fire.
+- `open_bytes(name, bytes)` works when no QC sidecar is needed.
+
+Known limitations: the QC YAML parser uses a positional 0/2/4-space
+indent grammar and reads the time-range bounds as a seconds-within-day
+value (`H*3600 + M*60 + S`). This currently works only for b1 NetCDF
+files whose `time` variable is itself seconds-since-midnight; tab
+indents, inline `#` comments inside QC range lines and multi-day
+fixtures silently match zero rules.

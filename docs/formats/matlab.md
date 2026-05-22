@@ -13,8 +13,9 @@ NIRS datasets in Rust:
 - prospectr `NIRsoil.RData` RDX3/XZ workspace files via `rds2rust`, mapped
   from the `NIRsoil` data.frame and its `spc` matrix;
 - the local-only Indian Pines MATLAB v5 hyperspectral cube
-  (`indian_pines_corrected.mat`) with optional `indian_pines_gt.mat` target
-  sidecar;
+  (`indian_pines_corrected.mat`) with optional `indian_pines_gt.mat`
+  target sidecar (the GT filename is hard-coded — only the literal
+  `indian_pines_gt.mat` next to the cube is honoured);
 - an `X` matrix, a wavelength axis named `wavelengths`, `wavelength`,
   `wavelength_nm` or `x`, and an optional numeric `y` target vector.
 
@@ -52,3 +53,19 @@ does not carry wavelength calibration.
 R workspace support is intentionally schema-mapped rather than generic. The
 current `.RData` path accepts the prospectr `NIRsoil` fixture and validates the
 expected `NIRsoil` data.frame columns before emitting records.
+
+## Sidecar contract (M1, 2026-05-22)
+
+MATLAB v5 single-file (`.mat`), MATLAB v7.3 (`.mat` HDF5) and `.RData`
+all decode in-memory through `open_bytes` directly — no companion
+files. The exception is the Indian Pines cube, which is sidecar-bearing:
+
+- `open_path(cube.mat)` reads the cube plus the optional
+  `indian_pines_gt.mat` from disk.
+- `open_with_sidecars(name, cube_bytes, Arc<dyn SidecarResolver>)`
+  decodes from in-memory bytes; the resolver may serve
+  `indian_pines_gt.mat` to populate the `land_cover_class` target.
+- `open_bytes(name, cube_bytes)` succeeds when the ground-truth is
+  absent (the target column drops out) but only because the GT lookup
+  is optional via `sidecars.contains()`. If you want the targets,
+  route through `open_with_sidecars`.

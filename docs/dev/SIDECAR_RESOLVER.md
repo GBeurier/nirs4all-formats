@@ -105,7 +105,32 @@ support in-memory reads" string.
 | WebAssembly | `openWithSidecars(filename: string, primary: Uint8Array, sidecars: Record<string, Uint8Array>)` — ENVI/ERDAS only; HDF5-backed formats require `fmt-hdf5` to be re-enabled in `bindings/wasm/Cargo.toml` |
 | CLI | `nirs4all-io read-json PATH --bytes-file PATH --sidecar key=path` |
 
-The WASM gap is documented intentionally: the pure-Rust HDF5 and NetCDF
-crates do not require any C dependency, so enabling `fmt-hdf5` in the
-WASM build is purely opt-in — it is left out by default to keep the
-default WASM bundle small. This is its own follow-up ticket after M1.
+The WASM gap is blocked upstream, not by architecture. Attempting to
+enable `fmt-hdf5` in `bindings/wasm/Cargo.toml` (2026-05-23 follow-up
+investigation) fails to compile for `wasm32-unknown-unknown` because
+`hdf5-reader` 0.5.0 declares `read_exact_at` only under `#[cfg(unix)]`
+and `#[cfg(windows)]` while `FileStorage::read_range` calls it
+unconditionally (`storage.rs:214`). On wasm neither cfg matches and
+linking fails even though we never instantiate `FileStorage` — only
+`BytesStorage` is used through `Hdf5File::from_vec_with_options`.
+
+Upstream fix (4 lines, ready to PR against
+`https://github.com/roteiro-gis/netcdf-rust`):
+
+```rust
+#[cfg(not(any(unix, windows)))]
+fn read_exact_at(_file: &File, _buf: &mut [u8], _offset: u64) -> std::io::Result<()> {
+    Err(std::io::Error::new(
+        std::io::ErrorKind::Unsupported,
+        "FileStorage not supported on this target; use BytesStorage / from_bytes",
+    ))
+}
+```
+
+Once that lands as `hdf5-reader = "0.5.1"` (or a vendored patched
+fork is wired in via `[patch.crates-io]`), flipping `fmt-hdf5` on in
+the WASM crate is a one-line change. Until then the WASM binding only
+covers ENVI Standard / ENVI SLI / AVIRIS LAN sidecars; FGI HDF5+XML,
+generic HDF5, MATLAB v7.3, NetCDF MFRSR and Allotrope ADF return
+`UnsupportedFormat` from `openWithSidecars` because the readers are
+gated off.

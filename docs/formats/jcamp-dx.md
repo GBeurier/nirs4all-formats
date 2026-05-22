@@ -108,23 +108,30 @@ the reader emits `0.0` for that point and records a provenance warning.
 
 ### LINK scope decision
 
-The current v1 contract is: **one `##DATA TYPE=LINK` file emits one
-`SpectralRecord`** whose signals must share a common axis. We deliberately
-keep that scope tight rather than generalising LINK now:
+The current contract is two-mode (M3, 2026-05-23):
 
-- The model already permits per-signal axes, but downstream consumers treat
-  axis-mismatched signals on the same record as ambiguous. Silently merging
-  heterogeneous LINK children would push that ambiguity onto every caller.
-- LINK files in practice come in disjoint varieties (Ocean Optics
-  SpectraSuite, Bruker MULTIPLE SPECTRA, NMR multipulse, etc.) — each is
-  best handled with explicit per-vendor logic rather than a permissive
-  merge. We accept the committed Ocean Optics fixture and reject the
-  rest with a clear error.
-- Promoting `PEAK TABLE` children inside LINK would mix dense spectra with
-  sparse peak lists on a single record, which has no consistent semantics
-  in the current `SpectralRecord` model. LINK files whose children carry
-  `##PEAK TABLE=` (or `##PEAK ASSIGNMENTS=`) are therefore rejected with a
-  pointer to use a standalone peak-table file instead.
+1. **Composite (same-axis)**: when every `##DATA TYPE=LINK` child reuses the
+   same spectral axis, the reader emits **one** `SpectralRecord` whose
+   signals are the children. This is the Ocean Optics SpectraSuite shape
+   (`sample`, `dark_reference`, `white_reference` plus a computed
+   transmittance). Per-signal axes are still permitted in the model but
+   the reader collapses them when the children agree.
+2. **Fan-out (heterogeneous axes)**: when child blocks declare different
+   axes (different units, different `FIRSTX`/`DELTAX`, different lengths),
+   the reader emits **one record per child** with
+   `link_parent_id` (SHA-256-derived stable identifier shared by every
+   child of the same LINK), `link_index`, `link_total`, and
+   `link_relation ∈ {sample, dark, reference, interferogram, fid, peaks,
+   unknown}` inferred from `##DATA TYPE=` or the child `##TITLE=`. The
+   strict-composite `parse_jcamp_text` entry point still errors with
+   "JCAMP LINK child blocks have incompatible axes" so legacy callers
+   that rely on a single-record contract are unaffected.
+
+Promoting `PEAK TABLE` children inside LINK would mix dense spectra with
+sparse peak lists on a single record, which has no consistent semantics
+in the current `SpectralRecord` model. LINK files whose children carry
+`##PEAK TABLE=` (or `##PEAK ASSIGNMENTS=`) are therefore rejected with a
+pointer to use a standalone peak-table file instead.
 
 Top-level multi-block JCAMP files (multiple `##JCAMP-DX=` headers without
 `##DATA TYPE=LINK`) are unaffected: each block is emitted as its own
@@ -221,6 +228,10 @@ legacy format stores extra line checkpoints.
   Adding NIST WebBook or nzhagen peak-assignment fixtures would harden
   vendor-specific quirks (e.g. embedded `>` in assignment text,
   multi-line assignments, peak groups separated by `;`).
-- Broader `LINK` variants beyond same-axis spectral children require a
-  per-record fan-out decision in the public API; see the LINK section.
-- Reference reports against open JCAMP readers for every committed fixture.
+- Real `PEAK TABLE` children inside LINK files: the current contract is
+  to reject those LINKs, but if a vendor LINK in practice combines dense
+  spectra with peak tables in the same file we may want a hybrid
+  fan-out that emits a peak-record alongside the spectrum records.
+- Reference reports against open JCAMP readers for every committed
+  fixture. The conformance harness already wires `jcamp.jcamp_readfile`
+  in `tests/conformance/test_jcamp.py`; see `docs/CONFORMANCE.md`.

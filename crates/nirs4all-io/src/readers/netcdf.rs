@@ -212,14 +212,13 @@ fn read_inner(
     match read_netcdf_records(&file, source.clone(), reader_name, name, sidecars) {
         Ok(records) => Ok(records),
         Err(error) if bytes.starts_with(HDF5_MAGIC) => {
-            read_netcdf4_hdf5_records(name, bytes, source, reader_name, sidecars, error)
+            read_netcdf4_hdf5_records(bytes, source, reader_name, sidecars, error)
         }
         Err(error) => Err(error),
     }
 }
 
 fn read_netcdf4_hdf5_records(
-    path: &Path,
     bytes: &[u8],
     source: SourceFile,
     reader: &str,
@@ -227,7 +226,7 @@ fn read_netcdf4_hdf5_records(
     original_error: Error,
 ) -> Result<Vec<SpectralRecord>> {
     let hdf5_file = open_hdf5(bytes.to_vec(), sidecars.clone(), "NetCDF4/HDF5 open error")?;
-    let hdf5_microtops_channels = discover_microtops_hdf5_aot_channels(&hdf5_file, path);
+    let hdf5_microtops_channels = discover_microtops_hdf5_aot_channels(&hdf5_file, bytes);
     let mut microtops_hdf5_error = None;
     if !hdf5_microtops_channels.is_empty() {
         match read_microtops_man_hdf5_records(
@@ -538,9 +537,9 @@ fn build_microtops_records(input: MicrotopsBuildInput<'_>) -> Result<Vec<Spectra
     Ok(records)
 }
 
-fn discover_microtops_hdf5_aot_channels(file: &Hdf5File, path: &Path) -> Vec<MicrotopsAotChannel> {
+fn discover_microtops_hdf5_aot_channels(file: &Hdf5File, bytes: &[u8]) -> Vec<MicrotopsAotChannel> {
     let Ok(root) = file.root_group() else {
-        return discover_microtops_hdf5_aot_channels_from_bytes(path);
+        return discover_microtops_hdf5_aot_channels_from_bytes(bytes);
     };
     let channels = match root.datasets() {
         Ok(datasets) => sorted_microtops_channels(
@@ -551,16 +550,13 @@ fn discover_microtops_hdf5_aot_channels(file: &Hdf5File, path: &Path) -> Vec<Mic
         Err(_) => Vec::new(),
     };
     if channels.is_empty() {
-        discover_microtops_hdf5_aot_channels_from_bytes(path)
+        discover_microtops_hdf5_aot_channels_from_bytes(bytes)
     } else {
         channels
     }
 }
 
-fn discover_microtops_hdf5_aot_channels_from_bytes(path: &Path) -> Vec<MicrotopsAotChannel> {
-    let Ok(bytes) = std::fs::read(path) else {
-        return Vec::new();
-    };
+fn discover_microtops_hdf5_aot_channels_from_bytes(bytes: &[u8]) -> Vec<MicrotopsAotChannel> {
     let mut channels = BTreeMap::new();
     let mut index = 0;
     while index + 4 <= bytes.len() {
