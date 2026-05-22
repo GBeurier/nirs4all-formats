@@ -226,6 +226,13 @@ fn read_netcdf4_hdf5_records(
     original_error: Error,
 ) -> Result<Vec<SpectralRecord>> {
     let hdf5_file = open_hdf5(bytes.to_vec(), sidecars.clone(), "NetCDF4/HDF5 open error")?;
+    let andi_markers = hdf5_andi_ms_markers(&hdf5_file);
+    if andi_markers.len() >= ANDI_MS_MIN_MARKERS {
+        return Err(Error::InvalidRecord(format!(
+            "ANDI/MS NetCDF chromatography data is not NIRS spectroscopy; detected variables {}. Use pyteomics.openms.ANDIMS, PyMassSpec or pyOpenMS instead.",
+            andi_markers.join(", ")
+        )));
+    }
     let hdf5_microtops_channels = discover_microtops_hdf5_aot_channels(&hdf5_file, bytes);
     let mut microtops_hdf5_error = None;
     if !hdf5_microtops_channels.is_empty() {
@@ -1699,10 +1706,14 @@ fn read_arm_mfrsr_records(
         }
         if let Some(sidecar) = &qc_sidecar {
             if let Some(time_seconds) = metadata.get("time").and_then(Value::as_f64) {
+                let epoch = metadata
+                    .get("time_units")
+                    .and_then(Value::as_str)
+                    .and_then(parse_time_units_epoch);
                 let matching_rules = sidecar
                     .rules
                     .iter()
-                    .filter(|rule| rule.matches(time_seconds))
+                    .filter(|rule| rule.matches(time_seconds, epoch))
                     .collect::<Vec<_>>();
                 if !matching_rules.is_empty() {
                     metadata.insert(
@@ -1763,13 +1774,34 @@ struct ArmMfrsrQcRule {
     filter: usize,
     severity: String,
     reason: String,
-    start_seconds: f64,
-    end_seconds: f64,
+    /// Absolute UTC seconds since the Unix epoch.
+    start_epoch_seconds: f64,
+    /// Absolute UTC seconds since the Unix epoch.
+    end_epoch_seconds: f64,
 }
 
 impl ArmMfrsrQcRule {
-    fn matches(&self, time_seconds: f64) -> bool {
-        time_seconds >= self.start_seconds && time_seconds <= self.end_seconds
+    /// Match the rule against the per-sample `time` value, given the
+    /// file's CF `time:units` epoch + scale (e.g. `(1617000000.0, 1.0)`
+    /// for "seconds since 2021-03-29 00:00:00"). When the units cannot
+    /// be parsed, falls back to the legacy seconds-within-day
+    /// comparison — at least the b1 fixtures keep matching.
+    fn matches(&self, sample_time: f64, epoch: Option<(f64, f64)>) -> bool {
+        match epoch {
+            Some((epoch_seconds, scale)) => {
+                let absolute = epoch_seconds + sample_time * scale;
+                absolute >= self.start_epoch_seconds && absolute <= self.end_epoch_seconds
+            }
+            None => {
+                // Legacy fallback: treat the rule bounds as
+                // seconds-within-day. Matches only files whose `time`
+                // variable is itself seconds-since-midnight (ARM b1).
+                let day_seconds = 86_400.0;
+                let start_day = self.start_epoch_seconds.rem_euclid(day_seconds);
+                let end_day = self.end_epoch_seconds.rem_euclid(day_seconds);
+                sample_time >= start_day && sample_time <= end_day
+            }
+        }
     }
 
     fn quality_flag(&self) -> String {
@@ -1789,8 +1821,8 @@ impl ArmMfrsrQcRule {
             "filter": self.filter,
             "severity": self.severity,
             "reason": self.reason,
-            "start_seconds": self.start_seconds,
-            "end_seconds": self.end_seconds,
+            "start_epoch_seconds": self.start_epoch_seconds,
+            "end_epoch_seconds": self.end_epoch_seconds,
         })
     }
 }
@@ -1840,12 +1872,16 @@ fn parse_arm_mfrsr_qc_sidecar(text: &str) -> Result<Vec<ArmMfrsrQcRule>> {
     let mut variable = None::<String>;
     let mut severity = None::<String>;
     let mut reason = None::<String>;
-    for line in text.lines() {
+    for raw_line in text.lines() {
+        // Strip inline `#` comments (a `#` preceded by whitespace marks
+        // a YAML inline comment; a `#` at column 0 is a full-line
+        // comment which the empty-trim check below also catches).
+        let line = strip_inline_comment(raw_line);
         let trimmed = line.trim();
         if trimmed.is_empty() || trimmed.starts_with('#') {
             continue;
         }
-        let indent = line.chars().take_while(|ch| *ch == ' ').count();
+        let indent = yaml_indent_columns(&line);
         match indent {
             0 if trimmed.ends_with(':') => {
                 variable = Some(trimmed.trim_end_matches(':').to_string());
@@ -1877,14 +1913,45 @@ fn parse_arm_mfrsr_qc_sidecar(text: &str) -> Result<Vec<ArmMfrsrQcRule>> {
                     filter,
                     severity,
                     reason,
-                    start_seconds: parse_qc_timestamp_seconds(start)?,
-                    end_seconds: parse_qc_timestamp_seconds(end)?,
+                    start_epoch_seconds: parse_qc_absolute_seconds(start)?,
+                    end_epoch_seconds: parse_qc_absolute_seconds(end)?,
                 });
             }
             _ => {}
         }
     }
     Ok(rules)
+}
+
+/// Count leading whitespace as YAML "indent columns". Tabs expand to
+/// the next 2-column tab stop (matching the file convention; the
+/// canonical ARM MFRSR YAML uses spaces but tab-indented sidecars are
+/// observed in the wild). Other whitespace counts as 1 column.
+fn yaml_indent_columns(line: &str) -> usize {
+    let mut column = 0_usize;
+    for ch in line.chars() {
+        match ch {
+            ' ' => column += 1,
+            '\t' => column = (column / 2 + 1) * 2,
+            _ => break,
+        }
+    }
+    column
+}
+
+/// Strip the first ` #` (whitespace + hash) inline comment from a line.
+/// Quoted strings are not supported in this YAML subset, so a literal
+/// `#` after whitespace is always a comment marker.
+fn strip_inline_comment(line: &str) -> String {
+    let bytes = line.as_bytes();
+    let mut idx = 0;
+    while idx < bytes.len() {
+        if bytes[idx] == b'#' && (idx == 0 || bytes[idx - 1].is_ascii_whitespace()) {
+            return line[..idx].to_string();
+        }
+        idx += 1;
+    }
+    line.to_string()
 }
 
 fn parse_arm_mfrsr_qc_variable(variable: &str) -> Result<(String, usize)> {
@@ -1910,32 +1977,51 @@ fn parse_arm_mfrsr_qc_variable(variable: &str) -> Result<(String, usize)> {
     Ok((signal_name, filter))
 }
 
-fn parse_qc_timestamp_seconds(value: &str) -> Result<f64> {
-    let (_, time) = value.trim().rsplit_once(' ').ok_or_else(|| {
-        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has no time"))
-    })?;
-    let parts = time.split(':').collect::<Vec<_>>();
-    if !(2..=3).contains(&parts.len()) {
-        return Err(Error::InvalidRecord(format!(
-            "ARM MFRSR QC timestamp {value} has unsupported time"
-        )));
+/// Parse an ARM MFRSR QC timestamp to absolute UTC seconds since the
+/// Unix epoch. Accepts `YYYY-MM-DD HH:MM` and `YYYY-MM-DD HH:MM:SS`.
+fn parse_qc_absolute_seconds(value: &str) -> Result<f64> {
+    use chrono::NaiveDateTime;
+    let trimmed = value.trim();
+    let parsed = NaiveDateTime::parse_from_str(trimmed, "%Y-%m-%d %H:%M:%S")
+        .or_else(|_| NaiveDateTime::parse_from_str(trimmed, "%Y-%m-%d %H:%M"))
+        .map_err(|err| {
+            Error::InvalidRecord(format!(
+                "ARM MFRSR QC timestamp {value} is not YYYY-MM-DD HH:MM[:SS]: {err}"
+            ))
+        })?;
+    Ok(parsed.and_utc().timestamp() as f64)
+}
+
+/// Parse a NetCDF CF `units` string of the form
+/// `<unit> since <YYYY-MM-DD HH:MM:SS>` to the epoch's absolute Unix
+/// seconds and the per-step seconds factor. Returns `None` when the
+/// units string is malformed or uses an unsupported unit (anything
+/// other than seconds for now).
+fn parse_time_units_epoch(units: &str) -> Option<(f64, f64)> {
+    use chrono::NaiveDateTime;
+    let (unit, since) = units.split_once(" since ")?;
+    let unit = unit.trim().to_ascii_lowercase();
+    let scale = match unit.as_str() {
+        "second" | "seconds" | "s" => 1.0,
+        "minute" | "minutes" | "min" => 60.0,
+        "hour" | "hours" | "hr" | "h" => 3600.0,
+        "day" | "days" | "d" => 86400.0,
+        _ => return None,
+    };
+    let since = since.trim();
+    let candidates = [
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M:%SZ",
+        "%Y-%m-%d",
+    ];
+    for fmt in &candidates {
+        if let Ok(dt) = NaiveDateTime::parse_from_str(since, fmt) {
+            return Some((dt.and_utc().timestamp() as f64, scale));
+        }
     }
-    let hours = parts[0].parse::<u32>().map_err(|_| {
-        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid hour"))
-    })?;
-    let minutes = parts[1].parse::<u32>().map_err(|_| {
-        Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid minute"))
-    })?;
-    let seconds = parts
-        .get(2)
-        .map(|raw| {
-            raw.parse::<u32>().map_err(|_| {
-                Error::InvalidRecord(format!("ARM MFRSR QC timestamp {value} has invalid second"))
-            })
-        })
-        .transpose()?
-        .unwrap_or(0);
-    Ok(f64::from(hours * 3600 + minutes * 60 + seconds))
+    None
 }
 
 fn normalize_qc_token(value: &str) -> String {
@@ -2060,6 +2146,24 @@ fn andi_ms_markers(file: &NcFile) -> Result<Vec<&'static str>> {
         .collect())
 }
 
+/// ANDI/MS variant for HDF5-backed NetCDF4 containers: walk the root
+/// group's datasets directly so we can refuse a chromatography/MS file
+/// at the same canonical entry point as the strict NetCDF3 path, even
+/// when `netcdf-reader` cannot decode the container metadata.
+fn hdf5_andi_ms_markers(file: &Hdf5File) -> Vec<&'static str> {
+    let Ok(root) = file.root_group() else {
+        return Vec::new();
+    };
+    let Ok(datasets) = root.datasets() else {
+        return Vec::new();
+    };
+    ANDI_MS_MARKERS
+        .iter()
+        .copied()
+        .filter(|marker| datasets.iter().any(|dataset| dataset.name() == *marker))
+        .collect()
+}
+
 fn find_axis_variable(file: &NcFile, band_count: usize) -> Result<(&str, &NcVariable)> {
     for name in ["wavelengths", "wavelength", "wavelength_nm", "x"] {
         if let Ok(variable) = file.variable(name) {
@@ -2157,5 +2261,75 @@ fn attr_value(attribute: &NcAttribute) -> Option<Value> {
                 json!(values)
             }
         }),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn yaml_parser_tolerates_tabs_and_inline_comments() {
+        let text = "\
+diffuse_hemisp_narrowband_filter4:\n\
+\tIncorrect:\n\
+\t\tValues are incorrect: # inline note\n\
+\t\t\t- 2021-03-29 17:26:40, 2021-03-29 17:39:20  # spot 1\n\
+";
+        let rules = parse_arm_mfrsr_qc_sidecar(text).expect("parse");
+        assert_eq!(rules.len(), 1);
+        assert_eq!(rules[0].variable, "diffuse_hemisp_narrowband_filter4");
+        assert_eq!(rules[0].severity, "Incorrect");
+    }
+
+    #[test]
+    fn parse_qc_absolute_seconds_returns_epoch_seconds() {
+        // 2021-03-29 17:26:40 UTC = 1617038800 seconds since the
+        // Unix epoch.
+        let value = parse_qc_absolute_seconds("2021-03-29 17:26:40").expect("parse");
+        assert!((value - 1_617_038_800.0).abs() < 1e-6);
+    }
+
+    #[test]
+    fn parse_time_units_epoch_handles_canonical_cf() {
+        let (epoch, scale) =
+            parse_time_units_epoch("seconds since 2021-03-29 00:00:00").expect("parse");
+        // 2021-03-29 00:00:00 UTC == 1616976000.
+        assert!((epoch - 1_616_976_000.0).abs() < 1e-6);
+        assert!((scale - 1.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn rule_matches_uses_epoch_when_available() {
+        let rule = ArmMfrsrQcRule {
+            variable: "diffuse_hemisp_narrowband_filter4".to_string(),
+            signal_name: "diffuse_hemisp_narrowband".to_string(),
+            filter: 4,
+            severity: "Incorrect".to_string(),
+            reason: String::new(),
+            start_epoch_seconds: 1_617_038_800.0,
+            end_epoch_seconds: 1_617_039_560.0,
+        };
+        let epoch = parse_time_units_epoch("seconds since 2021-03-29 00:00:00").unwrap();
+        // 17:26:40 since 2021-03-29 00:00:00 == 62800 seconds.
+        assert!(rule.matches(62_800.0, Some(epoch)));
+        assert!(!rule.matches(0.0, Some(epoch)));
+    }
+
+    #[test]
+    fn rule_matches_falls_back_to_seconds_within_day_without_units() {
+        let rule = ArmMfrsrQcRule {
+            variable: "diffuse_hemisp_narrowband_filter4".to_string(),
+            signal_name: "diffuse_hemisp_narrowband".to_string(),
+            filter: 4,
+            severity: "Incorrect".to_string(),
+            reason: String::new(),
+            start_epoch_seconds: 1_617_038_800.0,
+            end_epoch_seconds: 1_617_039_560.0,
+        };
+        // Without epoch info, the rule reduces the bounds modulo
+        // 86_400 s and compares seconds-within-day: 62800 / 63560.
+        assert!(rule.matches(62_800.0, None));
+        assert!(!rule.matches(0.0, None));
     }
 }
