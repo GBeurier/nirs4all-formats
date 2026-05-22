@@ -16,11 +16,27 @@ sparse `PEAK TABLE` / `PEAK ASSIGNMENTS`, and Ocean Optics `LINK` records.
   - DUP repeat counts.
 - Reads NMR `NTUPLES` pages with `VAR_FORM=AFFN,ASDF,ASDF,AFFN` and emits
   real/imaginary channels as separate normalized signals on the same record.
-- Reads `DATA TYPE=LINK` files whose child blocks use `XYPOINTS=(XY..XY)`;
-  the committed Ocean Optics LINK fixture is mapped to `sample`,
-  `dark_reference`, `white_reference` and a computed transmittance signal.
-  Child blocks with incompatible axes are rejected instead of silently merging
-  mismatched signals.
+- Reads `DATA TYPE=LINK` files in two modes (M3, 2026-05-23):
+  - **Composite (same-axis)**: when every child block reuses the same axis,
+    the reader emits one `SpectralRecord` whose signals are the children
+    (Ocean Optics flow). The committed Ocean Optics LINK fixture is mapped
+    to `sample`, `dark_reference`, `white_reference` and a computed
+    transmittance signal.
+  - **Fan-out (heterogeneous axes)**: when child blocks declare different
+    axes, the reader emits one `SpectralRecord` per child instead of
+    collapsing them. Each fan-out record carries `link_parent_id` (a
+    SHA-256-derived identifier shared by every child in the same LINK),
+    `link_index`, `link_total`, and `link_relation` ∈ `{sample, dark,
+    reference, interferogram, fid, peaks, unknown}` inferred from
+    `##DATA TYPE=` or the block `##TITLE`. The strict-composite
+    `parse_jcamp_text` entry point still errors with
+    "JCAMP LINK child blocks have incompatible axes" so legacy callers
+    that rely on a single-record contract are not affected.
+- Top-level multi-block files (several `##JCAMP-DX=` blocks at the file
+  root, no LINK wrapper) likewise emit one record per block with the same
+  `link_parent_id` / `link_index` / `link_total` / `link_relation`
+  metadata, plus the legacy `jcamp_block_index` for backwards
+  compatibility.
 - Reads sparse `PEAK TABLE` and `PEAK ASSIGNMENTS` blocks as a single
   `peak_intensity` signal whose axis carries the listed peak positions.
 - Applies `YFACTOR` to decoded ordinates and `XFACTOR` to peak abscissas /
@@ -28,8 +44,12 @@ sparse `PEAK TABLE` / `PEAK ASSIGNMENTS`, and Ocean Optics `LINK` records.
 - Reconstructs the X axis from `FIRSTX` and `DELTAX`, or from `FIRSTX`,
   `LASTX` and `NPOINTS` when `DELTAX` is absent.
 - Verifies `XYDATA` line-start X checkpoints against the reconstructed axis,
-  accepting either physical checkpoints or checkpoints that require `XFACTOR`;
-  mismatches are reported as provenance warnings.
+  accepting either physical checkpoints or checkpoints that require `XFACTOR`.
+  When mismatches occur the reader emits a structured provenance warning
+  `jcamp_xydata_x_checkpoint_drift: <context> N/M line starts mismatched;
+  first line_x …, expected …, abs=<delta>, rel=<delta>` so downstream tools
+  can act on the absolute and relative drift at the first mismatch rather
+  than parsing a free-form string.
 - Uses `XUNITS`/`YUNITS` or NTUPLES `UNITS` to map axis kind/unit and signal
   type.
 

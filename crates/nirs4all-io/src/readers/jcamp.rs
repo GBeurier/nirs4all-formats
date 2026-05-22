@@ -6,6 +6,7 @@ use nirs4all_io_core::{
     SpectralRecord,
 };
 use serde_json::{json, Value};
+use sha2::{Digest, Sha256};
 
 use crate::readers::util::{
     normalize_key, parse_number, read_bytes, record_from_signals, safe_signal_name,
@@ -44,19 +45,28 @@ impl Reader for JcampReader {
     ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
         let (text, source) = text_lossy_from_bytes(path, bytes);
         if is_link_jcamp(&text) {
-            return Ok(vec![jcamp_record_from_parsed(
-                parse_jcamp_text(&text)?,
-                source,
-                self.name(),
-            )?]);
+            let outcome = parse_link_jcamp_outcome(&text)?;
+            return finalize_link_outcome(outcome, &source, self.name(), bytes, &text);
         }
         let chunks = top_level_jcamp_chunks(&text);
         if chunks.len() > 1 {
+            let parent_id = compute_link_parent_id(bytes);
+            let total = chunks.len();
             return chunks
                 .iter()
                 .enumerate()
                 .map(|(index, chunk)| {
                     let mut parsed = parse_jcamp_text(chunk)?;
+                    let relation = infer_link_relation(&parsed.metadata, index);
+                    inject_link_metadata(
+                        &mut parsed.metadata,
+                        &parent_id,
+                        index,
+                        total,
+                        Some(&relation),
+                    );
+                    // Keep the legacy index key so downstream tools that
+                    // already filter on it still work.
                     parsed
                         .metadata
                         .insert("jcamp_block_index".to_string(), json!(index));
@@ -72,6 +82,152 @@ impl Reader for JcampReader {
     }
 }
 
+/// Outcome of parsing a top-level LINK block. Same-axis links collapse
+/// into a single composite record (Ocean Optics flow); heterogeneous links
+/// fan out one record per child so the caller can inspect each axis.
+enum LinkOutcome {
+    Composite(ParsedJcamp),
+    Heterogeneous(Vec<ParsedJcamp>),
+}
+
+fn finalize_link_outcome(
+    outcome: LinkOutcome,
+    source: &SourceFile,
+    reader: &'static str,
+    bytes: &[u8],
+    text: &str,
+) -> Result<Vec<SpectralRecord>> {
+    match outcome {
+        LinkOutcome::Composite(parsed) => Ok(vec![jcamp_record_from_parsed(
+            parsed,
+            source.clone(),
+            reader,
+        )?]),
+        LinkOutcome::Heterogeneous(blocks) => {
+            let parent_id = compute_link_parent_id(bytes);
+            let total = blocks.len();
+            let ocean_block_titles = link_block_titles(text);
+            blocks
+                .into_iter()
+                .enumerate()
+                .map(|(index, mut parsed)| {
+                    let title_hint = ocean_block_titles.get(index).map(String::as_str);
+                    let relation =
+                        infer_link_relation_with_hint(&parsed.metadata, index, title_hint);
+                    inject_link_metadata(
+                        &mut parsed.metadata,
+                        &parent_id,
+                        index,
+                        total,
+                        Some(&relation),
+                    );
+                    jcamp_record_from_parsed(parsed, source.clone(), reader)
+                })
+                .collect()
+        }
+    }
+}
+
+fn compute_link_parent_id(bytes: &[u8]) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    let digest = hasher.finalize();
+    format!("jcamp-{:x}", digest)
+        .chars()
+        .take("jcamp-".len() + 16)
+        .collect()
+}
+
+fn inject_link_metadata(
+    metadata: &mut BTreeMap<String, Value>,
+    parent_id: &str,
+    index: usize,
+    total: usize,
+    relation: Option<&str>,
+) {
+    metadata.insert("link_parent_id".to_string(), json!(parent_id));
+    metadata.insert("link_index".to_string(), json!(index));
+    metadata.insert("link_total".to_string(), json!(total));
+    if let Some(rel) = relation {
+        metadata.insert("link_relation".to_string(), json!(rel));
+    }
+}
+
+/// Map a block's `##DATA TYPE` (and optional Ocean Optics title hint)
+/// to a canonical link relation: sample / dark / reference / interferogram
+/// / fid / unknown.
+fn infer_link_relation(metadata: &BTreeMap<String, Value>, _index: usize) -> String {
+    infer_link_relation_with_hint(metadata, _index, None)
+}
+
+fn infer_link_relation_with_hint(
+    metadata: &BTreeMap<String, Value>,
+    _index: usize,
+    title_hint: Option<&str>,
+) -> String {
+    if let Some(hint) = title_hint {
+        if let Some(relation) = link_relation_from_string(hint) {
+            return relation;
+        }
+    }
+    // LDRs live under metadata["jcamp"] (single block) and metadata["jcamp_ldr"]
+    // (heterogeneous LINK child); both keep the same flat `key -> value` shape.
+    for slot in ["jcamp", "jcamp_ldr"] {
+        if let Some(Value::Object(ldr)) = metadata.get(slot) {
+            for key in ["data_type", "title"] {
+                if let Some(Value::String(value)) = ldr.get(key) {
+                    if let Some(relation) = link_relation_from_string(value) {
+                        return relation;
+                    }
+                }
+            }
+        }
+    }
+    "unknown".to_string()
+}
+
+fn link_relation_from_string(value: &str) -> Option<String> {
+    let lower = value.to_ascii_lowercase();
+    if lower.contains("dark") {
+        Some("dark".to_string())
+    } else if lower.contains("reference") || lower.contains("white") {
+        Some("reference".to_string())
+    } else if lower.contains("interferogram") {
+        Some("interferogram".to_string())
+    } else if lower.contains("nmr fid") || lower.contains("free induction") {
+        Some("fid".to_string())
+    } else if lower.contains("peak table") || lower.contains("peak assignments") {
+        Some("peaks".to_string())
+    } else if lower.contains("spectrum") || lower.contains("sample") {
+        Some("sample".to_string())
+    } else {
+        None
+    }
+}
+
+fn link_block_titles(text: &str) -> Vec<String> {
+    link_block_chunks(text)
+        .iter()
+        .map(|chunk| {
+            chunk
+                .lines()
+                .find_map(|line| {
+                    let trimmed = line.trim();
+                    if let Some(body) = trimmed.strip_prefix("##") {
+                        if let Some((key, value)) = body.split_once('=') {
+                            if normalize_key(key) == "title" {
+                                return Some(value.trim().to_string());
+                            }
+                        }
+                    }
+                    None
+                })
+                .unwrap_or_default()
+        })
+        .collect()
+}
+
+#[derive(Clone)]
 struct ParsedJcamp {
     axis: Vec<f64>,
     axis_unit: String,
@@ -81,6 +237,7 @@ struct ParsedJcamp {
     warnings: Vec<String>,
 }
 
+#[derive(Clone)]
 struct ParsedJcampSignal {
     name: String,
     values: Vec<f64>,
@@ -771,6 +928,15 @@ fn line_has_numeric(line: &str) -> bool {
 }
 
 fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
+    match parse_link_jcamp_outcome(text)? {
+        LinkOutcome::Composite(parsed) => Ok(parsed),
+        LinkOutcome::Heterogeneous(_) => Err(nirs4all_io_core::Error::InvalidRecord(
+            "JCAMP LINK child blocks have incompatible axes".to_string(),
+        )),
+    }
+}
+
+fn parse_link_jcamp_outcome(text: &str) -> Result<LinkOutcome> {
     let chunks = link_block_chunks(text);
     if chunks.is_empty() {
         return Err(nirs4all_io_core::Error::InvalidRecord(
@@ -778,12 +944,12 @@ fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         ));
     }
 
-    let mut axis = Vec::new();
-    let mut axis_unit = String::new();
-    let mut axis_kind = AxisKind::Index;
+    let mut composite_axis: Option<(Vec<f64>, String, AxisKind)> = None;
     let mut signals = Vec::<ParsedJcampSignal>::new();
     let mut block_metadata = Vec::<BTreeMap<String, String>>::new();
-    let mut warnings = Vec::<String>::new();
+    let mut composite_warnings = Vec::<String>::new();
+    let mut child_blocks = Vec::<ParsedJcamp>::new();
+    let mut heterogeneous = false;
 
     for (index, chunk) in chunks.iter().enumerate() {
         let ldr = collect_ldr(chunk);
@@ -793,18 +959,44 @@ fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
                 "JCAMP LINK child block did not decode to one signal".to_string(),
             ));
         }
-        if axis.is_empty() {
-            axis = parsed.axis;
-            axis_unit = parsed.axis_unit;
-            axis_kind = parsed.axis_kind;
-        } else if !same_axis(&axis, &parsed.axis) {
-            return Err(nirs4all_io_core::Error::InvalidRecord(
-                "JCAMP LINK child blocks have incompatible axes".to_string(),
-            ));
-        }
-        warnings.extend(parsed.warnings);
+        let mut next_parsed = ParsedJcamp {
+            axis: parsed.axis.clone(),
+            axis_unit: parsed.axis_unit.clone(),
+            axis_kind: parsed.axis_kind.clone(),
+            signals: parsed.signals.clone(),
+            metadata: parsed.metadata.clone(),
+            warnings: parsed.warnings.clone(),
+        };
+        child_blocks.push(parsed);
 
-        let mut signal = parsed.signals.into_iter().next().expect("checked");
+        if heterogeneous {
+            // Fan-out branch: keep each child verbatim.
+            block_metadata.push(ldr);
+            continue;
+        }
+
+        match composite_axis.as_ref() {
+            None => {
+                composite_axis = Some((
+                    next_parsed.axis.clone(),
+                    next_parsed.axis_unit.clone(),
+                    next_parsed.axis_kind.clone(),
+                ));
+            }
+            Some((axis, _, _)) if same_axis(axis, &next_parsed.axis) => {}
+            _ => {
+                // Switch to fan-out mode.
+                heterogeneous = true;
+                composite_axis = None;
+                signals.clear();
+                composite_warnings.clear();
+                block_metadata.push(ldr);
+                continue;
+            }
+        }
+        composite_warnings.append(&mut next_parsed.warnings);
+
+        let mut signal = next_parsed.signals.into_iter().next().expect("checked");
         let name = link_signal_name(&ldr, index);
         let (signal_type, unit) = link_signal_type_and_unit(&name, &ldr);
         signal.name = name.clone();
@@ -815,9 +1007,26 @@ fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
         block_metadata.push(ldr);
     }
 
+    if heterogeneous {
+        // Re-attach LDR onto each child's metadata under `jcamp_ldr` so
+        // callers can still inspect the parsed labelled-data records.
+        let blocks = child_blocks
+            .into_iter()
+            .zip(block_metadata)
+            .map(|(mut block, ldr)| {
+                block.metadata.insert("jcamp_ldr".to_string(), json!(ldr));
+                block
+            })
+            .collect();
+        return Ok(LinkOutcome::Heterogeneous(blocks));
+    }
+
+    let (axis, axis_unit, axis_kind) =
+        composite_axis.expect("composite path keeps an axis when not heterogeneous");
+
     if let Some((processed, undefined_count)) = compute_ocean_link_transmittance(&signals) {
         if undefined_count > 0 {
-            warnings.push(format!(
+            composite_warnings.push(format!(
                 "jcamp_link_processed_zero_denominator: {undefined_count} points set to 0"
             ));
         }
@@ -838,14 +1047,14 @@ fn parse_link_jcamp_text(text: &str) -> Result<ParsedJcamp> {
             "blocks": block_metadata,
         }),
     );
-    Ok(ParsedJcamp {
+    Ok(LinkOutcome::Composite(ParsedJcamp {
         axis,
         axis_unit,
         axis_kind,
         signals,
         metadata,
-        warnings,
-    })
+        warnings: composite_warnings,
+    }))
 }
 
 fn link_block_chunks(text: &str) -> Vec<String> {
@@ -1242,8 +1451,12 @@ fn decode_xy_lines_with_x_checkpoints(
 
     if mismatched_x > 0 {
         let (line_x, expected_x) = first_mismatch.expect("mismatch count implies example");
+        let abs_delta = (line_x - expected_x).abs();
+        let scale = expected_x.abs().max(line_x.abs()).max(f64::MIN_POSITIVE);
+        let rel_delta = abs_delta / scale;
         warnings.push(format!(
-            "jcamp_x_checkpoint_mismatch: {context} {mismatched_x}/{checked_x} line starts mismatched; first line_x {line_x}, expected {expected_x}"
+            "jcamp_xydata_x_checkpoint_drift: {context} {mismatched_x}/{checked_x} line starts mismatched; \
+first line_x {line_x}, expected {expected_x}, abs={abs_delta:.6e}, rel={rel_delta:.6e}"
         ));
     }
 
@@ -1952,7 +2165,9 @@ mod tests {
     }
 
     #[test]
-    fn rejects_link_child_blocks_with_incompatible_axes() {
+    fn rejects_link_child_blocks_with_incompatible_axes_in_strict_parse() {
+        // `parse_jcamp_text` is the strict composite path: any axis
+        // mismatch raises an InvalidRecord error.
         let message = invalid_record_message(parse_jcamp_text(
             "##JCAMP-DX=5.00
 ##DATA TYPE=LINK
@@ -1981,6 +2196,112 @@ mod tests {
         ));
 
         assert!(message.contains("JCAMP LINK child blocks have incompatible axes"));
+    }
+
+    #[test]
+    fn heterogeneous_link_fans_out_one_record_per_child() {
+        // Through the Reader::read_bytes entry point the heterogeneous
+        // LINK now emits one record per child with link_* metadata.
+        let reader = super::JcampReader;
+        let text = b"##JCAMP-DX=5.00
+##DATA TYPE=LINK
+##TITLE=linked spectra
+##JCAMP-DX=5.00
+##TITLE=first sample
+##DATA TYPE=INFRARED SPECTRUM
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+100 1 2 3
+##END=
+##JCAMP-DX=5.00
+##TITLE=second reference
+##DATA TYPE=INFRARED REFERENCE SPECTRUM
+##XUNITS=nm
+##YUNITS=Reflectance
+##FIRSTX=101
+##DELTAX=2
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+101 4 5 6
+##END=
+";
+        let records = reader
+            .read_bytes(Path::new("synthetic_link.jdx"), text)
+            .expect("read heterogeneous link");
+        assert_eq!(records.len(), 2);
+        let total = records[0].metadata.get("link_total").expect("link_total");
+        assert_eq!(total, &json!(2));
+        assert_eq!(
+            records[0].metadata.get("link_index").expect("link_index"),
+            &json!(0)
+        );
+        assert_eq!(
+            records[1].metadata.get("link_index").expect("link_index"),
+            &json!(1)
+        );
+        let parent0 = records[0]
+            .metadata
+            .get("link_parent_id")
+            .expect("link_parent_id")
+            .as_str()
+            .expect("string");
+        let parent1 = records[1]
+            .metadata
+            .get("link_parent_id")
+            .expect("link_parent_id")
+            .as_str()
+            .expect("string");
+        assert_eq!(parent0, parent1);
+        assert!(parent0.starts_with("jcamp-"));
+        assert_eq!(
+            records[0].metadata.get("link_relation").expect("relation"),
+            &json!("sample")
+        );
+        assert_eq!(
+            records[1].metadata.get("link_relation").expect("relation"),
+            &json!("reference")
+        );
+    }
+
+    #[test]
+    fn ocean_optics_link_stays_composite_with_link_metadata_absent() {
+        // Same-axis LINK collapses into one record; the link_* metadata
+        // only ships when there is more than one record to identify.
+        let reader = super::JcampReader;
+        let text = b"##JCAMP-DX=5.00
+##DATA TYPE=LINK
+##TITLE=composite
+##JCAMP-DX=5.00
+##TITLE=sample
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+100 1 2 3
+##END=
+##JCAMP-DX=5.00
+##TITLE=reference
+##XUNITS=nm
+##YUNITS=Absorbance
+##FIRSTX=100
+##DELTAX=1
+##NPOINTS=3
+##XYDATA=(X++(Y..Y))
+100 10 20 30
+##END=
+";
+        let records = reader
+            .read_bytes(Path::new("synthetic_composite.jdx"), text)
+            .expect("read composite link");
+        assert_eq!(records.len(), 1);
+        assert!(!records[0].metadata.contains_key("link_index"));
+        assert!(!records[0].metadata.contains_key("link_parent_id"));
     }
 
     #[test]
@@ -2022,10 +2343,15 @@ mod tests {
 
         assert_eq!(parsed.axis, vec![100.0, 101.0, 102.0, 103.0]);
         assert_eq!(parsed.signals[0].values, vec![1.0, 2.0, 3.0, 4.0]);
-        assert!(parsed
+        let drift_warning = parsed
             .warnings
             .iter()
-            .any(|warning| warning.contains("jcamp_x_checkpoint_mismatch")));
+            .find(|warning| warning.contains("jcamp_xydata_x_checkpoint_drift"))
+            .expect("drift warning emitted");
+        assert!(
+            drift_warning.contains("abs=") && drift_warning.contains("rel="),
+            "drift warning missing abs/rel deltas: {drift_warning}"
+        );
     }
 
     fn invalid_record_message(result: Result<ParsedJcamp>) -> String {

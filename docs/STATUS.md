@@ -89,9 +89,15 @@ Experimental native readers:
   decoding, top-level multi-block XYDATA files as multiple records, NMR
   `NTUPLES` real/imaginary pages with frequency/time axes, Ocean Optics
   `LINK`/`XYPOINTS` blocks, and top-level sparse `PEAK TABLE` /
-  `PEAK ASSIGNMENTS` records; incompatible-axis `LINK` children are rejected
-  and short `NPOINTS` payloads fail strictly. `XYDATA` line-start X checkpoints
-  are verified against the reconstructed axis, with warnings on mismatch;
+  `PEAK ASSIGNMENTS` records. Same-axis LINK still collapses into one
+  composite record (Ocean Optics flow); heterogeneous LINK (different
+  child axes) now fans out one record per child (M3, 2026-05-23) with
+  `link_parent_id`, `link_index`, `link_total` and `link_relation`
+  metadata. Top-level multi-block files carry the same metadata. Short
+  `NPOINTS` payloads fail strictly. `XYDATA` line-start X checkpoints are
+  verified against the reconstructed axis; mismatches surface a
+  structured `jcamp_xydata_x_checkpoint_drift` warning carrying absolute
+  and relative deltas;
 - EMSA/MAS `.msa` (ISO 22029-style) `XY` and `Y` single-spectrum text files
   with typed energy axes for `eV` data;
 - Spectral Evolution SED (`.sed`), including DN-only broken-but-valid files
@@ -298,8 +304,14 @@ Immediate next work:
    `--sidecar key=path` flag expose the new entry point. Follow-up:
    convert the path-only Parquet reader and re-enable `fmt-hdf5` for
    WASM.
-6. source real JCAMP PEAK TABLE/ASSIGNMENTS fixtures for conformance and decide
-   the public API shape for heterogeneous `LINK` fan-out;
+6. **DONE (M3, 2026-05-23)** — heterogeneous JCAMP `LINK` fan-out API
+   shipped: one record per child plus `link_parent_id` / `link_index` /
+   `link_total` / `link_relation` metadata. Top-level multi-block files
+   carry the same metadata. The `XYDATA` line-start X checkpoint
+   warning is now the structured
+   `jcamp_xydata_x_checkpoint_drift` carrying absolute and relative
+   deltas. Sourcing real PEAK TABLE / PEAK ASSIGNMENTS fixtures remains
+   open (synthetic-only path retained as the contract).
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
 8. keep the refreshed root `README.md`, `FORMAT_MATRIX.md` and
    `IMPLEMENTATION_DASHBOARD.md` current after each material format change, and
