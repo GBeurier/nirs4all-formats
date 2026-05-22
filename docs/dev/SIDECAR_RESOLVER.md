@@ -114,21 +114,37 @@ unconditionally (`storage.rs:214`). On wasm neither cfg matches and
 linking fails even though we never instantiate `FileStorage` — only
 `BytesStorage` is used through `Hdf5File::from_vec_with_options`.
 
-Upstream fix (4 lines, ready to PR against
-`https://github.com/roteiro-gis/netcdf-rust`):
+Fix in flight (F3, 2026-05-23): the 13-line patch lives on
+`https://github.com/GBeurier/netcdf-rust/tree/wasm-file-storage-fallback`
+(SHA `42537ef`) and adds:
 
 ```rust
 #[cfg(not(any(unix, windows)))]
 fn read_exact_at(_file: &File, _buf: &mut [u8], _offset: u64) -> std::io::Result<()> {
     Err(std::io::Error::new(
         std::io::ErrorKind::Unsupported,
-        "FileStorage not supported on this target; use BytesStorage / from_bytes",
+        "FileStorage is unavailable on this target; use BytesStorage or Hdf5File::from_bytes",
     ))
 }
 ```
 
-Once that lands as `hdf5-reader = "0.5.1"` (or a vendored patched
-fork is wired in via `[patch.crates-io]`), flipping `fmt-hdf5` on in
+Locally validated:
+
+- `cargo build -p hdf5-reader` (host) — green;
+- `cargo build -p hdf5-reader --target wasm32-unknown-unknown` — was
+  red, now green.
+
+The upstream PR has to be filed manually because the maintainer's
+fine-grained GitHub PAT does not have the
+`pull_request` create scope on `roteiro-gis/netcdf-rust`. Use the
+compare URL to open it from a browser:
+
+```
+https://github.com/roteiro-gis/netcdf-rust/compare/main...GBeurier:netcdf-rust:wasm-file-storage-fallback?expand=1
+```
+
+Once the patch lands as `hdf5-reader = "0.5.1"` (or we wire a
+`[patch.crates-io]` pointing at the fork), flipping `fmt-hdf5` on in
 the WASM crate is a one-line change. Until then the WASM binding only
 covers ENVI Standard / ENVI SLI / AVIRIS LAN sidecars; FGI HDF5+XML,
 generic HDF5, MATLAB v7.3, NetCDF MFRSR and Allotrope ADF return

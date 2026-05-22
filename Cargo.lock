@@ -968,6 +968,7 @@ dependencies = [
  "bytes",
  "calamine",
  "cfb",
+ "chrono",
  "flate2",
  "hdf5-reader",
  "matfile",

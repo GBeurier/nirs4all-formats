@@ -13,7 +13,8 @@ default = ["formats-all"]
 formats-all = ["fmt-hdf5", "fmt-matlab", "fmt-parquet"]
 # HDF5/NetCDF-backed readers (Hdf5, NetCDF, Allotrope ADF, FGI XML+HDF5).
 # Required by `fmt-matlab` because MATLAB v7.3 files are HDF5 containers.
-fmt-hdf5 = ["dep:hdf5-reader", "dep:netcdf-reader"]
+# `chrono` powers the ARM MFRSR `time:units` epoch parsing.
+fmt-hdf5 = ["dep:hdf5-reader", "dep:netcdf-reader", "dep:chrono"]
 # MATLAB MAT v5 + v7.3 and prospectr RData (xz/zstd-encoded R workspaces).
 fmt-matlab = ["dep:matfile", "dep:xz2", "dep:rds2rust", "fmt-hdf5"]
 # Apache Parquet tables produced by NIRS pipelines.
@@ -25,6 +26,7 @@ arrow-array = { version = "58.3.0", optional = true }
 arrow-schema = { version = "58.3.0", optional = true }
 bytes = { version = "1", optional = true }
 calamine = "0.35.0"
+chrono = { version = "0.4", default-features = false, optional = true, features = ["alloc"] }
 cfb = "0.14.0"
 flate2 = "1.1.5"
 hdf5-reader = { version = "0.5.0", optional = true }

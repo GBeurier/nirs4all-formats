@@ -109,9 +109,14 @@ sidecar:
   Absence of the YAML is silent — QC just doesn't fire.
 - `open_bytes(name, bytes)` works when no QC sidecar is needed.
 
-Known limitations: the QC YAML parser uses a positional 0/2/4-space
-indent grammar and reads the time-range bounds as a seconds-within-day
-value (`H*3600 + M*60 + S`). This currently works only for b1 NetCDF
-files whose `time` variable is itself seconds-since-midnight; tab
-indents, inline `#` comments inside QC range lines and multi-day
-fixtures silently match zero rules.
+Robustness (F2, 2026-05-23): the QC YAML parser now treats tabs as
+2-column tab stops and strips ` #`-prefixed inline comments before
+parsing, so the canonical ARM YAML format plus tab-indented variants
+both decode. QC range bounds are parsed as absolute UTC seconds since
+the Unix epoch; the per-sample comparison reads the file's
+`time:units` CF string (e.g. `seconds since 2021-03-29 00:00:00`),
+converts the YAML bounds into the same epoch, and compares
+absolutes. When `time:units` cannot be parsed the rule falls back to
+the legacy seconds-within-day match — single-day b1 files still
+produce the right flags, multi-day files just no-op rather than
+silently mismatching.
