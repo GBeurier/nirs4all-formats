@@ -320,8 +320,24 @@ Immediate next work:
    `jcamp_xydata_x_checkpoint_drift` carrying absolute and relative
    deltas. Sourcing real PEAK TABLE / PEAK ASSIGNMENTS fixtures remains
    open (synthetic-only path retained as the contract).
-7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
-8. keep the refreshed root `README.md`, `FORMAT_MATRIX.md` and
-   `IMPLEMENTATION_DASHBOARD.md` current after each material format change, and
-   continue auditing individual `docs/formats/` pages for description,
-   implemented behavior, missing behavior and validation status.
+7. **DONE (M4, 2026-05-23)** — Phase 6 release pipeline shipped:
+   `.github/workflows/release.yml` builds Python wheels via
+   `cibuildwheel` (manylinux2014 x86_64+aarch64, macOS x86_64+arm64,
+   Windows AMD64; CPython 3.10-3.13), a `maturin sdist`, per-OS C ABI
+   archives (`nirs4all-io-capi-<target>.{tar.gz,zip}` with the
+   `cbindgen`-generated `nirs4all_io.h` + LICENSE), and the R source
+   tarball. Tagged releases publish to PyPI via OIDC trusted publishing
+   and attach every artifact to the GitHub release; `workflow_dispatch`
+   provides a dry-run path. See `docs/RELEASE.md` for the tag flow,
+   per-wheel capability matrix and rollback procedure. Locally
+   validated: the C smoke
+   `crates/nirs4all-io-capi/examples/probe_version.c` builds against
+   the release library and prints `0.1.0`.
+
+9. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.
+
+10. keep the refreshed root `README.md`, `FORMAT_MATRIX.md` and
+    `IMPLEMENTATION_DASHBOARD.md` current after each material format change,
+    and continue auditing individual `docs/formats/` pages for
+    description, implemented behavior, missing behavior and validation
+    status.

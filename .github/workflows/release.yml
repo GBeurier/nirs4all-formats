@@ -1,0 +1,156 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build artifacts without publishing"
+        required: false
+        default: "true"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  python-wheels:
+    name: Python wheel (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse bindings/python
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+          if-no-files-found: error
+
+  python-sdist:
+    name: Python sdist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install maturin
+        run: python -m pip install maturin
+      - name: Build sdist
+        run: maturin sdist --manifest-path bindings/python/Cargo.toml --out dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sdist
+          path: dist/*.tar.gz
+          if-no-files-found: error
+
+  c-abi-archive:
+    name: C ABI archive (${{ matrix.target }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu, ext: tar.gz }
+          - { os: macos-latest, target: aarch64-apple-darwin, ext: tar.gz }
+          - { os: macos-latest, target: x86_64-apple-darwin, ext: tar.gz }
+          - { os: windows-latest, target: x86_64-pc-windows-msvc, ext: zip }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Build release artifacts
+        shell: bash
+        run: |
+          cargo build --release --target ${{ matrix.target }} -p nirs4all-io-capi
+          STAGING="nirs4all-io-capi-${{ matrix.target }}"
+          mkdir -p "$STAGING/lib" "$STAGING/include"
+          cp crates/nirs4all-io-capi/include/nirs4all_io.h "$STAGING/include/"
+          cp LICENSE "$STAGING/"
+          # Linux + macOS layouts
+          for lib in target/${{ matrix.target }}/release/libnirs4all_io_capi.*; do
+            if [ -f "$lib" ]; then cp "$lib" "$STAGING/lib/"; fi
+          done
+          # Windows layout
+          if [ -f "target/${{ matrix.target }}/release/nirs4all_io_capi.dll" ]; then
+            cp "target/${{ matrix.target }}/release/nirs4all_io_capi.dll" "$STAGING/lib/"
+            cp "target/${{ matrix.target }}/release/nirs4all_io_capi.dll.lib" "$STAGING/lib/" || true
+          fi
+          if [ "${{ matrix.ext }}" = "zip" ]; then
+            7z a "${STAGING}.zip" "$STAGING/"
+          else
+            tar czf "${STAGING}.tar.gz" "$STAGING/"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c-abi-${{ matrix.target }}
+          path: nirs4all-io-capi-${{ matrix.target }}.*
+          if-no-files-found: error
+
+  r-source:
+    name: R source tarball
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-r@v2
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build R source tarball
+        run: |
+          R CMD build bindings/r/nirs4allio
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r-source
+          path: nirs4allio_*.tar.gz
+          if-no-files-found: error
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: [python-wheels, python-sdist]
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'workflow_dispatch' }}
+    environment:
+      name: pypi
+      url: https://pypi.org/p/nirs4all-io
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
+
+  github-release:
+    name: Attach release artifacts
+    needs: [python-wheels, python-sdist, c-abi-archive, r-source]
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'workflow_dispatch' }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
