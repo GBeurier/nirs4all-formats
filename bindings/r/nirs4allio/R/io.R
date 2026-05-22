@@ -146,6 +146,37 @@ nirs4allio_open_bytes <- function(name, bytes) {
   jsonlite::fromJSON(payload, simplifyVector = FALSE)
 }
 
+nirs4allio_open_with_sidecars <- function(name, bytes, sidecars = list()) {
+  if (!nirs4allio_native_available()) {
+    stop(
+      "open_with_sidecars requires the native extendr static library. ",
+      "Reinstall the package via `R CMD INSTALL` with Cargo on PATH.",
+      call. = FALSE
+    )
+  }
+  if (!is.raw(bytes)) {
+    stop("bytes must be a raw vector", call. = FALSE)
+  }
+  if (!is.list(sidecars) || is.null(names(sidecars))) {
+    stop("sidecars must be a named list of raw vectors", call. = FALSE)
+  }
+  for (key in names(sidecars)) {
+    if (!is.raw(sidecars[[key]])) {
+      stop(sprintf("sidecar '%s' must be a raw vector", key), call. = FALSE)
+    }
+  }
+  payload <- nirs4allio_native_call(
+    "nirs4allio_native_read_with_sidecars",
+    as.character(name),
+    bytes,
+    sidecars,
+    NULL,
+    NULL,
+    NULL
+  )
+  jsonlite::fromJSON(payload, simplifyVector = FALSE)
+}
+
 nirs4allio_walk_path <- function(path,
                                   max_depth = NULL,
                                   include_hidden = FALSE,

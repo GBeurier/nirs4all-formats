@@ -105,8 +105,8 @@ fn open_bytes_matches_open_path_for_excel_workbooks() {
 
 #[test]
 fn open_bytes_refuses_envi_standard_cube_without_sidecar() {
-    // ENVI Standard cubes still require sidecar lookup through the
-    // filesystem; the default Reader::read_bytes therefore returns an error.
+    // ENVI Standard cubes need the `.hdr` companion; `open_bytes` uses the
+    // NoSidecars resolver and therefore fails with UnsupportedSidecar.
     let path = workspace_file("samples/envi_sli/cubescope-mini-cube.img");
     if !path.exists() {
         return;
@@ -115,7 +115,7 @@ fn open_bytes_refuses_envi_standard_cube_without_sidecar() {
     let err = open_bytes(&path, &bytes).expect_err("envi cube must require sidecar");
     let message = err.to_string();
     assert!(
-        message.contains("does not support in-memory reads"),
+        message.contains("sidecar") && message.contains("no sidecar resolver was supplied"),
         "unexpected error: {message}"
     );
 }
@@ -128,5 +128,9 @@ fn open_bytes_refuses_erdas_lan_without_sidecar() {
     }
     let bytes = std::fs::read(&path).expect("read");
     let err = open_bytes(&path, &bytes).expect_err("ERDAS LAN must require sidecar");
-    assert!(err.to_string().contains("does not support in-memory reads"));
+    let message = err.to_string();
+    assert!(
+        message.contains("sidecar") && message.contains("no sidecar resolver was supplied"),
+        "unexpected error: {message}"
+    );
 }

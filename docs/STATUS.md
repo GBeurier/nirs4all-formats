@@ -191,10 +191,24 @@ In-memory reads:
   OMNIC, BUCHI, PerkinElmer, AvantesAscii/Binary, MSA, OceanOptics, JASCO JWS,
   Horiba, Renishaw, TriVista, DigitalSurf, Hamamatsu, WiTec, NumPy, Excel,
   AnIML, AllotropeASM, SiWareAPI, SCiO, USGS, spectral matrix/table, sun
-  photometer, mzML, Bruker DPT, ...) implements `read_bytes` directly; only
-  formats that materialize on-disk sidecars (ENVI Standard, AVIRIS ERDAS LAN,
-  FGI HDF5+XML, MATLAB v7.3, NetCDF/HDF5) still require a real path and
-  return a descriptive error when called through `open_bytes`.
+  photometer, mzML, Bruker DPT, ...) implements `read_bytes` directly.
+- `open_with_sidecars()` / `open_with_sidecars_and_options()` (M1,
+  2026-05-22) decode sidecar-bearing formats from a pure in-memory map:
+  ENVI SLI, ENVI Standard, AVIRIS/ERDAS LAN, FGI HDF5+XML, generic HDF5
+  (with HDF5 external-file/external-link routing wired through the
+  resolver), MATLAB v7.3 and MATLAB Indian Pines (`indian_pines_gt.mat`
+  sidecar), ARM MFRSR NetCDF (`<stem>.yaml` QC sidecar) and Allotrope
+  ADF all support the new flow. See `docs/dev/SIDECAR_RESOLVER.md` for
+  the API surface.
+- `open_bytes` keeps refusing sidecar-bearing formats explicitly with
+  `Error::UnsupportedSidecar` instead of a generic "does not support
+  in-memory reads" string; bindings detect the refusal and route through
+  `open_with_sidecars` (PyO3, R extendr, WASM `openWithSidecars`, the CLI
+  `--sidecar key=path` flag). The WASM build still gates `fmt-hdf5` off
+  by default, so HDF5-backed sidecar formats are excluded from the WASM
+  `openWithSidecars` surface until that flag is re-enabled (pure-Rust
+  HDF5/NetCDF crates compile fine in wasm — this is an opt-in toggle, not
+  a technical blocker).
 
 Python bridge — native PyO3 extension `nirs4all_io._native` built with
 maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
@@ -212,7 +226,8 @@ shipped under `bindings/r/nirs4allio/src/rust/` (built at install time by
 CLI when the native symbols are absent:
 
 - `nirs4allio_open_records`, `nirs4allio_open_dataset`,
-  `nirs4allio_open_bytes`, `nirs4allio_probe_path`, `nirs4allio_walk_path`;
+  `nirs4allio_open_bytes`, `nirs4allio_open_with_sidecars`,
+  `nirs4allio_probe_path`, `nirs4allio_walk_path`;
 - `matrix`, `data.frame` and optional tibble conversion.
 
 JS / WebAssembly bridge — new `bindings/wasm/` crate built with `wasm-pack`
@@ -223,8 +238,11 @@ deps gated off (`fmt-hdf5`, `fmt-matlab`, `fmt-parquet` features) and exposes:
 - `probeBytes(filename, Uint8Array)` returning the ordered candidate readers;
 - `openBytes(filename, Uint8Array)` returning the decoded `SpectralRecord`
   list for every single-file reader. Sidecar formats (ENVI Standard, AVIRIS
-  ERDAS LAN) and the HDF5/MATLAB/Parquet group still need a host filesystem
-  and return a descriptive error.
+  ERDAS LAN) return `UnsupportedSidecar`; use `openWithSidecars` below.
+- `openWithSidecars(filename, Uint8Array, Record<string, Uint8Array>)` decodes
+  ENVI SLI / ENVI Standard / AVIRIS LAN under WASM from a pure in-memory
+  payload+sidecars map (M1). HDF5-backed formats remain excluded until
+  `fmt-hdf5` is re-enabled in `bindings/wasm/Cargo.toml`.
 
 ## Last Green Gate
 
@@ -269,11 +287,17 @@ Immediate next work:
    and high-speed variants beyond local SpectroChemPy samples, redistributable
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
 4. add direct external reference-reader conformance for OPUS/SPC/JCAMP/SED/SIG/ASM/HDF5 where practical;
-5. wire a sidecar resolver into `Reader::read_bytes` so the multi-file formats
-   (ENVI Standard, AVIRIS ERDAS LAN, FGI HDF5+XML, MATLAB v7.3) can be decoded
-   from in-memory `Map<filename, bytes>` payloads, currently they only work
-   through `open_path`. PyO3 and the extendr-api R static lib ship as the
-   default native transport with the CLI subprocess as a fallback.
+5. **DONE (M1, 2026-05-22)** — sidecar resolver wired into
+   `Reader::read_bytes` via the new `SidecarResolver` trait (core) plus
+   `FsSidecars`/`InMemorySidecars`/`NoSidecars` implementations. ENVI SLI,
+   ENVI Standard, AVIRIS/ERDAS LAN, FGI HDF5+XML, generic HDF5 (incl. HDF5
+   external file/link routing), MATLAB v7.3, MATLAB Indian Pines, ARM
+   MFRSR NetCDF (QC YAML) and Allotrope ADF all decode from in-memory
+   `Map<filename, bytes>` payloads. PyO3, R extendr, WASM (ENVI/ERDAS,
+   no HDF5 until `fmt-hdf5` is re-enabled in wasm) and the CLI
+   `--sidecar key=path` flag expose the new entry point. Follow-up:
+   convert the path-only Parquet reader and re-enable `fmt-hdf5` for
+   WASM.
 6. source real JCAMP PEAK TABLE/ASSIGNMENTS fixtures for conformance and decide
    the public API shape for heterogeneous `LINK` fan-out;
 7. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

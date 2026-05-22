@@ -9,6 +9,7 @@ members = [
 exclude = [
     "bindings/python",
     "bindings/wasm",
+    "bindings/r/nirs4allio/src/rust",
 ]
 
 [workspace.package]

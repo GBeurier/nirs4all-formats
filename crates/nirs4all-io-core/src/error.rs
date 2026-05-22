@@ -22,6 +22,9 @@ pub enum Error {
         source: std::io::Error,
     },
 
+    #[error("sidecar '{path}' is not available: {reason}")]
+    UnsupportedSidecar { path: PathBuf, reason: String },
+
     #[error("JSON error: {0}")]
     Json(#[from] serde_json::Error),
 }

@@ -1,13 +1,21 @@
 //! WebAssembly bridge for `nirs4all-io`.
 //!
-//! The browser context cannot call `std::fs::read`, so this binding currently
-//! exposes the byte-based sniffer surface. Callers pass the file name (used to
-//! drive extension-based sniffers) together with the file bytes. Full reads
-//! land here once the readers grow a path-free entry point.
+//! The browser context cannot call `std::fs::read`, so this binding exposes
+//! byte-based entry points. Callers pass the file name (used to drive
+//! extension-based sniffers) plus the file bytes, and optionally a map of
+//! sidecar names → byte payloads for formats that need a companion file
+//! (ENVI Standard, ENVI SLI, AVIRIS/ERDAS LAN). HDF5-backed formats (FGI
+//! XML+HDF5, MATLAB v7.3, NetCDF MFRSR, ADF) are still excluded because the
+//! `fmt-hdf5` Cargo feature stays off for the default WASM build.
 
-use std::path::Path;
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
-use nirs4all_io::{builtin_probes, open_bytes as open_bytes_native};
+use nirs4all_io::{
+    builtin_probes, open_bytes as open_bytes_native, open_with_sidecars as open_with_sidecars_native,
+    InMemorySidecars, SidecarResolver,
+};
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
 use wasm_bindgen::prelude::*;
@@ -66,13 +74,40 @@ pub fn probe_bytes(filename: &str, bytes: &[u8]) -> Result<JsValue, JsError> {
 /// Decode a file by name + bytes. Returns the spectral records as a JS array
 /// matching the JSON shape produced by `nirs4all-io read-json`.
 ///
-/// Sidecar formats (ENVI Standard, AVIRIS LAN) and HDF5/MATLAB/Parquet
-/// readers are not available in the default WASM build because they need
-/// access to the host filesystem or C libraries that do not cross-compile to
-/// wasm32. For those formats this entry point returns an error.
+/// Sidecar formats (ENVI Standard, AVIRIS LAN, FGI HDF5+XML, ...) return an
+/// `UnsupportedSidecar` error here; use `openWithSidecars` instead.
+/// HDF5-backed readers (FGI, MATLAB v7.3, NetCDF MFRSR, ADF) are not in
+/// the default WASM build because `fmt-hdf5` is currently disabled there;
+/// `openWithSidecars` therefore covers ENVI Standard, ENVI SLI and
+/// AVIRIS/ERDAS LAN under WASM.
 #[wasm_bindgen(js_name = openBytes)]
 pub fn open_bytes(filename: &str, bytes: &[u8]) -> Result<JsValue, JsError> {
     let records = open_bytes_native(Path::new(filename), bytes)
+        .map_err(|err| JsError::new(&err.to_string()))?;
+    records
+        .serialize(&js_serializer())
+        .map_err(|err| JsError::new(&err.to_string()))
+}
+
+/// Decode a file by name + bytes plus a map of sidecar names → byte
+/// payloads. Keys are relative path names (e.g. `"foo.hdr"` next to the
+/// primary file). For the WASM build this powers ENVI Standard, ENVI SLI
+/// and AVIRIS/ERDAS LAN; HDF5-backed sidecar formats remain unsupported
+/// here until `fmt-hdf5` is enabled in `bindings/wasm/Cargo.toml`.
+#[wasm_bindgen(js_name = openWithSidecars)]
+pub fn open_with_sidecars(
+    filename: &str,
+    bytes: &[u8],
+    sidecars: JsValue,
+) -> Result<JsValue, JsError> {
+    let map: HashMap<String, Vec<u8>> = serde_wasm_bindgen::from_value(sidecars)
+        .map_err(|err| JsError::new(&format!("sidecars must be an object of Uint8Array: {err}")))?;
+    let mut resolver = InMemorySidecars::new();
+    for (key, value) in map {
+        resolver.insert(PathBuf::from(key), value);
+    }
+    let arc: Arc<dyn SidecarResolver> = Arc::new(resolver);
+    let records = open_with_sidecars_native(Path::new(filename), bytes, arc)
         .map_err(|err| JsError::new(&err.to_string()))?;
     records
         .serialize(&js_serializer())

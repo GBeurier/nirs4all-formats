@@ -7,11 +7,14 @@
 // Triggered by the `#[pyfunction]` macro expansion in pyo3 0.22.
 #![allow(clippy::useless_conversion)]
 
+use std::collections::HashMap;
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use nirs4all_io::{
-    open_bytes_with_options, open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow,
-    ReadOptions, WalkOptions, WalkOutcome,
+    open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
+    walk_path, CubeMask, CubeWindow, InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions,
+    WalkOutcome,
 };
 use pyo3::exceptions::{PyIOError, PyValueError};
 use pyo3::prelude::*;
@@ -87,8 +90,9 @@ fn py_open_path(
 
 /// Read raw bytes through the native registry. `name` is the input file name
 /// (used for extension sniffing and provenance). Sidecar formats (ENVI
-/// Standard, AVIRIS LAN) still need a real filesystem; this entry point
-/// errors for those.
+/// Standard, AVIRIS LAN, FGI HDF5+XML, MATLAB Indian Pines, NetCDF MFRSR
+/// with QC sidecar) error here with `Error::UnsupportedSidecar`; pass them
+/// through [`open_with_sidecars`] instead.
 #[pyfunction]
 #[pyo3(
     name = "open_bytes",
@@ -105,6 +109,37 @@ fn py_open_bytes(
 ) -> PyResult<PyObject> {
     let options = build_options(rows, cols, pixels)?;
     let records = open_bytes_with_options(&name, bytes, &options).map_err(map_err)?;
+    let value = to_json(records)?;
+    Ok(pythonize(py, &value).map_err(map_err)?.into())
+}
+
+/// Read raw bytes plus a mapping of relative sidecar names to byte
+/// payloads. Use this entry point for ENVI Standard cubes, ENVI SLI,
+/// AVIRIS/ERDAS LAN, FGI HDF5+XML, MATLAB Indian Pines or NetCDF MFRSR with
+/// QC sidecars without touching the filesystem.
+#[pyfunction]
+#[pyo3(
+    name = "open_with_sidecars",
+    signature = (name, bytes, sidecars, rows=None, cols=None, pixels=None),
+    text_signature = "(name, bytes, sidecars, *, rows=None, cols=None, pixels=None)"
+)]
+fn py_open_with_sidecars(
+    py: Python<'_>,
+    name: PathBuf,
+    bytes: &[u8],
+    sidecars: HashMap<String, Vec<u8>>,
+    rows: Option<(usize, Option<usize>)>,
+    cols: Option<(usize, Option<usize>)>,
+    pixels: Option<Vec<(usize, usize)>>,
+) -> PyResult<PyObject> {
+    let options = build_options(rows, cols, pixels)?;
+    let mut map = InMemorySidecars::new();
+    for (key, value) in sidecars {
+        map.insert(PathBuf::from(key), value);
+    }
+    let resolver: Arc<dyn SidecarResolver> = Arc::new(map);
+    let records =
+        open_with_sidecars_and_options(&name, bytes, resolver, &options).map_err(map_err)?;
     let value = to_json(records)?;
     Ok(pythonize(py, &value).map_err(map_err)?.into())
 }
@@ -184,6 +219,7 @@ fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_probe_path, m)?)?;
     m.add_function(wrap_pyfunction!(py_open_path, m)?)?;
     m.add_function(wrap_pyfunction!(py_open_bytes, m)?)?;
+    m.add_function(wrap_pyfunction!(py_open_with_sidecars, m)?)?;
     m.add_function(wrap_pyfunction!(py_walk_path, m)?)?;
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
 

@@ -19,6 +19,8 @@ pub mod galactic_spc;
 pub mod hamamatsu_img;
 #[cfg(feature = "fmt-hdf5")]
 pub mod hdf5;
+#[cfg(feature = "fmt-hdf5")]
+pub mod hdf5_helpers;
 pub mod horiba_labspec;
 pub mod jasco_jws;
 pub mod jcamp;

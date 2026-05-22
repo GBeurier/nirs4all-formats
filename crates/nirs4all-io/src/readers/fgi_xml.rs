@@ -1,14 +1,19 @@
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
-use hdf5_reader::Hdf5File;
-use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SourceFile, SpectralRecord};
+use nirs4all_io_core::{
+    Confidence, Error, FormatProbe, Result, SidecarResolver, SourceFile, SpectralRecord,
+};
 use quick_xml::events::{BytesStart, Event};
 use quick_xml::Reader as XmlReader;
 use serde_json::{json, Value};
 
 use crate::readers::hdf5::read_hdf5_records;
-use crate::readers::util::{normalize_key, read_bytes, text_lossy_from_bytes};
+use crate::readers::hdf5_helpers::open_hdf5;
+use crate::readers::util::{normalize_key, text_lossy_from_bytes};
+use crate::registry::ReadOptions;
+use crate::sidecars::FsSidecars;
 use crate::Reader;
 
 pub struct FgiXmlReader;
@@ -39,30 +44,65 @@ impl Reader for FgiXmlReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let bytes = read_bytes(path)?;
-        let (text, mut xml_source) = text_lossy_from_bytes(path, &bytes);
-        xml_source.role = "metadata_sidecar".to_string();
-        let parsed = parse_fgi_xml(&text)?;
-        let hdf5_path = resolve_data_reference(path, &parsed.data_reference);
-        let file = Hdf5File::open(&hdf5_path)
-            .map_err(|error| Error::InvalidRecord(format!("FGI HDF5 open error: {error}")))?;
-        let hdf5_source = SourceFile::from_path(&hdf5_path, "primary")?;
-        let mut records = read_hdf5_records(&file, hdf5_source, self.name())?;
-        for record in &mut records {
-            record.provenance.format = "fgi-hdf5-xml".to_string();
-            record.provenance.reader = self.name().to_string();
-            record.provenance.sources.push(xml_source.clone());
-            record
-                .metadata
-                .insert("fgi_xml".to_string(), json!(parsed.metadata));
-            record.metadata.insert(
-                "fgi_data_reference".to_string(),
-                json!(parsed.data_reference),
-            );
-            record.validate()?;
-        }
-        Ok(records)
+        let base = path
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        let sidecars: Arc<dyn SidecarResolver> = Arc::new(FsSidecars::new(base));
+        let bytes = std::fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
+            source,
+        })?;
+        read_inner(
+            self.name(),
+            path,
+            &bytes,
+            &sidecars,
+            &ReadOptions::default(),
+        )
     }
+
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        read_inner(self.name(), name, bytes, sidecars, options)
+    }
+}
+
+fn read_inner(
+    reader_name: &'static str,
+    name: &Path,
+    bytes: &[u8],
+    sidecars: &Arc<dyn SidecarResolver>,
+    _options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
+    let (text, mut xml_source) = text_lossy_from_bytes(name, bytes);
+    xml_source.role = "metadata_sidecar".to_string();
+    let parsed = parse_fgi_xml(&text)?;
+    let hdf5_rel = PathBuf::from(&parsed.data_reference);
+    let hdf5_bytes = sidecars.read(&hdf5_rel)?;
+    let hdf5_display = resolve_data_reference(name, &parsed.data_reference);
+    let file = open_hdf5(hdf5_bytes.clone(), sidecars.clone(), "FGI HDF5")?;
+    let hdf5_source = SourceFile::from_bytes(&hdf5_display, &hdf5_bytes, "primary");
+    let mut records = read_hdf5_records(&file, hdf5_source, reader_name)?;
+    for record in &mut records {
+        record.provenance.format = "fgi-hdf5-xml".to_string();
+        record.provenance.reader = reader_name.to_string();
+        record.provenance.sources.push(xml_source.clone());
+        record
+            .metadata
+            .insert("fgi_xml".to_string(), json!(parsed.metadata));
+        record.metadata.insert(
+            "fgi_data_reference".to_string(),
+            json!(parsed.data_reference),
+        );
+        record.validate()?;
+    }
+    Ok(records)
 }
 
 #[derive(Default)]

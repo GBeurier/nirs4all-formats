@@ -1,14 +1,16 @@
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Provenance, Result, SignalType, SourceFile,
-    SpectralArray, SpectralAxis, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Provenance, Result, SidecarResolver, SignalType,
+    SourceFile, SpectralArray, SpectralAxis, SpectralRecord,
 };
 use serde_json::json;
 
 use crate::readers::util::normalize_key;
 use crate::registry::{cube_pixels, ReadOptions};
+use crate::sidecars::FsSidecars;
 use crate::Reader;
 
 pub struct EnviSliReader;
@@ -26,8 +28,40 @@ impl Reader for EnviSliReader {
         }
         if matches!(ext.as_str(), "sli" | "img" | "dat") {
             let header_path = path.with_extension("hdr");
-            let text = std::fs::read_to_string(header_path).ok()?;
+            if let Ok(text) = std::fs::read_to_string(&header_path) {
+                return sniff_header(self.name(), &text);
+            }
+            // Bytes-mode without filesystem fallback: defer to
+            // `sniff_with_sidecars` for resolution.
+            return None;
+        }
+        None
+    }
+
+    fn sniff_with_sidecars(
+        &self,
+        head: &[u8],
+        path: &Path,
+        sidecars: &Arc<dyn SidecarResolver>,
+    ) -> Option<FormatProbe> {
+        let ext = path.extension()?.to_str()?.to_ascii_lowercase();
+        if ext == "hdr" {
+            let text = String::from_utf8_lossy(head);
             return sniff_header(self.name(), &text);
+        }
+        if matches!(ext.as_str(), "sli" | "img" | "dat") {
+            // Try filesystem first (path mode with sidecar inspection).
+            let header_path = path.with_extension("hdr");
+            if let Ok(text) = std::fs::read_to_string(&header_path) {
+                return sniff_header(self.name(), &text);
+            }
+            // Fall back to the sidecar resolver for in-memory bytes.
+            if let Some(rel) = header_rel_for(path) {
+                if let Ok(bytes) = sidecars.read(&rel) {
+                    let text = String::from_utf8_lossy(&bytes);
+                    return sniff_header(self.name(), &text);
+                }
+            }
         }
         None
     }
@@ -41,118 +75,171 @@ impl Reader for EnviSliReader {
         path: &Path,
         options: &ReadOptions,
     ) -> Result<Vec<SpectralRecord>> {
-        let (header_path, data_hint) = paired_paths(path)?;
-        let header_bytes = std::fs::read(&header_path).map_err(|source| Error::Io {
-            path: header_path.clone(),
+        let base = path
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        let sidecars: Arc<dyn SidecarResolver> = Arc::new(FsSidecars::new(base));
+        let primary_bytes = std::fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
             source,
         })?;
-        let header_source = SourceFile::from_bytes(&header_path, &header_bytes, "header");
-        let header_text = String::from_utf8_lossy(&header_bytes);
-        let header = parse_envi_header(&header_text);
-
-        let file_type = header_value(&header, "file type")
-            .ok_or_else(|| Error::InvalidRecord("ENVI header missing file type".to_string()))?;
-        if file_type.eq_ignore_ascii_case("ENVI Standard") {
-            return read_standard_cube(
-                self.name(),
-                &header_path,
-                data_hint,
-                header_source,
-                &header,
-                options,
-            );
-        }
-        if options.has_reader_options() {
-            return Err(Error::InvalidRecord(
-                "ENVI Spectral Library does not support cube read options".to_string(),
-            ));
-        }
-        if !file_type.eq_ignore_ascii_case("ENVI Spectral Library") {
-            return Err(Error::InvalidRecord(format!(
-                "unsupported ENVI file type '{file_type}'; only ENVI Spectral Library or ENVI Standard are supported"
-            )));
-        }
-
-        let samples = parse_usize(&header, "samples")?;
-        let lines = parse_usize(&header, "lines")?;
-        let bands = parse_usize(&header, "bands")?;
-        if bands != 1 {
-            return Err(Error::InvalidRecord(format!(
-                "ENVI spectral library bands={bands}; only one-band SLI payloads are supported"
-            )));
-        }
-        let interleave = header_value(&header, "interleave").unwrap_or("bsq");
-        if !interleave.eq_ignore_ascii_case("bsq") {
-            return Err(Error::InvalidRecord(format!(
-                "ENVI SLI interleave '{interleave}' is not supported yet"
-            )));
-        }
-
-        let data_type = parse_usize(&header, "data type")?;
-        let byte_order = parse_usize(&header, "byte order")?;
-        let header_offset = parse_optional_usize(&header, "header offset").unwrap_or(0);
-        let data_path = resolve_data_path(&header_path, data_hint, &header, &["sli", "SLI"])?;
-        let data_bytes = std::fs::read(&data_path).map_err(|source| Error::Io {
-            path: data_path.clone(),
-            source,
-        })?;
-        let data_source = SourceFile::from_bytes(&data_path, &data_bytes, "binary");
-        if data_bytes.len() < header_offset {
-            return Err(Error::InvalidRecord(format!(
-                "ENVI SLI header offset {header_offset} exceeds payload length {}",
-                data_bytes.len()
-            )));
-        }
-
-        let expected_values = samples
-            .checked_mul(lines)
-            .and_then(|value| value.checked_mul(bands))
-            .ok_or_else(|| Error::InvalidRecord("ENVI SLI dimensions overflow".to_string()))?;
-        let payload = &data_bytes[header_offset..];
-        let values = decode_numeric_payload(payload, data_type, byte_order)?;
-        if values.len() < expected_values {
-            return Err(Error::InvalidRecord(format!(
-                "ENVI SLI payload has {} values; expected {expected_values}",
-                values.len()
-            )));
-        }
-
-        let mut warnings = Vec::new();
-        if values.len() > expected_values {
-            warnings.push(format!(
-                "envi_sli_payload_trailing_values:{}",
-                values.len() - expected_values
-            ));
-        }
-
-        let (axis_values, axis_unit, axis_kind) =
-            axis_from_header(&header, samples, &mut warnings)?;
-        let spectra_names = parse_list(header_value(&header, "spectra names").unwrap_or_default());
-        let records = (0..lines)
-            .map(|record_index| {
-                let start = record_index * samples;
-                let end = start + samples;
-                let sample_id = spectra_names
-                    .get(record_index)
-                    .cloned()
-                    .unwrap_or_else(|| format!("spectrum_{record_index}"));
-                make_record(
-                    self.name(),
-                    header_source.clone(),
-                    data_source.clone(),
-                    record_index,
-                    sample_id,
-                    &header,
-                    &axis_values,
-                    &axis_unit,
-                    axis_kind.clone(),
-                    values[start..end].to_vec(),
-                    warnings.clone(),
-                )
-            })
-            .collect::<Result<Vec<_>>>()?;
-        Ok(records)
+        read_inner(self.name(), path, &primary_bytes, &sidecars, options)
     }
+
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        read_inner(self.name(), name, bytes, sidecars, options)
+    }
+}
+
+fn header_rel_for(name: &Path) -> Option<PathBuf> {
+    Some(PathBuf::from(name.file_name()?).with_extension("hdr"))
+}
+
+fn read_inner(
+    reader_name: &'static str,
+    name: &Path,
+    primary_bytes: &[u8],
+    sidecars: &Arc<dyn SidecarResolver>,
+    options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
+    let (header_rel, data_hint_rel) = paired_rel_paths(name)?;
+    let header_is_primary = header_rel
+        .file_name()
+        .and_then(|n| n.to_str())
+        .map(|hf| {
+            name.file_name()
+                .and_then(|n| n.to_str())
+                .is_some_and(|nf| nf.eq_ignore_ascii_case(hf))
+        })
+        .unwrap_or(false);
+    let header_bytes = if header_is_primary {
+        primary_bytes.to_vec()
+    } else {
+        sidecars.read(&header_rel)?
+    };
+    let header_display_path = name
+        .parent()
+        .unwrap_or_else(|| Path::new(""))
+        .join(&header_rel);
+    let header_source = SourceFile::from_bytes(&header_display_path, &header_bytes, "header");
+    let header_text = String::from_utf8_lossy(&header_bytes);
+    let header = parse_envi_header(&header_text);
+
+    let file_type = header_value(&header, "file type")
+        .ok_or_else(|| Error::InvalidRecord("ENVI header missing file type".to_string()))?;
+    if file_type.eq_ignore_ascii_case("ENVI Standard") {
+        return read_standard_cube(
+            reader_name,
+            name,
+            primary_bytes,
+            header_is_primary,
+            data_hint_rel,
+            sidecars,
+            header_source,
+            &header,
+            options,
+        );
+    }
+    if options.has_reader_options() {
+        return Err(Error::InvalidRecord(
+            "ENVI Spectral Library does not support cube read options".to_string(),
+        ));
+    }
+    if !file_type.eq_ignore_ascii_case("ENVI Spectral Library") {
+        return Err(Error::InvalidRecord(format!(
+            "unsupported ENVI file type '{file_type}'; only ENVI Spectral Library or ENVI Standard are supported"
+        )));
+    }
+
+    let samples = parse_usize(&header, "samples")?;
+    let lines = parse_usize(&header, "lines")?;
+    let bands = parse_usize(&header, "bands")?;
+    if bands != 1 {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI spectral library bands={bands}; only one-band SLI payloads are supported"
+        )));
+    }
+    let interleave = header_value(&header, "interleave").unwrap_or("bsq");
+    if !interleave.eq_ignore_ascii_case("bsq") {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI SLI interleave '{interleave}' is not supported yet"
+        )));
+    }
+
+    let data_type = parse_usize(&header, "data type")?;
+    let byte_order = parse_usize(&header, "byte order")?;
+    let header_offset = parse_optional_usize(&header, "header offset").unwrap_or(0);
+    let (data_bytes, data_display_path) = load_data_payload(
+        name,
+        primary_bytes,
+        header_is_primary,
+        data_hint_rel,
+        sidecars,
+        &header,
+        &["sli", "SLI"],
+    )?;
+    let data_source = SourceFile::from_bytes(&data_display_path, &data_bytes, "binary");
+    if data_bytes.len() < header_offset {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI SLI header offset {header_offset} exceeds payload length {}",
+            data_bytes.len()
+        )));
+    }
+
+    let expected_values = samples
+        .checked_mul(lines)
+        .and_then(|value| value.checked_mul(bands))
+        .ok_or_else(|| Error::InvalidRecord("ENVI SLI dimensions overflow".to_string()))?;
+    let payload = &data_bytes[header_offset..];
+    let values = decode_numeric_payload(payload, data_type, byte_order)?;
+    if values.len() < expected_values {
+        return Err(Error::InvalidRecord(format!(
+            "ENVI SLI payload has {} values; expected {expected_values}",
+            values.len()
+        )));
+    }
+
+    let mut warnings = Vec::new();
+    if values.len() > expected_values {
+        warnings.push(format!(
+            "envi_sli_payload_trailing_values:{}",
+            values.len() - expected_values
+        ));
+    }
+
+    let (axis_values, axis_unit, axis_kind) = axis_from_header(&header, samples, &mut warnings)?;
+    let spectra_names = parse_list(header_value(&header, "spectra names").unwrap_or_default());
+    let records = (0..lines)
+        .map(|record_index| {
+            let start = record_index * samples;
+            let end = start + samples;
+            let sample_id = spectra_names
+                .get(record_index)
+                .cloned()
+                .unwrap_or_else(|| format!("spectrum_{record_index}"));
+            make_record(
+                reader_name,
+                header_source.clone(),
+                data_source.clone(),
+                record_index,
+                sample_id,
+                &header,
+                &axis_values,
+                &axis_unit,
+                axis_kind.clone(),
+                values[start..end].to_vec(),
+                warnings.clone(),
+            )
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(records)
 }
 
 fn sniff_header(reader: &'static str, text: &str) -> Option<FormatProbe> {
@@ -180,19 +267,85 @@ fn sniff_header(reader: &'static str, text: &str) -> Option<FormatProbe> {
     }
 }
 
-fn paired_paths(path: &Path) -> Result<(PathBuf, Option<PathBuf>)> {
-    let ext = path
+fn paired_rel_paths(name: &Path) -> Result<(PathBuf, Option<PathBuf>)> {
+    let ext = name
         .extension()
         .and_then(|value| value.to_str())
         .unwrap_or_default()
         .to_ascii_lowercase();
+    let file_name = name
+        .file_name()
+        .ok_or_else(|| Error::InvalidRecord("ENVI primary has no file name".to_string()))?;
+    let stem = PathBuf::from(file_name);
     match ext.as_str() {
-        "hdr" => Ok((path.to_path_buf(), None)),
-        "sli" | "img" | "dat" => Ok((path.with_extension("hdr"), Some(path.to_path_buf()))),
+        "hdr" => Ok((stem, None)),
+        "sli" | "img" | "dat" => Ok((stem.with_extension("hdr"), Some(stem))),
         _ => Err(Error::UnsupportedFormat {
-            path: path.to_path_buf(),
+            path: name.to_path_buf(),
         }),
     }
+}
+
+fn load_data_payload(
+    primary_name: &Path,
+    primary_bytes: &[u8],
+    header_is_primary: bool,
+    data_hint_rel: Option<PathBuf>,
+    sidecars: &Arc<dyn SidecarResolver>,
+    header: &BTreeMap<String, String>,
+    fallback_extensions: &[&str],
+) -> Result<(Vec<u8>, PathBuf)> {
+    let base = primary_name
+        .parent()
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| PathBuf::from(""));
+    let primary_rel = primary_name
+        .file_name()
+        .map(PathBuf::from)
+        .unwrap_or_default();
+
+    // If the primary file is the data file itself, use its bytes.
+    if !header_is_primary {
+        if let Some(hint) = &data_hint_rel {
+            if hint == &primary_rel {
+                return Ok((primary_bytes.to_vec(), base.join(hint)));
+            }
+        }
+    }
+
+    // Caller-provided hint.
+    if let Some(hint) = data_hint_rel {
+        let display = base.join(&hint);
+        let bytes = sidecars.read(&hint)?;
+        return Ok((bytes, display));
+    }
+
+    // Header may name a data file explicitly.
+    if let Some(value) = header_value(header, "data file") {
+        let rel = PathBuf::from(value);
+        let display = if rel.is_absolute() {
+            rel.clone()
+        } else {
+            base.join(&rel)
+        };
+        let bytes = sidecars.read(&rel)?;
+        return Ok((bytes, display));
+    }
+
+    // Fallback: try common companion extensions next to the header.
+    let stem = primary_rel.with_extension("");
+    for extension in fallback_extensions {
+        let candidate = stem.with_extension(extension);
+        if sidecars.contains(&candidate) {
+            let display = base.join(&candidate);
+            let bytes = sidecars.read(&candidate)?;
+            return Ok((bytes, display));
+        }
+    }
+    Err(Error::InvalidRecord(format!(
+        "missing ENVI binary next to {}",
+        base.join(&primary_rel).display()
+    )))
 }
 
 fn parse_envi_header(text: &str) -> BTreeMap<String, String> {
@@ -265,38 +418,8 @@ fn parse_optional_usize(header: &BTreeMap<String, String>, key: &str) -> Option<
     header_value(header, key)?.trim().parse::<usize>().ok()
 }
 
-fn resolve_data_path(
-    header_path: &Path,
-    data_hint: Option<PathBuf>,
-    header: &BTreeMap<String, String>,
-    fallback_extensions: &[&str],
-) -> Result<PathBuf> {
-    if let Some(path) = data_hint {
-        return Ok(path);
-    }
-    if let Some(value) = header_value(header, "data file") {
-        let path = Path::new(value);
-        return Ok(if path.is_absolute() {
-            path.to_path_buf()
-        } else {
-            header_path
-                .parent()
-                .unwrap_or_else(|| Path::new("."))
-                .join(path)
-        });
-    }
-
-    for extension in fallback_extensions {
-        let candidate = header_path.with_extension(extension);
-        if candidate.exists() {
-            return Ok(candidate);
-        }
-    }
-    Err(Error::InvalidRecord(format!(
-        "missing ENVI binary next to {}",
-        header_path.display()
-    )))
-}
+// `resolve_data_path` was replaced by [`load_data_payload`] so the
+// resolver can serve sidecars from disk or memory uniformly.
 
 fn decode_numeric_payload(payload: &[u8], data_type: usize, byte_order: usize) -> Result<Vec<f64>> {
     let width = match data_type {
@@ -478,10 +601,14 @@ fn parse_list(value: &str) -> Vec<String> {
         .collect()
 }
 
+#[allow(clippy::too_many_arguments)]
 fn read_standard_cube(
     reader: &str,
-    header_path: &Path,
-    data_hint: Option<PathBuf>,
+    primary_name: &Path,
+    primary_bytes: &[u8],
+    header_is_primary: bool,
+    data_hint_rel: Option<PathBuf>,
+    sidecars: &Arc<dyn SidecarResolver>,
     header_source: SourceFile,
     header: &BTreeMap<String, String>,
     options: &ReadOptions,
@@ -500,17 +627,16 @@ fn read_standard_cube(
     let data_type = parse_usize(header, "data type")?;
     let byte_order = parse_usize(header, "byte order")?;
     let header_offset = parse_optional_usize(header, "header offset").unwrap_or(0);
-    let data_path = resolve_data_path(
-        header_path,
-        data_hint,
+    let (data_bytes, data_display_path) = load_data_payload(
+        primary_name,
+        primary_bytes,
+        header_is_primary,
+        data_hint_rel,
+        sidecars,
         header,
         &["img", "IMG", "dat", "DAT"],
     )?;
-    let data_bytes = std::fs::read(&data_path).map_err(|source| Error::Io {
-        path: data_path.clone(),
-        source,
-    })?;
-    let data_source = SourceFile::from_bytes(&data_path, &data_bytes, "binary");
+    let data_source = SourceFile::from_bytes(&data_display_path, &data_bytes, "binary");
     if data_bytes.len() < header_offset {
         return Err(Error::InvalidRecord(format!(
             "ENVI Standard header offset {header_offset} exceeds payload length {}",

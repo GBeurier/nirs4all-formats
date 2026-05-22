@@ -1,20 +1,23 @@
 use std::collections::BTreeMap;
-use std::fs::File;
 use std::io::Read;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use flate2::read::ZlibDecoder;
 use hdf5_reader::{Dataset, Datatype, H5Type, Hdf5File};
 use matfile::{Array, MatFile, NumericData};
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
-    SpectralAxis, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Result, SidecarResolver, SignalType, SourceFile,
+    SpectralArray, SpectralAxis, SpectralRecord,
 };
 use rds2rust::{DataFrameData, ParseConfig, RObject, VectorData};
 use serde_json::{json, Value};
 use xz2::read::XzDecoder;
 
+use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
+use crate::registry::ReadOptions;
+use crate::sidecars::FsSidecars;
 use crate::Reader;
 
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
@@ -76,49 +79,60 @@ impl Reader for MatlabReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let source = SourceFile::from_path(path, "primary")?;
-        let ext = path
-            .extension()
-            .and_then(|value| value.to_str())
-            .unwrap_or_default()
-            .to_ascii_lowercase();
-        if matches!(ext.as_str(), "rdata" | "rda") {
-            read_rdata(path, source, self.name())
-        } else if has_hdf5_magic(path)? {
-            read_matlab_v73(path, source, self.name())
-        } else {
-            read_matlab_v5(path, source, self.name())
-        }
+        let base = path
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        let sidecars: Arc<dyn SidecarResolver> = Arc::new(FsSidecars::new(base));
+        let bytes = std::fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
+            source,
+        })?;
+        read_inner(self.name(), path, &bytes, &sidecars)
+    }
+
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        _options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        read_inner(self.name(), name, bytes, sidecars)
     }
 }
 
-fn has_hdf5_magic(path: &Path) -> Result<bool> {
-    let mut file = File::open(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    let mut head = [0_u8; HDF5_MAGIC.len()];
-    let read = file.read(&mut head).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    Ok(read == HDF5_MAGIC.len() && head == HDF5_MAGIC)
+fn read_inner(
+    reader_name: &'static str,
+    name: &Path,
+    bytes: &[u8],
+    sidecars: &Arc<dyn SidecarResolver>,
+) -> Result<Vec<SpectralRecord>> {
+    let source = SourceFile::from_bytes(name, bytes, "primary");
+    let ext = name
+        .extension()
+        .and_then(|value| value.to_str())
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    if matches!(ext.as_str(), "rdata" | "rda") {
+        read_rdata(bytes, source, reader_name)
+    } else if bytes.starts_with(HDF5_MAGIC) {
+        read_matlab_v73(bytes, source, reader_name, sidecars)
+    } else {
+        read_matlab_v5(name, bytes, source, reader_name, sidecars)
+    }
 }
 
-fn read_rdata(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
-    let bytes = std::fs::read(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
+fn read_rdata(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
     let (decompressed, container) = if bytes.starts_with(XZ_MAGIC) {
-        let mut decoder = XzDecoder::new(bytes.as_slice());
+        let mut decoder = XzDecoder::new(bytes);
         let mut out = Vec::new();
         decoder
             .read_to_end(&mut out)
             .map_err(|error| Error::InvalidRecord(format!("RData XZ decode error: {error}")))?;
         (out, "rdata_rdx3_xz")
     } else {
-        (bytes, "rdata_rdx3")
+        (bytes.to_vec(), "rdata_rdx3")
     };
 
     let payload = if decompressed.starts_with(RDATA_XDR_MAGIC) {
@@ -330,23 +344,25 @@ fn finite_json_or_null(value: f64) -> Value {
     }
 }
 
-fn read_matlab_v5(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
-    match read_matlab_v5_simple(path, source.clone(), reader) {
+fn read_matlab_v5(
+    path: &Path,
+    bytes: &[u8],
+    source: SourceFile,
+    reader: &str,
+    sidecars: &Arc<dyn SidecarResolver>,
+) -> Result<Vec<SpectralRecord>> {
+    match read_matlab_v5_simple(bytes, source.clone(), reader) {
         Ok(records) => Ok(records),
-        Err(_) => read_matlab_v5_structured(path, source, reader),
+        Err(_) => read_matlab_v5_structured(path, bytes, source, reader, sidecars),
     }
 }
 
 fn read_matlab_v5_simple(
-    path: &Path,
+    bytes: &[u8],
     source: SourceFile,
     reader: &str,
 ) -> Result<Vec<SpectralRecord>> {
-    let file = File::open(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    let mat = MatFile::parse(file)
+    let mat = MatFile::parse(bytes)
         .map_err(|error| Error::InvalidRecord(format!("MATLAB v5 parse error: {error}")))?;
     let x = mat
         .find_by_name("X")
@@ -385,9 +401,17 @@ fn read_matlab_v5_simple(
     )
 }
 
-fn read_matlab_v73(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
-    let file = Hdf5File::open(path)
-        .map_err(|error| Error::InvalidRecord(format!("MATLAB v7.3 HDF5 open error: {error}")))?;
+fn read_matlab_v73(
+    bytes: &[u8],
+    source: SourceFile,
+    reader: &str,
+    sidecars: &Arc<dyn SidecarResolver>,
+) -> Result<Vec<SpectralRecord>> {
+    let file = open_hdf5(
+        bytes.to_vec(),
+        sidecars.clone(),
+        "MATLAB v7.3 HDF5 open error",
+    )?;
     let x = file
         .dataset("/X")
         .map_err(|_| Error::InvalidRecord("MATLAB v7.3 file contains no /X dataset".to_string()))?;
@@ -425,14 +449,12 @@ fn read_matlab_v73(path: &Path, source: SourceFile, reader: &str) -> Result<Vec<
 
 fn read_matlab_v5_structured(
     path: &Path,
+    bytes: &[u8],
     source: SourceFile,
     reader: &str,
+    sidecars: &Arc<dyn SidecarResolver>,
 ) -> Result<Vec<SpectralRecord>> {
-    let bytes = std::fs::read(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    let mat = Mat5Document::parse(&bytes)?;
+    let mat = Mat5Document::parse(bytes)?;
 
     if let Some(records) = records_from_eigenvector_corn(&mat, reader, source.clone())? {
         return Ok(records);
@@ -446,7 +468,7 @@ fn read_matlab_v5_structured(
     if let Some(records) = records_from_als2004(&mat, reader, source.clone())? {
         return Ok(records);
     }
-    if let Some(records) = records_from_indian_pines(&mat, reader, source, path)? {
+    if let Some(records) = records_from_indian_pines(&mat, reader, source, path, sidecars)? {
         return Ok(records);
     }
 
@@ -709,6 +731,7 @@ fn records_from_indian_pines(
     reader: &str,
     source: SourceFile,
     path: &Path,
+    sidecars: &Arc<dyn SidecarResolver>,
 ) -> Result<Option<Vec<SpectralRecord>>> {
     let Some(cube) = mat
         .values
@@ -729,7 +752,7 @@ fn records_from_indian_pines(
         ));
     }
 
-    let gt = read_indian_pines_gt(path, rows, cols)?;
+    let gt = read_indian_pines_gt(path, rows, cols, sidecars)?;
     let axis = (0..bands).map(|value| value as f64).collect::<Vec<_>>();
     let mut records = Vec::with_capacity(rows * cols);
     for y in 0..rows {
@@ -787,19 +810,18 @@ fn read_indian_pines_gt(
     cube_path: &Path,
     rows: usize,
     cols: usize,
+    sidecars: &Arc<dyn SidecarResolver>,
 ) -> Result<Option<(Vec<u16>, SourceFile)>> {
-    let Some(parent) = cube_path.parent() else {
-        return Ok(None);
-    };
-    let gt_path = parent.join("indian_pines_gt.mat");
-    if !gt_path.exists() {
+    let gt_rel = PathBuf::from("indian_pines_gt.mat");
+    if !sidecars.contains(&gt_rel) {
         return Ok(None);
     }
-    let bytes = std::fs::read(&gt_path).map_err(|source| Error::Io {
-        path: gt_path.clone(),
-        source,
-    })?;
-    let source = SourceFile::from_bytes(&gt_path, &bytes, "target_sidecar");
+    let bytes = sidecars.read(&gt_rel)?;
+    let gt_display = cube_path
+        .parent()
+        .map(|p| p.join(&gt_rel))
+        .unwrap_or_else(|| gt_rel.clone());
+    let source = SourceFile::from_bytes(&gt_display, &bytes, "target_sidecar");
     let gt_mat = Mat5Document::parse(&bytes)?;
     let Some(gt) = gt_mat
         .values
