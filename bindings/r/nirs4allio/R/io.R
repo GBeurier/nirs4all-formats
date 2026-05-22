@@ -124,6 +124,28 @@ nirs4allio_probe_path <- function(path) {
   jsonlite::fromJSON(payload, simplifyVector = FALSE)
 }
 
+nirs4allio_open_bytes <- function(name, bytes) {
+  if (!nirs4allio_native_available()) {
+    stop(
+      "open_bytes requires the native extendr static library. Reinstall the ",
+      "package via `R CMD INSTALL` with Cargo on PATH.",
+      call. = FALSE
+    )
+  }
+  if (!is.raw(bytes)) {
+    stop("bytes must be a raw vector", call. = FALSE)
+  }
+  payload <- nirs4allio_native_call(
+    "nirs4allio_native_read_bytes",
+    as.character(name),
+    bytes,
+    NULL,
+    NULL,
+    NULL
+  )
+  jsonlite::fromJSON(payload, simplifyVector = FALSE)
+}
+
 nirs4allio_walk_path <- function(path,
                                   max_depth = NULL,
                                   include_hidden = FALSE,

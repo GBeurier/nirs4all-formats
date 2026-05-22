@@ -29,9 +29,13 @@ const probes = probeBytes(file.name, bytes);
 
 ## Current scope
 
-The WASM build compiles only the byte-based sniffer surface
-(`builtin_probes`). It returns the ordered list of candidate readers for a
-file given its name and bytes, without running the full reader pipeline.
+The WASM build exposes both the sniffer surface (`probeBytes`) and the full
+decoding surface (`openBytes`). Every single-file reader in `nirs4all-io`
+(CSV, JCAMP, ASD, SED, SIG, SPC, OPUS, OMNIC, BUCHI, PerkinElmer, Avantes,
+MSA, OceanOptics, JASCO JWS, Horiba, Renishaw, TriVista, DigitalSurf,
+Hamamatsu, WiTec, NumPy, Excel, AnIML, AllotropeASM, SiWareAPI, SCiO, USGS,
+spectral matrix/table, sun photometer, mzML, Bruker DPT) implements
+`Reader::read_bytes` directly and therefore works through `openBytes`.
 
 Heavy native-deps readers (HDF5, NetCDF, Allotrope ADF, FGI HDF5+XML, MATLAB,
 Parquet) cannot cross-compile to `wasm32-unknown-unknown` because their
@@ -39,10 +43,11 @@ underlying C libraries (libhdf5, libzstd, liblzma) lack a wasm backend in the
 current dependency tree. They are gated behind the `fmt-hdf5`, `fmt-matlab`
 and `fmt-parquet` Cargo features on `nirs4all-io` and remain off here.
 
-Full file decoding from WASM is follow-up work: it requires either an
-in-WASM virtual filesystem layer or a `Reader::read_bytes` entry point on the
-core readers so multi-file (sidecar) formats can be passed as `Map<filename,
-bytes>`.
+Multi-file formats that materialize sidecars (ENVI Standard `.hdr` + `.img`,
+AVIRIS ERDAS `.lan` + `.spc` + `.GIS`, FGI HDF5+XML) still require a real
+filesystem and return a descriptive error from `openBytes`. Supporting them
+in WASM is follow-up work and needs a `SidecarResolver` callback so the
+browser side can supply each related file as `Map<filename, bytes>`.
 
 ## Smoke test
 

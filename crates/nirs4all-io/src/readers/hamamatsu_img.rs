@@ -53,8 +53,16 @@ impl Reader for HamamatsuImgReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        parse_hamamatsu_img(&bytes, source, self.name())
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        parse_hamamatsu_img(bytes, source, self.name())
     }
 }
 

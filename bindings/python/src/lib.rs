@@ -10,8 +10,8 @@
 use std::path::PathBuf;
 
 use nirs4all_io::{
-    open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow, ReadOptions, WalkOptions,
-    WalkOutcome,
+    open_bytes_with_options, open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow,
+    ReadOptions, WalkOptions, WalkOutcome,
 };
 use pyo3::exceptions::{PyIOError, PyValueError};
 use pyo3::prelude::*;
@@ -81,6 +81,30 @@ fn py_open_path(
 ) -> PyResult<PyObject> {
     let options = build_options(rows, cols, pixels)?;
     let records = open_path_with_options(&path, &options).map_err(map_err)?;
+    let value = to_json(records)?;
+    Ok(pythonize(py, &value).map_err(map_err)?.into())
+}
+
+/// Read raw bytes through the native registry. `name` is the input file name
+/// (used for extension sniffing and provenance). Sidecar formats (ENVI
+/// Standard, AVIRIS LAN) still need a real filesystem; this entry point
+/// errors for those.
+#[pyfunction]
+#[pyo3(
+    name = "open_bytes",
+    signature = (name, bytes, rows=None, cols=None, pixels=None),
+    text_signature = "(name, bytes, *, rows=None, cols=None, pixels=None)"
+)]
+fn py_open_bytes(
+    py: Python<'_>,
+    name: PathBuf,
+    bytes: &[u8],
+    rows: Option<(usize, Option<usize>)>,
+    cols: Option<(usize, Option<usize>)>,
+    pixels: Option<Vec<(usize, usize)>>,
+) -> PyResult<PyObject> {
+    let options = build_options(rows, cols, pixels)?;
+    let records = open_bytes_with_options(&name, bytes, &options).map_err(map_err)?;
     let value = to_json(records)?;
     Ok(pythonize(py, &value).map_err(map_err)?.into())
 }
@@ -159,6 +183,7 @@ fn py_walk_path(
 fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_probe_path, m)?)?;
     m.add_function(wrap_pyfunction!(py_open_path, m)?)?;
+    m.add_function(wrap_pyfunction!(py_open_bytes, m)?)?;
     m.add_function(wrap_pyfunction!(py_walk_path, m)?)?;
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
 

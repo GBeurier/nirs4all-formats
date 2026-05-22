@@ -39,6 +39,14 @@ impl Reader for MzmlReader {
             path: path.to_path_buf(),
             source,
         })?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
         let head = String::from_utf8_lossy(&bytes[..bytes.len().min(16_384)]);
         let spectra = head.matches("<spectrum ").count();
         let chromatograms = head.matches("<chromatogram ").count();

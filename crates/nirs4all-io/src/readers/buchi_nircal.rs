@@ -36,8 +36,12 @@ impl Reader for BuchiNircalReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
-        parse_nircal(&bytes, source, self.name())
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
+        parse_nircal(bytes, source, self.name())
     }
 }
 

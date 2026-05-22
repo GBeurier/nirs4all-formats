@@ -62,9 +62,13 @@ impl Reader for NicoletOmnicReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
         if bytes.starts_with(OMNIC_SERIES_MAGIC) {
-            return read_srs(&bytes, source, self.name());
+            return read_srs(bytes, source, self.name());
         }
         if !bytes.starts_with(OMNIC_DATA_MAGIC) {
             return Err(Error::InvalidRecord(
@@ -76,11 +80,11 @@ impl Reader for NicoletOmnicReader {
             .and_then(|value| value.to_str())
             .unwrap_or_default()
             .to_ascii_lowercase();
-        let entries = parse_key_table(&bytes)?;
+        let entries = parse_key_table(bytes)?;
         if ext == "spg" || count_key(&entries, OmnicKey::Header) > 1 {
-            read_spg(&bytes, source, self.name())
+            read_spg(bytes, source, self.name())
         } else {
-            read_spa(&bytes, source, self.name())
+            read_spa(bytes, source, self.name())
         }
     }
 }

@@ -5,8 +5,8 @@ use nirs4all_io_core::{AxisKind, Confidence, Error, FormatProbe, Result, SignalT
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    detect_delimiter, normalize_key, parse_number, read_text_lossy, single_signal_record,
-    split_delimited, SingleSignalSpec,
+    detect_delimiter, normalize_key, parse_number, read_bytes, single_signal_record,
+    split_delimited, text_lossy_from_bytes, SingleSignalSpec,
 };
 use crate::Reader;
 
@@ -33,7 +33,16 @@ impl Reader for SpectralMatrixReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         let layout = find_matrix_layout(&text)?;
         read_matrix_records(&text, source, self.name(), layout)
     }

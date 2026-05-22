@@ -54,10 +54,18 @@ impl Reader for GalacticSpcReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
         match bytes.get(1).copied() {
-            Some(0x4b) => parse_new_lsb_spc(&bytes, path, source, self.name()),
-            Some(0x4d) => parse_old_lsb_spc(&bytes, path, source, self.name()),
+            Some(0x4b) => parse_new_lsb_spc(bytes, path, source, self.name()),
+            Some(0x4d) => parse_old_lsb_spc(bytes, path, source, self.name()),
             Some(0x4c) => Err(nirs4all_io_core::Error::InvalidRecord(
                 "Galactic SPC new big-endian files are recognized but not implemented yet"
                     .to_string(),

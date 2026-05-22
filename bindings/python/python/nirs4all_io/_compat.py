@@ -48,6 +48,25 @@ def open_records(path: str | Path) -> list[dict[str, Any]]:
     return [record for record in records if isinstance(record, dict)]
 
 
+def open_bytes(name: str | Path, payload: bytes) -> list[dict[str, Any]]:
+    """Read raw bytes through the native Rust backend.
+
+    `name` is the input file name (used for extension sniffing and
+    provenance). Sidecar formats (ENVI Standard, AVIRIS LAN) require a real
+    filesystem and raise an error here; use ``open_records(path)`` instead.
+    """
+
+    if _native is None:
+        raise RuntimeError(
+            "open_bytes requires the native PyO3 extension. Reinstall the wheel "
+            "via `maturin develop` or `pip install nirs4all-io`."
+        )
+    records = _native.open_bytes(str(name), payload)
+    if not isinstance(records, list):
+        raise RuntimeError("native open_bytes returned a non-list payload")
+    return [record for record in records if isinstance(record, dict)]
+
+
 def probe_path(path: str | Path) -> list[dict[str, Any]]:
     """Return ordered candidate readers without parsing the full file."""
 

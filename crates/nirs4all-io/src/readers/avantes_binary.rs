@@ -46,11 +46,19 @@ impl Reader for AvantesBinaryReader {
             path: path.to_path_buf(),
             source,
         })?;
-        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let source = SourceFile::from_bytes(path, bytes, "primary");
         if bytes.starts_with(b"AVS82") || bytes.starts_with(b"AVS84") {
-            read_avasoft8(self.name(), source, path, &bytes)
+            read_avasoft8(self.name(), source, path, bytes)
         } else {
-            read_legacy(self.name(), source, path, &bytes)
+            read_legacy(self.name(), source, path, bytes)
         }
     }
 }

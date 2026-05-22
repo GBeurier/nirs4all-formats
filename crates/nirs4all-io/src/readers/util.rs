@@ -7,13 +7,16 @@ use nirs4all_io_core::{
 };
 use serde_json::{json, Value};
 
-pub fn read_text_lossy(path: &Path) -> Result<(String, SourceFile)> {
-    let bytes = std::fs::read(path).map_err(|source| nirs4all_io_core::Error::Io {
+pub fn read_bytes(path: &Path) -> Result<Vec<u8>> {
+    std::fs::read(path).map_err(|source| nirs4all_io_core::Error::Io {
         path: path.to_path_buf(),
         source,
-    })?;
-    let source = SourceFile::from_bytes(path, &bytes, "primary");
-    Ok((String::from_utf8_lossy(&bytes).replace('\0', " "), source))
+    })
+}
+
+pub fn text_lossy_from_bytes(name: &Path, bytes: &[u8]) -> (String, SourceFile) {
+    let source = SourceFile::from_bytes(name, bytes, "primary");
+    (String::from_utf8_lossy(bytes).replace('\0', " "), source)
 }
 
 pub fn metadata_from_pairs(pairs: Vec<(String, String)>) -> BTreeMap<String, Value> {

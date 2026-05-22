@@ -7,7 +7,9 @@ use quick_xml::Reader as XmlReader;
 use quick_xml::XmlVersion;
 use serde_json::{json, Value};
 
-use crate::readers::util::{parse_number, read_text_lossy, single_signal_record, SingleSignalSpec};
+use crate::readers::util::{
+    parse_number, read_bytes, single_signal_record, text_lossy_from_bytes, SingleSignalSpec,
+};
 use crate::Reader;
 
 const FORMAT: &str = "trivista-tvf";
@@ -41,7 +43,16 @@ impl Reader for TrivistaTvfReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         if !text.contains("<XmlMain") {
             return Err(Error::UnsupportedFormat {
                 path: path.to_path_buf(),

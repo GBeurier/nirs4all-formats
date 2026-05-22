@@ -5,6 +5,7 @@ import pytest
 
 from nirs4all_io import (
     NirsDataset,
+    open_bytes,
     open_dataset,
     open_records,
     probe_path,
@@ -93,6 +94,31 @@ def test_native_extension_is_built_for_this_wheel() -> None:
     )
     assert len(records) == 2
     assert records[0]["metadata"]["sample_id"] == "pixel_y0_x0"
+
+
+def test_open_bytes_matches_open_records_for_text_fixture() -> None:
+    path = sample("samples/csv_tsv/synthetic_nirs.csv")
+    payload = path.read_bytes()
+    from_records = open_records(path)
+    from_bytes = open_bytes(path.name, payload)
+    assert len(from_bytes) == len(from_records) == 50
+    signal_key = next(iter(from_records[0]["signals"]))
+    assert (
+        from_bytes[0]["signals"][signal_key]["values"]
+        == from_records[0]["signals"][signal_key]["values"]
+    )
+
+
+def test_open_bytes_works_for_binary_jcamp_and_asd() -> None:
+    for relative in (
+        "samples/jcamp_dx/TESTSPEC.DX",
+        "samples/asd/soil.asd",
+    ):
+        path = sample(relative)
+        payload = path.read_bytes()
+        records = open_bytes(path.name, payload)
+        assert records, relative
+        assert records[0]["signals"], relative
 
 
 def sample(relative: str) -> Path:

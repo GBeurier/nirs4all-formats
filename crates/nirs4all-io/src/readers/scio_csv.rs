@@ -8,7 +8,8 @@ use nirs4all_io_core::{
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    detect_delimiter, normalize_key, parse_number, provenance, read_text_lossy, split_delimited,
+    detect_delimiter, normalize_key, parse_number, provenance, read_bytes, split_delimited,
+    text_lossy_from_bytes,
 };
 use crate::Reader;
 
@@ -47,7 +48,16 @@ impl Reader for ScioCsvReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         if let Some(records) = read_band_export(&text, source.clone(), self.name())? {
             return Ok(records);
         }

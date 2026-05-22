@@ -59,6 +59,10 @@ impl Reader for WitecWipReader {
             path: path.to_path_buf(),
             source,
         })?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(&self, path: &Path, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
         if bytes.starts_with(LEGACY_MAGIC) && !bytes.starts_with(MODERN_MAGIC) {
             return Err(legacy_unsupported(path));
         }
@@ -69,7 +73,7 @@ impl Reader for WitecWipReader {
             )));
         }
 
-        parse_wit_pr06(path, &bytes, self.name())
+        parse_wit_pr06(path, bytes, self.name())
     }
 }
 

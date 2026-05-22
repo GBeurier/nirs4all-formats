@@ -7,8 +7,8 @@ use nirs4all_io_core::{
 use serde_json::{json, Value};
 
 use crate::readers::util::{
-    detect_delimiter, normalize_key, parse_number, read_text_lossy, record_from_signals,
-    safe_signal_name, signal_type_from_label, split_delimited,
+    detect_delimiter, normalize_key, parse_number, read_bytes, record_from_signals,
+    safe_signal_name, signal_type_from_label, split_delimited, text_lossy_from_bytes,
 };
 use crate::Reader;
 
@@ -35,7 +35,16 @@ impl Reader for SpectralTableReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let (text, source) = read_text_lossy(path)?;
+        let bytes = read_bytes(path)?;
+        self.read_bytes(path, &bytes)
+    }
+
+    fn read_bytes(
+        &self,
+        path: &Path,
+        bytes: &[u8],
+    ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
+        let (text, source) = text_lossy_from_bytes(path, bytes);
         let parsed = parse_spectral_table_text(&text, path)?;
         let mut signals = BTreeMap::new();
         let mut dominant = SignalType::Unknown;
