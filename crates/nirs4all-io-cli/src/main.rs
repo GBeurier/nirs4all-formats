@@ -1,8 +1,11 @@
 use std::path::PathBuf;
+use std::sync::Arc;
 
 use anyhow::Context;
 use clap::{Parser, Subcommand};
-use nirs4all_io::{walk_path, WalkOptions, WalkOutcome, WalkStats};
+use nirs4all_io::{
+    walk_path, InMemorySidecars, SidecarResolver, WalkOptions, WalkOutcome, WalkStats,
+};
 use serde_json::json;
 
 #[derive(Debug, Parser)]
@@ -36,6 +39,17 @@ enum Command {
         /// non-comment line must contain a single `ROW,COL` pair.
         #[arg(long = "pixels-file", value_name = "PATH")]
         pixels_file: Option<PathBuf>,
+        /// Provide a sidecar file as `KEY=PATH`. `KEY` is the relative
+        /// name the reader looks up (for example `cubescope-mini-cube.hdr`
+        /// next to an ENVI Standard cube). Repeat the flag once per sidecar.
+        #[arg(long = "sidecar", value_name = "KEY=PATH")]
+        sidecar: Vec<String>,
+        /// Read the primary payload from `--bytes-file PATH` instead of
+        /// from `PATH`, exercising the in-memory `open_with_sidecars`
+        /// entry point. Requires at least one `--sidecar` if the format
+        /// needs companions.
+        #[arg(long = "bytes-file", value_name = "PATH")]
+        bytes_file: Option<PathBuf>,
     },
     /// Recursively scan a directory and report which files load successfully.
     Scan {
@@ -73,6 +87,8 @@ fn main() -> anyhow::Result<()> {
             cols,
             pixel,
             pixels_file,
+            sidecar,
+            bytes_file,
         } => {
             let options = read_options(
                 rows.as_deref(),
@@ -80,8 +96,30 @@ fn main() -> anyhow::Result<()> {
                 &pixel,
                 pixels_file.as_deref(),
             )?;
-            let records = nirs4all_io::open_path_with_options(&path, &options)
-                .with_context(|| format!("failed to read {}", path.display()))?;
+            let records = if sidecar.is_empty() && bytes_file.is_none() {
+                nirs4all_io::open_path_with_options(&path, &options)
+                    .with_context(|| format!("failed to read {}", path.display()))?
+            } else {
+                let primary_path = bytes_file.as_deref().unwrap_or(&path);
+                let bytes = std::fs::read(primary_path).with_context(|| {
+                    format!(
+                        "failed to read primary bytes from {}",
+                        primary_path.display()
+                    )
+                })?;
+                let mut resolver = InMemorySidecars::new();
+                for raw in &sidecar {
+                    let (key, value) = raw.split_once('=').ok_or_else(|| {
+                        anyhow::anyhow!("--sidecar must use KEY=PATH syntax: {raw}")
+                    })?;
+                    let sidecar_bytes = std::fs::read(value)
+                        .with_context(|| format!("failed to read sidecar {value}"))?;
+                    resolver.insert(PathBuf::from(key), sidecar_bytes);
+                }
+                let arc: Arc<dyn SidecarResolver> = Arc::new(resolver);
+                nirs4all_io::open_with_sidecars_and_options(&path, &bytes, arc, &options)
+                    .with_context(|| format!("failed to decode {}", path.display()))?
+            };
             println!("{}", serde_json::to_string_pretty(&records)?);
         }
         Command::Scan {

@@ -1,15 +1,20 @@
 use std::collections::BTreeMap;
 use std::path::Path;
+use std::sync::Arc;
 
 use hdf5_reader::group::Group;
 use hdf5_reader::{Dataset, Hdf5File};
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Result, SidecarResolver, SignalType, SourceFile,
+    SpectralRecord,
 };
 use serde_json::json;
 
 use crate::readers::hdf5::read_numeric_vec;
+use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{safe_signal_name, single_signal_record, SingleSignalSpec};
+use crate::registry::ReadOptions;
+use crate::sidecars::FsSidecars;
 use crate::Reader;
 
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
@@ -39,9 +44,29 @@ impl Reader for AllotropeAdfReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
-        let source = SourceFile::from_path(path, "primary")?;
-        let file = Hdf5File::open(path)
-            .map_err(|error| Error::InvalidRecord(format!("ADF HDF5 open error: {error}")))?;
+        let base = path
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| std::path::PathBuf::from("."));
+        let sidecars: Arc<dyn SidecarResolver> = Arc::new(FsSidecars::new(base));
+        let bytes = std::fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
+            source,
+        })?;
+        let source = SourceFile::from_bytes(path, &bytes, "primary");
+        let file = open_hdf5(bytes, sidecars, "ADF HDF5 open error")?;
+        read_adf_records(&file, source, self.name())
+    }
+
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        _options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        let source = SourceFile::from_bytes(name, bytes, "primary");
+        let file = open_hdf5(bytes.to_vec(), sidecars.clone(), "ADF HDF5 open error")?;
         read_adf_records(&file, source, self.name())
     }
 }

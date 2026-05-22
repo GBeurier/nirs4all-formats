@@ -3,10 +3,14 @@
 //! All three native functions return JSON strings so that the R side can
 //! lean on `jsonlite::fromJSON` rather than translating SEXP trees by hand.
 
+use std::path::PathBuf;
+use std::sync::Arc;
+
 use extendr_api::prelude::*;
 use nirs4all_io::{
-    open_bytes_with_options, open_path_with_options, probe_path, walk_path, CubeMask, CubeWindow,
-    ReadOptions, WalkOptions, WalkOutcome,
+    open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
+    walk_path, CubeMask, CubeWindow, InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions,
+    WalkOutcome,
 };
 
 fn to_string<T: serde::Serialize>(value: &T) -> std::result::Result<String, Error> {
@@ -61,6 +65,37 @@ fn nirs4allio_native_read_bytes(
     let pixels_opt = pixels_from_matrix(pixels)?;
     let options = build_options(rows_opt, cols_opt, pixels_opt)?;
     let records = open_bytes_with_options(name, bytes, &options).map_err(map_io_err)?;
+    to_string(&records)
+}
+
+/// Decode raw bytes plus a list of sidecar payloads through the native
+/// registry. `sidecars` must be a named list whose values are raw vectors
+/// (`raw()`). Names are interpreted as relative paths next to the primary
+/// file (e.g. `"foo.hdr"` next to an ENVI Standard cube).
+/// @export
+#[extendr]
+fn nirs4allio_native_read_with_sidecars(
+    name: &str,
+    bytes: &[u8],
+    sidecars: List,
+    rows: Nullable<Integers>,
+    cols: Nullable<Integers>,
+    pixels: Nullable<RMatrix<i32>>,
+) -> Result<String> {
+    let rows_opt = window_from_integers(rows, "rows")?;
+    let cols_opt = window_from_integers(cols, "cols")?;
+    let pixels_opt = pixels_from_matrix(pixels)?;
+    let options = build_options(rows_opt, cols_opt, pixels_opt)?;
+    let mut resolver = InMemorySidecars::new();
+    for (key, value) in sidecars.iter() {
+        let raw = value
+            .as_raw_slice()
+            .ok_or_else(|| Error::Other(format!("sidecar '{key}' must be a raw vector")))?;
+        resolver.insert(PathBuf::from(key.to_string()), raw.to_vec());
+    }
+    let arc: Arc<dyn SidecarResolver> = Arc::new(resolver);
+    let records =
+        open_with_sidecars_and_options(name, bytes, arc, &options).map_err(map_io_err)?;
     to_string(&records)
 }
 
@@ -196,5 +231,6 @@ extendr_module! {
     fn nirs4allio_native_probe;
     fn nirs4allio_native_read;
     fn nirs4allio_native_read_bytes;
+    fn nirs4allio_native_read_with_sidecars;
     fn nirs4allio_native_walk;
 }

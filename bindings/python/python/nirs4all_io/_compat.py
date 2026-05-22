@@ -52,8 +52,10 @@ def open_bytes(name: str | Path, payload: bytes) -> list[dict[str, Any]]:
     """Read raw bytes through the native Rust backend.
 
     `name` is the input file name (used for extension sniffing and
-    provenance). Sidecar formats (ENVI Standard, AVIRIS LAN) require a real
-    filesystem and raise an error here; use ``open_records(path)`` instead.
+    provenance). Sidecar formats (ENVI Standard, AVIRIS LAN, FGI HDF5+XML,
+    MATLAB Indian Pines, NetCDF MFRSR with QC sidecar) raise
+    ``UnsupportedSidecar`` here; use :func:`open_with_sidecars` to decode
+    them without touching the filesystem.
     """
 
     if _native is None:
@@ -64,6 +66,30 @@ def open_bytes(name: str | Path, payload: bytes) -> list[dict[str, Any]]:
     records = _native.open_bytes(str(name), payload)
     if not isinstance(records, list):
         raise RuntimeError("native open_bytes returned a non-list payload")
+    return [record for record in records if isinstance(record, dict)]
+
+
+def open_with_sidecars(
+    name: str | Path,
+    payload: bytes,
+    sidecars: Mapping[str, bytes],
+) -> list[dict[str, Any]]:
+    """Read bytes plus a mapping of sidecar names to byte payloads.
+
+    Keys in `sidecars` are interpreted as relative paths next to the
+    primary file: ENVI Standard wants ``"<stem>.hdr"``, AVIRIS LAN wants
+    ``"<stem>.spc"`` and optionally ``"92AV3GT.GIS"``, FGI XML wants the
+    HDF5 path referenced in ``<DataReference>``.
+    """
+
+    if _native is None:
+        raise RuntimeError(
+            "open_with_sidecars requires the native PyO3 extension. Reinstall "
+            "the wheel via `maturin develop` or `pip install nirs4all-io`."
+        )
+    records = _native.open_with_sidecars(str(name), payload, dict(sidecars))
+    if not isinstance(records, list):
+        raise RuntimeError("native open_with_sidecars returned a non-list payload")
     return [record for record in records if isinstance(record, dict)]
 
 

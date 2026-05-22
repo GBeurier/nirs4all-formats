@@ -12,6 +12,7 @@ name = "nirs4allio_r"
 extendr-api = { version = "0.7", default-features = false }
 nirs4all-io = { path = "../../../../../crates/nirs4all-io" }
 nirs4all-io-core = { path = "../../../../../crates/nirs4all-io-core" }
+serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 
 [profile.release]

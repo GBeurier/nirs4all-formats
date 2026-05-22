@@ -1,5 +1,6 @@
 use std::collections::BTreeMap;
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use hdf5_reader::error::ByteOrder;
 use hdf5_reader::messages::datatype::Datatype as HdfDatatype;
@@ -8,12 +9,15 @@ use hdf5_reader::messages::HdfMessage;
 use hdf5_reader::{Attribute, Dataset, H5Type, Hdf5File};
 use netcdf_reader::{NcAttrValue, NcAttribute, NcFile, NcMetadataMode, NcOpenOptions, NcVariable};
 use nirs4all_io_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
-    SpectralAxis, SpectralRecord,
+    AxisKind, Confidence, Error, FormatProbe, Result, SidecarResolver, SignalType, SourceFile,
+    SpectralArray, SpectralAxis, SpectralRecord,
 };
 use serde_json::{json, Value};
 
+use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
+use crate::registry::ReadOptions;
+use crate::sidecars::FsSidecars;
 use crate::Reader;
 
 const ANDI_MS_MARKERS: &[&str] = &[
@@ -173,27 +177,56 @@ impl Reader for NetcdfReader {
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
-        let source = SourceFile::from_path(path, "primary")?;
-        let file = NcFile::open(path)
-            .map_err(|error| Error::InvalidRecord(format!("NetCDF open error: {error}")))?;
-        match read_netcdf_records(&file, source.clone(), self.name()) {
-            Ok(records) => Ok(records),
-            Err(error) if is_hdf5_container(path)? => {
-                read_netcdf4_hdf5_records(path, source, self.name(), error)
-            }
-            Err(error) => Err(error),
+        let base = path
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."));
+        let sidecars: Arc<dyn SidecarResolver> = Arc::new(FsSidecars::new(base));
+        let bytes = std::fs::read(path).map_err(|source| Error::Io {
+            path: path.to_path_buf(),
+            source,
+        })?;
+        read_inner(self.name(), path, &bytes, &sidecars)
+    }
+
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        _options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        read_inner(self.name(), name, bytes, sidecars)
+    }
+}
+
+fn read_inner(
+    reader_name: &'static str,
+    name: &Path,
+    bytes: &[u8],
+    sidecars: &Arc<dyn SidecarResolver>,
+) -> Result<Vec<SpectralRecord>> {
+    let source = SourceFile::from_bytes(name, bytes, "primary");
+    let file = NcFile::from_bytes(bytes)
+        .map_err(|error| Error::InvalidRecord(format!("NetCDF open error: {error}")))?;
+    match read_netcdf_records(&file, source.clone(), reader_name, name, sidecars) {
+        Ok(records) => Ok(records),
+        Err(error) if bytes.starts_with(HDF5_MAGIC) => {
+            read_netcdf4_hdf5_records(name, bytes, source, reader_name, sidecars, error)
         }
+        Err(error) => Err(error),
     }
 }
 
 fn read_netcdf4_hdf5_records(
     path: &Path,
+    bytes: &[u8],
     source: SourceFile,
     reader: &str,
+    sidecars: &Arc<dyn SidecarResolver>,
     original_error: Error,
 ) -> Result<Vec<SpectralRecord>> {
-    let hdf5_file = Hdf5File::open(path)
-        .map_err(|error| Error::InvalidRecord(format!("NetCDF4/HDF5 open error: {error}")))?;
+    let hdf5_file = open_hdf5(bytes.to_vec(), sidecars.clone(), "NetCDF4/HDF5 open error")?;
     let hdf5_microtops_channels = discover_microtops_hdf5_aot_channels(&hdf5_file, path);
     let mut microtops_hdf5_error = None;
     if !hdf5_microtops_channels.is_empty() {
@@ -211,8 +244,8 @@ fn read_netcdf4_hdf5_records(
         return read_arm_surfspecalb_hdf5_records(&hdf5_file, source.clone(), reader);
     }
 
-    let file = NcFile::open_with_options(
-        path,
+    let file = NcFile::from_bytes_with_options(
+        bytes,
         NcOpenOptions {
             metadata_mode: NcMetadataMode::Lossy,
             ..NcOpenOptions::default()
@@ -246,14 +279,6 @@ fn read_netcdf4_hdf5_records(
         detail.push_str(&format!("; NetCDF Microtops read error: {error}"));
     }
     Err(Error::InvalidRecord(detail))
-}
-
-fn is_hdf5_container(path: &Path) -> Result<bool> {
-    let bytes = std::fs::read(path).map_err(|source| Error::Io {
-        path: path.to_path_buf(),
-        source,
-    })?;
-    Ok(bytes.starts_with(HDF5_MAGIC))
 }
 
 fn read_microtops_man_hdf5_records(
@@ -1495,6 +1520,8 @@ fn read_netcdf_records(
     file: &NcFile,
     source: SourceFile,
     reader: &str,
+    name: &Path,
+    sidecars: &Arc<dyn SidecarResolver>,
 ) -> Result<Vec<nirs4all_io_core::SpectralRecord>> {
     let andi_ms_markers = andi_ms_markers(file)?;
     if andi_ms_markers.len() >= ANDI_MS_MIN_MARKERS {
@@ -1505,7 +1532,7 @@ fn read_netcdf_records(
     }
 
     if has_arm_mfrsr_channels(file) {
-        return read_arm_mfrsr_records(file, source, reader);
+        return read_arm_mfrsr_records(file, source, reader, name, sidecars);
     }
 
     let spectra_var = file
@@ -1582,11 +1609,13 @@ fn read_arm_mfrsr_records(
     file: &NcFile,
     source: SourceFile,
     reader: &str,
+    name: &Path,
+    sidecars: &Arc<dyn SidecarResolver>,
 ) -> Result<Vec<SpectralRecord>> {
     let sample_count = arm_mfrsr_sample_count(file)?;
     let axis_values = arm_mfrsr_axis_values(file)?;
     let filter_fwhm = arm_mfrsr_filter_fwhm(file);
-    let qc_sidecar = load_arm_mfrsr_qc_sidecar(&source.path)?;
+    let qc_sidecar = load_arm_mfrsr_qc_sidecar(name, sidecars)?;
     let metadata_floats = read_optional_netcdf_float_series(file, ARM_MFRSR_METADATA_FLOATS)
         .into_iter()
         .filter(|(_, values)| values.len() == sample_count)
@@ -1770,36 +1799,44 @@ impl ArmMfrsrQcRule {
     }
 }
 
-fn load_arm_mfrsr_qc_sidecar(primary_path: &str) -> Result<Option<ArmMfrsrQcSidecar>> {
-    let Some(path) = arm_mfrsr_qc_sidecar_path(Path::new(primary_path)) else {
-        return Ok(None);
-    };
-    let text = std::fs::read_to_string(&path).map_err(|source| Error::Io {
-        path: path.clone(),
-        source,
-    })?;
-    let rules = parse_arm_mfrsr_qc_sidecar(&text)?;
-    if rules.is_empty() {
-        return Ok(None);
+fn load_arm_mfrsr_qc_sidecar(
+    primary_path: &Path,
+    sidecars: &Arc<dyn SidecarResolver>,
+) -> Result<Option<ArmMfrsrQcSidecar>> {
+    let candidates = arm_mfrsr_qc_sidecar_candidates(primary_path);
+    for rel in candidates {
+        if !sidecars.contains(&rel) {
+            continue;
+        }
+        let bytes = sidecars.read(&rel)?;
+        let text = String::from_utf8_lossy(&bytes).into_owned();
+        let rules = parse_arm_mfrsr_qc_sidecar(&text)?;
+        if rules.is_empty() {
+            return Ok(None);
+        }
+        let display = primary_path
+            .parent()
+            .map(|p| p.join(&rel))
+            .unwrap_or_else(|| rel.clone());
+        let source = SourceFile::from_bytes(&display, &bytes, "qc_sidecar");
+        return Ok(Some(ArmMfrsrQcSidecar { source, rules }));
     }
-    let source = SourceFile::from_path(&path, "qc_sidecar")?;
-    Ok(Some(ArmMfrsrQcSidecar { source, rules }))
+    Ok(None)
 }
 
-fn arm_mfrsr_qc_sidecar_path(primary_path: &Path) -> Option<std::path::PathBuf> {
-    let direct = primary_path.with_extension("yaml");
-    if direct.exists() {
-        return Some(direct);
+fn arm_mfrsr_qc_sidecar_candidates(primary_path: &Path) -> Vec<PathBuf> {
+    let mut candidates = Vec::new();
+    if let Some(file_name) = primary_path.file_name() {
+        candidates.push(PathBuf::from(file_name).with_extension("yaml"));
     }
-    let stem = primary_path.file_stem()?.to_string_lossy();
-    let (prefix, suffix) = stem.rsplit_once('_')?;
-    if suffix.len() == 8 && suffix.chars().all(|ch| ch.is_ascii_digit()) {
-        let dated = primary_path.with_file_name(format!("{prefix}.yaml"));
-        if dated.exists() {
-            return Some(dated);
+    if let Some(stem) = primary_path.file_stem().and_then(|s| s.to_str()) {
+        if let Some((prefix, suffix)) = stem.rsplit_once('_') {
+            if suffix.len() == 8 && suffix.chars().all(|ch| ch.is_ascii_digit()) {
+                candidates.push(PathBuf::from(format!("{prefix}.yaml")));
+            }
         }
     }
-    None
+    candidates
 }
 
 fn parse_arm_mfrsr_qc_sidecar(text: &str) -> Result<Vec<ArmMfrsrQcRule>> {

@@ -1,6 +1,7 @@
 use std::path::Path;
+use std::sync::Arc;
 
-use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SpectralRecord};
+use nirs4all_io_core::{Confidence, Error, FormatProbe, Result, SidecarResolver, SpectralRecord};
 
 #[cfg(feature = "fmt-matlab")]
 use crate::readers::MatlabReader;
@@ -17,11 +18,30 @@ use crate::readers::{
     ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader, SpectralTableReader,
     SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UsgsArefReader, WitecWipReader,
 };
+use crate::sidecars::NoSidecars;
 
 /// Contract implemented by every native reader.
 pub trait Reader: Send + Sync {
     fn name(&self) -> &'static str;
     fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe>;
+
+    /// Sniff a primary file with access to companion sidecars.
+    ///
+    /// Default implementation forwards to [`Reader::sniff`]; readers whose
+    /// detection depends on an external header (ENVI Standard, ENVI SLI,
+    /// FGI XML+HDF5) override this so dispatch through
+    /// [`open_with_sidecars`] still resolves them when no filesystem is
+    /// available.
+    fn sniff_with_sidecars(
+        &self,
+        head: &[u8],
+        path: &Path,
+        sidecars: &Arc<dyn SidecarResolver>,
+    ) -> Option<FormatProbe> {
+        let _ = sidecars;
+        self.sniff(head, path)
+    }
+
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>>;
 
     fn read_path_with_options(
@@ -65,6 +85,24 @@ pub trait Reader: Send + Sync {
             )));
         }
         self.read_bytes(name, bytes)
+    }
+
+    /// Decode an in-memory primary payload while resolving sidecar files
+    /// through the supplied [`SidecarResolver`].
+    ///
+    /// The default implementation ignores the resolver and delegates to
+    /// [`Reader::read_bytes_with_options`], which means single-file readers
+    /// automatically work with any resolver. Sidecar-bearing readers
+    /// override this method.
+    fn read_bytes_with_sidecars(
+        &self,
+        name: &Path,
+        bytes: &[u8],
+        sidecars: &Arc<dyn SidecarResolver>,
+        options: &ReadOptions,
+    ) -> Result<Vec<SpectralRecord>> {
+        let _ = sidecars;
+        self.read_bytes_with_options(name, bytes, options)
     }
 }
 
@@ -305,24 +343,53 @@ pub fn open_path_with_options(
 
 /// Open an in-memory byte slice through the native registry. `name` is the
 /// input file name, used for sniffing and provenance only.
+///
+/// Sidecar-bearing formats (ENVI Standard, AVIRIS LAN, FGI HDF5+XML, MATLAB
+/// Indian Pines, NetCDF MFRSR-with-QC) error here with
+/// [`Error::UnsupportedSidecar`]; use [`open_with_sidecars`] to decode them
+/// without a filesystem.
 pub fn open_bytes(name: impl AsRef<Path>, bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
     open_bytes_with_options(name, bytes, &ReadOptions::default())
 }
 
-/// Open an in-memory byte slice with read options. Sidecar-bearing formats
-/// (ENVI Standard, AVIRIS LAN, FGI HDF5+XML, ...) still need a real path
-/// today and return an error here; refactor those readers to take a sidecar
-/// resolver if you need them on no-fs targets.
+/// Open an in-memory byte slice with read options.
+///
+/// Sidecar-bearing formats error with [`Error::UnsupportedSidecar`]; use
+/// [`open_with_sidecars_and_options`] if you need them off the filesystem.
 pub fn open_bytes_with_options(
     name: impl AsRef<Path>,
     bytes: &[u8],
+    options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
+    let sidecars: Arc<dyn SidecarResolver> = Arc::new(NoSidecars);
+    open_with_sidecars_and_options(name, bytes, sidecars, options)
+}
+
+/// Open an in-memory byte slice using `sidecars` for companion files.
+pub fn open_with_sidecars(
+    name: impl AsRef<Path>,
+    bytes: &[u8],
+    sidecars: Arc<dyn SidecarResolver>,
+) -> Result<Vec<SpectralRecord>> {
+    open_with_sidecars_and_options(name, bytes, sidecars, &ReadOptions::default())
+}
+
+/// Open an in-memory byte slice using `sidecars` and `options`.
+pub fn open_with_sidecars_and_options(
+    name: impl AsRef<Path>,
+    bytes: &[u8],
+    sidecars: Arc<dyn SidecarResolver>,
     options: &ReadOptions,
 ) -> Result<Vec<SpectralRecord>> {
     let name_ref = name.as_ref();
     let head = &bytes[..bytes.len().min(8192)];
     let mut candidates: Vec<(FormatProbe, Box<dyn Reader>)> = readers()
         .into_iter()
-        .filter_map(|reader| reader.sniff(head, name_ref).map(|probe| (probe, reader)))
+        .filter_map(|reader| {
+            reader
+                .sniff_with_sidecars(head, name_ref, &sidecars)
+                .map(|probe| (probe, reader))
+        })
         .collect();
     candidates.sort_by(|a, b| {
         b.0.confidence
@@ -334,7 +401,7 @@ pub fn open_bytes_with_options(
             path: name_ref.to_path_buf(),
         });
     };
-    reader.read_bytes_with_options(name_ref, bytes, options)
+    reader.read_bytes_with_sidecars(name_ref, bytes, &sidecars, options)
 }
 
 /// Built-in format sniffers backed by the native readers.
