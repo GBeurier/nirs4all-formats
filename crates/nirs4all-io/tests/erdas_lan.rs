@@ -47,6 +47,13 @@ fn reads_aviris_indian_pines_erdas_lan_cube() {
     assert_eq!(last.metadata["x_index"].as_u64(), Some(144));
     assert_eq!(last.metadata["y_index"].as_u64(), Some(144));
     assert_eq!(last.targets["land_cover_class"].as_u64(), Some(0));
+    // G2 (2026-05-23): the `erdas_lan_aviris_experimental` flag is a
+    // format-wide status carried only by the first record, not
+    // repeated 21,025 times.
+    assert!(!last
+        .provenance
+        .warnings
+        .contains(&"erdas_lan_aviris_experimental".to_string()));
 
     let options =
         ReadOptions::default().with_cube_window(CubeWindow::new(10, Some(12), 20, Some(22)));

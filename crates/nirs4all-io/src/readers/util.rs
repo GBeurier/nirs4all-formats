@@ -14,9 +14,31 @@ pub fn read_bytes(path: &Path) -> Result<Vec<u8>> {
     })
 }
 
+/// Decode a byte slice into a lossy UTF-8 string for ASCII / mostly-ASCII
+/// spectroscopy formats (JCAMP, SED, SVC, MSA, AnIML, NeoSpectra CSV).
+///
+/// Two transforms are applied:
+///
+/// - invalid UTF-8 bytes are replaced with U+FFFD via
+///   [`String::from_utf8_lossy`];
+/// - NUL bytes (`\0`) are replaced with ASCII spaces, because every
+///   format we currently consume treats embedded NULs as filler or
+///   end-of-record padding rather than meaningful content. Vendors that
+///   embed NUL in metadata strings would lose data; if such a fixture
+///   ever lands, switch the caller to
+///   [`text_lossy_from_bytes_keep_nul`].
 pub fn text_lossy_from_bytes(name: &Path, bytes: &[u8]) -> (String, SourceFile) {
     let source = SourceFile::from_bytes(name, bytes, "primary");
     (String::from_utf8_lossy(bytes).replace('\0', " "), source)
+}
+
+/// Variant of [`text_lossy_from_bytes`] that preserves embedded NUL
+/// bytes. Currently unused by built-in readers; provided for
+/// downstream consumers whose vendor files embed NUL in metadata.
+#[allow(dead_code)]
+pub fn text_lossy_from_bytes_keep_nul(name: &Path, bytes: &[u8]) -> (String, SourceFile) {
+    let source = SourceFile::from_bytes(name, bytes, "primary");
+    (String::from_utf8_lossy(bytes).into_owned(), source)
 }
 
 pub fn metadata_from_pairs(pairs: Vec<(String, String)>) -> BTreeMap<String, Value> {
