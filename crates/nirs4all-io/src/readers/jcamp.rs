@@ -128,9 +128,20 @@ fn finalize_link_outcome(
     }
 }
 
+/// Cap on how many bytes we hash to derive `link_parent_id`. JCAMP
+/// headers and the first ASCII payload bytes are unique enough across
+/// files that a fixed-size window keeps NMR multi-page exports
+/// (potentially tens of MB) off the hot path while still producing a
+/// stable identifier shared by every child of the same LINK file. The
+/// first 4 KiB cover the `##TITLE`, `##JCAMP-DX`, `##DATA TYPE`, axis
+/// LDRs and roughly the start of `##XYDATA`/`##XYPOINTS`.
+const LINK_PARENT_ID_HASH_BYTES: usize = 4 * 1024;
+
 fn compute_link_parent_id(bytes: &[u8]) -> String {
+    let cap = bytes.len().min(LINK_PARENT_ID_HASH_BYTES);
     let mut hasher = Sha256::new();
-    hasher.update(bytes);
+    hasher.update(&bytes[..cap]);
+    hasher.update((bytes.len() as u64).to_le_bytes());
     let digest = hasher.finalize();
     format!("jcamp-{:x}", digest)
         .chars()
@@ -1094,6 +1105,9 @@ fn collect_ldr(text: &str) -> BTreeMap<String, String> {
 }
 
 fn same_axis(left: &[f64], right: &[f64]) -> bool {
+    // `.max(1.0)` floors the relative tolerance against ~1e-6 absolute,
+    // so axes that include or pass through 0.0 (e.g. wavenumber-shifted
+    // IR axes) compare cleanly without a divide-by-near-zero blow-up.
     left.len() == right.len()
         && left
             .iter()
@@ -2302,6 +2316,30 @@ mod tests {
         assert_eq!(records.len(), 1);
         assert!(!records[0].metadata.contains_key("link_index"));
         assert!(!records[0].metadata.contains_key("link_parent_id"));
+    }
+
+    #[test]
+    fn link_parent_id_is_stable_and_caps_hash_window() {
+        // Two LINK files identical in their first 4 KiB but differing
+        // afterwards must produce *different* parent IDs (we mix the
+        // file length into the digest). Same bytes → same ID.
+        let prefix = vec![b'A'; super::LINK_PARENT_ID_HASH_BYTES];
+        let a = prefix.clone();
+        let b = {
+            let mut clone = prefix.clone();
+            clone.extend(std::iter::repeat_n(b'B', 512));
+            clone
+        };
+        let c = prefix.clone();
+        let id_a = super::compute_link_parent_id(&a);
+        let id_b = super::compute_link_parent_id(&b);
+        let id_c = super::compute_link_parent_id(&c);
+        assert!(id_a.starts_with("jcamp-"));
+        assert_eq!(id_a, id_c, "same bytes must yield the same parent id");
+        assert_ne!(
+            id_a, id_b,
+            "trailing bytes after the cap must still affect the id"
+        );
     }
 
     #[test]

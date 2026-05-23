@@ -131,7 +131,7 @@ fn read_inner(
     let pixels = cube_pixels(options, header.rows, header.cols, "ERDAS LAN cube")?;
 
     let mut records = Vec::with_capacity(pixels.len());
-    for (row, col) in pixels {
+    for (index, (row, col)) in pixels.into_iter().enumerate() {
         let values = read_bil_pixel_spectrum(bytes, &header, row, col)?;
         let mut metadata = BTreeMap::new();
         metadata.insert(
@@ -154,6 +154,14 @@ fn read_inner(
             targets.insert("land_cover_class".to_string(), json!(label));
         }
 
+        // The `erdas_lan_aviris_experimental` warning is a format-wide
+        // status flag (the reader is scoped to AVIRIS 92AV3C 145x145x220
+        // and not yet generalised to other ERDAS LAN layouts). Emitting
+        // it on every one of the 21,025 pixel records wastes ~200 KiB
+        // of provenance overhead; downstream tools that filter by
+        // `provenance.format == "erdas-lan-aviris"` get the same
+        // signal. We keep it on the first record so callers iterating
+        // a single record still see the flag.
         records.push(make_record(
             reader_name,
             sources.clone(),
@@ -162,6 +170,7 @@ fn read_inner(
             metadata,
             targets,
             axis_warnings.clone(),
+            index == 0,
         )?);
     }
     Ok(records)
@@ -266,6 +275,7 @@ fn read_bil_pixel_spectrum(
     Ok(values)
 }
 
+#[allow(clippy::too_many_arguments)]
 fn make_record(
     reader: &str,
     sources: Vec<SourceFile>,
@@ -274,6 +284,7 @@ fn make_record(
     metadata: BTreeMap<String, serde_json::Value>,
     targets: BTreeMap<String, serde_json::Value>,
     mut warnings: Vec<String>,
+    emit_experimental_warning: bool,
 ) -> Result<SpectralRecord> {
     let axis = SpectralAxis::new(axis_values, "nm", AxisKind::Wavelength)?;
     let signal = SpectralArray::new(
@@ -287,7 +298,9 @@ fn make_record(
     )?;
     let mut signals = BTreeMap::new();
     signals.insert("raw_counts".to_string(), signal);
-    warnings.insert(0, "erdas_lan_aviris_experimental".to_string());
+    if emit_experimental_warning {
+        warnings.insert(0, "erdas_lan_aviris_experimental".to_string());
+    }
     let record = SpectralRecord {
         signals,
         signal_type: SignalType::RawCounts,
