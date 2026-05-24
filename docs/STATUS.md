@@ -210,11 +210,12 @@ In-memory reads:
   `Error::UnsupportedSidecar` instead of a generic "does not support
   in-memory reads" string; bindings detect the refusal and route through
   `open_with_sidecars` (PyO3, R extendr, WASM `openWithSidecars`, the CLI
-  `--sidecar key=path` flag). The WASM build still gates `fmt-hdf5` off
-  by default, so HDF5-backed sidecar formats are excluded from the WASM
-  `openWithSidecars` surface until that flag is re-enabled (pure-Rust
-  HDF5/NetCDF crates compile fine in wasm — this is an opt-in toggle, not
-  a technical blocker).
+  `--sidecar key=path` flag). The WASM build now enables `fmt-hdf5` by
+  default (the upstream `read_exact_at` wasm fix landed in
+  `roteiro-gis/netcdf-rust` PR #46, pulled via a pinned `[patch.crates-io]`
+  in `bindings/wasm/Cargo.toml` until `hdf5-reader` 0.5.1 ships), so the
+  HDF5-backed sidecar formats (FGI XML+HDF5, NetCDF MFRSR) decode under
+  WASM too. `fmt-matlab` / `fmt-parquet` stay off.
 
 Python bridge — native PyO3 extension `nirs4all_io._native` built with
 maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
@@ -237,22 +238,24 @@ CLI when the native symbols are absent:
 - `matrix`, `data.frame` and optional tibble conversion.
 
 JS / WebAssembly bridge — new `bindings/wasm/` crate built with `wasm-pack`
-for `target web` / `target nodejs`. Compiles `nirs4all-io` with the heavy C
-deps gated off (`fmt-hdf5`, `fmt-matlab`, `fmt-parquet` features) and exposes:
+for `target web` / `target nodejs`. Compiles `nirs4all-io` with `fmt-hdf5`
+on (pure-Rust HDF5/NetCDF decoders) and `fmt-matlab` / `fmt-parquet` off,
+and exposes:
 
-- `version()`, `features()`;
+- `version()`, `features()` (reports `{ hdf5: true, matlab: false,
+  parquet: false }`);
 - `probeBytes(filename, Uint8Array)` returning the ordered candidate readers;
 - `openBytes(filename, Uint8Array)` returning the decoded `SpectralRecord`
-  list for every single-file reader. Sidecar formats (ENVI Standard, AVIRIS
-  ERDAS LAN) return `UnsupportedSidecar`; use `openWithSidecars` below.
+  list for every single-file reader, including single-file HDF5/NetCDF.
+  Sidecar formats (ENVI Standard, AVIRIS ERDAS LAN) return
+  `UnsupportedSidecar`; use `openWithSidecars` below.
 - `openWithSidecars(filename, Uint8Array, Record<string, Uint8Array>)` decodes
-  ENVI SLI / ENVI Standard / AVIRIS LAN under WASM from a pure in-memory
-  payload+sidecars map (M1). HDF5-backed formats remain excluded until
-  `fmt-hdf5` is re-enabled in `bindings/wasm/Cargo.toml`.
+  ENVI SLI / ENVI Standard / AVIRIS LAN and the HDF5-backed FGI XML+HDF5 and
+  NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
 
-Green locally on 2026-05-22:
+Green locally on 2026-05-25 (WASM build now includes `fmt-hdf5`):
 
 ```bash
 . "$HOME/.cargo/env"
@@ -270,6 +273,7 @@ python -m pytest bindings/python/tests/ tools/reverse-lab/tests
 Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); source("bindings/r/nirs4allio/R/version.R"); source("bindings/r/nirs4allio/R/io.R"); source("bindings/r/nirs4allio/R/native.R"); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
 (cd bindings/wasm && wasm-pack build --target nodejs --release --out-dir pkg-node)
 node bindings/wasm/tests/smoke.js
+node bindings/wasm/tests/sidecars.test.js
 uv run sphinx-build -W -b html docs docs/_build/html
 git diff --check
 ```
@@ -307,16 +311,16 @@ Immediate next work:
    ENVI Standard, AVIRIS/ERDAS LAN, FGI HDF5+XML, generic HDF5 (incl. HDF5
    external file/link routing), MATLAB v7.3, MATLAB Indian Pines, ARM
    MFRSR NetCDF (QC YAML) and Allotrope ADF all decode from in-memory
-   `Map<filename, bytes>` payloads. PyO3, R extendr, WASM (ENVI/ERDAS,
-   no HDF5 until `fmt-hdf5` is re-enabled in wasm) and the CLI
+   `Map<filename, bytes>` payloads. PyO3, R extendr, WASM (ENVI/ERDAS
+   plus HDF5-backed FGI XML+HDF5 and NetCDF MFRSR) and the CLI
    `--sidecar key=path` flag expose the new entry point. Follow-up
    2026-05-23: ParquetReader now overrides `read_bytes` via
    `bytes::Bytes` (commit P1) so the committed `synthetic_nirs.parquet`
-   fixture decodes in-memory through `open_bytes`. Re-enabling
-   `fmt-hdf5` in the WASM crate is blocked on an upstream
-   `hdf5-reader` 0.5.0 compile error on `wasm32-unknown-unknown`; the
-   four-line patch and the workaround path live in
-   `docs/dev/SIDECAR_RESOLVER.md`.
+   fixture decodes in-memory through `open_bytes`. Follow-up 2026-05-25:
+   `fmt-hdf5` is now on by default in the WASM crate — the upstream
+   `read_exact_at` wasm fix merged as `roteiro-gis/netcdf-rust` PR #46
+   and is pulled through a pinned `[patch.crates-io]` until
+   `hdf5-reader` 0.5.1 ships. See `docs/dev/SIDECAR_RESOLVER.md`.
 6. **DONE (M3, 2026-05-23)** — heterogeneous JCAMP `LINK` fan-out API
    shipped: one record per child plus `link_parent_id` / `link_index` /
    `link_total` / `link_relation` metadata. Top-level multi-block files
