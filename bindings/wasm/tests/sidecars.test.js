@@ -87,9 +87,8 @@ function readBytes(absolute) {
   }
 }
 
-// FGI HDF5+XML is excluded from the default WASM build because `fmt-hdf5`
-// is off; assert openWithSidecars surfaces a useful error rather than
-// silently producing nothing.
+// FGI HDF5+XML — decodes in the WASM build now that `fmt-hdf5` is on
+// (the XML primary references its HDF5 payload, served as a sidecar).
 {
   const primary = path.join(repoRoot(), 'samples/fgi/synthetic_fgi.xml');
   if (!fs.existsSync(primary)) {
@@ -100,22 +99,35 @@ function readBytes(absolute) {
         path.join(path.dirname(primary), 'synthetic_fgi.h5')
       ),
     };
-    let raised = null;
-    try {
-      wasm.openWithSidecars(
-        'synthetic_fgi.xml',
-        readBytes(primary),
-        sidecars
-      );
-    } catch (err) {
-      raised = String(err);
-    }
-    assert.ok(
-      raised !== null,
-      'FGI HDF5+XML should error in the WASM build until fmt-hdf5 ships'
+    const records = wasm.openWithSidecars(
+      'synthetic_fgi.xml',
+      readBytes(primary),
+      sidecars
     );
-    console.log('FGI WASM refusal:', raised.slice(0, 120));
+    assert.ok(Array.isArray(records));
+    assert.ok(
+      records.length > 0,
+      'FGI HDF5+XML openWithSidecars produced no records'
+    );
+    assert.equal(
+      records[0].provenance.format,
+      'fgi-hdf5-xml',
+      'FGI record format'
+    );
+    console.log(
+      'FGI HDF5+XML records:',
+      records.length,
+      'format:',
+      records[0].provenance.format
+    );
   }
+}
+
+// `fmt-hdf5` is on: the feature flag must report HDF5 support so JS
+// callers can branch at runtime.
+{
+  const flags = wasm.features();
+  assert.equal(flags.hdf5, true, 'WASM build must report fmt-hdf5 on');
 }
 
 console.log('OK: WASM openWithSidecars tests passed');

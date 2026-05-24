@@ -102,51 +102,41 @@ support in-memory reads" string.
 | Rust | `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` |
 | Python (PyO3) | `nirs4all_io.open_with_sidecars(name, bytes, sidecars: dict[str, bytes])` |
 | R (extendr) | `nirs4allio_open_with_sidecars(name, raw_bytes, sidecars = list(name = raw))` |
-| WebAssembly | `openWithSidecars(filename: string, primary: Uint8Array, sidecars: Record<string, Uint8Array>)` — ENVI/ERDAS only; HDF5-backed formats require `fmt-hdf5` to be re-enabled in `bindings/wasm/Cargo.toml` |
+| WebAssembly | `openWithSidecars(filename: string, primary: Uint8Array, sidecars: Record<string, Uint8Array>)` — ENVI/ERDAS LAN plus HDF5-backed FGI XML+HDF5 and NetCDF MFRSR (`fmt-hdf5` on by default) |
 | CLI | `nirs4all-io read-json PATH --bytes-file PATH --sidecar key=path` |
 
-The WASM gap is blocked upstream, not by architecture. Attempting to
-enable `fmt-hdf5` in `bindings/wasm/Cargo.toml` (2026-05-23 follow-up
-investigation) fails to compile for `wasm32-unknown-unknown` because
-`hdf5-reader` 0.5.0 declares `read_exact_at` only under `#[cfg(unix)]`
-and `#[cfg(windows)]` while `FileStorage::read_range` calls it
-unconditionally (`storage.rs:214`). On wasm neither cfg matches and
-linking fails even though we never instantiate `FileStorage` — only
-`BytesStorage` is used through `Hdf5File::from_vec_with_options`.
+### WASM HDF5 support (F3, resolved 2026-05-25)
 
-Fix in flight (F3, 2026-05-23): the 13-line patch lives on
-`https://github.com/GBeurier/netcdf-rust/tree/wasm-file-storage-fallback`
-(SHA `42537ef`) and adds:
+`fmt-hdf5` is now on by default in `bindings/wasm/Cargo.toml`, so the
+WASM binding decodes generic HDF5, FGI XML+HDF5, NetCDF MFRSR (with its
+QC YAML sidecar) and Allotrope ADF. The `features()` JS export reports
+`{ hdf5: true, matlab: false, parquet: false }`; `fmt-matlab` and
+`fmt-parquet` stay off (no wasm-side need yet).
 
-```rust
-#[cfg(not(any(unix, windows)))]
-fn read_exact_at(_file: &File, _buf: &mut [u8], _offset: u64) -> std::io::Result<()> {
-    Err(std::io::Error::new(
-        std::io::ErrorKind::Unsupported,
-        "FileStorage is unavailable on this target; use BytesStorage or Hdf5File::from_bytes",
-    ))
-}
+This was previously blocked because `hdf5-reader` 0.5.0 declared
+`read_exact_at` only under `#[cfg(unix)]` / `#[cfg(windows)]` while
+`FileStorage::read_range` called it unconditionally (`storage.rs:214`),
+so `wasm32-unknown-unknown` failed to link even though we only ever use
+`BytesStorage` through `Hdf5File::from_vec_with_options`. The fix adds a
+`#[cfg(not(any(unix, windows)))]` fallback returning
+`io::ErrorKind::Unsupported`; it was merged upstream as
+[`roteiro-gis/netcdf-rust` PR #46](https://github.com/roteiro-gis/netcdf-rust/pull/46)
+(merge commit `f0cdd2f0`).
+
+crates.io still publishes only `hdf5-reader` 0.5.0 (the fix is on
+`main`, not yet released), so the WASM crate pulls the fixed crate
+through a pinned patch in `bindings/wasm/Cargo.toml`:
+
+```toml
+[patch.crates-io]
+hdf5-reader = { git = "https://github.com/roteiro-gis/netcdf-rust", rev = "f0cdd2f0dbd2c6a036fc18cc4ae58d4072d7cb0b" }
 ```
 
-Locally validated:
+**When `hdf5-reader` 0.5.1 lands on crates.io**: drop the
+`[patch.crates-io]` block and bump the `hdf5-reader` requirement in
+`crates/nirs4all-io/Cargo.toml` to `0.5.1`. No other change is needed —
+`fmt-hdf5` is already wired through the WASM crate's own feature.
 
-- `cargo build -p hdf5-reader` (host) — green;
-- `cargo build -p hdf5-reader --target wasm32-unknown-unknown` — was
-  red, now green.
-
-The upstream PR has to be filed manually because the maintainer's
-fine-grained GitHub PAT does not have the
-`pull_request` create scope on `roteiro-gis/netcdf-rust`. Use the
-compare URL to open it from a browser:
-
-```
-https://github.com/roteiro-gis/netcdf-rust/compare/main...GBeurier:netcdf-rust:wasm-file-storage-fallback?expand=1
-```
-
-Once the patch lands as `hdf5-reader = "0.5.1"` (or we wire a
-`[patch.crates-io]` pointing at the fork), flipping `fmt-hdf5` on in
-the WASM crate is a one-line change. Until then the WASM binding only
-covers ENVI Standard / ENVI SLI / AVIRIS LAN sidecars; FGI HDF5+XML,
-generic HDF5, MATLAB v7.3, NetCDF MFRSR and Allotrope ADF return
-`UnsupportedFormat` from `openWithSidecars` because the readers are
-gated off.
+Validated end-to-end: `wasm-pack build --target nodejs` +
+`node tests/sidecars.test.js` decodes the FGI HDF5+XML fixture to 50
+records (`provenance.format == "fgi-hdf5-xml"`).
