@@ -4,29 +4,14 @@ from pathlib import Path
 import pytest
 
 from nirs4all_io import (
-    NirsDataset,
+    SpectralRecordSet,
     open_bytes,
-    open_dataset,
     open_records,
+    open_recordset,
     probe_path,
-    to_nirs4all_spectrodataset,
-    to_numpy_matrix,
-    to_sklearn_bunch,
     walk_path,
 )
 from nirs4all_io._compat import _native
-
-
-def test_dataset_shape_contract() -> None:
-    dataset = NirsDataset(
-        x=[[0.1, 0.2], [0.3, 0.4]],
-        wavelengths=[1100.0, 1110.0],
-        targets={"protein": [12.0, 13.0]},
-        sample_ids=["S001", "S002"],
-    )
-
-    assert len(dataset.x) == 2
-    assert list(dataset.targets) == ["protein"]
 
 
 def test_open_records_uses_rust_backend() -> None:
@@ -36,38 +21,78 @@ def test_open_records_uses_rust_backend() -> None:
     assert records[0]["provenance"]["format"] == "delimited-text"
 
 
-def test_open_dataset_from_committed_sample() -> None:
-    dataset = open_dataset(sample("samples/csv_tsv/synthetic_nirs.csv"))
+def test_recordset_is_lossless_mirror() -> None:
+    rs = open_recordset(sample("samples/csv_tsv/synthetic_nirs.csv"))
 
-    assert len(dataset.x) == 50
-    assert len(dataset.wavelengths) == 200
-    assert dataset.sample_ids[0] == "S000"
-    assert list(dataset.targets) == ["protein"]
-    assert dataset.axis_unit == "nm"
+    assert isinstance(rs, SpectralRecordSet)
+    assert len(rs) == 50
+    record = rs.records[0]
+    assert record.provenance.format == "delimited-text"
+    signal = next(iter(record.signals.values()))
+    # 1-D spectrum: shape == [n], dims == ["x"], coords empty, axis preserved.
+    assert signal.dims == ("x",)
+    assert signal.shape == (signal.axis.values.shape[0],)
+    assert signal.coords == {}
+    assert signal.values.shape == signal.axis.values.shape
 
 
-def test_numpy_and_sklearn_shapes_when_numpy_is_available() -> None:
-    pytest.importorskip("numpy")
-    dataset = open_dataset(sample("samples/csv_tsv/synthetic_nirs.csv"))
+def test_to_numpy_and_sklearn_shapes() -> None:
+    rs = open_recordset(sample("samples/csv_tsv/synthetic_nirs.csv"))
 
-    x, wavelengths, targets = to_numpy_matrix(dataset)
-    bunch = to_sklearn_bunch(dataset)
+    x, axis = rs.to_numpy()
+    bunch = rs.to_sklearn()
 
     assert x.shape == (50, 200)
-    assert wavelengths.shape == (200,)
-    assert targets["protein"].shape == (50,)
+    assert axis.shape == (200,)
     assert bunch.data.shape == (50, 200)
     assert bunch.target.shape == (50,)
+    assert bunch.target_name == "protein"
+
+
+def test_to_pandas_carries_provenance_columns() -> None:
+    pytest.importorskip("pandas")
+    rs = open_recordset(sample("samples/csv_tsv/synthetic_nirs.csv"))
+
+    frame = rs.to_pandas()
+    assert frame.shape[0] == 50
+    assert "nirs4all_io.format" in frame.columns
+    assert frame["nirs4all_io.format"].iloc[0] == "delimited-text"
+    assert "protein" in frame.columns
+
+
+def test_heterogeneous_axes_raise_in_strict_projection() -> None:
+    # Two records with different feature axes must refuse to project.
+    payload = [
+        _fake_record(axis=[1.0, 2.0, 3.0], values=[0.1, 0.2, 0.3]),
+        _fake_record(axis=[1.0, 2.0, 3.0, 4.0], values=[0.1, 0.2, 0.3, 0.4]),
+    ]
+    rs = SpectralRecordSet.from_dicts(payload)
+    with pytest.raises(ValueError, match="different feature axes"):
+        rs.to_numpy(signal="absorbance")
+
+
+def test_missing_signal_is_nan_filled() -> None:
+    import numpy as np
+
+    payload = [
+        _fake_record(axis=[1.0, 2.0], values=[0.1, 0.2]),
+        _fake_record(axis=[1.0, 2.0], values=[0.3, 0.4], signal="reflectance"),
+    ]
+    rs = SpectralRecordSet.from_dicts(payload)
+    x, _axis = rs.to_numpy(signal="absorbance")
+    assert x.shape == (2, 2)
+    assert np.isnan(x[1]).all()  # second record lacks "absorbance"
 
 
 def test_nirs4all_spectrodataset_when_checkout_is_available() -> None:
     checkout = Path("/home/delete/nirs4all/nirs4all")
     if not checkout.exists():
         pytest.skip("nirs4all checkout not available")
+    pytest.importorskip("nirs4all")
     sys.path.insert(0, str(checkout))
-    dataset = open_dataset(sample("samples/csv_tsv/synthetic_nirs.csv"))
+    rs = open_recordset(sample("samples/csv_tsv/synthetic_nirs.csv"))
 
-    spectro_dataset = to_nirs4all_spectrodataset(dataset, name="smoke")
+    spectro_dataset = rs.to_spectrodataset(name="smoke")
 
     assert type(spectro_dataset).__name__ == "SpectroDataset"
     assert spectro_dataset.x(None).shape == (50, 200)
@@ -119,6 +144,37 @@ def test_open_bytes_works_for_binary_jcamp_and_asd() -> None:
         records = open_bytes(path.name, payload)
         assert records, relative
         assert records[0]["signals"], relative
+
+
+def _fake_record(
+    *, axis: list[float], values: list[float], signal: str = "absorbance"
+) -> dict:
+    return {
+        "signals": {
+            signal: {
+                "axis": {"values": axis, "unit": "nm", "kind": "wavelength", "order": "ascending"},
+                "values": values,
+                "shape": [len(values)],
+                "dims": ["x"],
+                "signal_type": signal,
+                "unit": None,
+                "role": signal,
+                "source": "file",
+            }
+        },
+        "signal_type": signal,
+        "targets": {},
+        "metadata": {},
+        "provenance": {
+            "format": "test",
+            "reader": "test",
+            "reader_version": "0",
+            "sources": [],
+            "record_schema_version": "0.2.0",
+            "warnings": [],
+        },
+        "quality_flags": [],
+    }
 
 
 def sample(relative: str) -> Path:

@@ -1,4 +1,9 @@
-"""Python compatibility helpers backed by the Rust reader pipeline."""
+"""Raw access to the Rust reader pipeline (native PyO3 with a CLI fallback).
+
+These functions return the records exactly as the Rust core emits them, as
+plain dicts/lists. The lossless object model and the lossy projections live in
+:mod:`nirs4all_io.records`.
+"""
 
 from __future__ import annotations
 
@@ -8,7 +13,6 @@ import shlex
 import shutil
 import subprocess
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -16,20 +20,6 @@ try:  # native PyO3 extension built by maturin
     from . import _native  # type: ignore[attr-defined]
 except ImportError:  # pragma: no cover - fallback when the wheel was not built
     _native = None  # type: ignore[assignment]
-
-
-@dataclass(frozen=True)
-class NirsDataset:
-    """Tabular spectral dataset representation used by Python integrations."""
-
-    x: Sequence[Sequence[float]]
-    wavelengths: Sequence[float]
-    targets: Mapping[str, Sequence[Any]]
-    sample_ids: Sequence[str]
-    metadata: Sequence[Mapping[str, Any]] = field(default_factory=tuple)
-    signal_type: str = "unknown"
-    axis_unit: str = "index"
-    formats: Sequence[str] = field(default_factory=tuple)
 
 
 def open_records(path: str | Path) -> list[dict[str, Any]]:
@@ -153,205 +143,6 @@ def walk_path(
     return [entry for entry in entries if isinstance(entry, dict)]
 
 
-def open_dataset(path: str | Path, *, signal: str | None = None) -> NirsDataset:
-    """Read one spectral file and collapse records into a tabular dataset."""
-
-    records = open_records(path)
-    if not records:
-        raise RuntimeError(f"Rust reader returned no records for {path}")
-
-    rows: list[list[float]] = []
-    sample_ids: list[str] = []
-    metadata_rows: list[Mapping[str, Any]] = []
-    target_values: dict[str, list[Any]] = {}
-    formats: list[str] = []
-    wavelengths: list[float] | None = None
-    axis_unit = "index"
-    signal_type = "unknown"
-
-    for row_index, record in enumerate(records):
-        name, signal_payload = _select_signal(record, signal)
-        values = [float(value) for value in signal_payload.get("values", [])]
-        axis = signal_payload.get("axis", {})
-        axis_values = [float(value) for value in axis.get("values", [])]
-        if not values or not axis_values:
-            raise RuntimeError(f"Record {row_index} signal {name!r} is empty")
-        if len(values) != len(axis_values):
-            raise RuntimeError(f"Record {row_index} signal {name!r} has mismatched axis length")
-
-        if wavelengths is None:
-            wavelengths = axis_values
-            axis_unit = str(axis.get("unit", "index"))
-            signal_type = str(
-                signal_payload.get("signal_type", record.get("signal_type", "unknown"))
-            )
-        elif axis_values != wavelengths:
-            raise RuntimeError("Cannot build one dataset from records with different axes")
-
-        rows.append(values)
-        metadata = _dict_or_empty(record.get("metadata"))
-        metadata_rows.append(metadata)
-        sample_ids.append(_sample_id(record, metadata, row_index))
-        formats.append(str(_dict_or_empty(record.get("provenance")).get("format", "unknown")))
-
-        targets = _dict_or_empty(record.get("targets"))
-        for key in list(target_values):
-            target_values[key].append(targets.get(key))
-        for key, value in targets.items():
-            if key not in target_values:
-                target_values[key] = [None] * row_index
-                target_values[key].append(value)
-
-    return NirsDataset(
-        x=rows,
-        wavelengths=wavelengths or [],
-        targets=target_values,
-        sample_ids=sample_ids,
-        metadata=metadata_rows,
-        signal_type=signal_type,
-        axis_unit=axis_unit,
-        formats=formats,
-    )
-
-
-def to_numpy_matrix(dataset: NirsDataset) -> Any:
-    """Return `(X, wavelengths, targets)` as numpy arrays."""
-
-    import numpy as np  # type: ignore[import-not-found]
-
-    targets = {name: np.asarray(values) for name, values in dataset.targets.items()}
-    return np.asarray(dataset.x, dtype=float), np.asarray(dataset.wavelengths, dtype=float), targets
-
-
-def to_pandas_frame(dataset: NirsDataset) -> Any:
-    """Return one pandas DataFrame with metadata/targets followed by spectral columns."""
-
-    import pandas as pd  # type: ignore[import-not-found]
-
-    data: dict[str, Any] = {"sample_id": list(dataset.sample_ids)}
-    metadata_keys = sorted({key for row in dataset.metadata for key in row if key != "sample_id"})
-    for key in metadata_keys:
-        data[f"meta_{key}"] = [row.get(key) for row in dataset.metadata]
-    data.update({name: list(values) for name, values in dataset.targets.items()})
-    for index, wavelength in enumerate(dataset.wavelengths):
-        data[f"x_{float(wavelength):g}"] = [row[index] for row in dataset.x]
-    return pd.DataFrame(data)
-
-
-def to_sklearn_bunch(dataset: NirsDataset, *, target: str | None = None) -> Any:
-    """Return a scikit-learn-style Bunch with data, target and feature names."""
-
-    import numpy as np  # type: ignore[import-not-found]
-
-    try:
-        from sklearn.utils import Bunch  # type: ignore[import-not-found]
-    except ImportError:
-
-        class Bunch(dict):  # type: ignore[no-redef]
-            def __getattr__(self, key: str) -> Any:
-                try:
-                    return self[key]
-                except KeyError as exc:
-                    raise AttributeError(key) from exc
-
-    x, wavelengths, targets = to_numpy_matrix(dataset)
-    target_name = target or (next(iter(targets)) if len(targets) == 1 else None)
-    y = np.asarray(targets[target_name]) if target_name else None
-    return Bunch(
-        data=x,
-        target=y,
-        target_name=target_name,
-        feature_names=[f"x_{float(value):g}" for value in wavelengths],
-        wavelengths=wavelengths,
-        sample_ids=list(dataset.sample_ids),
-        signal_type=dataset.signal_type,
-    )
-
-
-@dataclass(frozen=True)
-class SklearnDatasetProvider:
-    """Small provider object for sklearn pipelines and examples."""
-
-    path: str | Path
-    target: str | None = None
-    signal: str | None = None
-
-    def load(self) -> Any:
-        return to_sklearn_bunch(open_dataset(self.path, signal=self.signal), target=self.target)
-
-    def as_arrays(self) -> tuple[Any, Any]:
-        bunch = self.load()
-        return bunch.data, bunch.target
-
-
-class TorchSpectralDataset:
-    """Torch Dataset adapter around a Rust-loaded NIRS dataset."""
-
-    def __init__(self, dataset: NirsDataset, *, target: str | None = None) -> None:
-        import torch  # type: ignore[import-not-found]
-
-        x, _, targets = to_numpy_matrix(dataset)
-        target_name = target or (next(iter(targets)) if len(targets) == 1 else None)
-        self.x = torch.as_tensor(x, dtype=torch.float32)
-        self.y = torch.as_tensor(targets[target_name], dtype=torch.float32) if target_name else None
-        self.sample_ids = list(dataset.sample_ids)
-        self.wavelengths = dataset.wavelengths
-
-    def __len__(self) -> int:
-        return int(self.x.shape[0])
-
-    def __getitem__(self, index: int) -> Any:
-        if self.y is None:
-            return self.x[index]
-        return self.x[index], self.y[index]
-
-
-def to_nirs4all_spectrodataset(
-    dataset: NirsDataset,
-    *,
-    name: str = "nirs4all_io_dataset",
-    target: str | None = None,
-    add_metadata: bool = True,
-) -> Any:
-    """Create a nirs4all SpectroDataset and fill samples, targets and metadata."""
-
-    import numpy as np  # type: ignore[import-not-found]
-    import pandas as pd  # type: ignore[import-not-found]
-    from nirs4all.data import SpectroDataset  # type: ignore[import-not-found]
-
-    x, _, targets = to_numpy_matrix(dataset)
-    spectro_dataset = SpectroDataset(name=name)
-    header_unit = (
-        dataset.axis_unit
-        if dataset.axis_unit in {"cm-1", "nm", "none", "text", "index"}
-        else "index"
-    )
-    spectro_dataset.add_samples(
-        x.astype("float32"),
-        headers=[f"{float(value):g}" for value in dataset.wavelengths],
-        header_unit=header_unit,
-    )
-
-    target_name = target or (next(iter(targets)) if len(targets) == 1 else None)
-    if target_name:
-        spectro_dataset.add_targets(np.asarray(targets[target_name]))
-
-    if add_metadata:
-        metadata = pd.DataFrame({"sample_id": list(dataset.sample_ids)})
-        for key in sorted(
-            {key for row in dataset.metadata for key in row if key != "sample_id"}
-        ):
-            metadata[key] = [row.get(key) for row in dataset.metadata]
-        for key, values in dataset.targets.items():
-            metadata[f"target_{key}"] = list(values)
-        spectro_dataset.add_metadata(metadata)
-
-    if dataset.signal_type and dataset.signal_type != "unknown":
-        spectro_dataset.set_signal_type(dataset.signal_type)
-
-    return spectro_dataset
-
-
 def _run_rust_reader(path: str | Path) -> str:
     return _run_rust_reader_command(["read-json", str(path)])
 
@@ -406,47 +197,3 @@ def _repo_root() -> Path | None:
         ).exists():
             return parent
     return None
-
-
-def _select_signal(record: Mapping[str, Any], requested: str | None) -> tuple[str, Mapping[str, Any]]:
-    signals = record.get("signals")
-    if not isinstance(signals, Mapping) or not signals:
-        raise RuntimeError("Record has no signals")
-
-    if requested:
-        payload = signals.get(requested)
-        if not isinstance(payload, Mapping):
-            raise RuntimeError(f"Record does not contain signal {requested!r}")
-        return requested, payload
-
-    preferred_type = record.get("signal_type")
-    for key, payload in signals.items():
-        if isinstance(payload, Mapping) and payload.get("signal_type") == preferred_type:
-            return str(key), payload
-    for key in ("reflectance", "absorbance", "transmittance", "signal"):
-        payload = signals.get(key)
-        if isinstance(payload, Mapping):
-            return key, payload
-    key = sorted(str(name) for name in signals)[0]
-    payload = signals[key]
-    if not isinstance(payload, Mapping):
-        raise RuntimeError(f"Signal {key!r} is not an object")
-    return key, payload
-
-
-def _sample_id(record: Mapping[str, Any], metadata: Mapping[str, Any], row_index: int) -> str:
-    sample_id = metadata.get("sample_id")
-    if sample_id is not None:
-        return str(sample_id)
-    provenance = _dict_or_empty(record.get("provenance"))
-    sources = provenance.get("sources")
-    if isinstance(sources, Sequence) and sources:
-        source = _dict_or_empty(sources[0])
-        source_path = source.get("path")
-        if source_path:
-            return f"{Path(str(source_path)).stem}:{row_index}"
-    return f"record:{row_index}"
-
-
-def _dict_or_empty(value: Any) -> Mapping[str, Any]:
-    return value if isinstance(value, Mapping) else {}
