@@ -33,6 +33,8 @@ and every other dimension into samples:
 - `to_numpy(signal=None, feature_dim="x")`: `(X[n_samples, n_features], axis)`;
 - `to_pandas(signal=None)`: wide DataFrame — metadata + reserved
   `nirs4all_io.*` provenance columns + `x_<axis>` columns;
+- `to_polars(signal=None)`: same wide table as `to_pandas`, as a polars
+  DataFrame (the backend nirs4all's `SpectroDataset.metadata()` uses);
 - `to_pandas_long()`: loss-minimising long frame, one row per
   `(record, signal, point)`;
 - `to_sklearn(signal=None, target=None)`: scikit-learn `Bunch`;
