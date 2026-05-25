@@ -34,3 +34,5 @@ asd_reader_*.log
 # Cargo.lock for the bindings crates is generated on first build.
 /bindings/python/Cargo.lock
 /bindings/wasm/Cargo.lock
+# uv writes this when resolving the Python binding's dev env.
+/bindings/python/uv.lock
