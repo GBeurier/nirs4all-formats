@@ -221,11 +221,16 @@ Python bridge — native PyO3 extension `nirs4all_io._native` built with
 maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
 when the native module is not available:
 
-- `probe_path`, `open_records`, `open_bytes`, `walk_path` directly via PyO3
-  (no JSON roundtrip);
-- tabular `NirsDataset`, numpy / pandas / sklearn-style exports;
-- torch dataset adapter;
-- `nirs4all.data.SpectroDataset` adapter.
+- raw access — `probe_path`, `open_records`, `open_bytes`,
+  `open_with_sidecars`, `walk_path` directly via PyO3 (no JSON roundtrip);
+- lossless object model — `open_recordset` -> `SpectralRecordSet`, a faithful
+  N-dimensional mirror of the Rust `SpectralRecord` (shape/dims/coords,
+  metadata, provenance) with `to_xarray()` on each array;
+- explicit projections on `SpectralRecordSet` — `to_numpy`, `to_pandas` /
+  `to_pandas_long`, `to_sklearn`, `to_torch` and `to_spectrodataset` (each
+  signal -> a nirs4all source, provenance preserved in reserved
+  `nirs4all_io.*` metadata columns). Heterogeneous feature axes raise a strict
+  projection error; missing signals are NaN-filled.
 
 R bridge — `nirs4allio_*` functions try a native extendr-api static library
 shipped under `bindings/r/nirs4allio/src/rust/` (built at install time by
