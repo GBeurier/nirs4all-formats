@@ -9,7 +9,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::parse_number;
-use crate::registry::{cube_pixels, ReadOptions};
+use crate::registry::{cube_pixels, cube_region, ReadOptions};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -128,6 +128,19 @@ fn read_inner(
     } else {
         vec![lan_source, spc_source]
     };
+    if options.single_record_cube {
+        return read_single_cube_record(
+            reader_name,
+            &header,
+            bytes,
+            axis,
+            &axis_warnings,
+            labels.as_deref(),
+            sources,
+            options,
+        );
+    }
+
     let pixels = cube_pixels(options, header.rows, header.cols, "ERDAS LAN cube")?;
 
     let mut records = Vec::with_capacity(pixels.len());
@@ -319,6 +332,102 @@ fn make_record(
     };
     record.validate()?;
     Ok(record)
+}
+
+/// Single N-dimensional cube record: `dims = ["row", "col", "x"]`,
+/// `shape = [n_rows, n_cols, bands]`, values in C-order. Row/col coordinates
+/// carry the absolute pixel indices (so a windowed read keeps its position).
+/// The optional ground-truth label grid is preserved as a 2-D nested array in
+/// `metadata.land_cover_class_grid` (it does not fit the scalar-per-record
+/// `targets` shape — use the per-pixel layout for pixel-as-sample modelling).
+#[allow(clippy::too_many_arguments)]
+fn read_single_cube_record(
+    reader: &str,
+    header: &LanHeader,
+    bytes: &[u8],
+    axis_values: Vec<f64>,
+    axis_warnings: &[String],
+    labels: Option<&[u8]>,
+    sources: Vec<SourceFile>,
+    options: &ReadOptions,
+) -> Result<Vec<SpectralRecord>> {
+    let (row_range, col_range) = cube_region(options, header.rows, header.cols, "ERDAS LAN cube")?;
+    let n_rows = row_range.len();
+    let n_cols = col_range.len();
+
+    let mut values = Vec::with_capacity(n_rows * n_cols * header.bands);
+    let mut label_grid: Vec<Vec<u8>> = Vec::with_capacity(n_rows);
+    for row in row_range.clone() {
+        let mut label_row = Vec::with_capacity(n_cols);
+        for col in col_range.clone() {
+            values.extend(read_bil_pixel_spectrum(bytes, header, row, col)?);
+            if let Some(labels) = labels {
+                label_row.push(labels[row * header.cols + col]);
+            }
+        }
+        if labels.is_some() {
+            label_grid.push(label_row);
+        }
+    }
+
+    let axis = SpectralAxis::new(axis_values, "nm", AxisKind::Wavelength)?;
+    let row_coord = SpectralAxis::new(
+        row_range.clone().map(|r| r as f64).collect(),
+        "pixel",
+        AxisKind::Index,
+    )?;
+    let col_coord = SpectralAxis::new(
+        col_range.clone().map(|c| c as f64).collect(),
+        "pixel",
+        AxisKind::Index,
+    )?;
+    let mut coords = BTreeMap::new();
+    coords.insert("row".to_string(), row_coord);
+    coords.insert("col".to_string(), col_coord);
+    let signal = SpectralArray::new_nd(
+        vec![n_rows, n_cols, header.bands],
+        vec!["row".to_string(), "col".to_string(), "x".to_string()],
+        axis,
+        coords,
+        values,
+        SignalType::RawCounts,
+        Some("dn".to_string()),
+        "raw_counts",
+        "file",
+    )?;
+    let mut signals = BTreeMap::new();
+    signals.insert("raw_counts".to_string(), signal);
+
+    let mut metadata = BTreeMap::new();
+    metadata.insert("rows".to_string(), json!(header.rows));
+    metadata.insert("cols".to_string(), json!(header.cols));
+    metadata.insert("bands".to_string(), json!(header.bands));
+    metadata.insert("interleave".to_string(), json!("bil"));
+    metadata.insert("spatial_unit".to_string(), json!("pixel"));
+    if !label_grid.is_empty() {
+        metadata.insert("land_cover_class_grid".to_string(), json!(label_grid));
+    }
+
+    let mut warnings = axis_warnings.to_vec();
+    warnings.insert(0, "erdas_lan_aviris_experimental".to_string());
+    let record = SpectralRecord {
+        signals,
+        signal_type: SignalType::RawCounts,
+        targets: BTreeMap::new(),
+        metadata,
+        provenance: Provenance {
+            format: FORMAT.to_string(),
+            reader: reader.to_string(),
+            reader_version: env!("CARGO_PKG_VERSION").to_string(),
+            sources,
+            parsed_at_utc: None,
+            record_schema_version: "0.2.0".to_string(),
+            warnings,
+        },
+        quality_flags: Vec::new(),
+    };
+    record.validate()?;
+    Ok(vec![record])
 }
 
 fn read_u32_le(bytes: &[u8], offset: usize) -> Result<u32> {

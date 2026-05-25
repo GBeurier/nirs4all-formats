@@ -39,6 +39,12 @@ enum Command {
         /// non-comment line must contain a single `ROW,COL` pair.
         #[arg(long = "pixels-file", value_name = "PATH")]
         pixels_file: Option<PathBuf>,
+        /// Emit an image cube as a single N-dimensional record
+        /// (`dims = ["row", "col", "x"]`) instead of one record per pixel.
+        /// Works with `--rows`/`--cols` (sub-cube) but not with a sparse
+        /// `--pixel`/`--pixels-file` mask.
+        #[arg(long = "single-record", conflicts_with_all = ["pixel", "pixels_file"])]
+        single_record: bool,
         /// Provide a sidecar file as `KEY=PATH`. `KEY` is the relative
         /// name the reader looks up (for example `cubescope-mini-cube.hdr`
         /// next to an ENVI Standard cube). Repeat the flag once per sidecar.
@@ -87,15 +93,19 @@ fn main() -> anyhow::Result<()> {
             cols,
             pixel,
             pixels_file,
+            single_record,
             sidecar,
             bytes_file,
         } => {
-            let options = read_options(
+            let mut options = read_options(
                 rows.as_deref(),
                 cols.as_deref(),
                 &pixel,
                 pixels_file.as_deref(),
             )?;
+            if single_record {
+                options = options.single_record();
+            }
             let records = if sidecar.is_empty() && bytes_file.is_none() {
                 nirs4all_io::open_path_with_options(&path, &options)
                     .with_context(|| format!("failed to read {}", path.display()))?

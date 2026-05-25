@@ -121,6 +121,22 @@ def test_native_extension_is_built_for_this_wheel() -> None:
     assert records[0]["metadata"]["sample_id"] == "pixel_y0_x0"
 
 
+def test_single_record_cube_via_recordset() -> None:
+    lan = sample("samples/hyperspectral_cubes/92AV3C.lan")
+    if not lan.exists():
+        pytest.skip("ERDAS LAN fixture missing")
+    rs = open_recordset(lan, single_record=True)
+    assert len(rs) == 1
+    signal = rs.records[0].signals["raw_counts"]
+    assert signal.shape == (145, 145, 220)
+    assert signal.dims == ("row", "col", "x")
+    assert set(signal.coords) == {"row", "col"}
+    # Projecting the N-D cube flattens the 145x145 grid into samples.
+    x, axis = rs.to_numpy(signal="raw_counts")
+    assert x.shape == (145 * 145, 220)
+    assert axis.shape == (220,)
+
+
 def test_open_bytes_matches_open_records_for_text_fixture() -> None:
     path = sample("samples/csv_tsv/synthetic_nirs.csv")
     payload = path.read_bytes()

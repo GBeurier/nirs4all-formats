@@ -504,7 +504,11 @@ class SpectralRecordSet:
         return dataset
 
 
-def open_recordset(path: str | Path) -> SpectralRecordSet:
-    """Read a file losslessly into a :class:`SpectralRecordSet`."""
+def open_recordset(path: str | Path, *, single_record: bool = False) -> SpectralRecordSet:
+    """Read a file losslessly into a :class:`SpectralRecordSet`.
 
-    return SpectralRecordSet.from_dicts(open_records(path))
+    ``single_record=True`` asks cube readers to emit one N-dimensional record
+    (``dims = ["row", "col", "x"]``) instead of one record per pixel.
+    """
+
+    return SpectralRecordSet.from_dicts(open_records(path, single_record=single_record))
