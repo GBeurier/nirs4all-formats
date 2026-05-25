@@ -198,10 +198,19 @@ fn read_srs_tg_gc(
         header.base.axis_unit.clone(),
         header.base.axis_kind.clone(),
     )?;
-    let signal = SpectralArray::new(
-        axis,
-        spectra.values,
+    let y_coord = SpectralAxis::new(
+        linspace(header.first_y as f64, header.last_y as f64, header.ny),
+        "min",
+        AxisKind::Time,
+    )?;
+    let mut coords = BTreeMap::new();
+    coords.insert("y".to_string(), y_coord);
+    let signal = SpectralArray::new_nd(
+        vec![header.ny, header.base.nx],
         vec!["y".to_string(), "x".to_string()],
+        axis,
+        coords,
+        spectra.values,
         header.base.signal_type.clone(),
         header.base.signal_unit.clone(),
         safe_signal_name(&header.base.signal_title, "signal"),

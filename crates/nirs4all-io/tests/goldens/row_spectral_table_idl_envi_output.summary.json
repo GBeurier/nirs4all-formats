@@ -18,8 +18,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "s000",
           "role": "s000",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.0367,
@@ -34,8 +41,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "s001",
           "role": "s001",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.0119,
@@ -50,8 +64,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "s002",
           "role": "s002",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.1638,
@@ -66,8 +87,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "s003",
           "role": "s003",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.1292,
@@ -82,8 +110,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "s004",
           "role": "s004",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.0524,

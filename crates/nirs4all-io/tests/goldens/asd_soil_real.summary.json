@@ -18,8 +18,15 @@
           "axis_len": 2151,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw",
           "role": "raw",
+          "shape": [
+            2151
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 15.700499,

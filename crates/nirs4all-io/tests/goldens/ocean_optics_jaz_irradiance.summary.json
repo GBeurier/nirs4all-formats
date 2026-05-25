@@ -18,8 +18,15 @@
           "axis_len": 2048,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dark_reference",
           "role": "dark_reference",
+          "shape": [
+            2048
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 0.0,
@@ -34,8 +41,15 @@
           "axis_len": 2048,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "irradiance",
           "role": "irradiance",
+          "shape": [
+            2048
+          ],
           "signal_type": "irradiance",
           "unit": null,
           "value_first": 0.0,
@@ -50,8 +64,15 @@
           "axis_len": 2048,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample",
           "role": "sample",
+          "shape": [
+            2048
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 0.0,

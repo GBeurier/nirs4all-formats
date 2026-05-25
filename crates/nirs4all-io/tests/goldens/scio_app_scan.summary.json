@@ -19,8 +19,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 1.499853,

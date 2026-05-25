@@ -44,8 +44,15 @@
           "axis_len": 2151,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "norm__dn_ref_",
           "role": "norm__dn_ref_",
+          "shape": [
+            2151
+          ],
           "signal_type": "raw_counts",
           "unit": "DN",
           "value_first": 5.282287,
@@ -60,8 +67,15 @@
           "axis_len": 2151,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "norm__dn_target",
           "role": "norm__dn_target",
+          "shape": [
+            2151
+          ],
           "signal_type": "raw_counts",
           "unit": "DN",
           "value_first": 1.922703,

@@ -18,8 +18,15 @@
           "axis_len": 561,
           "axis_order": "ascending",
           "axis_unit": "um",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            561
+          ],
           "signal_type": "reflectance",
           "unit": "Reflectance (percent)",
           "value_first": 8.82,

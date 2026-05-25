@@ -21,8 +21,15 @@
           "axis_len": 1716,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            1716
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.123978,
@@ -37,8 +44,15 @@
           "axis_len": 1716,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance_2",
           "role": "Absorbance",
+          "shape": [
+            1716
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.123222,
@@ -53,8 +67,15 @@
           "axis_len": 1722,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            1722
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.009608,
@@ -69,8 +90,15 @@
           "axis_len": 1716,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_spectrum",
           "role": "Sample Spectrum",
+          "shape": [
+            1716
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.007275,

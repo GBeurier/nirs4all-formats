@@ -61,8 +61,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -137,8 +144,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -213,8 +227,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -289,8 +310,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -365,8 +393,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -441,8 +476,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -517,8 +559,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -593,8 +642,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -669,8 +725,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -745,8 +808,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -821,8 +891,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -897,8 +974,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -973,8 +1057,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -1049,8 +1140,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -1125,8 +1223,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -1201,8 +1306,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -1277,8 +1389,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -1353,8 +1472,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -1429,8 +1555,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -1505,8 +1638,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -1581,8 +1721,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -1657,8 +1804,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -1733,8 +1887,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -1809,8 +1970,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -1885,8 +2053,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -1961,8 +2136,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 48.515625,
@@ -2037,8 +2219,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -2113,8 +2302,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -2189,8 +2385,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -2265,8 +2468,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -2341,8 +2551,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -2417,8 +2634,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -2493,8 +2717,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -2569,8 +2800,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -2645,8 +2883,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -2721,8 +2966,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -2797,8 +3049,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -2873,8 +3132,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -2949,8 +3215,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -3025,8 +3298,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -3101,8 +3381,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -3177,8 +3464,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -3253,8 +3547,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -3329,8 +3630,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -3405,8 +3713,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -3481,8 +3796,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -3557,8 +3879,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -3633,8 +3962,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -3709,8 +4045,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 48.515625,
@@ -3785,8 +4128,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -3861,8 +4211,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -3937,8 +4294,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -4013,8 +4377,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -4089,8 +4460,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -4165,8 +4543,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -4241,8 +4626,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -4317,8 +4709,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -4393,8 +4792,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -4469,8 +4875,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -4545,8 +4958,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -4621,8 +5041,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -4697,8 +5124,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -4773,8 +5207,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -4849,8 +5290,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -4925,8 +5373,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -5001,8 +5456,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -5077,8 +5539,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -5153,8 +5622,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -5229,8 +5705,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -5305,8 +5788,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -5381,8 +5871,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -5457,8 +5954,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -5533,8 +6037,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -5609,8 +6120,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -5685,8 +6203,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -5761,8 +6286,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -5837,8 +6369,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -5913,8 +6452,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -5989,8 +6535,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -6065,8 +6618,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -6141,8 +6701,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -6217,8 +6784,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -6293,8 +6867,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -6369,8 +6950,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -6445,8 +7033,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -6521,8 +7116,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -6597,8 +7199,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -6673,8 +7282,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -6749,8 +7365,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -6825,8 +7448,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 50.418198,
@@ -6901,8 +7531,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -6977,8 +7614,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -7053,8 +7697,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -7129,8 +7780,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -7205,8 +7863,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -7281,8 +7946,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -7357,8 +8029,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -7433,8 +8112,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -7509,8 +8195,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -7585,8 +8278,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -7661,8 +8361,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -7737,8 +8444,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -7813,8 +8527,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -7889,8 +8610,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -7965,8 +8693,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -8041,8 +8776,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -8117,8 +8859,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -8193,8 +8942,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -8269,8 +9025,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -8345,8 +9108,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -8421,8 +9191,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -8497,8 +9274,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -8573,8 +9357,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -8649,8 +9440,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -8725,8 +9523,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -8801,8 +9606,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -8877,8 +9689,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -8953,8 +9772,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -9029,8 +9855,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -9105,8 +9938,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -9181,8 +10021,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -9257,8 +10104,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -9333,8 +10187,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -9409,8 +10270,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -9485,8 +10353,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -9561,8 +10436,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -9637,8 +10519,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -9713,8 +10602,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -9789,8 +10685,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.624538,
@@ -9865,8 +10768,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -9941,8 +10851,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -10017,8 +10934,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -10093,8 +11017,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -10169,8 +11100,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -10245,8 +11183,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -10321,8 +11266,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -10397,8 +11349,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -10473,8 +11432,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -10549,8 +11515,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -10625,8 +11598,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -10701,8 +11681,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -10777,8 +11764,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -10853,8 +11847,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -10929,8 +11930,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.137405,
@@ -11005,8 +12013,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -11081,8 +12096,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -11157,8 +12179,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -11233,8 +12262,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -11309,8 +12345,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -11385,8 +12428,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -11461,8 +12511,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -11537,8 +12594,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -11613,8 +12677,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -11689,8 +12760,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -11765,8 +12843,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -11841,8 +12926,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -11917,8 +13009,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -11993,8 +13092,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.186119,
@@ -12069,8 +13175,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -12145,8 +13258,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -12221,8 +13341,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -12297,8 +13424,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -12373,8 +13507,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -12449,8 +13590,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -12525,8 +13673,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -12601,8 +13756,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -12677,8 +13839,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -12753,8 +13922,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -12829,8 +14005,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -12905,8 +14088,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -12981,8 +14171,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -13057,8 +14254,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -13133,8 +14337,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -13209,8 +14420,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -13285,8 +14503,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -13361,8 +14586,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -13437,8 +14669,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -13513,8 +14752,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -13589,8 +14835,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -13665,8 +14918,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -13741,8 +15001,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -13817,8 +15084,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -13893,8 +15167,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -13969,8 +15250,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -14045,8 +15333,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -14121,8 +15416,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -14197,8 +15499,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -14273,8 +15582,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -14349,8 +15665,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -14425,8 +15748,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -14501,8 +15831,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -14577,8 +15914,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -14653,8 +15997,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -14729,8 +16080,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -14805,8 +16163,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -14881,8 +16246,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -14957,8 +16329,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -15033,8 +16412,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -15109,8 +16495,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -15185,8 +16578,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -15261,8 +16661,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -15337,8 +16744,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -15413,8 +16827,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -15489,8 +16910,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -15565,8 +16993,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 47.088696,
@@ -15641,8 +17076,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -15717,8 +17159,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -15793,8 +17242,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -15869,8 +17325,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -15945,8 +17408,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -16021,8 +17491,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -16097,8 +17574,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -16173,8 +17657,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -16249,8 +17740,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -16325,8 +17823,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -16401,8 +17906,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -16477,8 +17989,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -16553,8 +18072,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -16629,8 +18155,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -16705,8 +18238,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -16781,8 +18321,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -16857,8 +18404,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.137405,
@@ -16933,8 +18487,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -17009,8 +18570,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -17085,8 +18653,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -17161,8 +18736,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -17237,8 +18819,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -17313,8 +18902,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -17389,8 +18985,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.283546,
@@ -17465,8 +19068,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -17541,8 +19151,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -17617,8 +19234,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -17693,8 +19317,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -17769,8 +19400,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -17845,8 +19483,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -17921,8 +19566,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -17997,8 +19649,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -18073,8 +19732,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -18149,8 +19815,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -18225,8 +19898,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -18301,8 +19981,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -18377,8 +20064,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 32.34375,
@@ -18453,8 +20147,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -18529,8 +20230,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -18605,8 +20313,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -18681,8 +20396,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -18757,8 +20479,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.295036,
@@ -18833,8 +20562,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -18909,8 +20645,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -18985,8 +20728,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -19061,8 +20811,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -19137,8 +20894,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -19213,8 +20977,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -19289,8 +21060,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -19365,8 +21143,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -19441,8 +21226,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -19517,8 +21309,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -19593,8 +21392,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -19669,8 +21475,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -19745,8 +21558,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -19821,8 +21641,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -19897,8 +21724,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -19973,8 +21807,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.137405,
@@ -20049,8 +21890,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -20125,8 +21973,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -20201,8 +22056,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -20277,8 +22139,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -20353,8 +22222,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -20429,8 +22305,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -20505,8 +22388,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 45.661762,
@@ -20581,8 +22471,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -20657,8 +22554,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -20733,8 +22637,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -20809,8 +22720,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -20885,8 +22803,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -20961,8 +22886,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -21037,8 +22969,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -21113,8 +23052,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -21189,8 +23135,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -21265,8 +23218,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -21341,8 +23301,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -21417,8 +23384,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -21493,8 +23467,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -21569,8 +23550,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.197609,
@@ -21645,8 +23633,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -21721,8 +23716,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -21797,8 +23799,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -21873,8 +23882,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -21949,8 +23965,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.807903,
@@ -22025,8 +24048,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 34.721966,
@@ -22101,8 +24131,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -22177,8 +24214,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -22253,8 +24297,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -22329,8 +24380,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -22405,8 +24463,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -22481,8 +24546,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -22557,8 +24629,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -22633,8 +24712,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.137405,
@@ -22709,8 +24795,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -22785,8 +24878,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -22861,8 +24961,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -22937,8 +25044,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -23013,8 +25127,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 46.613049,
@@ -23089,8 +25210,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -23165,8 +25293,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -23241,8 +25376,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -23317,8 +25459,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -23393,8 +25542,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.295036,
@@ -23469,8 +25625,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -23545,8 +25708,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -23621,8 +25791,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -23697,8 +25874,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -23773,8 +25957,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -23849,8 +26040,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -23925,8 +26123,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.234833,
@@ -24001,8 +26206,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -24077,8 +26289,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -24153,8 +26372,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -24229,8 +26455,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -24305,8 +26538,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.197609,
@@ -24381,8 +26621,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -24457,8 +26704,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -24533,8 +26787,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -24609,8 +26870,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -24685,8 +26953,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 34.721966,
@@ -24761,8 +27036,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.624538,
@@ -24837,8 +27119,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.770679,
@@ -24913,8 +27202,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -24989,8 +27285,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -25065,8 +27368,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -25141,8 +27451,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -25217,8 +27534,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -25293,8 +27617,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -25369,8 +27700,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -25445,8 +27783,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -25521,8 +27866,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -25597,8 +27949,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -25673,8 +28032,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.197609,
@@ -25749,8 +28115,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -25825,8 +28198,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -25901,8 +28281,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -25977,8 +28364,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -26053,8 +28447,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -26129,8 +28530,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.624538,
@@ -26205,8 +28613,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -26281,8 +28696,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -26357,8 +28779,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -26433,8 +28862,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -26509,8 +28945,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -26585,8 +29028,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -26661,8 +29111,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -26737,8 +29194,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -26813,8 +29277,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -26889,8 +29360,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.624538,
@@ -26965,8 +29443,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -27041,8 +29526,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -27117,8 +29609,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -27193,8 +29692,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -27269,8 +29775,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -27345,8 +29858,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -27421,8 +29941,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -27497,8 +30024,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 43.75919,
@@ -27573,8 +30107,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -27649,8 +30190,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -27725,8 +30273,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -27801,8 +30356,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.905331,
@@ -27877,8 +30439,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -27953,8 +30522,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 40.429688,
@@ -28029,8 +30605,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -28105,8 +30688,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -28181,8 +30771,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -28257,8 +30854,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.673252,
@@ -28333,8 +30937,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.295036,
@@ -28409,8 +31020,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.380974,
@@ -28485,8 +31103,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.197609,
@@ -28561,8 +31186,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -28637,8 +31269,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 42.33226,
@@ -28713,8 +31352,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -28789,8 +31435,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 44.710476,
@@ -28865,8 +31518,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -28941,8 +31601,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.770679,
@@ -29017,8 +31684,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.148895,
@@ -29093,8 +31767,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.575825,
@@ -29169,8 +31850,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -29245,8 +31933,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -29321,8 +32016,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -29397,8 +32099,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -29473,8 +32182,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.954044,
@@ -29549,8 +32265,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -29625,8 +32348,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.478401,
@@ -29701,8 +32431,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 37.100182,
@@ -29777,8 +32514,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 36.624538,
@@ -29853,8 +32597,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 35.673252,
@@ -29929,8 +32680,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 41.856617,
@@ -30005,8 +32763,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 39.002758,
@@ -30081,8 +32846,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.527115,
@@ -30157,8 +32929,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 34.721966,
@@ -30233,8 +33012,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 38.051468,
@@ -30309,8 +33095,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.770679,
@@ -30385,8 +33178,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 33.770679,

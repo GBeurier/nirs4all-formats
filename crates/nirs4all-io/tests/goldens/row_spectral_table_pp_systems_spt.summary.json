@@ -18,8 +18,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dn_target",
           "role": "dn_target",
+          "shape": [
+            200
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1018.0,
@@ -34,8 +41,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dn_white",
           "role": "dn_white",
+          "shape": [
+            200
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1500.0,
@@ -50,8 +64,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.6787,

@@ -21,8 +21,15 @@
           "axis_len": 60,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            60
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1808.0,
@@ -55,8 +62,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2882.0,
@@ -89,8 +103,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2834.0,
@@ -123,8 +144,15 @@
           "axis_len": 19,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            19
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2250.0,
@@ -157,8 +185,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1453.0,
@@ -191,8 +226,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1328.0,
@@ -225,8 +267,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1575.0,
@@ -259,8 +308,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1594.0,
@@ -293,8 +349,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2308.0,
@@ -327,8 +390,15 @@
           "axis_len": 27,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            27
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5040.0,
@@ -361,8 +431,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2206.0,
@@ -395,8 +472,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1575.0,
@@ -429,8 +513,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2710.0,
@@ -463,8 +554,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1909.0,
@@ -497,8 +595,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3544.0,
@@ -531,8 +636,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2295.0,
@@ -565,8 +677,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2401.0,
@@ -599,8 +718,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1199.0,
@@ -633,8 +759,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1818.0,
@@ -667,8 +800,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1732.0,
@@ -701,8 +841,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2194.0,
@@ -735,8 +882,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2512.0,
@@ -769,8 +923,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4072.0,
@@ -803,8 +964,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1548.0,
@@ -837,8 +1005,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1531.0,
@@ -871,8 +1046,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1589.0,
@@ -905,8 +1087,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1762.0,
@@ -939,8 +1128,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1453.0,
@@ -973,8 +1169,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1478.0,
@@ -1007,8 +1210,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1294.0,
@@ -1041,8 +1251,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1860.0,
@@ -1075,8 +1292,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1470.0,
@@ -1109,8 +1333,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1351.0,
@@ -1143,8 +1374,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1829.0,
@@ -1177,8 +1415,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1387.0,
@@ -1211,8 +1456,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1986.0,
@@ -1245,8 +1497,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2334.0,
@@ -1279,8 +1538,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1803.0,
@@ -1313,8 +1579,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1903.0,
@@ -1347,8 +1620,15 @@
           "axis_len": 33,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            33
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1562.0,
@@ -1381,8 +1661,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1942.0,
@@ -1415,8 +1702,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2940.0,
@@ -1449,8 +1743,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2598.0,
@@ -1483,8 +1784,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1575.0,
@@ -1517,8 +1825,15 @@
           "axis_len": 16,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            16
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1580.0,
@@ -1551,8 +1866,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1626.0,
@@ -1585,8 +1907,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4462.0,
@@ -1619,8 +1948,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3994.0,
@@ -1653,8 +1989,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1531.0,
@@ -1687,8 +2030,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1669.0,
@@ -1721,8 +2071,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1678.0,
@@ -1755,8 +2112,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2114.0,
@@ -1789,8 +2153,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2519.0,
@@ -1823,8 +2194,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1767.0,
@@ -1857,8 +2235,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1449.0,
@@ -1891,8 +2276,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2015.0,
@@ -1925,8 +2317,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1387.0,
@@ -1959,8 +2358,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1271.0,
@@ -1993,8 +2399,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1399.0,
@@ -2027,8 +2440,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3726.0,
@@ -2061,8 +2481,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1478.0,
@@ -2095,8 +2522,15 @@
           "axis_len": 38,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            38
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2282.0,
@@ -2129,8 +2563,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1727.0,
@@ -2163,8 +2604,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1395.0,
@@ -2197,8 +2645,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1930.0,
@@ -2231,8 +2686,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2302.0,
@@ -2265,8 +2727,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1594.0,
@@ -2299,8 +2768,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1328.0,
@@ -2333,8 +2809,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1920.0,
@@ -2367,8 +2850,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4475.0,
@@ -2401,8 +2891,15 @@
           "axis_len": 37,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            37
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2090.0,
@@ -2435,8 +2932,15 @@
           "axis_len": 65,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            65
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1712.0,
@@ -2469,8 +2973,15 @@
           "axis_len": 75,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            75
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1500.0,
@@ -2503,8 +3014,15 @@
           "axis_len": 80,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            80
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1813.0,
@@ -2537,8 +3055,15 @@
           "axis_len": 50,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            50
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5370.0,
@@ -2571,8 +3096,15 @@
           "axis_len": 19,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            19
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5385.0,
@@ -2605,8 +3137,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2548.0,
@@ -2639,8 +3178,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1635.0,
@@ -2673,8 +3219,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 10663.0,
@@ -2707,8 +3260,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 8853.0,
@@ -2741,8 +3301,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 7348.0,
@@ -2775,8 +3342,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5414.0,
@@ -2809,8 +3383,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5801.0,
@@ -2843,8 +3424,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5706.0,
@@ -2877,8 +3465,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4072.0,
@@ -2911,8 +3506,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1332.0,
@@ -2945,8 +3547,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1496.0,
@@ -2979,8 +3588,15 @@
           "axis_len": 16,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            16
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1297.0,
@@ -3013,8 +3629,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2665.0,
@@ -3047,8 +3670,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3091.0,
@@ -3081,8 +3711,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3074.0,
@@ -3115,8 +3752,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2477.0,
@@ -3149,8 +3793,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1702.0,
@@ -3183,8 +3834,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1535.0,
@@ -3217,8 +3875,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3476.0,
@@ -3251,8 +3916,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2650.0,
@@ -3285,8 +3957,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2200.0,
@@ -3319,8 +3998,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1351.0,
@@ -3353,8 +4039,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3654.0,
@@ -3387,8 +4080,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2225.0,
@@ -3421,8 +4121,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1275.0,
@@ -3455,8 +4162,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1712.0,
@@ -3489,8 +4203,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3380.0,
@@ -3523,8 +4244,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1041.0,
@@ -3557,8 +4285,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1953.0,
@@ -3591,8 +4326,15 @@
           "axis_len": 44,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            44
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5963.0,
@@ -3625,8 +4367,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5224.0,
@@ -3659,8 +4408,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1742.0,
@@ -3693,8 +4449,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1449.0,
@@ -3727,8 +4490,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2061.0,
@@ -3761,8 +4531,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1474.0,
@@ -3795,8 +4572,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1693.0,
@@ -3829,8 +4613,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1432.0,
@@ -3863,8 +4654,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1260.0,
@@ -3897,8 +4695,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1249.0,
@@ -3931,8 +4736,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3074.0,
@@ -3965,8 +4777,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2635.0,
@@ -3999,8 +4818,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2334.0,
@@ -4033,8 +4859,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2026.0,
@@ -4067,8 +4900,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2491.0,
@@ -4101,8 +4941,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1517.0,
@@ -4135,8 +4982,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1607.0,
@@ -4169,8 +5023,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1171.0,
@@ -4203,8 +5064,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1757.0,
@@ -4237,8 +5105,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1539.0,
@@ -4271,8 +5146,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1603.0,
@@ -4305,8 +5187,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1930.0,
@@ -4339,8 +5228,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1387.0,
@@ -4373,8 +5269,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1466.0,
@@ -4407,8 +5310,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1050.0,
@@ -4441,8 +5351,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1531.0,
@@ -4475,8 +5392,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3242.0,
@@ -4509,8 +5433,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2263.0,
@@ -4543,8 +5474,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3135.0,
@@ -4577,8 +5515,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1673.0,
@@ -4611,8 +5556,15 @@
           "axis_len": 2,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            2
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2650.0,
@@ -4645,8 +5597,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1137.0,
@@ -4679,8 +5638,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1474.0,
@@ -4713,8 +5679,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1340.0,
@@ -4747,8 +5720,15 @@
           "axis_len": 38,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            38
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1553.0,
@@ -4781,8 +5761,15 @@
           "axis_len": 50,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            50
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2741.0,
@@ -4815,8 +5802,15 @@
           "axis_len": 46,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            46
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3023.0,
@@ -4849,8 +5843,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2702.0,
@@ -4883,8 +5884,15 @@
           "axis_len": 42,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            42
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3831.0,
@@ -4917,8 +5925,15 @@
           "axis_len": 26,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            26
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3842.0,
@@ -4951,8 +5966,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1290.0,
@@ -4985,8 +6007,15 @@
           "axis_len": 26,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            26
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1235.0,
@@ -5019,8 +6048,15 @@
           "axis_len": 22,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            22
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1424.0,
@@ -5053,8 +6089,15 @@
           "axis_len": 19,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            19
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1474.0,
@@ -5087,8 +6130,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1942.0,
@@ -5121,8 +6171,15 @@
           "axis_len": 29,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            29
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1436.0,
@@ -5155,8 +6212,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1305.0,
@@ -5189,8 +6253,15 @@
           "axis_len": 19,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            19
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1260.0,
@@ -5223,8 +6294,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1328.0,
@@ -5257,8 +6335,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1227.0,
@@ -5291,8 +6376,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5282.0,
@@ -5325,8 +6417,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2361.0,
@@ -5359,8 +6458,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2144.0,
@@ -5393,8 +6499,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1969.0,
@@ -5427,8 +6540,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1256.0,
@@ -5461,8 +6581,15 @@
           "axis_len": 38,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            38
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1798.0,
@@ -5495,8 +6622,15 @@
           "axis_len": 30,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            30
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2795.0,
@@ -5529,8 +6663,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1850.0,
@@ -5563,8 +6704,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1669.0,
@@ -5597,8 +6745,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1698.0,
@@ -5631,8 +6786,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1903.0,
@@ -5665,8 +6827,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2015.0,
@@ -5699,8 +6868,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1161.0,
@@ -5733,8 +6909,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1589.0,
@@ -5767,8 +6950,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1355.0,
@@ -5801,8 +6991,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1178.0,
@@ -5835,8 +7032,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1098.0,
@@ -5869,8 +7073,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2680.0,
@@ -5903,8 +7114,15 @@
           "axis_len": 55,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            55
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4664.0,
@@ -5937,8 +7155,15 @@
           "axis_len": 135,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            135
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3624.0,
@@ -5971,8 +7196,15 @@
           "axis_len": 141,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            141
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2219.0,
@@ -6005,8 +7237,15 @@
           "axis_len": 56,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            56
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1509.0,
@@ -6039,8 +7278,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2015.0,
@@ -6073,8 +7319,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1777.0,
@@ -6107,8 +7360,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2225.0,
@@ -6141,8 +7401,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1860.0,
@@ -6175,8 +7442,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1294.0,
@@ -6209,8 +7483,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1387.0,
@@ -6243,8 +7524,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2049.0,
@@ -6277,8 +7565,15 @@
           "axis_len": 43,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            43
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2764.0,
@@ -6311,8 +7606,15 @@
           "axis_len": 102,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            102
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3233.0,
@@ -6345,8 +7647,15 @@
           "axis_len": 124,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            124
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1930.0,
@@ -6379,8 +7688,15 @@
           "axis_len": 90,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            90
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 6440.0,
@@ -6413,8 +7729,15 @@
           "axis_len": 46,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            46
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1762.0,
@@ -6447,8 +7770,15 @@
           "axis_len": 42,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            42
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2132.0,
@@ -6481,8 +7811,15 @@
           "axis_len": 26,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            26
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1722.0,
@@ -6515,8 +7852,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3885.0,
@@ -6549,8 +7893,15 @@
           "axis_len": 19,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            19
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1762.0,
@@ -6583,8 +7934,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1898.0,
@@ -6617,8 +7975,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1399.0,
@@ -6651,8 +8016,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1238.0,
@@ -6685,8 +8057,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1483.0,
@@ -6719,8 +8098,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2282.0,
@@ -6753,8 +8139,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1717.0,
@@ -6787,8 +8180,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1399.0,
@@ -6821,8 +8221,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1693.0,
@@ -6855,8 +8262,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4365.0,
@@ -6889,8 +8303,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1363.0,
@@ -6923,8 +8344,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3170.0,
@@ -6957,8 +8385,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1850.0,
@@ -6991,8 +8426,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1227.0,
@@ -7025,8 +8467,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2263.0,
@@ -7059,8 +8508,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2231.0,
@@ -7093,8 +8549,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1539.0,
@@ -7127,8 +8590,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1474.0,
@@ -7161,8 +8631,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1702.0,
@@ -7195,8 +8672,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1737.0,
@@ -7229,8 +8713,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1787.0,
@@ -7263,8 +8754,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1645.0,
@@ -7297,8 +8795,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1294.0,
@@ -7331,8 +8836,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2079.0,
@@ -7365,8 +8877,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2187.0,
@@ -7399,8 +8918,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1871.0,
@@ -7433,8 +8959,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1474.0,
@@ -7467,8 +9000,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1470.0,
@@ -7501,8 +9041,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1860.0,
@@ -7535,8 +9082,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2187.0,
@@ -7569,8 +9123,15 @@
           "axis_len": 16,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            16
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1762.0,
@@ -7603,8 +9164,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2394.0,
@@ -7637,8 +9205,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1757.0,
@@ -7671,8 +9246,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2956.0,
@@ -7705,8 +9287,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3495.0,
@@ -7739,8 +9328,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3534.0,
@@ -7773,8 +9369,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1424.0,
@@ -7807,8 +9410,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2163.0,
@@ -7841,8 +9451,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2289.0,
@@ -7875,8 +9492,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1407.0,
@@ -7909,8 +9533,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1487.0,
@@ -7943,8 +9574,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2569.0,
@@ -7977,8 +9615,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1332.0,
@@ -8011,8 +9656,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2657.0,
@@ -8045,8 +9697,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1855.0,
@@ -8079,8 +9738,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1416.0,
@@ -8113,8 +9779,15 @@
           "axis_len": 49,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            49
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3437.0,
@@ -8147,8 +9820,15 @@
           "axis_len": 216,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            216
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5459.0,
@@ -8181,8 +9861,15 @@
           "axis_len": 236,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            236
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2491.0,
@@ -8215,8 +9902,15 @@
           "axis_len": 237,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            237
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2132.0,
@@ -8249,8 +9943,15 @@
           "axis_len": 215,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            215
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2061.0,
@@ -8283,8 +9984,15 @@
           "axis_len": 65,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            65
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1850.0,
@@ -8317,8 +10025,15 @@
           "axis_len": 39,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            39
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3447.0,
@@ -8351,8 +10066,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1557.0,
@@ -8385,8 +10107,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4943.0,
@@ -8419,8 +10148,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4245.0,
@@ -8453,8 +10189,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1120.0,
@@ -8487,8 +10230,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2463.0,
@@ -8521,8 +10271,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1767.0,
@@ -8555,8 +10312,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1986.0,
@@ -8589,8 +10353,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1850.0,
@@ -8623,8 +10394,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2401.0,
@@ -8657,8 +10435,15 @@
           "axis_len": 66,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            66
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1787.0,
@@ -8691,8 +10476,15 @@
           "axis_len": 67,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            67
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2491.0,
@@ -8725,8 +10517,15 @@
           "axis_len": 26,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            26
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1669.0,
@@ -8759,8 +10558,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1808.0,
@@ -8793,8 +10599,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1367.0,
@@ -8827,8 +10640,15 @@
           "axis_len": 21,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2498.0,
@@ -8861,8 +10681,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3437.0,
@@ -8895,8 +10722,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 6565.0,
@@ -8929,8 +10763,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3242.0,
@@ -8963,8 +10804,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1245.0,
@@ -8997,8 +10845,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1553.0,
@@ -9031,8 +10886,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2038.0,
@@ -9065,8 +10927,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2891.0,
@@ -9099,8 +10968,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2422.0,
@@ -9133,8 +11009,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2915.0,
@@ -9167,8 +11050,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1732.0,
@@ -9201,8 +11091,15 @@
           "axis_len": 29,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            29
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2163.0,
@@ -9235,8 +11132,15 @@
           "axis_len": 60,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            60
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3269.0,
@@ -9269,8 +11173,15 @@
           "axis_len": 41,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            41
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2043.0,
@@ -9303,8 +11214,15 @@
           "axis_len": 16,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            16
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5643.0,
@@ -9337,8 +11255,15 @@
           "axis_len": 44,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            44
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1942.0,
@@ -9371,8 +11296,15 @@
           "axis_len": 183,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            183
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1737.0,
@@ -9405,8 +11337,15 @@
           "axis_len": 226,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            226
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1909.0,
@@ -9439,8 +11378,15 @@
           "axis_len": 236,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            236
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2456.0,
@@ -9473,8 +11419,15 @@
           "axis_len": 237,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            237
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2257.0,
@@ -9507,8 +11460,15 @@
           "axis_len": 226,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            226
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2620.0,
@@ -9541,8 +11501,15 @@
           "axis_len": 108,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            108
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2295.0,
@@ -9575,8 +11542,15 @@
           "axis_len": 89,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            89
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4835.0,
@@ -9609,8 +11583,15 @@
           "axis_len": 92,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            92
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2334.0,
@@ -9643,8 +11624,15 @@
           "axis_len": 53,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            53
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3144.0,
@@ -9677,8 +11665,15 @@
           "axis_len": 27,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            27
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2361.0,
@@ -9711,8 +11706,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 6197.0,
@@ -9745,8 +11747,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5628.0,
@@ -9779,8 +11788,15 @@
           "axis_len": 23,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            23
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2237.0,
@@ -9813,8 +11829,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1635.0,
@@ -9847,8 +11870,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1998.0,
@@ -9881,8 +11911,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3485.0,
@@ -9915,8 +11952,15 @@
           "axis_len": 16,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            16
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3260.0,
@@ -9949,8 +11993,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2302.0,
@@ -9983,8 +12034,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3409.0,
@@ -10017,8 +12075,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2200.0,
@@ -10051,8 +12116,15 @@
           "axis_len": 20,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            20
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3126.0,
@@ -10085,8 +12157,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3476.0,
@@ -10119,8 +12198,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4769.0,
@@ -10153,8 +12239,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1712.0,
@@ -10187,8 +12280,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2020.0,
@@ -10221,8 +12321,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1487.0,
@@ -10255,8 +12362,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2394.0,
@@ -10289,8 +12403,15 @@
           "axis_len": 59,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            59
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 6730.0,
@@ -10323,8 +12444,15 @@
           "axis_len": 201,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            201
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3333.0,
@@ -10357,8 +12485,15 @@
           "axis_len": 239,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            239
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1752.0,
@@ -10391,8 +12526,15 @@
           "axis_len": 253,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            253
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4199.0,
@@ -10425,8 +12567,15 @@
           "axis_len": 254,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            254
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5628.0,
@@ -10459,8 +12608,15 @@
           "axis_len": 177,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            177
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1316.0,
@@ -10493,8 +12649,15 @@
           "axis_len": 43,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            43
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4984.0,
@@ -10527,8 +12690,15 @@
           "axis_len": 30,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            30
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2055.0,
@@ -10561,8 +12731,15 @@
           "axis_len": 18,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            18
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3831.0,
@@ -10595,8 +12772,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2795.0,
@@ -10629,8 +12813,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2102.0,
@@ -10663,8 +12854,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2381.0,
@@ -10697,8 +12895,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1375.0,
@@ -10731,8 +12936,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2512.0,
@@ -10765,8 +12977,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1640.0,
@@ -10799,8 +13018,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1727.0,
@@ -10833,8 +13059,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1598.0,
@@ -10867,8 +13100,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3215.0,
@@ -10901,8 +13141,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2394.0,
@@ -10935,8 +13182,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5963.0,
@@ -10969,8 +13223,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4016.0,
@@ -11003,8 +13264,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3371.0,
@@ -11037,8 +13305,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1391.0,
@@ -11071,8 +13346,15 @@
           "axis_len": 12,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            12
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2250.0,
@@ -11105,8 +13387,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1936.0,
@@ -11139,8 +13428,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3152.0,
@@ -11173,8 +13469,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1757.0,
@@ -11207,8 +13510,15 @@
           "axis_len": 14,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            14
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1645.0,
@@ -11241,8 +13551,15 @@
           "axis_len": 11,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            11
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1264.0,
@@ -11275,8 +13592,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2484.0,
@@ -11309,8 +13633,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1818.0,
@@ -11343,8 +13674,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2718.0,
@@ -11377,8 +13715,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4027.0,
@@ -11411,8 +13756,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1598.0,
@@ -11445,8 +13797,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2628.0,
@@ -11479,8 +13838,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2882.0,
@@ -11513,8 +13879,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2665.0,
@@ -11547,8 +13920,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3315.0,
@@ -11581,8 +13961,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2049.0,
@@ -11615,8 +14002,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2328.0,
@@ -11649,8 +14043,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2540.0,
@@ -11683,8 +14084,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2374.0,
@@ -11717,8 +14125,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1305.0,
@@ -11751,8 +14166,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2415.0,
@@ -11785,8 +14207,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 5296.0,
@@ -11819,8 +14248,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2940.0,
@@ -11853,8 +14289,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2891.0,
@@ -11887,8 +14330,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2741.0,
@@ -11921,8 +14371,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2456.0,
@@ -11955,8 +14412,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2907.0,
@@ -11989,8 +14453,15 @@
           "axis_len": 17,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            17
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1871.0,
@@ -12023,8 +14494,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2733.0,
@@ -12057,8 +14535,15 @@
           "axis_len": 39,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            39
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1654.0,
@@ -12091,8 +14576,15 @@
           "axis_len": 15,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            15
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1818.0,
@@ -12125,8 +14617,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1416.0,
@@ -12159,8 +14658,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1598.0,
@@ -12193,8 +14699,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3091.0,
@@ -12227,8 +14740,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2657.0,
@@ -12261,8 +14781,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1607.0,
@@ -12295,8 +14822,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1217.0,
@@ -12329,8 +14863,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2569.0,
@@ -12363,8 +14904,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2650.0,
@@ -12397,8 +14945,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2334.0,
@@ -12431,8 +14986,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1301.0,
@@ -12465,8 +15027,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2576.0,
@@ -12499,8 +15068,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1882.0,
@@ -12533,8 +15109,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2923.0,
@@ -12567,8 +15150,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2899.0,
@@ -12601,8 +15191,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2533.0,
@@ -12635,8 +15232,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2498.0,
@@ -12669,8 +15273,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2381.0,
@@ -12703,8 +15314,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2891.0,
@@ -12737,8 +15355,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2569.0,
@@ -12771,8 +15396,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1496.0,
@@ -12805,8 +15437,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1678.0,
@@ -12839,8 +15478,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 4129.0,
@@ -12873,8 +15519,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2250.0,
@@ -12907,8 +15560,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2144.0,
@@ -12941,8 +15601,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3015.0,
@@ -12975,8 +15642,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2428.0,
@@ -13009,8 +15683,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2470.0,
@@ -13043,8 +15724,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1253.0,
@@ -13077,8 +15765,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2826.0,
@@ -13111,8 +15806,15 @@
           "axis_len": 10,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            10
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3278.0,
@@ -13145,8 +15847,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2341.0,
@@ -13179,8 +15888,15 @@
           "axis_len": 13,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            13
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1336.0,
@@ -13213,8 +15929,15 @@
           "axis_len": 8,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            8
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1808.0,
@@ -13247,8 +15970,15 @@
           "axis_len": 9,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            9
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1803.0,
@@ -13281,8 +16011,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1603.0,
@@ -13315,8 +16052,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2725.0,
@@ -13349,8 +16093,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2772.0,
@@ -13383,8 +16134,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2628.0,
@@ -13417,8 +16175,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2315.0,
@@ -13451,8 +16216,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2470.0,
@@ -13485,8 +16257,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2126.0,
@@ -13519,8 +16298,15 @@
           "axis_len": 5,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            5
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2289.0,
@@ -13553,8 +16339,15 @@
           "axis_len": 7,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            7
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3048.0,
@@ -13587,8 +16380,15 @@
           "axis_len": 6,
           "axis_order": "descending",
           "axis_unit": "m/z",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1958.0,

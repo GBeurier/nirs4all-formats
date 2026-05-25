@@ -44,8 +44,15 @@
           "axis_len": 1015,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            1015
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 47.092709,

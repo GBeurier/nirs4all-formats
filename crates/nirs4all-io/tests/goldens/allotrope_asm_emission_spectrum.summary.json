@@ -54,8 +54,15 @@
           "axis_len": 3,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "fluorescence",
           "role": "fluorescence",
+          "shape": [
+            3
+          ],
           "signal_type": "unknown",
           "unit": "mAU",
           "value_first": 0.123,

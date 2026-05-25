@@ -21,8 +21,15 @@
           "axis_len": 1732,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "counts",
           "role": "Counts",
+          "shape": [
+            1732
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 173.333344,

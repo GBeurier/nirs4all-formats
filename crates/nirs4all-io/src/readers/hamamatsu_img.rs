@@ -144,10 +144,19 @@ fn parse_hamamatsu_img(
         x_axis.unit.clone(),
         x_axis.kind.clone(),
     )?;
-    let signal = SpectralArray::new(
-        spectral_axis,
-        values,
+    let y_coord = SpectralAxis::new(
+        y_axis.values.clone(),
+        y_axis.unit.clone(),
+        y_axis.kind.clone(),
+    )?;
+    let mut coords = BTreeMap::new();
+    coords.insert("y".to_string(), y_coord);
+    let signal = SpectralArray::new_nd(
+        vec![header.height, header.width],
         vec!["y".to_string(), "x".to_string()],
+        spectral_axis,
+        coords,
+        values,
         SignalType::RawCounts,
         Some(signal_unit(&sections)),
         "intensity",

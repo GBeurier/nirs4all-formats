@@ -18,8 +18,15 @@
           "axis_len": 1922,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "irradiance",
           "role": "irradiance",
+          "shape": [
+            1922
+          ],
           "signal_type": "irradiance",
           "unit": null,
           "value_first": 0.0,

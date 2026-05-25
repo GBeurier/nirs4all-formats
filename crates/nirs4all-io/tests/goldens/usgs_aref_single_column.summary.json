@@ -20,8 +20,15 @@
           "axis_len": 24,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            24
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.338494,

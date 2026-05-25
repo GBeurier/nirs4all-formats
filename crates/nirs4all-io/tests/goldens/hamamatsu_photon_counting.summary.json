@@ -58,8 +58,27 @@
           "axis_len": 672,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [
+            {
+              "dim": "y",
+              "first": 0.0,
+              "kind": "time",
+              "last": 4.632347,
+              "len": 512,
+              "order": "ascending",
+              "unit": "ns"
+            }
+          ],
+          "dims": [
+            "y",
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            512,
+            672
+          ],
           "signal_type": "raw_counts",
           "unit": "Counts",
           "value_first": 0.0,

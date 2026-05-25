@@ -26,8 +26,15 @@
           "axis_len": 7729,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "transmittance",
           "role": "transmittance",
+          "shape": [
+            7729
+          ],
           "signal_type": "transmittance",
           "unit": "%T",
           "value_first": 38.42017,

@@ -18,8 +18,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channel_a_dn",
           "role": "channel_a_dn",
+          "shape": [
+            200
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 1018.0,
@@ -34,8 +41,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channel_b_dn",
           "role": "channel_b_dn",
+          "shape": [
+            200
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 804.0,
@@ -50,8 +64,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 1.2646,

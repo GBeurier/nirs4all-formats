@@ -312,7 +312,7 @@ fn make_record(
             reader_version: env!("CARGO_PKG_VERSION").to_string(),
             sources,
             parsed_at_utc: None,
-            record_schema_version: "0.1.0".to_string(),
+            record_schema_version: "0.2.0".to_string(),
             warnings,
         },
         quality_flags: Vec::new(),

@@ -18,8 +18,15 @@
           "axis_len": 3648,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "transmittance",
           "role": "transmittance",
+          "shape": [
+            3648
+          ],
           "signal_type": "transmittance",
           "unit": "%",
           "value_first": 95.38,

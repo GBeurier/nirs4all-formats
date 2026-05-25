@@ -18,8 +18,15 @@
           "axis_len": 3648,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "processed",
           "role": "processed",
+          "shape": [
+            3648
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.0,

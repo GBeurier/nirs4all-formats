@@ -19,8 +19,15 @@
           "axis_len": 1600,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum__000__spec_data_1",
           "role": "spectrum__000__spec_data_1",
+          "shape": [
+            1600
+          ],
           "signal_type": "raw_counts",
           "unit": "CCD cts",
           "value_first": 356.850006,

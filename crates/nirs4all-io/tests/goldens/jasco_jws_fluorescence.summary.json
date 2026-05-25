@@ -27,8 +27,15 @@
           "axis_len": 301,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "fluorescence",
           "role": "fluorescence",
+          "shape": [
+            301
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 18.799175,

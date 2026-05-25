@@ -18,8 +18,15 @@
           "axis_len": 21,
           "axis_order": "ascending",
           "axis_unit": "eV",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "counts",
           "role": "counts",
+          "shape": [
+            21
+          ],
           "signal_type": "raw_counts",
           "unit": "Intensity",
           "value_first": 4066.0,

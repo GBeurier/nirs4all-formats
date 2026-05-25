@@ -23,8 +23,15 @@
           "axis_len": 7153,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            7153
+          ],
           "signal_type": "reflectance",
           "unit": "Reflectance",
           "value_first": 0.422011,
@@ -59,8 +66,15 @@
           "axis_len": 7153,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            7153
+          ],
           "signal_type": "reflectance",
           "unit": "Reflectance",
           "value_first": 0.471453,

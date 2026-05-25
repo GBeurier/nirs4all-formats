@@ -21,8 +21,15 @@
           "axis_len": 3839,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            3839
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 28821.09375,

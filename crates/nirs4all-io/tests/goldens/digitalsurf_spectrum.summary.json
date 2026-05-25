@@ -76,8 +76,15 @@
           "axis_len": 512,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            512
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 2438.830136,

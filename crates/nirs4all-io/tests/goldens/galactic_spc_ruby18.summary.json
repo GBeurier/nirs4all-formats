@@ -21,8 +21,15 @@
           "axis_len": 501,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arb",
           "role": "(arb)",
+          "shape": [
+            501
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 62.0,

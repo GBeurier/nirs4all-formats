@@ -18,8 +18,15 @@
           "axis_len": 401,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dark",
           "role": "dark",
+          "shape": [
+            401
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": -10.335,
@@ -34,8 +41,15 @@
           "axis_len": 401,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference",
           "role": "reference",
+          "shape": [
+            401
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": -9.339,
@@ -50,8 +64,15 @@
           "axis_len": 401,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            401
+          ],
           "signal_type": "reflectance",
           "unit": "%",
           "value_first": 252.16336,
@@ -66,8 +87,15 @@
           "axis_len": 401,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample",
           "role": "sample",
+          "shape": [
+            401
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": -6.893,

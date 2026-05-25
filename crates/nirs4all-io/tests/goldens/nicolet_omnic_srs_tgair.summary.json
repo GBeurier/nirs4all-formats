@@ -37,8 +37,27 @@
           "axis_len": 1868,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [
+            {
+              "dim": "y",
+              "first": 0.25975,
+              "kind": "time",
+              "last": 87.016251,
+              "len": 335,
+              "order": "ascending",
+              "unit": "min"
+            }
+          ],
+          "dims": [
+            "y",
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            335,
+            1868
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007524,

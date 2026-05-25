@@ -30,8 +30,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -73,8 +80,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -116,8 +130,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -159,8 +180,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -202,8 +230,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -245,8 +280,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -288,8 +330,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -331,8 +380,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -374,8 +430,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -417,8 +480,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -460,8 +530,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -503,8 +580,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -546,8 +630,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -589,8 +680,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -632,8 +730,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -675,8 +780,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -718,8 +830,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -761,8 +880,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -804,8 +930,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,
@@ -847,8 +980,15 @@
           "axis_len": 3,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "aot",
           "role": "aot",
+          "shape": [
+            3
+          ],
           "signal_type": "aerosol_optical_thickness",
           "unit": null,
           "value_first": 0.124,

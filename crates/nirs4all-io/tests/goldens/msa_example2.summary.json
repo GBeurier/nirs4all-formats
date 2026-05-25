@@ -18,8 +18,15 @@
           "axis_len": 80,
           "axis_order": "ascending",
           "axis_unit": "eV",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "x_ray_intensity",
           "role": "x_ray_intensity",
+          "shape": [
+            80
+          ],
           "signal_type": "raw_counts",
           "unit": "Intensity",
           "value_first": 65.82,

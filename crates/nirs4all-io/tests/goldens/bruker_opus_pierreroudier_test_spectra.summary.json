@@ -21,8 +21,15 @@
           "axis_len": 4825,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            4825
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.00779,
@@ -37,8 +44,15 @@
           "axis_len": 4819,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "Reflectance",
+          "shape": [
+            4819
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.524343,
@@ -53,8 +67,15 @@
           "axis_len": 4819,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_spectrum",
           "role": "Sample Spectrum",
+          "shape": [
+            4819
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.00412,

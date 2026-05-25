@@ -18,8 +18,15 @@
           "axis_len": 1,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            1
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 1.0,

@@ -745,6 +745,21 @@ fn summarize_record(record: &SpectralRecord) -> Value {
         .signals
         .iter()
         .map(|(name, signal)| {
+            let coords = signal
+                .coords
+                .iter()
+                .map(|(dim, coord)| {
+                    json!({
+                        "dim": dim,
+                        "kind": &coord.kind,
+                        "order": &coord.order,
+                        "unit": coord.unit,
+                        "len": coord.values.len(),
+                        "first": round6(coord.values[0]),
+                        "last": round6(coord.values[coord.values.len() - 1]),
+                    })
+                })
+                .collect::<Vec<_>>();
             json!({
                 "name": name,
                 "axis_kind": &signal.axis.kind,
@@ -753,6 +768,9 @@ fn summarize_record(record: &SpectralRecord) -> Value {
                 "axis_len": signal.axis.values.len(),
                 "axis_first": round6(signal.axis.values[0]),
                 "axis_last": round6(signal.axis.values[signal.axis.values.len() - 1]),
+                "shape": &signal.shape,
+                "dims": &signal.dims,
+                "coords": coords,
                 "signal_type": &signal.signal_type,
                 "unit": signal.unit,
                 "role": signal.role,

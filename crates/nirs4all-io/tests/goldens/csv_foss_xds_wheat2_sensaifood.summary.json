@@ -23,8 +23,15 @@
           "axis_len": 1050,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            1050
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.246676,
@@ -63,8 +70,15 @@
           "axis_len": 1050,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            1050
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.245259,

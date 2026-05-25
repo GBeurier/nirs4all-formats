@@ -19,8 +19,15 @@
           "axis_len": 4,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "peak_intensity",
           "role": "peak_intensity",
+          "shape": [
+            4
+          ],
           "signal_type": "absorbance",
           "unit": "ABSORBANCE",
           "value_first": 0.42,

@@ -21,8 +21,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.0002,
@@ -55,8 +62,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000177,
@@ -89,8 +103,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000992,
@@ -123,8 +144,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.00113,
@@ -157,8 +185,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000028,
@@ -191,8 +226,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000026,
@@ -225,8 +267,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000491,
@@ -259,8 +308,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.001237,
@@ -293,8 +349,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.001142,
@@ -327,8 +390,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.001959,
@@ -361,8 +431,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000094,
@@ -395,8 +472,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000089,
@@ -429,8 +513,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000802,
@@ -463,8 +554,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000897,
@@ -497,8 +595,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.00133,
@@ -531,8 +636,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.001084,
@@ -565,8 +677,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000503,
@@ -599,8 +718,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000314,
@@ -633,8 +759,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.001768,
@@ -667,8 +800,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "kubelka_munk",
           "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
           "signal_type": "kubelka_munk",
           "unit": null,
           "value_first": 0.000444,

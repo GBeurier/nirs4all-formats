@@ -21,8 +21,15 @@
           "axis_len": 3177,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_interferogram",
           "role": "Reference Interferogram",
+          "shape": [
+            3177
+          ],
           "signal_type": "interferogram",
           "unit": null,
           "value_first": -0.000049,
@@ -37,8 +44,15 @@
           "axis_len": 4096,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            4096
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.012417,

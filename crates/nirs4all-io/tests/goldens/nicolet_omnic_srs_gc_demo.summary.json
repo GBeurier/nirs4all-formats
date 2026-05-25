@@ -37,8 +37,27 @@
           "axis_len": 1738,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [
+            {
+              "dim": "y",
+              "first": 0.025441,
+              "kind": "time",
+              "last": 20.047266,
+              "len": 788,
+              "order": "ascending",
+              "unit": "min"
+            }
+          ],
+          "dims": [
+            "y",
+            "x"
+          ],
           "name": "transmittance",
           "role": "transmittance",
+          "shape": [
+            788,
+            1738
+          ],
           "signal_type": "transmittance",
           "unit": "%",
           "value_first": 99.701584,
