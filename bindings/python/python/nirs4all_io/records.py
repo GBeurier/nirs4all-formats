@@ -356,19 +356,41 @@ class SpectralRecordSet:
                         )
         return pd.DataFrame(rows)
 
+    def _wide_table(
+        self, signal: str | None, feature_dim: str
+    ) -> dict[str, list[Any]]:
+        """Ordered column dict shared by ``to_pandas`` and ``to_polars``:
+        metadata + reserved provenance columns, per-record targets broadcast
+        onto sample rows, then one ``x_<axis>`` column per feature."""
+
+        x, axis, _unit, meta = self._project(signal, feature_dim)
+        record_index = [int(m[f"{_RESERVED}record_index"]) for m in meta]
+        table: dict[str, list[Any]] = {
+            key: [row.get(key) for row in meta] for key in meta[0]
+        } if meta else {}
+        for name, values in self._targets().items():
+            table[name] = [values[i] for i in record_index]
+        for col, coord in enumerate(axis):
+            table[f"x_{float(coord):g}"] = x[:, col].tolist()
+        return table
+
     def to_pandas(self, *, signal: str | None = None, feature_dim: str = "x") -> Any:
-        """Wide frame: metadata + provenance columns followed by ``x_<axis>``."""
+        """Wide pandas frame: metadata + provenance columns followed by
+        ``x_<axis>``."""
 
         import pandas as pd
 
-        x, axis, _unit, meta = self._project(signal, feature_dim)
-        frame = pd.DataFrame(meta)
-        for name, values in self._targets().items():
-            # Targets are per-record; broadcast onto each sample row.
-            frame[name] = [values[int(i)] for i in frame[f"{_RESERVED}record_index"]]
-        for col, coord in enumerate(axis):
-            frame[f"x_{float(coord):g}"] = x[:, col]
-        return frame
+        return pd.DataFrame(self._wide_table(signal, feature_dim))
+
+    def to_polars(self, *, signal: str | None = None, feature_dim: str = "x") -> Any:
+        """Lower-level wide polars frame (same columns as :meth:`to_pandas`).
+
+        polars is the backend nirs4all's own ``SpectroDataset.metadata()``
+        uses, so this is the natural zero-copy-ish hand-off for that side."""
+
+        import polars as pl
+
+        return pl.DataFrame(self._wide_table(signal, feature_dim))
 
     def to_sklearn(self, *, signal: str | None = None, target: str | None = None) -> Any:
         """Return a scikit-learn ``Bunch`` with data/target/feature_names."""
