@@ -18,8 +18,15 @@
           "axis_len": 16384,
           "axis_order": "descending",
           "axis_unit": "hz",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            16384
+          ],
           "signal_type": "unknown",
           "unit": "ARBITRARY UNITS",
           "value_first": 2254931.0,

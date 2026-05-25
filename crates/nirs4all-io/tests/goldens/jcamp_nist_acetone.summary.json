@@ -18,8 +18,15 @@
           "axis_len": 14106,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            14106
+          ],
           "signal_type": "unknown",
           "unit": "(micromol/mol)-1m-1 (base 10)",
           "value_first": 0.0,

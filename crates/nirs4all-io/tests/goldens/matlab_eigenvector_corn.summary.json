@@ -20,8 +20,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.044495,
@@ -36,8 +43,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.01244,
@@ -52,8 +66,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.022701,
@@ -90,8 +111,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046504,
@@ -106,8 +134,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014189,
@@ -122,8 +157,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021921,
@@ -160,8 +202,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046958,
@@ -176,8 +225,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013373,
@@ -192,8 +248,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.02086,
@@ -230,8 +293,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045461,
@@ -246,8 +316,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.016487,
@@ -262,8 +339,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.023631,
@@ -300,8 +384,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.053948,
@@ -316,8 +407,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008495,
@@ -332,8 +430,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015174,
@@ -370,8 +475,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.052083,
@@ -386,8 +498,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008039,
@@ -402,8 +521,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015738,
@@ -440,8 +566,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.056716,
@@ -456,8 +589,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006016,
@@ -472,8 +612,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.012641,
@@ -510,8 +657,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.056241,
@@ -526,8 +680,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006107,
@@ -542,8 +703,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013703,
@@ -580,8 +748,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.048786,
@@ -596,8 +771,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011135,
@@ -612,8 +794,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017899,
@@ -650,8 +839,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.049272,
@@ -666,8 +862,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013503,
@@ -682,8 +885,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020009,
@@ -720,8 +930,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.054434,
@@ -736,8 +953,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.000252,
@@ -752,8 +976,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007409,
@@ -790,8 +1021,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.054668,
@@ -806,8 +1044,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.003155,
@@ -822,8 +1067,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.010314,
@@ -860,8 +1112,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.039546,
@@ -876,8 +1135,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013395,
@@ -892,8 +1158,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020386,
@@ -930,8 +1203,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040965,
@@ -946,8 +1226,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013035,
@@ -962,8 +1249,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.019605,
@@ -1000,8 +1294,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.053086,
@@ -1016,8 +1317,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.000867,
@@ -1032,8 +1340,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.00747,
@@ -1070,8 +1385,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.054238,
@@ -1086,8 +1408,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.001301,
@@ -1102,8 +1431,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007647,
@@ -1140,8 +1476,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046986,
@@ -1156,8 +1499,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007287,
@@ -1172,8 +1522,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014076,
@@ -1210,8 +1567,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045524,
@@ -1226,8 +1590,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006993,
@@ -1242,8 +1613,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013715,
@@ -1280,8 +1658,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046162,
@@ -1296,8 +1681,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.00864,
@@ -1312,8 +1704,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015403,
@@ -1350,8 +1749,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.048773,
@@ -1366,8 +1772,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006677,
@@ -1382,8 +1795,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.012833,
@@ -1420,8 +1840,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045741,
@@ -1436,8 +1863,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009014,
@@ -1452,8 +1886,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015345,
@@ -1490,8 +1931,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.047766,
@@ -1506,8 +1954,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008029,
@@ -1522,8 +1977,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.01432,
@@ -1560,8 +2022,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.049731,
@@ -1576,8 +2045,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006707,
@@ -1592,8 +2068,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013409,
@@ -1630,8 +2113,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.048684,
@@ -1646,8 +2136,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006848,
@@ -1662,8 +2159,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.01423,
@@ -1700,8 +2204,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.047567,
@@ -1716,8 +2227,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.001819,
@@ -1732,8 +2250,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009097,
@@ -1770,8 +2295,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.043573,
@@ -1786,8 +2318,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011742,
@@ -1802,8 +2341,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018479,
@@ -1840,8 +2386,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.053401,
@@ -1856,8 +2409,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.000857,
@@ -1872,8 +2432,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.005092,
@@ -1910,8 +2477,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.053283,
@@ -1926,8 +2500,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.003486,
@@ -1942,8 +2523,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009007,
@@ -1980,8 +2568,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.053301,
@@ -1996,8 +2591,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.003798,
@@ -2012,8 +2614,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009682,
@@ -2050,8 +2659,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.032015,
@@ -2066,8 +2682,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020602,
@@ -2082,8 +2705,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.027154,
@@ -2120,8 +2750,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.032143,
@@ -2136,8 +2773,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.022056,
@@ -2152,8 +2796,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.027838,
@@ -2190,8 +2841,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040973,
@@ -2206,8 +2864,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017719,
@@ -2222,8 +2887,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.023583,
@@ -2260,8 +2932,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040032,
@@ -2276,8 +2955,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013716,
@@ -2292,8 +2978,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020366,
@@ -2330,8 +3023,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045156,
@@ -2346,8 +3046,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.012817,
@@ -2362,8 +3069,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014575,
@@ -2400,8 +3114,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.04903,
@@ -2416,8 +3137,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009641,
@@ -2432,8 +3160,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014773,
@@ -2470,8 +3205,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.03672,
@@ -2486,8 +3228,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018936,
@@ -2502,8 +3251,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.024443,
@@ -2540,8 +3296,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.037727,
@@ -2556,8 +3319,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018735,
@@ -2572,8 +3342,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.024531,
@@ -2610,8 +3387,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040578,
@@ -2626,8 +3410,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.016405,
@@ -2642,8 +3433,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021072,
@@ -2680,8 +3478,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.038076,
@@ -2696,8 +3501,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.016767,
@@ -2712,8 +3524,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.022626,
@@ -2750,8 +3569,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.034388,
@@ -2766,8 +3592,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021543,
@@ -2782,8 +3615,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.027404,
@@ -2820,8 +3660,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.038644,
@@ -2836,8 +3683,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018494,
@@ -2852,8 +3706,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.02995,
@@ -2890,8 +3751,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.036815,
@@ -2906,8 +3774,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018249,
@@ -2922,8 +3797,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.030682,
@@ -2960,8 +3842,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.03781,
@@ -2976,8 +3865,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020275,
@@ -2992,8 +3888,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.032631,
@@ -3030,8 +3933,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046227,
@@ -3046,8 +3956,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011781,
@@ -3062,8 +3979,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.024281,
@@ -3100,8 +4024,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046194,
@@ -3116,8 +4047,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.01254,
@@ -3132,8 +4070,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.025312,
@@ -3170,8 +4115,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.062052,
@@ -3186,8 +4138,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.007183,
@@ -3202,8 +4161,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006401,
@@ -3240,8 +4206,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.062508,
@@ -3256,8 +4229,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.00305,
@@ -3272,8 +4252,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.010514,
@@ -3310,8 +4297,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.047336,
@@ -3326,8 +4320,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009989,
@@ -3342,8 +4343,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.022683,
@@ -3380,8 +4388,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045945,
@@ -3396,8 +4411,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011464,
@@ -3412,8 +4434,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.02443,
@@ -3450,8 +4479,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.042605,
@@ -3466,8 +4502,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014746,
@@ -3482,8 +4525,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.027838,
@@ -3520,8 +4570,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046298,
@@ -3536,8 +4593,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008035,
@@ -3552,8 +4616,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020615,
@@ -3590,8 +4661,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.044428,
@@ -3606,8 +4684,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007034,
@@ -3622,8 +4707,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.020206,
@@ -3660,8 +4752,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045851,
@@ -3676,8 +4775,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008566,
@@ -3692,8 +4798,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021864,
@@ -3730,8 +4843,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.033803,
@@ -3746,8 +4866,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018043,
@@ -3762,8 +4889,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.031013,
@@ -3800,8 +4934,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.03327,
@@ -3816,8 +4957,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017774,
@@ -3832,8 +4980,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.030318,
@@ -3870,8 +5025,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.033569,
@@ -3886,8 +5048,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017004,
@@ -3902,8 +5071,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.03379,
@@ -3940,8 +5116,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.039351,
@@ -3956,8 +5139,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.012841,
@@ -3972,8 +5162,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.02583,
@@ -4010,8 +5207,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.039918,
@@ -4026,8 +5230,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.010843,
@@ -4042,8 +5253,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.023874,
@@ -4080,8 +5298,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.039304,
@@ -4096,8 +5321,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013464,
@@ -4112,8 +5344,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.026043,
@@ -4150,8 +5389,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.044356,
@@ -4166,8 +5412,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.009394,
@@ -4182,8 +5435,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021187,
@@ -4220,8 +5480,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040966,
@@ -4236,8 +5503,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011369,
@@ -4252,8 +5526,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.023895,
@@ -4290,8 +5571,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.04273,
@@ -4306,8 +5594,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006465,
@@ -4322,8 +5617,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.019526,
@@ -4360,8 +5662,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.046549,
@@ -4376,8 +5685,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.008927,
@@ -4392,8 +5708,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.021477,
@@ -4430,8 +5753,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.037811,
@@ -4446,8 +5776,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015988,
@@ -4462,8 +5799,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.028119,
@@ -4500,8 +5844,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.040911,
@@ -4516,8 +5867,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.014123,
@@ -4532,8 +5890,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.026591,
@@ -4570,8 +5935,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.034063,
@@ -4586,8 +5958,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018059,
@@ -4602,8 +5981,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.03096,
@@ -4640,8 +6026,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.041837,
@@ -4656,8 +6049,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013918,
@@ -4672,8 +6072,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.02662,
@@ -4710,8 +6117,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.03967,
@@ -4726,8 +6140,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.012853,
@@ -4742,8 +6163,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.025491,
@@ -4780,8 +6208,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.042248,
@@ -4796,8 +6231,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.013614,
@@ -4812,8 +6254,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.025574,
@@ -4850,8 +6299,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.042089,
@@ -4866,8 +6322,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.011571,
@@ -4882,8 +6345,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.024138,
@@ -4920,8 +6390,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.044026,
@@ -4936,8 +6413,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006786,
@@ -4952,8 +6436,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.010382,
@@ -4990,8 +6481,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.043795,
@@ -5006,8 +6504,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.010698,
@@ -5022,8 +6527,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.022869,
@@ -5060,8 +6572,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.048573,
@@ -5076,8 +6595,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006687,
@@ -5092,8 +6618,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.018925,
@@ -5130,8 +6663,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.045197,
@@ -5146,8 +6686,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.00788,
@@ -5162,8 +6709,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.019575,
@@ -5200,8 +6754,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.069101,
@@ -5216,8 +6777,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.010202,
@@ -5232,8 +6800,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.001688,
@@ -5270,8 +6845,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.049494,
@@ -5286,8 +6868,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.005033,
@@ -5302,8 +6891,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017375,
@@ -5340,8 +6936,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.071578,
@@ -5356,8 +6959,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.015558,
@@ -5372,8 +6982,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.000436,
@@ -5410,8 +7027,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.049717,
@@ -5426,8 +7050,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.007136,
@@ -5442,8 +7073,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.017865,
@@ -5480,8 +7118,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.059438,
@@ -5496,8 +7141,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.005116,
@@ -5512,8 +7164,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.006796,
@@ -5550,8 +7209,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "m5spec",
           "role": "m5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.050085,
@@ -5566,8 +7232,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp5spec",
           "role": "mp5spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.003701,
@@ -5582,8 +7255,15 @@
           "axis_len": 700,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "mp6spec",
           "role": "mp6spec",
+          "shape": [
+            700
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": -0.015261,

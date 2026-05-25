@@ -21,8 +21,15 @@
           "axis_len": 1112,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            1112
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.998422,
@@ -37,8 +44,15 @@
           "axis_len": 1112,
           "axis_order": "descending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "match",
           "role": "Match",
+          "shape": [
+            1112
+          ],
           "signal_type": "preprocessed",
           "unit": null,
           "value_first": 0.647137,
@@ -53,8 +67,15 @@
           "axis_len": 1112,
           "axis_order": "descending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "match_2ch",
           "role": "Match",
+          "shape": [
+            1112
+          ],
           "signal_type": "preprocessed",
           "unit": null,
           "value_first": 0.002447,
@@ -69,8 +90,15 @@
           "axis_len": 1118,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            1118
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.007996,
@@ -85,8 +113,15 @@
           "axis_len": 1112,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_spectrum",
           "role": "Sample Spectrum",
+          "shape": [
+            1112
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.000515,

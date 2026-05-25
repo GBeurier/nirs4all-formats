@@ -27,8 +27,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 500.0,
@@ -67,8 +74,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 502.0,
@@ -107,8 +121,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 504.0,
@@ -147,8 +168,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 506.0,
@@ -187,8 +215,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 508.0,
@@ -227,8 +262,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 510.0,
@@ -267,8 +309,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 512.0,
@@ -307,8 +356,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 514.0,
@@ -347,8 +403,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 516.0,
@@ -387,8 +450,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 518.0,
@@ -427,8 +497,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 520.0,
@@ -467,8 +544,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 522.0,
@@ -507,8 +591,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 524.0,
@@ -547,8 +638,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 526.0,
@@ -587,8 +685,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 528.0,
@@ -627,8 +732,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 530.0,
@@ -667,8 +779,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 532.0,
@@ -707,8 +826,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 534.0,
@@ -747,8 +873,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 536.0,
@@ -787,8 +920,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 538.0,
@@ -827,8 +967,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 540.0,
@@ -867,8 +1014,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 542.0,
@@ -907,8 +1061,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 544.0,
@@ -947,8 +1108,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 546.0,
@@ -987,8 +1155,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 548.0,
@@ -1027,8 +1202,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 550.0,
@@ -1067,8 +1249,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 552.0,
@@ -1107,8 +1296,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 554.0,
@@ -1147,8 +1343,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 556.0,
@@ -1187,8 +1390,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 558.0,
@@ -1227,8 +1437,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 560.0,
@@ -1267,8 +1484,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 562.0,
@@ -1307,8 +1531,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 564.0,
@@ -1347,8 +1578,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 566.0,
@@ -1387,8 +1625,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 568.0,
@@ -1427,8 +1672,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 570.0,
@@ -1467,8 +1719,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 572.0,
@@ -1507,8 +1766,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 574.0,
@@ -1547,8 +1813,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 576.0,
@@ -1587,8 +1860,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 578.0,
@@ -1627,8 +1907,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 580.0,
@@ -1667,8 +1954,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 582.0,
@@ -1707,8 +2001,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 584.0,
@@ -1747,8 +2048,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 586.0,
@@ -1787,8 +2095,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 588.0,
@@ -1827,8 +2142,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 590.0,
@@ -1867,8 +2189,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 592.0,
@@ -1907,8 +2236,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 594.0,
@@ -1947,8 +2283,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 596.0,
@@ -1987,8 +2330,15 @@
           "axis_len": 6,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "channels",
           "role": "channels",
+          "shape": [
+            6
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 598.0,

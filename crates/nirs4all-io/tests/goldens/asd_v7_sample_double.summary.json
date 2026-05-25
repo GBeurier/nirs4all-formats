@@ -18,8 +18,15 @@
           "axis_len": 2151,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "radiance",
           "role": "radiance",
+          "shape": [
+            2151
+          ],
           "signal_type": "radiance",
           "unit": null,
           "value_first": 30.425934,

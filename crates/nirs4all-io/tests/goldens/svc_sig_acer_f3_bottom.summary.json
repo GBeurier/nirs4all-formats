@@ -49,8 +49,15 @@
           "axis_len": 1024,
           "axis_order": "non_monotonic",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference",
           "role": "reference",
+          "shape": [
+            1024
+          ],
           "signal_type": "radiance",
           "unit": null,
           "value_first": 1323.43,
@@ -65,8 +72,15 @@
           "axis_len": 1024,
           "axis_order": "non_monotonic",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            1024
+          ],
           "signal_type": "reflectance",
           "unit": "%",
           "value_first": 12.25,
@@ -81,8 +95,15 @@
           "axis_len": 1024,
           "axis_order": "non_monotonic",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "target",
           "role": "target",
+          "shape": [
+            1024
+          ],
           "signal_type": "radiance",
           "unit": null,
           "value_first": 162.12,

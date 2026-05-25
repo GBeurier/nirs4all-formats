@@ -21,8 +21,15 @@
           "axis_len": 3648,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "transmittance",
           "role": "Transmission",
+          "shape": [
+            3648
+          ],
           "signal_type": "transmittance",
           "unit": null,
           "value_first": 0.0,

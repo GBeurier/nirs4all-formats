@@ -37,8 +37,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 275.5,
@@ -87,8 +94,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 295.5,
@@ -137,8 +151,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 257.5,
@@ -187,8 +208,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 257.0,
@@ -237,8 +265,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 262.0,
@@ -287,8 +322,15 @@
           "axis_len": 34,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            34
+          ],
           "signal_type": "raw_counts",
           "unit": "Cnt/sec",
           "value_first": 254.5,

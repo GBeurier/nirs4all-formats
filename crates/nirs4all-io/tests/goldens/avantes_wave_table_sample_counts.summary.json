@@ -18,8 +18,15 @@
           "axis_len": 1442,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample",
           "role": "sample",
+          "shape": [
+            1442
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 805.0,

@@ -19,8 +19,15 @@
           "axis_len": 2844,
           "axis_order": "descending",
           "axis_unit": "um",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            2844
+          ],
           "signal_type": "reflectance",
           "unit": "Reflectance (percent)",
           "value_first": 7.2712,

@@ -16,8 +16,15 @@
           "axis_len": 3439,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            3439
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 1.11622,

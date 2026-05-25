@@ -18,8 +18,15 @@
           "axis_len": 16384,
           "axis_order": "ascending",
           "axis_unit": "s",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "imaginary",
           "role": "imaginary",
+          "shape": [
+            16384
+          ],
           "signal_type": "unknown",
           "unit": "ARBITRARY UNITS",
           "value_first": 6214.555864,
@@ -34,8 +41,15 @@
           "axis_len": 16384,
           "axis_order": "ascending",
           "axis_unit": "s",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "real",
           "role": "real",
+          "shape": [
+            16384
+          ],
           "signal_type": "unknown",
           "unit": "ARBITRARY UNITS",
           "value_first": 2979.837825,

@@ -18,8 +18,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_s000",
           "role": "sample_s000",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.036743,

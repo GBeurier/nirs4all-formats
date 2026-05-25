@@ -29,8 +29,15 @@
           "axis_len": 1442,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "scope",
           "role": "scope",
+          "shape": [
+            1442
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 805.0,

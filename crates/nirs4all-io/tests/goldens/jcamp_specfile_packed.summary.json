@@ -18,8 +18,15 @@
           "axis_len": 1801,
           "axis_order": "ascending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            1801
+          ],
           "signal_type": "transmittance",
           "unit": "TRANSMITTANCE",
           "value_first": 97.737187,

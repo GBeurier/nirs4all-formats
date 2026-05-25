@@ -20,8 +20,15 @@
           "axis_len": 4069,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raman_intensity",
           "role": "Raman Intensity",
+          "shape": [
+            4069
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 0.0,

@@ -20,8 +20,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.015245,
@@ -58,8 +65,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.019694,
@@ -96,8 +110,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.026627,
@@ -134,8 +155,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.039318,
@@ -172,8 +200,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.052147,
@@ -210,8 +245,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.080293,
@@ -248,8 +290,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.102207,
@@ -286,8 +335,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.140853,
@@ -324,8 +380,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.17682,
@@ -362,8 +425,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.226536,
@@ -400,8 +470,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.274543,
@@ -438,8 +515,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.338005,
@@ -476,8 +560,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.409953,
@@ -514,8 +605,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.47332,
@@ -552,8 +650,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.546451,
@@ -590,8 +695,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.610791,
@@ -628,8 +740,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.673397,
@@ -666,8 +785,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.723746,
@@ -704,8 +830,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.767764,
@@ -742,8 +875,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.806549,
@@ -780,8 +920,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.823064,
@@ -818,8 +965,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.828307,
@@ -856,8 +1010,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.82506,
@@ -894,8 +1055,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.817727,
@@ -932,8 +1100,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.79634,
@@ -970,8 +1145,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.775557,
@@ -1008,8 +1190,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.727361,
@@ -1046,8 +1235,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.705864,
@@ -1084,8 +1280,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.68364,
@@ -1122,8 +1325,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.658095,
@@ -1160,8 +1370,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.642607,
@@ -1198,8 +1415,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.622441,
@@ -1236,8 +1460,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.595596,
@@ -1274,8 +1505,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.556214,
@@ -1312,8 +1550,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.527392,
@@ -1350,8 +1595,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.487013,
@@ -1388,8 +1640,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.444219,
@@ -1426,8 +1685,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.3937,
@@ -1464,8 +1730,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.345443,
@@ -1502,8 +1775,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.300472,
@@ -1540,8 +1820,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.2501,
@@ -1578,8 +1865,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.203467,
@@ -1616,8 +1910,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.159352,
@@ -1654,8 +1955,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.126468,
@@ -1692,8 +2000,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.097096,
@@ -1730,8 +2045,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.070315,
@@ -1768,8 +2090,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.051315,
@@ -1806,8 +2135,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.038359,
@@ -1844,8 +2180,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.030356,
@@ -1882,8 +2225,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.010004,
@@ -1920,8 +2270,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.008121,
@@ -1958,8 +2315,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.004516,
@@ -1996,8 +2360,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.011205,
@@ -2034,8 +2405,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.012856,
@@ -2072,8 +2450,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.024964,
@@ -2110,8 +2495,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.035628,
@@ -2148,8 +2540,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.046347,
@@ -2186,8 +2585,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.063972,
@@ -2224,8 +2630,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.086872,
@@ -2262,8 +2675,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.113544,
@@ -2300,8 +2720,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.142333,
@@ -2338,8 +2765,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.187303,
@@ -2376,8 +2810,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.230421,
@@ -2414,8 +2855,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.280857,
@@ -2452,8 +2900,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.339369,
@@ -2490,8 +2945,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.396999,
@@ -2528,8 +2990,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.460986,
@@ -2566,8 +3035,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.505869,
@@ -2604,8 +3080,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.558926,
@@ -2642,8 +3125,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.607905,
@@ -2680,8 +3170,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.652727,
@@ -2718,8 +3215,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.686961,
@@ -2756,8 +3260,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.711654,
@@ -2794,8 +3305,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.727099,
@@ -2832,8 +3350,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.745152,
@@ -2870,8 +3395,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.753062,
@@ -2908,8 +3440,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.746524,
@@ -2946,8 +3485,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.746073,
@@ -2984,8 +3530,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.734358,
@@ -3022,8 +3575,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.723898,
@@ -3060,8 +3620,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.70812,
@@ -3098,8 +3665,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.680687,
@@ -3136,8 +3710,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.661949,
@@ -3174,8 +3755,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.619942,
@@ -3212,8 +3800,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.584203,
@@ -3250,8 +3845,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.542369,
@@ -3288,8 +3890,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.488344,
@@ -3326,8 +3935,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.431692,
@@ -3364,8 +3980,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.382087,
@@ -3402,8 +4025,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.330345,
@@ -3440,8 +4070,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.273172,
@@ -3478,8 +4115,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.222849,
@@ -3516,8 +4160,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.179849,
@@ -3554,8 +4205,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.148223,
@@ -3592,8 +4250,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.11147,
@@ -3630,8 +4295,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.083261,
@@ -3668,8 +4340,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.060744,
@@ -3706,8 +4385,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.047573,
@@ -3744,8 +4430,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.025956,
@@ -3782,8 +4475,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.016726,
@@ -3820,8 +4520,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.015956,
@@ -3858,8 +4565,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.012039,
@@ -3896,8 +4610,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.010007,
@@ -3934,8 +4655,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.021904,
@@ -3972,8 +4700,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.034466,
@@ -4010,8 +4745,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.032421,
@@ -4048,8 +4790,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.057664,
@@ -4086,8 +4835,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.073168,
@@ -4124,8 +4880,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.096898,
@@ -4162,8 +4925,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.125739,
@@ -4200,8 +4970,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.153215,
@@ -4238,8 +5015,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.201715,
@@ -4276,8 +5060,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.237597,
@@ -4314,8 +5105,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.289069,
@@ -4352,8 +5150,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.328315,
@@ -4390,8 +5195,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.375645,
@@ -4428,8 +5240,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.423063,
@@ -4466,8 +5285,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.467172,
@@ -4504,8 +5330,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.497844,
@@ -4542,8 +5375,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.527986,
@@ -4580,8 +5420,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.553621,
@@ -4618,8 +5465,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.570965,
@@ -4656,8 +5510,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.588785,
@@ -4694,8 +5555,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.588777,
@@ -4732,8 +5600,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.596929,
@@ -4770,8 +5645,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.600659,
@@ -4808,8 +5690,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.607452,
@@ -4846,8 +5735,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.616028,
@@ -4884,8 +5780,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.636154,
@@ -4922,8 +5825,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.652847,
@@ -4960,8 +5870,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.656702,
@@ -4998,8 +5915,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.669039,
@@ -5036,8 +5960,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.680221,
@@ -5074,8 +6005,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.672548,
@@ -5112,8 +6050,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.66159,
@@ -5150,8 +6095,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.63669,
@@ -5188,8 +6140,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.608875,
@@ -5226,8 +6185,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.56953,
@@ -5264,8 +6230,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.518991,
@@ -5302,8 +6275,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.470615,
@@ -5340,8 +6320,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.41149,
@@ -5378,8 +6365,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.350142,
@@ -5416,8 +6410,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.296997,
@@ -5454,8 +6455,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.238478,
@@ -5492,8 +6500,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.192422,
@@ -5530,8 +6545,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.153779,
@@ -5568,8 +6590,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.120493,
@@ -5606,8 +6635,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.088879,
@@ -5644,8 +6680,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.063394,
@@ -5682,8 +6725,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.042479,
@@ -5720,8 +6770,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.033936,
@@ -5758,8 +6815,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.018334,
@@ -5796,8 +6860,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.010378,
@@ -5834,8 +6905,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.009292,
@@ -5872,8 +6950,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.009742,
@@ -5910,8 +6995,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.022796,
@@ -5948,8 +7040,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.031567,
@@ -5986,8 +7085,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.036003,
@@ -6024,8 +7130,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.049992,
@@ -6062,8 +7175,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.06566,
@@ -6100,8 +7220,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.093284,
@@ -6138,8 +7265,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.11889,
@@ -6176,8 +7310,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.154489,
@@ -6214,8 +7355,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.191121,
@@ -6252,8 +7400,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.232457,
@@ -6290,8 +7445,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.272907,
@@ -6328,8 +7490,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.323713,
@@ -6366,8 +7535,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.367935,
@@ -6404,8 +7580,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.417406,
@@ -6442,8 +7625,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.454895,
@@ -6480,8 +7670,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.488998,
@@ -6518,8 +7715,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.521987,
@@ -6556,8 +7760,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.535091,
@@ -6594,8 +7805,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.546224,
@@ -6632,8 +7850,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.554392,
@@ -6670,8 +7895,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.542148,
@@ -6708,8 +7940,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.533362,
@@ -6746,8 +7985,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.513579,
@@ -6784,8 +8030,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.491449,
@@ -6822,8 +8075,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.454823,
@@ -6860,8 +8120,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.429127,
@@ -6898,8 +8165,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.402432,
@@ -6936,8 +8210,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.388656,
@@ -6974,8 +8255,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.362736,
@@ -7012,8 +8300,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.347702,
@@ -7050,8 +8345,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.332985,
@@ -7088,8 +8390,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.307123,
@@ -7126,8 +8435,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.288898,
@@ -7164,8 +8480,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.263509,
@@ -7202,8 +8525,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.237545,
@@ -7240,8 +8570,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.208942,
@@ -7278,8 +8615,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.180188,
@@ -7316,8 +8660,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.158258,
@@ -7354,8 +8705,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.124824,
@@ -7392,8 +8750,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.107424,
@@ -7430,8 +8795,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.082367,
@@ -7468,8 +8840,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.062111,
@@ -7506,8 +8885,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.049626,
@@ -7544,8 +8930,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.035267,
@@ -7582,8 +8975,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.029946,
@@ -7620,8 +9020,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.018654,
@@ -7658,8 +9065,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.012611,
@@ -7696,8 +9110,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.005205,
@@ -7734,8 +9155,15 @@
           "axis_len": 96,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            96
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.001699,

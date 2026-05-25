@@ -18,8 +18,15 @@
           "axis_len": 2733,
           "axis_order": "ascending",
           "axis_unit": "um",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "signal",
           "role": "signal",
+          "shape": [
+            2733
+          ],
           "signal_type": "transmittance",
           "unit": "TRANSMITTANCE",
           "value_first": 0.753,

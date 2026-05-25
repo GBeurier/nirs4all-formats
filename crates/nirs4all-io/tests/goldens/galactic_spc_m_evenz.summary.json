@@ -21,8 +21,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -57,8 +64,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -93,8 +107,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -129,8 +150,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -165,8 +193,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -201,8 +236,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -237,8 +279,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -273,8 +322,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -309,8 +365,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -345,8 +408,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -381,8 +451,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -417,8 +494,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -453,8 +537,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -489,8 +580,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -525,8 +623,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -561,8 +666,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -597,8 +709,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -633,8 +752,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -669,8 +795,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -705,8 +838,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -741,8 +881,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -777,8 +924,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -813,8 +967,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -849,8 +1010,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -885,8 +1053,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -921,8 +1096,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -957,8 +1139,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -993,8 +1182,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -1029,8 +1225,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -1065,8 +1268,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -1101,8 +1311,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,
@@ -1137,8 +1354,15 @@
           "axis_len": 171,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            171
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0,

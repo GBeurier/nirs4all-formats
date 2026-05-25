@@ -20,8 +20,15 @@
           "axis_len": 1400,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            1400
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 1.347404,

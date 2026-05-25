@@ -21,8 +21,15 @@
           "axis_len": 1899,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            1899
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.0714,
@@ -37,8 +44,15 @@
           "axis_len": 1862,
           "axis_order": "descending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "match",
           "role": "Match",
+          "shape": [
+            1862
+          ],
           "signal_type": "preprocessed",
           "unit": null,
           "value_first": 0.649707,
@@ -53,8 +67,15 @@
           "axis_len": 1862,
           "axis_order": "descending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "match_2ch",
           "role": "Match",
+          "shape": [
+            1862
+          ],
           "signal_type": "preprocessed",
           "unit": null,
           "value_first": 0.002647,
@@ -69,8 +90,15 @@
           "axis_len": 15044,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_interferogram",
           "role": "Reference Interferogram",
+          "shape": [
+            15044
+          ],
           "signal_type": "interferogram",
           "unit": null,
           "value_first": 0.001802,
@@ -85,8 +113,15 @@
           "axis_len": 1868,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            1868
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.002206,
@@ -101,8 +136,15 @@
           "axis_len": 15044,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_interferogram",
           "role": "Sample Interferogram",
+          "shape": [
+            15044
+          ],
           "signal_type": "interferogram",
           "unit": null,
           "value_first": 0.000377,
@@ -117,8 +159,15 @@
           "axis_len": 1862,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_spectrum",
           "role": "Sample Spectrum",
+          "shape": [
+            1862
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.001213,

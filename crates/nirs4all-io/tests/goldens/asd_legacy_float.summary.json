@@ -18,8 +18,15 @@
           "axis_len": 2151,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            2151
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.026823,

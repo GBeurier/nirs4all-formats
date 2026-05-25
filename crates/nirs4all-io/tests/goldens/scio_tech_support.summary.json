@@ -37,8 +37,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4939.252455,
@@ -53,8 +60,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.619432,
@@ -69,8 +83,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7973.843642,
@@ -122,8 +143,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3775.942421,
@@ -138,8 +166,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.48892,
@@ -154,8 +189,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7723.01926,
@@ -207,8 +249,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4764.091305,
@@ -223,8 +272,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.597465,
@@ -239,8 +295,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7973.843642,
@@ -292,8 +355,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3832.564907,
@@ -308,8 +378,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.487302,
@@ -324,8 +401,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7864.872263,
@@ -377,8 +461,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3507.124014,
@@ -393,8 +484,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.445923,
@@ -409,8 +507,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7864.872263,
@@ -462,8 +567,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5011.146629,
@@ -478,8 +590,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.628448,
@@ -494,8 +613,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7973.843642,
@@ -547,8 +673,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5259.82974,
@@ -563,8 +696,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.690655,
@@ -579,8 +719,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7615.717147,
@@ -632,8 +779,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3835.094867,
@@ -648,8 +802,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.487623,
@@ -664,8 +825,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7864.872263,
@@ -717,8 +885,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4517.476521,
@@ -733,8 +908,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.593178,
@@ -749,8 +931,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7615.717147,
@@ -802,8 +991,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3872.6738,
@@ -818,8 +1014,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.501446,
@@ -834,8 +1037,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7723.01926,
@@ -887,8 +1097,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3551.4825,
@@ -903,8 +1120,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.459857,
@@ -919,8 +1143,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7723.01926,
@@ -972,8 +1203,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5881.221649,
@@ -988,8 +1226,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.772248,
@@ -1004,8 +1249,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7615.717147,
@@ -1057,8 +1309,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5680.124533,
@@ -1073,8 +1332,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.755067,
@@ -1089,8 +1355,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7522.673431,
@@ -1142,8 +1415,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6518.910327,
@@ -1158,8 +1438,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.855341,
@@ -1174,8 +1461,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7621.416427,
@@ -1227,8 +1521,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5035.926944,
@@ -1243,8 +1544,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.669433,
@@ -1259,8 +1567,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7522.673431,
@@ -1312,8 +1627,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4857.488205,
@@ -1328,8 +1650,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.633769,
@@ -1344,8 +1673,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7664.440258,
@@ -1397,8 +1733,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4884.232478,
@@ -1413,8 +1756,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.649268,
@@ -1429,8 +1779,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7522.673431,
@@ -1482,8 +1839,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6077.730049,
@@ -1498,8 +1862,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.797454,
@@ -1514,8 +1885,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7621.416427,
@@ -1567,8 +1945,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5767.343228,
@@ -1583,8 +1968,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.752481,
@@ -1599,8 +1991,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7664.440258,
@@ -1652,8 +2051,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6430.607208,
@@ -1668,8 +2074,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.843755,
@@ -1684,8 +2097,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7621.416427,
@@ -1737,8 +2157,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4786.707657,
@@ -1753,8 +2180,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.619399,
@@ -1769,8 +2203,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7727.990326,
@@ -1822,8 +2263,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5261.489226,
@@ -1838,8 +2286,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.680835,
@@ -1854,8 +2309,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7727.990326,
@@ -1907,8 +2369,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5631.941005,
@@ -1923,8 +2392,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.734814,
@@ -1939,8 +2415,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7664.440258,
@@ -1992,8 +2475,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5235.223772,
@@ -2008,8 +2498,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.677437,
@@ -2024,8 +2521,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7727.990326,
@@ -2077,8 +2581,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4064.153094,
@@ -2093,8 +2604,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.519981,
@@ -2109,8 +2627,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7815.959087,
@@ -2162,8 +2687,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4013.106381,
@@ -2178,8 +2710,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.51345,
@@ -2194,8 +2733,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7815.959087,
@@ -2247,8 +2793,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4831.368622,
@@ -2263,8 +2816,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.644251,
@@ -2279,8 +2839,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7499.200275,
@@ -2332,8 +2899,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4419.438522,
@@ -2348,8 +2922,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.589321,
@@ -2364,8 +2945,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7499.200275,
@@ -2417,8 +3005,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4405.755087,
@@ -2433,8 +3028,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.563687,
@@ -2449,8 +3051,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7815.959087,
@@ -2502,8 +3111,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4495.606589,
@@ -2518,8 +3134,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.565861,
@@ -2534,8 +3157,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7944.714225,
@@ -2587,8 +3217,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4919.516291,
@@ -2603,8 +3240,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.656005,
@@ -2619,8 +3263,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7499.200275,
@@ -2672,8 +3323,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4460.991199,
@@ -2688,8 +3346,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.561057,
@@ -2704,8 +3369,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7951.04331,
@@ -2757,8 +3429,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4857.414804,
@@ -2773,8 +3452,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.611402,
@@ -2789,8 +3475,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7944.714225,
@@ -2842,8 +3535,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4332.962903,
@@ -2858,8 +3558,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.545389,
@@ -2874,8 +3581,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7944.714225,
@@ -2927,8 +3641,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4130.82394,
@@ -2943,8 +3664,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.519532,
@@ -2959,8 +3687,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7951.04331,
@@ -3012,8 +3747,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4966.843866,
@@ -3028,8 +3770,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.624678,
@@ -3044,8 +3793,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7951.04331,
@@ -3097,8 +3853,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5894.354791,
@@ -3113,8 +3876,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.769351,
@@ -3129,8 +3899,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7661.466697,
@@ -3182,8 +3959,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4986.542991,
@@ -3198,8 +3982,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.653855,
@@ -3214,8 +4005,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7626.369463,
@@ -3267,8 +4065,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5849.004357,
@@ -3283,8 +4088,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.763431,
@@ -3299,8 +4111,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7661.466697,
@@ -3352,8 +4171,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5875.928675,
@@ -3368,8 +4194,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.766946,
@@ -3384,8 +4217,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7661.466697,
@@ -3437,8 +4277,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4222.19149,
@@ -3453,8 +4300,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.553631,
@@ -3469,8 +4323,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7626.369463,
@@ -3522,8 +4383,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5083.128383,
@@ -3538,8 +4406,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.670184,
@@ -3554,8 +4429,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7584.680006,
@@ -3607,8 +4489,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4795.560102,
@@ -3623,8 +4512,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.628813,
@@ -3639,8 +4535,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7626.369463,
@@ -3692,8 +4595,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5095.373231,
@@ -3708,8 +4618,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.671798,
@@ -3724,8 +4641,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7584.680006,
@@ -3777,8 +4701,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5364.937695,
@@ -3793,8 +4724,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.707339,
@@ -3809,8 +4747,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7584.680006,
@@ -3862,8 +4807,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4579.838004,
@@ -3878,8 +4830,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.596126,
@@ -3894,8 +4853,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7682.669525,
@@ -3947,8 +4913,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4334.069823,
@@ -3963,8 +4936,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.564136,
@@ -3979,8 +4959,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7682.669525,
@@ -4032,8 +5019,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4597.083444,
@@ -4048,8 +5042,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.598371,
@@ -4064,8 +5065,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7682.669525,
@@ -4117,8 +5125,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5102.764106,
@@ -4133,8 +5148,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.653766,
@@ -4149,8 +5171,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7805.185942,
@@ -4202,8 +5231,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5089.301059,
@@ -4218,8 +5254,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.673466,
@@ -4234,8 +5277,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7556.876394,
@@ -4287,8 +5337,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5815.299296,
@@ -4303,8 +5360,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.725008,
@@ -4319,8 +5383,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8021.01421,
@@ -4372,8 +5443,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5816.412271,
@@ -4388,8 +5466,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.745198,
@@ -4404,8 +5489,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7805.185942,
@@ -4457,8 +5549,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6971.202351,
@@ -4473,8 +5572,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.898348,
@@ -4489,8 +5595,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7760.023785,
@@ -4542,8 +5655,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3289.385826,
@@ -4558,8 +5678,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.413488,
@@ -4574,8 +5701,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7955.217833,
@@ -4627,8 +5761,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4291.220696,
@@ -4643,8 +5784,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.567856,
@@ -4659,8 +5807,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7556.876394,
@@ -4712,8 +5867,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3506.374589,
@@ -4728,8 +5890,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.440764,
@@ -4744,8 +5913,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7955.217833,
@@ -4797,8 +5973,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3548.041157,
@@ -4813,8 +5996,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.469512,
@@ -4829,8 +6019,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7556.876394,
@@ -4882,8 +6079,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5400.870397,
@@ -4898,8 +6102,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.67334,
@@ -4914,8 +6125,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8021.01421,
@@ -4967,8 +6185,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3400.827721,
@@ -4983,8 +6208,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.427496,
@@ -4999,8 +6231,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7955.217833,
@@ -5052,8 +6291,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5862.328062,
@@ -5068,8 +6314,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.730871,
@@ -5084,8 +6337,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8021.01421,
@@ -5137,8 +6397,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5104.616715,
@@ -5153,8 +6420,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.642745,
@@ -5169,8 +6443,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7941.90437,
@@ -5222,8 +6503,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4762.497654,
@@ -5238,8 +6526,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.608904,
@@ -5254,8 +6549,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7821.428296,
@@ -5307,8 +6609,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5249.184286,
@@ -5323,8 +6632,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.671129,
@@ -5339,8 +6655,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7821.428296,
@@ -5392,8 +6715,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5516.175484,
@@ -5408,8 +6738,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.706732,
@@ -5424,8 +6761,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7805.185942,
@@ -5477,8 +6821,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5320.832469,
@@ -5493,8 +6844,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.680289,
@@ -5509,8 +6867,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7821.428296,
@@ -5562,8 +6927,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6181.358624,
@@ -5578,8 +6950,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.796564,
@@ -5594,8 +6973,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7760.023785,
@@ -5647,8 +7033,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5811.130621,
@@ -5663,8 +7056,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.748855,
@@ -5679,8 +7079,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7760.023785,
@@ -5732,8 +7139,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5431.932188,
@@ -5748,8 +7162,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.683958,
@@ -5764,8 +7185,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7941.90437,
@@ -5817,8 +7245,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5462.266195,
@@ -5833,8 +7268,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.72631,
@@ -5849,8 +7291,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7520.575097,
@@ -5902,8 +7351,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5282.992798,
@@ -5918,8 +7374,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.702472,
@@ -5934,8 +7397,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7520.575097,
@@ -5987,8 +7457,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5490.493311,
@@ -6003,8 +7480,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.700625,
@@ -6019,8 +7503,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7836.56807,
@@ -6072,8 +7563,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5101.080722,
@@ -6088,8 +7586,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.650933,
@@ -6104,8 +7609,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7836.56807,
@@ -6157,8 +7669,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3564.64616,
@@ -6173,8 +7692,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.47021,
@@ -6189,8 +7715,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7580.970809,
@@ -6242,8 +7775,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5681.07302,
@@ -6258,8 +7798,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.755404,
@@ -6274,8 +7821,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7520.575097,
@@ -6327,8 +7881,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4334.151223,
@@ -6343,8 +7904,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.546351,
@@ -6359,8 +7927,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7932.9063,
@@ -6412,8 +7987,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4813.595932,
@@ -6428,8 +8010,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.606101,
@@ -6444,8 +8033,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7941.90437,
@@ -6497,8 +8093,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3532.11057,
@@ -6513,8 +8116,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.465918,
@@ -6529,8 +8139,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7580.970809,
@@ -6582,8 +8199,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5037.610892,
@@ -6598,8 +8222,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.629866,
@@ -6614,8 +8245,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7997.914108,
@@ -6667,8 +8305,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4659.755151,
@@ -6683,8 +8328,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.587396,
@@ -6699,8 +8351,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7932.9063,
@@ -6752,8 +8411,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4901.455116,
@@ -6768,8 +8434,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.617864,
@@ -6784,8 +8457,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7932.9063,
@@ -6837,8 +8517,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5696.812307,
@@ -6853,8 +8540,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.726952,
@@ -6869,8 +8563,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7836.56807,
@@ -6922,8 +8623,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4214.586404,
@@ -6938,8 +8646,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.526961,
@@ -6954,8 +8669,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7997.914108,
@@ -7007,8 +8729,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3318.999674,
@@ -7023,8 +8752,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.437807,
@@ -7039,8 +8775,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7580.970809,
@@ -7092,8 +8835,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5687.323415,
@@ -7108,8 +8858,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.741001,
@@ -7124,8 +8881,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7675.185044,
@@ -7177,8 +8941,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4601.284069,
@@ -7193,8 +8964,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.575311,
@@ -7209,8 +8987,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7997.914108,
@@ -7262,8 +9047,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6411.475743,
@@ -7278,8 +9070,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.835351,
@@ -7294,8 +9093,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7675.185044,
@@ -7347,8 +9153,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5806.631621,
@@ -7363,8 +9176,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.766911,
@@ -7379,8 +9199,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7571.456496,
@@ -7432,8 +9259,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6008.213501,
@@ -7448,8 +9282,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.793535,
@@ -7464,8 +9305,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7571.456496,
@@ -7517,8 +9365,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6484.076493,
@@ -7533,8 +9388,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.856384,
@@ -7549,8 +9411,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7571.456496,
@@ -7602,8 +9471,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4613.201431,
@@ -7618,8 +9494,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.601054,
@@ -7634,8 +9517,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7675.185044,
@@ -7687,8 +9577,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4452.849164,
@@ -7703,8 +9600,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.564809,
@@ -7719,8 +9623,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7883.817156,
@@ -7772,8 +9683,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4727.992616,
@@ -7788,8 +9706,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.599709,
@@ -7804,8 +9729,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7883.817156,
@@ -7857,8 +9789,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4689.936606,
@@ -7873,8 +9812,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.594881,
@@ -7889,8 +9835,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7883.817156,
@@ -7942,8 +9895,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5004.540475,
@@ -7958,8 +9918,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.656573,
@@ -7974,8 +9941,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7622.219975,
@@ -8027,8 +10001,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5285.198039,
@@ -8043,8 +10024,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.693394,
@@ -8059,8 +10047,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7622.219975,
@@ -8112,8 +10107,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4939.905328,
@@ -8128,8 +10130,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.648093,
@@ -8144,8 +10153,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7622.219975,
@@ -8197,8 +10213,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5336.292313,
@@ -8213,8 +10236,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.686237,
@@ -8229,8 +10259,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7776.167904,
@@ -8282,8 +10319,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6300.810433,
@@ -8298,8 +10342,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.810272,
@@ -8314,8 +10365,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7776.167904,
@@ -8367,8 +10425,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5059.236713,
@@ -8383,8 +10448,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.650608,
@@ -8399,8 +10471,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7776.167904,
@@ -8452,8 +10531,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5470.675536,
@@ -8468,8 +10554,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.68098,
@@ -8484,8 +10577,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8033.53198,
@@ -8537,8 +10637,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5180.305253,
@@ -8553,8 +10660,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.657609,
@@ -8569,8 +10683,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7877.490741,
@@ -8622,8 +10743,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5370.614163,
@@ -8638,8 +10766,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.681767,
@@ -8654,8 +10789,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7877.490741,
@@ -8707,8 +10849,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5239.807452,
@@ -8723,8 +10872,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.665162,
@@ -8739,8 +10895,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7877.490741,
@@ -8792,8 +10955,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6048.037482,
@@ -8808,8 +10978,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.752849,
@@ -8824,8 +11001,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8033.53198,
@@ -8877,8 +11061,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6249.16593,
@@ -8893,8 +11084,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.774143,
@@ -8909,8 +11107,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8072.371595,
@@ -8962,8 +11167,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4073.871915,
@@ -8978,8 +11190,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.539354,
@@ -8994,8 +11213,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7553.245799,
@@ -9047,8 +11273,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5322.16846,
@@ -9063,8 +11296,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.70462,
@@ -9079,8 +11319,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7553.245799,
@@ -9132,8 +11379,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4538.099239,
@@ -9148,8 +11402,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.59721,
@@ -9164,8 +11425,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7598.831225,
@@ -9217,8 +11485,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4596.420824,
@@ -9233,8 +11508,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.608536,
@@ -9249,8 +11531,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7553.245799,
@@ -9302,8 +11591,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6040.905981,
@@ -9318,8 +11614,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.794978,
@@ -9334,8 +11637,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7598.831225,
@@ -9387,8 +11697,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5199.053351,
@@ -9403,8 +11720,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.647169,
@@ -9419,8 +11743,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8033.53198,
@@ -9472,8 +11803,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4973.413998,
@@ -9488,8 +11826,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.654497,
@@ -9504,8 +11849,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7598.831225,
@@ -9557,8 +11909,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5257.677117,
@@ -9573,8 +11932,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.695902,
@@ -9589,8 +11955,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7555.200858,
@@ -9642,8 +12015,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5188.224984,
@@ -9658,8 +12038,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.686709,
@@ -9674,8 +12061,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7555.200858,
@@ -9727,8 +12121,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4972.656654,
@@ -9743,8 +12144,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.658177,
@@ -9759,8 +12167,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7555.200858,
@@ -9812,8 +12227,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4866.752793,
@@ -9828,8 +12250,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.620162,
@@ -9844,8 +12273,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7847.548382,
@@ -9897,8 +12333,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5063.507826,
@@ -9913,8 +12356,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.645234,
@@ -9929,8 +12379,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7847.548382,
@@ -9982,8 +12439,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4598.875434,
@@ -9998,8 +12462,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.586027,
@@ -10014,8 +12485,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7847.548382,
@@ -10067,8 +12545,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6195.238001,
@@ -10083,8 +12568,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.768729,
@@ -10099,8 +12591,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8059.065592,
@@ -10152,8 +12651,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6089.49108,
@@ -10168,8 +12674,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.755608,
@@ -10184,8 +12697,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8059.065592,
@@ -10237,8 +12757,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4657.417517,
@@ -10253,8 +12780,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.602343,
@@ -10269,8 +12803,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7732.172706,
@@ -10322,8 +12863,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6272.782759,
@@ -10338,8 +12886,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.778351,
@@ -10354,8 +12909,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8059.065592,
@@ -10407,8 +12969,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3794.254975,
@@ -10423,8 +12992,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.49071,
@@ -10439,8 +13015,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7732.172706,
@@ -10492,8 +13075,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5015.071233,
@@ -10508,8 +13098,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.642707,
@@ -10524,8 +13121,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7803.049884,
@@ -10577,8 +13181,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3945.536008,
@@ -10593,8 +13204,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.510275,
@@ -10609,8 +13227,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7732.172706,
@@ -10662,8 +13287,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5338.46291,
@@ -10678,8 +13310,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.684151,
@@ -10694,8 +13333,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7803.049884,
@@ -10747,8 +13393,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4745.17548,
@@ -10763,8 +13416,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.608118,
@@ -10779,8 +13439,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7803.049884,
@@ -10832,8 +13499,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5437.964342,
@@ -10848,8 +13522,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.716052,
@@ -10864,8 +13545,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7594.368524,
@@ -10917,8 +13605,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5396.216849,
@@ -10933,8 +13628,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.710555,
@@ -10949,8 +13651,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7594.368524,
@@ -11002,8 +13711,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4930.026213,
@@ -11018,8 +13734,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.655433,
@@ -11034,8 +13757,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7521.790333,
@@ -11087,8 +13817,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5248.551514,
@@ -11103,8 +13840,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.691111,
@@ -11119,8 +13863,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7594.368524,
@@ -11172,8 +13923,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4720.590935,
@@ -11188,8 +13946,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.627589,
@@ -11204,8 +13969,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7521.790333,
@@ -11257,8 +14029,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4710.182826,
@@ -11273,8 +14052,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.626205,
@@ -11289,8 +14075,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7521.790333,
@@ -11342,8 +14135,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4976.724558,
@@ -11358,8 +14158,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.649759,
@@ -11374,8 +14181,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7659.342362,
@@ -11427,8 +14241,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6297.577951,
@@ -11443,8 +14264,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.822209,
@@ -11459,8 +14287,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7659.342362,
@@ -11512,8 +14347,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 6059.832154,
@@ -11528,8 +14370,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.791169,
@@ -11544,8 +14393,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7659.342362,
@@ -11597,8 +14453,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3835.033026,
@@ -11613,8 +14476,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.493926,
@@ -11629,8 +14499,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7764.393529,
@@ -11682,8 +14559,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4564.295042,
@@ -11698,8 +14582,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.58785,
@@ -11714,8 +14605,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7764.393529,
@@ -11767,8 +14665,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5154.171122,
@@ -11783,8 +14688,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.643458,
@@ -11799,8 +14711,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8010.117898,
@@ -11852,8 +14771,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 3949.512656,
@@ -11868,8 +14794,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.50867,
@@ -11884,8 +14817,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 7764.393529,
@@ -11937,8 +14877,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5299.923777,
@@ -11953,8 +14900,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.661654,
@@ -11969,8 +14923,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8010.117898,
@@ -12022,8 +14983,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5030.365587,
@@ -12038,8 +15006,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.626063,
@@ -12054,8 +15029,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8034.916274,
@@ -12107,8 +15089,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4790.641431,
@@ -12123,8 +15112,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.598074,
@@ -12139,8 +15135,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8010.117898,
@@ -12192,8 +15195,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 4938.936887,
@@ -12208,8 +15218,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.614684,
@@ -12224,8 +15241,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8034.916274,
@@ -12277,8 +15301,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_raw",
           "role": "sample_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 5053.079496,
@@ -12293,8 +15324,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            331
+          ],
           "signal_type": "reflectance",
           "unit": null,
           "value_first": 0.62889,
@@ -12309,8 +15347,15 @@
           "axis_len": 331,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "wr_raw",
           "role": "wr_raw",
+          "shape": [
+            331
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 8034.916274,

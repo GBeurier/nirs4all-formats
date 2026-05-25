@@ -20,8 +20,15 @@
           "axis_len": 512,
           "axis_order": "ascending",
           "axis_unit": "min",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "arbitrary_intensity",
           "role": "Arbitrary Intensity",
+          "shape": [
+            512
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 45333.0,

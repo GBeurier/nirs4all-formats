@@ -27,8 +27,15 @@
           "axis_len": 1501,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            1501
+          ],
           "signal_type": "absorbance",
           "unit": "dOD",
           "value_first": 0.712839,
@@ -43,8 +50,15 @@
           "axis_len": 1501,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "cd",
           "role": "cd",
+          "shape": [
+            1501
+          ],
           "signal_type": "unknown",
           "unit": "mdeg",
           "value_first": 0.341637,
@@ -59,8 +73,15 @@
           "axis_len": 1501,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "ht",
           "role": "ht",
+          "shape": [
+            1501
+          ],
           "signal_type": "unknown",
           "unit": "V",
           "value_first": 250.948471,

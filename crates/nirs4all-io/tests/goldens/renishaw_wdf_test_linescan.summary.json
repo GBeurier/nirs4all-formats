@@ -60,8 +60,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 0.0,
@@ -135,8 +142,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 0.373655,
@@ -210,8 +224,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 0.74731,
@@ -285,8 +306,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 0.74731,
@@ -360,8 +388,15 @@
           "axis_len": 40,
           "axis_order": "descending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "raw_counts",
           "role": "raw_counts",
+          "shape": [
+            40
+          ],
           "signal_type": "raw_counts",
           "unit": "counts",
           "value_first": 1.120965,

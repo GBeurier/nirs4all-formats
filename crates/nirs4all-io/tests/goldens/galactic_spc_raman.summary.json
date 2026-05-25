@@ -21,8 +21,15 @@
           "axis_len": 3632,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "rmn_intensity",
           "role": "Rmn Intensity",
+          "shape": [
+            3632
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 0.017102,

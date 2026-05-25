@@ -86,8 +86,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 443.0,
@@ -188,8 +195,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 452.0,
@@ -290,8 +304,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 458.0,
@@ -392,8 +413,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 473.0,
@@ -494,8 +522,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 469.0,
@@ -596,8 +631,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 452.0,
@@ -698,8 +740,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 451.0,
@@ -800,8 +849,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 463.0,
@@ -902,8 +958,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 470.0,
@@ -1004,8 +1067,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 474.0,
@@ -1106,8 +1176,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 432.0,
@@ -1208,8 +1285,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 445.0,
@@ -1310,8 +1394,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 436.0,
@@ -1412,8 +1503,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 497.0,
@@ -1514,8 +1612,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 487.0,
@@ -1616,8 +1721,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 464.0,
@@ -1718,8 +1830,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 459.0,
@@ -1820,8 +1939,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 474.0,
@@ -1922,8 +2048,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 439.0,
@@ -2024,8 +2157,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 473.0,
@@ -2126,8 +2266,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 458.0,
@@ -2228,8 +2375,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 472.0,
@@ -2330,8 +2484,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 449.0,
@@ -2432,8 +2593,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 463.0,
@@ -2534,8 +2702,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 451.0,
@@ -2636,8 +2811,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 448.0,
@@ -2738,8 +2920,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 444.0,
@@ -2840,8 +3029,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 467.0,
@@ -2942,8 +3138,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 431.0,
@@ -3044,8 +3247,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 468.0,
@@ -3146,8 +3356,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 452.0,
@@ -3248,8 +3465,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 456.0,
@@ -3350,8 +3574,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 450.0,
@@ -3452,8 +3683,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 442.0,
@@ -3554,8 +3792,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 434.0,
@@ -3656,8 +3901,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 428.0,
@@ -3758,8 +4010,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 421.0,
@@ -3860,8 +4119,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 426.0,
@@ -3962,8 +4228,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 443.0,
@@ -4064,8 +4337,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 463.0,
@@ -4166,8 +4446,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 416.0,
@@ -4268,8 +4555,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 426.0,
@@ -4370,8 +4664,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 408.0,
@@ -4472,8 +4773,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 394.0,
@@ -4574,8 +4882,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 421.0,
@@ -4676,8 +4991,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 375.0,
@@ -4778,8 +5100,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 375.0,
@@ -4880,8 +5209,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 410.0,
@@ -4982,8 +5318,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 454.0,
@@ -5084,8 +5427,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 406.0,
@@ -5186,8 +5536,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 401.0,
@@ -5288,8 +5645,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 404.0,
@@ -5390,8 +5754,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 398.0,
@@ -5492,8 +5863,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 375.0,
@@ -5594,8 +5972,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 358.0,
@@ -5696,8 +6081,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 306.0,
@@ -5798,8 +6190,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 296.0,
@@ -5900,8 +6299,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 377.0,
@@ -6002,8 +6408,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 401.0,
@@ -6104,8 +6517,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 436.0,
@@ -6206,8 +6626,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 417.0,
@@ -6308,8 +6735,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 389.0,
@@ -6410,8 +6844,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 382.0,
@@ -6512,8 +6953,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 321.0,
@@ -6614,8 +7062,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 311.0,
@@ -6716,8 +7171,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 298.0,
@@ -6818,8 +7280,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 275.0,
@@ -6920,8 +7389,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 362.0,
@@ -7022,8 +7498,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 388.0,
@@ -7124,8 +7607,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 419.0,
@@ -7226,8 +7716,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 386.0,
@@ -7328,8 +7825,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 370.0,
@@ -7430,8 +7934,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 354.0,
@@ -7532,8 +8043,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 319.0,
@@ -7634,8 +8152,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 319.0,
@@ -7736,8 +8261,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 314.0,
@@ -7838,8 +8370,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 332.0,
@@ -7940,8 +8479,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 377.0,
@@ -8042,8 +8588,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 423.0,
@@ -8144,8 +8697,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 414.0,
@@ -8246,8 +8806,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 407.0,
@@ -8348,8 +8915,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 402.0,
@@ -8450,8 +9024,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 384.0,
@@ -8552,8 +9133,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 338.0,
@@ -8654,8 +9242,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 340.0,
@@ -8756,8 +9351,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 387.0,
@@ -8858,8 +9460,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 396.0,
@@ -8960,8 +9569,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 402.0,
@@ -9062,8 +9678,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 404.0,
@@ -9164,8 +9787,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 411.0,
@@ -9266,8 +9896,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 421.0,
@@ -9368,8 +10005,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 393.0,
@@ -9470,8 +10114,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 384.0,
@@ -9572,8 +10223,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 372.0,
@@ -9674,8 +10332,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 392.0,
@@ -9776,8 +10441,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 407.0,
@@ -9878,8 +10550,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 424.0,
@@ -9980,8 +10659,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 421.0,
@@ -10082,8 +10768,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 411.0,
@@ -10184,8 +10877,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 413.0,
@@ -10286,8 +10986,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 402.0,
@@ -10388,8 +11095,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 432.0,
@@ -10490,8 +11204,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 416.0,
@@ -10592,8 +11313,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 432.0,
@@ -10694,8 +11422,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 397.0,
@@ -10796,8 +11531,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 398.0,
@@ -10898,8 +11640,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 448.0,
@@ -11000,8 +11749,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 429.0,
@@ -11102,8 +11858,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 444.0,
@@ -11204,8 +11967,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 434.0,
@@ -11306,8 +12076,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 428.0,
@@ -11408,8 +12185,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 425.0,
@@ -11510,8 +12294,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 416.0,
@@ -11612,8 +12403,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 420.0,
@@ -11714,8 +12512,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 429.0,
@@ -11816,8 +12621,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 402.0,
@@ -11918,8 +12730,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 440.0,
@@ -12020,8 +12839,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 417.0,
@@ -12122,8 +12948,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 433.0,
@@ -12224,8 +13057,15 @@
           "axis_len": 281,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "intensity",
           "role": "intensity",
+          "shape": [
+            281
+          ],
           "signal_type": "raw_counts",
           "unit": "a.u.",
           "value_first": 424.0,

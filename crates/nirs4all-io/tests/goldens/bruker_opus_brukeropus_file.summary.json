@@ -21,8 +21,15 @@
           "axis_len": 4927,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "Absorbance",
+          "shape": [
+            4927
+          ],
           "signal_type": "absorbance",
           "unit": null,
           "value_first": 0.008769,
@@ -37,8 +44,15 @@
           "axis_len": 14728,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_interferogram",
           "role": "Reference Interferogram",
+          "shape": [
+            14728
+          ],
           "signal_type": "interferogram",
           "unit": null,
           "value_first": 0.000435,
@@ -53,8 +67,15 @@
           "axis_len": 4933,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reference_spectrum",
           "role": "Reference Spectrum",
+          "shape": [
+            4933
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.000011,
@@ -69,8 +90,15 @@
           "axis_len": 29456,
           "axis_order": "ascending",
           "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_interferogram",
           "role": "Sample Interferogram",
+          "shape": [
+            29456
+          ],
           "signal_type": "interferogram",
           "unit": null,
           "value_first": 0.000587,
@@ -85,8 +113,15 @@
           "axis_len": 512,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_phase",
           "role": "Sample Phase",
+          "shape": [
+            512
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.001052,
@@ -101,8 +136,15 @@
           "axis_len": 4927,
           "axis_order": "descending",
           "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample_spectrum",
           "role": "Sample Spectrum",
+          "shape": [
+            4927
+          ],
           "signal_type": "single_beam",
           "unit": null,
           "value_first": 0.000018,

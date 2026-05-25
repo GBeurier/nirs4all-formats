@@ -19,8 +19,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.036743,
@@ -53,8 +60,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.01188,
@@ -87,8 +101,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.163765,
@@ -121,8 +142,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.129192,
@@ -155,8 +183,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.052398,
@@ -189,8 +224,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.12873,
@@ -223,8 +265,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.005128,
@@ -257,8 +306,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.131852,
@@ -291,8 +347,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.057219,
@@ -325,8 +388,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.228555,
@@ -359,8 +429,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.07238,
@@ -393,8 +470,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.212921,
@@ -427,8 +511,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.103596,
@@ -461,8 +552,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.19941,
@@ -495,8 +593,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.032496,
@@ -529,8 +634,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.103855,
@@ -563,8 +675,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.039788,
@@ -597,8 +716,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.052305,
@@ -631,8 +757,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.158021,
@@ -665,8 +798,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.131622,
@@ -699,8 +839,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.021621,
@@ -733,8 +880,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.062899,
@@ -767,8 +921,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.104987,
@@ -801,8 +962,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.120746,
@@ -835,8 +1003,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.119908,
@@ -869,8 +1044,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.127039,
@@ -903,8 +1085,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.003434,
@@ -937,8 +1126,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.041772,
@@ -971,8 +1167,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.046073,
@@ -1005,8 +1208,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.003859,
@@ -1039,8 +1249,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.155654,
@@ -1073,8 +1290,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.062125,
@@ -1107,8 +1331,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.05073,
@@ -1141,8 +1372,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.117551,
@@ -1175,8 +1413,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.169976,
@@ -1209,8 +1454,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.064483,
@@ -1243,8 +1495,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.004467,
@@ -1277,8 +1536,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.068412,
@@ -1311,8 +1577,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.010459,
@@ -1345,8 +1618,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.112546,
@@ -1379,8 +1659,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.069298,
@@ -1413,8 +1700,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.38725,
@@ -1447,8 +1741,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.000407,
@@ -1481,8 +1782,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.046686,
@@ -1515,8 +1823,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.008605,
@@ -1549,8 +1864,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.035745,
@@ -1583,8 +1905,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.095345,
@@ -1617,8 +1946,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.108765,
@@ -1651,8 +1987,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": -0.297107,
@@ -1685,8 +2028,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "spectrum",
           "role": "spectrum",
+          "shape": [
+            200
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 0.140986,

@@ -29,8 +29,15 @@
           "axis_len": 1623,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dark_reference",
           "role": "dark_reference",
+          "shape": [
+            1623
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 2.4,
@@ -45,8 +52,15 @@
           "axis_len": 1623,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample",
           "role": "sample",
+          "shape": [
+            1623
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 23.65,
@@ -61,8 +75,15 @@
           "axis_len": 1623,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "transmittance",
           "role": "transmittance",
+          "shape": [
+            1623
+          ],
           "signal_type": "transmittance",
           "unit": "%",
           "value_first": 30.313837,
@@ -77,8 +98,15 @@
           "axis_len": 1623,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "white_reference",
           "role": "white_reference",
+          "shape": [
+            1623
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 72.5,

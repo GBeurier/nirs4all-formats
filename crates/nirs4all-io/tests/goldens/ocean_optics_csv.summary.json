@@ -18,8 +18,15 @@
           "axis_len": 1994,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "processed",
           "role": "processed",
+          "shape": [
+            1994
+          ],
           "signal_type": "unknown",
           "unit": null,
           "value_first": 10.013,

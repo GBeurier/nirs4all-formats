@@ -23,8 +23,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.036743,
@@ -39,8 +46,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.918877,
@@ -77,8 +91,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.01188,
@@ -93,8 +114,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.973015,
@@ -131,8 +159,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.163765,
@@ -147,8 +182,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.458024,
@@ -185,8 +227,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.129192,
@@ -201,8 +250,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.74269,
@@ -239,8 +295,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.052398,
@@ -255,8 +318,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.886343,
@@ -293,8 +363,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.12873,
@@ -309,8 +386,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.743481,
@@ -347,8 +431,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.005128,
@@ -363,8 +454,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.011877,
@@ -401,8 +499,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.131852,
@@ -417,8 +522,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.354727,
@@ -455,8 +567,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.057219,
@@ -471,8 +590,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.87656,
@@ -509,8 +635,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.228555,
@@ -525,8 +658,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.590807,
@@ -563,8 +703,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.07238,
@@ -579,8 +726,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.181353,
@@ -617,8 +771,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.212921,
@@ -633,8 +794,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.612462,
@@ -671,8 +839,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.103596,
@@ -687,8 +862,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.269392,
@@ -725,8 +907,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.19941,
@@ -741,8 +930,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.5,
@@ -779,8 +975,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.032496,
@@ -795,8 +998,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.927906,
@@ -833,8 +1043,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.103855,
@@ -849,8 +1066,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.270149,
@@ -887,8 +1111,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.039788,
@@ -903,8 +1134,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.095944,
@@ -941,8 +1179,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.052305,
@@ -957,8 +1202,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.886533,
@@ -995,8 +1247,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.158021,
@@ -1011,8 +1270,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.438867,
@@ -1049,8 +1315,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.131622,
@@ -1065,8 +1338,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.354012,
@@ -1103,8 +1383,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.021621,
@@ -1119,8 +1406,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.051044,
@@ -1157,8 +1451,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.062899,
@@ -1173,8 +1474,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.155843,
@@ -1211,8 +1519,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.104987,
@@ -1227,8 +1542,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.785258,
@@ -1265,8 +1587,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.120746,
@@ -1281,8 +1610,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.320523,
@@ -1319,8 +1655,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.119908,
@@ -1335,8 +1678,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.758738,
@@ -1373,8 +1723,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.127039,
@@ -1389,8 +1746,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.339796,
@@ -1427,8 +1791,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.003434,
@@ -1443,8 +1814,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.007939,
@@ -1481,8 +1859,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.041772,
@@ -1497,8 +1882,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.100962,
@@ -1535,8 +1927,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.046073,
@@ -1551,8 +1950,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.111919,
@@ -1589,8 +1995,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.003859,
@@ -1605,8 +2018,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.008925,
@@ -1643,8 +2063,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.155654,
@@ -1659,8 +2086,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.431047,
@@ -1697,8 +2131,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.062125,
@@ -1713,8 +2154,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.153785,
@@ -1751,8 +2199,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.05073,
@@ -1767,8 +2222,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.889754,
@@ -1805,8 +2267,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.117551,
@@ -1821,8 +2290,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.310843,
@@ -1859,8 +2335,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.169976,
@@ -1875,8 +2358,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.479028,
@@ -1913,8 +2403,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.064483,
@@ -1929,8 +2426,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.862018,
@@ -1967,8 +2471,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.004467,
@@ -1983,8 +2494,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.010339,
@@ -2021,8 +2539,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.068412,
@@ -2037,8 +2562,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.170609,
@@ -2075,8 +2607,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.010459,
@@ -2091,8 +2630,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.976205,
@@ -2129,8 +2675,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.112546,
@@ -2145,8 +2698,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.295823,
@@ -2183,8 +2743,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.069298,
@@ -2199,8 +2766,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.173,
@@ -2237,8 +2811,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.38725,
@@ -2253,8 +2834,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.5,
@@ -2291,8 +2879,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.000407,
@@ -2307,8 +2902,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.999063,
@@ -2345,8 +2947,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.046686,
@@ -2361,8 +2970,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.11349,
@@ -2399,8 +3015,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.008605,
@@ -2415,8 +3038,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.020011,
@@ -2453,8 +3083,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.035745,
@@ -2469,8 +3106,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.920989,
@@ -2507,8 +3151,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.095345,
@@ -2523,8 +3174,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.802888,
@@ -2561,8 +3219,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.108765,
@@ -2577,8 +3242,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.778458,
@@ -2615,8 +3287,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": -0.297107,
@@ -2631,8 +3310,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 1.5,
@@ -2669,8 +3355,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "absorbance",
           "role": "absorbance",
+          "shape": [
+            200
+          ],
           "signal_type": "absorbance",
           "unit": "absorbance",
           "value_first": 0.140986,
@@ -2685,8 +3378,15 @@
           "axis_len": 200,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "reflectance",
           "role": "reflectance",
+          "shape": [
+            200
+          ],
           "signal_type": "reflectance",
           "unit": "reflectance",
           "value_first": 0.722793,

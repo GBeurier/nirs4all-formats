@@ -30,8 +30,15 @@
           "axis_len": 1019,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "dark_reference",
           "role": "dark_reference",
+          "shape": [
+            1019
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 259.585449,
@@ -46,8 +53,15 @@
           "axis_len": 1019,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "sample",
           "role": "sample",
+          "shape": [
+            1019
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 267.155243,
@@ -62,8 +76,15 @@
           "axis_len": 1019,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "scope",
           "role": "scope",
+          "shape": [
+            1019
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 267.155243,
@@ -78,8 +99,15 @@
           "axis_len": 1019,
           "axis_order": "ascending",
           "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
           "name": "white_reference",
           "role": "white_reference",
+          "shape": [
+            1019
+          ],
           "signal_type": "raw_counts",
           "unit": null,
           "value_first": 3031.831299,
