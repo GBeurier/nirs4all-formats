@@ -17,13 +17,20 @@ Records exactly as the Rust core emits them, as plain dicts:
 
 ## Lossless object model
 
-`open_recordset(path)` returns a `SpectralRecordSet`, a faithful mirror of the
+`open_recordset(path, single_record=False)` returns a `SpectralRecordSet`, a
+faithful mirror of the
 Rust `SpectralRecord`: every signal, its N-dimensional `shape`/`dims`, the
 spectral `axis`, per-dimension `coords`, full `metadata` and `provenance`.
 Nothing is reshaped, aligned or dropped. The dataclasses are `SpectralRecordSet`,
 `SpectralRecord`, `SpectralArray`, `SpectralAxis`, `SourceFile`, `Provenance`.
 `SpectralArray.values` is reshaped to `shape` (C-order); `SpectralArray.to_xarray()`
 returns a labelled `xarray.DataArray` when xarray is installed.
+
+`single_record=True` asks the cube readers (ENVI Standard, AVIRIS/ERDAS LAN)
+to emit one N-dimensional record (`dims = ["row", "col", "x"]`, with `row`/`col`
+coordinates) instead of one record per pixel — preserving the spatial grid.
+Projecting such a record (`to_numpy`, `to_sklearn`, …) flattens `row`/`col`
+back into samples, so you still get `X[n_pixels, n_bands]` for modelling.
 
 ## Projections (explicit, possibly lossy)
 

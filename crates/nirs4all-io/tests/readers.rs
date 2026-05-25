@@ -2762,6 +2762,34 @@ fn reads_envi_standard_image_cube_sparse_mask() {
 }
 
 #[test]
+fn reads_envi_standard_image_cube_as_single_nd_record() {
+    let path = workspace_file("samples/envi_sli/cubescope-mini-cube.hdr");
+    let per_pixel = open_path(&path).expect("open ENVI cube per-pixel");
+
+    let options = ReadOptions::default().single_record();
+    let records = open_path_with_options(&path, &options).expect("open ENVI cube single record");
+
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "envi-standard-cube");
+    let signal = records[0].signals.get("spectrum").expect("spectrum");
+    assert_eq!(signal.shape, vec![48, 48, 32]);
+    assert_eq!(signal.dims, vec!["row", "col", "x"]);
+    assert_eq!(signal.axis.values.len(), 32);
+    assert_eq!(signal.coords["row"].values.len(), 48);
+    assert_eq!(signal.coords["col"].values.len(), 48);
+    // C-order [row][col][band]: pixel (0,0) is the first 32 values and the
+    // interleave (bsq here) is resolved back to the same spectrum as
+    // the per-pixel reader.
+    assert_eq!(
+        signal.values[..32].to_vec(),
+        per_pixel[0].signals["spectrum"].values
+    );
+    // Map-level georeferencing is preserved on the single record.
+    assert_eq!(records[0].metadata["map_projection"].as_str(), Some("UTM"));
+    assert_eq!(records[0].metadata["map_pixel_size_x"].as_f64(), Some(30.0));
+}
+
+#[test]
 fn reads_numpy_npy_matrix_with_generated_axis() {
     let records =
         open_path(workspace_file("samples/numpy/synthetic_nirs_X.npy")).expect("open npy");

@@ -140,6 +140,61 @@ fn reads_aviris_indian_pines_erdas_lan_sparse_mask() {
         .contains("mask pixel (145, 0) is outside 0..145 x 0..145"));
 }
 
+#[test]
+fn reads_aviris_indian_pines_as_single_nd_cube() {
+    let path = workspace_file("samples/hyperspectral_cubes/92AV3C.lan");
+    let per_pixel = open_path(&path).expect("open AVIRIS LAN");
+
+    let options = ReadOptions::default().single_record();
+    let records = open_path_with_options(&path, &options).expect("open AVIRIS LAN single cube");
+
+    // One N-D record instead of 21,025 pixel records.
+    assert_eq!(records.len(), 1);
+    let signal = &records[0].signals["raw_counts"];
+    assert_eq!(signal.shape, vec![145, 145, 220]);
+    assert_eq!(signal.dims, vec!["row", "col", "x"]);
+    assert_eq!(signal.values.len(), 145 * 145 * 220);
+    // Spectral axis is the band axis.
+    assert_eq!(signal.axis.values.len(), 220);
+    assert_eq!(signal.axis.kind, AxisKind::Wavelength);
+    // Row/col coordinates carry the absolute pixel indices.
+    assert_eq!(signal.coords["row"].values.len(), 145);
+    assert_eq!(signal.coords["col"].values.len(), 145);
+    assert_eq!(signal.coords["row"].values[0], 0.0);
+    assert_eq!(signal.coords["col"].values[144], 144.0);
+    // The cube is C-order [row][col][band]: pixel (0,0) is the first 220
+    // values and must match the per-pixel record.
+    assert_eq!(
+        signal.values[..220].to_vec(),
+        per_pixel[0].signals["raw_counts"].values
+    );
+    // Ground-truth labels are preserved as a 2-D grid in metadata.
+    let grid = records[0].metadata["land_cover_class_grid"]
+        .as_array()
+        .unwrap();
+    assert_eq!(grid.len(), 145);
+    assert_eq!(grid[0].as_array().unwrap().len(), 145);
+
+    // A rectangular window yields a sub-cube; a sparse mask is refused.
+    let windowed = ReadOptions::default()
+        .single_record()
+        .with_cube_window(CubeWindow::new(10, Some(12), 20, Some(23)));
+    let sub = open_path_with_options(&path, &windowed).expect("windowed single cube");
+    assert_eq!(sub[0].signals["raw_counts"].shape, vec![2, 3, 220]);
+    assert_eq!(
+        sub[0].signals["raw_counts"].coords["row"].values,
+        vec![10.0, 11.0]
+    );
+
+    let masked = ReadOptions::default()
+        .single_record()
+        .with_cube_mask(CubeMask::new(vec![(0, 0), (1, 1)]));
+    let err = open_path_with_options(&path, &masked).expect_err("mask incompatible with N-D");
+    assert!(err
+        .to_string()
+        .contains("sparse pixel mask is incompatible"));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

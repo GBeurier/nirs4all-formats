@@ -22,9 +22,15 @@ minimal ENVI Standard cube-to-point-spectra path.
   axis.
 - Emits one `SpectralRecord` per `spectra names` entry, with one `spectrum`
   signal and `metadata.sample_id`.
-- Emits one `SpectralRecord` per ENVI Standard pixel, with `pixel_x`,
-  `pixel_y`, row-slowest/X-fastest order and optional parsed `map info`
-  coordinates in metadata.
+- Emits one `SpectralRecord` per ENVI Standard pixel by default, with
+  `pixel_x`, `pixel_y`, row-slowest/X-fastest order and optional parsed
+  `map info` coordinates in metadata.
+- Optionally emits a single N-dimensional cube record
+  (`dims = ["row", "col", "x"]`, `shape = [lines, samples, bands]`, with
+  `row`/`col` index coordinates and map-level georeferencing in metadata)
+  through `ReadOptions::single_record()` / CLI `read-json --single-record`.
+  The BSQ/BIL/BIP interleave is resolved into C-order; a sparse mask is
+  rejected in this mode.
 - Supports optional half-open row/column windows through
   `open_path_with_options()` and the CLI `read-json --rows START:END --cols
   START:END`, while preserving original pixel coordinates in record metadata.

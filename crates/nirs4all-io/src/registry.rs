@@ -113,6 +113,11 @@ pub trait Reader: Send + Sync {
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct ReadOptions {
     pub cube_selection: Option<CubeSelection>,
+    /// Emit an image cube as a single N-dimensional record
+    /// (`dims = ["row", "col", "x"]`) instead of one record per pixel.
+    /// Preserves the spatial grid losslessly. Incompatible with a sparse
+    /// [`CubeMask`] (a non-rectangular selection cannot be an N-D array).
+    pub single_record_cube: bool,
 }
 
 impl ReadOptions {
@@ -126,8 +131,15 @@ impl ReadOptions {
         self
     }
 
+    /// Request a single N-dimensional cube record (see
+    /// [`ReadOptions::single_record_cube`]).
+    pub fn single_record(mut self) -> Self {
+        self.single_record_cube = true;
+        self
+    }
+
     pub(crate) fn has_reader_options(&self) -> bool {
-        self.cube_selection.is_some()
+        self.cube_selection.is_some() || self.single_record_cube
     }
 }
 
@@ -223,6 +235,40 @@ pub(crate) fn cube_pixels(
             }
             Ok(mask.pixels.clone())
         }
+    }
+}
+
+/// Rectangular region (row range, col range) selected for a single-record
+/// cube read. Full cube by default, a [`CubeWindow`] when set; a sparse
+/// [`CubeMask`] is rejected because it cannot form an N-D array.
+pub(crate) fn cube_region(
+    options: &ReadOptions,
+    rows: usize,
+    cols: usize,
+    context: &str,
+) -> Result<(std::ops::Range<usize>, std::ops::Range<usize>)> {
+    match &options.cube_selection {
+        None => Ok((0..rows, 0..cols)),
+        Some(CubeSelection::Window(window)) => {
+            let row_end = window.row_end.unwrap_or(rows);
+            let col_end = window.col_end.unwrap_or(cols);
+            if window.row_start >= row_end || row_end > rows {
+                return Err(Error::InvalidRecord(format!(
+                    "{context} row window {}..{} is outside 0..{rows}",
+                    window.row_start, row_end
+                )));
+            }
+            if window.col_start >= col_end || col_end > cols {
+                return Err(Error::InvalidRecord(format!(
+                    "{context} column window {}..{} is outside 0..{cols}",
+                    window.col_start, col_end
+                )));
+            }
+            Ok((window.row_start..row_end, window.col_start..col_end))
+        }
+        Some(CubeSelection::Mask(_)) => Err(Error::InvalidRecord(format!(
+            "{context}: a sparse pixel mask is incompatible with single-record cube layout; use a window or the per-pixel layout"
+        ))),
     }
 }
 

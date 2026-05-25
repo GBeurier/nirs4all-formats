@@ -9,7 +9,7 @@ use nirs4all_io_core::{
 use serde_json::json;
 
 use crate::readers::util::normalize_key;
-use crate::registry::{cube_pixels, ReadOptions};
+use crate::registry::{cube_pixels, cube_region, ReadOptions};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -665,6 +665,93 @@ fn read_standard_cube(
     }
     let (axis_values, axis_unit, axis_kind) = axis_from_header(header, bands, &mut warnings)?;
     let map_info = parse_map_info(header);
+
+    if options.single_record_cube {
+        let (row_range, col_range) = cube_region(options, lines, samples, "ENVI Standard cube")?;
+        let n_rows = row_range.len();
+        let n_cols = col_range.len();
+        let mut cube = Vec::with_capacity(n_rows * n_cols * bands);
+        for row in row_range.clone() {
+            for col in col_range.clone() {
+                for band in 0..bands {
+                    let index = cube_value_index(
+                        interleave.as_str(),
+                        samples,
+                        lines,
+                        bands,
+                        row,
+                        col,
+                        band,
+                    );
+                    cube.push(values[index]);
+                }
+            }
+        }
+        let axis = SpectralAxis::new(axis_values.clone(), axis_unit.clone(), axis_kind.clone())?;
+        let row_coord = SpectralAxis::new(
+            row_range.clone().map(|r| r as f64).collect(),
+            "pixel",
+            AxisKind::Index,
+        )?;
+        let col_coord = SpectralAxis::new(
+            col_range.clone().map(|c| c as f64).collect(),
+            "pixel",
+            AxisKind::Index,
+        )?;
+        let mut coords = BTreeMap::new();
+        coords.insert("row".to_string(), row_coord);
+        coords.insert("col".to_string(), col_coord);
+        let signal = SpectralArray::new_nd(
+            vec![n_rows, n_cols, bands],
+            vec!["row".to_string(), "col".to_string(), "x".to_string()],
+            axis,
+            coords,
+            cube,
+            SignalType::Unknown,
+            None,
+            "spectrum",
+            "file",
+        )?;
+        let mut signals = BTreeMap::new();
+        signals.insert("spectrum".to_string(), signal);
+        let mut metadata = BTreeMap::new();
+        metadata.insert("samples".to_string(), json!(samples));
+        metadata.insert("lines".to_string(), json!(lines));
+        metadata.insert("bands".to_string(), json!(bands));
+        metadata.insert("interleave".to_string(), json!(interleave));
+        metadata.insert("spatial_unit".to_string(), json!("pixel"));
+        if let Some(map_info) = map_info.as_ref() {
+            // Map-level georeferencing (the per-pixel spatial_x/y of the
+            // per-pixel layout is recoverable from the row/col coords plus
+            // these reference + pixel-size fields).
+            metadata.insert("map_projection".to_string(), json!(map_info.projection));
+            metadata.insert("map_ref_pixel_x".to_string(), json!(map_info.ref_pixel_x));
+            metadata.insert("map_ref_pixel_y".to_string(), json!(map_info.ref_pixel_y));
+            metadata.insert("map_ref_x".to_string(), json!(map_info.ref_map_x));
+            metadata.insert("map_ref_y".to_string(), json!(map_info.ref_map_y));
+            metadata.insert("map_pixel_size_x".to_string(), json!(map_info.pixel_size_x));
+            metadata.insert("map_pixel_size_y".to_string(), json!(map_info.pixel_size_y));
+        }
+        let record = SpectralRecord {
+            signals,
+            signal_type: SignalType::Unknown,
+            targets: BTreeMap::new(),
+            metadata,
+            provenance: Provenance {
+                format: "envi-standard-cube".to_string(),
+                reader: reader.to_string(),
+                reader_version: env!("CARGO_PKG_VERSION").to_string(),
+                sources: vec![header_source, data_source],
+                parsed_at_utc: None,
+                record_schema_version: "0.2.0".to_string(),
+                warnings,
+            },
+            quality_flags: Vec::new(),
+        };
+        record.validate()?;
+        return Ok(vec![record]);
+    }
+
     let pixels = cube_pixels(options, lines, samples, "ENVI Standard cube")?;
 
     let mut records = Vec::with_capacity(pixels.len());

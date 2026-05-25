@@ -26,7 +26,14 @@ emitted `SpectralAxis.order` is non-monotonic and records carry warning
 ## Implemented
 
 - probe/read for `92AV3C.lan`;
-- one `SpectralRecord` per pixel, i.e. 21,025 records;
+- one `SpectralRecord` per pixel by default, i.e. 21,025 records;
+- optional single N-dimensional cube record (`dims = ["row", "col", "x"]`,
+  `shape = [rows, cols, bands]`, `row`/`col` index coordinates) through
+  `ReadOptions::single_record()` and the CLI `read-json --single-record`. The
+  ground-truth labels are kept as a 2-D `metadata.land_cover_class_grid` in this
+  mode (they do not fit the scalar-per-record `targets` shape; use the per-pixel
+  layout for pixel-as-sample classification). Works with `--rows`/`--cols`
+  (sub-cube) but not with a sparse mask;
 - optional half-open row/column windows through `open_path_with_options()` and
   the CLI `read-json --rows START:END --cols START:END`;
 - optional sparse pixel mask through `ReadOptions::with_cube_mask(CubeMask::new(...))`

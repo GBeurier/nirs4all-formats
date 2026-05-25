@@ -33,6 +33,7 @@ fn build_options(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
+    single_record: bool,
 ) -> PyResult<ReadOptions> {
     let has_window = rows.is_some() || cols.is_some();
     let has_mask = pixels.is_some();
@@ -41,17 +42,21 @@ fn build_options(
             "rows/cols cannot be combined with pixels",
         ));
     }
-    if let Some(pixels) = pixels {
-        return Ok(ReadOptions::default().with_cube_mask(CubeMask::new(pixels)));
-    }
-    if has_window {
+    let mut options = if let Some(pixels) = pixels {
+        ReadOptions::default().with_cube_mask(CubeMask::new(pixels))
+    } else if has_window {
         let (row_start, row_end) = rows.unwrap_or((0, None));
         let (col_start, col_end) = cols.unwrap_or((0, None));
-        return Ok(ReadOptions::default().with_cube_window(CubeWindow::new(
+        ReadOptions::default().with_cube_window(CubeWindow::new(
             row_start, row_end, col_start, col_end,
-        )));
+        ))
+    } else {
+        ReadOptions::default()
+    };
+    if single_record {
+        options = options.single_record();
     }
-    Ok(ReadOptions::default())
+    Ok(options)
 }
 
 /// Probe a file and return JSON-like candidates ordered by confidence.
@@ -72,8 +77,8 @@ fn py_probe_path(py: Python<'_>, path: PathBuf) -> PyResult<PyObject> {
 #[pyfunction]
 #[pyo3(
     name = "open_path",
-    signature = (path, rows=None, cols=None, pixels=None),
-    text_signature = "(path, *, rows=None, cols=None, pixels=None)"
+    signature = (path, rows=None, cols=None, pixels=None, single_record=false),
+    text_signature = "(path, *, rows=None, cols=None, pixels=None, single_record=False)"
 )]
 fn py_open_path(
     py: Python<'_>,
@@ -81,8 +86,9 @@ fn py_open_path(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
+    single_record: bool,
 ) -> PyResult<PyObject> {
-    let options = build_options(rows, cols, pixels)?;
+    let options = build_options(rows, cols, pixels, single_record)?;
     let records = open_path_with_options(&path, &options).map_err(map_err)?;
     let value = to_json(records)?;
     Ok(pythonize(py, &value).map_err(map_err)?.into())
@@ -96,8 +102,8 @@ fn py_open_path(
 #[pyfunction]
 #[pyo3(
     name = "open_bytes",
-    signature = (name, bytes, rows=None, cols=None, pixels=None),
-    text_signature = "(name, bytes, *, rows=None, cols=None, pixels=None)"
+    signature = (name, bytes, rows=None, cols=None, pixels=None, single_record=false),
+    text_signature = "(name, bytes, *, rows=None, cols=None, pixels=None, single_record=False)"
 )]
 fn py_open_bytes(
     py: Python<'_>,
@@ -106,8 +112,9 @@ fn py_open_bytes(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
+    single_record: bool,
 ) -> PyResult<PyObject> {
-    let options = build_options(rows, cols, pixels)?;
+    let options = build_options(rows, cols, pixels, single_record)?;
     let records = open_bytes_with_options(&name, bytes, &options).map_err(map_err)?;
     let value = to_json(records)?;
     Ok(pythonize(py, &value).map_err(map_err)?.into())
@@ -120,9 +127,10 @@ fn py_open_bytes(
 #[pyfunction]
 #[pyo3(
     name = "open_with_sidecars",
-    signature = (name, bytes, sidecars, rows=None, cols=None, pixels=None),
-    text_signature = "(name, bytes, sidecars, *, rows=None, cols=None, pixels=None)"
+    signature = (name, bytes, sidecars, rows=None, cols=None, pixels=None, single_record=false),
+    text_signature = "(name, bytes, sidecars, *, rows=None, cols=None, pixels=None, single_record=False)"
 )]
+#[allow(clippy::too_many_arguments)]
 fn py_open_with_sidecars(
     py: Python<'_>,
     name: PathBuf,
@@ -131,8 +139,9 @@ fn py_open_with_sidecars(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
+    single_record: bool,
 ) -> PyResult<PyObject> {
-    let options = build_options(rows, cols, pixels)?;
+    let options = build_options(rows, cols, pixels, single_record)?;
     let mut map = InMemorySidecars::new();
     for (key, value) in sidecars {
         map.insert(PathBuf::from(key), value);
@@ -161,8 +170,9 @@ fn py_open_with_sidecars(
         rows=None,
         cols=None,
         pixels=None,
+        single_record=false,
     ),
-    text_signature = "(path, *, max_depth=None, include_hidden=False, follow_symlinks=False, include_unsupported=False, rows=None, cols=None, pixels=None)"
+    text_signature = "(path, *, max_depth=None, include_hidden=False, follow_symlinks=False, include_unsupported=False, rows=None, cols=None, pixels=None, single_record=False)"
 )]
 #[allow(clippy::too_many_arguments)]
 fn py_walk_path(
@@ -175,8 +185,9 @@ fn py_walk_path(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
+    single_record: bool,
 ) -> PyResult<PyObject> {
-    let read_options = build_options(rows, cols, pixels)?;
+    let read_options = build_options(rows, cols, pixels, single_record)?;
     let options = WalkOptions {
         max_depth,
         skip_hidden: !include_hidden,

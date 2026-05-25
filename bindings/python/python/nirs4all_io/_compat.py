@@ -22,16 +22,22 @@ except ImportError:  # pragma: no cover - fallback when the wheel was not built
     _native = None  # type: ignore[assignment]
 
 
-def open_records(path: str | Path) -> list[dict[str, Any]]:
-    """Read a file through the Rust backend and return normalized records."""
+def open_records(
+    path: str | Path, *, single_record: bool = False
+) -> list[dict[str, Any]]:
+    """Read a file through the Rust backend and return normalized records.
+
+    ``single_record=True`` asks cube readers (ENVI Standard, AVIRIS/ERDAS
+    LAN) to emit a single N-dimensional record instead of one per pixel.
+    """
 
     if _native is not None:
-        records = _native.open_path(str(path))
+        records = _native.open_path(str(path), single_record=single_record)
         if not isinstance(records, list):
             raise RuntimeError("native reader returned a non-list payload")
         return [record for record in records if isinstance(record, dict)]
 
-    raw = _run_rust_reader(path)
+    raw = _run_rust_reader(path, single_record=single_record)
     records = json.loads(raw)
     if not isinstance(records, list):
         raise RuntimeError("Rust reader returned a non-list JSON payload")
@@ -143,8 +149,11 @@ def walk_path(
     return [entry for entry in entries if isinstance(entry, dict)]
 
 
-def _run_rust_reader(path: str | Path) -> str:
-    return _run_rust_reader_command(["read-json", str(path)])
+def _run_rust_reader(path: str | Path, *, single_record: bool = False) -> str:
+    args = ["read-json", str(path)]
+    if single_record:
+        args.append("--single-record")
+    return _run_rust_reader_command(args)
 
 
 def _run_rust_reader_command(args: Sequence[str]) -> str:
