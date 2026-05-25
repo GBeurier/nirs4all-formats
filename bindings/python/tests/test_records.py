@@ -98,6 +98,20 @@ def test_to_pandas_long_lists_every_point() -> None:
     assert long["value"].tolist() == [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
 
 
+def test_to_polars_matches_pandas_columns() -> None:
+    pl = pytest.importorskip("polars")
+    pytest.importorskip("pandas")
+    rs = SpectralRecordSet.from_dicts([_record_2d()])
+
+    pdf = rs.to_pandas(signal="intensity")
+    pldf = rs.to_polars(signal="intensity")
+
+    assert isinstance(pldf, pl.DataFrame)
+    assert pldf.height == pdf.shape[0] == 2
+    assert list(pldf.columns) == list(pdf.columns)
+    assert pldf["coord_y"].to_list() == [10.0, 20.0]
+
+
 def test_to_xarray_when_available() -> None:
     xr = pytest.importorskip("xarray")
     rs = SpectralRecordSet.from_dicts([_record_2d()])
