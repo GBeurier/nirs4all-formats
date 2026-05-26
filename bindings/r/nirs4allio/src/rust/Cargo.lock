@@ -867,8 +867,10 @@ version = "0.1.0-alpha.0"
 dependencies = [
  "arrow-array",
  "arrow-schema",
+ "bytes",
  "calamine",
  "cfb",
+ "chrono",
  "flate2",
  "hdf5-reader",
  "matfile",

@@ -1,55 +1,89 @@
 # Allotrope ADF
 
-Status: experimental, local-fixture only.
+> **Status:** Experimental · **Vendor:** Allotrope Foundation · **Extensions:** `.adf` · **Feature flag:** `fmt-hdf5`
 
-The Allotrope ADF reader covers a narrow HDF5 data-cube subset. It detects
-`.adf` files with HDF5 magic and validates the core ADF groups:
+ADF (Allotrope Data Format) is the Allotrope Foundation's HDF5-based container
+for analytical data cubes plus an RDF semantic description. This reader covers a
+narrow data-cube subset and decodes a small, defensive slice of the RDF
+triplestore. It is local-fixture only while redistributable and vendor ADF files
+are sourced.
 
-- `/data-cubes`;
-- `/data-description`;
-- `/data-package`;
-- `/named-graphs`.
+## Instruments & software
 
-For each cube under `/data-cubes`, the reader emits numeric datasets under
-`measures` as `SpectralRecord`s. A matching 1-D dataset under `scales` is used
-as the x axis when its length matches the primary measure dimension; otherwise
-a generated index axis is used. Two-dimensional measures are split into one
-record per secondary column.
+Produced by Allotrope-aware analytical software and conversion tools. Validation
+currently relies on a single local `adfsee` demonstration file; vendor
+instrumental ADF exports (Waters, Sciex, Agilent, Bruker, …) are not yet
+available.
 
-The reader now decodes a small, defensive subset of the ADF RDF triplestore in
-`/data-description/dictionary` and `/data-description/quads`. When the observed
-ADF mapping pattern is present, it promotes cube titles/labels, measure
-component types, primary scale component types and secondary scale component
-types into metadata. The local `adfsee` fixture maps:
+## File structure
 
-- `AbsorbanceUnitValue` measures to an absorbance signal with `mAU` units;
-- `SecondTimeValue` scales to a seconds axis typed as `time`;
-- `NanometerValue` secondary scales to `nm` wavelength metadata for split 2-D
-  records.
+Detected by an `.adf` extension plus the HDF5 magic (`\x89HDF\r\n\x1a\n`); the
+ADF structure is validated on read. Decoding uses the pure-Rust `hdf5-reader`
+crate (gated behind `fmt-hdf5`) through the shared HDF5 helper, which also routes
+external-file references via the sidecar resolver. The reader requires the four
+core ADF groups: `/data-cubes`, `/data-description`, `/data-package` and
+`/named-graphs`.
 
-Unknown mappings fall back to conservative IDs and warnings. This is not an
-ontology-complete resolver.
+For each cube under `/data-cubes`, numeric datasets under `measures` become
+records. A 1-D dataset under `scales` whose length matches the primary measure
+dimension is used as the x axis; otherwise a generated index axis is used.
+Two-dimensional measures are split into one record per secondary column.
 
-## Supported Fixtures
+The reader additionally decodes the RDF triplestore in
+`/data-description/dictionary` (a byte store + 13-byte key rows) and
+`/data-description/quads` (a 5-column subject/predicate/object table indexed into
+the dictionary), promoting cube titles/labels/descriptions, measure component
+types and primary/secondary scale component types when the expected ADF mapping
+pattern is present. Unknown mappings fall back to conservative IDs and warnings.
 
-| Fixture | Records | Axis | Signal | Notes |
-|---|---:|---|---|---|
-| `samples_local/allotrope_adf/adfsee_example.adf` | 4 | generated index or seconds scale, 18001 points; secondary `250/400 nm` for the 2-D UV spectrum | unknown double array or absorbance `mAU` | Local-only `adfsee` demo; 3 numeric cubes, one 2-column measure |
+## What nirs4all-io extracts
 
-The local fixture is not committed because the ADF data package and ontologies
-remain governed by Allotrope terms even though `adfsee` is an open inspection
-tool. CI skips this test when `samples_local/` is absent.
+- **Signals** — numeric `measures` datasets. The `adfsee` fixture maps
+  `AbsorbanceUnitValue` measures to an `absorbance` signal in `mAU`; other
+  component types yield an `Unknown`-typed signal named from the measure ID.
+- **Axis** — a matching `scales` dataset or a generated index axis.
+  `SecondTimeValue` scales become a seconds axis typed `Time`; `NanometerValue`
+  scales become an `nm` wavelength axis (used as the secondary axis for split
+  2-D records).
+- **Metadata** — cube ID, measure ID/shape, axis source/unit/kind, scale IDs,
+  ADF component types, axis order, and decoded cube titles/labels/descriptions.
+- **Provenance & warnings** — always
+  `allotrope_adf_reverse_engineered_data_cube_subset`, plus
+  `allotrope_adf_rdf_semantics_partially_mapped` /
+  `..._not_resolved` (and a decode-failure warning if the RDF slice cannot be
+  read).
 
-## Dispatch Boundaries
+## Variants & support status
 
-This is not a full Allotrope implementation. Missing pieces before a `fait`
-status:
+| Variant | Status | Notes |
+|---|---|---|
+| 1-D numeric data cube | Experimental | One record per measure on its scale or a generated index axis. |
+| 2-D data cube | Experimental | Split into one record per secondary column. |
+| RDF semantics (titles, component types) | Experimental | Defensive subset of dictionary + quads; conservative fallback otherwise. |
+| Vendor instrumental ADF | Planned | Waters/Sciex/Agilent/etc. exports not yet sourced. |
 
-- RDF dictionary and quad decoding for quantity names, units and dimensions;
-- full ADF ontology mapping beyond the narrow component types above;
-- SDK/reference-reader validation;
-- vendor-specific ADF exports from Waters, Sciex, Agilent or similar systems;
-- redistributable fixtures that can run in CI.
+## Limitations & known gaps
 
-The JSON Simple Model path remains separate and is documented in
-`formats/allotrope-asm.md`.
+- Not a full Allotrope implementation: only the narrow data-cube subset and a
+  defensive RDF slice are decoded.
+- The full ADF ontology, complete quantity/unit/dimension resolution and SDK /
+  reference-reader validation are pending.
+- No vendor instrumental ADF exports are available, and the only fixture is
+  local-only (governed by Allotrope terms), so this cannot run in CI.
+- The JSON Simple Model (ASM) path is separate — see
+  [`allotrope-asm`](allotrope-asm.md).
+
+## Reference readers
+
+The Allotrope SDK and the `adfsee` inspection tool; full conformance awaits
+redistributable fixtures and ontology resolution.
+
+## Samples & validation
+
+Fixture: `samples_local/allotrope_adf/adfsee_example.adf` (4 records from 3
+numeric cubes, including one 2-column measure; generated-index or seconds scale
+with a secondary `250/400 nm` axis for the 2-D UV spectrum; `mAU` absorbance).
+The file is not committed because the ADF data package and ontologies remain
+governed by Allotrope terms even though `adfsee` is an open inspection tool; CI
+skips this test when `samples_local/` is absent. The probe reports
+`allotrope-adf` at `Confidence::Likely`.

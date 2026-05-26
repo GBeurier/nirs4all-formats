@@ -1,62 +1,84 @@
 # WiTec WIP / WID
 
-Status: experimental native subset; ASCII exports are covered by the
-row-oriented spectral table reader.
+> **Status:** Partial · **Vendor:** WiTec · **Extensions:** `.wip`, `.wid`
 
-## Format
-
-WiTec `.wip` and `.wid` files are binary project containers produced by WiTec
-Project / Project FIVE for confocal Raman workflows. They can contain single
+WiTec `.wip` and `.wid` files are binary project containers written by WiTec
+Project / Project FIVE for confocal Raman workflows. They can hold single
 spectra, maps, line scans, image/navigation metadata and project-tree objects.
-Observed public fixtures include both older `WIT^` signatures and the Project
-FIVE `WIT_PR06` signature. The committed `Sa4.wip` fixture is a `WIT_PR06`
-project containing a `TDGraph` spectral map.
+nirs4all-io decodes one observed Project FIVE map layout natively; the broad
+interchange path remains the WiTec ASCII export, handled by the
+[row-oriented spectral table reader](row-spectral-table.md). The format is Raman,
+adjacent to the core NIRS point-spectrum scope.
 
-The practical broad interchange path remains the WiTec ASCII export. The
-committed fixture `samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt` is parsed
-by `nirs4all_io::readers::spectral_table` as raw CCD counts with a nanometer
-axis.
+## Instruments & software
 
-## Implemented
+Produced by WiTec Project and Project FIVE for WiTec confocal Raman microscopes.
+Public fixtures show both the older `WIT^` signature and the Project FIVE
+`WIT_PR06` signature; the committed `Sa4.wip` fixture is a `WIT_PR06` project
+containing a `TDGraph` spectral map.
 
-- `.wip` and `.wid` sniffing when the file starts with `WIT^` or `WIT_PR06`;
-- definite `witec-wip` probe result for signed binary project files;
-- experimental `WIT_PR06` TDGraph decoder for the committed `Sa4.wip` layout:
-  `SizeX=90`, `SizeY=55`, `SizeGraph=1024`, `DataType=6`;
-- `LineValid` handling so the interrupted acquisition emits 4410 valid spectra
-  instead of 4950 physical grid slots;
-- strict boolean validation of `LineValid` bytes (`0`/`1`) and diagnostic
-  metadata for valid/invalid line counts, physical grid slots and physical
-  spectrum index;
-- spectral axis reconstruction from the WiTec `FreePolynom` coefficients,
-  converted to Raman shift (`cm-1`) from `ExcitationWaveLength`;
-- diagnostic metadata for the `FreePolynom` order and bin range used to build
-  the wavelength axis before Raman-shift conversion;
-- physical map position metadata in micrometers, derived from the TDGraph
-  `SpaceTransformationID` and its model/world origin, scale and rotation
-  matrices;
-- strict refusal for legacy `WIT^` and unknown `WIT_PR06` layouts;
-- WiTec ASCII single-spectrum export support through `row-spectral-table`;
-- real `Sa4.wip` TDGraph regression tests.
+## File structure
 
-## Missing
+The reader sniffs `.wip`/`.wid` by the leading project signature (`WIT^` or
+`WIT_PR06`) and emits a `Definite` probe for both. Only the `WIT_PR06` TDGraph
+layout is decoded:
 
-- general native binary project-tree parser;
-- extraction of arbitrary single spectra, maps, line scans and time series from
-  `.wip`;
-- typed WiTec metadata normalization for laser, objective, integration time,
-  acquisition settings and broader map geometry;
-- validation against an ASCII export from the same `Sa4.wip` project;
-- conformance reports against external WiTec-capable readers where license and
-  fixture terms allow it.
+- the supported geometry `SizeX=90`, `SizeY=55`, `SizeGraph=1024`, `DataType=6`
+  (unsigned 16-bit);
+- `LineValid` flags, validated strictly as boolean (`0`/`1`) bytes, so an
+  interrupted acquisition emits its valid spectra instead of all physical grid
+  slots;
+- the WiTec `FreePolynom` calibration coefficients, used to reconstruct a
+  wavelength axis;
+- the TDGraph `SpaceTransformationID` model/world origin, scale and rotation
+  matrices, used to derive physical map positions.
 
-## Validation Notes
+## What nirs4all-io extracts
 
-Current native validation is intentionally narrow. The `Sa4.wip` test asserts
-4410 spectra, 1024 Raman-shift points, the first raw-count values, the
-underlying wavelength range, the 532.099 nm excitation wavelength and first/last
-map coordinates. It also asserts the diagnostic layout metadata: 4950 physical
-grid slots, 49 valid lines, 6 invalid lines and 4410 emitted spectra. The parser
-emits `witec_wip_experimental_parser` plus explicit warnings for derived
-Raman-shift axis and map coordinates, and must stay experimental until more
-WiTec project variants and paired vendor ASCII exports are available.
+- **Signals** — one `SpectralRecord` per valid spectrum, each with a single
+  `raw_counts` signal typed `RawCounts` (raw CCD counts).
+- **Axis** — the `FreePolynom` wavelength axis converted to Raman shift (`cm-1`)
+  using the `ExcitationWaveLength` (532.099 nm in the fixture).
+- **Metadata** — physical map positions in micrometres; diagnostic counts for
+  valid/invalid lines, physical grid slots and physical spectrum index; and the
+  `FreePolynom` order and bin range used before Raman-shift conversion.
+- **Provenance & warnings** — every record carries
+  `witec_wip_experimental_parser`, plus explicit warnings for the layout limit,
+  the derived Raman-shift axis and the derived map coordinates.
+- **ASCII export** — WiTec single-spectrum ASCII exports decode through
+  `row-spectral-table` as raw CCD counts with a nanometre axis.
+
+## Variants & support status
+
+| Variant | Status | Notes |
+|---|---|---|
+| `WIT_PR06` TDGraph map (`Sa4.wip` geometry) | Experimental | The one decoded native layout; strict `LineValid`, Raman-shift axis, physical coordinates. |
+| WiTec ASCII single-spectrum export | Supported | Routed to the row-oriented spectral table reader. |
+| Legacy `WIT^` projects | Detected / refused | Sniffed but refused with an explicit unsupported-layout error. |
+| Other `WIT_PR06` layouts / project-tree objects | Detected / refused | General single spectra, maps, line scans and time series not yet extracted. |
+
+## Limitations & known gaps
+
+- There is no general native project-tree parser; only the single `WIT_PR06`
+  TDGraph geometry above is decoded, and all other native layouts (including
+  legacy `WIT^`) are refused rather than guessed.
+- Typed WiTec metadata (laser, objective, integration time, acquisition
+  settings, broader map geometry) is not yet normalised.
+- A paired ASCII export from the same `Sa4.wip` project, and conformance reports
+  against external WiTec-capable readers, are still wanted.
+
+## Reference readers
+
+Layout cross-checks reference `pynxtools-raman`, `hySpc.read.Witec` and the
+`LabberI2A` WIPfile loader.
+
+## Samples & validation
+
+The native path is validated by `samples/raman_witec/Sa4.wip` (Zenodo 7907659,
+ODbL v1.0): the regression test asserts 4410 emitted spectra, 1024 Raman-shift
+points, the first raw-count values, the underlying wavelength range, the 532.099 nm
+excitation wavelength and first/last map coordinates, plus the diagnostic layout
+metadata (4950 physical grid slots, 49 valid lines, 6 invalid lines, 4410 emitted
+spectra). The ASCII path uses `samples/raman_witec/Si-wafer-Raman-Spectrum-1.txt`.
+The reader stays experimental until more WiTec project variants and paired vendor
+ASCII exports are available.

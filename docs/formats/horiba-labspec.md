@@ -1,79 +1,79 @@
 # Horiba LabSpec / JobinYvon
 
-Status: experimental.
+> **Status:** Partial · **Vendor:** Horiba (Jobin Yvon) · **Extensions:** `.xml`, `.txt`, `.l6m`
 
-The Horiba reader covers the committed Raman LabSpec fixtures that are useful
-for adjacent spectroscopy disambiguation and ML workflow compatibility:
+Horiba's LabSpec software (and the older Jobin Yvon line) drives Raman
+microscopes and writes both interchange exports (LSX XML, LabSpec text) and the
+native LabSpec 6 binary container. nirs4all-io reads the XML and text exports and
+one experimental LabSpec 6 `.l6m` map layout. The format is Raman, adjacent to
+the core NIRS point-spectrum scope, and is supported for spectroscopy
+interchange and ML-workflow compatibility.
 
-- JobinYvon/LabSpec LSX XML exports with `<LSX_Data>`, `<LSX_Tree>` and
-  `<LSX_Matrix>` payloads;
-- LabSpec text exports with `#` metadata headers and either two-column,
-  series-row or map-row numeric sections;
-- one experimental LabSpec 6 `.l6m` binary map layout validated against the
-  paired `labspec6_Gd2O3_AlN_map.txt` export.
+## Instruments & software
 
-Native binary support is deliberately narrow. The `.l6m` path scans the
-LabSpec6 container for the main `Intens` float32 payload, the `Spectr` axis
-payload and the matching 2D spatial axes. Unknown LabSpec6 layouts, calibration
-files and `.l6s` variants remain pending until redistributable samples are
-available.
+Written by Horiba LabSpec and legacy Jobin Yvon / LabRam software for Raman
+acquisitions — single spectra, parameter ranges, line scans, maps and time
+series.
 
-## Normalization
+## File structure
 
-The reader emits one `SpectralRecord` per spectrum or map pixel. The signal is
-named `intensity`, uses `SignalType::RawCounts`, and keeps the native spectral
-axis order.
+The reader sniffs by extension plus content:
 
-Axis units are normalized conservatively:
+- **LSX XML** (`.xml`) — JobinYvon export with `<LSX_Data>`, `<LSX_Tree>` and
+  `<LSX_Matrix>` payloads; spectra, ranges, linescans and maps.
+- **LabSpec text** (`.txt`) — `#`-prefixed metadata headers followed by a
+  two-column, series-row or map-row numeric section.
+- **LabSpec 6 binary** (`.l6m`) — detected by the `LabSpec6` magic; the reader
+  scans the container for the main `Intens` float32 payload, the `Spectr` axis
+  payload and the matching 2D spatial axes.
 
-- `nm` -> wavelength axis;
-- `1/cm`, `cm-1` and corrupted `cm-�` headers -> wavenumber axis with unit
-  `cm-1`;
-- `eV` -> energy axis.
+## What nirs4all-io extracts
 
-For XML and text maps, spatial coordinates are stored in metadata as
-`spatial_x`, `spatial_y` and unit fields. Text exports that omit the spectral
-axis unit default to `cm-1` with warning
-`horiba_labspec_text_axis_unit_inferred`.
+- **Signals** — one `SpectralRecord` per spectrum or map pixel, with a single
+  `intensity` signal typed `RawCounts`, keeping the native spectral axis order.
+- **Axis** — units normalised conservatively: `nm` → wavelength; `1/cm`, `cm-1`
+  and corrupted `cm-?` headers → wavenumber (`cm-1`); `eV` → energy. Text exports
+  that omit the axis unit default to `cm-1` with warning
+  `horiba_labspec_text_axis_unit_inferred`.
+- **Metadata** — for XML and text maps/linescans, `spatial_x`, `spatial_y` and
+  their unit fields are stored in metadata.
+- **Provenance & warnings** — the `.l6m` path emits
+  `horiba_labspec6_binary_experimental` on every record because it is validated
+  against a single public fixture.
 
-The XML range and linescan branches are covered by semantic tests in addition
-to golden summaries, including linescan spatial coordinates and the ascending
-range axis.
+## Variants & support status
 
-The LabSpec6 binary path emits warning
-`horiba_labspec6_binary_experimental` on every record because it is validated on
-one public `.l6m` fixture only. For that fixture, the Rust test compares all 72
-binary spectra against the paired text export: intensities match exactly,
-spectral axes match within text-rounding tolerance, and `spatial_x` /
-`spatial_y` use the same x-slowest/y-fastest map order as the text export.
+| Variant | Status | Notes |
+|---|---|---|
+| LSX XML single spectrum / range | Supported | `nm`, `cm-1` and `eV` axes; range axis ascending. |
+| LSX XML linescan / map | Supported | One record per point; spatial coordinates in metadata. |
+| LabSpec two-column / series-row text | Supported | Legacy LabRam and modern LabSpec exports. |
+| LabSpec time series-row text | Supported | One record per row. |
+| LabSpec 6 `.l6m` map | Experimental | One observed layout, validated against the paired text export. |
+| LabSpec 6 `.l6s` single-spectrum, other LabSpec 6 layouts, calibration files | Not yet supported | Pending redistributable samples. |
 
-## Supported Fixtures
+## Limitations & known gaps
 
-| Fixture | Records | Axis | Notes |
-|---|---:|---|---|
-| `samples/raman_horiba/jobinyvon_test_spec.xml` | 1 | wavelength, `nm`, 34 points | LSX XML single spectrum |
-| `samples/raman_horiba/jobinyvon_test_spec_3s_cm-1.xml` | 1 | wavenumber, `cm-1`, 34 points | LSX XML single spectrum |
-| `samples/raman_horiba/jobinyvon_test_spec_3s_eV.xml` | 1 | energy, `eV`, 34 points | LSX XML energy axis |
-| `samples/raman_horiba/jobinyvon_test_spec_range.xml` | 1 | wavelength, `nm`, 105 points | LSX XML range export |
-| `samples/raman_horiba/jobinyvon_test_linescan.xml` | 3 | wavelength, `nm`, 34 points | LSX XML linescan, one record per point |
-| `samples/raman_horiba/jobinyvon_test_map_x3-y2.xml` | 6 | wavelength, `nm`, 34 points | LSX XML 3 x 2 map |
-| `samples/raman_horiba/labspec_532nm_Si.txt` | 1 | wavenumber, `cm-1`, 1024 points | Two-column text export |
-| `samples/raman_horiba/labspec_Activation.txt` | 532 | wavenumber, `cm-1`, 1024 points | Legacy LabRam series-row text export |
-| `samples/raman_horiba/labspec_SMC1_Initial.txt` | 1 | wavenumber, `cm-1`, 1024 points | Two-column text export |
-| `samples/raman_horiba/labspec_lasertest1.txt` | 3 | wavenumber, `cm-1`, 1024 points | LabSpec series-row text export |
-| `samples/raman_horiba/labspec_serie190214.txt` | 168 | wavenumber, `cm-1`, 1024 points | Time series-row text export |
-| `samples/raman_horiba/labspec_LiNbWO6_pol.txt` | 1 | wavenumber, `cm-1`, 1024 points | Two-column text export |
-| `samples/raman_horiba/labspec6_Gd2O3_AlN_map.txt` | 72 | wavenumber, `cm-1`, 498 points | LabSpec 6 map-row text export |
-| `samples/raman_horiba/AlN_Gd2O3_indepth.l6m` | 72 | wavenumber, `cm-1`, 498 points | Experimental LabSpec6 binary map; intensity and spatial coordinates are compared against the paired text export |
+- Native binary support is deliberately narrow: only one `.l6m` map layout is
+  decoded. `.l6s` single-spectrum files and other LabSpec 6 layouts/calibration
+  files are not handled until redistributable fixtures exist.
+- Full LabSpec 6 metadata is not yet promoted into typed fields.
+- Full-array conformance is planned as isolated jobs; the runtime imports no
+  GPL reference-reader code.
 
-## Reference Readers
+## Reference readers
 
-Reference comparison targets are:
+Cross-checked against `rsciio.jobinyvon` (JobinYvon XML),
+`spectrochempy.read_labspec()` (LabSpec text) and `ccoverstreet/horiba-raman`
+(LabSpec 6 mapping text and the paired `.l6m` fixture).
 
-- `rsciio.jobinyvon` for JobinYvon XML;
-- `spectrochempy.read_labspec()` for LabSpec text;
-- `ccoverstreet/horiba-raman` for LabSpec 6 mapping text and the paired `.l6m`
-  fixture.
+## Samples & validation
 
-Those comparisons are planned as isolated conformance jobs; the Rust runtime
-does not import GPL reference-reader code.
+Fixtures under `samples/raman_horiba/` cover LSX XML spectra/range/linescan/map
+(`nm`, `cm-1`, `eV` axes) and LabSpec two-column, series-row, time-series and
+LabSpec 6 map-row text exports, all golden-backed. The experimental
+`AlN_Gd2O3_indepth.l6m` (72 records, `cm-1`, 498 points) is compared cell-for-cell
+against the paired `labspec6_Gd2O3_AlN_map.txt`: intensities match exactly,
+spectral axes match within text-rounding tolerance, and `spatial_x`/`spatial_y`
+follow the same x-slowest/y-fastest map order. XML range and linescan branches
+also carry semantic tests beyond the golden summaries.

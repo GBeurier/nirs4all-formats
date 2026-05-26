@@ -1,0 +1,85 @@
+name: 🧪 Provide reference files / samples
+description: Share real files so a reader can be implemented, hardened or validated.
+title: "[Samples] <vendor / format name>"
+labels: ["samples"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Real reference files are the single biggest unblocker for nirs4all-io. Thank you!
+
+        Ideally provide, **for the same scan**: the original raw file, a human-readable export from the vendor software (CSV / TXT / XLSX / JCAMP-DX…), the instrument model, the software version, the measurement mode, and a few control values we can verify. Data may be anonymised — keep the original format and structural metadata intact.
+  - type: input
+    id: format-name
+    attributes:
+      label: Format / machine
+      placeholder: e.g. ASD FieldSpec calibration set, Bruker Tango FT-NIR, Vision Air export
+    validations:
+      required: true
+  - type: textarea
+    id: original-files
+    attributes:
+      label: Original file(s) you can share
+      description: List the file types/extensions. Drag & drop the files directly into this box to attach them. For large or sensitive files, paste a download link (Zenodo, Drive, etc.) instead.
+    validations:
+      required: true
+  - type: textarea
+    id: companion-export
+    attributes:
+      label: Companion export (optional but valuable)
+      description: A readable export of the same scan (CSV / TXT / XLSX / JCAMP-DX) lets us cross-check decoded values.
+  - type: input
+    id: instrument-model
+    attributes:
+      label: Instrument model
+      placeholder: e.g. ASD FieldSpec 4, Bruker MPA II
+    validations:
+      required: true
+  - type: input
+    id: software-version
+    attributes:
+      label: Software name & version
+      placeholder: e.g. ViewSpecPro 6.2, OPUS 8.5
+  - type: dropdown
+    id: measurement-mode
+    attributes:
+      label: Measurement mode
+      options:
+        - Raw counts / DN
+        - Absorbance
+        - Reflectance
+        - Transmittance
+        - Radiance
+        - Irradiance
+        - Other / mixed
+    validations:
+      required: true
+  - type: textarea
+    id: control-values
+    attributes:
+      label: Control values
+      description: A few wavelengths / wavenumbers and their values (e.g. first and last X with their Y) so we can verify the decode.
+  - type: textarea
+    id: extra-content
+    attributes:
+      label: What else is in the file?
+      description: Multiple signals (raw / dark / white / reference), targets or lab values, maps / time series, calibration blocks, sidecar files… anything beyond a single spectrum.
+  - type: dropdown
+    id: redistribution
+    attributes:
+      label: Redistribution
+      options:
+        - I can license these files for public redistribution in the test corpus
+        - Shareable for development only (kept local, not redistributed)
+        - Not sure — let's discuss
+    validations:
+      required: true
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Rights & licensing
+      options:
+        - label: I have the right to share these files and to allow their use for developing and testing nirs4all-io.
+          required: true
+        - label: I understand redistributable fixtures are documented with their source and license under samples/.
+          required: true

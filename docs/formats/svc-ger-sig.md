@@ -1,79 +1,91 @@
 # SVC / GER SIG
 
-Status: experimental.
+> **Status:** Supported (scoped) · **Vendor:** Spectra Vista (SVC) / GER · **Extensions:** `.sig`
 
-The `.sig` reader targets Spectra Vista / GER ASCII exports whose header
-contains `Spectra Vista SIG Data` and whose spectral block starts after a
-literal `data=` line.
+`.sig` is the ASCII export written by Spectra Vista Corporation (and legacy GER)
+field spectrometers — HR-1024i, GER 3700 and related VNIR/SWIR instruments. Each
+file pairs a reference and target acquisition and computes a reflectance
+channel. nirs4all-io reads the three spectral columns and promotes the rich SVC
+acquisition header (instrument, foreoptic, per-detector settings, radiometric
+factors and overlap policy) into canonical metadata.
 
-## Scope Implemented
+## Instruments & software
 
-Implemented:
+Produced by SVC's HR-1024i software and by older GER instruments (GER 3700).
+Both PDA-style and laptop-style headers are handled. The committed corpus covers
+Acer-PDA, laptop-firmware, GER 3700 PDA and HR-1024i field exports.
 
-- PDA and laptop-style SVC/GER headers as key/value metadata under `vendor`;
-- whitespace-separated spectral rows with wavelength, reference, target and
-  reflectance columns;
-- normalized wavelength axis in `nm`;
-- three signals per record: `reference`, `target` and `reflectance`;
-- `%` unit on the reflectance channel;
-- canonical `acquisition_start_*` / `acquisition_end_*` metadata from
-  firmware `time` fields;
-- canonical GPS latitude, longitude and GPS time metadata from SVC
-  `ddmm.mmmmN` / `dddmm.mmmmW` fields when present;
-- `source_signal_units` metadata from the vendor `units` header;
-- canonical `instrument_model` and `instrument_serial` parsed from the SVC
-  `HI: <serial> (<model>)` instrument header;
-- canonical `foreoptic` array (two strings, reference and target) parsed
-  from the SVC `optic=` header;
-- per-detector / per-scan acquisition metadata parsed from `integration=`,
-  `scan coadds=`, `temp=`, `battery=`, `error=` and `memory slot=`. The Si /
-  InGaAs1 / InGaAs2 triplets are split between reference and target scans
-  and surfaced as `integration_time_reference_ms`,
-  `integration_time_target_ms`, `coadds_reference`, `coadds_target`,
-  `detector_temperatures_reference_celsius`,
-  `detector_temperatures_target_celsius`. Battery voltages, error codes and
-  memory slots are surfaced as two-element arrays
-  (`battery_voltages_volts`, `error_codes`, `memory_slots`);
-- canonical `radiometric_factors` (three floats), `overlap_policy`
-  (`preserve` / `remove`), `matching_type` and
-  `overlap_break_wavelengths_nm` parsed from the SVC `factors=` bracket;
-- `matched_overlap_corrected`, `overlap_removed`, `detector_overlap_preserved`
-  and `resampled_export` quality flags reflecting the SVC overlap policy
-  found in the `factors=` bracket (or in `comm=` / the filename for
-  resampled exports);
-- `white_reference` quality flag when the filename stem contains `_WR_`
-  (the SVC white-reference acquisition convention used by `spectrolab`);
-- `declared_bad_fixture` quality flag and warning for intentionally bad
-  fixture filenames.
+## File structure
 
-## Fixture Coverage
+- A `Spectra Vista SIG Data` header block of `key=value` lines (`instrument`,
+  `optic`, `integration`, `scan coadds`, `temp`, `battery`, `factors`, `time`,
+  `latitude`/`longitude`, `gpstime`, `units`, `comm`, etc.), then a literal
+  `data=` line.
+- The numeric block follows `data=`: whitespace-separated rows of four columns —
+  wavelength, reference, target and reflectance.
 
-| Fixture | Variant | Coverage |
+## What nirs4all-io extracts
+
+- **Signals** — three per record: `reference`, `target` and `reflectance`. The
+  `reflectance` channel carries unit `%`; reference/target are typed from the
+  `units=` header (radiance) with `unit=null` because SVC firmware exposes
+  uncalibrated DN-derived radiance.
+- **Axis** — a wavelength axis in `nm`.
+- **Metadata** — the raw header under `metadata.vendor`, plus promoted canonical
+  fields: `instrument_model`/`instrument_serial` (from `HI: <serial>
+  (<model>)`), `foreoptic` (two strings), per-detector Si/InGaAs1/InGaAs2
+  integration times, coadds and temperatures split into reference/target,
+  `battery_voltages_volts`, `error_codes`, `memory_slots`, `source_signal_units`
+  (from `units`), acquisition start/end date and time, GPS latitude/longitude
+  and GPS time, and — parsed from the `factors=` bracket —
+  `radiometric_factors` (three floats), `overlap_policy` (`preserve`/`remove`),
+  `matching_type` and `overlap_break_wavelengths_nm`.
+- **Quality flags** — `matched_overlap_corrected`, `overlap_removed`,
+  `detector_overlap_preserved`, `resampled_export` (from the overlap policy,
+  `comm=` or a `_resamp` filename), `white_reference` (`_WR_` filename
+  convention) and `declared_bad_fixture` (with a matching provenance warning).
+
+## Variants & support status
+
+| Variant | Status | Notes |
 |---|---|---|
-| `ACPL_D2_P1_*.sig`, `ACPL_F3_P2_B_1_000.sig` | Acer PDA clean fixtures | Golden-backed; all clean Acer fixtures now have semantic assertions for 1024 points, reflectance anchors, `detector_overlap_preserved` quality flag and the new acquisition metadata (instrument model/serial, foreoptic, factors, integration/coadds/temperatures, battery, error codes) |
-| `ACPL_D2_P1_T_1_WR_000.sig` | Acer PDA white reference | Golden-backed; semantic assertions cover reflectance near 100 percent plus reference/target anchors and the `white_reference` quality flag |
-| `ACPL_D2_P1_B_1_000_BAD.sig`, `3_6_PANVI_2_T_1_001_BAD.sig` | declared bad fixtures | Golden-backed; accepted but flagged as bad fixtures |
-| `BNL13001_000_laptop.sig`, `BNL13002_000_laptop.sig` | laptop firmware | Golden-backed; both laptop fixtures have semantic assertions for reference/target/reflectance, `detector_overlap_preserved` flag and the new acquisition metadata |
-| `BNL13001_000_moc.sig` | matched overlap corrected | Golden-backed with semantic tests for the `matched_overlap_corrected` / `overlap_removed` flags, parsed `overlap_break_wavelengths_nm = [970, 1901]` and `matching_type = "Radiance @ 976 - 1010 / NIR-SWIR On"` |
-| `serbinsh_gr070214_003.sig` | GER 3700 PDA | Golden and real-sample tests, including parsed `radiometric_factors` and `overlap_break_wavelengths_nm = [985, 1906]` |
-| `serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` | HR-1024i field resampled export | Golden and real-sample tests for resampling, overlap removal, the 350-2500 nm / 1 nm canonical axis, GPS metadata, parsed factor bracket and `LENS 4(1)` foreoptic |
+| Acer-PDA exports (clean / white-reference) | Supported | 1024-point spectra; reflectance anchors and acquisition metadata asserted. |
+| Laptop-firmware exports | Supported | Reference/target/reflectance plus `detector_overlap_preserved`. |
+| Matched-overlap-corrected export | Supported | `overlap_break_wavelengths_nm` and `matching_type` parsed. |
+| GER 3700 PDA | Supported | Parsed `radiometric_factors` and overlap breakpoints. |
+| HR-1024i field / resampled export | Supported | Resampling, overlap removal and the 350–2500 nm / 1 nm axis covered. |
+| HR-1024i firmware ≥ 3.0 | Partial | Needs more independent samples beyond the spectrolab / R-FieldSpectra corpora. |
 
-## Known Gaps
+## Limitations & known gaps
 
-- HR-1024i firmware >=3.0 variants need more independent samples (current
-  fixtures only cover the spectrolab and R-FieldSpectra corpora).
-- The reference / target channels report `signal_type=radiance` based on the
-  `units=` header, but SVC firmware exposes uncalibrated DN-derived radiance
-  with no physical unit; we deliberately leave `unit=null` on those signals.
-  A redistributable calibrated `.sig` example would let us promote a real
-  spectral radiance unit on top of the parsed `radiometric_factors` triplet.
-- Conformance reports against `spectrolab` / `specdal` still need to be
-  wired into the reverse-engineering lab. The metadata surface now mirrors
-  what those R/Python libraries expose (instrument model/serial, foreoptic,
-  integration time, coadds, detector temperatures, battery, error codes,
-  factors and overlap policy), so a byte-level comparison can stay
-  text-only.
-- Per-detector spectral ranges (the Si / InGaAs1 / InGaAs2 split points)
-  are not yet surfaced; they are implicit in the parsed
-  `overlap_break_wavelengths_nm` when the file is overlap-removed but
-  cannot currently be inferred from the raw PDA fixtures.
+- Reference/target channels are typed `radiance` from the `units=` header but
+  carry `unit=null`; a redistributable calibrated `.sig` would let a real
+  spectral-radiance unit be promoted on top of the `radiometric_factors`
+  triplet.
+- Per-detector spectral ranges (Si/InGaAs1/InGaAs2 split points) are not
+  surfaced; they are implicit in `overlap_break_wavelengths_nm` only for
+  overlap-removed files.
+- HR-1024i firmware ≥ 3.0 variants and historical GER 1500 files still need
+  independent samples.
+
+## Reference readers
+
+Compared full-array against `spectrolab` (R subprocess) in `tests/conformance/`;
+`specdal` is an additional reference candidate. The promoted metadata surface
+mirrors what `spectrolab`/`specdal` expose (instrument, foreoptic, integration,
+coadds, temperatures, battery, error codes, factors and overlap policy), so the
+comparison can stay text-only.
+
+## Samples & validation
+
+Fifteen fixtures under `samples/svc_ger/` are golden-backed in
+`crates/nirs4all-io/tests/goldens/` with direct semantic assertions covering the
+Acer-PDA, laptop, matched-overlap-corrected, two declared-bad, GER 3700 PDA and
+HR-1024i Barrow variants. Control values include
+`BNL13001_000_moc.sig` (`overlap_break_wavelengths_nm = [970, 1901]`,
+`matching_type = "Radiance @ 976 - 1010 / NIR-SWIR On"`),
+`serbinsh_gr070214_003.sig` (`overlap_break_wavelengths_nm = [985, 1906]`) and
+`serbinsh_BEO_CakeEater_Pheno_026_resamp.sig` (`LENS 4(1)` foreoptic, 350–2500 nm
+/ 1 nm axis). The conformance suite compares the reflectance signal against
+`spectrolab` with a `1e-6` relative tolerance. The probe reports format
+`svc-ger-sig` at `Confidence::Definite`.

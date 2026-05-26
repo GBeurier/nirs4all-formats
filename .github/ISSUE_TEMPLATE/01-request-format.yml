@@ -1,0 +1,77 @@
+name: 📡 Request a new format
+description: Ask for support of a NIRS / spectroscopy file format that nirs4all-io does not read yet.
+title: "[Format request] <vendor / format name>"
+labels: ["format-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping extend nirs4all-io!
+
+        Parsers live **only** in the Rust core, so a new format means a new Rust reader. Two things make a request actionable:
+
+        1. Check the [supported-format catalogue](https://github.com/GBeurier/nirs4all-io/blob/main/docs/SUPPORTED_FORMATS.md) first — your format may already be covered, sometimes through a generic CSV/Excel reader.
+        2. **Real sample files are the single biggest unblocker.** If you can share files, please also (or instead) use the *Provide reference files / samples* template.
+  - type: input
+    id: format-name
+    attributes:
+      label: Format / product name
+      placeholder: e.g. Foss WinISI .NIR, Perten Inframatic, Specim IQ cube
+    validations:
+      required: true
+  - type: input
+    id: vendor
+    attributes:
+      label: Vendor / instrument(s)
+      placeholder: e.g. Foss NIRSystems, Perten / PerkinElmer, Specim
+    validations:
+      required: true
+  - type: input
+    id: extensions
+    attributes:
+      label: File extension(s)
+      placeholder: e.g. .NIR, .DA, .cal
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Measurement domain
+      options:
+        - NIR (near-infrared)
+        - MIR / FTIR
+        - UV-Vis
+        - Raman
+        - Hyperspectral imaging (cube)
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: producing-software
+    attributes:
+      label: Producing software & versions
+      description: Which software writes these files, and which versions do you use?
+  - type: textarea
+    id: samples-availability
+    attributes:
+      label: Can you provide sample files?
+      description: Real files are the fastest way to unblock a reader. Tell us what you can share and under which conditions. You can drag & drop files into this box.
+  - type: textarea
+    id: references
+    attributes:
+      label: Specs / reference readers
+      description: Links to any public format spec, vendor docs, or existing open-source readers (Python/R/MATLAB) we can compare against for conformance.
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: How would you use this format with nirs4all / nirs4all-io? Roughly how common is it in your field?
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and the supported-format catalogue.
+          required: true
+        - label: I understand parsers are implemented in the Rust core, not in bindings.
+          required: true

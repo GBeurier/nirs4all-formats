@@ -1,6 +1,14 @@
 # Project Status
 
-Last updated: 2026-05-22.
+Last updated: 2026-05-26.
+
+> 2026-05-26 — Documentation pass: the per-format pages
+> (`docs/formats/*.md`) were rewritten into a single publishable template, a
+> public [`SUPPORTED_FORMATS.md`](SUPPORTED_FORMATS.md) catalogue and
+> getting-started / installation / usage guides were added, all binding docs
+> (Python/R/WASM/C ABI) were refreshed, and GitHub issue forms +
+> `CONTRIBUTING.md` were added. Re-run `sphinx-build -W` as part of the next
+> green gate.
 
 ## Current Checkpoint
 

@@ -62,3 +62,39 @@ record missing a selected signal contributes a NaN-filled row.
 - otherwise the bridge calls `nirs4all-io read-json`; `NIRS4ALL_IO_CLI` can
   point to a prebuilt binary, and in a source checkout it falls back to
   `cargo run -p nirs4all-io-cli`.
+
+## Examples
+
+Load, inspect, then project to a modelling matrix:
+
+```python
+import nirs4all_io as nio
+
+rs = nio.open_recordset("spectrum.sed")
+print(rs.signal_names(), len(rs))
+
+X, axis = rs.to_numpy(signal="reflectance")   # (X[n_samples, n_features], axis)
+df      = rs.to_pandas()                        # wide frame for inspection/export
+```
+
+Read a hyperspectral cube without materialising the whole scene:
+
+```python
+# Rectangular ROI window (half-open) or an ordered sparse pixel list
+roi    = nio.open_records("cube.hdr", rows=(10, 20), cols=(30, 40))
+sparse = nio.open_records("cube.hdr", pixels=[(10, 20), (11, 21)])
+
+# Keep the spatial grid as one N-dimensional record, then project
+grid   = nio.open_recordset("cube.hdr", single_record=True)
+arr    = grid[0].signals["reflectance"]
+cube   = arr.to_xarray()                        # dims ("row", "col", "x")
+X, ax  = grid.to_numpy(signal="reflectance")    # row/col flattened into samples
+```
+
+Decode in memory (e.g. an upload), routing sidecar formats explicitly:
+
+```python
+records = nio.open_bytes("spectrum.jdx", payload)               # bytes
+cube    = nio.open_with_sidecars("cube.img", img_bytes,
+                                 {"cube.hdr": hdr_bytes})
+```

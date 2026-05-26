@@ -1,47 +1,73 @@
 # FGI HDF5 + XML
 
-Status: experimental partial.
+> **Status:** Experimental · **Vendor:** FGI · **Extensions:** `.xml` (primary), `.h5`, `.hdf5` (payload) · **Feature flag:** `fmt-hdf5`
 
-FGI exports are modelled as an HDF5 payload plus an XML metadata sidecar. The
-current reader handles the committed synthetic pairing:
+FGI exports pair an XML metadata file with an HDF5 spectral payload. The XML is
+the entry point: it carries the measurement metadata and references its HDF5
+data file. This is a narrow, sidecar-bearing reader scoped to the committed
+synthetic pairing while a real FGI dataset is sourced.
 
-- XML root `<FGIMeasurement>`;
-- `<DataReference path="...">` pointing to a sibling `.h5` file;
-- `<Metadata>` child elements copied into `metadata.fgi_xml`;
-- HDF5 payload decoded by the generic nested `spectra` + `wavelengths` mapper.
+## Instruments & software
 
-The emitted provenance format is `fgi-hdf5-xml`, with both the HDF5 primary
-payload and XML sidecar listed in `provenance.sources`.
+FGI (a niche producer). No redistributable real-world FGI pairing is available
+yet, so the current implementation is validated only against a committed
+synthetic XML+HDF5 fixture.
 
-## Supported Fixtures
+## File structure
 
-| Fixture | Records | Axis | Signal | Metadata |
-|---|---:|---|---|---|
-| `samples/fgi/synthetic_fgi.xml` + `.h5` | 50 | wavelength, `nm`, 200 points | `absorbance` | XML `instrument`, `operator`, `date`; HDF5 group attributes |
+The reader is dispatched on the `.xml` primary by sniffing for both
+`<FGIMeasurement` and `<DataReference` markers (probe confidence `Definite`).
+The XML provides:
 
-## Sidecar contract (M1, 2026-05-22)
+- root `<FGIMeasurement>`;
+- a `<DataReference path="...">` pointing to a sibling `.h5` file;
+- `<Metadata>` child elements copied into `metadata.fgi_xml`.
 
-FGI is a sidecar-bearing format: the XML metadata file references its
-HDF5 payload via `<DataReference path="...">`. Three entry points cover
-decoding:
+The referenced HDF5 payload is decoded by the generic nested
+`spectra` + `wavelengths` mapper (see [`hdf5`](hdf5.md)), so this reader inherits
+the `fmt-hdf5` feature gate. Because the HDF5 lives in a separate file, FGI is
+resolved through the sidecar resolver: `open_path(xml)` reads both files from
+disk, `open_with_sidecars(name, xml_bytes, resolver)` decodes from in-memory
+bytes with the resolver serving the referenced HDF5, and plain `open_bytes`
+returns `Error::UnsupportedSidecar`. External HDF5 file/link references inside
+the data file are routed through the same resolver adapters.
 
-- `open_path(xml_path)` reads the XML plus the HDF5 sidecar from disk.
-- `open_with_sidecars(name, xml_bytes, Arc<dyn SidecarResolver>)`
-  decodes from in-memory bytes; pass the XML as the primary and have
-  the resolver serve the HDF5 file referenced in `<DataReference>`.
-- `open_bytes(name, xml_bytes)` returns `Error::UnsupportedSidecar`.
+## What nirs4all-io extracts
 
-External HDF5 links inside the data file are routed through the same
-resolver (M1 adds `Arc<dyn ExternalFileResolver>` /
-`Arc<dyn ExternalLinkResolver>` adapters via
-`crates/nirs4all-io/src/readers/hdf5_helpers.rs`).
+- **Signals & axis** — from the HDF5 payload, via the generic HDF5 mapper
+  (here, an `absorbance` signal on a wavelength axis).
+- **Metadata** — XML `<Metadata>` scalars under `metadata.fgi_xml` (e.g.
+  `instrument`, `operator`, `date`), the data-reference path, plus the HDF5
+  group attributes.
+- **Provenance** — the format is rewritten to `fgi-hdf5-xml`, with both the HDF5
+  primary payload and the XML metadata sidecar listed in `provenance.sources`.
 
-## Missing Behavior
+## Variants & support status
+
+| Variant | Status | Notes |
+|---|---|---|
+| Synthetic FGI XML + HDF5 pair | Experimental | Maps `<DataReference>` + `<Metadata>` scalars onto the HDF5 mapper. |
+| Real FGI XML schema | Planned | Beyond simple `<Metadata>` scalar fields, still unmapped. |
+| Multiple HDF5 measurements per XML | Planned | One-to-one assumed; many-to-one not yet specified. |
+
+## Limitations & known gaps
 
 This is not yet a production FGI implementation. Remaining work:
 
-- validate against at least one real FGI HDF5/XML pair;
+- validate against at least one real FGI HDF5/XML pairing;
 - map the real XML schema beyond simple `<Metadata>` scalar fields;
-- document whether multiple HDF5 measurements can be referenced by one
-  XML sidecar;
-- compare extracted arrays against `h5py`/`lxml` reference scripts.
+- determine whether one XML sidecar may reference several HDF5 measurements;
+- add reference-script comparison of extracted arrays.
+
+## Reference readers
+
+`h5py`, `hdf5r` / `rhdf5` for the HDF5 payload and `lxml` for the XML metadata.
+A real pairing is needed before reference comparison is meaningful.
+
+## Samples & validation
+
+Fixture: `samples/fgi/synthetic_fgi.xml` + `.h5` (50 records, 200-point `nm`
+axis, `absorbance`; XML `instrument`/`operator`/`date` plus HDF5 group
+attributes), covered by golden summaries in
+`crates/nirs4all-io/tests/goldens/`. The probe reports `fgi-hdf5-xml` at
+`Confidence::Definite`.

@@ -1,100 +1,94 @@
 # Ocean Optics / Ocean Insight
 
-Experimental native Rust reader for Ocean Optics-style ASCII exports and
-OceanView `.ProcSpec` archives.
+> **Status:** Supported (scoped) · **Vendor:** Ocean Optics / Ocean Insight · **Extensions:** `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` (also `.jdx`, `.spc` via sibling readers)
 
-## Scope Implemented
+Ocean Optics / Ocean Insight spectrometers export through SpectraSuite,
+OceanView, OOIBase32 and the Jaz firmware. nirs4all-io reads the family's ASCII
+exports and the OceanView `.ProcSpec` ZIP archive, emitting one `SpectralRecord`
+per file.
 
-The current reader covers the committed text fixtures:
+## Instruments & software
 
-- SpectraSuite text exports with `>>>>>Begin Processed Spectral Data<<<<<`;
-- OceanView text exports with `>>>>>Begin Spectral Data<<<<<`;
-- OOIBase32 `*.Master.Transmission` text exports;
-- Jaz ASCII exports (`.jaz`, `.JazIrrad`) with `W/D/R/S/P` columns;
-- CRAIC two-column reflectance text export;
-- simple two-column Ocean-style CSV export.
-- OceanView `.ProcSpec` ZIP archives containing `ps_*.xml`, `OOIVersion.txt`
-  and `OOISignatures.xml`.
+Produced by SpectraSuite, OceanView, OOIBase32 and Jaz across the Ocean Optics /
+Ocean Insight range, plus CRAIC two-column exports. Committed fixtures span
+SpectraSuite, OceanView, Jaz / JazIrrad, CRAIC, Master.Transmission, two-column
+CSV and Linux/Windows `.ProcSpec` archives.
 
-The first tranche intentionally does not parse:
+## File structure
 
-- Ocean Optics `.spc` binary flavor;
-- Ocean Optics JCAMP beyond what the JCAMP reader can already decode.
+- **ASCII exports** — text files keyed by header banners such as
+  `SpectraSuite Data File`, `OOIBase32 Version`, `Jaz Data File` or
+  `Jaz Absolute Irradiance File`, with a `>>>>>Begin … Data<<<<<` marker before
+  the numeric block. CRAIC and headerless two-column CSV exports are recognised
+  by their numeric-pair content.
+- **`.ProcSpec`** — a ZIP archive (magic `PK`) containing `ps_*.xml` (the spectral
+  arrays and acquisition metadata), `OOIVersion.txt` and, when present,
+  `OOISignatures.xml`. The reader validates the SHA-512 signature of the XML
+  member when the signature file is present.
 
-The `.ProcSpec` reader validates the SHA-512 signature when
-`OOISignatures.xml` is present. Ocean Optics JCAMP `LINK` exports are routed
-through the JCAMP reader, which keeps sample/dark/reference arrays and computes
-the processed transmittance signal. The committed Ocean Optics `.spc` fixture
-uses the Galactic/Thermo new-LSB explicit-X SPC layout, so it is intentionally
-routed through the Galactic SPC reader instead of a duplicate Ocean-specific
-reader.
+## What nirs4all-io extracts
 
-## Record Mapping
+- **Signals** — two-column exports emit one signal (`processed`, `reflectance`,
+  `transmittance` or `irradiance`) chosen from headers and file name. Jaz
+  multichannel exports map `W/D/R/S/P` to wavelength axis, `dark_reference`,
+  `white_reference`, `sample` and a processed signal (`irradiance` for absolute
+  irradiance files, otherwise `processed`). `.ProcSpec` archives map
+  `channelWavelengths`, source `pixelValues`, `darkSpectrum`,
+  `referenceSpectrum` and `processedPixels` to the same signal set, with the
+  processed type (`transmittance` / `reflectance` / `absorbance` / `processed`)
+  taken from the OceanView core processor / `yUnits` class.
+- **Axis** — wavelength in `nm` for all variants.
+- **Metadata** — vendor key/value lines under `metadata.vendor` with normalized
+  key names; the source file name is stored too, because some workflows encode
+  the measurement type in the extension rather than the header. `.ProcSpec`
+  archives additionally record integration time, boxcar width, averages,
+  electrical-dark / non-linearity flags, serial numbers, spectrometer class and
+  pixel count, timestamp, archive members and the SHA-512 `signature_status`.
+- **Provenance & warnings** — source file, SHA-256 and signature warnings for
+  `.ProcSpec` (missing / mismatched signature).
 
-Each file becomes one `SpectralRecord`.
+## Variants & support status
 
-For two-column exports:
+| Variant | Status | Notes |
+|---|---|---|
+| SpectraSuite / OceanView text | Supported | `>>>>>Begin … Data<<<<<` numeric block. |
+| OOIBase32 `*.Master.Transmission` | Supported | Two-column transmittance. |
+| Jaz `.jaz` / `.JazIrrad` | Supported | `W/D/R/S/P` columns; absolute-irradiance → `irradiance`. |
+| CRAIC two-column text | Supported | Reflectance export. |
+| Two-column Ocean-style CSV | Supported | Headerless numeric-pair CSV. |
+| OceanView `.ProcSpec` ZIP | Supported | XML arrays + SHA-512 signature verification. |
+| Ocean Optics JCAMP `LINK` (`.jdx`) | Supported (via JCAMP reader) | Keeps sample/dark/reference arrays and computes processed transmittance. |
+| Ocean Optics `.spc` | Supported (via Galactic SPC reader) | Committed fixture is the Galactic new-LSB explicit-X layout. |
+| QE Pro / Maya / Apex exports | Planned | Awaiting redistributable samples. |
 
-- first column: wavelength axis in `nm`;
-- second column: `processed`, `reflectance`, `transmittance` or `irradiance`
-  depending on headers and file names.
+## Limitations & known gaps
 
-For Jaz multichannel exports:
+- The first tranche does not parse a distinct Ocean-specific `.spc` binary or any
+  Ocean JCAMP beyond what the JCAMP reader already decodes. The committed `.spc`
+  fixture is routed to the [Galactic SPC reader](galactic-spc.md) because its
+  layout belongs to that family rather than a separate Ocean container, and Ocean
+  JCAMP `LINK` exports are routed to the JCAMP-DX reader.
+- QE Pro, Maya and Apex export variants, and any non-Galactic Ocean `.spc`,
+  remain pending until redistributable samples exist.
+- Semantic typing of generic text / Jaz `processed` spectra is limited when the
+  export records the processing mode in metadata rather than column labels.
 
-- `W`: wavelength axis in `nm`;
-- `D`: `dark_reference` raw counts;
-- `R`: `white_reference` raw counts;
-- `S`: `sample` raw counts;
-- `P`: processed signal, mapped to `irradiance` for `Jaz Absolute Irradiance`
-  files and to `processed` when the semantic type is not explicit.
+## Reference readers
 
-For `.ProcSpec` archives:
+`lightr` is the practical external reference for this family (with `pavo` for R);
+both stay conformance-only because the Rust core is MIT.
 
-- `channelWavelengths`: wavelength axis in `nm`;
-- source `pixelValues`: `sample` raw counts;
-- `darkSpectrum/pixelValues`: `dark_reference` raw counts;
-- `referenceSpectrum/pixelValues`: `white_reference` raw counts;
-- `processedPixels`: `transmittance`, `reflectance`, `absorbance` or
-  `processed`, based on the OceanView core processor / `yUnits` class when
-  available.
+## Samples & validation
 
-Metadata is preserved under `metadata.vendor` using normalized key names. The
-reader stores the source file name there as well, because some workflows encode
-the measurement type in the extension rather than in the text header.
-
-## Fixtures and Value Controls
-
-Current committed controls:
-
-| File | Points | Signal | Axis | Value control |
-|---|---:|---|---|---|
-| `OOusb4000.txt` | 3648 | `processed` | `178.65 -> 888.37 nm` | last `-12.792` |
-| `OceanView.txt` | 2389 | `processed` | `187.92 -> 2116.50 nm` | first `18.995` |
-| `CRAIC_export.txt` | 3761 | `reflectance` | `280.11 -> 949.93 nm` | first `13.3999`, last `169.6574` |
-| `FMNH6834.00000001.Master.Transmission` | 3648 | `transmittance` | `178.53 -> 889.03 nm` | first `95.380`, last `25.753` |
-| `spec.csv` | 1994 | `processed` | `299.99 -> 700.03 nm` | first `10.013`, last `15.408` |
-| `jazspec.jaz` | 2048 | `dark_reference`, `white_reference`, `sample`, `processed` | `190.8535 -> 886.439331 nm` | processed last `13.679238` |
-| `irrad.JazIrrad` | 2048 | `dark_reference`, `sample`, `irradiance` | `191.016296 -> 891.915466 nm` | irradiance last `3.643908` |
-| `OceanOptics_Linux.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `transmittance` | `176.360418 -> 893.694340 nm` | transmittance `0.0 -> 125.074331` |
-| `OceanOptics_Windows.ProcSpec` | 2048 | `sample`, `dark_reference`, `white_reference`, `transmittance` | `190.939253 -> 888.233535 nm` | transmittance `282.857143 -> 40.050321` |
-| `whiteref.ProcSpec` | 3648 | `sample`, `dark_reference`, `white_reference`, `reflectance` | `176.360418 -> 893.694340 nm` | reflectance `0.0 -> 97.294250` |
-| `OceanOptics_period.jdx` | 3648 | `sample`, `dark_reference`, `white_reference`, computed `processed` via JCAMP reader | `176.36 -> 893.69 nm` | processed `0.0 -> 171.977070` |
-| `OceanOptics.spc` | 3648 | `transmittance` via Galactic SPC reader | `176.360413 -> 893.694336 nm` | `0.0 -> 119.425171` |
-
-All 12 committed Ocean Optics / Ocean Insight data fixtures are golden-backed.
-Direct semantic tests cover the text, CSV, Jaz, CRAIC, Master.Transmission and
-ProcSpec families. Ocean JCAMP is validated through the JCAMP-DX reader, and
-the committed `.spc` file is validated through the Galactic SPC reader because
-its binary layout is that family rather than a distinct Ocean-only container.
-
-`lightr` is the practical external reference for this family, but it remains a
-conformance-only dependency because the Rust core is MIT.
-
-## Next Work
-
-- Add QE Pro, Maya and Apex export variants when redistributable samples are
-  available.
-- Add samples for any non-Galactic Ocean Optics `.spc` variant if encountered.
-- Add reference reports against `lightr` and `pavo`.
-- Improve semantic typing of generic text/Jaz `processed` spectra when the
-  export records processing mode in metadata rather than column labels.
+All 12 committed Ocean Optics / Ocean Insight data fixtures under
+`samples/ocean_optics/` are golden-backed, with direct semantic tests over the
+text, CSV, Jaz, CRAIC, Master.Transmission and ProcSpec families. Control values
+include `OOusb4000.txt` (3648 points, `processed`, `178.65 -> 888.37 nm`, last
+`-12.792`), `CRAIC_export.txt` (3761 points, `reflectance`, first `13.3999`, last
+`169.6574`), `jazspec.jaz` (2048 points, four channels, processed last
+`13.679238`), `irrad.JazIrrad` (2048 points, `irradiance` last `3.643908`) and
+`OceanOptics_Linux.ProcSpec` (3648 points, `transmittance` `0.0 -> 125.074331`).
+Ocean JCAMP is validated through the JCAMP-DX reader and the committed `.spc`
+through the Galactic SPC reader. Probe confidence is `Definite` for the
+`.ProcSpec` archive and the banner-keyed ASCII exports, and `Likely` for CRAIC
+and two-column CSV.

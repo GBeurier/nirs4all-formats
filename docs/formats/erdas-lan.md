@@ -1,101 +1,87 @@
-# ERDAS LAN / AVIRIS
+# ERDAS LAN / AVIRIS (Indian Pines)
 
-Status: experimental, sample-backed subset.
+> **Status:** Experimental · **Vendor:** ERDAS Imagine / AVIRIS (NASA JPL) · **Extensions:** `.lan` (+ `.spc`, `.GIS` sidecars)
 
-The ERDAS `.lan` reader is currently limited to the classic AVIRIS 92AV3C
-Indian Pines cube committed under `samples/hyperspectral_cubes/`. It is useful
-for validating hyperspectral dispatch and pixel-spectrum extraction, not as a
-general ERDAS Imagine reader.
+ERDAS LAN is a banded raster container. This reader is scoped to the classic
+AVIRIS 92AV3C "Indian Pines" hyperspectral cube — a widely used benchmark — and
+is meant for validating hyperspectral dispatch and pixel-spectrum extraction,
+not as a general ERDAS Imagine reader.
 
-## Format
+## Instruments & software
 
-The supported layout is:
+The supported file is the AVIRIS 92AV3C cube acquired over the Indian Pines test
+site and distributed in ERDAS LAN form. The accompanying `.spc` file is **not**
+Galactic SPC: it is an AVIRIS band-calibration text file listing the 220 band
+centres. The optional `92AV3GT.GIS` file is the per-pixel ground-truth land-cover
+label map.
 
-- `HEAD74` magic;
-- 128-byte ERDAS header;
-- 145 rows x 145 columns x 220 bands;
-- unsigned 16-bit little-endian BIL payload;
-- `.spc` sidecar with 220 band-center wavelengths;
-- optional `92AV3GT.GIS` 145 x 145 ground-truth label map.
+## File structure
 
-The `.spc` sidecar is not Galactic SPC. It is an AVIRIS band-calibration text
-file. The native band order has a few local wavelength inversions, so the
-emitted `SpectralAxis.order` is non-monotonic and records carry warning
-`erdas_lan_spc_axis_non_monotonic_native_order`.
+- `HEAD74` magic followed by a 128-byte ERDAS header (band count at offset 8,
+  rows at 16, cols at 20, read as little-endian u32).
+- 145 rows × 145 columns × 220 bands of unsigned 16-bit little-endian samples in
+  BIL (band-interleaved-by-line) order.
+- `<stem>.spc` sidecar — one band-centre wavelength per line (first whitespace
+  token), skipping `FILE` and dashed separator lines. The native band order has
+  local wavelength inversions, so the emitted axis order is non-monotonic.
+- `92AV3GT.GIS` sidecar (optional) — a second `HEAD74` raster of the same
+  145×145 footprint carrying the class label per pixel.
 
-## Implemented
+## What nirs4all-io extracts
 
-- probe/read for `92AV3C.lan`;
-- one `SpectralRecord` per pixel by default, i.e. 21,025 records;
-- optional single N-dimensional cube record (`dims = ["row", "col", "x"]`,
-  `shape = [rows, cols, bands]`, `row`/`col` index coordinates) through
-  `ReadOptions::single_record()` and the CLI `read-json --single-record`. The
-  ground-truth labels are kept as a 2-D `metadata.land_cover_class_grid` in this
-  mode (they do not fit the scalar-per-record `targets` shape; use the per-pixel
-  layout for pixel-as-sample classification). Works with `--rows`/`--cols`
-  (sub-cube) but not with a sparse mask;
-- optional half-open row/column windows through `open_path_with_options()` and
-  the CLI `read-json --rows START:END --cols START:END`;
-- optional sparse pixel mask through `ReadOptions::with_cube_mask(CubeMask::new(...))`
-  and the CLI `read-json --pixel ROW,COL ...` / `--pixels-file PATH`, preserving
-  the order of pixels supplied by the caller (duplicates allowed);
-- `raw_counts` signal with wavelength axis in `nm` and unit `dn`;
-- `sample_id`, `x_index`, `y_index`, `spatial_x`, `spatial_y` metadata;
-- `land_cover_class` target from `92AV3GT.GIS` when present;
-- strict refusal for ERDAS LAN dimensions other than 145 x 145 x 220.
+- **Default layout** — one `SpectralRecord` per pixel (21,025 records), each with
+  a single `raw_counts` signal, a `nm` wavelength axis (unit `dn`), and metadata
+  `sample_id = pixel_y{row}_x{col}`, `x_index`, `y_index`, `spatial_x`,
+  `spatial_y` (= column / row), `spatial_unit = "pixel"`, `rows`, `cols`,
+  `bands`, `interleave = "bil"`. When the `.GIS` sidecar is present, each record
+  gains `targets.land_cover_class`.
+- **Pixel selection** — a half-open `CubeWindow` ROI (`--rows START:END
+  --cols START:END`) or an ordered sparse `CubeMask` (`--pixel ROW,COL` /
+  `--pixels-file`, duplicates preserved). The window mode works alongside the
+  single-record cube; the mask mode does not.
+- **Single-record mode** — `ReadOptions::single_record()` / `--single-record`
+  emits one N-dimensional record (`dims = ["row", "col", "x"]`, `shape =
+  [rows, cols, bands]`) with `row`/`col` index coordinates; the ground-truth
+  labels are kept as a 2-D `metadata.land_cover_class_grid` (they do not fit the
+  scalar-per-record `targets` shape — use the per-pixel layout for
+  pixel-as-sample classification).
+- **Provenance** — the `.lan` primary, the `.spc` axis sidecar and (when present)
+  the `.GIS` ground-truth, each with SHA-256. The first record carries the
+  `erdas_lan_aviris_experimental` status warning (kept off the other 21,024
+  pixel records to avoid ~200 KiB of duplicated provenance; the
+  `erdas-lan-aviris` format name carries the same signal), plus
+  `erdas_lan_spc_axis_non_monotonic_native_order` when the `.spc` axis is out of
+  order.
 
-## Supported Fixtures
+## Variants & support status
 
-| Fixture | Records | Axis | Notes |
-|---|---:|---|---|
-| `samples/hyperspectral_cubes/92AV3C.lan` | 21,025 | wavelength, `nm`, 220 points | AVIRIS Indian Pines ERDAS LAN cube. |
-| `samples/hyperspectral_cubes/92AV3C.spc` | sidecar | wavelength calibration | First column is used as the spectral axis. |
-| `samples/hyperspectral_cubes/92AV3GT.GIS` | sidecar | class labels | Per-pixel ground truth exposed as `targets.land_cover_class`. |
+| Variant | Status | Notes |
+|---|---|---|
+| AVIRIS 92AV3C 145×145×220 ERDAS LAN | Experimental | Sole supported layout; strict refusal for any other dimensions. |
+| Generic ERDAS Imagine / LAN | Planned | No general header parsing, data types or interleaves yet. |
+| NEON / Specim / HySpex / Headwall / AVIRIS-NG cubes | Planned | HDF5 and raw cube layouts not covered. |
 
-The semantic test also validates a `rows=10:12`, `cols=20:22` ROI against the
-same pixels from the full 21,025-record expansion, plus a sparse mask reading
-`[(0,0), (72,36), (144,144), (10,20)]` to confirm caller-ordered selection and
-the refusal paths for empty and out-of-bounds masks.
+## Limitations & known gaps
 
-## Sidecar contract (M1, 2026-05-22)
+- Dimensions other than 145×145×220 are refused with a descriptive error.
+- The ground-truth filename is the literal `92AV3GT.GIS` regardless of the LAN
+  stem; a user-renamed ground-truth file would not be picked up (an intentional
+  narrowing to the canonical Indian Pines layout).
+- No reference comparison against Spectral Python or rasterio yet.
 
-ERDAS LAN is a sidecar-bearing format: every record carries the
-`<stem>.spc` axis sidecar and, when present, the `92AV3GT.GIS`
-ground-truth file. Three entry points cover decoding:
+## Reference readers
 
-- `open_path(path)` reads the `.lan` plus both sidecars from disk.
-- `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` decodes
-  the cube from in-memory bytes; the resolver serves the `.spc` axis
-  and the optional `.GIS` ground-truth.
-- `open_bytes(name, bytes)` returns `Error::UnsupportedSidecar` because
-  the axis sidecar is mandatory.
+The Indian Pines cube is commonly read with Spectral Python (`spectral`),
+`rasterio` and SciPy. A subprocess conformance comparison is not yet wired in.
 
-The ground-truth filename is the literal `92AV3GT.GIS`, regardless of
-the LAN file's stem. A user supplying their own LAN file paired with
-e.g. `MYCUBE_gt.GIS` would not get the ground-truth lookup — that's an
-intentional narrowing to the canonical AVIRIS Indian Pines layout.
+## Samples & validation
 
-## Metadata surface
-
-Every emitted pixel record carries:
-
-- `sample_id` = `pixel_y{row}_x{col}`;
-- `x_index`, `y_index`, `spatial_x`, `spatial_y` (= column / row in
-  pixel coordinates);
-- `spatial_unit = "pixel"`;
-- `rows`, `cols`, `bands`, `interleave = "bil"`;
-- `targets["land_cover_class"] = <class>` when the `.GIS` ground-truth
-  sidecar is present.
-
-Provenance warnings: every record carries the
-`erdas_lan_aviris_experimental` warning (the layout is still scoped to
-the 145x145x220 AVIRIS 92AV3C fixture) plus
-`erdas_lan_spc_axis_non_monotonic_native_order` when the `.spc` axis is
-out of order.
-
-## Missing
-
-- generic ERDAS Imagine/LAN metadata parsing;
-- other LAN dimensions, data types and interleaves;
-- reference comparison against Spectral Python or rasterio;
-- NEON/Specim/HySpex/Headwall/AVIRIS-NG HDF5 or raw cube layouts.
+Fixtures live under `samples/hyperspectral_cubes/`: `92AV3C.lan` (21,025 pixel
+records, 220-point `nm` axis), `92AV3C.spc` (axis calibration), and `92AV3GT.GIS`
+(per-pixel `land_cover_class`). The semantic test validates a `rows=10:12`,
+`cols=20:22` ROI against the full 21,025-record expansion and a sparse mask
+`[(0,0), (72,36), (144,144), (10,20)]` for caller-ordered selection, plus the
+refusal paths for empty and out-of-bounds masks. ERDAS LAN is sidecar-bearing:
+`open_path` reads the `.lan` plus both sidecars from disk, `open_with_sidecars`
+serves them from memory, and `open_bytes` returns `Error::UnsupportedSidecar`
+because the `.spc` axis is mandatory.

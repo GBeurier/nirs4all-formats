@@ -1,69 +1,80 @@
 # Princeton TriVista TVF
 
-Status: experimental / partial.
+> **Status:** Supported · **Vendor:** Princeton Instruments · **Extensions:** `.tvf`
 
-The TriVista reader covers the committed RosettaSciIO `.tvf` Raman fixtures:
+TVF is the file format written for Princeton Instruments TriVista triple-stage
+Raman spectrometers. Despite the historical "binary spectroscopy file" wording,
+the observed files are XML documents with ASCII frame payloads. nirs4all-io emits
+one record per frame, covering single spectra, time series, line scans, maps and
+Step-and-Glue acquisitions. The format is Raman, adjacent to the core NIRS
+point-spectrum scope.
 
-- XML `XmlMain` / `Document` containers with ASCII `Frame` payloads;
-- non-uniform wavelength axes from `xDim/Calibration@ValueArray`;
-- one `SpectralRecord` per frame for single spectra, time series, line scans
-  and maps;
-- `xDim@Length` is checked against `Calibration@ValueArray`, and `Frame@xDim`
-  is checked against the resolved spectral axis length;
-- spectral axis metadata keeps the calibration label, normalized unit,
-  display unit, calibration type and laser wavelength when present;
-- `InfoSerialized` X/Y navigation groups mapped to `spatial_x`,
-  `spatial_y` and frame indices; units are preserved when present and reported
-  as `unknown` in the current RosettaSciIO fixtures where the group has no unit
-  item;
-- `InfoSerialized` detector fields and one-or-many spectrometer groups are
-  promoted to metadata, including serial/model/stage/focal length/groove
-  density/order arrays for triple-stage setups;
-- Windows FILETIME-style frame timestamps mapped to `time_filetime_100ns` and
-  `elapsed_time_seconds`;
-- Step-and-Glue files emit the primary glued spectrum plus each child document
+## Instruments & software
+
+Produced by TriVista software for Princeton Instruments TriVista
+multi-spectrometer (triple-stage) Raman systems, including single/multi-frame
+acquisitions, time series, line scans, XY maps and Step-and-Glue stitching.
+
+## File structure
+
+The reader sniffs `.tvf` by content (`<XmlMain` plus `TriVista-File`). The
+document is an `XmlMain` / `Document` container:
+
+- spectral values live in semicolon-separated `Frame` text nodes;
+- the spectral axis is a pipe-separated `xDim/Calibration@ValueArray` whose first
+  field declares the point count (non-uniform axes supported);
+- `xDim@Length` is checked against the calibration array, and `Frame@xDim`
+  against the resolved axis length;
+- the escaped `InfoSerialized` attribute carries `Experiment`, `Detector`,
+  `Calibration`, `X-Axis`, `Y-Axis` and numbered `Spectrometer` groups.
+
+## What nirs4all-io extracts
+
+- **Signals** — one `SpectralRecord` per frame; signal units are inferred only
+  when `DataLabel` clearly denotes counts.
+- **Axis** — values from `xDim/Calibration`; the axis kind follows
+  `Calibration@Unit` (not assumed wavelength-only). Axis metadata keeps the
+  calibration label, normalised unit, display unit, calibration type and laser
+  wavelength when present.
+- **Metadata** — `InfoSerialized` X/Y navigation mapped to `spatial_x`,
+  `spatial_y` and frame indices (units preserved when present, otherwise reported
+  as `unknown`); detector and one-or-many spectrometer groups promoted to
+  metadata (serial/model/stage/focal length/groove density/order arrays for
+  triple-stage setups); `detector_temperature_c`; and Windows FILETIME frame
+  timestamps mapped to `time_filetime_100ns` and `elapsed_time_seconds`.
+- **Step-and-Glue** — emits the primary glued spectrum plus each child document
   as separate records, preserving the source windows.
 
-## Supported Fixtures
+## Variants & support status
 
-| Fixture | Records | Axis | Notes |
-|---|---:|---|---|
-| `samples/raman_trivista/spec_1s_1acc_1frame_average.tvf` | 1 | wavelength, `nm`, 1024 points | Single averaged spectrum |
-| `samples/raman_trivista/spec_3s_1acc_2frames_average.tvf` | 2 | wavelength, `nm`, 1024 points | Two frame records |
-| `samples/raman_trivista/spec_3s_2acc_1frame_average.tvf` | 1 | wavelength, `nm`, 1024 points | Two accumulations, averaged |
-| `samples/raman_trivista/spec_3s_2acc_1frame_no_average.tvf` | 1 | wavelength, `nm`, 1024 points | Two accumulations, not averaged |
-| `samples/raman_trivista/spec_multiple_spectrometers.tvf` | 1 | wavelength, `nm`, 1024 points | Multi-spectrometer setup metadata |
-| `samples/raman_trivista/spec_step_and_glue.tvf` | 20 | wavelength, `nm`, 18000 or 1024 points | Glued primary plus 19 child windows |
-| `samples/raman_trivista/spec_timeseries_2x1s_delta3s.tvf` | 2 | wavelength, `nm`, 1024 points | Timestamp-derived elapsed time |
-| `samples/raman_trivista/linescan.tvf` | 21 | wavelength, `nm`, 97 points | X line scan navigation |
-| `samples/raman_trivista/map.tvf` | 81 | wavelength, `nm`, 1024 points | 9 by 9 XY map navigation |
+| Variant | Status | Notes |
+|---|---|---|
+| Single / multi-frame, averaged or not | Supported | One record per frame. |
+| Time series | Supported | Elapsed time derived from frame timestamps. |
+| Line scan / XY map | Supported | X/Y navigation in metadata. |
+| Multi-spectrometer (triple-stage) | Supported | Numbered spectrometer groups promoted. |
+| Step-and-Glue | Supported | Glued primary plus child windows as separate records. |
 
-## Binary Notes
+## Limitations & known gaps
 
-Despite the historical "binary spectroscopy file" wording, these fixtures are
-XML documents. Spectral values live in semicolon-separated `Frame` text nodes.
-The spectral axis is stored as a pipe-separated `ValueArray` whose first field
-declares the point count.
+- Objective metadata and unsupported hardware-specific `InfoSerialized` branches
+  are left to a later conformance pass.
+- Spatial units absent from the current fixtures are reported as `unknown`
+  rather than invented.
+- Variants outside the committed corpus have no explicit scope decision yet, and
+  automated full-array conformance against `rsciio.trivista` is still pending.
 
-The `InfoSerialized` attribute is escaped XML. The current reader decodes the
-top-level `Experiment`, `Detector`, `Calibration`, `X-Axis` and `Y-Axis`
-groups plus numbered `Spectrometer` groups. The spectral axis is not assumed to
-be wavelength-only: `Calibration@Unit` drives the axis kind where possible.
-Detector temperature is emitted as `detector_temperature_c`; signal units are
-only inferred from `DataLabel` when it clearly denotes counts.
-Objective metadata and unsupported hardware-specific branches are left to a
-later conformance pass.
+## Reference readers
 
-## Remaining Gaps
+Layout and fixture behaviour cross-checked against `rsciio.trivista` 0.13.0.
+RosettaSciIO defaults to the glued spectrum for Step-and-Glue; nirs4all-io also
+emits child documents so low-level consumers can inspect the source windows.
 
-The committed RosettaSciIO corpus is fully covered by goldens. The remaining
-partial status is not a sample blocker: it is a conformance and metadata task,
-mainly full-array comparison against `rsciio.trivista`, richer objective and
-hardware-branch metadata, and an explicit scope decision for variants outside
-this fixture corpus.
+## Samples & validation
 
-## Reference Readers
-
-Layout and fixture behavior are cross-checked against `rsciio.trivista` 0.13.0.
-RosettaSciIO defaults to the glued spectrum for Step-and-Glue; `nirs4all-io`
-also emits child documents so low-level consumers can inspect source windows.
+The RosettaSciIO `.tvf` corpus under `samples/raman_trivista/` is fully
+golden-backed: single/multi-frame averages, two-accumulation variants,
+multi-spectrometer metadata, a 20-record Step-and-Glue file (glued primary plus
+19 child windows), a timestamp-derived time series, a 21-point line scan and a
+9-by-9 (81-record) XY map. The remaining items are conformance and metadata
+work, not sample blockers.

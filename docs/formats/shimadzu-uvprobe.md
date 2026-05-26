@@ -1,33 +1,57 @@
 # Shimadzu UVProbe
 
-Status: experimental partial.
+> **Status:** Supported (scoped) · **Vendor:** Shimadzu · **Extensions:** `.txt` (export); native `.spc` (planned)
 
-The supported v1 path is Shimadzu UVProbe text export. Native Shimadzu `.spc`
-is a proprietary container that shares an extension with Galactic/Thermo GRAMS
-SPC but does not share the same binary layout, so dispatch must never be based
-on `.spc` alone.
+UVProbe is Shimadzu's UV-Vis / NIR acquisition software. nirs4all-io reads its
+ASCII `.txt` export through the
+[row-spectral-table reader](row-spectral-table.md). The native Shimadzu `.spc`
+container is proprietary: it shares an extension with Galactic / Thermo GRAMS SPC
+but not its binary layout, so dispatch must never be based on `.spc` alone.
 
-## Supported Fixtures
+## Instruments & software
 
-| Fixture | Records | Axis | Signals | Notes |
-|---|---:|---|---|---|
-| `samples/shimadzu/synthetic_uvprobe.txt` | 1 | 200 wavelengths, `1100..2500 nm` | `sample_s000` | Synthetic quoted CSV-style UVProbe export |
+Produced by Shimadzu UVProbe for Shimadzu UV-Vis / NIR spectrophotometers. The
+text export is an axis-first table (often quoted CSV-style). The committed
+fixture is a synthetic UVProbe export; a real redistributable export and a
+licensed native `.spc` fixture are still wanted.
 
-The signal type remains `unknown` because the export header only identifies a
-sample column, not absorbance, transmittance or reflectance. The `"Spectrum
-Data"` title row is preserved as a note.
+## File structure
 
-## Dispatch Boundaries
+A `"Spectrum Data"` title row followed by an axis-first table: a wavelength
+column and one or more sample columns. The reader auto-detects the delimiter and
+preserves the declared axis order.
 
-The row-oriented spectral table reader accepts UVProbe text exports when it can
-see a wavelength column and numeric sample data. For native `.spc` files,
-`nirs4all-io` only reports an extension-level candidate unless the binary
-matches a known Galactic/Thermo SPC header.
+## What nirs4all-io extracts
 
-## Remaining Gaps
+- **Signal** — one signal per sample column (e.g. `sample_s000`), axis in `nm`.
+  The signal type stays `Unknown` because the export header identifies only a
+  sample column, not absorbance / transmittance / reflectance.
+- **Metadata** — the `"Spectrum Data"` title row is preserved as a note.
+- **Provenance** — source file + SHA-256, reader name and version.
 
-- real redistributable Shimadzu UVProbe text export;
-- native Shimadzu `.spc` fixture with a clear redistribution license;
-- comparison against `pyfasma-spc` or Shimadzu's own export for native `.spc`;
-- typed signal role detection once real UVProbe exports expose measurement mode
-  metadata.
+## Variants & support status
+
+| Variant | Status | Notes |
+|---|---|---|
+| UVProbe `.txt` text export | Supported (scoped) | Read via the row-spectral-table reader; synthetic fixture only so far. |
+| Native Shimadzu `.spc` | Planned | Recognised only at extension level; never claimed by `.spc` alone. |
+
+## Limitations & known gaps
+
+- The native `.spc` is not decoded: nirs4all-io reports only an extension-level
+  candidate unless the binary matches a known Galactic / Thermo SPC header.
+- Typed signal-role detection is pending a real UVProbe export that exposes a
+  measurement-mode field.
+
+## Reference readers
+
+The `.txt` export is readable with `pandas` or R `read.table`; nirs4all-io adds
+axis detection and provenance. For the native `.spc`, candidate references such
+as `pyfasma-spc` or Shimadzu's own export converter are noted but no
+clearly-licensed fixture exists yet.
+
+## Samples & validation
+
+`samples/shimadzu/synthetic_uvprobe.txt` is golden-backed: 1 record, 200-point
+`nm` axis (1100–2500 nm), `sample_s000` signal, `"Spectrum Data"` title. The
+registry test also confirms that `.spc` is not claimed by extension alone.

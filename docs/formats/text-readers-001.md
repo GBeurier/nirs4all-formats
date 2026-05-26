@@ -1,63 +1,79 @@
-# Text Reader Batch 001
+# Delimited Spectral Tables (one spectrum per row)
 
-Date: 2026-05-20.
+> **Status:** Supported · **Vendor:** Generic / instrument & software exports · **Extensions:** `.csv`, `.tsv`, `.txt`
 
-This batch establishes the first production path through the Rust registry:
-`probe_path()` sniffs candidates, `open_path()` dispatches to the strongest
-native reader and each reader returns normalized `SpectralRecord` values.
+Many tools export a whole dataset as a single delimited table where **each data
+row is one complete spectrum** and the **column headers are numeric wavelengths**.
+This reader (`csv_like`) handles that "wide" orientation. It is the complement of
+the [row-oriented spectral table](row-spectral-table.md) reader, which handles the
+transposed layout (one spectral point per row, axis in the first column).
 
-Implemented readers:
+## Instruments & software
 
-| Reader | Fixture | Assertion scope |
+This is a vendor-neutral text reader and the simplest base path for external
+imports. It is the format produced by `pandas.DataFrame.to_csv`, R `write.table`,
+and many lab/handheld export buttons that emit a wavelength-header matrix.
+Committed fixtures are synthetic NIRS tables in comma, semicolon and tab variants.
+
+## File structure
+
+A single header row followed by one row per sample. The header mixes:
+
+- **numeric wavelength headers** (e.g. `400`, `402`, …) that define the axis;
+- optional identifier columns (`sample`, `sample_id`, `id`);
+- optional non-spectral columns (numeric targets or text metadata).
+
+The delimiter is auto-detected per file (comma, semicolon or tab). For `.csv`,
+all three delimiters are considered; `.tsv` is tab-only; `.txt` uses the
+detected delimiter with a slightly stricter threshold to avoid false positives.
+
+## What nirs4all-io extracts
+
+- **Signals** — one `SpectralRecord` per data row, each with a single signal
+  named `signal`, typed as `Absorbance`. Values come from the numeric-header
+  columns in header order.
+- **Axis** — built from the numeric column headers; unit `nm`, kind
+  `Wavelength`. The native header order is preserved.
+- **Targets** — non-spectral numeric columns are stored as `targets` under their
+  header name.
+- **Metadata** — identifier columns map to `metadata.sample_id`; other non-numeric
+  columns are kept under their header name; a `row_index` is recorded.
+- **Provenance** — source file + SHA-256, reader name and version.
+
+## Variants & support status
+
+| Variant | Status | Notes |
 |---|---|---|
-| `csv_like` | `samples/csv_tsv/synthetic_nirs.csv`, `.tsv`, `synthetic_nirs_semicolon.csv` | 50 records, 200-point wavelength axis, `protein` target, `sample_id` metadata; comma CSV, tab TSV and semicolon CSV variants are golden-backed. |
-| `bruker_dpt` | `samples/bruker_dpt/synthetic.dpt`, `RS-1.dpt` | One absorbance record, `cm-1` axis, synthetic descending fixture plus real `lightr` fixture. |
-| `avantes_ascii` | `samples/avantes/avantes_export.ttt` | Transmittance wave table. |
-| `avantes_ascii` | `samples/avantes/irr_820_1941.IRR` | Two-column irradiance export. |
-| `jcamp` | `samples/jcamp_dx/nist_water_ir.jdx` | Plain AFFN `XYDATA` with 3917 transmittance points. |
-| `jcamp` | `samples/jcamp_dx/BRUKSQZ.DX`, `BRUKDIF.DX`, `SPECFILE.DX` | PAC/SQZ/DIF/DUP packed `XYDATA` ordinate decoding. |
-| `jcamp` | `samples/jcamp_dx/BRUKNTUP.DX`, `TESTFID.DX` | NMR `NTUPLES` real/imaginary pages decoded into two signals. |
-| `jcamp` | `samples/ocean_optics/OceanOptics_period.jdx` | `LINK`/`XYPOINTS` sample, dark and reference blocks plus computed transmittance. |
-| `sed` | `samples/spectral_evolution/1566060_09506_working.sed` | 2151-point reflectance channel plus metadata. |
-| `sed` | `samples/spectral_evolution/1566060_15025_not_working.sed` | Broken-but-valid DN-only fixture accepted with `missing_reflectance_signal` quality flag. |
-| `svc_sig` | `samples/svc_ger/BNL13001_000_moc.sig` | Reference, target and reflectance channels plus overlap quality flag. |
-| `svc_sig` | `samples/svc_ger/*_BAD.sig` | Deliberately malformed fixture filenames are accepted but flagged as `declared_bad_fixture`. |
-| `usgs_aref` | `samples/envi_sli/usgs_liba_AREF.txt` | Single-column USGS AREF reflectance dump with generated index axis and explicit warning. |
-| `spectral_table` | Si-Ware CSV, MODTRAN `.dat`, PP Systems `.SPT/.SPU`, ENVI/ECOSTRESS `.spectrum.txt`, Shimadzu TXT, USGS SPECPR ASCII, WiTec TXT | Row-oriented axis-first spectral tables, one normalized signal per numeric column after the axis. |
-| `spectral_matrix` | Foss/WinISI text, Metrohm Vision Air CSV, VIAVI MicroNIR CSV | One spectrum per sample row, numeric headers or `Wavelengths:` block become the axis, property columns become targets. |
-| `sun_photometer` | MFR `.OUT`, Microtops `.TXT` | Channel columns become a short wavelength axis, one record per observation row. |
+| Comma `.csv` with numeric headers | Supported | Strongest match (`Confidence::Likely`). |
+| Semicolon `.csv` | Supported | Semicolon delimiter auto-detected. |
+| Tab `.tsv` / `.txt` | Supported | Tab and whitespace-delimited tables. |
+| Mixed spectral + target/metadata columns | Supported | Numeric extras become targets; text extras become metadata. |
 
-Known limitations:
+## Limitations & known gaps
 
-- CSV parsing is intentionally narrow and expects numeric spectral headers.
-- Single-column text dumps without an embedded axis still need a sidecar axis,
-  except the dedicated USGS AREF single-column path, which emits an index axis
-  with a warning because no wavelength vector is present in the file.
-- Target-only reports without spectra are not loaded into `SpectralRecord`.
-- JCAMP `PEAK TABLE` / `PEAK ASSIGNMENTS` (sparse top-level), top-level
-  multi-block `XYDATA`, and `##DATA TYPE=LINK` files are decoded:
-  same-axis LINKs collapse into a single composite record while
-  heterogeneous LINKs fan out (one record per child plus `link_*`
-  metadata) since M3 (2026-05-23). See `docs/formats/jcamp-dx.md` for
-  the full LINK contract.
-- Python and R bindings ship a native PyO3 / extendr-api static library
-  (M1 2026-05-22) with the legacy `nirs4all-io read-json` CLI subprocess
-  retained as a fallback when the native module is unavailable.
+- Parsing is intentionally narrow: the header **must** contain numeric spectral
+  columns. Tables without numeric headers fail explicitly with
+  `no numeric spectral headers found` rather than guessing an axis.
+- Target-only reports (properties but no spectral axis) are not loaded as
+  spectra; the FOSS DS3 / Perten report fixtures are refused here by design.
+- The axis-first orientation (point-per-row) belongs to the
+  [row-oriented spectral table](row-spectral-table.md) reader, and one-spectrum
+  matrices fronted by a `Wavelengths:` block or `p`-prefixed headers route to the
+  [spectral matrix](spectral-matrix.md) reader instead.
+- All non-identifier signals are typed `Absorbance`; per-column signal-type
+  inference is not attempted in this generic path.
 
-Green gate:
+## Reference readers
 
-```bash
-. "$HOME/.cargo/env"
-cargo fmt --all --check
-cargo test --workspace
-cargo clippy --workspace --all-targets -- -D warnings
-python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]"
-python -m pytest tools/reverse-lab/tests bindings/python/tests
-```
+`pandas.read_csv` and R `read.table` read the same exports; the `nirs4all`
+`CSVLoader` consumes them in the modelling library. nirs4all-io adds delimiter
+detection, axis construction, target/metadata separation and provenance.
 
-Golden summaries:
+## Samples & validation
 
-- stored in `crates/nirs4all-io/tests/goldens/`;
-- checked by `cargo test --workspace`;
-- intentionally cover stable normalized-output summaries before full
-  reference-reader array comparisons are wired in.
+Fixtures live under `samples/csv_tsv/` (synthetic NIRS in comma, tab and
+semicolon form) and are covered by golden summaries in
+`crates/nirs4all-io/tests/goldens/` (`csv_synthetic*`). Each fixture yields 50
+records over a 200-point `nm` axis with a `protein` target and a `sample_id`
+metadata column. The probe reports format `delimited-text` at
+`Confidence::Likely` for a direct numeric header.

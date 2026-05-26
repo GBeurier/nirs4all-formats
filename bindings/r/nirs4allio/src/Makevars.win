@@ -5,7 +5,9 @@ STATLIB = $(LIBDIR)/libnirs4allio_r.a
 PKG_LIBS = -L$(LIBDIR) -lnirs4allio_r -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll
 PKG_CFLAGS = -I$(CURDIR)/rust/src
 
-all: C_clean
+.PHONY: all clean C_clean $(STATLIB)
+
+all: $(SHLIB)
 
 $(SHLIB): $(STATLIB)
 

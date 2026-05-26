@@ -1,0 +1,62 @@
+name: 🐞 Report a reader / library error
+description: A file is misread or refused, a reader crashes, or a binding behaves incorrectly.
+title: "[Bug] <short description>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. If the problem is about a specific file, attaching that file (or a minimal one that reproduces it) helps enormously. You can drag & drop it into the *Steps to reproduce* box.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what did you get instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: interface
+    attributes:
+      label: Interface
+      options:
+        - Rust core (nirs4all-io)
+        - CLI (nirs4all-io)
+        - Python
+        - R
+        - WebAssembly / JS
+        - C ABI
+    validations:
+      required: true
+  - type: input
+    id: format-reader
+    attributes:
+      label: Format / reader involved
+      placeholder: e.g. bruker-opus, jcamp-dx, or "probe picked the wrong reader"
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Commands or code. For the CLI, the output of `nirs4all-io probe <file>` and `nirs4all-io read-json <file>` is very useful. Drag & drop the offending file here if you can share it.
+      render: shell
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: nirs4all-io version
+      placeholder: e.g. 0.1.0a0 (pip), 0.1.0-alpha.0 (cargo), or a commit hash
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: OS & runtime
+      placeholder: e.g. Windows 11 / Python 3.11, Ubuntu 24.04 / Rust 1.82, Node 22
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues.
+          required: true
