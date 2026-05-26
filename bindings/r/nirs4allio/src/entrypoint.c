@@ -5,8 +5,8 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
-extern SEXP R_init_nirs4allio_extendr(DllInfo *);
+extern SEXP R_init_nirs4allio_r_extendr(DllInfo *);
 
 void R_init_nirs4allio(DllInfo *info) {
-    R_init_nirs4allio_extendr(info);
+    R_init_nirs4allio_r_extendr(info);
 }

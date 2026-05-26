@@ -1,53 +1,90 @@
 # Thermo Nicolet OMNIC
 
-Status: experimental.
+> **Status:** Supported (scoped) · **Vendor:** Thermo Nicolet · **Extensions:** `.spa`, `.spg`, `.srs` (`.srsx` pending)
 
-The OMNIC reader covers two reverse-engineered legacy layouts:
+OMNIC is the native file format written by Thermo Nicolet's OMNIC software for
+FT-IR / FT-NIR / Raman acquisitions. nirs4all-io reads single-spectrum `.spa`
+files, grouped `.spg` files and the TGA/GC and rapid-scan `.srs` series layouts
+through a reverse-engineered key-table parser modelled on SpectroChemPy.
 
-- `.SPA` single-spectrum files;
-- `.SPG` grouped spectra, emitted as one `SpectralRecord` per sub-spectrum.
-- `.srs` TGA/GC and rapid-scan series files, emitted as one 2D
-  `SpectralRecord` with `dims = ["y", "x"]`.
+## Instruments & software
 
-The reader extracts the spectral header (`nx`, axis unit, signal unit, first and
-last x values), the float32 intensity block and the OMNIC title/timestamp fields
-when present. Wavenumber axes are emitted in native descending `cm-1` order. For
-TGA/GC `.srs` files, the y/time axis is currently preserved as metadata
-(`series_y_len`, `series_y_first_min`, `series_y_last_min`, `series_y_step_min`)
-until the core schema grows a first-class secondary axis.
+Produced by Thermo Scientific OMNIC across the Nicolet FT-IR / FT-NIR and Raman
+ranges, including hyphenated TGA-GC-IR workflows. The committed corpus is sourced
+from SpectroChemPy documentation fixtures; rapid-scan series come from local-only
+SpectroChemPy fixtures.
 
-## Supported Fixtures
+## File structure
 
-| Fixture | Records | Axis | Signal | Notes |
-|---|---:|---|---|---|
-| `samples/nicolet_omnic/2-BaSO4_0.SPA` | 1 | wavenumber, `cm-1`, 11098 points | `absorbance` | Real SpectroChemPy fixture |
-| `samples/nicolet_omnic/11-Z25-CP_0.SPA` | 1 | wavenumber, `cm-1` | `absorbance` | Additional SPA regression fixture |
-| `samples/nicolet_omnic/not_opus.spa` | 1 | wavenumber, `cm-1`, 5549 points | `absorbance` | Regression fixture for `.spa` vs Bruker OPUS disambiguation |
-| `samples/nicolet_omnic/wodger.spg` | 2 | wavenumber, `cm-1`, 5549 points | `absorbance` | SpectroChemPy documentation fixture |
-| `samples/nicolet_omnic/CO_at_Mo_Al2O3.SPG` | 19 | wavenumber, `cm-1` | `absorbance` | Additional SPG group fixture |
-| `samples/nicolet_omnic/nh4y-activation.spg` | 55 | wavenumber, `cm-1` | `absorbance` | Additional SPG group fixture |
-| `samples/nicolet_omnic/GC_Demo.srs` | 1 | wavenumber, `cm-1`, 1738 x-points, 788 y rows | `transmittance` | TGA/GC series fixture; 2D `["y", "x"]` matrix tested |
-| `samples/nicolet_omnic/TGAIR.srs` | 1 | wavenumber, `cm-1`, 1868 x-points, 335 y rows | `absorbance` | TGA/GC hard-case fixture; 2D `["y", "x"]` matrix tested |
-| `samples_local/nicolet_omnic/spectrochempy_TGA_demo.srs` | 1 | wavenumber, `cm-1`, 3630 x-points, 485 y rows | `absorbance` | Local-only larger `tg_gc` series |
-| `samples_local/nicolet_omnic/spectrochempy_rapid_scan.srs` | 1 | generated index, 4160 x-points, 643 y rows | `detector_signal`, `V`, interferogram | Local-only `rapid_scan_raw` series |
-| `samples_local/nicolet_omnic/spectrochempy_rapid_scan_reprocessed.srs` | 1 | wavenumber, `cm-1`, 3734 x-points, 643 y rows | `absorbance` | Local-only `rapid_scan_reprocessed` series |
+- **`.spa` / `.spg`** — detected by the ASCII magic `Spectral Data File`. The
+  layout is a fixed header followed by a key table (count at offset 294, entries
+  from offset 304, 16 bytes each). Each entry carries a key byte, a payload
+  offset and a payload length. Key `02` points to the spectral header, key `03`
+  to the float32 intensity block and key `6B` (107) to group spectrum titles and
+  OMNIC timestamps. A `.spg` is recognised either by extension or by carrying
+  more than one header key.
+- **`.srs`** — detected by the magic `Spectral Exte File`. The TGA/GC layout is
+  located from three `02 00 00 00 18 00 00 00 00 00` anchors, which fix the data
+  header, background header and spectral-matrix offsets; the y/time axis length
+  and bounds come from the data header.
 
-## Dispatch Boundaries
+## What nirs4all-io extracts
 
-`.srs` support is intentionally limited to the series layout identified by the
-three `02 00 00 00 18 00 00 00 00 00` signature anchors. This covers the
-committed TGA/GC files and the local SpectroChemPy rapid-scan pair. Files with
-OMNIC series magic but a different anchor pattern are classified as unsupported
-series variants and refused explicitly. `.srsx` remains pending because no
-redistributable fixture is available.
+- **Signals** — `.spa` emits one `SpectralRecord`; `.spg` emits one record per
+  sub-spectrum. The signal type is decoded from the header signal key:
+  `absorbance`, `transmittance` (`%`), `reflectance` (`%`), `log(1/R)`,
+  Kubelka-Munk, interferogram detector signal (`V`), and labelled Raman /
+  photoacoustic intensities. `.srs` emits one 2D record with
+  `dims = ["y", "x"]`.
+- **Axis** — values are generated from the header `first_x` / `last_x` bounds and
+  point count. The axis kind follows the header axis key: wavenumber (`cm-1`),
+  wavelength (`nm` / `um`) or index. Wavenumber axes are emitted in their native
+  descending order.
+- **Metadata** — OMNIC title and timestamp, scan counts, zero-path difference,
+  reference frequency, optical velocity, key-table offsets and (for series) the
+  `series_variant`, `series_name` and `series_y_*` fields. The series y/time axis
+  is preserved both as a first-class `["y", "x"]` coordinate (`min`,
+  `AxisKind::Time`) and as `series_y_len` / `series_y_first_min` /
+  `series_y_last_min` / `series_y_step_min` metadata.
+- **Provenance & warnings** — every record carries a reverse-engineering warning
+  (`nicolet_omnic_reverse_engineered_key_table` or the matching series warning)
+  plus source file and SHA-256.
 
-`series_variant` is normalized to `tg_gc`, `rapid_scan_raw` or
-`rapid_scan_reprocessed` for the fixtures currently understood. Raw rapid-scan
-interferograms use a generated index x axis until the model grows a richer
-interferogram-domain axis.
+## Variants & support status
 
-The implementation follows the same public reverse-engineering model used by
-SpectroChemPy: key `02` points to the spectral header, key `03` points to the
-float32 intensity block and key `6B` carries group spectrum titles and OMNIC
-timestamps. TGA/GC `.srs` files use fixed offsets relative to the three series
-anchors for data header, background header and spectral matrix start.
+| Variant | Status | Notes |
+|---|---|---|
+| `.spa` single spectrum | Supported | One record; semantic signal type from the header key. |
+| `.spg` grouped spectra | Supported | One record per sub-spectrum, with per-spectrum titles. |
+| `.srs` TGA/GC series | Supported | One 2D `["y", "x"]` record; minute/time y-axis. |
+| `.srs` rapid-scan (raw / reprocessed) | Supported | Raw interferograms use a generated index axis until the model grows an interferogram-domain axis. |
+| Other `.srs` series anchors | Detected / refused | Series magic without exactly three TGA/GC anchors is refused as an unsupported variant. |
+| `.srsx` | Planned | No redistributable fixture yet. |
+
+## Limitations & known gaps
+
+- `.srs` support is intentionally limited to the layout fixed by the three
+  TGA/GC anchors; other anchor patterns are refused explicitly rather than
+  guessed.
+- `.srsx` and additional high-speed / rapid-scan variants remain pending until a
+  real fixture and reference export are available.
+- Raw rapid-scan interferograms fall back to a generated index x-axis because the
+  shared data model does not yet carry a richer interferogram-domain axis.
+
+## Reference readers
+
+The implementation follows the public reverse-engineering model used by
+SpectroChemPy and `spa-on-python`; SpectroChemPy is the practical cross-check for
+the `.spa`, `.spg` and `.srs` paths.
+
+## Samples & validation
+
+SPA/SPG/SRS fixtures live under `samples/nicolet_omnic/` and are golden-backed
+with direct semantic tests, including the 2D matrices, offsets and `series_y_*`
+metadata. Control fixtures include `2-BaSO4_0.SPA` (absorbance, `cm-1`, 11098
+points), `wodger.spg` (2 records, 5549 points), `GC_Demo.srs` (1738 x-points x
+788 y rows, transmittance) and `TGAIR.srs` (1868 x-points x 335 y rows). Three
+local-only SpectroChemPy `.srs` files cover the `tg_gc`, `rapid_scan_raw` and
+`rapid_scan_reprocessed` variants. The probe reports `nicolet-omnic` at
+`Confidence::Definite` for standard extensions, and the series probe at
+`Confidence::Possible` so dispatch can route to the read-time layout detector.

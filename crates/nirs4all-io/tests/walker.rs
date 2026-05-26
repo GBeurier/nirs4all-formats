@@ -72,16 +72,30 @@ fn refuses_designed_refusal_files_with_error_outcome() {
 
 #[test]
 fn max_depth_zero_limits_to_root_children() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    std::fs::write(dir.path().join("root.bin"), b"not a spectrum").expect("write root file");
+    std::fs::create_dir(dir.path().join("nested")).expect("create nested dir");
+    std::fs::write(
+        dir.path().join("nested").join("child.bin"),
+        b"not a spectrum",
+    )
+    .expect("write child file");
+
+    let options = WalkOptions {
+        skip_unsupported: false,
+        ..WalkOptions::default()
+    };
     let shallow = walk_path(
-        workspace_file("samples"),
+        dir.path(),
         &WalkOptions {
             max_depth: Some(0),
-            ..WalkOptions::default()
+            ..options.clone()
         },
     )
-    .expect("walk samples max_depth=0");
-    let deep = walk_path(workspace_file("samples"), &WalkOptions::default())
-        .expect("walk samples unlimited");
+    .expect("walk temp tree max_depth=0");
+    let deep = walk_path(dir.path(), &options).expect("walk temp tree unlimited");
+    assert_eq!(shallow.len(), 1);
+    assert_eq!(deep.len(), 2);
     assert!(deep.len() > shallow.len());
 }
 

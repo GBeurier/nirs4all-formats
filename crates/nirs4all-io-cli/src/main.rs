@@ -150,7 +150,7 @@ fn main() -> anyhow::Result<()> {
             let entries = walk_path(&path, &options)
                 .with_context(|| format!("failed to scan {}", path.display()))?;
             if json {
-                emit_scan_json(&entries);
+                emit_scan_json(&entries)?;
             } else {
                 emit_scan_text(&entries);
             }
@@ -195,7 +195,7 @@ fn emit_scan_text(entries: &[nirs4all_io::WalkEntry]) {
     );
 }
 
-fn emit_scan_json(entries: &[nirs4all_io::WalkEntry]) {
+fn emit_scan_json(entries: &[nirs4all_io::WalkEntry]) -> anyhow::Result<()> {
     let payload: Vec<_> = entries
         .iter()
         .map(|entry| match &entry.outcome {
@@ -230,7 +230,8 @@ fn emit_scan_json(entries: &[nirs4all_io::WalkEntry]) {
             "total": stats.total(),
         },
     });
-    println!("{}", serde_json::to_string_pretty(&summary).unwrap());
+    println!("{}", serde_json::to_string_pretty(&summary)?);
+    Ok(())
 }
 
 fn read_options(
@@ -263,6 +264,9 @@ fn read_options(
                 )?);
             }
         }
+        if pixels.is_empty() {
+            anyhow::bail!("--pixel/--pixels-file did not provide any pixels");
+        }
         return Ok(
             nirs4all_io::ReadOptions::default().with_cube_mask(nirs4all_io::CubeMask::new(pixels))
         );
@@ -283,10 +287,12 @@ fn parse_window_range(value: &str, label: &str) -> anyhow::Result<(usize, Option
     let (start, end) = value
         .split_once(':')
         .ok_or_else(|| anyhow::anyhow!("{label} must use START:END syntax"))?;
+    let start = start.trim();
+    let end = end.trim();
     let start = start
         .parse::<usize>()
         .with_context(|| format!("{label} start is not an unsigned integer: {start}"))?;
-    let end = if end.trim().is_empty() {
+    let end = if end.is_empty() {
         None
     } else {
         Some(
@@ -310,4 +316,37 @@ fn parse_pixel(value: &str, label: &str) -> anyhow::Result<(usize, usize)> {
         .parse::<usize>()
         .with_context(|| format!("{label} column is not an unsigned integer: {col}"))?;
     Ok((row, col))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_window_range_trims_bounds() {
+        assert_eq!(
+            parse_window_range(" 10 : 20 ", "--rows").unwrap(),
+            (10, Some(20))
+        );
+        assert_eq!(parse_window_range("5: ", "--rows").unwrap(), (5, None));
+    }
+
+    #[test]
+    fn read_options_rejects_mixed_window_and_mask() {
+        let pixels = vec!["1,2".to_string()];
+        let err = read_options(Some("0:3"), None, &pixels, None).unwrap_err();
+        assert!(err.to_string().contains("--rows/--cols cannot be combined"));
+    }
+
+    #[test]
+    fn read_options_rejects_empty_mask() {
+        let path = std::env::temp_dir().join(format!(
+            "nirs4all-io-empty-pixels-{}.txt",
+            std::process::id()
+        ));
+        std::fs::write(&path, b"\n# only comments\n").unwrap();
+        let err = read_options(None, None, &[], Some(&path)).unwrap_err();
+        let _ = std::fs::remove_file(&path);
+        assert!(err.to_string().contains("did not provide any pixels"));
+    }
 }

@@ -1,34 +1,66 @@
 # Foss / WinISI Exports
 
-Status: export path done, native binary blocked.
+> **Status:** Supported (scoped) · **Vendor:** Foss (NIRSystems) · **Extensions:** `.txt`, `.csv` (exports); native `.NIR`, `.DA`, `.cal`, `.eqa` (blocked)
 
-Foss NIRSystems / WinISI native project files (`.NIR`, `.DA`, `.cal`, `.eqa`)
-remain vendor-closed and no reliable open reference reader or redistributable
-binary fixture is available. The supported path is therefore the exported text
-or CSV spectral matrix.
+Foss NIRSystems / WinISI / ISIscan is a long-standing industrial NIR platform.
+Its native project files are vendor-closed with no reliable open reader, so
+nirs4all-io reads the exported text or CSV spectral matrix instead: `Wavelengths:`
+text blocks through the [spectral-matrix reader](spectral-matrix.md) and wide CSV
+exports through the [delimited-text reader](text-readers-001.md). The native
+binary formats are not decoded.
 
-## Implemented
+## Instruments & software
 
-- `Wavelengths:` block text exports through `spectral_matrix`;
-- wide CSV exports with metadata/target columns followed by numeric wavelength
-  headers through `csv_like`;
-- preservation of `ID` as `metadata.sample_id`;
-- preservation of numeric properties such as `Moisture`, `Protein` and `Year`
-  as targets.
-- explicit refusal of DS3/Inframatic-style property-only reports that have no
-  numeric spectral headers.
+Produced by WinISI / ISIscan for Foss NIRSystems instruments (e.g. XDS, NIRSystems
+5000) when exporting calibration or sample data. Committed fixtures include a
+synthetic WinISI-style matrix export and two real Foss XDS CSV exports from a
+University of Cordoba (sensAIfood) dataset.
 
-## Supported Fixtures
+## File structure
 
-| Fixture | Records | Axis | Notes |
-|---|---:|---|---|
-| `samples/foss_winisi/synthetic_winisi_export.txt` | 50 | wavelength, `nm`, 200 points | Synthetic WinISI-style matrix export with `protein` target. |
-| `samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv` | 7 | wavelength, `nm`, 1050 points | Real Foss XDS / NIRSystems CSV export, 400-2498 nm. |
-| `samples/foss_winisi/foss_xds_wheat2_sensAIfood.csv` | 2 | wavelength, `nm`, 1050 points | Real Foss XDS CSV export, same wide layout. |
+- **`Wavelengths:` text export** — a labelled wavelength block followed by
+  one-spectrum-per-row data; read as a spectral matrix.
+- **Wide CSV export** — leading metadata / target columns (`ID`, properties)
+  followed by numeric wavelength headers, one sample per row; read as delimited
+  text. The delimiter is auto-detected.
 
-## Missing
+## What nirs4all-io extracts
 
-- native `.NIR`, `.DA`, `.cal` and `.eqa` reverse engineering;
-- calibration/equation payload extraction;
-- comparison against a vendor or community native binary reader, because none
-  is currently available.
+- **Signal** — one spectral signal per sample row, axis in `nm`.
+- **Metadata** — `ID` is promoted to `metadata.sample_id`.
+- **Targets** — numeric property columns (e.g. `Moisture`, `Protein`, `Year`)
+  become per-record targets.
+- **Provenance** — source file + SHA-256, reader name and version.
+
+## Variants & support status
+
+| Variant | Status | Notes |
+|---|---|---|
+| `Wavelengths:` text matrix export | Supported | Read via the spectral-matrix reader. |
+| Wide CSV export (metadata/targets + numeric headers) | Supported | Read via the delimited-text reader. |
+| Native `.NIR` / `.DA` / `.cal` / `.eqa` | Blocked | Closed formats; no reliable open reader or redistributable binary fixture. |
+| DS3 / Inframatic property-only reports | Detected / refused | No numeric spectral headers, so explicitly refused. |
+
+## Limitations & known gaps
+
+- The native `.NIR` / `.DA` / `.cal` / `.eqa` formats are not reverse-engineered
+  (no public binary fixture has been found), so calibration / equation payloads
+  are not extracted.
+- The export path does not replace the native Foss reader; it only covers the
+  text / CSV interchange.
+- No comparison against a vendor or community native binary reader exists,
+  because none is currently available.
+
+## Reference readers
+
+The text and CSV exports are equally readable with `pandas` or R `read.table`;
+nirs4all-io adds axis detection, target promotion and provenance. No open native
+reader is available for the binary project formats.
+
+## Samples & validation
+
+Fixtures under `samples/foss_winisi/` are golden-backed / read-tested:
+`synthetic_winisi_export.txt` (50 records, 200-point `nm` axis, `protein`
+target), `foss_xds_barleyground_sensAIfood.csv` (7 records, 1050 points,
+400–2498 nm) and `foss_xds_wheat2_sensAIfood.csv` (2 records, same wide layout).
+DS3 / Inframatic-style property-only reports are kept as expected refusals.

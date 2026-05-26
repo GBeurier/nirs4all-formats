@@ -1,12 +1,67 @@
-# nirs4all-io Python Binding
+# nirs4all-io (Python)
 
-This package is a thin Python surface over the Rust core. The first published
-binding will expose:
+Python bindings for [`nirs4all-io`](https://github.com/GBeurier/nirs4all-io),
+the Rust-first low-level reader for NIRS and spectroscopy file formats. It reads
+~58 format families, auto-detecting each file by content, and projects the
+canonical records into numpy / pandas / polars / sklearn / torch / xarray or a
+`nirs4all` `SpectroDataset`.
 
-- native records as Python dataclasses or extension types;
-- `to_numpy()` and `to_pandas()` export helpers;
-- sklearn-compatible dataset providers;
-- optional torch dataset adapters.
+Parsers live entirely in the Rust core — this package is a thin, lossless
+surface over it.
 
-The package is intentionally skeletal until three Rust readers have passed the
-conformance gate described in `../../docs/ROADMAP.md`.
+## Install
+
+```bash
+pip install nirs4all-io                                  # Python 3.10+
+pip install "nirs4all-io[numpy,pandas,sklearn,torch]"    # projection extras
+```
+
+`to_polars()` needs `polars`, `to_xarray()` needs `xarray`, and
+`to_spectrodataset()` needs `nirs4all`.
+
+## Quick start
+
+```python
+import nirs4all_io as nio
+
+# Probe: which reader will handle this file, and why?
+nio.probe_path("spectrum.jdx")
+
+# Lossless object model — every signal, axis, coord, metadata and provenance
+rs = nio.open_recordset("spectrum.sed")
+rs.signal_names()
+
+# Modelling-ready projections (explicit; may be lossy)
+X, axis = rs.to_numpy(signal="reflectance")   # (X[n_samples, n_features], axis)
+df      = rs.to_pandas()                        # wide: metadata + x_<axis> columns
+bunch   = rs.to_sklearn(signal="reflectance", target="protein")
+```
+
+## API at a glance
+
+**Raw access** (records exactly as the Rust core emits them, as dicts):
+`open_records`, `open_bytes`, `open_with_sidecars`, `probe_path`, `walk_path`.
+
+**Object model:** `open_recordset(path) -> SpectralRecordSet` with dataclasses
+`SpectralRecord`, `SpectralArray`, `SpectralAxis`, `SourceFile`, `Provenance`.
+
+**Projections on `SpectralRecordSet`:** `to_numpy`, `to_pandas`,
+`to_pandas_long`, `to_polars`, `to_sklearn`, `to_torch`, `to_spectrodataset`;
+`SpectralArray.to_xarray()` for N-dimensional signals (cubes, maps, series).
+
+Image-cube readers accept pixel selection: `rows=`/`cols=` (rectangular ROI),
+`pixels=[(r, c), …]` (sparse), or `single_record=True` to keep the spatial grid.
+
+A native PyO3 extension (`nirs4all_io._native`) is used when present; otherwise
+the bridge falls back to the `nirs4all-io` CLI (`NIRS4ALL_IO_CLI` can point to a
+prebuilt binary).
+
+## Documentation
+
+Full reference: <https://github.com/GBeurier/nirs4all-io/blob/main/docs/bindings/python.md>.
+The usage guide, supported-format catalogue and data model live in the
+[project docs](https://github.com/GBeurier/nirs4all-io/tree/main/docs).
+
+## License
+
+MIT.

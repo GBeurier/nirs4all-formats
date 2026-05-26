@@ -1,107 +1,91 @@
 # Thermo / Galactic GRAMS SPC
 
-Status: experimental native reader.
+> **Status:** Supported (scoped) · **Vendor:** Thermo / Galactic (GRAMS) · **Extensions:** `.spc`
 
-## Scope Implemented
+SPC is the Galactic / Thermo GRAMS spectroscopy container, one of the most widely
+exchanged formats across IR, NIR, Raman and UV-Vis. A single `.spc` file can hold
+one spectrum or many subfiles, with a shared or per-subfile X axis.
+nirs4all-io reads it by the file-version byte, never by extension, and emits one
+normalized `SpectralRecord` per readable subfile.
 
-The Rust reader recognizes Galactic/Thermo GRAMS SPC by the file-version byte,
-not by extension. This is mandatory because `.spc` is also used by unrelated
-Ocean Optics, Shimadzu, Renishaw and hyperspectral fixtures.
+## Instruments & software
 
-Implemented:
+GRAMS SPC is produced by Galactic / Thermo software and exported by a broad range
+of instruments and conversion tools. Because `.spc` is reused by unrelated Ocean
+Optics, Shimadzu, Renishaw and hyperspectral fixtures, the reader dispatches on
+the header byte rather than the extension.
 
-- new little-endian header `FVERSN = 0x4B`;
-- generated evenly spaced X axes from `ffirst`, `flast`, `fnpts`;
-- explicit global X arrays when `TXVALS` is set;
-- multi-subfile common-X files as one `SpectralRecord` per subfile;
-- independent-X `TXYXYS` / `-XYXY` files, including directory-backed subfile
-  offsets;
-- fixed-point 32-bit Y arrays, fixed-point 16-bit Y arrays (`TSPREC`), and
-  IEEE float32 Y arrays (`fexp` or `subexp` equal to `0x80`);
-- axis and signal labels from SPC enumerations, with `TALABS` custom labels
-  overriding the enum labels when present;
-- SPC time-axis labels mapped to `AxisKind::Time` (`Seconds`, `Minutes`,
-  hours, days, years and sub-second units);
-- log-text key/value parsing when the SPC log block is present.
+## File structure
 
-Limited support:
+A 512-byte new-header (or 256-byte old-header) followed by per-subfile headers and
+Y arrays, with optional log and directory blocks. The reader decodes the header
+flag byte (`TSPREC`, `TCGRAM`, `TMULTI`, `TRANDM`, `TORDRD`, `TALABS`, `TXYXYS`,
+`TXVALS`) to choose the X-axis source and Y encoding. X arrays are either
+generated evenly from `ffirst` / `flast` / `fnpts` or read explicitly when
+`TXVALS` is set; independent-X `-XYXY` files carry per-subfile directory offsets.
+Y arrays are decoded as fixed-point 32-bit, fixed-point 16-bit (`TSPREC`) or IEEE
+float32.
 
-- old little-endian header `FVERSN = 0x4D` is decoded for generated-X files and
-  old word-swapped Y values, but old-format XY/log variants are not complete.
+## What nirs4all-io extracts
 
-Not implemented yet:
+- **Signals** — one `SpectralRecord` per readable subfile. Multi-subfile common-X
+  files keep all subfiles usable by the tabular adapters; independent-X `-XYXY`
+  files are exposed as raw records and intentionally rejected by `open_dataset()`
+  until a resampling / ragged-array policy exists.
+- **Axis** — axis and signal labels come from the SPC enumerations, with `TALABS`
+  custom labels overriding the enum labels when present. SPC time-axis labels
+  (`Seconds`, `Minutes`, hours, days, years and sub-second units) are mapped to
+  `AxisKind::Time`.
+- **Metadata** — the decoded global header under `galactic_spc`, the subfile
+  header under `galactic_spc_subfile`, the optional `galactic_spc_log` key/value
+  block, a `data_layout` field for single/common/independent-X layouts, and a
+  top-level `sample_id` (from `SUBFILE<n>` log labels when available, otherwise
+  `subfile_<n>`).
+- **Provenance** — source file, SHA-256 and warnings (e.g. invalid integer
+  exponents preserved, old-header limited-mode notes).
 
-- new big-endian `FVERSN = 0x4C`;
-- full old-format multi/ordered-Z semantics;
-- binary log payloads;
-- promotion of quantitative calibration metadata into `targets`.
+## Variants & support status
 
-## Record Mapping
-
-Every readable subfile becomes one normalized `SpectralRecord`. This keeps
-multi-spectrum SPC files usable by the Python and R tabular adapters when the
-subfiles share an axis. Independent-X `-XYXY` files remain available through
-raw records; `open_dataset()` intentionally rejects them until an explicit
-resampling or ragged-array policy is added.
-
-Reader metadata includes the decoded global header under `galactic_spc`, the
-subfile header under `galactic_spc_subfile`, optional `galactic_spc_log`, and a
-top-level `sample_id`. If the log contains `SUBFILE<n>` labels, those labels
-are used as sample IDs; otherwise the reader emits `subfile_<n>`.
-
-## Fixtures and Reference Checks
-
-Committed smoke and golden coverage currently includes:
-
-| Fixture | Variant | Expected shape |
+| Variant | Status | Notes |
 |---|---|---|
-| `BENZENE.SPC` | new LSB, generated X | 1 record, 1842 absorbance points |
-| `BARBITUATES.SPC` | new LSB, generated X | Golden summary coverage |
-| `DRUG_SAMPLE.SPC` | new LSB, generated X | Golden summary coverage |
-| `HCL.SPC` | new LSB, generated X | Golden summary coverage |
-| `s_xy.spc` | new LSB, explicit global X | 1 record, 512 points over a minute time axis |
-| `OceanOptics.spc` | new LSB, explicit global X, Ocean Optics export | 1 record, 3648 transmittance points |
-| `nir.spc` | new LSB, multi common-X | 20 records, 700 points each |
-| `m_xyxy.spc` | new LSB, `-XYXY` directory | 512 records, variable point counts |
-| `DRUG_SAMPLE.SPC` | new LSB, directory-backed `TXYXYS` mass spectra | 400 records, variable point counts |
-| `RAMAN.SPC`, `resolutionPro.spc` | new LSB variants | Golden summary coverage |
-| `cell01_c1.spc`, `cell01_c2.spc` | cell assay examples | Golden summary coverage |
-| `Ft-ir.spc`, `RUBY18.SPC`, `SINGLE_POLYMER_FILM.SPC`, `TOLUENE.SPC`, `MERC.SPC`, `NDR0002.SPC`, `SPECTRUM_WITH_BAD_BASELINE.SPC`, `test_input.spc` | additional new-LSB corpus | Golden summary coverage |
-| `s_evenx.spc`, `m_evenz.spc`, `m_ordz.spc`, `raman-sion.spc` | explicit/generated X and multi variants | Golden summary coverage |
-| `NMR_FID.SPC` | adjacent NMR/FID control | Golden summary coverage over a seconds time axis; final normalized-scope decision still pending |
-| `LC_DIODE_ARRAY.SPC` | old LSB | limited old-header smoke test |
+| New little-endian (`FVERSN = 0x4B`) | Supported | Generated-X, explicit-X, multi common-X and independent-X `TXYXYS`. |
+| Float32 / fixed-point 16- and 32-bit Y | Supported | Including `TSPREC` 16-bit and IEEE float32. |
+| Time-axis labels | Supported | Mapped to `AxisKind::Time`. |
+| Old little-endian (`FVERSN = 0x4D`) | Partial | Generated-X and old word-swapped Y decoded; old XY / log variants incomplete. |
+| New big-endian (`FVERSN = 0x4C`) | Detected / refused | Recognised by sniff (`Confidence::Possible`) then refused with a clear not-implemented error. |
+| NMR / FID (adjacent) | Supported (adjacent) | Readable as raw counts over a seconds time axis; not a core NIRS scope guarantee. |
 
-Reference comparisons were checked against the local `spc_spectra` Python
-reader for the new-LSB fixtures. Important controls:
+## Limitations & known gaps
 
-- `BENZENE.SPC`: first Y `0.1015599817`, sum `189.390214`.
-- `s_xy.spc`: minute axis typed as `time`, first X `1.0866667032`, first Y
-  `45333`, sum `30065112`.
-- `OceanOptics.spc`: first X `176.3604126`, last X `893.6943359`,
-  first Y `0`, last Y `119.4251709`.
-- `nir.spc`: 20 records, first record first Y `0.0002004839`, sum `238.526`.
-- `m_xyxy.spc`: 512 records, first subfile has 8 points, first X
-  `16943.600006`, first Y `6823`, sum `45327`.
-- `m_evenz.spc`: 32 records with generated wavelength axis, first record sum
-  `4.61097`, and invalid integer exponent `255` preserved as a warning.
-- `m_ordz.spc`: old LSB ordered-Z fixture decoded in limited mode, 10 records
-  with the old-header warning retained.
-- `DRUG_SAMPLE.SPC`: 400 directory-backed `TXYXYS` records; first record uses a
-  descending `m/z` axis and sums to `245071`.
-- `NMR_FID.SPC`: adjacent FID control is readable as raw counts over a
-  seconds axis typed as `time`, but it is not promoted as a core NIRS scope
-  guarantee.
+- New big-endian (`0x4C`) is recognised but not decoded; full old-format
+  multi/ordered-Z semantics, binary log payloads and promotion of quantitative
+  calibration into `targets` are not implemented.
+- Independent-X `-XYXY` files are not assembled into a dataset until a resampling
+  or ragged-array policy is added.
+- `spc_spectra` does not implement new big-endian and is unreliable for at least
+  one old ordered-Z fixture, so old-format promotion needs an additional
+  independent review. Adversarial truncation tests and full-array reference
+  conformance for representative new-LSB fixtures remain to be added.
 
-`spc_spectra` does not implement new big-endian SPC and is unreliable for at
-least one old ordered-Z fixture, so old-format promotion requires an additional
-independent review or another reference reader.
+## Reference readers
 
-## Next Work
+Cross-checked against the local `spc_spectra` Python reader for the new-LSB
+fixtures; `rohanisaac/spc`, `specio`, SpectroChemPy, `xylib` and `spc-parser` are
+further references for the family.
 
-- Add adversarial truncation tests for SPC header, global X arrays, subfile
-  data and directory entries.
-- Add full-array reference conformance for representative new-LSB fixtures.
-- Decide whether independent-X SPC files should expose a ragged Python/R
-  adapter or require explicit resampling before tabular export.
-- Expand old `0x4D` and future `0x4C` coverage when reliable references or
-  controlled fixtures are available.
+## Samples & validation
+
+A broad corpus under `samples/galactic_spc/` is golden-backed with direct
+semantic tests across IR / Raman / UV-Vis / NIR and an adjacent NMR-FID control,
+including multi-subfile generated-X, directory-backed `TXYXYS`, limited old
+ordered-Z, and minute/second time axes (`s_xy.spc`, `NMR_FID.SPC`). Important
+controls include `BENZENE.SPC` (1842 absorbance points, first Y `0.1015599817`,
+sum `189.390214`), `s_xy.spc` (512 points, minute time axis, first X
+`1.0866667032`, first Y `45333`, sum `30065112`), `OceanOptics.spc` (first X
+`176.3604126`, last X `893.6943359`, last Y `119.4251709`), `nir.spc` (20 records,
+700 points each), `m_xyxy.spc` (512 records, first subfile 8 points, sum `45327`)
+and `DRUG_SAMPLE.SPC` (400 directory-backed `TXYXYS` records over a descending
+`m/z` axis, first record sum `245071`). The probe reports `galactic-spc` at
+`Confidence::Definite` for new-LSB, `Likely` for old-LSB and `Possible` for the
+recognised-but-refused big-endian header; `PK`-prefixed ZIP archives are excluded
+to disambiguate from other containers.

@@ -1,0 +1,55 @@
+name: 🔌 Request a language binding
+description: Ask for a nirs4all-io binding in a language that is not available yet.
+title: "[Binding request] <language>"
+labels: ["binding-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        nirs4all-io already ships **Python**, **R**, **WebAssembly / JS** and a **C ABI**. The C ABI is the foundation most other language bindings build on, so a new binding is usually a thin wrapper over it — never a reimplementation of the parsers.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Target language / runtime
+      options:
+        - MATLAB / Octave
+        - Java / JVM (JNI)
+        - C# / .NET
+        - Julia
+        - Go
+        - Ruby
+        - Lua
+        - Swift
+        - Other (describe below)
+    validations:
+      required: true
+  - type: input
+    id: language-other
+    attributes:
+      label: If "Other", which one?
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case & platform
+      description: What do you need to do, on which platform (desktop / server / mobile / web)? Which outputs (records, numpy-like arrays, data frames) matter most?
+    validations:
+      required: true
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Can you help?
+      options:
+        - I can help implement it
+        - I can test / provide feedback
+        - I can only request it
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked that this binding does not already exist.
+          required: true
+        - label: I understand bindings must not reimplement parsers — they wrap the Rust core / C ABI.
+          required: true

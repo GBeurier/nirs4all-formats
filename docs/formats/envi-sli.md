@@ -1,151 +1,100 @@
-# ENVI Spectral Library / Standard Cubes
+# ENVI Spectral Library & Standard Cubes
 
-Experimental native Rust reader for ENVI Spectral Library sidecars and a
-minimal ENVI Standard cube-to-point-spectra path.
+> **Status:** Supported (scoped) · **Vendor:** L3Harris / ENVI (formerly Exelis / RSI) · **Extensions:** `.sli` + `.hdr` (spectral library); `.img` / `.dat` + `.hdr` (image cube)
 
-## Scope Implemented
+ENVI is the de facto interchange format for hyperspectral remote sensing. A
+plain-text `.hdr` header describes a binary payload, which is either a
+one-band-per-row spectral library (`.sli`) or a multi-band image cube
+(`.img` / `.dat`). nirs4all-io reads both: spectral libraries become one record
+per stored spectrum, and image cubes become one record per pixel (or a single
+N-dimensional cube record on request).
 
-- Sniffs `.hdr` files whose header starts with `ENVI` and declares
-  `file type = ENVI Spectral Library` or `file type = ENVI Standard`.
-- Opens either the `.hdr` path or the paired `.sli` / `.img` binary path.
-- Resolves the binary payload from `data file = ...` when present,
-  otherwise from the sibling file:
-  - **SLI**: fallback extensions `.sli` / `.SLI` only (the `data file`
-    LDR is honoured first for explicit overrides).
-  - **Standard**: fallback extensions `.img` / `.IMG` / `.dat` / `.DAT`.
-- Decodes payloads via the shared `decode_numeric_payload` helper, which
-  covers ENVI scalar `data type` values 1, 2, 3, 4, 5, 12, 13, 14 and 15
-  (u8 / i16 / i32 / f32 / f64 / u16 / u32 / i64 / u64) in either byte
-  order. The SLI path additionally requires `bands == 1` and
-  `interleave == bsq`; ENVI Standard supports BSQ/BIL/BIP.
-- Uses `wavelength = { ... }` plus `wavelength units` to build the spectral
-  axis.
-- Emits one `SpectralRecord` per `spectra names` entry, with one `spectrum`
-  signal and `metadata.sample_id`.
-- Emits one `SpectralRecord` per ENVI Standard pixel by default, with
-  `pixel_x`, `pixel_y`, row-slowest/X-fastest order and optional parsed
-  `map info` coordinates in metadata.
-- Optionally emits a single N-dimensional cube record
-  (`dims = ["row", "col", "x"]`, `shape = [lines, samples, bands]`, with
-  `row`/`col` index coordinates and map-level georeferencing in metadata)
-  through `ReadOptions::single_record()` / CLI `read-json --single-record`.
-  The BSQ/BIL/BIP interleave is resolved into C-order; a sparse mask is
-  rejected in this mode.
-- Supports optional half-open row/column windows through
-  `open_path_with_options()` and the CLI `read-json --rows START:END --cols
-  START:END`, while preserving original pixel coordinates in record metadata.
-- Supports optional sparse pixel masks through
-  `ReadOptions::with_cube_mask(CubeMask::new(...))` and the CLI
-  `read-json --pixel ROW,COL ...` / `--pixels-file PATH`. Pixels are emitted in
-  caller order; duplicates are preserved so callers can describe ordered sample
-  paths.
+## Instruments & software
 
-## Record Mapping
+Written by ENVI and compatible GIS/remote-sensing tools. ENVI spectral
+libraries ship with reference collections such as the USGS spectral libraries
+(splib06/splib07), while ENVI Standard cubes back airborne and lab hyperspectral
+imagers. Committed fixtures include a synthetic little-endian float32 library, a
+mini ENVI Standard cube, and the USGS AVIRIS-resampled splib06a / splib07
+libraries.
 
-Each spectrum in a spectral library becomes one record:
+## File structure
 
-- signal name: `spectrum`;
-- record signal type: `unknown` unless a future fixture provides an explicit
-  unit or semantic field;
-- axis: wavelength in `nm` for the current fixture;
-- metadata:
-  - `sample_id` from `spectra names`;
-  - `envi` object with dimensions, data type, interleave, byte order,
-    wavelength units and sensor type.
-- provenance sources:
-  - header sidecar as role `header`;
-  - binary payload as role `binary`.
+- **Header (`.hdr`)** — ASCII key/value lines beginning with `ENVI`, parsed into
+  `samples`, `lines`, `bands`, `interleave`, `data type`, `byte order`, optional
+  `header offset`, `wavelength = { ... }`, `wavelength units`, `spectra names`
+  and (for cubes) `map info`. Brace-wrapped lists may span multiple lines.
+- **Binary payload** — resolved from `data file = ...` when present, otherwise
+  from the sibling file (`.sli` / `.SLI` for libraries; `.img` / `.IMG` /
+  `.dat` / `.DAT` for cubes). Decoded through the shared numeric helper covering
+  ENVI `data type` 1, 2, 3, 4, 5, 12, 13, 14, 15 (u8 / i16 / i32 / f32 / f64 /
+  u16 / u32 / i64 / u64) in either byte order.
+- **Layout constraints** — spectral libraries require `bands == 1` and BSQ
+  interleave; ENVI Standard cubes support BSQ, BIL and BIP and resolve the
+  interleave into C-order on read.
 
-Each ENVI Standard cube pixel also becomes one record:
+## What nirs4all-io extracts
 
-- signal name: `spectrum`;
-- axis: wavelengths from the ENVI `wavelength = { ... }` vector;
-- metadata:
-  - `sample_id` as `pixel_y{row}_x{col}`;
-  - `pixel_x`, `pixel_y`;
-  - `spatial_x`, `spatial_y`, normalized `spatial_unit` when `map info` is
-    present;
-  - `map_axis_order`, projection, reference pixel/map coordinates, pixel sizes,
-    zone, hemisphere and datum when they are present in `map info`;
-  - `envi` object with dimensions, interleave, data type, byte order, raw map
-    info, parsed map info and coordinate system string.
+- **Signals** — one `spectrum` signal per record. The signal type is `Unknown`
+  (ENVI headers carry no semantic unit field).
+- **Axis** — values from `wavelength = { ... }`; the unit/kind follow
+  `wavelength units` (`nm`, `um`, `cm-1`); a missing axis falls back to a
+  generated index with the `envi_sli_missing_wavelength_axis_generated_index`
+  warning.
+- **Library records** — one record per `spectra names` entry, with
+  `metadata.sample_id` and an `envi` object (dimensions, data type, interleave,
+  byte order, wavelength units, sensor type).
+- **Cube records** — one record per pixel, `sample_id = pixel_y{row}_x{col}`,
+  `pixel_x` / `pixel_y`, and, when `map info` is present, `spatial_x` /
+  `spatial_y`, normalized `spatial_unit`, projection, reference pixel/map
+  coordinates, pixel sizes, zone, hemisphere and datum.
+- **Pixel selection** — cubes accept a half-open `CubeWindow` ROI
+  (`--rows START:END --cols START:END`) or an ordered sparse `CubeMask`
+  (`--pixel ROW,COL` / `--pixels-file`); original pixel coordinates are
+  preserved.
+- **Single-record mode** — `ReadOptions::single_record()` / `--single-record`
+  emits one N-dimensional record (`dims = ["row", "col", "x"]`) with `row`/`col`
+  index coordinates and map-level georeferencing in metadata (rejects a sparse
+  mask).
+- **Provenance** — header sidecar (role `header`) and binary payload (role
+  `binary`), each with SHA-256.
 
-## Fixtures and Reference Checks
+## Variants & support status
 
-Current fixture:
+| Variant | Status | Notes |
+|---|---|---|
+| ENVI Spectral Library `.sli` + `.hdr` | Supported | One-band BSQ float/int payloads, either byte order; `spectra names` become records. |
+| ENVI Standard cube `.img` / `.dat` + `.hdr` | Supported (scoped) | BSQ/BIL/BIP; per-pixel records, ROI window, sparse mask, or single N-D record. |
+| USGS splib06 / splib07 (AVIRIS-resampled) | Supported | Read through both `.hdr` and direct `.sli` entry paths. |
+| Legacy `.slb` spectral library | Planned | No fixture yet; low NIRS impact. |
+| Specim / HySpex / Headwall / NEON cubes | Planned | Production-scale cube fixtures still wanted. |
 
-- `samples/envi_sli/synthetic_lib.hdr`
-- `samples/envi_sli/synthetic_lib.sli`
-- `samples/envi_sli/cubescope-mini-cube.hdr`
-- `samples/envi_sli/cubescope-mini-cube.img`
-- `samples/envi_sli/usgs_splib06a_aviris95_envi.hdr`
-- `samples/envi_sli/usgs_splib06a_aviris95_envi.sli`
-- `samples/envi_sli/usgs_splib07_aviris95_envi.hdr`
-- `samples/envi_sli/usgs_splib07_aviris95_envi.sli`
+## Limitations & known gaps
 
-Expected shape:
+- `data ignore value` sentinels are preserved as numeric values rather than
+  converted to missing values; a masking policy is pending in the shared model.
+- Non-zero `header offset` and big-endian payloads are accepted by the decoder
+  but not yet exercised by a committed fixture.
+- The single-record cube mode rejects sparse masks; use the per-pixel layout for
+  arbitrary pixel selection.
 
-- 50 records;
-- 200 wavelength points per record;
-- wavelength axis 1100.0 to 2500.0 nm;
-- first record first value: `0.0367427170`;
-- last record last value: `0.0608757548`.
+## Reference readers
 
-Additional fixed control points for the current little-endian float32 fixture:
+The format is documented by ENVI and supported by Spectral Python (`spectral`),
+R `RStoolbox::readSLI()`, `pysptools` and `rasterio`. The nirs4all-io reader is
+clean-room. Conformance output from Spectral Python is planned once the optional
+dependency is present in the reverse-engineering environment.
 
-| Record | `y[0]` | `y[50]` | `y[100]` | `y[199]` |
-|---|---:|---:|---:|---:|
-| `S000` | `0.0367427170` | `0.3736431003` | `0.0838314667` | `-0.1465858221` |
-| `S001` | `0.0118803680` | `0.2504318655` | `0.1165727973` | `0.0967217237` |
-| `S010` | `-0.0723795667` | `0.6311128736` | `0.3589301407` | `0.0539555252` |
-| `S049` | `0.1409859657` | `0.4480262399` | `0.4442021549` | `0.0608757548` |
+## Samples & validation
 
-The format is documented by ENVI and supported by Spectral Python
-(`spectral`) and R `RStoolbox::readSLI()`. The current Rust reader is
-clean-room. The synthetic library is the committed golden, while the USGS
-splib06/07 fixtures are tested through both `.hdr` and direct `.sli` entry
-paths.
-
-Cube fixture checks:
-
-- 48 by 48 pixels, 32 spectral bands;
-- header and direct `.img` entry paths both dispatch to `envi-standard-cube`;
-- ROI window `rows=2:4`, `cols=3:6` emits 6 records while preserving
-  `pixel_y2_x3` through `pixel_y3_x5` coordinates and matching the full-cube
-  spectra for those pixels;
-- sparse mask `[(47,47), (0,0), (12,7)]` emits 3 records in caller order whose
-  values match the corresponding pixels from the full-cube expansion, while the
-  empty-mask and out-of-bounds-pixel paths return descriptive errors;
-- first pixel first/last values: `100`, `3223`;
-- last pixel first/last values: `152`, `3275`;
-- map coordinates are read from `map info`, with `units=Meters` normalized to
-  `spatial_unit = "m"` and UTM zone/hemisphere/datum promoted.
-
-USGS AVIRIS95 spectral-library checks:
-
-- `splib06a`: 1365 records, 224 wavelength points, `um` axis
-  `0.38315..2.5082`, first sample `Acmite NMNH133746 Pyroxene s06av95a=a`.
-- `splib07`: 3139 records, same 224-point axis, first two rows are wavelength
-  and resolution metadata spectra as stored in the upstream library.
-- `data ignore value` sentinels are currently preserved as numeric values
-  rather than converted to missing values.
-
-## Sidecar contract (M1, 2026-05-22)
-
-ENVI is a sidecar-bearing format: the `.hdr` header and the binary
-payload travel as a pair. Three entry points cover decoding:
-
-- `open_path(path)` reads the `.hdr` + binary from disk.
-- `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` decodes
-  from in-memory bytes; pass either the `.hdr` text or the `.sli`/`.img`
-  binary as the primary and supply the companion in the resolver.
-- `open_bytes(name, bytes)` returns `Error::UnsupportedSidecar`.
-
-## Next Work
-
-- Add conformance output from Spectral Python once the optional
-  dependency is present in the reverse-engineering environment.
-- Add tests for non-zero `header offset` and big-endian payloads.
-- Add real Specim/HySpex/Headwall/NEON cube fixtures to exercise the
-  rectangular and sparse-mask extraction paths on production-scale
-  layouts.
+Fixtures live under `samples/envi_sli/` (synthetic library `.hdr`/`.sli`, mini
+cube `.hdr`/`.img`, USGS splib06a/splib07) and the AVIRIS cube under
+`samples/hyperspectral_cubes/`; all are golden-backed. The synthetic library
+yields 50 records of 200 points over 1100–2500 nm, first record `y[0] = 0.0367427170`,
+last record `y[199] = 0.0608757548`. The mini cube is 48×48 pixels × 32 bands
+(first pixel first/last `100`/`3223`; last pixel `152`/`3275`), with UTM `map info`
+normalized to `spatial_unit = "m"`. The USGS libraries expose 1365 (splib06a) and
+3139 (splib07) records on a 224-point `um` axis (`0.38315..2.5082`). ENVI is a
+sidecar-bearing format: `open_path` reads the pair from disk, `open_with_sidecars`
+decodes in-memory bytes through a `SidecarResolver`, and `open_bytes` returns
+`Error::UnsupportedSidecar`.

@@ -1,58 +1,80 @@
 # Spectral Evolution / PSR SED
 
-Status: experimental.
+> **Status:** Supported (scoped) · **Vendor:** Spectral Evolution · **Extensions:** `.sed`
 
-The `.sed` reader targets Spectral Evolution / PSR ASCII exports. It recognizes
-files by the `.sed` extension plus `Version:` and `Instrument:` header keys,
-then parses the `Data:` table.
+`.sed` is the ASCII export written by Spectral Evolution field spectrometers
+(PSR and SR series) for reflectance and raw-DN measurements across the
+VNIR/SWIR range. The file is a key/value header followed by a `Data:` table
+whose first column is wavelength. nirs4all-io parses the table, types each
+signal column and promotes the field-acquisition header into canonical
+metadata.
 
-## Scope Implemented
+## Instruments & software
 
-Implemented:
+Produced by Spectral Evolution's DARWin software for PSR-1100/2500/3500 and
+SR-1900/3500/6500 handheld spectrometers. The committed corpus is drawn from the
+PSR-3500 family; SR-series firmware variants remain under-sampled.
 
-- key/value header preservation under `vendor`;
-- wavelength axis in `nm`;
-- one normalized signal per data column after `Wvl`;
-- reflectance columns typed as `reflectance`;
-- DN/reference/target columns typed as `raw_counts`;
-- signal units inferred from observed column labels: `DN` for normalized DN
-  columns, `%` for `Reflect. %`, and `1` for `Reflect. [1.0]`;
-- explicit warning and quality flag when the file contains only DN channels and
-  no reflectance signal.
-- parseable GPS latitude/longitude/altitude, acquisition date/time, GPS time
-  and satellite counts promoted to canonical top-level metadata while the raw
-  header remains preserved under `vendor`;
-- instrument/model/serial, measurement mode, radiometric calibration, declared
-  point count, wavelength range, source signal labels and source signal units
-  promoted to top-level metadata.
-- field acquisition metadata promoted from observed PSR headers:
-  `declared_column_count`, `detector_channels`,
-  `detector_temperatures_reference_celsius`,
-  `detector_temperatures_target_celsius`,
-  `integration_time_reference_ms`, `integration_time_target_ms`,
-  `battery_voltages_volts`, `scan_averages`, `dark_mode`, `foreoptic` and
-  `foreoptic_signal_units`.
-- explicit warnings when declared channel or column counts disagree with the
-  parsed spectral table.
+## File structure
 
-## Fixture Coverage
+- A key/value header (e.g. `Version:`, `Instrument:`, `Measurement:`,
+  `Channels:`, `Wavelength Range:`, GPS and detector lines), then a literal
+  `Data:` line.
+- The line after `Data:` is the column header; the first column is `Wvl` and
+  the remaining columns are value channels (DN reference/target, `Reflect. %`
+  or `Reflect. [1.0]`).
+- The numeric block follows, one wavelength per row.
 
-| Fixture | Variant | Coverage |
+## What nirs4all-io extracts
+
+- **Signals** — one signal per value column after `Wvl`. Reflectance columns are
+  typed `reflectance`; DN / reference / target columns are typed `raw_counts`.
+- **Axis** — a wavelength axis in `nm`.
+- **Units** — inferred from column labels: `DN` for normalized DN columns, `%`
+  for `Reflect. %`, and `1` for `Reflect. [1.0]`.
+- **Metadata** — the raw header under `metadata.vendor`, plus promoted
+  canonical fields: instrument/model/serial, measurement mode, radiometric
+  calibration, declared point count, wavelength range, source signal
+  labels/units, detector channels, reference/target detector temperatures and
+  integration times, battery voltages, scan averages, dark mode, foreoptic and
+  its signal units, GPS latitude/longitude/altitude, GPS time, satellite counts
+  and acquisition start/end date and time.
+- **Warnings & quality flags** — `sed_missing_reflectance_signal` (plus a
+  `missing_reflectance_signal` quality flag) when only DN channels are present;
+  `sed_point_count_mismatch` and `sed_column_count_mismatch` when declared
+  counts disagree with the parsed table.
+
+## Variants & support status
+
+| Variant | Status | Notes |
 |---|---|---|
-| `1566060_09506_working.sed` | PSR+3500 DN + reflectance | 2151-point axis, raw DN reference/target plus reflectance |
-| `1566060_15025_not_working.sed` | broken-but-valid DN-only export | 2151-point axis, two raw DN signals, `missing_reflectance_signal` quality flag, declared 3-column table |
-| `serbinsh_cvars_grape_leaf.sed` | PSR-3500 grape-leaf reflectance acquisition | 2151-point axis, firmware/header drift coverage, canonical GPS/date/time metadata, colon-style foreoptic parsing |
+| PSR+3500 DN + reflectance export | Supported | Raw DN reference/target plus reflectance, 2151-point axis. |
+| PSR-3500 reflectance acquisition | Supported | Firmware/header drift, GPS/date/time and colon-style foreoptic parsing. |
+| DN-only export (no reflectance) | Supported | Read as raw channels; flagged, not promoted to reflectance. |
+| SR-3500 / SR-6500 firmware | Partial | Firmware-specific headers under-covered; more samples wanted. |
 
-The DN-only fixture remains readable because it contains valid spectral raw
-channels. It is not promoted to reflectance: downstream users must handle the
-`sed_missing_reflectance_signal` warning or compute reflectance from a validated
-workflow.
+## Limitations & known gaps
 
-## Known Gaps
-
-- SR-3500 / SR-6500 firmware-specific headers remain under-covered.
-- Signal-unit inference is limited to column labels observed in committed
+- The reader does not reconstruct reflectance from DN-only acquisitions; the
+  `sed_missing_reflectance_signal` warning is left for downstream handling.
+- Signal-unit inference is limited to the column labels observed in committed
   fixtures.
-- The reader does not reconstruct reflectance from DN-only acquisitions.
-- Automated conformance reports against `spectrolab` / `specdal` are still
-  pending in the reverse-engineering lab.
+- SR-series firmware headers and explicit calibrated radiance/irradiance units
+  still need redistributable samples.
+
+## Reference readers
+
+Compared full-array against `spectrolab` (R subprocess) in `tests/conformance/`;
+`specdal` is an additional reference candidate.
+
+## Samples & validation
+
+Three fixtures under `samples/spectral_evolution/` are golden-backed in
+`crates/nirs4all-io/tests/goldens/`: `1566060_09506_working.sed` (PSR+3500 DN +
+reflectance), `1566060_15025_not_working.sed` (broken-but-valid DN-only export
+carrying the `missing_reflectance_signal` flag) and
+`serbinsh_cvars_grape_leaf.sed` (PSR-3500 grape-leaf acquisition with canonical
+GPS/date/time metadata). The conformance suite (`pytest -m conformance`)
+compares the reflectance signal against `spectrolab` with a `1e-6` relative
+tolerance on axis and values. The probe reports format `spectral-evolution-sed`
+at `Confidence::Definite`.

@@ -1,50 +1,77 @@
 # Parquet NIRS Tables
 
-Native Rust reader for canonical tabular NIRS datasets stored as Apache
-Parquet.
+> **Status:** Supported · **Vendor:** Apache / generic · **Extensions:** `.parquet` · **Feature flag:** `fmt-parquet`
 
-## Scope Implemented
+Native Rust reader for canonical tabular NIRS datasets stored as Apache Parquet,
+the columnar format used for efficient internal distribution of wide spectral
+tables. A spectral Parquet table has one row per sample and numeric
+wavelength-named columns.
 
-- Sniffs `.parquet` files by `PAR1` magic.
-- Opens Parquet through Arrow with Zstd support.
-- Accepts tables whose spectral columns are named by numeric wavelength values
-  and whose column types are `float32` or `float64`.
-- Requires at least 8 spectral columns and a strictly ascending axis to avoid
-  false positives on generic Parquet files.
-- Maps numeric non-spectral columns to targets.
-- Maps `sample_id`, `sample` or `id` string columns to metadata
-  `sample_id`.
-- Refuses non-spectral Parquet files, including the Apache
-  `alltypes_plain.parquet` fixture.
-- Decodes from both `read_path` (filesystem) and `read_bytes` /
-  `open_bytes` (in-memory `bytes::Bytes`) via the same shared code
-  path. Sidecar-less, so `open_bytes` works without a resolver
-  (M4 follow-up 2026-05-23).
+## Instruments & software
 
-## Record Mapping
+Vendor-neutral; written by Arrow / `pyarrow`, `fastparquet`,
+`pandas.to_parquet` and the `nirs4all` `ParquetLoader`. Useful as a compact
+distribution format for NIRS datasets.
 
-- one `SpectralRecord` per table row;
-- signal name: `absorbance`;
-- signal type: `absorbance`;
-- axis: wavelength, `nm`, from numeric column names;
-- targets: numeric non-spectral columns, for example `protein`;
-- metadata: `sample_id`, `row_index` and a `parquet` summary object.
+## File structure
 
-## Fixtures and Reference Checks
+Detected by the `PAR1` magic plus the `.parquet` extension and opened through
+Arrow (with Zstd support). A table is accepted as spectral when:
 
-Committed fixtures:
+- its spectral columns are **named by numeric wavelength values** and typed
+  `float32` or `float64`;
+- there are **at least 8** such columns;
+- the resulting axis is **strictly ascending** (these two checks reject generic
+  Parquet files).
 
-| File | Expected output |
-|---|---|
-| `samples/parquet/synthetic_nirs.parquet` | 50 records, 200 wavelength columns, target `protein` |
-| `samples/parquet/alltypes_plain.parquet` | refused as non-spectral |
+Non-spectral numeric columns become targets, and a `sample_id` / `sample` / `id`
+UTF-8 column becomes the identifier.
 
-Reference readers: `pyarrow.parquet`, `fastparquet`,
-`pandas.read_parquet`, and `nirs4all.data.loaders.ParquetLoader`.
+## What nirs4all-io extracts
 
-## Missing / Next Work
+- **Signals** — one `SpectralRecord` per table row, each with a single
+  `absorbance` signal (type `Absorbance`).
+- **Axis** — values from the numeric column names; unit `nm`, kind `Wavelength`.
+- **Targets** — numeric non-spectral columns (`float32`/`float64`/`int32`/`int64`,
+  e.g. `protein`) become `targets`; nulls are preserved as `null`.
+- **Metadata** — the `sample_id`/`sample`/`id` string column maps to
+  `metadata.sample_id`; `row_index` and a `parquet` summary (spectral/target
+  column counts) are recorded.
+- **Provenance** — source file + SHA-256, reader name and version.
 
-- Add schema metadata support for explicit units and signal type.
-- Add compression variants beyond the committed Zstd fixture as needed.
-- Add projection-based reading for very wide Parquet datasets if performance
-  requires it.
+The same decode path serves both `read_path` (filesystem) and `read_bytes` /
+`open_bytes` (in-memory), so the reader is sidecar-free and works without a
+resolver.
+
+## Variants & support status
+
+| Variant | Status | Notes |
+|---|---|---|
+| Numeric-wavelength spectral table (float32/float64) | Supported | ≥ 8 ascending wavelength columns. |
+| Zstd-compressed Parquet | Supported | Default committed fixture is Zstd. |
+| Numeric target + `sample_id` columns | Supported | Targets and identifier joined per row. |
+| In-memory decode (`open_bytes`) | Supported | Same code path as filesystem reads. |
+| Non-spectral Parquet (e.g. `alltypes_plain.parquet`) | Detected / refused | Refused as "not a NIRS spectral table". |
+
+## Limitations & known gaps
+
+- Schema metadata is not yet read for explicit units or signal type, so the
+  signal is always typed `Absorbance` on a `nm` wavelength axis.
+- Compression variants beyond the committed Zstd fixture are added as needed.
+- Projection-based reading for very wide tables is not implemented; the reader
+  materialises all spectral columns per batch.
+
+## Reference readers
+
+`pyarrow.parquet`, `fastparquet`, `pandas.read_parquet` and the `nirs4all`
+`ParquetLoader` read the same tables. nirs4all-io adds the spectral-schema
+validation, axis construction, target/metadata separation and provenance.
+
+## Samples & validation
+
+Fixtures live under `samples/parquet/`, covered by golden summaries in
+`crates/nirs4all-io/tests/goldens/` (`parquet_*`):
+`synthetic_nirs.parquet` yields 50 records over 200 wavelength columns with a
+`protein` target, and `alltypes_plain.parquet` (the Apache sample) is refused as
+non-spectral. The probe reports format `parquet-container` at
+`Confidence::Likely`.

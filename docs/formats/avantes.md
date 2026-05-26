@@ -1,183 +1,105 @@
 # Avantes AvaSoft
 
-Experimental native Rust readers for Avantes AvaSoft ASCII and binary
-fixtures.
+> **Status:** Supported (scoped) · **Vendor:** Avantes · **Extensions:** ASCII `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt`; legacy binary `.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF`; AvaSoft 8 binary `.Raw8`, `.IRR8` (and other `*8` suffixes)
 
-## Scope Implemented
+AvaSoft is the acquisition software for Avantes fibre-optic spectrometers. It
+writes both ASCII exports (recommended for interchange) and per-acquisition
+binary files in two generations: the legacy AvaSoft 6/7 single-mode layout and
+the AvaSoft 8 `AVS82`/`AVS84` container. nirs4all-io reads the ASCII exports
+fully and decodes the binary layouts covered by committed fixtures.
 
-ASCII exports:
+## Instruments & software
 
-- AvaSoft wave tables (`.ttt`, `.trt`, `.tit`, `.tat`) with `Wave;...`
-  columns;
-- two-column irradiance exports (`.IRR`) such as `irr_820_1941.IRR`.
-- text exports from AvaSoft 8 such as `avasoft8.txt`; these are ASCII fixtures
-  and do not close the binary AvaSoft 8 suffix gaps.
-- `Dark`, `Ref`, `Reference` and `Sample` ASCII columns are typed as
-  `raw_counts`; processed columns retain reflectance, transmittance or
-  irradiance signal types.
+Produced by AvaSoft across the AvaSpec range. ASCII wave tables come from
+AvaSoft 6/7 (`Wave;...` columns) and AvaSoft 8 text exports; binary files are the
+native per-measurement records. Reference behaviour was compared against the
+documented `lightr` parser layout and its formulas; `lightr` is GPL and remains
+a conformance reference only — no runtime dependency is linked into the MIT core.
 
-Legacy AvaSoft binaries:
+## File structure
 
-- AvaSoft 7-style single-mode files whose header is stored as little-endian
-  `float32` values;
-- tested extensions: `.TRM`, `.ROH`, `.DRK`, `.REF`;
-- `.ABS` is routed through the same layout and formula path but is not covered
-  by a committed fixture yet.
+- **ASCII wave tables** — a short metadata preamble, then a `Wave;...` header
+  row, an optional units row, and semicolon-delimited columns (axis first). The
+  delimiter is auto-detected. `.IRR` two-column whitespace files are parsed as a
+  single irradiance trace.
+- **Legacy binary (AvaSoft 6/7)** — a 400-byte header stored as little-endian
+  `float32` values: `version_id` (= 70) at byte 0, spectrometer id and user name
+  as float32 ASCII code points, wavelength polynomial coefficients `a0..a4` at
+  byte 296, `first_pixel`/`last_pixel` at 316/320, `measure_mode` at 324, then
+  the data at byte 400. The axis is `a0 + a1·p + a2·p² + a3·p³ + a4·p⁴` for pixel
+  index `p`. Processed modes (`.TRM`, `.ABS`) interleave `scope, white, dark`
+  triples; raw modes (`.ROH`, `.DRK`, `.REF`) store one vector plus trailing
+  acquisition values.
+- **AvaSoft 8 binary** — a 5-byte magic (`AVS82` / `AVS84`), a spectra count, then
+  per-subfile headers carrying subfile length, measurement-mode byte,
+  start/stop pixel, integration time/delay, averages, SPC date, comment, and
+  four float32 payload vectors (`xcoord`, scope, dark, reference). The reader
+  advances to the next subfile with `start + length + 10`.
 
-AvaSoft 8 binaries:
+## What nirs4all-io extracts
 
-- `AVS82`/`AVS84` containers;
-- tested extensions: `.Raw8`, `.IRR8`;
-- one subfile per current fixture;
-- wavelength coordinates, scope, dark and reference arrays are decoded.
+- **Signals** — one `SpectralRecord` per file or AvaSoft 8 subfile, axis in `nm`.
+  Processed modes derive the primary signal: transmittance/reflectance
+  `(scope − dark)/(white − dark)·100`, absorbance `−log10((scope − dark)/(white −
+  dark))`. Raw and reference channels are exposed alongside (`sample`,
+  `white_reference`, `dark_reference`, `scope`). ASCII `Dark`/`Ref`/`Reference`/
+  `Sample` columns are typed `raw_counts`; processed columns keep their
+  reflectance/transmittance/irradiance types.
+- **Metadata (harmonized top level)** — `measurement_mode`, `point_count`,
+  `first_pixel`, `last_pixel`, `integration_time_ms`, `averages_count`,
+  `integration_delay`; legacy adds `detector_temperature_c` and `version_id`;
+  AvaSoft 8 adds `magic`, `acquisition_start_date`/`acquisition_start_time`
+  (decoded from the packed SPC date) and, when populated, `instrument_serial`,
+  `operator`, `comment`. Fixed-length C-string fields are cut at the first NUL.
+- **Raw vendor block** — `metadata.avantes` preserves byte-level provenance
+  (`spec_id`, `user_name`, wavelength coefficients, raw measure-mode byte,
+  decoded SPC date, smooth/trigger fields).
+- **Diagnostics** — single-channel legacy raw modes carry
+  `avantes_legacy_single_channel:<mode>:companion_files_required` (consumers need
+  the companion files to recompute processed signals). When the AvaSoft 8
+  extension implies a mode that contradicts the observed `measure_mode` byte, the
+  record carries `avantes_avasoft8_extension_mode_mismatch:expected=…:observed=…`.
 
-## Legacy Layout
+## Variants & support status
 
-The committed AvaSoft 7 binary fixtures use:
+| Variant | Status | Notes |
+|---|---|---|
+| AvaSoft 6/7 ASCII wave tables (`.ttt`/`.trt`/`.tit`/`.tat`) | Supported | Multi-column axis-first tables; per-column signal typing. |
+| Two-column irradiance ASCII (`.IRR`) | Supported | Single irradiance trace. |
+| AvaSoft 8 text export (`.txt`) | Supported | Raw dark/reference/sample plus processed signal. |
+| Legacy binary `.TRM` / `.ROH` / `.DRK` / `.REF` | Supported (scoped) | Processed transmittance + channels, or single raw channel. |
+| Legacy binary `.ABS` | Supported (scoped) | Same layout/formula path; no committed fixture yet. |
+| AvaSoft 8 binary `.Raw8` / `.IRR8` | Partial | One subfile per fixture; `IRR8` calibration not yet applied. |
+| AvaSoft 8 `.RWD8`/`.ABS8`/`.TRM8`/`.RFL8`/`.RIR8`/`.RMN8`/`.RMD8`, multi-subfile | Planned | Recognised by magic but no committed fixtures yet. |
 
-```text
-0    version_id f32 = 70
-4    spec_id[9] as 9 float32 ASCII code points
-40   user_name[64] as 64 float32 ASCII code points
-296  wavelength coefficients a0..a4
-316  first_pixel
-320  last_pixel
-324  measure_mode
-400  data
-```
+## Limitations & known gaps
 
-The wavelength axis is:
+- `IRR8` irradiance calibration is not applied: the primary signal is exposed as
+  `irradiance` for discoverability with the
+  `avantes_irr8_irradiance_calibration_not_applied` warning, and the fourth
+  payload vector is exposed as `irradiance_calibration` (signal type `unknown`,
+  values spanning ~1e10 down to ~1e0) rather than a misnamed `white_reference`.
+- Many active AvaSoft 8 suffixes lack committed fixtures, and multi-subfile
+  AVS8 containers are not yet exercised.
+- The remaining AVS8 acquisition fields are preserved raw but not fully
+  normalized.
 
-```text
-wavelength = a0 + a1*p + a2*p^2 + a3*p^3 + a4*p^4
-```
+## Reference readers
 
-where `p` is the pixel index from `first_pixel` to `last_pixel`.
+`lightr` (GPL) is the layout/formula reference for the binary paths, used only
+in the isolated conformance lab. ASCII exports are equally readable with
+`pandas` and R `read.table`; nirs4all-io adds axis derivation, signal typing and
+provenance. Subprocess conformance reports against `lightr` are planned once the
+local R native chain is available.
 
-For `.TRM` and `.ABS`, payload triples are interleaved per point:
+## Samples & validation
 
-```text
-scope, white, dark
-```
-
-The current formulas are:
-
-- transmittance percent: `(scope - dark) / (white - dark) * 100`;
-- absorbance: `-log10((scope - dark) / (white - dark))`.
-
-Raw `.ROH`, `.DRK` and `.REF` payloads store one `float32` vector followed by
-three trailing acquisition values.
-
-## AvaSoft 8 Layout
-
-The implemented subset follows the current fixtures:
-
-```text
-0      magic char[5] = AVS82 or AVS84
-5      number of spectra
-sub+0  subfile length u32
-sub+4  sequence u8
-sub+5  measurement mode u8
-sub+6  bitness u8
-sub+7  sd marker u8
-sub+8  spec_id[10]
-sub+18 user_name[64]
-sub+83 start_pixel u16
-sub+85 stop_pixel u16
-sub+87 integration_time f32
-sub+91 integration_delay u32
-sub+95 averages u32
-sub+128 SPC date i32
-sub+192 comment[130]
-sub+322 xcoord[n], scope[n], dark[n], reference[n] as float32
-```
-
-The reader advances to the next subfile with `sub_start + length + 10`, matching
-the merge-group trailer observed in the fixtures.
-
-`IRR8` calibration is not applied yet. The primary signal is exposed as
-`irradiance` for discoverability, but provenance contains
-`avantes_irr8_irradiance_calibration_not_applied`. In IRR8 mode the fourth
-payload vector is exposed as `irradiance_calibration` (signal type
-`unknown`) rather than misnamed `white_reference`: the values span a huge
-dynamic range (about 1e10 down to about 1e0) and are per-pixel calibration factors,
-not a raw white scan.
-
-## Record Mapping
-
-- one `SpectralRecord` per file or AvaSoft 8 subfile;
-- axis: wavelength in `nm`;
-- metadata harmonized at the top level: `measurement_mode` (one of
-  `transmittance`, `absorbance`, `reflectance`, `irradiance`, `raw_scope`,
-  `dark_reference`, `white_reference`), `point_count`, `first_pixel`,
-  `last_pixel`, `integration_time_ms`, `averages_count`,
-  `integration_delay`; legacy adds `detector_temperature_c` and
-  `version_id`; AvaSoft 8 adds `magic`, `acquisition_start_date`,
-  `acquisition_start_time` and (when the C-string field is populated)
-  `instrument_serial`, `operator`, `comment`;
-- raw vendor block under `metadata.avantes` is preserved for byte-level
-  provenance (`spec_id`, `user_name`, wavelength coefficients, raw measure
-  mode, decoded SPC date, etc.);
-- legacy `.TRM`: `transmittance`, `sample`, `white_reference`,
-  `dark_reference`;
-- legacy `.ROH/.DRK/.REF`: `scope`, `dark_reference` or `white_reference`,
-  with the provenance warning
-  `avantes_legacy_single_channel:<mode>:companion_files_required` to flag
-  that downstream consumers need the companion files to recompute processed
-  signals;
-- AvaSoft 8 `.Raw8`: `scope`, `sample`, `dark_reference`, `white_reference`;
-- AvaSoft 8 `.IRR8`: `irradiance`, `sample`, `dark_reference`,
-  `irradiance_calibration`.
-
-When the file extension would imply a specific AvaSoft 8 mode (for example
-`.IRR8` -> irradiance, `.Raw8` -> raw scope), a mismatch with the observed
-`measure_mode` byte raises
-`avantes_avasoft8_extension_mode_mismatch:expected=<mode>:observed=<mode>`.
-
-Fixed-length C strings in AvaSoft 8 headers (spectrometer id, user name,
-comment) are now stopped at their first NUL byte. Earlier parsers leaked
-binary trailers when fixture buffers contained uninitialised ASCII-range
-bytes past the terminator.
-
-## Fixtures and Reference Checks
-
-Current binary fixtures:
-
-| File | Points | Axis | Primary control |
-|---|---:|---|---|
-| `avantes2.TRM` | 1442 | `275.271759 -> 1100.133307 nm` | transmittance `11.840215 -> -127.179425` |
-| `avantes_trans.TRM` | 1623 | `179.100616 -> 1100.347880 nm` | transmittance `30.313837 -> 54.054054` |
-| `avantes_reflect.ROH` | 1442 | `275.271759 -> 1100.133307 nm` | scope `805.000000 -> 774.299988` |
-| `1305084U1.DRK` | 1442 | `275.271759 -> 1100.133307 nm` | dark `785.900024 -> 782.700012` |
-| `1305084U1.REF` | 1442 | `275.271759 -> 1100.133307 nm` | white `856.000000 -> 802.200012` |
-| `1904090M1_0003.Raw8` | 1019 | `300.013855 -> 899.874878 nm` | `scope` equals raw `sample`; `AVS84`, measure mode `0` |
-| `eg.IRR8` | 1620 | `144.942429 -> 1100.441406 nm` | `irradiance` equals raw `sample`; `AVS84`, measure mode `4`, calibration warning |
-
-Each committed binary suffix above is also locked by probe tests so extension
-routing remains aligned with the binary header/magic checks.
-AvaSoft 8 `spc_date` values are unpacked into top-level
-`acquisition_start_date` and `acquisition_start_time` metadata while the raw
-integer and decoded components remain under `metadata.avantes`.
-
-Current ASCII fixtures:
-
-| File | Points | Axis | Primary control |
-|---|---:|---|---|
-| `avantes_export.ttt` | 401 | `300.000000 -> 700.000000 nm` | transmittance `3.148700 -> 31.491200` |
-| `avantes_export2.trt` | 1442 | `275.270000 -> 1100.130000 nm` | sample counts `805.000000 -> 774.300000` |
-| `avantes_export_long.ttt` | 1442 | `275.270000 -> 1100.130000 nm` | `Dark`, `Ref` and `Sample` raw-count columns plus `Transmittance` |
-| `irr_820_1941.IRR` | 1922 | `173.000000 -> 1133.500000 nm` | two-column irradiance parser |
-| `avasoft8.txt` | 401 | `300.000000 -> 700.000000 nm` | AvaSoft 8 text export with raw dark/reference/sample and reflectance |
-
-Reference behavior was compared against the documented `lightr` parser layout
-and its known formulas. `lightr` is GPL, so it remains a conformance reference
-only; no runtime dependency is linked into the MIT Rust core.
-
-## Next Work
-
-- Add committed `.ABS`, `.RFL8`, `.TRM8` and multi-subfile AVS8 fixtures.
-- Decode and normalize the remaining AVS8 acquisition fields.
-- Implement calibrated `IRR8` once the required irradiance calibration terms are
-  understood.
-- Add subprocess-based conformance reports against `lightr` in the
-  reverse-engineering lab when the local R native dependency chain is available.
+Binary fixtures under `samples/avantes/` are golden-backed and probe-locked per
+suffix: `avantes2.TRM` (1442 pts, 275.27→1100.13 nm, transmittance
+11.840215→−127.179425), `avantes_trans.TRM` (1623 pts), `avantes_reflect.ROH`
+(scope 805.0→774.3), `1305084U1.DRK`/`.REF`, `1904090M1_0003.Raw8` (1019 pts,
+`AVS84`, mode 0) and `eg.IRR8` (1620 pts, `AVS84`, mode 4, calibration warning).
+ASCII fixtures include `avantes_export.ttt`, `avantes_export2.trt`,
+`avantes_export_long.ttt`, `irr_820_1941.IRR` and `avasoft8.txt`. AvaSoft 8 SPC
+dates are unpacked into top-level `acquisition_start_date`/`time` metadata while
+the raw integer and decoded components remain under `metadata.avantes`.
