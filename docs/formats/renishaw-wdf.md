@@ -4,7 +4,7 @@
 
 WDF is the native chunked container written by Renishaw's WiRE software for inVia
 confocal Raman spectrometers. It stores single spectra, maps, line scans, depth
-profiles, time series and StreamLine acquisitions in one file. nirs4all-io reads
+profiles, time series and StreamLine acquisitions in one file. nirs4all-formats reads
 the spectral payload subset and emits one record per stored spectrum. The format
 is Raman, adjacent to the core NIRS point-spectrum scope; it is included for
 spectroscopy interchange and disambiguation.
@@ -35,7 +35,7 @@ header (`name[4]`, `block_uid: u32le`, `block_size: u64le`), and the leading
 - `WHTL` — white-light image container metadata (not the pixel payload);
 - `MAP ` — derived analysis-block inventory with bounded `dataRange` extraction.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per stored spectrum, each with a single
   `raw_counts` signal typed `RawCounts` (counts unit when declared by `YLST`).

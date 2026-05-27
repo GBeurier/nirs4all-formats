@@ -1,0 +1,425 @@
+{
+  "record_count": 10,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.022194,
+          "value_last": 0.150001,
+          "value_sum": 12.425798,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.010892,
+          "value_last": 0.032766,
+          "value_sum": 151.526412,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.007908,
+          "value_last": -0.048273,
+          "value_sum": 13.587731,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.115733,
+          "value_last": 0.085389,
+          "value_sum": -136.168453,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.008771,
+          "value_last": 0.002512,
+          "value_sum": -14.405421,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.095774,
+          "value_last": 0.076217,
+          "value_sum": -103.769456,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.011179,
+          "value_last": 0.005203,
+          "value_sum": -13.978934,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.011248,
+          "value_last": 0.002278,
+          "value_sum": -5.641233,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.030983,
+          "value_last": 0.006411,
+          "value_sum": -27.088184,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 698.229736,
+          "axis_kind": "wavenumber",
+          "axis_last": 4000.354736,
+          "axis_len": 857,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            857
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.023878,
+          "value_last": 0.00049,
+          "value_sum": -34.684629,
+          "values_len": 857
+        }
+      ],
+      "source_sha256": "0071cbd2a766cbcd04443d853a2f3325d7bbd71d0d909a98d931c8f4272853ec",
+      "target_keys": [],
+      "warnings": [
+        "old_spc_header_limited: log blocks and old-format XY variants are not decoded yet"
+      ]
+    }
+  ]
+}

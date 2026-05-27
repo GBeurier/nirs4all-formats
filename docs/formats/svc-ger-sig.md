@@ -5,7 +5,7 @@
 `.sig` is the ASCII export written by Spectra Vista Corporation (and legacy GER)
 field spectrometers — HR-1024i, GER 3700 and related VNIR/SWIR instruments. Each
 file pairs a reference and target acquisition and computes a reflectance
-channel. nirs4all-io reads the three spectral columns and promotes the rich SVC
+channel. nirs4all-formats reads the three spectral columns and promotes the rich SVC
 acquisition header (instrument, foreoptic, per-detector settings, radiometric
 factors and overlap policy) into canonical metadata.
 
@@ -24,7 +24,7 @@ Acer-PDA, laptop-firmware, GER 3700 PDA and HR-1024i field exports.
 - The numeric block follows `data=`: whitespace-separated rows of four columns —
   wavelength, reference, target and reflectance.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — three per record: `reference`, `target` and `reflectance`. The
   `reflectance` channel carries unit `%`; reference/target are typed from the
@@ -79,7 +79,7 @@ comparison can stay text-only.
 ## Samples & validation
 
 Fifteen fixtures under `samples/svc_ger/` are golden-backed in
-`crates/nirs4all-io/tests/goldens/` with direct semantic assertions covering the
+`crates/nirs4all-formats/tests/goldens/` with direct semantic assertions covering the
 Acer-PDA, laptop, matched-overlap-corrected, two declared-bad, GER 3700 PDA and
 HR-1024i Barrow variants. Control values include
 `BNL13001_000_moc.sig` (`overlap_break_wavelengths_nm = [970, 1901]`,

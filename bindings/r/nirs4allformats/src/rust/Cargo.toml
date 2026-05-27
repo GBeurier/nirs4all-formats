@@ -1,0 +1,20 @@
+[package]
+name = "nirs4allformats-r"
+version = "0.1.0-alpha.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+name = "nirs4allformats_r"
+
+[dependencies]
+extendr-api = { version = "0.7", default-features = false }
+nirs4all-formats = { path = "../../../../../crates/nirs4all-formats" }
+nirs4all-formats-core = { path = "../../../../../crates/nirs4all-formats-core" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = 2
+lto = "thin"

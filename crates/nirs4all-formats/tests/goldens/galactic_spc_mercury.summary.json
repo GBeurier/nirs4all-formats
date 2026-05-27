@@ -1,0 +1,46 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 20000.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 17000.0,
+          "axis_len": 3001,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "arb",
+          "role": "(arb)",
+          "shape": [
+            3001
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 124.0,
+          "value_last": 11.0,
+          "value_sum": 7125566.0,
+          "values_len": 3001
+        }
+      ],
+      "source_sha256": "8790e687a43c39e8b181ae09d055c8d1b1c8ae1821b2fc16ffca7c6362ff2c35",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

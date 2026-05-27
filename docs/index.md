@@ -1,10 +1,10 @@
-# nirs4all-io
+# nirs4all-formats
 
 Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
 stable Python / R / WebAssembly / C bindings and conformance checks against
 reference loaders.
 
-nirs4all-io auto-detects each file by content, decodes it through a single Rust
+nirs4all-formats auto-detects each file by content, decodes it through a single Rust
 registry, and returns a canonical, provenance-tracked `SpectralRecord` model. It
 does no modelling itself — it produces the records that
 [`nirs4all`](https://github.com/GBeurier/nirs4all) consumes.

@@ -1,0 +1,102 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "trivista-tvf",
+      "metadata_keys": [
+        "accumulation_count",
+        "calc_average",
+        "center_wavelength_nm",
+        "child_document_count",
+        "container",
+        "data_label",
+        "declared_frame_count",
+        "detector_adc_gain",
+        "detector_adc_rate_resolution",
+        "detector_adc_readout_port",
+        "detector_clearing_count",
+        "detector_name",
+        "detector_roi",
+        "detector_size",
+        "detector_temperature_c",
+        "document_depth",
+        "document_frame_count",
+        "document_index",
+        "document_label",
+        "document_role",
+        "document_type",
+        "elapsed_time_seconds",
+        "elapsed_time_unit",
+        "exposure_time_ms",
+        "file_datetime",
+        "file_version",
+        "frame_index",
+        "frame_x_dim",
+        "laser_wavelength_nm",
+        "record_time",
+        "source_filename",
+        "spectral_axis_calibration_type",
+        "spectral_axis_display_unit",
+        "spectral_axis_label",
+        "spectral_axis_laser_wave",
+        "spectral_axis_unit",
+        "spectral_point_count",
+        "spectrometer_count",
+        "spectrometer_detector_angle",
+        "spectrometer_detector_angles",
+        "spectrometer_focal_length_mm",
+        "spectrometer_focal_lengths_mm",
+        "spectrometer_groove_densities",
+        "spectrometer_groove_density",
+        "spectrometer_inclusion_angle",
+        "spectrometer_inclusion_angles",
+        "spectrometer_model",
+        "spectrometer_models",
+        "spectrometer_order",
+        "spectrometer_orders",
+        "spectrometer_serial_number",
+        "spectrometer_serial_numbers",
+        "spectrometer_stage_number",
+        "spectrometer_stage_numbers",
+        "spectrum_index",
+        "time_filetime_100ns",
+        "used_setup",
+        "xdim_length"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::trivista_tvf",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 794.220731,
+          "axis_kind": "wavelength",
+          "axis_last": 835.667586,
+          "axis_len": 1024,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "intensity",
+          "role": "intensity",
+          "shape": [
+            1024
+          ],
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 27732.0,
+          "value_last": 45818.0,
+          "value_sum": 28479097.0,
+          "values_len": 1024
+        }
+      ],
+      "source_sha256": "b1b1ae0de7acbe53376ccdfde20159a687b18e663cc5127c569ebe0bebae5dd6",
+      "target_keys": [],
+      "warnings": [
+        "trivista_tvf_xml_reverse_engineered"
+      ]
+    }
+  ]
+}

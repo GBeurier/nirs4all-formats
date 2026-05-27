@@ -30,12 +30,12 @@ values_rel_tol = 1e-6
 
 [jcamp]
 # `jcamp` decodes ASDF integer ordinates exactly; the axis is rebuilt
-# differently between readers: nirs4all-io uses `FIRSTX + i*DELTAX`
+# differently between readers: nirs4all-formats uses `FIRSTX + i*DELTAX`
 # linearly, while the Python `jcamp` library quantises each Xi to the
 # rounded textual precision recorded in the file (often ~0.01). The
 # worst observed drift on the committed NIST fixtures is ~6e-3 absolute
 # / ~2e-6 relative at the high end of a 7500-point spectrum — that is
-# the reference reader's choice, not nirs4all-io drift. Values stay
+# the reference reader's choice, not nirs4all-formats drift. Values stay
 # tight: ASDF ordinates are exact integers scaled by YFACTOR.
 axis_abs_tol = 1e-1
 axis_rel_tol = 5e-4
@@ -43,7 +43,7 @@ values_abs_tol = 0.0
 values_rel_tol = 1e-9
 
 [sed]
-# SED axis is read from ASCII text by both nirs4all-io and spectrolab.
+# SED axis is read from ASCII text by both nirs4all-formats and spectrolab.
 axis_abs_tol = 0.0
 axis_rel_tol = 1e-6
 values_abs_tol = 0.0

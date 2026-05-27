@@ -1,6 +1,6 @@
 # Supported formats
 
-nirs4all-io reads NIRS and spectroscopy files through a registry of native Rust
+nirs4all-formats reads NIRS and spectroscopy files through a registry of native Rust
 readers. You never pick a reader by hand: `open_path` / `open_bytes` sniff the
 file by content (magic bytes, container schema or text shape) and route it to
 the best match. This page is the public catalogue of what is covered today.
@@ -19,7 +19,7 @@ links to a detailed page.
 | **Partial** | Reads real files but is knowingly incomplete — read the page's *Limitations* before relying on it. |
 | **Experimental** | A narrow or local-only path that may still change. |
 | **Detected / refused** | Recognised, but intentionally **not** decoded (out of NIRS scope) — the reader points you to the right tool. |
-| **Blocked / Planned** | Not readable yet; we need sample files or a specification. [Send files →](https://github.com/GBeurier/nirs4all-io/issues/new/choose) |
+| **Blocked / Planned** | Not readable yet; we need sample files or a specification. [Send files →](https://github.com/GBeurier/nirs4all-formats/issues/new/choose) |
 
 Feature flags in brackets (`fmt-hdf5`, `fmt-matlab`, `fmt-parquet`) mark readers
 that are compiled in by default but can be turned off (and are off on the
@@ -141,10 +141,10 @@ specification. If you can share any of them, you will directly unblock a reader.
 ## Don't see your format?
 
 - **Request a format** or **send reference files** through the
-  [issue templates](https://github.com/GBeurier/nirs4all-io/issues/new/choose) —
+  [issue templates](https://github.com/GBeurier/nirs4all-formats/issues/new/choose) —
   real files are the single biggest unblocker.
 - If a supported file is **misread or refused**, open a *bug* issue with the
-  output of `nirs4all-io probe <file>`.
+  output of `nirs4all-formats probe <file>`.
 
-See [`CONTRIBUTING.md`](https://github.com/GBeurier/nirs4all-io/blob/main/CONTRIBUTING.md)
+See [`CONTRIBUTING.md`](https://github.com/GBeurier/nirs4all-formats/blob/main/CONTRIBUTING.md)
 for how sample files are licensed and added to the corpus.

@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jcamp",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 574.928,
+          "axis_kind": "wavenumber",
+          "axis_last": 3974.233,
+          "axis_len": 14106,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            14106
+          ],
+          "signal_type": "unknown",
+          "unit": "(micromol/mol)-1m-1 (base 10)",
+          "value_first": 0.0,
+          "value_last": 1e-6,
+          "value_sum": 0.294218,
+          "values_len": 14106
+        }
+      ],
+      "source_sha256": "53c664ea0fbd710e63392de46455f90fdaa215e81c13c4a8a36fdfdee69e7e9c",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

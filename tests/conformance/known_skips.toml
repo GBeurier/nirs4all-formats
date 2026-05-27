@@ -6,7 +6,7 @@
 # Synthetic peak-assignments fixture is intentionally trivial; the
 # `jcamp` Python reader does not parse the sparse "(XYA)" shape.
 synthetic_peak_assignments_jdx = "JCAMP Python reader does not parse PEAK ASSIGNMENTS"
-# Top-level multi-block files: nirs4all-io emits one record per block
+# Top-level multi-block files: nirs4all-formats emits one record per block
 # while jcamp_readfile concatenates them into a single axis/value pair.
 # The pairing differs by design; covered by the M3 multi-block tests
 # instead.
@@ -17,7 +17,7 @@ nist_sucrose_ir_jdx = "jcamp_readfile merges multi-block top-level files into on
 # block ordering differs from the standard OPUS layout.
 mmp_2107_test1_001 = "brukeropus rejects the AfSIS Bruker MPA layout"
 # ICR (ion cyclotron resonance) fixtures expose several blocks with
-# identical point counts; brukeropus and nirs4all-io disagree on which
+# identical point counts; brukeropus and nirs4all-formats disagree on which
 # block is "the" primary spectrum, so the value comparison would match
 # different physical channels and fail.
 icr_087266_b2_0 = "ICR fixtures have ambiguous block primacy; covered by sm/rf/r individual cross-checks"

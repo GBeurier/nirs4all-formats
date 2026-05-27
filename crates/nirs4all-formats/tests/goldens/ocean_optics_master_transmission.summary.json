@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "ocean-optics-text",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::ocean_optics",
+      "record_signal_type": "transmittance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 178.53,
+          "axis_kind": "wavelength",
+          "axis_last": 889.03,
+          "axis_len": 3648,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "transmittance",
+          "role": "transmittance",
+          "shape": [
+            3648
+          ],
+          "signal_type": "transmittance",
+          "unit": "%",
+          "value_first": 95.38,
+          "value_last": 25.753,
+          "value_sum": 75074.699,
+          "values_len": 3648
+        }
+      ],
+      "source_sha256": "5424051a2efbd21bd6811c60ab2a39ec179a3bdda4105c48cc60f1738d419cbe",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

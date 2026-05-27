@@ -1,6 +1,6 @@
 # NIRS / Spectroscopy File Format Inventory
 
-Inventory of file formats that `nirs4all-io` aims to ingest, with the current
+Inventory of file formats that `nirs4all-formats` aims to ingest, with the current
 state of open-source support and the parser strategy we plan to use. Sections
 1–3 capture the formats provided in the original spec; sections 4–6 add formats
 discovered during the web research phase (cf. `DIRECTIONS.md`, Annex A).

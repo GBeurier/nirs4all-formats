@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **This is `nirs4all-io`, not `nirs4all`.** Parent-directory `CLAUDE.md` files describe
+> **This is `nirs4all-formats`, not `nirs4all`.** Parent-directory `CLAUDE.md` files describe
 > the `nirs4all` Python modelling library and its webapp. This repo is a separate, **Rust-first
 > low-level file-reader library** for NIRS/spectroscopy formats with thin Python/R/WASM/C bindings.
 > It does **not** depend on `nirs4all`; it produces the records that `nirs4all` later models.
@@ -34,24 +34,24 @@ Always source the Rust env first: `. "$HOME/.cargo/env"`.
 ```bash
 # Core Rust workspace
 cargo test --workspace                                    # all Rust tests
-cargo test -p nirs4all-io --test goldens                  # one integration test binary
-cargo test -p nirs4all-io <substring>                     # filter by test name
+cargo test -p nirs4all-formats --test goldens                  # one integration test binary
+cargo test -p nirs4all-formats <substring>                     # filter by test name
 cargo fmt --all --check                                   # format gate
 cargo clippy --workspace --all-targets -- -D warnings     # lint gate (warnings are errors)
 
 # Feature-flag builds (readers gate on these)
-cargo build -p nirs4all-io --no-default-features                                   # core readers only
-cargo build -p nirs4all-io --no-default-features --target wasm32-unknown-unknown   # no-fs target
+cargo build -p nirs4all-formats --no-default-features                                   # core readers only
+cargo build -p nirs4all-formats --no-default-features --target wasm32-unknown-unknown   # no-fs target
 
-# CLI (binary name: nirs4all-io)
-cargo run -p nirs4all-io-cli -- probe samples/jcamp_dx/TESTSPEC.DX
-cargo run -p nirs4all-io-cli -- read-json PATH [--rows 10:20 --cols 30:40 | --pixel R,C | --pixels-file f]
-cargo run -p nirs4all-io-cli -- read-json PATH --sidecar cube.hdr=PATH/cube.hdr   # sidecar formats
-cargo run -p nirs4all-io-cli -- scan DIR [--max-depth N --include-unsupported --json]
+# CLI (binary name: nirs4all-formats)
+cargo run -p nirs4all-formats-cli -- probe samples/jcamp_dx/TESTSPEC.DX
+cargo run -p nirs4all-formats-cli -- read-json PATH [--rows 10:20 --cols 30:40 | --pixel R,C | --pixels-file f]
+cargo run -p nirs4all-formats-cli -- read-json PATH --sidecar cube.hdr=PATH/cube.hdr   # sidecar formats
+cargo run -p nirs4all-formats-cli -- scan DIR [--max-depth N --include-unsupported --json]
 
 # Conformance vs external reference readers (pytest marker; weekly CI job)
 pytest -m conformance tests/conformance/
-NIRS4ALL_IO_ACCEPT_GOLDENS=1 cargo test -p nirs4all-io --test goldens   # re-bless goldens after a reviewed change
+NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1 cargo test -p nirs4all-formats --test goldens   # re-bless goldens after a reviewed change
 ```
 
 ### Bindings
@@ -63,7 +63,7 @@ NIRS4ALL_IO_ACCEPT_GOLDENS=1 cargo test -p nirs4all-io --test goldens   # re-ble
 pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]" && pytest tools/reverse-lab/tests bindings/python/tests
 
 # R (extendr; native lib built at install time when Cargo is present, else CLI fallback)
-R CMD INSTALL bindings/r/nirs4allio
+R CMD INSTALL bindings/r/nirs4allformats
 
 # WASM (wasm-pack; fmt-hdf5 ON, fmt-matlab/fmt-parquet OFF)
 (cd bindings/wasm && wasm-pack build --target nodejs --release --out-dir pkg-node) && node bindings/wasm/tests/smoke.js
@@ -86,12 +86,12 @@ built independently.
 
 | Crate | Role |
 |---|---|
-| `crates/nirs4all-io-core` | Canonical data model, errors, signal types, `FormatProbe`/`Confidence` sniff contract, `SidecarResolver` trait. No vendor/binding deps. |
-| `crates/nirs4all-io` | Reader registry + 40+ native readers + directory walker. The public facade. |
-| `crates/nirs4all-io-capi` | Additive C ABI; `build.rs` regenerates `include/nirs4all_io.h` via cbindgen (`cbindgen.toml`). |
-| `crates/nirs4all-io-cli` | `probe` / `read-json` / `scan` (also the current transport for bindings before native paths fill in). |
+| `crates/nirs4all-formats-core` | Canonical data model, errors, signal types, `FormatProbe`/`Confidence` sniff contract, `SidecarResolver` trait. No vendor/binding deps. |
+| `crates/nirs4all-formats` | Reader registry + 40+ native readers + directory walker. The public facade. |
+| `crates/nirs4all-formats-capi` | Additive C ABI; `build.rs` regenerates `include/nirs4all_formats.h` via cbindgen (`cbindgen.toml`). |
+| `crates/nirs4all-formats-cli` | `probe` / `read-json` / `scan` (also the current transport for bindings before native paths fill in). |
 
-### Data model (`nirs4all-io-core/src/model.rs`)
+### Data model (`nirs4all-formats-core/src/model.rs`)
 
 Every reader emits `Vec<SpectralRecord>`. Canonical shape — bindings mirror it, never replace it:
 
@@ -105,7 +105,7 @@ Every reader emits `Vec<SpectralRecord>`. Canonical shape — bindings mirror it
 - `Provenance` carries reader name/version, per-source SHA-256 (`SourceFile`), and `warnings`.
   Preserving provenance through to `nirs4all` is a project goal — see `docs/INTEGRATION_NIRS4ALL.md`.
 
-### Reader registry & dispatch (`nirs4all-io/src/registry.rs`)
+### Reader registry & dispatch (`nirs4all-formats/src/registry.rs`)
 
 Every reader implements the `Reader` trait: `name()`, `sniff(head, path) -> Option<FormatProbe>`,
 `read_path()`. Optional overrides:
@@ -120,7 +120,7 @@ all positive candidates. `walk_path`/`scan` recurse a directory and mark each fi
 Facade entry points (re-exported from `lib.rs`): `open_path`, `open_path_with_options`, `open_bytes`,
 `open_with_sidecars[_and_options]`, `probe_path`, `walk_path`.
 
-### Feature flags (`nirs4all-io/Cargo.toml`)
+### Feature flags (`nirs4all-formats/Cargo.toml`)
 
 - `default = formats-all = fmt-hdf5 + fmt-matlab + fmt-parquet`.
 - `fmt-hdf5` — pure-Rust `hdf5-reader`/`netcdf-reader` (HDF5, NetCDF, Allotrope ADF, FGI XML+HDF5).
@@ -148,7 +148,7 @@ A reader is **not** accepted because it parses one file. Acceptance requires the
 output, metadata, provenance, warnings, adversarial behavior (truncation/corruption) **and** a
 reference-loader comparison all documented and tested (`docs/DIRECTIONS.md`, `docs/CONFORMANCE.md`).
 
-To add a reader: create `crates/nirs4all-io/src/readers/<fmt>.rs`, wire it into `readers/mod.rs`
+To add a reader: create `crates/nirs4all-formats/src/readers/<fmt>.rs`, wire it into `readers/mod.rs`
 (`pub mod` + `pub use`, with `#[cfg(feature=…)]` if HDF5/MATLAB/Parquet-backed), and register it in
 the `readers()` Vec in `registry.rs`. Then follow the public trail (README "Adding Or Validating A
 Format"): place the sample, document its source/license, add a `docs/formats/<fmt>.md` page, update
@@ -157,11 +157,11 @@ pass the green gate.
 
 ### Two-tier conformance
 
-1. **Golden summaries** — `crates/nirs4all-io/tests/goldens/*.summary.json`, checked by
+1. **Golden summaries** — `crates/nirs4all-formats/tests/goldens/*.summary.json`, checked by
    `cargo test --workspace`. Strict-compare format/reader, axis unit+kind+order, signal
    names/roles/units/types, dims, typed metadata subset, provenance hashes, warnings, quality flags.
    Arrays are *summarized* (length/first/last + 6-decimal rounded sum), not stored whole. Re-bless a
-   reviewed change with `NIRS4ALL_IO_ACCEPT_GOLDENS=1`.
+   reviewed change with `NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1`.
 2. **Reference readers** — `tests/conformance/` (`pytest -m conformance`, weekly +
    `workflow_dispatch` via `.github/workflows/conformance.yml`). Compares full arrays against
    `brukeropus` (OPUS), `spc-spectra` (SPC), `jcamp` (JCAMP), `spectrolab` (SED/SIG, R subprocess —
@@ -182,5 +182,5 @@ pass the green gate.
 
 `.github/workflows/release.yml` (tag-triggered, with `workflow_dispatch` dry-run) builds Python
 wheels via `cibuildwheel` (manylinux2014 x86_64+aarch64, macOS x86_64+arm64, Windows AMD64; CPython
-3.10–3.13), a maturin sdist, per-OS C ABI archives (with generated `nirs4all_io.h`), and the R source
+3.10–3.13), a maturin sdist, per-OS C ABI archives (with generated `nirs4all_formats.h`), and the R source
 tarball; tagged releases publish to PyPI via OIDC trusted publishing. See `docs/RELEASE.md`.

@@ -1,0 +1,14 @@
+[package]
+name = "nirs4all-formats-core"
+description = "Core data model and low-level contracts for nirs4all-formats."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true

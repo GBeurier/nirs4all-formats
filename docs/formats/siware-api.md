@@ -22,7 +22,7 @@ committed fixtures are synthetic stand-ins for a real credentialed response.
 - **CSV** — an axis-first table (wavelength column followed by absorbance),
   routed to the [row-spectral-table](row-spectral-table.md) reader.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `absorbance` signal (typed `Absorbance`).
 - **Axis** — a wavelength axis; the unit is taken from
@@ -55,7 +55,7 @@ Standard JSON/CSV tooling; no dedicated reference reader.
 
 `samples/siware_api/synthetic_siware_api.json` (1 record, `absorbance`, 200-point
 `nm` axis, `protein`/`moisture` targets) is golden-backed in
-`crates/nirs4all-io/tests/goldens/` (`siware_api_json.summary.json`); the
+`crates/nirs4all-formats/tests/goldens/` (`siware_api_json.summary.json`); the
 companion `synthetic_siware_api.csv` is golden-backed via the row-spectral-table
 reader (`row_spectral_table_siware_api_csv.summary.json`). The JSON probe
 reports format `siware-api-json` at `Confidence::Definite`.

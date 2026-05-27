@@ -3,7 +3,7 @@
 > **Status:** Supported · **Vendor:** Consumer Physics · **Extensions:** `.csv`
 
 CSV exports from the Consumer Physics SCiO handheld NIR sensor and its developer
-app. nirs4all-io recognises the SCiO-specific `band`-prefixed and grouped
+app. nirs4all-formats recognises the SCiO-specific `band`-prefixed and grouped
 channel layouts and is registered ahead of the generic CSV readers so SCiO
 column groups are not mistaken for target-only tables.
 
@@ -26,7 +26,7 @@ Two SCiO layouts are detected (both `.csv`):
 
 The axis is read from the numeric suffix of each band/channel column name.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per row. The band export emits a single
   `spectrum` signal (type `Unknown`); the developer export emits three signals:
@@ -61,13 +61,13 @@ The axis is read from the numeric suffix of each band/channel column name.
 ## Reference readers
 
 The `kebasaa/SCIO-read` project parses the same developer/app exports;
-nirs4all-io adds channel grouping, signal typing, target/metadata separation and
+nirs4all-formats adds channel grouping, signal typing, target/metadata separation and
 provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/scio/`, covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/` (`scio_*`):
+`crates/nirs4all-formats/tests/goldens/` (`scio_*`):
 `scio_app_scan.csv` yields 1 `spectrum` record over a 740–1070 nm axis;
 `scio_scans_from_tech_support.csv` yields 145 records with `spectrum`/`wr_raw`/
 `sample_raw` signals; `scio_calibration_plate_Polypen.csv` (324–790 nm

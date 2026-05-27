@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** Si-Ware · **Extensions:** `.csv`, `.xlsx`
 
 Si-Ware NeoSpectra is a handheld MEMS FT-NIR spectrometer family. NeoSpectra data
-currently enters nirs4all-io through open export layouts rather than a native
+currently enters nirs4all-formats through open export layouts rather than a native
 project container, so there is **no dedicated NeoSpectra reader**: the coverage
 is split across the generic tabular readers. The single-measurement Scanner
 export is not yet covered.
@@ -27,7 +27,7 @@ Three open layouts are recognised, each routed to an existing reader:
   cell and wavelengths along the first row; read by the [Excel](excel.md)
   reader.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — `absorbance` (or the column-declared signal) over a wavelength
   axis in `nm`, one record per spectrum row.
@@ -62,7 +62,7 @@ Generic CSV/Excel tooling (`pandas`, `openpyxl`); no dedicated reference reader.
 ## Samples & validation
 
 Fixtures under `samples/siware_neospectra/` are golden-backed in
-`crates/nirs4all-io/tests/goldens/`:
+`crates/nirs4all-formats/tests/goldens/`:
 `synthetic_neospectra.csv` (1 record, axis-first, 200-point `nm` axis),
 `neospectra_ossl_50samples_slice.csv` (24 records, real OSSL Woodwell/KSSL
 slice, 601-point `nm` axis) and `neospectra_forensic_K_avg.xlsx` (88 records,

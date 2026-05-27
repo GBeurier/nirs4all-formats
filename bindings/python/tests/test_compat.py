@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from nirs4all_io import (
+from nirs4all_formats import (
     SpectralRecordSet,
     open_bytes,
     open_records,
@@ -11,7 +11,7 @@ from nirs4all_io import (
     probe_path,
     walk_path,
 )
-from nirs4all_io._compat import _native
+from nirs4all_formats._compat import _native
 
 
 def test_open_records_uses_rust_backend() -> None:
@@ -55,8 +55,8 @@ def test_to_pandas_carries_provenance_columns() -> None:
 
     frame = rs.to_pandas()
     assert frame.shape[0] == 50
-    assert "nirs4all_io.format" in frame.columns
-    assert frame["nirs4all_io.format"].iloc[0] == "delimited-text"
+    assert "nirs4all_formats.format" in frame.columns
+    assert frame["nirs4all_formats.format"].iloc[0] == "delimited-text"
     assert "protein" in frame.columns
 
 

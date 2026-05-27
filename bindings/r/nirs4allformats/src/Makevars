@@ -1,0 +1,23 @@
+TARGET_DIR = $(CURDIR)/rust/target
+LIBDIR = $(TARGET_DIR)/release
+STATLIB = $(LIBDIR)/libnirs4allformats_r.a
+PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r
+PKG_CFLAGS = -I$(CURDIR)/rust/src
+
+.PHONY: all clean C_clean $(STATLIB)
+
+all: $(SHLIB)
+
+$(SHLIB): $(STATLIB)
+
+$(STATLIB):
+	@if ! command -v cargo >/dev/null; then \
+		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
+		exit 1; \
+	fi
+	cd rust && cargo build --release --offline 2>/dev/null || cd rust && cargo build --release
+
+C_clean:
+	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR)
+
+clean: C_clean

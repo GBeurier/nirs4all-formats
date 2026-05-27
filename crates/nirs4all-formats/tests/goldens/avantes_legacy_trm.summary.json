@@ -1,0 +1,123 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-legacy-binary",
+      "metadata_keys": [
+        "avantes",
+        "averages_count",
+        "detector_temperature_c",
+        "first_pixel",
+        "instrument_serial",
+        "integration_delay",
+        "integration_time_ms",
+        "last_pixel",
+        "measurement_mode",
+        "operator",
+        "point_count",
+        "version_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::avantes_binary",
+      "record_signal_type": "transmittance",
+      "signal_count": 4,
+      "signals": [
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "dark_reference",
+          "role": "dark_reference",
+          "shape": [
+            1442
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 785.900024,
+          "value_last": 782.700012,
+          "value_sum": 1107497.024536,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "sample",
+          "role": "sample",
+          "shape": [
+            1442
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 794.200012,
+          "value_last": 757.900024,
+          "value_sum": 1550158.724854,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "transmittance",
+          "role": "transmittance",
+          "shape": [
+            1442
+          ],
+          "signal_type": "transmittance",
+          "unit": "%",
+          "value_first": 11.840215,
+          "value_last": -127.179425,
+          "value_sum": 20182.756033,
+          "values_len": 1442
+        },
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "white_reference",
+          "role": "white_reference",
+          "shape": [
+            1442
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 856.0,
+          "value_last": 802.200012,
+          "value_sum": 4210569.07605,
+          "values_len": 1442
+        }
+      ],
+      "source_sha256": "53bbaaf1a911aafb5ecf16801f661b4259aaecce6cc86d333e98b8621d29ac63",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

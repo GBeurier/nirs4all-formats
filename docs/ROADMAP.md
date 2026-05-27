@@ -1,6 +1,6 @@
 # Roadmap
 
-`nirs4all-io` is developed in gated phases. Each phase must leave tests,
+`nirs4all-formats` is developed in gated phases. Each phase must leave tests,
 documentation and review notes behind.
 
 ## Phase 0: Foundation
@@ -163,12 +163,12 @@ Deliverables:
 - sklearn-compatible dataset provider; experimental;
 - torch dataset adapter; experimental;
 - nirs4all `SpectroDataset` adapter; experimental;
-- R package backed by extendr-api static lib (`bindings/r/nirs4allio/src/rust/`)
+- R package backed by extendr-api static lib (`bindings/r/nirs4allformats/src/rust/`)
   built at `R CMD INSTALL` time, with CLI fallback; experimental;
 - R matrix/data.frame/tibble-compatible exports; experimental;
 - JS/WASM binding (`bindings/wasm/`) built with `wasm-pack` exposing
   `probeBytes(filename, Uint8Array)`; experimental;
-- auto-discovery `walk_path` API and `nirs4all-io scan` subcommand;
+- auto-discovery `walk_path` API and `nirs4all-formats scan` subcommand;
   experimental;
 - cross-binding fixtures for every `Done` reader.
 

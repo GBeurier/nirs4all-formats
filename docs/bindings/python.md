@@ -39,7 +39,7 @@ and every other dimension into samples:
 
 - `to_numpy(signal=None, feature_dim="x")`: `(X[n_samples, n_features], axis)`;
 - `to_pandas(signal=None)`: wide DataFrame — metadata + reserved
-  `nirs4all_io.*` provenance columns + `x_<axis>` columns;
+  `nirs4all_formats.*` provenance columns + `x_<axis>` columns;
 - `to_polars(signal=None)`: same wide table as `to_pandas`, as a polars
   DataFrame (the backend nirs4all's `SpectroDataset.metadata()` uses);
 - `to_pandas_long()`: loss-minimising long frame, one row per
@@ -49,7 +49,7 @@ and every other dimension into samples:
   (float32);
 - `to_spectrodataset(name=..., signals=None, target=None)`: a nirs4all
   `SpectroDataset` where each signal becomes a source; provenance and quality
-  flags travel as reserved `nirs4all_io.*` metadata columns (including JSON
+  flags travel as reserved `nirs4all_formats.*` metadata columns (including JSON
   blobs) so model reports can trace file origin.
 
 Projection contract: records that disagree on the feature axis raise a strict
@@ -59,16 +59,16 @@ record missing a selected signal contributes a NaN-filled row.
 ## Transport
 
 - native PyO3 extension (`_native`) built by maturin is used when present;
-- otherwise the bridge calls `nirs4all-io read-json`; `NIRS4ALL_IO_CLI` can
+- otherwise the bridge calls `nirs4all-formats read-json`; `NIRS4ALL_FORMATS_CLI` can
   point to a prebuilt binary, and in a source checkout it falls back to
-  `cargo run -p nirs4all-io-cli`.
+  `cargo run -p nirs4all-formats-cli`.
 
 ## Examples
 
 Load, inspect, then project to a modelling matrix:
 
 ```python
-import nirs4all_io as nio
+import nirs4all_formats as nio
 
 rs = nio.open_recordset("spectrum.sed")
 print(rs.signal_names(), len(rs))

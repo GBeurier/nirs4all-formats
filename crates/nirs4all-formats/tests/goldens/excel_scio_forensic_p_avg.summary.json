@@ -1,0 +1,2916 @@
+{
+  "record_count": 71,
+  "records": [
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.065055,
+          "value_last": 0.063027,
+          "value_sum": 21.171335,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.063629,
+          "value_last": 0.07596,
+          "value_sum": 24.597587,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.071874,
+          "value_last": 0.067556,
+          "value_sum": 23.449534,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.019357,
+          "value_last": 0.082814,
+          "value_sum": 25.601636,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.07945,
+          "value_last": 0.077221,
+          "value_sum": 25.434765,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.089111,
+          "value_last": 0.080272,
+          "value_sum": 28.872989,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.033239,
+          "value_last": 0.085739,
+          "value_sum": 27.860017,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.115302,
+          "value_last": 0.177852,
+          "value_sum": 58.811884,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.141578,
+          "value_last": 0.126396,
+          "value_sum": 44.560882,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.181528,
+          "value_last": 0.157095,
+          "value_sum": 56.070361,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.178536,
+          "value_last": 0.186281,
+          "value_sum": 63.585564,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.025554,
+          "value_last": 0.022123,
+          "value_sum": 7.46013,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.186796,
+          "value_last": 0.163876,
+          "value_sum": 58.787996,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.046509,
+          "value_last": 0.04326,
+          "value_sum": 15.345893,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.092064,
+          "value_last": 0.09569,
+          "value_sum": 32.453593,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.181587,
+          "value_last": 0.162189,
+          "value_sum": 57.504313,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.017073,
+          "value_last": 0.045686,
+          "value_sum": 14.743106,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.075895,
+          "value_last": 0.055499,
+          "value_sum": 22.349707,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.065558,
+          "value_last": 0.06207,
+          "value_sum": 20.954508,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.071251,
+          "value_last": 0.062505,
+          "value_sum": 22.667632,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.02361,
+          "value_last": 0.019897,
+          "value_sum": 6.885804,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.072893,
+          "value_last": 0.066064,
+          "value_sum": 24.218627,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.068645,
+          "value_last": 0.112265,
+          "value_sum": 34.106761,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.120089,
+          "value_last": 0.111326,
+          "value_sum": 39.454626,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.027375,
+          "value_last": 0.10206,
+          "value_sum": 30.098781,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.063922,
+          "value_last": 0.06072,
+          "value_sum": 20.698577,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.238379,
+          "value_last": 0.202318,
+          "value_sum": 72.864912,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.033735,
+          "value_last": 0.025637,
+          "value_sum": 9.439585,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.012026,
+          "value_last": 0.00824,
+          "value_sum": 3.107171,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.072771,
+          "value_last": 0.057801,
+          "value_sum": 21.920553,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.17958,
+          "value_last": 0.157008,
+          "value_sum": 55.290462,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.034629,
+          "value_last": 0.079713,
+          "value_sum": 21.042021,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.215564,
+          "value_last": 0.191972,
+          "value_sum": 68.45492,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.17346,
+          "value_last": 0.15368,
+          "value_sum": 55.345112,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.068603,
+          "value_last": 0.054095,
+          "value_sum": 20.317487,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.018053,
+          "value_last": 0.052334,
+          "value_sum": 14.24417,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.103073,
+          "value_last": 0.096078,
+          "value_sum": 32.662252,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.064981,
+          "value_last": 0.140014,
+          "value_sum": 38.490213,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.084484,
+          "value_last": 0.070187,
+          "value_sum": 25.704528,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.022534,
+          "value_last": 0.055745,
+          "value_sum": 14.795222,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.182135,
+          "value_last": 0.182378,
+          "value_sum": 61.687863,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.112209,
+          "value_last": 0.1092,
+          "value_sum": 35.656572,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.121631,
+          "value_last": 0.126816,
+          "value_sum": 40.183294,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.234858,
+          "value_last": 0.245296,
+          "value_sum": 81.346954,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.055279,
+          "value_last": 0.057246,
+          "value_sum": 18.941359,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.117041,
+          "value_last": 0.10406,
+          "value_sum": 36.580115,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.210112,
+          "value_last": 0.219775,
+          "value_sum": 76.556101,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.059699,
+          "value_last": 0.111089,
+          "value_sum": 33.058167,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.064791,
+          "value_last": 0.131461,
+          "value_sum": 38.982403,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.285828,
+          "value_last": 0.247193,
+          "value_sum": 90.964409,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.075811,
+          "value_last": 0.086216,
+          "value_sum": 27.881415,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.134682,
+          "value_last": 0.112101,
+          "value_sum": 41.214274,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.166102,
+          "value_last": 0.161732,
+          "value_sum": 56.003837,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.034776,
+          "value_last": 0.096918,
+          "value_sum": 25.529931,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.028734,
+          "value_last": 0.023931,
+          "value_sum": 8.374079,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.057962,
+          "value_last": 0.056357,
+          "value_sum": 20.143889,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.049541,
+          "value_last": 0.102447,
+          "value_sum": 29.773663,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.089431,
+          "value_last": 0.068762,
+          "value_sum": 26.985805,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.095784,
+          "value_last": 0.193076,
+          "value_sum": 57.386331,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.057656,
+          "value_last": 0.062262,
+          "value_sum": 20.408857,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.086914,
+          "value_last": 0.091626,
+          "value_sum": 31.791521,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.106589,
+          "value_last": 0.094837,
+          "value_sum": 33.212427,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.032796,
+          "value_last": 0.046229,
+          "value_sum": 11.130702,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.198555,
+          "value_last": 0.171438,
+          "value_sum": 61.708809,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.104355,
+          "value_last": 0.099875,
+          "value_sum": 33.211259,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.097811,
+          "value_last": 0.076061,
+          "value_sum": 29.702469,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.062785,
+          "value_last": 0.062626,
+          "value_sum": 20.31942,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.015677,
+          "value_last": 0.056726,
+          "value_sum": 17.502218,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.065719,
+          "value_last": 0.084664,
+          "value_sum": 26.767918,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.085972,
+          "value_last": 0.09553,
+          "value_sum": 31.068863,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "excel-xlsx",
+      "metadata_keys": [
+        "axis_descriptor",
+        "row_index",
+        "sample_id",
+        "sheet"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::excel",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 740.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1070.0,
+          "axis_len": 331,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw",
+          "role": "raw",
+          "shape": [
+            331
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 0.059318,
+          "value_last": 0.058231,
+          "value_sum": 20.03931,
+          "values_len": 331
+        }
+      ],
+      "source_sha256": "eb88a89ca7597ea845b2ca057ed233548800665cc67b8d8bd18db2249d1cd3be",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

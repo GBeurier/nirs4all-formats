@@ -11,6 +11,6 @@ Recent cloud-attached MEMS spectrometers stream measurements as JSON over HTTP. 
 
 ## Parser hints
 
-- JSON: stream-friendly (one measurement per object). `nirs4all-io` detects `measurement.wavelengths` + `measurement.absorbance` and maps `predictions` to targets.
+- JSON: stream-friendly (one measurement per object). `nirs4all-formats` detects `measurement.wavelengths` + `measurement.absorbance` and maps `predictions` to targets.
 - For batch ingestion (a folder of JSON files), behave like a `SpectralCollection`.
 - **No publicly redistributable real samples** were found; the Spectro Inc. API is gated behind customer credentials.

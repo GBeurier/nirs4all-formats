@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "emsa-mas-msa",
+      "metadata_keys": [
+        "emsa_mas"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::msa",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 520.13,
+          "axis_kind": "energy",
+          "axis_last": 580.5,
+          "axis_len": 21,
+          "axis_order": "ascending",
+          "axis_unit": "eV",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "counts",
+          "role": "counts",
+          "shape": [
+            21
+          ],
+          "signal_type": "raw_counts",
+          "unit": "Intensity",
+          "value_first": 4066.0,
+          "value_last": 4217.0,
+          "value_sum": 104070.0,
+          "values_len": 21
+        }
+      ],
+      "source_sha256": "878a1895baa1ae08400e9b09e417ae9ab8f85183e26f48b2ae0ac44502e4548e",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

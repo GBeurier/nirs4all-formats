@@ -1,0 +1,3405 @@
+{
+  "record_count": 50,
+  "records": [
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.036743,
+          "value_last": -0.146586,
+          "value_sum": 41.350465,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.918877,
+          "value_last": 1.401477,
+          "value_sum": 140.407915,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.01188,
+          "value_last": 0.096722,
+          "value_sum": 41.266927,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.973015,
+          "value_last": 0.800347,
+          "value_sum": 137.837235,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.163765,
+          "value_last": 0.007726,
+          "value_sum": 36.174064,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.458024,
+          "value_last": 0.982369,
+          "value_sum": 143.823357,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.129192,
+          "value_last": -0.053213,
+          "value_sum": 38.104814,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.74269,
+          "value_last": 1.130351,
+          "value_sum": 143.436706,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.052398,
+          "value_last": 0.000632,
+          "value_sum": 49.630488,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.886343,
+          "value_last": 0.998546,
+          "value_sum": 129.225295,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.12873,
+          "value_last": 0.193328,
+          "value_sum": 40.857957,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.743481,
+          "value_last": 0.640726,
+          "value_sum": 139.537374,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.005128,
+          "value_last": -0.101347,
+          "value_sum": 42.75508,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.011877,
+          "value_last": 1.262837,
+          "value_sum": 137.820053,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.131852,
+          "value_last": -0.074346,
+          "value_sum": 53.661279,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.354727,
+          "value_last": 1.186714,
+          "value_sum": 125.360771,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.057219,
+          "value_last": -0.046622,
+          "value_sum": 44.773297,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.87656,
+          "value_last": 1.113326,
+          "value_sum": 134.985039,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.228555,
+          "value_last": -0.079533,
+          "value_sum": 50.714931,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.590807,
+          "value_last": 1.200972,
+          "value_sum": 129.163729,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.07238,
+          "value_last": 0.053956,
+          "value_sum": 50.478304,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.181353,
+          "value_last": 0.88317,
+          "value_sum": 130.313852,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.212921,
+          "value_last": -0.025385,
+          "value_sum": 41.51913,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.612462,
+          "value_last": 1.060193,
+          "value_sum": 139.899253,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.103596,
+          "value_last": -0.059215,
+          "value_sum": 51.401581,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.269392,
+          "value_last": 1.14608,
+          "value_sum": 127.893279,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.19941,
+          "value_last": -0.028222,
+          "value_sum": 52.245974,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.5,
+          "value_last": 1.067142,
+          "value_sum": 129.073702,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.032496,
+          "value_last": -0.039781,
+          "value_sum": 43.892354,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.927906,
+          "value_last": 1.095926,
+          "value_sum": 137.601094,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.103855,
+          "value_last": 0.004915,
+          "value_sum": 39.688897,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.270149,
+          "value_last": 0.988747,
+          "value_sum": 141.542997,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.039788,
+          "value_last": -0.043569,
+          "value_sum": 48.375224,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.095944,
+          "value_last": 1.105527,
+          "value_sum": 130.857626,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.052305,
+          "value_last": -0.04269,
+          "value_sum": 55.302745,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.886533,
+          "value_last": 1.10329,
+          "value_sum": 124.380455,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.158021,
+          "value_last": -0.096481,
+          "value_sum": 49.356996,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.438867,
+          "value_last": 1.248766,
+          "value_sum": 129.739655,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.131622,
+          "value_last": 0.006739,
+          "value_sum": 39.529856,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.354012,
+          "value_last": 0.984603,
+          "value_sum": 143.112677,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.021621,
+          "value_last": 0.048112,
+          "value_sum": 48.157287,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.051044,
+          "value_last": 0.895133,
+          "value_sum": 134.628989,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.062899,
+          "value_last": 0.123031,
+          "value_sum": 42.767675,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.155843,
+          "value_last": 0.753301,
+          "value_sum": 139.721296,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.104987,
+          "value_last": 0.142304,
+          "value_sum": 47.830797,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.785258,
+          "value_last": 0.720603,
+          "value_sum": 131.885935,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.120746,
+          "value_last": 0.085175,
+          "value_sum": 49.627196,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.320523,
+          "value_last": 0.82191,
+          "value_sum": 132.413347,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.119908,
+          "value_last": -0.150427,
+          "value_sum": 47.914333,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.758738,
+          "value_last": 1.413927,
+          "value_sum": 132.089986,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.127039,
+          "value_last": 0.142102,
+          "value_sum": 52.202447,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.339796,
+          "value_last": 0.720939,
+          "value_sum": 127.726813,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.003434,
+          "value_last": 0.011822,
+          "value_sum": 48.726233,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.007939,
+          "value_last": 0.973145,
+          "value_sum": 131.12806,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.041772,
+          "value_last": 0.069893,
+          "value_sum": 47.850147,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.100962,
+          "value_last": 0.851347,
+          "value_sum": 131.495653,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.046073,
+          "value_last": -0.107576,
+          "value_sum": 38.076146,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.111919,
+          "value_last": 1.281079,
+          "value_sum": 143.346113,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.003859,
+          "value_last": -0.065373,
+          "value_sum": 52.063088,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.008925,
+          "value_last": 1.162446,
+          "value_sum": 128.665822,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.155654,
+          "value_last": -0.041036,
+          "value_sum": 55.429169,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.431047,
+          "value_last": 1.099097,
+          "value_sum": 125.731388,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.062125,
+          "value_last": -0.076586,
+          "value_sum": 38.701272,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.153785,
+          "value_last": 1.192852,
+          "value_sum": 142.659428,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.05073,
+          "value_last": 0.190462,
+          "value_sum": 45.318685,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.889754,
+          "value_last": 0.644968,
+          "value_sum": 135.987889,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.117551,
+          "value_last": 0.173008,
+          "value_sum": 41.708628,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.310843,
+          "value_last": 0.671416,
+          "value_sum": 139.82467,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.169976,
+          "value_last": 0.048466,
+          "value_sum": 50.00227,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.479028,
+          "value_last": 0.894404,
+          "value_sum": 132.774432,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.064483,
+          "value_last": -0.139879,
+          "value_sum": 50.834684,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.862018,
+          "value_last": 1.380001,
+          "value_sum": 128.878127,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.004467,
+          "value_last": 0.07644,
+          "value_sum": 41.532696,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.010339,
+          "value_last": 0.838611,
+          "value_sum": 137.332951,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.068412,
+          "value_last": 0.008421,
+          "value_sum": 52.24735,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.170609,
+          "value_last": 0.980797,
+          "value_sum": 128.52025,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.010459,
+          "value_last": -0.203236,
+          "value_sum": 41.24668,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.976205,
+          "value_last": 1.5,
+          "value_sum": 139.058155,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.112546,
+          "value_last": 0.093552,
+          "value_sum": 53.159565,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.295823,
+          "value_last": 0.80621,
+          "value_sum": 126.359803,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.069298,
+          "value_last": -0.026864,
+          "value_sum": 45.661432,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.173,
+          "value_last": 1.063811,
+          "value_sum": 132.65248,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.38725,
+          "value_last": 0.020844,
+          "value_sum": 43.994208,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.5,
+          "value_last": 0.953139,
+          "value_sum": 136.992269,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.000407,
+          "value_last": 0.077185,
+          "value_sum": 40.198096,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.999063,
+          "value_last": 0.837172,
+          "value_sum": 140.196922,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.046686,
+          "value_last": 0.113376,
+          "value_sum": 41.956305,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.11349,
+          "value_last": 0.770236,
+          "value_sum": 137.560022,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.008605,
+          "value_last": 0.010817,
+          "value_sum": 48.369181,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.020011,
+          "value_last": 0.975401,
+          "value_sum": 130.987274,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.035745,
+          "value_last": -0.011121,
+          "value_sum": 48.735857,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.920989,
+          "value_last": 1.025937,
+          "value_sum": 130.542936,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.095345,
+          "value_last": 0.055848,
+          "value_sum": 38.406144,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.802888,
+          "value_last": 0.879331,
+          "value_sum": 142.213106,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.108765,
+          "value_last": -0.130495,
+          "value_sum": 39.503999,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.778458,
+          "value_last": 1.350501,
+          "value_sum": 140.948052,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": -0.297107,
+          "value_last": -0.072651,
+          "value_sum": 38.371592,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 1.5,
+          "value_last": 1.182092,
+          "value_sum": 142.222125,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "hdf5-nirs",
+      "metadata_keys": [
+        "container",
+        "group_path",
+        "root_attributes",
+        "sample_index",
+        "signal_datasets",
+        "signal_units"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::hdf5",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": "absorbance",
+          "value_first": 0.140986,
+          "value_last": 0.060876,
+          "value_sum": 50.141507,
+          "values_len": 200
+        },
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            200
+          ],
+          "signal_type": "reflectance",
+          "unit": "reflectance",
+          "value_first": 0.722793,
+          "value_last": 0.869209,
+          "value_sum": 131.236767,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "8522e4e6504943eeb7d8bc3bc6d03bcbe142a53e088f7c4dbe3bc0578312822b",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 SPC is the Galactic / Thermo GRAMS spectroscopy container, one of the most widely
 exchanged formats across IR, NIR, Raman and UV-Vis. A single `.spc` file can hold
 one spectrum or many subfiles, with a shared or per-subfile X axis.
-nirs4all-io reads it by the file-version byte, never by extension, and emits one
+nirs4all-formats reads it by the file-version byte, never by extension, and emits one
 normalized `SpectralRecord` per readable subfile.
 
 ## Instruments & software
@@ -26,7 +26,7 @@ generated evenly from `ffirst` / `flast` / `fnpts` or read explicitly when
 Y arrays are decoded as fixed-point 32-bit, fixed-point 16-bit (`TSPREC`) or IEEE
 float32.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per readable subfile. Multi-subfile common-X
   files keep all subfiles usable by the tabular adapters; independent-X `-XYXY`

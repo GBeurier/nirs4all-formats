@@ -1,0 +1,58 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "horiba-jobinyvon-xml",
+      "metadata_keys": [
+        "acquired",
+        "container",
+        "dataset_name",
+        "dataset_type",
+        "date",
+        "detector",
+        "grating",
+        "instrument",
+        "laser_nm",
+        "objective",
+        "sample",
+        "spectral_point_count",
+        "spectrum_count",
+        "spectrum_index",
+        "title",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::horiba_labspec",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1.60672,
+          "axis_kind": "energy",
+          "axis_last": 1.7201,
+          "axis_len": 34,
+          "axis_order": "ascending",
+          "axis_unit": "eV",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "intensity",
+          "role": "intensity",
+          "shape": [
+            34
+          ],
+          "signal_type": "raw_counts",
+          "unit": "Cnt/sec",
+          "value_first": 166.333,
+          "value_last": 86.0,
+          "value_sum": 3292.666,
+          "values_len": 34
+        }
+      ],
+      "source_sha256": "8e024979dd679a7b243c3240a14017e5726281e0e53f5b51bd63398e6d5937db",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

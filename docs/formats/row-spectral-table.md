@@ -31,7 +31,7 @@ column is the axis. The reader recognises the axis from any of:
 The delimiter (comma, tab or whitespace) is auto-detected and the native axis
 order (ascending or descending) is preserved.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one signal per numeric column after the axis, named from the
   column header (e.g. `absorbance`, `dn_white`, `reflectance`, `s000`). The
@@ -69,11 +69,11 @@ order (ascending or descending) is preserved.
 ## Reference readers
 
 `pandas.read_csv`, R `read.table`, and the `nirs4all` `CSVLoader` read the same
-exports; nirs4all-io adds axis detection, signal typing and provenance.
+exports; nirs4all-formats adds axis detection, signal typing and provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/` (Si-Ware, PP Systems, ENVI/ECOSTRESS, JASCO,
 Shimadzu, USGS SPECPR, WiTec, MODTRAN) and are covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/`. The probe reports format
+`crates/nirs4all-formats/tests/goldens/`. The probe reports format
 `row-spectral-table` at `Confidence::Likely`.

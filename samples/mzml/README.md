@@ -17,4 +17,4 @@ All from [`pymzml/pymzML@dev/tests/data`](https://github.com/pymzml/pymzML/tree/
 - mzML is XML; `<binaryDataArray>` elements carry base64-encoded float32/float64 with optional zlib + numpress compression.
 - Reference readers: [`pymzml`](https://pymzml.readthedocs.io/), [`pyteomics`](https://pyteomics.readthedocs.io/).
 - For NIRS the spec is interesting because it solves the same problem we have (uniform schema across instruments) — see `pyteomics.mzml.MzML` for an API design reference.
-- `nirs4all-io` detects these files and refuses them as mass-spectrometry data instead of coercing `m/z` spectra into the optical `SpectralRecord` model.
+- `nirs4all-formats` detects these files and refuses them as mass-spectrometry data instead of coercing `m/z` spectra into the optical `SpectralRecord` model.

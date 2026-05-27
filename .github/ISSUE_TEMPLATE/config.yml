@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📚 Documentation & supported-format catalogue
-    url: https://github.com/GBeurier/nirs4all-io/blob/main/docs/SUPPORTED_FORMATS.md
+    url: https://github.com/GBeurier/nirs4all-formats/blob/main/docs/SUPPORTED_FORMATS.md
     about: Check whether your format is already supported (sometimes through a generic CSV/Excel reader) and read the per-format pages before opening an issue.
   - name: 🔒 Report a security issue
-    url: https://github.com/GBeurier/nirs4all-io/blob/main/docs/SECURITY.md
+    url: https://github.com/GBeurier/nirs4all-formats/blob/main/docs/SECURITY.md
     about: Please follow the security policy for vulnerability reports instead of opening a public issue.

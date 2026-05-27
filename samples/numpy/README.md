@@ -1,7 +1,7 @@
 # NumPy `.npy` / `.npz`
 
 Common in ML workflows. Supported in `nirs4all` and by the native Rust
-`nirs4all-io` reader for bare numeric `.npy` matrices and canonical `.npz`
+`nirs4all-formats` reader for bare numeric `.npy` matrices and canonical `.npz`
 datasets.
 
 ## Samples

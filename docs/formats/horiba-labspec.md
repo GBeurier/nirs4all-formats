@@ -4,7 +4,7 @@
 
 Horiba's LabSpec software (and the older Jobin Yvon line) drives Raman
 microscopes and writes both interchange exports (LSX XML, LabSpec text) and the
-native LabSpec 6 binary container. nirs4all-io reads the XML and text exports and
+native LabSpec 6 binary container. nirs4all-formats reads the XML and text exports and
 one experimental LabSpec 6 `.l6m` map layout. The format is Raman, adjacent to
 the core NIRS point-spectrum scope, and is supported for spectroscopy
 interchange and ML-workflow compatibility.
@@ -27,7 +27,7 @@ The reader sniffs by extension plus content:
   scans the container for the main `Intens` float32 payload, the `Spectr` axis
   payload and the matching 2D spatial axes.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per spectrum or map pixel, with a single
   `intensity` signal typed `RawCounts`, keeping the native spectral axis order.

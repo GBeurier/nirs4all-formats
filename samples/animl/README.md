@@ -14,6 +14,6 @@ IUPAC + ASTM XML standard for analytical data. Schema is open; production-grade 
 
 - AnIML uses the namespace `urn:org:astm:animl:schema:core:draft:0.90` (or later draft revision).
 - Top-level structure: `<AnIML>` → `<SampleSet>` + `<ExperimentStepSet>` (each ExperimentStep contains `<Result>` blocks with `<SeriesSet>` data).
-- Series data covered by nirs4all-io include `<IndividualValueSet>` explicit `<F>`/`<D>` values and uniform `AutoIncrementedValueSet` grids with `StartValue` + `Increment`.
+- Series data covered by nirs4all-formats include `<IndividualValueSet>` explicit `<F>`/`<D>` values and uniform `AutoIncrementedValueSet` grids with `StartValue` + `Increment`.
 - Reference readers: `animl-python` (early), generic `lxml.etree` parsing.
 - Schema validators are useful for sanity-checking input.

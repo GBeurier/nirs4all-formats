@@ -29,8 +29,8 @@ asd_reader_*.log
 /bindings/wasm/pkg/
 /bindings/wasm/pkg-node/
 # R native build artifacts produced by `R CMD INSTALL`.
-/bindings/r/nirs4allio/src/rust/target/
-/bindings/r/nirs4allio/src/*.o
+/bindings/r/nirs4allformats/src/rust/target/
+/bindings/r/nirs4allformats/src/*.o
 # Cargo.lock for the bindings crates is generated on first build.
 /bindings/python/Cargo.lock
 /bindings/wasm/Cargo.lock

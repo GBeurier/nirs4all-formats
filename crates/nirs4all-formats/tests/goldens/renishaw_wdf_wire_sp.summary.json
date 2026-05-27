@@ -1,0 +1,71 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "renishaw-wdf",
+      "metadata_keys": [
+        "accumulation_count",
+        "application_name",
+        "application_version",
+        "capacity",
+        "container",
+        "elapsed_time_seconds",
+        "elapsed_time_unit",
+        "laser_wavenumber",
+        "measurement_type",
+        "measurement_type_label",
+        "origin_axes",
+        "origin_axis_count",
+        "other_data_count",
+        "point_count",
+        "scan_type",
+        "spectral_unit_code",
+        "spectrum_count",
+        "spectrum_index",
+        "time_filetime_100ns",
+        "title",
+        "username",
+        "x_data_type",
+        "x_size",
+        "x_unit_code",
+        "y_data_type",
+        "y_size",
+        "y_unit_code"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::renishaw_wdf",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 2787.514404,
+          "axis_kind": "wavenumber",
+          "axis_last": 1226.275269,
+          "axis_len": 1015,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw_counts",
+          "role": "raw_counts",
+          "shape": [
+            1015
+          ],
+          "signal_type": "raw_counts",
+          "unit": "counts",
+          "value_first": 47.092709,
+          "value_last": 21.815458,
+          "value_sum": 107421.227566,
+          "values_len": 1015
+        }
+      ],
+      "source_sha256": "5ca8c55848b4bdbe73fa2ca44f3e211613b52c65bf2aaaf5b14e8858f4e3f565",
+      "target_keys": [],
+      "warnings": [
+        "renishaw_wdf_reverse_engineered_chunks"
+      ]
+    }
+  ]
+}

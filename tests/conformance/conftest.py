@@ -76,10 +76,10 @@ def _import_or_skip(module: str, *, reason: str | None = None) -> Any:
         pytest.skip(reason or f"{module} is not installed in the conformance env")
 
 
-def require_nirs4all_io():
+def require_nirs4all_formats():
     return _import_or_skip(
-        "nirs4all_io",
-        reason="nirs4all_io PyO3 binding is required; run `maturin develop` in bindings/python",
+        "nirs4all_formats",
+        reason="nirs4all_formats PyO3 binding is required; run `maturin develop` in bindings/python",
     )
 
 
@@ -170,7 +170,7 @@ def compare_values(left: list[float], right: list[float], tol: Tolerance, *, lab
 
 
 def normalize_records(records: list[Mapping[str, Any]]) -> list[dict[str, list[float]]]:
-    """Reduce nirs4all-io records to {axis, values_by_signal} dicts."""
+    """Reduce nirs4all-formats records to {axis, values_by_signal} dicts."""
 
     normalized: list[dict[str, Any]] = []
     for record in records:

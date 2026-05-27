@@ -27,7 +27,7 @@ Arrow (with Zstd support). A table is accepted as spectral when:
 Non-spectral numeric columns become targets, and a `sample_id` / `sample` / `id`
 UTF-8 column becomes the identifier.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per table row, each with a single
   `absorbance` signal (type `Absorbance`).
@@ -64,13 +64,13 @@ resolver.
 ## Reference readers
 
 `pyarrow.parquet`, `fastparquet`, `pandas.read_parquet` and the `nirs4all`
-`ParquetLoader` read the same tables. nirs4all-io adds the spectral-schema
+`ParquetLoader` read the same tables. nirs4all-formats adds the spectral-schema
 validation, axis construction, target/metadata separation and provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/parquet/`, covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/` (`parquet_*`):
+`crates/nirs4all-formats/tests/goldens/` (`parquet_*`):
 `synthetic_nirs.parquet` yields 50 records over 200 wavelength columns with a
 `protein` target, and `alltypes_plain.parquet` (the Apache sample) is refused as
 non-spectral. The probe reports format `parquet-container` at

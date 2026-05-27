@@ -52,10 +52,10 @@ jobs:
         run: |
           Rscript -e 'install.packages("jsonlite", repos = "https://cloud.r-project.org")'
       - name: Install package
-        run: R CMD INSTALL bindings/r/nirs4allio
+        run: R CMD INSTALL bindings/r/nirs4allformats
       - name: Smoke test
         run: |
-          Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); library(nirs4allio); records <- nirs4allio_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allio_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
+          Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); library(nirs4allformats); records <- nirs4allformats_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allformats_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
 
   docs:
     name: Docs

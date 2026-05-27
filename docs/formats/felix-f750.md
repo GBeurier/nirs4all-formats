@@ -22,7 +22,7 @@ one spectrum per row. The canonical public example is the Mango DMC dataset
 (Anderson et al. 2020), whose columns are `Set, Season, Region, Date, Type,
 Cultivar, Pop, Temp, DM` followed by 285-1200 nm in 3 nm steps.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — `absorbance` over a `nm` wavelength axis, one record per spectrum
   row (the published export is `log(1/R)` absorbance).
@@ -55,6 +55,6 @@ Generic CSV tooling (`pandas`, `read.table`); no dedicated reference reader.
 ## Samples & validation
 
 `samples/felix_f750/mango_dmc_f750_slice.csv` is golden-backed in
-`crates/nirs4all-io/tests/goldens/` (`csv_felix_f750_mango_slice`, 26 records,
+`crates/nirs4all-formats/tests/goldens/` (`csv_felix_f750_mango_slice`, 26 records,
 306-point `nm` axis, 285-1200 nm). It is a CC-BY-4.0 slice of the Mango DMC
 dataset (Anderson, Walsh & Subedi 2020, Mendeley `10.17632/46htwnp833.1`).

@@ -5,7 +5,7 @@
 WiTec `.wip` and `.wid` files are binary project containers written by WiTec
 Project / Project FIVE for confocal Raman workflows. They can hold single
 spectra, maps, line scans, image/navigation metadata and project-tree objects.
-nirs4all-io decodes one observed Project FIVE map layout natively; the broad
+nirs4all-formats decodes one observed Project FIVE map layout natively; the broad
 interchange path remains the WiTec ASCII export, handled by the
 [row-oriented spectral table reader](row-spectral-table.md). The format is Raman,
 adjacent to the core NIRS point-spectrum scope.
@@ -33,7 +33,7 @@ layout is decoded:
 - the TDGraph `SpaceTransformationID` model/world origin, scale and rotation
   matrices, used to derive physical map positions.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per valid spectrum, each with a single
   `raw_counts` signal typed `RawCounts` (raw CCD counts).

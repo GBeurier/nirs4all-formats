@@ -1,0 +1,20 @@
+Package: nirs4allformats
+Title: R Binding for nirs4all-formats
+Version: 0.1.0.9000
+Authors@R: person("G.", "Beurier", email = "beurier@cirad.fr", role = c("aut", "cre"))
+Description: Thin R binding for the Rust-first nirs4all-formats NIRS file loading
+    core. When installed via R CMD INSTALL with Cargo available the package
+    compiles a native extendr-api static library from src/rust/ and dispatches
+    probe/read/walk calls directly through Rust. Without Cargo the package
+    falls back to invoking the nirs4all-formats CLI binary.
+SystemRequirements: Cargo (Rust's package manager), rustc
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    jsonlite
+Suggests:
+    testthat (>= 3.0.0),
+    tibble
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3

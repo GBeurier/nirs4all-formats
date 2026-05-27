@@ -1,4 +1,4 @@
-"""SVC/GER `.sig` conformance: nirs4all-io vs `spectrolab` (R)."""
+"""SVC/GER `.sig` conformance: nirs4all-formats vs `spectrolab` (R)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from conftest import (
     fixtures_under,
     load_tolerances,
     normalize_records,
-    require_nirs4all_io,
+    require_nirs4all_formats,
     require_rscript_with,
     run_rscript,
 )
@@ -25,13 +25,13 @@ SIG_DUMP = HERE / "refreaders" / "sig_dump.R"
 
 @pytest.mark.parametrize("path", SIG_SAMPLES, ids=lambda p: p.name)
 def test_sig_records_match_spectrolab(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     rscript = require_rscript_with("spectrolab")
 
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -53,7 +53,7 @@ def test_sig_records_match_spectrolab(path: Path) -> None:
     )
     if record is None:
         pytest.skip(
-            f"{path.name}: no nirs4all-io reflectance record matches length "
+            f"{path.name}: no nirs4all-formats reflectance record matches length "
             f"{len(expected_values_pct)}"
         )
     compare_axes(record["axis"], expected_axis, TOL, label=f"{path.name}:axis")

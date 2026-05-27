@@ -1,4 +1,4 @@
-"""Galactic SPC conformance: nirs4all-io vs `spc_spectra` (MIT)."""
+"""Galactic SPC conformance: nirs4all-formats vs `spc_spectra` (MIT)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from conftest import (
     load_known_skips,
     load_tolerances,
     normalize_records,
-    require_nirs4all_io,
+    require_nirs4all_formats,
     require_spc,
 )
 
@@ -24,7 +24,7 @@ SKIPS = load_known_skips().get("spc", {})
 
 @pytest.mark.parametrize("path", SPC_SAMPLES, ids=lambda p: p.name)
 def test_spc_records_match_spc_spectra(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     spc = require_spc()
 
     skip_key = path.name.lower().replace("-", "_").replace(".", "_")
@@ -34,7 +34,7 @@ def test_spc_records_match_spc_spectra(path: Path) -> None:
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -70,7 +70,7 @@ def test_spc_records_match_spc_spectra(path: Path) -> None:
         break
     if matched == 0:
         pytest.skip(
-            f"{path.name}: no nirs4all-io record matched any spc subfile "
+            f"{path.name}: no nirs4all-formats record matched any spc subfile "
             f"length (records {[len(r['values']) for r in records]}, "
             f"subfiles {[len(s.y) for s in ref.sub]})"
         )

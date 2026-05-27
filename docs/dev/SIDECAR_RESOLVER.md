@@ -4,7 +4,7 @@ orphan: true
 
 # Sidecar resolver
 
-`nirs4all-io` decodes spectroscopy files through the `Reader` trait. Some
+`nirs4all-formats` decodes spectroscopy files through the `Reader` trait. Some
 formats reference more than one file: ENVI Standard cubes need a `.hdr`
 header, AVIRIS/ERDAS LAN needs a `.spc` axis (and an optional `.GIS`
 ground-truth), FGI HDF5+XML pairs an `.xml` metadata sidecar with an HDF5
@@ -18,7 +18,7 @@ that needs sidecars can fetch them from disk or from an in-memory map.
 ## API surface
 
 The trait lives in
-[`crates/nirs4all-io-core/src/sidecar.rs`](../../crates/nirs4all-io-core/src/sidecar.rs):
+[`crates/nirs4all-formats-core/src/sidecar.rs`](../../crates/nirs4all-formats-core/src/sidecar.rs):
 
 ```rust
 pub trait SidecarResolver: Send + Sync {
@@ -29,7 +29,7 @@ pub trait SidecarResolver: Send + Sync {
 ```
 
 Three concrete impls ship under
-[`crates/nirs4all-io/src/sidecars.rs`](../../crates/nirs4all-io/src/sidecars.rs):
+[`crates/nirs4all-formats/src/sidecars.rs`](../../crates/nirs4all-formats/src/sidecars.rs):
 
 | Impl | Use case |
 |---|---|
@@ -40,8 +40,8 @@ Three concrete impls ship under
 Public registry entry points:
 
 ```rust
-nirs4all_io::open_with_sidecars(name, bytes, sidecars: Arc<dyn SidecarResolver>)
-nirs4all_io::open_with_sidecars_and_options(name, bytes, sidecars, options)
+nirs4all_formats::open_with_sidecars(name, bytes, sidecars: Arc<dyn SidecarResolver>)
+nirs4all_formats::open_with_sidecars_and_options(name, bytes, sidecars, options)
 ```
 
 Reader trait additions (default implementations forward to existing
@@ -67,14 +67,14 @@ pure-memory mode.
 The pure-Rust `hdf5-reader` crate already exposes
 `Hdf5File::from_bytes_with_options` and the `ExternalFileResolver` /
 `ExternalLinkResolver` traits. The helper
-[`open_hdf5`](../../crates/nirs4all-io/src/readers/hdf5_helpers.rs) wraps
+[`open_hdf5`](../../crates/nirs4all-formats/src/readers/hdf5_helpers.rs) wraps
 both into an `Arc<SidecarBackedExternal>` so any HDF5 raw-data file or
 external link referenced from inside the primary HDF5 container is
 served by the same `SidecarResolver` instance the caller supplied. The
 NetCDF reader uses the matching `NcFile::from_bytes_with_options`.
 
 The synthetic test fixtures under
-`crates/nirs4all-io/tests/fixtures/hdf5_external/` exercise both code
+`crates/nirs4all-formats/tests/fixtures/hdf5_external/` exercise both code
 paths (see the matching tests in `tests/sidecars.rs`).
 
 ## Format scope (M1)
@@ -100,10 +100,10 @@ support in-memory reads" string.
 | Binding | New entry point |
 |---|---|
 | Rust | `open_with_sidecars(name, bytes, Arc<dyn SidecarResolver>)` |
-| Python (PyO3) | `nirs4all_io.open_with_sidecars(name, bytes, sidecars: dict[str, bytes])` |
-| R (extendr) | `nirs4allio_open_with_sidecars(name, raw_bytes, sidecars = list(name = raw))` |
+| Python (PyO3) | `nirs4all_formats.open_with_sidecars(name, bytes, sidecars: dict[str, bytes])` |
+| R (extendr) | `nirs4allformats_open_with_sidecars(name, raw_bytes, sidecars = list(name = raw))` |
 | WebAssembly | `openWithSidecars(filename: string, primary: Uint8Array, sidecars: Record<string, Uint8Array>)` — ENVI/ERDAS LAN plus HDF5-backed FGI XML+HDF5 and NetCDF MFRSR (`fmt-hdf5` on by default) |
-| CLI | `nirs4all-io read-json PATH --bytes-file PATH --sidecar key=path` |
+| CLI | `nirs4all-formats read-json PATH --bytes-file PATH --sidecar key=path` |
 
 ### WASM HDF5 support (F3, resolved 2026-05-25)
 
@@ -134,7 +134,7 @@ hdf5-reader = { git = "https://github.com/roteiro-gis/netcdf-rust", rev = "f0cdd
 
 **When `hdf5-reader` 0.5.1 lands on crates.io**: drop the
 `[patch.crates-io]` block and bump the `hdf5-reader` requirement in
-`crates/nirs4all-io/Cargo.toml` to `0.5.1`. No other change is needed —
+`crates/nirs4all-formats/Cargo.toml` to `0.5.1`. No other change is needed —
 `fmt-hdf5` is already wired through the WASM crate's own feature.
 
 Validated end-to-end: `wasm-pack build --target nodejs` +

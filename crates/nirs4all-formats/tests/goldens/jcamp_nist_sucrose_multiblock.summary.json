@@ -1,0 +1,91 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp",
+        "jcamp_block_index",
+        "link_index",
+        "link_parent_id",
+        "link_relation",
+        "link_total"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jcamp",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 7498.994,
+          "axis_kind": "wavenumber",
+          "axis_last": 600.883992,
+          "axis_len": 7153,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            7153
+          ],
+          "signal_type": "reflectance",
+          "unit": "Reflectance",
+          "value_first": 0.422011,
+          "value_last": 0.028789,
+          "value_sum": 562.646814,
+          "values_len": 7153
+        }
+      ],
+      "source_sha256": "c14254df019c4fca53a64429985f79eebd1fee36b750848f5197437af68a7c8c",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp",
+        "jcamp_block_index",
+        "link_index",
+        "link_parent_id",
+        "link_relation",
+        "link_total"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jcamp",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 7498.994,
+          "axis_kind": "wavenumber",
+          "axis_last": 600.883992,
+          "axis_len": 7153,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            7153
+          ],
+          "signal_type": "reflectance",
+          "unit": "Reflectance",
+          "value_first": 0.471453,
+          "value_last": 0.031526,
+          "value_sum": 638.896643,
+          "values_len": 7153
+        }
+      ],
+      "source_sha256": "c14254df019c4fca53a64429985f79eebd1fee36b750848f5197437af68a7c8c",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

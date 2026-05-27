@@ -1,4 +1,4 @@
-//! WebAssembly bridge for `nirs4all-io`.
+//! WebAssembly bridge for `nirs4all-formats`.
 //!
 //! The browser context cannot call `std::fs::read`, so this binding exposes
 //! byte-based entry points. Callers pass the file name (used to drive
@@ -13,7 +13,7 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use nirs4all_io::{
+use nirs4all_formats::{
     builtin_probes, open_bytes as open_bytes_native, open_with_sidecars as open_with_sidecars_native,
     InMemorySidecars, SidecarResolver,
 };
@@ -73,7 +73,7 @@ pub fn probe_bytes(filename: &str, bytes: &[u8]) -> Result<JsValue, JsError> {
 }
 
 /// Decode a file by name + bytes. Returns the spectral records as a JS array
-/// matching the JSON shape produced by `nirs4all-io read-json`.
+/// matching the JSON shape produced by `nirs4all-formats read-json`.
 ///
 /// Sidecar formats (ENVI Standard, AVIRIS LAN, FGI HDF5+XML, ...) return an
 /// `UnsupportedSidecar` error here; use `openWithSidecars` instead.

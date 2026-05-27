@@ -1,6 +1,6 @@
-# nirs4all-io (WebAssembly / JS)
+# nirs4all-formats (WebAssembly / JS)
 
-Browser- and Node-friendly bridge to the `nirs4all-io` Rust core. It runs the
+Browser- and Node-friendly bridge to the `nirs4all-formats` Rust core. It runs the
 format sniffers **and** the decoders entirely in WebAssembly, from in-memory
 bytes — no filesystem required.
 
@@ -13,7 +13,7 @@ wasm-pack build bindings/wasm --target web --release
 wasm-pack build bindings/wasm --target nodejs --release --out-dir pkg-node
 ```
 
-This emits the `nirs4all-io-wasm` package (JS glue + `.wasm` + TypeScript
+This emits the `nirs4all-formats-wasm` package (JS glue + `.wasm` + TypeScript
 typings) under `pkg/` (or `pkg-node/`).
 
 ## Surface
@@ -21,7 +21,7 @@ typings) under `pkg/` (or `pkg-node/`).
 ```ts
 import init, {
   version, features, probeBytes, openBytes, openWithSidecars,
-} from "./pkg/nirs4all_io_wasm.js";
+} from "./pkg/nirs4all_formats_wasm.js";
 
 await init();
 
@@ -34,7 +34,7 @@ const bytes = new Uint8Array(await file.arrayBuffer());
 probeBytes(file.name, bytes);
 // [{ format: "jcamp-dx", reader: "...", confidence: "definite", reason: "..." }]
 
-// Decode: SpectralRecord[] (same JSON shape as `nirs4all-io read-json`)
+// Decode: SpectralRecord[] (same JSON shape as `nirs4all-formats read-json`)
 const records = openBytes(file.name, bytes);
 ```
 

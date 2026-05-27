@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jcamp",
+      "record_signal_type": "transmittance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 451.304,
+          "axis_kind": "wavenumber",
+          "axis_last": 3798.259685,
+          "axis_len": 3850,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            3850
+          ],
+          "signal_type": "transmittance",
+          "unit": "TRANSMITTANCE",
+          "value_first": 0.568,
+          "value_last": 0.97,
+          "value_sum": 2538.8828,
+          "values_len": 3850
+        }
+      ],
+      "source_sha256": "ee6ddfa926e7b52efdfa28aed1bcba9a761cbfb2b46fb7c60700af2035727c0b",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

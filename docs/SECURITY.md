@@ -1,6 +1,6 @@
 # Security Policy
 
-`nirs4all-io` parses untrusted binary and text files. Readers must fail closed.
+`nirs4all-formats` parses untrusted binary and text files. Readers must fail closed.
 
 ## Runtime Rules
 

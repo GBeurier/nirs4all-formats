@@ -2,7 +2,7 @@
 
 Columnar binary format. Used as the internal cache format by `nirs4all`.
 Supported by `nirs4all.data.loaders.ParquetLoader` and by the native Rust
-`nirs4all-io` Parquet reader for canonical NIRS tables.
+`nirs4all-formats` Parquet reader for canonical NIRS tables.
 
 ## Samples
 

@@ -5,7 +5,7 @@
 EMSA/MAS `.msa` is the single-spectrum ASCII interchange format from the
 Microscopy Society of America / European Microbeam Analysis Society, standardised
 as ISO 22029. It is used mainly for EDS/EELS microanalysis spectra, where the X
-axis is typically energy in `eV`. nirs4all-io reads it as an adjacent, narrow
+axis is typically energy in `eV`. nirs4all-formats reads it as an adjacent, narrow
 text format so these files can be probed and disambiguated.
 
 ## Instruments & software
@@ -31,7 +31,7 @@ Plain ASCII with two parts:
 The reader sniffs files with an `.msa` extension or an `EMSA/MAS` marker that also
 contain `#FORMAT`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signal** — one `SpectralRecord` with a single signal named from `#YLABEL`
   (default `signal`). Signal type is inferred from the Y label/units; an
@@ -73,7 +73,7 @@ Full-array conformance reports against it are still to be added.
 ## Samples & validation
 
 Fixtures live under `samples/` and are covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/`; the probe reports format `emsa-mas-msa` at
+`crates/nirs4all-formats/tests/goldens/`; the probe reports format `emsa-mas-msa` at
 `Confidence::Definite`. Committed control values:
 
 | File | Data type | Points | Axis | Value control |

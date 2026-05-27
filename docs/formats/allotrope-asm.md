@@ -23,7 +23,7 @@ through `open_bytes`. The reader walks the plate reader aggregate document, its
 plate documents and their measurement documents, emitting one record per
 `measurement document`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — for cube measurements, the measure series under
   `/data/measures/0`; for endpoint measurements, a single value at the detector

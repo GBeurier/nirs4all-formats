@@ -1,0 +1,55 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jasco-jws",
+      "metadata_keys": [
+        "channel_count",
+        "channel_labels",
+        "instrument_model",
+        "instrument_modules",
+        "measurement_mode",
+        "measurement_parameters",
+        "operator_organization",
+        "point_count",
+        "sample_label",
+        "source_path"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jasco_jws",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 700.0,
+          "axis_len": 301,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "fluorescence",
+          "role": "fluorescence",
+          "shape": [
+            301
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 18.799175,
+          "value_last": 5.624601,
+          "value_sum": 75506.507521,
+          "values_len": 301
+        }
+      ],
+      "source_sha256": "0e8b0c47d189820189ec4499d203aef702ba3bb6bc125ed27a8f480e7bc65b68",
+      "target_keys": [],
+      "warnings": [
+        "jasco_jws_reverse_engineered_data_info",
+        "jasco_jws_semantic_channels_inferred"
+      ]
+    }
+  ]
+}

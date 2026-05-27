@@ -5,7 +5,7 @@
 ENVI is the de facto interchange format for hyperspectral remote sensing. A
 plain-text `.hdr` header describes a binary payload, which is either a
 one-band-per-row spectral library (`.sli`) or a multi-band image cube
-(`.img` / `.dat`). nirs4all-io reads both: spectral libraries become one record
+(`.img` / `.dat`). nirs4all-formats reads both: spectral libraries become one record
 per stored spectrum, and image cubes become one record per pixel (or a single
 N-dimensional cube record on request).
 
@@ -33,7 +33,7 @@ libraries.
   interleave; ENVI Standard cubes support BSQ, BIL and BIP and resolve the
   interleave into C-order on read.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `spectrum` signal per record. The signal type is `Unknown`
   (ENVI headers carry no semantic unit field).
@@ -81,7 +81,7 @@ libraries.
 ## Reference readers
 
 The format is documented by ENVI and supported by Spectral Python (`spectral`),
-R `RStoolbox::readSLI()`, `pysptools` and `rasterio`. The nirs4all-io reader is
+R `RStoolbox::readSLI()`, `pysptools` and `rasterio`. The nirs4all-formats reader is
 clean-room. Conformance output from Spectral Python is planned once the optional
 dependency is present in the reverse-engineering environment.
 

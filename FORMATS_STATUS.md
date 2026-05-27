@@ -1,4 +1,4 @@
-# Statut synthétique des formats (nirs4all-io)
+# Statut synthétique des formats (nirs4all-formats)
 
 Vue compacte de tous les formats de la lib, dérivée de
 [`docs/FORMAT_MATRIX.md`](docs/FORMAT_MATRIX.md).

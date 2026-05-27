@@ -34,7 +34,7 @@ deep, looking for:
   `x_axis`, and related `*_nm` / `*_cm-1` aliases);
 - optional 1-D numeric target datasets matching the sample dimension.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one signal per recognised spectral dataset. Multiple compatible
   datasets in the same group (e.g. `absorbance` and `reflectance` sharing one
@@ -80,7 +80,7 @@ The reader emits one `SpectralRecord` per sample row.
 ## Reference readers
 
 `h5py`, the `hdf5-reader` crate and PyTables (`tables`) open the same containers;
-nirs4all-io adds axis detection, signal typing, target extraction and provenance
+nirs4all-formats adds axis detection, signal typing, target extraction and provenance
 on top.
 
 ## Samples & validation
@@ -88,6 +88,6 @@ on top.
 Fixtures live under `samples/hdf5/` (`synthetic_nirs.h5` — 50 records, two
 signals on a shared `/wavelengths`; `generic_aliases_data_group.h5` — a
 `bands x samples` `/data/absorbance` with a `cm-1` axis) and `samples/fgi/`. They
-are covered by golden summaries in `crates/nirs4all-io/tests/goldens/`, and
+are covered by golden summaries in `crates/nirs4all-formats/tests/goldens/`, and
 non-spectral refusals are locked in. The probe reports `hdf5-nirs-container` at
 `Confidence::Likely`.

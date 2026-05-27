@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "ocean-optics-craic-text",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::ocean_optics",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 280.11,
+          "axis_kind": "wavelength",
+          "axis_last": 949.93,
+          "axis_len": 3761,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            3761
+          ],
+          "signal_type": "reflectance",
+          "unit": "%",
+          "value_first": 13.3999,
+          "value_last": 169.6574,
+          "value_sum": 497195.5909,
+          "values_len": 3761
+        }
+      ],
+      "source_sha256": "b9a37c0c2d5b5947064ac2f0a3bf83f3b611316b7fe17a58a216ccc5758d4cf0",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

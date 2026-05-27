@@ -1,0 +1,45 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "jcamp-dx",
+      "metadata_keys": [
+        "jcamp"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::jcamp",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 24038.5,
+          "axis_kind": "frequency",
+          "axis_last": 0.0,
+          "axis_len": 16384,
+          "axis_order": "descending",
+          "axis_unit": "hz",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            16384
+          ],
+          "signal_type": "unknown",
+          "unit": "ARBITRARY UNITS",
+          "value_first": 2254931.0,
+          "value_last": 1513177.0,
+          "value_sum": 616961840.0,
+          "values_len": 16384
+        }
+      ],
+      "source_sha256": "1c4eb5c20625fc49e8e9cc2e97b9dfec07d476cb20763c385ce83e231b5a514e",
+      "target_keys": [],
+      "warnings": [
+        "npoints_truncated: declared 16384, decoded 16393"
+      ]
+    }
+  ]
+}

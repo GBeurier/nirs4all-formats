@@ -27,7 +27,7 @@ label map.
 - `92AV3GT.GIS` sidecar (optional) — a second `HEAD74` raster of the same
   145×145 footprint carrying the class label per pixel.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Default layout** — one `SpectralRecord` per pixel (21,025 records), each with
   a single `raw_counts` signal, a `nm` wavelength axis (unit `dn`), and metadata

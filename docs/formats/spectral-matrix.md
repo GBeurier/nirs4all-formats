@@ -34,7 +34,7 @@ The reader recognises two matrix forms:
 
 The delimiter (comma, semicolon, tab or whitespace) is detected per line.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per sample row, each with a single
   `absorbance` signal (type `Absorbance`).
@@ -69,7 +69,7 @@ The delimiter (comma, semicolon, tab or whitespace) is detected per line.
 
 ## Reference readers
 
-`pandas.read_csv` and R `read.table` read the same matrices. nirs4all-io adds
+`pandas.read_csv` and R `read.table` read the same matrices. nirs4all-formats adds
 the `Wavelengths:`-block and preamble handling, axis detection, target/metadata
 separation and provenance.
 
@@ -77,7 +77,7 @@ separation and provenance.
 
 Fixtures live under `samples/foss_winisi/`, `samples/metrohm/`,
 `samples/viavi_micronir/`, `samples/csv_tsv/` and `samples/siware_neospectra/`,
-covered by golden summaries in `crates/nirs4all-io/tests/goldens/`
+covered by golden summaries in `crates/nirs4all-formats/tests/goldens/`
 (`spectral_matrix_*`). Representative outputs: 50 records for the synthetic
 WinISI export (`Wavelengths:` block, `nm`, `protein` target) and 50 records for
 Metrohm Vision Air (numeric `;` headers, `protein`/`moisture`/`fat` targets). The

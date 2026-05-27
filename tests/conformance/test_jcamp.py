@@ -1,4 +1,4 @@
-"""JCAMP-DX conformance: nirs4all-io vs `jcamp` (Python)."""
+"""JCAMP-DX conformance: nirs4all-formats vs `jcamp` (Python)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from conftest import (
     load_tolerances,
     normalize_records,
     require_jcamp,
-    require_nirs4all_io,
+    require_nirs4all_formats,
 )
 
 JCAMP_SAMPLES = fixtures_under(
@@ -27,7 +27,7 @@ SKIPS = load_known_skips().get("jcamp", {})
 
 @pytest.mark.parametrize("path", JCAMP_SAMPLES, ids=lambda p: p.name)
 def test_jcamp_records_match_python_jcamp(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     jcamp = require_jcamp()
 
     skip_key = path.name.lower().replace("-", "_").replace(".", "_")
@@ -37,7 +37,7 @@ def test_jcamp_records_match_python_jcamp(path: Path) -> None:
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -52,7 +52,7 @@ def test_jcamp_records_match_python_jcamp(path: Path) -> None:
     if len(expected_axis) == 0:
         pytest.skip(f"{path.name}: jcamp axis empty")
 
-    # nirs4all-io may emit several records (LINK, NTUPLES, multi-block);
+    # nirs4all-formats may emit several records (LINK, NTUPLES, multi-block);
     # compare each record whose values length matches the reference.
     matched = False
     for index, record in enumerate(records):
@@ -74,7 +74,7 @@ def test_jcamp_records_match_python_jcamp(path: Path) -> None:
         break
     if not matched:
         pytest.skip(
-            f"{path.name}: no nirs4all-io record matches jcamp value count "
+            f"{path.name}: no nirs4all-formats record matches jcamp value count "
             f"{len(expected_values)} (records have lengths "
             f"{[len(r['values']) for r in records]})"
         )

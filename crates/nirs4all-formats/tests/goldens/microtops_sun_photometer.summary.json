@@ -1,0 +1,1005 @@
+{
+  "record_count": 20,
+  "records": [
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "microtops-sun-photometer",
+      "metadata_keys": [
+        "altitude",
+        "am",
+        "date",
+        "latitude",
+        "longitude",
+        "pressure",
+        "rec",
+        "row_index",
+        "sdcorr",
+        "sza",
+        "temp",
+        "time",
+        "water"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "aerosol_optical_thickness",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1020.0,
+          "axis_kind": "wavelength",
+          "axis_last": 675.0,
+          "axis_len": 3,
+          "axis_order": "descending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "aot",
+          "role": "aot",
+          "shape": [
+            3
+          ],
+          "signal_type": "aerosol_optical_thickness",
+          "unit": null,
+          "value_first": 0.124,
+          "value_last": 0.211,
+          "value_sum": 0.491,
+          "values_len": 3
+        }
+      ],
+      "source_sha256": "18e5d378081ba905fde20b03756292896e1d89d68ea7f3ff6777e2c6aea8141e",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

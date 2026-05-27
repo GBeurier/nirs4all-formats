@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** Vendor-neutral / IUPAC · **Extensions:** `.jdx`, `.dx`, `.jcm`, `.jcamp`
 
 JCAMP-DX is the IUPAC labelled-data interchange format for IR, NIR, Raman, UV-Vis
-and NMR spectra. nirs4all-io ships a native Rust reader for the high-value
+and NMR spectra. nirs4all-formats ships a native Rust reader for the high-value
 spectroscopic shapes: dense `XYDATA` tables (plain and packed), `XYPOINTS`,
 `NTUPLES` pages, sparse `PEAK TABLE` / `PEAK ASSIGNMENTS`, top-level multi-block
 files and `DATA TYPE=LINK` containers.
@@ -37,7 +37,7 @@ PAC adjacent signed numbers, SQZ pseudo-digits, DIF difference coding and DUP
 repeat counts. `YFACTOR` scales ordinates; `XFACTOR` scales peak abscissas and
 widths inside peak tables.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one or more `SpectralRecord`s. `XYDATA`/`XYPOINTS` produce a
   single `signal`; `NTUPLES` produces named channels (`real`, `imaginary`, …);
@@ -119,7 +119,7 @@ the high-value NIR/IR `XYDATA` cases.
 ## Samples & validation
 
 Fixtures live under `samples/jcamp_dx/` and are covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/`; the probe reports format `jcamp-dx` at
+`crates/nirs4all-formats/tests/goldens/`; the probe reports format `jcamp-dx` at
 `Confidence::Definite`. Committed control values:
 
 | File | Encoding | Points | Axis | Value control |

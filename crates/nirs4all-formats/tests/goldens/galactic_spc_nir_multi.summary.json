@@ -1,0 +1,825 @@
+{
+  "record_count": 20,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.0002,
+          "value_last": 0.001441,
+          "value_sum": 238.526,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000177,
+          "value_last": 0.001441,
+          "value_sum": 238.909345,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000992,
+          "value_last": 0.005651,
+          "value_sum": 224.285115,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.00113,
+          "value_last": 0.000795,
+          "value_sum": 262.60628,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000028,
+          "value_last": 0.00071,
+          "value_sum": 282.813985,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000026,
+          "value_last": 0.004385,
+          "value_sum": 232.230897,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000491,
+          "value_last": 0.002998,
+          "value_sum": 247.750457,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.001237,
+          "value_last": 0.001441,
+          "value_sum": 257.85079,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.001142,
+          "value_last": 0.000898,
+          "value_sum": 380.51217,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.001959,
+          "value_last": 0.006402,
+          "value_sum": 323.882035,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000094,
+          "value_last": 0.003384,
+          "value_sum": 279.496379,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000089,
+          "value_last": 0.003201,
+          "value_sum": 253.630147,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000802,
+          "value_last": 0.000539,
+          "value_sum": 345.975058,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000897,
+          "value_last": 0.007703,
+          "value_sum": 269.734169,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.00133,
+          "value_last": 0.000378,
+          "value_sum": 381.308745,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.001084,
+          "value_last": 0.000094,
+          "value_sum": 373.140056,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000503,
+          "value_last": 0.000259,
+          "value_sum": 335.365731,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000314,
+          "value_last": 0.001441,
+          "value_sum": 265.562383,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.001768,
+          "value_last": 0.001441,
+          "value_sum": 290.380601,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "kubelka_munk",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "kubelka_munk",
+          "role": "Kubelka-Munk",
+          "shape": [
+            700
+          ],
+          "signal_type": "kubelka_munk",
+          "unit": null,
+          "value_first": 0.000444,
+          "value_last": 0.000026,
+          "value_sum": 350.265851,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "f3e064402789b076568861e84888367b220227787312acd947cfba987106f173",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

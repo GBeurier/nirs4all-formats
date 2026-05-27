@@ -6,7 +6,7 @@ they are listed in [`FORMATS.md`](FORMATS.md). It complements
 
 ## Policy
 
-`nirs4all-io` does not promote a native loader without at least one of:
+`nirs4all-formats` does not promote a native loader without at least one of:
 
 - a redistributable real fixture;
 - a private fixture that can be used in CI-like validation by the owner;

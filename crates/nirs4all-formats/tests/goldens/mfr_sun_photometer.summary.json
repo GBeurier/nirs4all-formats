@@ -1,0 +1,2355 @@
+{
+  "record_count": 50,
+  "records": [
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 500.0,
+          "value_last": 620.0,
+          "value_sum": 4320.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 502.0,
+          "value_last": 622.0,
+          "value_sum": 4334.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 504.0,
+          "value_last": 624.0,
+          "value_sum": 4348.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 506.0,
+          "value_last": 626.0,
+          "value_sum": 4362.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 508.0,
+          "value_last": 628.0,
+          "value_sum": 4376.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 510.0,
+          "value_last": 630.0,
+          "value_sum": 4390.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 512.0,
+          "value_last": 632.0,
+          "value_sum": 4404.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 514.0,
+          "value_last": 634.0,
+          "value_sum": 4418.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 516.0,
+          "value_last": 636.0,
+          "value_sum": 4432.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 518.0,
+          "value_last": 638.0,
+          "value_sum": 4446.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 520.0,
+          "value_last": 640.0,
+          "value_sum": 4460.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 522.0,
+          "value_last": 642.0,
+          "value_sum": 4474.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 524.0,
+          "value_last": 644.0,
+          "value_sum": 4488.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 526.0,
+          "value_last": 646.0,
+          "value_sum": 4502.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 528.0,
+          "value_last": 648.0,
+          "value_sum": 4516.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 530.0,
+          "value_last": 650.0,
+          "value_sum": 4530.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 532.0,
+          "value_last": 652.0,
+          "value_sum": 4544.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 534.0,
+          "value_last": 654.0,
+          "value_sum": 4558.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 536.0,
+          "value_last": 656.0,
+          "value_sum": 4572.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 538.0,
+          "value_last": 658.0,
+          "value_sum": 4586.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 540.0,
+          "value_last": 660.0,
+          "value_sum": 4600.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 542.0,
+          "value_last": 662.0,
+          "value_sum": 4614.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 544.0,
+          "value_last": 664.0,
+          "value_sum": 4628.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 546.0,
+          "value_last": 666.0,
+          "value_sum": 4642.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 548.0,
+          "value_last": 668.0,
+          "value_sum": 4656.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 550.0,
+          "value_last": 670.0,
+          "value_sum": 4670.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 552.0,
+          "value_last": 672.0,
+          "value_sum": 4684.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 554.0,
+          "value_last": 674.0,
+          "value_sum": 4698.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 556.0,
+          "value_last": 676.0,
+          "value_sum": 4712.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 558.0,
+          "value_last": 678.0,
+          "value_sum": 4726.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 560.0,
+          "value_last": 680.0,
+          "value_sum": 4740.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 562.0,
+          "value_last": 682.0,
+          "value_sum": 4754.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 564.0,
+          "value_last": 684.0,
+          "value_sum": 4768.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 566.0,
+          "value_last": 686.0,
+          "value_sum": 4782.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 568.0,
+          "value_last": 688.0,
+          "value_sum": 4796.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 570.0,
+          "value_last": 690.0,
+          "value_sum": 4810.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 572.0,
+          "value_last": 692.0,
+          "value_sum": 4824.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 574.0,
+          "value_last": 694.0,
+          "value_sum": 4838.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 576.0,
+          "value_last": 696.0,
+          "value_sum": 4852.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 578.0,
+          "value_last": 698.0,
+          "value_sum": 4866.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 580.0,
+          "value_last": 700.0,
+          "value_sum": 4880.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 582.0,
+          "value_last": 702.0,
+          "value_sum": 4894.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 584.0,
+          "value_last": 704.0,
+          "value_sum": 4908.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 586.0,
+          "value_last": 706.0,
+          "value_sum": 4922.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 588.0,
+          "value_last": 708.0,
+          "value_sum": 4936.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 590.0,
+          "value_last": 710.0,
+          "value_sum": 4950.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 592.0,
+          "value_last": 712.0,
+          "value_sum": 4964.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 594.0,
+          "value_last": 714.0,
+          "value_sum": 4978.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 596.0,
+          "value_last": 716.0,
+          "value_sum": 4992.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    },
+    {
+      "format": "mfr-sun-photometer",
+      "metadata_keys": [
+        "air_mass",
+        "alt",
+        "date",
+        "instrument",
+        "lat",
+        "lon",
+        "record",
+        "row_index",
+        "site",
+        "time"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::sun_photometer",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 415.0,
+          "axis_kind": "wavelength",
+          "axis_last": 940.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "channels",
+          "role": "channels",
+          "shape": [
+            6
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 598.0,
+          "value_last": 718.0,
+          "value_sum": 5006.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "5a174d726c395ed887ef1ca7ccef3ad3610ec56417775f40dbe122da0d1d63e7",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

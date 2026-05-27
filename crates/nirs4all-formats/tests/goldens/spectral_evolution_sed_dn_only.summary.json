@@ -1,0 +1,94 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "spectral-evolution-sed",
+      "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
+        "battery_voltages_volts",
+        "dark_mode",
+        "declared_column_count",
+        "detector_channels",
+        "detector_temperatures_reference_celsius",
+        "detector_temperatures_target_celsius",
+        "foreoptic",
+        "foreoptic_signal_units",
+        "instrument",
+        "instrument_model",
+        "instrument_serial",
+        "integration_time_reference_ms",
+        "integration_time_target_ms",
+        "measurement_mode",
+        "point_count",
+        "radiometric_calibration",
+        "scan_averages",
+        "source_signal_labels",
+        "source_signal_units",
+        "vendor",
+        "wavelength_range_nm"
+      ],
+      "quality_flags": [
+        "missing_reflectance_signal"
+      ],
+      "reader": "nirs4all_formats::readers::sed",
+      "record_signal_type": "raw_counts",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "norm__dn_ref_",
+          "role": "norm__dn_ref_",
+          "shape": [
+            2151
+          ],
+          "signal_type": "raw_counts",
+          "unit": "DN",
+          "value_first": 5.282287,
+          "value_last": 16.15534,
+          "value_sum": 751954.105349,
+          "values_len": 2151
+        },
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "norm__dn_target",
+          "role": "norm__dn_target",
+          "shape": [
+            2151
+          ],
+          "signal_type": "raw_counts",
+          "unit": "DN",
+          "value_first": 1.922703,
+          "value_last": 1.271258,
+          "value_sum": 238415.329832,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "81628756e43e75f172d6a23e9e96e962e33dc8d8a7afde0e0a16336314bf586c",
+      "target_keys": [],
+      "warnings": [
+        "sed_missing_reflectance_signal"
+      ]
+    }
+  ]
+}

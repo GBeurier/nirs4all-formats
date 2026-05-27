@@ -4,7 +4,7 @@
 
 The PP Systems UniSpec SC (single-channel) and UniSpec DC (dual-channel) are
 field spectroradiometers. When their `.SPT` / `.SPU` exports expose an axis-first
-ASCII table, nirs4all-io reads them through the
+ASCII table, nirs4all-formats reads them through the
 [row-spectral-table reader](row-spectral-table.md). The current fixtures are
 synthetic, so the coverage is scoped until a real field acquisition can validate
 production headers, units and metadata.
@@ -24,7 +24,7 @@ then an axis-first table: an explicit wavelength column followed by numeric
 signal columns. The reader requires that explicit axis column and does not claim
 arbitrary PP Systems reports by extension alone.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — `DN` columns are emitted as `raw_counts`; `Reflectance` columns
   as reflectance. UniSpec SC exposes `dn_white`, `dn_target`, `reflectance`;
@@ -58,7 +58,7 @@ arbitrary PP Systems reports by extension alone.
 ## Reference readers
 
 The axis-first exports are readable with `pandas` or R `read.table`;
-nirs4all-io adds axis detection, signal typing and provenance. A comparison
+nirs4all-formats adds axis detection, signal typing and provenance. A comparison
 against SPECCHIO or another trusted import path is planned if one becomes
 available.
 

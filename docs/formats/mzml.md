@@ -3,7 +3,7 @@
 > **Status:** Detected / refused · **Vendor:** HUPO PSI / MS vendors · **Extensions:** `.mzML`, `.mzMLb`
 
 mzML is the HUPO PSI XML standard for mass-spectrometry data. It is recognised by
-nirs4all-io for disambiguation but is **not decoded into records**: it is not a
+nirs4all-formats for disambiguation but is **not decoded into records**: it is not a
 NIRS / optical-spectroscopy format, and its primary X axis is `m/z`, which is
 outside the current `SpectralAxis` model.
 
@@ -11,7 +11,7 @@ outside the current `SpectralAxis` model.
 
 Produced and consumed across the mass-spectrometry ecosystem (Thermo, Bruker,
 SCIEX, Agilent and others) via the ProteoWizard / `msconvert` toolchain. mzML is a
-useful design reference for nirs4all-io's data model, but its scope is MS, not
+useful design reference for nirs4all-formats's data model, but its scope is MS, not
 optical spectroscopy.
 
 ## File structure

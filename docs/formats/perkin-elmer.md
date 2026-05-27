@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** PerkinElmer · **Extensions:** `.sp` (`.fsm` imaging out of v1 scope)
 
 PerkinElmer's Spectrum and Spotlight software write the `PEPE` block container.
-nirs4all-io reads the `.sp` single-spectrum flavour of that container; the `.fsm`
+nirs4all-formats reads the `.sp` single-spectrum flavour of that container; the `.fsm`
 Spotlight imaging flavour shares the family magic but is intentionally left out of
 the v1 scope.
 
@@ -23,7 +23,7 @@ block sequences. Data-bearing blocks are tagged: f64 pair (`0x751d`), single f64
 ordinate array, axis bounds, step and point count are read from their specific
 block ids and tags.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per file with the f64 ordinate array. The
   signal type is inferred from the signal label, and falls back to `absorbance`

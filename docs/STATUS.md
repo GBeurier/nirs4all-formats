@@ -1,6 +1,13 @@
 # Project Status
 
-Last updated: 2026-05-26.
+Last updated: 2026-05-27.
+
+> 2026-05-27 — **Renamed `nirs4all-io` → `nirs4all-formats`** (Phase 0 of the
+> formats/io redesign, distinct from this repo's internal roadmap phases). All
+> crates, bindings (Python/R/WASM), the C ABI (`n4fmt_*`, `NIRS4ALL_FORMATS_H`),
+> env vars (`NIRS4ALL_FORMATS_*`), provenance literals, the 231 goldens (re-blessed),
+> CI/release workflows, and docs were renamed. Full green gate re-run green below.
+> The freed `nirs4all-io` name is reused by the new dataset-bridge library (separate repo).
 
 > 2026-05-26 — Documentation pass: the per-format pages
 > (`docs/formats/*.md`) were rewritten into a single publishable template, a
@@ -184,7 +191,7 @@ Experimental native readers:
   `pyteomics.openms.ANDIMS`, `PyMassSpec` or `pyOpenMS`.
 
 Golden-summary conformance exists for the fixtures above under
-`crates/nirs4all-io/tests/goldens/`.
+`crates/nirs4all-formats/tests/goldens/`.
 
 Untreated formats, missing fixture blockers, unknown binary layouts and
 deliberate refusal paths are now documented in `docs/FORMAT_GAPS.md`, with
@@ -192,10 +199,10 @@ deliberate refusal paths are now documented in `docs/FORMAT_GAPS.md`, with
 
 Auto-discovery walker:
 
-- `walk_path()` / `WalkOptions` in `nirs4all-io` recursively traverse a
+- `walk_path()` / `WalkOptions` in `nirs4all-formats` recursively traverse a
   directory, probe each file by head bytes and either decode it through the
   registry or mark it `Unsupported` / `Error`. The CLI exposes the same path as
-  `nirs4all-io scan PATH [--max-depth N] [--include-unsupported] [--json]`.
+  `nirs4all-formats scan PATH [--max-depth N] [--include-unsupported] [--json]`.
 
 In-memory reads:
 
@@ -225,7 +232,7 @@ In-memory reads:
   HDF5-backed sidecar formats (FGI XML+HDF5, NetCDF MFRSR) decode under
   WASM too. `fmt-matlab` / `fmt-parquet` stay off.
 
-Python bridge — native PyO3 extension `nirs4all_io._native` built with
+Python bridge — native PyO3 extension `nirs4all_formats._native` built with
 maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
 when the native module is not available:
 
@@ -237,21 +244,21 @@ when the native module is not available:
 - explicit projections on `SpectralRecordSet` — `to_numpy`, `to_pandas` /
   `to_pandas_long`, `to_sklearn`, `to_torch` and `to_spectrodataset` (each
   signal -> a nirs4all source, provenance preserved in reserved
-  `nirs4all_io.*` metadata columns). Heterogeneous feature axes raise a strict
+  `nirs4all_formats.*` metadata columns). Heterogeneous feature axes raise a strict
   projection error; missing signals are NaN-filled.
 
-R bridge — `nirs4allio_*` functions try a native extendr-api static library
-shipped under `bindings/r/nirs4allio/src/rust/` (built at install time by
-`R CMD INSTALL` when Cargo is present) and fall back to the `nirs4all-io`
+R bridge — `nirs4allformats_*` functions try a native extendr-api static library
+shipped under `bindings/r/nirs4allformats/src/rust/` (built at install time by
+`R CMD INSTALL` when Cargo is present) and fall back to the `nirs4all-formats`
 CLI when the native symbols are absent:
 
-- `nirs4allio_open_records`, `nirs4allio_open_dataset`,
-  `nirs4allio_open_bytes`, `nirs4allio_open_with_sidecars`,
-  `nirs4allio_probe_path`, `nirs4allio_walk_path`;
+- `nirs4allformats_open_records`, `nirs4allformats_open_dataset`,
+  `nirs4allformats_open_bytes`, `nirs4allformats_open_with_sidecars`,
+  `nirs4allformats_probe_path`, `nirs4allformats_walk_path`;
 - `matrix`, `data.frame` and optional tibble conversion.
 
 JS / WebAssembly bridge — new `bindings/wasm/` crate built with `wasm-pack`
-for `target web` / `target nodejs`. Compiles `nirs4all-io` with `fmt-hdf5`
+for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`
 on (pure-Rust HDF5/NetCDF decoders) and `fmt-matlab` / `fmt-parquet` off,
 and exposes:
 
@@ -268,22 +275,24 @@ and exposes:
 
 ## Last Green Gate
 
-Green locally on 2026-05-25 (WASM build now includes `fmt-hdf5`):
+Green locally on 2026-05-27 (post rename `nirs4all-io` → `nirs4all-formats`; all
+steps below re-run green: fmt, 259 tests, clippy, no-default + wasm builds, per-binding
+clippy, Python 27 tests, R 23 pass/2 skip, node WASM smoke+sidecars, Sphinx `-W`, C ABI):
 
 ```bash
 . "$HOME/.cargo/env"
 cargo fmt --all --check
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
-cargo build -p nirs4all-io --no-default-features
-cargo build -p nirs4all-io --no-default-features --target wasm32-unknown-unknown
+cargo build -p nirs4all-formats --no-default-features
+cargo build -p nirs4all-formats --no-default-features --target wasm32-unknown-unknown
 (cd bindings/wasm && cargo clippy --all-targets -- -D warnings)
 (cd bindings/python && cargo clippy --all-targets -- -D warnings)
 unset CONDA_DEFAULT_ENV CONDA_PREFIX CONDA_PYTHON_EXE
 . .venv/bin/activate
 (cd bindings/python && maturin develop --release --quiet)
 python -m pytest bindings/python/tests/ tools/reverse-lab/tests
-Rscript -e 'Sys.setenv(NIRS4ALL_IO_REPO=getwd()); source("bindings/r/nirs4allio/R/version.R"); source("bindings/r/nirs4allio/R/io.R"); source("bindings/r/nirs4allio/R/native.R"); testthat::test_dir("bindings/r/nirs4allio/tests/testthat")'
+Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); source("bindings/r/nirs4allformats/R/version.R"); source("bindings/r/nirs4allformats/R/io.R"); source("bindings/r/nirs4allformats/R/native.R"); testthat::test_dir("bindings/r/nirs4allformats/tests/testthat")'
 (cd bindings/wasm && wasm-pack build --target nodejs --release --out-dir pkg-node)
 node bindings/wasm/tests/smoke.js
 node bindings/wasm/tests/sidecars.test.js
@@ -296,7 +305,7 @@ reads, 5 expected refusals and 0 unexpected refusals.
 
 ## Next Agent Prompt
 
-Continue from `/home/delete/nirs4all/nirs4all-io`. Keep Rust as the canonical
+Continue from `/home/delete/nirs4all/nirs4all-formats`. Keep Rust as the canonical
 core. Do not implement parser logic in Python or R bindings.
 
 Immediate next work:
@@ -346,14 +355,14 @@ Immediate next work:
    `.github/workflows/release.yml` builds Python wheels via
    `cibuildwheel` (manylinux2014 x86_64+aarch64, macOS x86_64+arm64,
    Windows AMD64; CPython 3.10-3.13), a `maturin sdist`, per-OS C ABI
-   archives (`nirs4all-io-capi-<target>.{tar.gz,zip}` with the
-   `cbindgen`-generated `nirs4all_io.h` + LICENSE), and the R source
+   archives (`nirs4all-formats-capi-<target>.{tar.gz,zip}` with the
+   `cbindgen`-generated `nirs4all_formats.h` + LICENSE), and the R source
    tarball. Tagged releases publish to PyPI via OIDC trusted publishing
    and attach every artifact to the GitHub release; `workflow_dispatch`
    provides a dry-run path. See `docs/RELEASE.md` for the tag flow,
    per-wheel capability matrix and rollback procedure. Locally
    validated: the C smoke
-   `crates/nirs4all-io-capi/examples/probe_version.c` builds against
+   `crates/nirs4all-formats-capi/examples/probe_version.c` builds against
    the release library and prints `0.1.0`.
 
 9. keep `docs/STATUS.md` and `docs/ROADMAP.md` current after each green gate.

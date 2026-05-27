@@ -1,6 +1,6 @@
 # Getting started
 
-`nirs4all-io` is a **Rust-first, low-level reader** for NIRS and spectroscopy
+`nirs4all-formats` is a **Rust-first, low-level reader** for NIRS and spectroscopy
 file formats. It reads ~58 format families, auto-detects each file by content,
 and returns a canonical `SpectralRecord` model that the same code can project
 into numpy / pandas / sklearn / torch (Python), matrices and data frames (R), or
@@ -21,16 +21,16 @@ Rust, Python, R, the CLI or the browser. See the
 
 ```bash
 # Which reader will handle this file, and why?
-nirs4all-io probe samples/jcamp_dx/TESTSPEC.DX
+nirs4all-formats probe samples/jcamp_dx/TESTSPEC.DX
 
 # Decode it to normalized JSON records
-nirs4all-io read-json samples/jcamp_dx/TESTSPEC.DX
+nirs4all-formats read-json samples/jcamp_dx/TESTSPEC.DX
 ```
 
 **Python**
 
 ```python
-import nirs4all_io as nio
+import nirs4all_formats as nio
 
 # Lossless object model: every signal, axis, coord, metadata and provenance
 records = nio.open_recordset("spectrum.sed")
@@ -42,9 +42,9 @@ X, axis = records.to_numpy(signal="reflectance")
 **R**
 
 ```r
-library(nirs4allio)
+library(nirs4allformats)
 
-dataset <- nirs4allio_open_dataset("spectrum.sed")
+dataset <- nirs4allformats_open_dataset("spectrum.sed")
 X       <- as.matrix(dataset)        # spectral matrix
 df      <- as.data.frame(dataset)    # sample ids + targets + spectral columns
 ```
@@ -75,4 +75,4 @@ Nothing is resampled, merged or silently dropped. See the
 - Bindings: [Python](bindings/python.md) · [R](bindings/r.md) ·
   [WebAssembly](bindings/wasm.md) · [C ABI](bindings/capi.md).
 - Don't see your format, or hit a misread file? Open an
-  [issue](https://github.com/GBeurier/nirs4all-io/issues/new/choose).
+  [issue](https://github.com/GBeurier/nirs4all-formats/issues/new/choose).
