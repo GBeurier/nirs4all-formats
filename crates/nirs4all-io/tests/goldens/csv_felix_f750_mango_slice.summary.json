@@ -1,0 +1,1253 @@
+{
+  "record_count": 26,
+  "records": [
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -76.005334,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -70.344084,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -38.619474,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": 0.816803,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -56.762515,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -54.340099,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -59.289677,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -16.774387,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -50.369047,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -46.147832,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -7.824135,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -16.605966,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -34.025428,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "Cultivar",
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -42.114764,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -7.877313,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -56.333037,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -37.213502,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -63.064838,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -28.260951,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -0.697191,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "Cultivar",
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -40.907793,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -33.657005,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "Cultivar",
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -10.584109,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -16.817132,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -56.938051,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cultivar",
+        "Date",
+        "Region",
+        "Set",
+        "Temp",
+        "Type",
+        "row_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_io::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 285.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1200.0,
+          "axis_len": 306,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            306
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.0,
+          "value_sum": -25.406131,
+          "values_len": 306
+        }
+      ],
+      "source_sha256": "b47a49397818c781f76b134a07d426ead3ea4e5ca71bb2f0b2f58fe3ac3ef123",
+      "target_keys": [
+        "DM",
+        "Pop",
+        "Season"
+      ],
+      "warnings": []
+    }
+  ]
+}

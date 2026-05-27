@@ -65,6 +65,7 @@ that are compiled in by default but can be turned off (and are off on the
 | USGS / ECOSTRESS spectral text | USGS / JHU / ECOSTRESS | `.asc`, `.txt`, `.spectrum.txt` | Supported (scoped) | [usgs-speclib](formats/usgs-speclib.md) |
 | Avantes AvaSoft (ASCII + binary) | Avantes | `.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.TRM`, `.ROH`, `.DRK`, `.REF`, `.Raw8`, `.IRR8` | Supported (scoped) | [avantes](formats/avantes.md) |
 | PP Systems UniSpec SC / DC | PP Systems | `.SPT`, `.SPU` | Experimental | [pp-systems-unispec](formats/pp-systems-unispec.md) |
+| Felix Instruments F-750 | Felix Instruments / CID Bio-Science | `.csv` | Supported (scoped) | [felix-f750](formats/felix-f750.md) |
 
 ## Hyperspectral cubes
 

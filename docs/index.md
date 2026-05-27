@@ -49,6 +49,7 @@ formats/digitalsurf
 formats/envi-sli
 formats/erdas-lan
 formats/excel
+formats/felix-f750
 formats/fgi-hdf5-xml
 formats/foss-winisi
 formats/galactic-spc

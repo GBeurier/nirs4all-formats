@@ -14,6 +14,12 @@ Ocean Insight range, plus CRAIC two-column exports. Committed fixtures span
 SpectraSuite, OceanView, Jaz / JazIrrad, CRAIC, Master.Transmission, two-column
 CSV and Linux/Windows `.ProcSpec` archives.
 
+The **Flame-NIR / Flame-NIR+** (InGaAs, ~950-1650 nm) is part of this family. It
+exports only through OceanView and produces the same ASCII / `.ProcSpec` / `.jdx`
+layouts decoded here, so no dedicated reader is needed; a Flame-NIR fixture
+covering the InGaAs axis (vs the current CCD-range fixtures) is still to be
+sourced.
+
 ## File structure
 
 - **ASCII exports** — text files keyed by header banners such as
