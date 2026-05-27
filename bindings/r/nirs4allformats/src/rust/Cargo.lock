@@ -862,7 +862,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nirs4all-io"
+name = "nirs4all-formats"
 version = "0.1.0-alpha.0"
 dependencies = [
  "arrow-array",
@@ -875,7 +875,7 @@ dependencies = [
  "hdf5-reader",
  "matfile",
  "netcdf-reader",
- "nirs4all-io-core",
+ "nirs4all-formats-core",
  "parquet",
  "quick-xml 0.40.1",
  "rds2rust",
@@ -887,7 +887,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nirs4all-io-core"
+name = "nirs4all-formats-core"
 version = "0.1.0-alpha.0"
 dependencies = [
  "serde",
@@ -897,12 +897,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "nirs4allio-r"
+name = "nirs4allformats-r"
 version = "0.1.0-alpha.0"
 dependencies = [
  "extendr-api",
- "nirs4all-io",
- "nirs4all-io-core",
+ "nirs4all-formats",
+ "nirs4all-formats-core",
  "serde",
  "serde_json",
 ]
