@@ -539,6 +539,10 @@ const CASES: &[(&str, &str)] = &[
         "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",
     ),
     (
+        "csv_felix_f750_mango_slice",
+        "samples/felix_f750/mango_dmc_f750_slice.csv",
+    ),
+    (
         "spectral_matrix_foss_winisi",
         "samples/foss_winisi/synthetic_winisi_export.txt",
     ),

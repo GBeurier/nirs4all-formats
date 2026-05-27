@@ -14,6 +14,12 @@ ranges, including hyphenated TGA-GC-IR workflows. The committed corpus is source
 from SpectroChemPy documentation fixtures; rapid-scan series come from local-only
 SpectroChemPy fixtures.
 
+The **Thermo Antaris II** FT-NIR analyzer (RESULT / TQ Analyst software on the
+OMNIC engine) writes the same `.spa` / `.spg` containers and is therefore read
+here; its RESULT `.csv` / `.xlsx` exports route to the generic table / Excel
+readers and `.spc` interchange to the [Galactic SPC reader](galactic-spc.md). A
+branded Antaris fixture is still to be sourced.
+
 ## File structure
 
 - **`.spa` / `.spg`** — detected by the ASCII magic `Spectral Data File`. The
