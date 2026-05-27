@@ -1,6 +1,6 @@
 # Installation
 
-nirs4all-io is one Rust core with thin bindings. Pick the surface you need —
+nirs4all-formats is one Rust core with thin bindings. Pick the surface you need —
 they all decode through the same readers.
 
 > **Version:** `0.1.0-alpha.0`. The project is in active alpha; APIs are stable
@@ -12,14 +12,14 @@ they all decode through the same readers.
 Requires Python 3.10+.
 
 ```bash
-pip install nirs4all-io
+pip install nirs4all-formats
 ```
 
 The wheel ships the native extension — no Rust toolchain needed. Optional
 projections pull their own dependencies via extras:
 
 ```bash
-pip install "nirs4all-io[numpy,pandas,sklearn,torch]"
+pip install "nirs4all-formats[numpy,pandas,sklearn,torch]"
 ```
 
 `to_polars()` needs `polars`, `to_xarray()` needs `xarray`, and
@@ -38,15 +38,15 @@ Add the facade crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nirs4all-io = "0.1.0-alpha.0"
+nirs4all-formats = "0.1.0-alpha.0"
 ```
 
 Default features bundle the HDF5, MATLAB and Parquet readers. Build a leaner
 core, or target `wasm32`, by turning them off:
 
 ```bash
-cargo build -p nirs4all-io --no-default-features                       # core readers only
-cargo build -p nirs4all-io --no-default-features \
+cargo build -p nirs4all-formats --no-default-features                       # core readers only
+cargo build -p nirs4all-formats --no-default-features \
   --features fmt-hdf5                                                   # add one back
 ```
 
@@ -58,28 +58,28 @@ cargo build -p nirs4all-io --no-default-features \
 
 ## Command-line tool
 
-The CLI binary is `nirs4all-io`:
+The CLI binary is `nirs4all-formats`:
 
 ```bash
-cargo install --path crates/nirs4all-io-cli
+cargo install --path crates/nirs4all-formats-cli
 # or, without installing:
-cargo run -p nirs4all-io-cli -- probe path/to/file
+cargo run -p nirs4all-formats-cli -- probe path/to/file
 ```
 
 See the [usage guide](usage.md) and [CLI contract](CLI.md) for commands.
 
 ## R
 
-The package is `nirs4allio`. With a Rust toolchain present, `R CMD INSTALL`
+The package is `nirs4allformats`. With a Rust toolchain present, `R CMD INSTALL`
 builds the native extendr library; without one, it falls back to the
-`nirs4all-io` CLI transport.
+`nirs4all-formats` CLI transport.
 
 ```bash
-R CMD INSTALL bindings/r/nirs4allio
+R CMD INSTALL bindings/r/nirs4allformats
 ```
 
-If you use the CLI fallback, point `NIRS4ALL_IO_CLI` at a prebuilt binary, or
-run from a source checkout where `cargo run -p nirs4all-io-cli` is available.
+If you use the CLI fallback, point `NIRS4ALL_FORMATS_CLI` at a prebuilt binary, or
+run from a source checkout where `cargo run -p nirs4all-formats-cli` is available.
 
 ## WebAssembly / JavaScript
 
@@ -93,7 +93,7 @@ wasm-pack build bindings/wasm --target web --release
 wasm-pack build bindings/wasm --target nodejs --release --out-dir pkg-node
 ```
 
-This produces the `nirs4all-io-wasm` package (JS glue + `.wasm` + TypeScript
+This produces the `nirs4all-formats-wasm` package (JS glue + `.wasm` + TypeScript
 typings) under `bindings/wasm/pkg*`.
 
 ## C ABI
@@ -101,9 +101,9 @@ typings) under `bindings/wasm/pkg*`.
 A small, additive C ABI for embedding or building further bindings:
 
 ```bash
-cargo build -p nirs4all-io-capi --release
+cargo build -p nirs4all-formats-capi --release
 ```
 
-`build.rs` regenerates `crates/nirs4all-io-capi/include/nirs4all_io.h` via
+`build.rs` regenerates `crates/nirs4all-formats-capi/include/nirs4all_formats.h` via
 cbindgen. Tagged releases also ship per-OS archives bundling the static/shared
 library, the header and the license. See the [C ABI page](bindings/capi.md).

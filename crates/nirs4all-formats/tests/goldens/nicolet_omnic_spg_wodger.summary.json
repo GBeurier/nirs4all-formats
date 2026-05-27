@@ -1,0 +1,117 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "nicolet-omnic-spg",
+      "metadata_keys": [
+        "axis_title",
+        "background_scan_count",
+        "collection_length_ticks_10ms",
+        "omnic_data_key_offset",
+        "omnic_data_offset",
+        "omnic_header_key_offset",
+        "omnic_header_offset",
+        "omnic_timestamp_seconds",
+        "omnic_title_offset",
+        "optical_velocity",
+        "record_index",
+        "reference_frequency_cm-1",
+        "scan_count",
+        "scan_points",
+        "signal_title",
+        "spectrum_title",
+        "zero_path_difference"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::nicolet_omnic",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 5999.555664,
+          "axis_kind": "wavenumber",
+          "axis_last": 649.903564,
+          "axis_len": 5549,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            5549
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 1.983153,
+          "value_last": 1.704334,
+          "value_sum": 9985.101921,
+          "values_len": 5549
+        }
+      ],
+      "source_sha256": "c0caef3b5603a6920c3fbd0bad976718b9af5e32e098492b01704ef9ddd0ce15",
+      "target_keys": [],
+      "warnings": [
+        "nicolet_omnic_reverse_engineered_key_table"
+      ]
+    },
+    {
+      "format": "nicolet-omnic-spg",
+      "metadata_keys": [
+        "axis_title",
+        "background_scan_count",
+        "collection_length_ticks_10ms",
+        "omnic_data_key_offset",
+        "omnic_data_offset",
+        "omnic_header_key_offset",
+        "omnic_header_offset",
+        "omnic_timestamp_seconds",
+        "omnic_title_offset",
+        "optical_velocity",
+        "record_index",
+        "reference_frequency_cm-1",
+        "scan_count",
+        "scan_points",
+        "signal_title",
+        "spectrum_title",
+        "zero_path_difference"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::nicolet_omnic",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 5999.555664,
+          "axis_kind": "wavenumber",
+          "axis_last": 649.903564,
+          "axis_len": 5549,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            5549
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 2.004898,
+          "value_last": 1.831353,
+          "value_sum": 10614.69117,
+          "values_len": 5549
+        }
+      ],
+      "source_sha256": "c0caef3b5603a6920c3fbd0bad976718b9af5e32e098492b01704ef9ddd0ce15",
+      "target_keys": [],
+      "warnings": [
+        "nicolet_omnic_reverse_engineered_key_table"
+      ]
+    }
+  ]
+}

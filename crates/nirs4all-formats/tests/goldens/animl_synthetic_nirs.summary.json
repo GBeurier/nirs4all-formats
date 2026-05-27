@@ -1,0 +1,46 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "animl",
+      "metadata_keys": [
+        "sample_id",
+        "sample_name"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::animl",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            200
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.03674,
+          "value_last": -0.14659,
+          "value_sum": 41.35044,
+          "values_len": 200
+        }
+      ],
+      "source_sha256": "2617b886c4da852111a032b9f506e1e480555f159060cf2fa61a5cea3c2a9104",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": []
+    }
+  ]
+}

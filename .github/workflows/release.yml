@@ -77,19 +77,19 @@ jobs:
       - name: Build release artifacts
         shell: bash
         run: |
-          cargo build --release --target ${{ matrix.target }} -p nirs4all-io-capi
-          STAGING="nirs4all-io-capi-${{ matrix.target }}"
+          cargo build --release --target ${{ matrix.target }} -p nirs4all-formats-capi
+          STAGING="nirs4all-formats-capi-${{ matrix.target }}"
           mkdir -p "$STAGING/lib" "$STAGING/include"
-          cp crates/nirs4all-io-capi/include/nirs4all_io.h "$STAGING/include/"
+          cp crates/nirs4all-formats-capi/include/nirs4all_formats.h "$STAGING/include/"
           cp LICENSE "$STAGING/"
           # Linux + macOS layouts
-          for lib in target/${{ matrix.target }}/release/libnirs4all_io_capi.*; do
+          for lib in target/${{ matrix.target }}/release/libnirs4all_formats_capi.*; do
             if [ -f "$lib" ]; then cp "$lib" "$STAGING/lib/"; fi
           done
           # Windows layout
-          if [ -f "target/${{ matrix.target }}/release/nirs4all_io_capi.dll" ]; then
-            cp "target/${{ matrix.target }}/release/nirs4all_io_capi.dll" "$STAGING/lib/"
-            cp "target/${{ matrix.target }}/release/nirs4all_io_capi.dll.lib" "$STAGING/lib/" || true
+          if [ -f "target/${{ matrix.target }}/release/nirs4all_formats_capi.dll" ]; then
+            cp "target/${{ matrix.target }}/release/nirs4all_formats_capi.dll" "$STAGING/lib/"
+            cp "target/${{ matrix.target }}/release/nirs4all_formats_capi.dll.lib" "$STAGING/lib/" || true
           fi
           if [ "${{ matrix.ext }}" = "zip" ]; then
             7z a "${STAGING}.zip" "$STAGING/"
@@ -99,7 +99,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: c-abi-${{ matrix.target }}
-          path: nirs4all-io-capi-${{ matrix.target }}.*
+          path: nirs4all-formats-capi-${{ matrix.target }}.*
           if-no-files-found: error
 
   r-source:
@@ -111,11 +111,11 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Build R source tarball
         run: |
-          R CMD build bindings/r/nirs4allio
+          R CMD build bindings/r/nirs4allformats
       - uses: actions/upload-artifact@v4
         with:
           name: r-source
-          path: nirs4allio_*.tar.gz
+          path: nirs4allformats_*.tar.gz
           if-no-files-found: error
 
   publish-pypi:
@@ -125,7 +125,7 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'workflow_dispatch' }}
     environment:
       name: pypi
-      url: https://pypi.org/p/nirs4all-io
+      url: https://pypi.org/p/nirs4all-formats
     permissions:
       id-token: write
     steps:

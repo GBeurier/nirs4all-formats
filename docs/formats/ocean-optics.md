@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** Ocean Optics / Ocean Insight · **Extensions:** `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` (also `.jdx`, `.spc` via sibling readers)
 
 Ocean Optics / Ocean Insight spectrometers export through SpectraSuite,
-OceanView, OOIBase32 and the Jaz firmware. nirs4all-io reads the family's ASCII
+OceanView, OOIBase32 and the Jaz firmware. nirs4all-formats reads the family's ASCII
 exports and the OceanView `.ProcSpec` ZIP archive, emitting one `SpectralRecord`
 per file.
 
@@ -32,7 +32,7 @@ sourced.
   `OOISignatures.xml`. The reader validates the SHA-512 signature of the XML
   member when the signature file is present.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — two-column exports emit one signal (`processed`, `reflectance`,
   `transmittance` or `irradiance`) chosen from headers and file name. Jaz

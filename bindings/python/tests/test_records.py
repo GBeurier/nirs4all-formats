@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from nirs4all_io import SpectralRecordSet
+from nirs4all_formats import SpectralRecordSet
 
 
 def _record_2d() -> dict:

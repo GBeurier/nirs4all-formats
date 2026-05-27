@@ -5,7 +5,7 @@
 AvaSoft is the acquisition software for Avantes fibre-optic spectrometers. It
 writes both ASCII exports (recommended for interchange) and per-acquisition
 binary files in two generations: the legacy AvaSoft 6/7 single-mode layout and
-the AvaSoft 8 `AVS82`/`AVS84` container. nirs4all-io reads the ASCII exports
+the AvaSoft 8 `AVS82`/`AVS84` container. nirs4all-formats reads the ASCII exports
 fully and decodes the binary layouts covered by committed fixtures.
 
 ## Instruments & software
@@ -36,7 +36,7 @@ a conformance reference only — no runtime dependency is linked into the MIT co
   four float32 payload vectors (`xcoord`, scope, dark, reference). The reader
   advances to the next subfile with `start + length + 10`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per file or AvaSoft 8 subfile, axis in `nm`.
   Processed modes derive the primary signal: transmittance/reflectance
@@ -88,7 +88,7 @@ a conformance reference only — no runtime dependency is linked into the MIT co
 
 `lightr` (GPL) is the layout/formula reference for the binary paths, used only
 in the isolated conformance lab. ASCII exports are equally readable with
-`pandas` and R `read.table`; nirs4all-io adds axis derivation, signal typing and
+`pandas` and R `read.table`; nirs4all-formats adds axis derivation, signal typing and
 provenance. Subprocess conformance reports against `lightr` are planned once the
 local R native chain is available.
 

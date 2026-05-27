@@ -1,6 +1,6 @@
 # Outputs utilisateur
 
-Ce document décrit les sorties que `nirs4all-io` doit fournir aux utilisateurs
+Ce document décrit les sorties que `nirs4all-formats` doit fournir aux utilisateurs
 finaux. La bibliothèque lit des formats spectroscopiques hétérogènes; elle doit
 donc exposer à la fois un modèle riche et des projections simples pour les
 outils data science.
@@ -108,7 +108,7 @@ dataset.n4io/
   quicklook.png
 ```
 
-`manifest.json` doit décrire la version de `nirs4all-io`, le fichier source, le
+`manifest.json` doit décrire la version de `nirs4all-formats`, le fichier source, le
 format détecté, les commandes utilisées, le signal exporté, les options de
 sélection de pixels/ROI et les checksums.
 
@@ -118,7 +118,7 @@ sélection de pixels/ROI et les checksums.
 |---|---|
 | Rust | `open_path() -> Vec<SpectralRecord>`, `RecordSet`, projections contrôlées, exports JSON/CSV/Parquet. |
 | Python | Dict brut, dataclasses `SpectralRecordSet`, `numpy`, `pandas`, `polars`, `xarray`, `sklearn`, `torch`, `SpectroDataset`. |
-| R | List brut, `nirs4allio_dataset`, `matrix`, `data.frame`, tibble optionnel, extraction des targets. |
+| R | List brut, `nirs4allformats_dataset`, `matrix`, `data.frame`, tibble optionnel, extraction des targets. |
 | WASM / JS | JSON lossless, typed arrays, metadata/provenance séparables. |
 | CLI | `probe`, `read-json`, `convert`, `scan --json`, exports bundle. |
 

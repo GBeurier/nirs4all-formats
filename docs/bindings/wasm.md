@@ -1,6 +1,6 @@
 # WebAssembly / JS Binding
 
-The WASM binding runs the `nirs4all-io` sniffers and decoders in the browser or
+The WASM binding runs the `nirs4all-formats` sniffers and decoders in the browser or
 in Node, entirely from in-memory bytes. Parser logic stays in the Rust core; the
 binding only serialises records to plain JS objects.
 
@@ -13,7 +13,7 @@ wasm-pack build bindings/wasm --target web    --release                  # brows
 wasm-pack build bindings/wasm --target nodejs --release --out-dir pkg-node  # Node / Bun
 ```
 
-The output is the `nirs4all-io-wasm` package: JS glue, the `.wasm` binary and
+The output is the `nirs4all-formats-wasm` package: JS glue, the `.wasm` binary and
 generated TypeScript typings.
 
 ## API
@@ -35,7 +35,7 @@ probing; pass the whole buffer or just the head.
 ### Shapes
 
 - **Probe** — `{ format, reader, confidence, reason }`.
-- **SpectralRecord** — the same JSON shape as `nirs4all-io read-json`:
+- **SpectralRecord** — the same JSON shape as `nirs4all-formats read-json`:
   `{ signals, signal_type, targets, metadata, provenance, quality_flags }`. See
   the [data model](../DATA_MODEL.md). (JSON cannot represent `NaN`/`Inf`; use the
   native or Python path when signal values may be non-finite.)
@@ -44,7 +44,7 @@ probing; pass the whole buffer or just the head.
 
 ```ts
 import init, { version, features, probeBytes, openBytes, openWithSidecars }
-  from "nirs4all-io-wasm";
+  from "nirs4all-formats-wasm";
 
 await init();
 console.log(version(), features());

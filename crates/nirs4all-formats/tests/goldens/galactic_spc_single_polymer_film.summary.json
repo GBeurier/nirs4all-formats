@@ -1,0 +1,45 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 447.48407,
+          "axis_kind": "wavenumber",
+          "axis_last": 4002.281738,
+          "axis_len": 1844,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            1844
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.065904,
+          "value_last": 0.063155,
+          "value_sum": 115.784562,
+          "values_len": 1844
+        }
+      ],
+      "source_sha256": "ce835979dc8c5c5aa214c0fb13af49c62455519fffdd6e6049b85c14f69b7819",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

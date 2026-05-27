@@ -1,0 +1,161 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "bruker-opus",
+      "metadata_keys": [
+        "bruker_opus",
+        "bruker_opus_history",
+        "bruker_opus_params",
+        "bruker_opus_signal_params"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::bruker_opus",
+      "record_signal_type": "absorbance",
+      "signal_count": 6,
+      "signals": [
+        {
+          "axis_first": 3998.344938,
+          "axis_kind": "wavenumber",
+          "axis_last": 699.388954,
+          "axis_len": 2567,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "Absorbance",
+          "shape": [
+            2567
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.000459,
+          "value_last": 0.632425,
+          "value_sum": 311.543804,
+          "values_len": 2567
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 3176.0,
+          "axis_len": 3177,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reference_interferogram",
+          "role": "Reference Interferogram",
+          "shape": [
+            3177
+          ],
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": -0.000049,
+          "value_last": -0.000014,
+          "value_sum": -0.019642,
+          "values_len": 3177
+        },
+        {
+          "axis_first": 4003.487504,
+          "axis_kind": "wavenumber",
+          "axis_last": 696.817671,
+          "axis_len": 2573,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reference_spectrum",
+          "role": "Reference Spectrum",
+          "shape": [
+            2573
+          ],
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.022409,
+          "value_last": 0.002786,
+          "value_sum": 279.135747,
+          "values_len": 2573
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 3176.0,
+          "axis_len": 3177,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "sample_interferogram",
+          "role": "Sample Interferogram",
+          "shape": [
+            3177
+          ],
+          "signal_type": "interferogram",
+          "unit": null,
+          "value_first": -0.000018,
+          "value_last": -0.000017,
+          "value_sum": -0.024018,
+          "values_len": 3177
+        },
+        {
+          "axis_first": 5255.702286,
+          "axis_kind": "wavenumber",
+          "axis_last": 0.0,
+          "axis_len": 512,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "sample_phase",
+          "role": "Sample Phase",
+          "shape": [
+            512
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": -0.007362,
+          "value_last": -4.787925,
+          "value_sum": -1446.80556,
+          "values_len": 512
+        },
+        {
+          "axis_first": 3998.344938,
+          "axis_kind": "wavenumber",
+          "axis_last": 699.388954,
+          "axis_len": 2567,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "sample_spectrum",
+          "role": "Sample Spectrum",
+          "shape": [
+            2567
+          ],
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 0.022515,
+          "value_last": 0.000735,
+          "value_sum": 265.302009,
+          "values_len": 2567
+        }
+      ],
+      "source_sha256": "449fd7ebe693e6902b6a9e18aa95724ff3e8e3cd02d577eee3a44a9670736d70",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

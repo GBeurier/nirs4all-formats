@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** Thermo Nicolet · **Extensions:** `.spa`, `.spg`, `.srs` (`.srsx` pending)
 
 OMNIC is the native file format written by Thermo Nicolet's OMNIC software for
-FT-IR / FT-NIR / Raman acquisitions. nirs4all-io reads single-spectrum `.spa`
+FT-IR / FT-NIR / Raman acquisitions. nirs4all-formats reads single-spectrum `.spa`
 files, grouped `.spg` files and the TGA/GC and rapid-scan `.srs` series layouts
 through a reverse-engineered key-table parser modelled on SpectroChemPy.
 
@@ -34,7 +34,7 @@ branded Antaris fixture is still to be sourced.
   header, background header and spectral-matrix offsets; the y/time axis length
   and bounds come from the data header.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — `.spa` emits one `SpectralRecord`; `.spg` emits one record per
   sub-spectrum. The signal type is decoded from the header signal key:

@@ -36,7 +36,7 @@ the dictionary), promoting cube titles/labels/descriptions, measure component
 types and primary/secondary scale component types when the expected ADF mapping
 pattern is present. Unknown mappings fall back to conservative IDs and warnings.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — numeric `measures` datasets. The `adfsee` fixture maps
   `AbsorbanceUnitValue` measures to an `absorbance` signal in `mAU`; other

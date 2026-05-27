@@ -24,7 +24,7 @@ Python scientific stack. Especially useful for the Python binding round-trip.
   `sample_ids.npy` (optional string identifiers). Member lengths are validated
   against `X`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per row of the spectra matrix, each with a
   single signal named `spectrum`, typed `Unknown` (the raw array carries no
@@ -60,13 +60,13 @@ Python scientific stack. Especially useful for the Python binding round-trip.
 
 ## Reference readers
 
-`numpy.load` reads the same files; nirs4all-io adds the canonical `.npz` schema
+`numpy.load` reads the same files; nirs4all-formats adds the canonical `.npz` schema
 mapping, axis/target handling, signal naming and provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/numpy/`, covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/` (`numpy_*`):
+`crates/nirs4all-formats/tests/goldens/` (`numpy_*`):
 `synthetic_nirs_X.npy` yields 50 records over a 200-point generated index axis
 with no targets, and `synthetic_nirs.npz` yields 50 records over a 200-point
 `nm` wavelength axis with target `y`. The probe reports format `numpy-npy` /

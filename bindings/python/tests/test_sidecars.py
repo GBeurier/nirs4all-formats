@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from nirs4all_io import open_records, open_with_sidecars
+from nirs4all_formats import open_records, open_with_sidecars
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 

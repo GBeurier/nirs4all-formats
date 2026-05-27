@@ -17,15 +17,15 @@ match the intended product:
 
 ## Decision
 
-`nirs4all-io` uses Rust as the reference implementation from the start.
+`nirs4all-formats` uses Rust as the reference implementation from the start.
 Python and R are first-class distribution targets, not implementation owners.
 
 The core is split into:
 
-- `nirs4all-io-core`: normalized record model and shared contracts;
-- `nirs4all-io`: reader registry and native readers;
-- `nirs4all-io-capi`: additive C ABI for bindings and external consumers;
-- `nirs4all-io-cli`: inspection, probing and conversion tools.
+- `nirs4all-formats-core`: normalized record model and shared contracts;
+- `nirs4all-formats`: reader registry and native readers;
+- `nirs4all-formats-capi`: additive C ABI for bindings and external consumers;
+- `nirs4all-formats-cli`: inspection, probing and conversion tools.
 
 Bindings translate Rust records into language-native objects. They must not
 maintain their own parsers.

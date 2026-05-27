@@ -1,17 +1,17 @@
 # CLI Contract
 
-The CLI binary is `nirs4all-io`.
+The CLI binary is `nirs4all-formats`.
 
 Current commands:
 
 ```bash
-nirs4all-io probe path/to/file
-nirs4all-io read-json path/to/file
-nirs4all-io read-json --rows 10:20 --cols 30:40 path/to/cube.hdr
-nirs4all-io read-json --pixel 10,20 --pixel 11,21 path/to/cube.hdr
-nirs4all-io read-json --pixels-file pixels.txt path/to/cube.hdr
-nirs4all-io scan path/to/directory
-nirs4all-io scan path/to/directory --max-depth 2 --include-unsupported --json
+nirs4all-formats probe path/to/file
+nirs4all-formats read-json path/to/file
+nirs4all-formats read-json --rows 10:20 --cols 30:40 path/to/cube.hdr
+nirs4all-formats read-json --pixel 10,20 --pixel 11,21 path/to/cube.hdr
+nirs4all-formats read-json --pixels-file pixels.txt path/to/cube.hdr
+nirs4all-formats scan path/to/directory
+nirs4all-formats scan path/to/directory --max-depth 2 --include-unsupported --json
 ```
 
 `probe` prints JSON candidate readers with format, reader, confidence and
@@ -32,8 +32,8 @@ the native extension/C ABI bindings are being filled in.
 per visited entry with status `parsed` / `error` / `unsupported`, an end
 summary on stderr, and a structured JSON payload when `--json` is set. Hidden
 entries and symlinks are skipped by default. The same surface is exposed
-natively to Python via `nirs4all_io.walk_path(...)` and to R via
-`nirs4allio_walk_path(...)`.
+natively to Python via `nirs4all_formats.walk_path(...)` and to R via
+`nirs4allformats_walk_path(...)`.
 
 Planned commands:
 

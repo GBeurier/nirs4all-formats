@@ -3,7 +3,7 @@
 > **Status:** Supported · **Vendor:** Digital Surf · **Extensions:** `.sur`, `.pro`
 
 `.sur` and `.pro` are the Digital Surf MountainsMap container formats, used for
-surface metrology, profilometry and AFM/Raman exports. nirs4all-io reads the
+surface metrology, profilometry and AFM/Raman exports. nirs4all-formats reads the
 spectral and surface objects: spectra and hyperspectral maps become spectral
 records, while height surfaces become spatial profile records. These files are
 adjacent to the core NIRS point-spectrum scope.
@@ -29,7 +29,7 @@ per-stream raw/zlib lengths) precedes the zlib streams. Raw points are signed
 16-bit or 32-bit integers; for spectral/profile payloads the decoded value is
 `(raw_int - z_min) * (z_spacing / z_unit_ratio) + z_offset`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — `_SPECTRUM` objects emit one record (single) or one record per
   spectrum (multi); `_HYPCARD` hyperspectral maps emit one `SpectralRecord` per

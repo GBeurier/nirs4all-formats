@@ -1,4 +1,4 @@
-"""HDF5 conformance: nirs4all-io vs h5py."""
+"""HDF5 conformance: nirs4all-formats vs h5py."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from conftest import (
     load_tolerances,
     normalize_records,
     require_h5py,
-    require_nirs4all_io,
+    require_nirs4all_formats,
 )
 
 HDF5_SAMPLES = fixtures_under("hdf5", "fgi", suffix=(".h5",))
@@ -22,13 +22,13 @@ TOL = load_tolerances()["hdf5"]
 
 @pytest.mark.parametrize("path", HDF5_SAMPLES, ids=lambda p: p.name)
 def test_hdf5_records_match_h5py(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     h5py = require_h5py()
 
     try:
         raw = nirs.open_records(path)
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     records = normalize_records(raw)
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")

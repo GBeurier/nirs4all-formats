@@ -1,0 +1,18 @@
+[package]
+name = "nirs4all-formats-capi"
+description = "C ABI surface for the Rust nirs4all-formats core."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+nirs4all-formats.workspace = true
+serde_json.workspace = true
+
+[build-dependencies]
+cbindgen = "0.27"

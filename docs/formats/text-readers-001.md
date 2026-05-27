@@ -27,7 +27,7 @@ The delimiter is auto-detected per file (comma, semicolon or tab). For `.csv`,
 all three delimiters are considered; `.tsv` is tab-only; `.txt` uses the
 detected delimiter with a slightly stricter threshold to avoid false positives.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per data row, each with a single signal
   named `signal`, typed as `Absorbance`. Values come from the numeric-header
@@ -66,14 +66,14 @@ detected delimiter with a slightly stricter threshold to avoid false positives.
 ## Reference readers
 
 `pandas.read_csv` and R `read.table` read the same exports; the `nirs4all`
-`CSVLoader` consumes them in the modelling library. nirs4all-io adds delimiter
+`CSVLoader` consumes them in the modelling library. nirs4all-formats adds delimiter
 detection, axis construction, target/metadata separation and provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/csv_tsv/` (synthetic NIRS in comma, tab and
 semicolon form) and are covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/` (`csv_synthetic*`). Each fixture yields 50
+`crates/nirs4all-formats/tests/goldens/` (`csv_synthetic*`). Each fixture yields 50
 records over a 200-point `nm` axis with a `protein` target and a `sample_id`
 metadata column. The probe reports format `delimited-text` at
 `Confidence::Likely` for a direct numeric header.

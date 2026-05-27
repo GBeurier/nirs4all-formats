@@ -15,7 +15,7 @@ These fields are compared exactly in golden-summary tests:
 - provenance source hashes;
 - warnings and quality flags.
 
-Current goldens live under `crates/nirs4all-io/tests/goldens/` and are checked
+Current goldens live under `crates/nirs4all-formats/tests/goldens/` and are checked
 by `cargo test --workspace`. They intentionally summarize arrays instead of
 storing full arrays: axis length/first/last, value length/first/last and rounded
 value sums. Full-array reference comparisons are added per format when a
@@ -24,7 +24,7 @@ trusted external reader is wired in.
 To intentionally accept a changed normalized output:
 
 ```bash
-NIRS4ALL_IO_ACCEPT_GOLDENS=1 cargo test -p nirs4all-io --test goldens
+NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1 cargo test -p nirs4all-formats --test goldens
 ```
 
 Only use acceptance after reviewing the reader change and updating the relevant

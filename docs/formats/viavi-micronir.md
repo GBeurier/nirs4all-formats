@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** VIAVI Solutions (formerly JDSU) · **Extensions:** `.csv`, `.xlsx` (exports); native `.pri` project (blocked)
 
 The VIAVI MicroNIR is a compact handheld NIR spectrometer. Its native `.pri`
-project file is a customer-only binary, so nirs4all-io reads the CSV / XLSX
+project file is a customer-only binary, so nirs4all-formats reads the CSV / XLSX
 spectral-matrix exports its software produces — CSV through the generic
 [spectral-matrix reader](row-spectral-table.md) and XLSX through the
 [Excel reader](excel.md).
@@ -24,7 +24,7 @@ forensic study (MicroNIR 1700 drug screening), alongside a synthetic CSV matrix.
   follow, with sample identifiers in the first column. Multi-sheet workbooks are
   handled by the Excel reader.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signal** — one `absorbance` signal per row/sample, axis in `nm`.
 - **Axis descriptor** — the XLSX first-cell descriptor sets the axis unit/kind
@@ -51,7 +51,7 @@ forensic study (MicroNIR 1700 drug screening), alongside a synthetic CSV matrix.
 ## Reference readers
 
 The exports are equally readable with `pandas` (CSV) and `openpyxl` / R `readxl`
-(XLSX); nirs4all-io adds axis detection, signal typing and provenance. No open
+(XLSX); nirs4all-formats adds axis detection, signal typing and provenance. No open
 reader exists for the native `.pri` project.
 
 ## Samples & validation

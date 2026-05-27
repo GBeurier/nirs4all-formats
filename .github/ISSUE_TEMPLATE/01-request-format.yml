@@ -1,16 +1,16 @@
 name: 📡 Request a new format
-description: Ask for support of a NIRS / spectroscopy file format that nirs4all-io does not read yet.
+description: Ask for support of a NIRS / spectroscopy file format that nirs4all-formats does not read yet.
 title: "[Format request] <vendor / format name>"
 labels: ["format-request"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping extend nirs4all-io!
+        Thanks for helping extend nirs4all-formats!
 
         Parsers live **only** in the Rust core, so a new format means a new Rust reader. Two things make a request actionable:
 
-        1. Check the [supported-format catalogue](https://github.com/GBeurier/nirs4all-io/blob/main/docs/SUPPORTED_FORMATS.md) first — your format may already be covered, sometimes through a generic CSV/Excel reader.
+        1. Check the [supported-format catalogue](https://github.com/GBeurier/nirs4all-formats/blob/main/docs/SUPPORTED_FORMATS.md) first — your format may already be covered, sometimes through a generic CSV/Excel reader.
         2. **Real sample files are the single biggest unblocker.** If you can share files, please also (or instead) use the *Provide reference files / samples* template.
   - type: input
     id: format-name
@@ -65,7 +65,7 @@ body:
     id: use-case
     attributes:
       label: Use case
-      description: How would you use this format with nirs4all / nirs4all-io? Roughly how common is it in your field?
+      description: How would you use this format with nirs4all / nirs4all-formats? Roughly how common is it in your field?
   - type: checkboxes
     id: checks
     attributes:

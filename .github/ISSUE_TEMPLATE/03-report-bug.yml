@@ -19,8 +19,8 @@ body:
     attributes:
       label: Interface
       options:
-        - Rust core (nirs4all-io)
-        - CLI (nirs4all-io)
+        - Rust core (nirs4all-formats)
+        - CLI (nirs4all-formats)
         - Python
         - R
         - WebAssembly / JS
@@ -37,14 +37,14 @@ body:
     attributes:
       label: Steps to reproduce
       description: |
-        Commands or code. For the CLI, the output of `nirs4all-io probe <file>` and `nirs4all-io read-json <file>` is very useful. Drag & drop the offending file here if you can share it.
+        Commands or code. For the CLI, the output of `nirs4all-formats probe <file>` and `nirs4all-formats read-json <file>` is very useful. Drag & drop the offending file here if you can share it.
       render: shell
     validations:
       required: true
   - type: input
     id: version
     attributes:
-      label: nirs4all-io version
+      label: nirs4all-formats version
       placeholder: e.g. 0.1.0a0 (pip), 0.1.0-alpha.0 (cargo), or a commit hash
     validations:
       required: true

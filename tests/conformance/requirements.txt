@@ -1,5 +1,5 @@
 # Python reference readers for the conformance harness.
-# Install in the same virtualenv as the nirs4all-io PyO3 binding:
+# Install in the same virtualenv as the nirs4all-formats PyO3 binding:
 #
 #   pip install -r tests/conformance/requirements.txt
 #

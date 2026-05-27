@@ -9,7 +9,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
 
-const wasm = require('../pkg-node/nirs4all_io_wasm.js');
+const wasm = require('../pkg-node/nirs4all_formats_wasm.js');
 
 function repoRoot() {
   return path.resolve(__dirname, '..', '..', '..');

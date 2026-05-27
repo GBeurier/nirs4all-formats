@@ -1,0 +1,44 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "notes",
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::spectral_table",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 530.78168,
+          "axis_kind": "wavelength",
+          "axis_last": 661.872378,
+          "axis_len": 1600,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum__000__spec_data_1",
+          "role": "spectrum__000__spec_data_1",
+          "shape": [
+            1600
+          ],
+          "signal_type": "raw_counts",
+          "unit": "CCD cts",
+          "value_first": 356.850006,
+          "value_last": 274.649994,
+          "value_sum": 1369755.249965,
+          "values_len": 1600
+        }
+      ],
+      "source_sha256": "fe2bfe7cdda6d74adaf892322745d38b437d685ad9c49cf750d359b8f4cae5c0",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

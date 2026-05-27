@@ -6,7 +6,7 @@ Sun photometers measure spectral aerosol optical thickness and irradiance at a
 handful of fixed filter wavelengths. These are not core NIR lab spectra, but
 they appear in the sample corpus and exercise the same normalization contract:
 channel wavelengths become the spectral axis and each observation row becomes
-one `SpectralRecord`. nirs4all-io reads the common ASCII exports (MFR, Microtops,
+one `SpectralRecord`. nirs4all-formats reads the common ASCII exports (MFR, Microtops,
 AERONET MAN); the ARM MFRSR and Microtops MAN NetCDF paths live in the NetCDF
 reader and require the `fmt-hdf5` feature.
 
@@ -30,7 +30,7 @@ The ASCII reader recognises three text layouts by content:
 The NetCDF path (ARM MFRSR b1 and Microtops MAN) is decoded through the
 `fmt-hdf5` NetCDF reader.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **MFR `.OUT`** — one record per row, signal `channels` (raw counts) at the
   filter wavelengths (e.g. 415, 500, 614, 673, 870, 940 nm). Record number,
@@ -86,7 +86,7 @@ the reference candidates.
 
 `samples/mfr/synthetic_mfr.OUT` (50 records) and
 `samples/microtops/synthetic_microtops.TXT` (20 records) are golden-backed in
-`crates/nirs4all-io/tests/goldens/`, alongside the real
+`crates/nirs4all-formats/tests/goldens/`, alongside the real
 `samples/microtops/microtops_arc_msm114_2.nc` MAN NetCDF (378 records, PANGAEA
 MSM114/2, CC-BY-4.0). Local-only fixtures cover the ARM MFRSR b1 NetCDF (4,320
 records × 7 filters, with a QC YAML sidecar attached as a `qc_sidecar` source)

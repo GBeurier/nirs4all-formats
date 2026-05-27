@@ -1,0 +1,111 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "svc-ger-sig",
+      "metadata_keys": [
+        "acquisition_end_date",
+        "acquisition_end_time",
+        "acquisition_start_date",
+        "acquisition_start_time",
+        "battery_voltages_volts",
+        "coadds_reference",
+        "coadds_target",
+        "detector_temperatures_reference_celsius",
+        "detector_temperatures_target_celsius",
+        "error_codes",
+        "foreoptic",
+        "instrument_model",
+        "instrument_serial",
+        "integration_time_reference_ms",
+        "integration_time_target_ms",
+        "matching_type",
+        "memory_slots",
+        "overlap_policy",
+        "radiometric_factors",
+        "source_signal_units",
+        "vendor"
+      ],
+      "quality_flags": [
+        "detector_overlap_preserved"
+      ],
+      "reader": "nirs4all_formats::readers::svc_sig",
+      "record_signal_type": "reflectance",
+      "signal_count": 3,
+      "signals": [
+        {
+          "axis_first": 338.2,
+          "axis_kind": "wavelength",
+          "axis_last": 2517.2,
+          "axis_len": 1024,
+          "axis_order": "non_monotonic",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reference",
+          "role": "reference",
+          "shape": [
+            1024
+          ],
+          "signal_type": "radiance",
+          "unit": null,
+          "value_first": 469.43,
+          "value_last": 30227.12,
+          "value_sum": 76460534.58,
+          "values_len": 1024
+        },
+        {
+          "axis_first": 338.2,
+          "axis_kind": "wavelength",
+          "axis_last": 2517.2,
+          "axis_len": 1024,
+          "axis_order": "non_monotonic",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            1024
+          ],
+          "signal_type": "reflectance",
+          "unit": "%",
+          "value_first": 8.56,
+          "value_last": 2.55,
+          "value_sum": 20485.95,
+          "values_len": 1024
+        },
+        {
+          "axis_first": 338.2,
+          "axis_kind": "wavelength",
+          "axis_last": 2517.2,
+          "axis_len": 1024,
+          "axis_order": "non_monotonic",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "target",
+          "role": "target",
+          "shape": [
+            1024
+          ],
+          "signal_type": "radiance",
+          "unit": null,
+          "value_first": 40.16,
+          "value_last": 771.1,
+          "value_sum": 21299333.84,
+          "values_len": 1024
+        }
+      ],
+      "source_sha256": "8c3134a847c212e8b104123fca9f0bccc3fb1054d7d414c2da0855d4ba5216fd",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

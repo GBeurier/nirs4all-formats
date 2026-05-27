@@ -1,4 +1,4 @@
-"""Bruker OPUS conformance: nirs4all-io vs `brukeropus` (MIT)."""
+"""Bruker OPUS conformance: nirs4all-formats vs `brukeropus` (MIT)."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from conftest import (
     load_tolerances,
     normalize_records,
     require_brukeropus,
-    require_nirs4all_io,
+    require_nirs4all_formats,
 )
 
 OPUS_SAMPLES = fixtures_under(
@@ -32,7 +32,7 @@ OPUS_BLOCK_KEYS = ("sm", "r", "rf", "ab", "raman")
 
 @pytest.mark.parametrize("path", OPUS_SAMPLES, ids=lambda p: p.name)
 def test_opus_records_match_brukeropus(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     brukeropus = require_brukeropus()
 
     skip_key = path.name.lower().replace("-", "_").replace(".", "_")
@@ -42,7 +42,7 @@ def test_opus_records_match_brukeropus(path: Path) -> None:
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -74,7 +74,7 @@ def test_opus_records_match_brukeropus(path: Path) -> None:
         break
     if not matched_any:
         pytest.skip(
-            f"{path.name}: no nirs4all-io record matches a brukeropus block "
+            f"{path.name}: no nirs4all-formats record matches a brukeropus block "
             f"(record lengths {[len(r['values']) for r in records]}, "
             f"brukeropus keys {list(opus.data_keys)})"
         )

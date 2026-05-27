@@ -8,7 +8,7 @@ for reflectance, radiance and raw-counts measurements across the VNIR/SWIR
 range. A single `.asd` file is a fixed header followed by the primary spectrum
 and, in newer revisions, several embedded internal blocks (reference,
 classifier, dependent variables, calibration, audit log, signature).
-nirs4all-io decodes the primary spectrum of revisions 1, 6, 7 and 8 and
+nirs4all-formats decodes the primary spectrum of revisions 1, 6, 7 and 8 and
 inventories the remaining blocks.
 
 ## Instruments & software
@@ -35,7 +35,7 @@ from the header and mapped to labels such as `fieldspec_full_range`,
   spectra (rev ≥ 7), audit log and signature (rev 8), followed by an optional
   `ff fe fd` footer marker and zero padding.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` carrying the primary spectrum as a single
   signal, named and typed from the header `data_type`: `reflectance`,
@@ -86,7 +86,7 @@ reference path is automated.
 ## Samples & validation
 
 Six fixtures under `samples/asd/` are golden-backed in
-`crates/nirs4all-io/tests/goldens/` with direct semantic tests:
+`crates/nirs4all-formats/tests/goldens/` with direct semantic tests:
 `3L9257.000` (rev 1, `float32`, reflectance), `v6sample00000.asd` (rev 6, raw
 counts), `v7_field_44231B009.asd` (rev 7, reflectance), `v7sample00000.asd`
 (rev 7, radiance), `soil.asd` and `v8sample00001.asd` (rev 8, raw counts). The

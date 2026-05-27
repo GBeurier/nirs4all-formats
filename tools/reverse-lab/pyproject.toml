@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "nirs4all-reverse-lab"
 version = "0.1.0a0"
-description = "Reverse-engineering helpers for nirs4all-io formats."
+description = "Reverse-engineering helpers for nirs4all-formats formats."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }

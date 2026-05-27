@@ -25,7 +25,7 @@ a timestamp. A UTF-8 HPD-TA comment block follows the header, then a
 `width * height` unsigned payload; calibration tables referenced by `#offset,count`
 live later in the file as float32 arrays.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one record holding a single 2D signal with dimensions `y,x`,
   one record per file. 8-bit, 16-bit and 32-bit unsigned payloads are decoded.

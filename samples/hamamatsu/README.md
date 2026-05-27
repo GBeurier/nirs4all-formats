@@ -18,4 +18,4 @@ All from [`hyperspy/rosettasciio@main/rsciio/tests/data/hamamatsu/`](https://git
 
 - Reference reader: [`rsciio.hamamatsu`](https://hyperspy.org/rosettasciio/).
 - The streak-camera image is 2-D (time or vertical CCD position × wavelength) — semantically a time-resolved / streak-camera signal, not a single point-sample NIR spectrum.
-- `nirs4all-io` loads these fixtures as one 2-D `y,x` record each, with the secondary time/CCD axis preserved in metadata and explicit adjacent-format warnings.
+- `nirs4all-formats` loads these fixtures as one 2-D `y,x` record each, with the secondary time/CCD axis preserved in metadata and explicit adjacent-format warnings.

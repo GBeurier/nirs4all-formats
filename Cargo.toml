@@ -1,15 +1,15 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/nirs4all-io-core",
-    "crates/nirs4all-io",
-    "crates/nirs4all-io-capi",
-    "crates/nirs4all-io-cli",
+    "crates/nirs4all-formats-core",
+    "crates/nirs4all-formats",
+    "crates/nirs4all-formats-capi",
+    "crates/nirs4all-formats-cli",
 ]
 exclude = [
     "bindings/python",
     "bindings/wasm",
-    "bindings/r/nirs4allio/src/rust",
+    "bindings/r/nirs4allformats/src/rust",
 ]
 
 [workspace.package]
@@ -17,15 +17,15 @@ version = "0.1.0-alpha.0"
 edition = "2021"
 license = "MIT"
 authors = ["G. Beurier <beurier@cirad.fr>"]
-repository = "https://github.com/GBeurier/nirs4all-io"
-homepage = "https://github.com/GBeurier/nirs4all-io"
+repository = "https://github.com/GBeurier/nirs4all-formats"
+homepage = "https://github.com/GBeurier/nirs4all-formats"
 readme = "README.md"
 
 [workspace.dependencies]
 anyhow = "1.0"
 clap = { version = "4.5", features = ["derive"] }
-nirs4all-io-core = { path = "crates/nirs4all-io-core" }
-nirs4all-io = { path = "crates/nirs4all-io" }
+nirs4all-formats-core = { path = "crates/nirs4all-formats-core" }
+nirs4all-formats = { path = "crates/nirs4all-formats" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha2 = "0.10"

@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "asd-fieldspec",
+      "metadata_keys": [
+        "asd"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::asd",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 350.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2500.0,
+          "axis_len": 2151,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            2151
+          ],
+          "signal_type": "reflectance",
+          "unit": null,
+          "value_first": 0.026823,
+          "value_last": 0.335625,
+          "value_sum": 590.079295,
+          "values_len": 2151
+        }
+      ],
+      "source_sha256": "e3bd1da0b5763dbc3a0f9cff323d3965a2f27470b558796e7bc5feb7805de770",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

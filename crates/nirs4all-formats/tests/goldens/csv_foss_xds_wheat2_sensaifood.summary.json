@@ -1,0 +1,99 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            1050
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.246676,
+          "value_last": 0.579869,
+          "value_sum": 259.070976,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "640759d743543b67e7506fc55caa1e4fa08ac02978574c1e59b22496b00eebbd",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "delimited-text",
+      "metadata_keys": [
+        "Cereal",
+        "Country",
+        "Spectrometer",
+        "Variety",
+        "row_index",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::csv_like",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal",
+          "role": "signal",
+          "shape": [
+            1050
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.245259,
+          "value_last": 0.574714,
+          "value_sum": 255.762527,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "640759d743543b67e7506fc55caa1e4fa08ac02978574c1e59b22496b00eebbd",
+      "target_keys": [
+        "Moisture",
+        "Protein",
+        "Year"
+      ],
+      "warnings": []
+    }
+  ]
+}

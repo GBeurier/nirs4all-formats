@@ -3,9 +3,9 @@ requires = ["maturin>=1.7,<2"]
 build-backend = "maturin"
 
 [project]
-name = "nirs4all-io"
+name = "nirs4all-formats"
 version = "0.1.0a0"
-description = "Python bindings for the Rust-first nirs4all-io NIRS loader."
+description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -21,7 +21,7 @@ dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.10", "maturin>=1.7"]
 
 [tool.maturin]
 python-source = "python"
-module-name = "nirs4all_io._native"
+module-name = "nirs4all_formats._native"
 features = ["pyo3/extension-module"]
 
 [tool.pytest.ini_options]

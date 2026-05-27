@@ -17,8 +17,8 @@ jobs:
 |---|---|---|
 | `python-wheels` | Python wheels via `cibuildwheel` for Linux (manylinux2014, x86_64 + aarch64), macOS (x86_64 + arm64) and Windows (AMD64) on CPython 3.10–3.13. | every push of a `v*` tag and every `workflow_dispatch`. |
 | `python-sdist` | Source distribution built by `maturin sdist`. | same. |
-| `c-abi-archive` | `nirs4all-io-capi-<target>.{tar.gz,zip}` per OS containing `lib/libnirs4all_io_capi.{a,so,dylib,dll}`, the generated `include/nirs4all_io.h`, and `LICENSE`. | same. |
-| `r-source` | `nirs4allio_<version>.tar.gz` source tarball built via `R CMD build`. | same. |
+| `c-abi-archive` | `nirs4all-formats-capi-<target>.{tar.gz,zip}` per OS containing `lib/libnirs4all_formats_capi.{a,so,dylib,dll}`, the generated `include/nirs4all_formats.h`, and `LICENSE`. | same. |
+| `r-source` | `nirs4allformats_<version>.tar.gz` source tarball built via `R CMD build`. | same. |
 | `publish-pypi` | Publishes wheels + sdist to PyPI via OIDC trusted publishing (no token). | only on a `v*` tag. |
 | `github-release` | Attaches every artifact (wheels, sdist, C ABI archives, R source) to the GitHub Release. | only on a `v*` tag. |
 
@@ -46,13 +46,13 @@ artifacts from the workflow-run UI to validate them locally:
 - install a wheel into a fresh venv: `pip install <wheel>` then run
   `python -m pytest bindings/python/tests`.
 - tar-extract the C ABI archive and compile the
-  `crates/nirs4all-io-capi/examples/probe_version.c` smoke against it
+  `crates/nirs4all-formats-capi/examples/probe_version.c` smoke against it
   (the example documents the exact compile flags).
 
 ## Rollback / yank
 
 PyPI wheels are immutable. Use
-`pypi yank nirs4all-io 0.x.y --reason "..."` to mark a bad release as
+`pypi yank nirs4all-formats 0.x.y --reason "..."` to mark a bad release as
 unavailable to new installs without breaking existing pins. For the
 GitHub release, delete the assets or the entire release via `gh release
 delete vX.Y.Z`.
@@ -76,8 +76,8 @@ platform, document the per-OS gating here and add an override under
 
 ## C ABI versioning
 
-`N4IO_ABI_VERSION` (currently `0.1.0`, defined in
-`crates/nirs4all-io-capi/src/lib.rs`) bumps independently from the Rust
+`N4FMT_ABI_VERSION` (currently `0.1.0`, defined in
+`crates/nirs4all-formats-capi/src/lib.rs`) bumps independently from the Rust
 semver:
 
 - patch bump for additive symbols that keep the ABI backward-compatible;

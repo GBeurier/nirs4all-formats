@@ -1,0 +1,43 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "row-spectral-table",
+      "metadata_keys": [
+        "vendor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::spectral_table",
+      "record_signal_type": "reflectance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 0.3,
+          "axis_kind": "wavelength",
+          "axis_last": 15.0,
+          "axis_len": 561,
+          "axis_order": "ascending",
+          "axis_unit": "um",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "reflectance",
+          "role": "reflectance",
+          "shape": [
+            561
+          ],
+          "signal_type": "reflectance",
+          "unit": "Reflectance (percent)",
+          "value_first": 8.82,
+          "value_last": 2.721,
+          "value_sum": 10877.0397,
+          "values_len": 561
+        }
+      ],
+      "source_sha256": "962b50822e5a4ab085b996063bc499a87d489c62be01e9ef084ba3a71caa7e9d",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

@@ -42,7 +42,7 @@ The expected matrix layout is an `X` spectra matrix, a wavelength axis named
 `wavelengths`, `wavelength`, `wavelength_nm` or `x`, and an optional numeric `y`
 target vector.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — the spectra matrix, emitting one record per sample. Eigenvector
   datasets expose their named spectral blocks as separate signals (e.g.
@@ -85,7 +85,7 @@ target vector.
 ## Reference readers
 
 `scipy.io` and the `hdf5-reader` crate (MAT), R serialization and `prospectr`
-(RData). nirs4all-io adds axis detection, signal typing, target mapping and
+(RData). nirs4all-formats adds axis detection, signal typing, target mapping and
 provenance.
 
 ## Samples & validation
@@ -99,4 +99,4 @@ records, two instruments), `scpdata_dso.mat` (20 records, `cm-1` axis),
 `samples_local/hyperspectral_cubes/indian_pines_corrected.mat` (21,025 pixels x
 200 bands, `land_cover_class` from the optional `_gt.mat`) is covered when
 present. All committed fixtures are golden-backed in
-`crates/nirs4all-io/tests/goldens/`.
+`crates/nirs4all-formats/tests/goldens/`.

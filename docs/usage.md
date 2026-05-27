@@ -11,18 +11,18 @@ Probing sniffs the first bytes and returns the ordered candidate readers without
 a full parse.
 
 ```bash
-nirs4all-io probe path/to/file        # JSON: format, reader, confidence, reason
+nirs4all-formats probe path/to/file        # JSON: format, reader, confidence, reason
 ```
 
 ```python
-import nirs4all_io as nio
+import nirs4all_formats as nio
 nio.probe_path("path/to/file")        # list of candidates, best first
 ```
 
 ## 2. Read records
 
 ```bash
-nirs4all-io read-json path/to/file    # normalized SpectralRecord[] as JSON
+nirs4all-formats read-json path/to/file    # normalized SpectralRecord[] as JSON
 ```
 
 ```python
@@ -35,9 +35,9 @@ rs.signal_names()                     # what's inside
 ```
 
 ```r
-library(nirs4allio)
-records <- nirs4allio_open_records("path/to/file")
-dataset <- nirs4allio_open_dataset("path/to/file", signal = NULL)
+library(nirs4allformats)
+records <- nirs4allformats_open_records("path/to/file")
+dataset <- nirs4allformats_open_dataset("path/to/file", signal = NULL)
 ```
 
 ## 3. Project to numpy / pandas / sklearn / torch
@@ -60,7 +60,7 @@ sds     = rs.to_spectrodataset(name="myset")   # nirs4all SpectroDataset
 Multi-dimensional signals (cubes, maps, time series) also project to
 `xarray.DataArray` via `array.to_xarray()`. See the
 [Python binding](bindings/python.md) for the full surface; R offers
-`as.matrix`, `as.data.frame` and `nirs4allio_as_tibble`.
+`as.matrix`, `as.data.frame` and `nirs4allformats_as_tibble`.
 
 ## 4. Sidecar formats (companion files)
 
@@ -70,7 +70,7 @@ read from a path these are resolved automatically. When you read from bytes you
 must supply them:
 
 ```bash
-nirs4all-io read-json --sidecar cube.hdr=path/cube.hdr path/cube.img
+nirs4all-formats read-json --sidecar cube.hdr=path/cube.hdr path/cube.img
 ```
 
 ```python
@@ -87,9 +87,9 @@ Cube readers (ENVI Standard, AVIRIS/ERDAS LAN) accept a rectangular ROI or an
 ordered sparse pixel mask, so you never have to materialise a full scene.
 
 ```bash
-nirs4all-io read-json --rows 10:20 --cols 30:40 path/cube.hdr   # ROI window
-nirs4all-io read-json --pixel 10,20 --pixel 11,21 path/cube.hdr # sparse pixels
-nirs4all-io read-json --pixels-file pixels.txt   path/cube.hdr  # one ROW,COL per line
+nirs4all-formats read-json --rows 10:20 --cols 30:40 path/cube.hdr   # ROI window
+nirs4all-formats read-json --pixel 10,20 --pixel 11,21 path/cube.hdr # sparse pixels
+nirs4all-formats read-json --pixels-file pixels.txt   path/cube.hdr  # one ROW,COL per line
 ```
 
 ```python
@@ -111,7 +111,7 @@ nio.open_bytes("spectrum.jdx", payload)        # payload: bytes
 ```
 
 ```js
-import init, { openBytes } from "nirs4all-io-wasm";
+import init, { openBytes } from "nirs4all-formats-wasm";
 await init();
 openBytes("spectrum.jdx", new Uint8Array(buffer));
 ```
@@ -122,7 +122,7 @@ The walker recurses a folder, probes each file and labels it
 `parsed` / `error` / `unsupported`.
 
 ```bash
-nirs4all-io scan path/to/dir --max-depth 2 --include-unsupported --json
+nirs4all-formats scan path/to/dir --max-depth 2 --include-unsupported --json
 ```
 
 ```python
@@ -130,5 +130,5 @@ nio.walk_path("path/to/dir", include_unsupported=True)
 ```
 
 ```r
-nirs4allio_walk_path("path/to/dir", include_unsupported = TRUE)
+nirs4allformats_walk_path("path/to/dir", include_unsupported = TRUE)
 ```

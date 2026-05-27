@@ -4,7 +4,7 @@
 
 JWS is the native binary format written by JASCO Spectra Manager for FT-IR,
 UV-Vis, fluorescence and circular-dichroism instruments. A `.jws` file is an
-OLE2 compound document; nirs4all-io reads the reverse-engineered stream pair seen
+OLE2 compound document; nirs4all-formats reads the reverse-engineered stream pair seen
 in the committed fixtures and labels channels conservatively from the embedded
 instrument metadata.
 
@@ -27,7 +27,7 @@ An OLE2 compound document (magic `D0 CF 11 E0 …`) with named streams:
 The axis unit is inferred from the endpoint range: `nm` (wavelength) when the
 bounds sit within roughly 150-2500, otherwise `cm-1` (wavenumber).
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per file. Single-channel files emit one
   signal; multi-channel files emit one signal per channel. Channel semantics are

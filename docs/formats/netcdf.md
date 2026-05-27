@@ -29,7 +29,7 @@ in-memory path and read from disk by `open_path`; its absence is silent.
 The generic NIRS schema is a 2-D `spectra` variable shaped `samples x wavelength`
 with a 1-D `wavelengths` axis variable and optional 1-D target variables.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — the `spectra` variable for the generic schema; for the
   atmospheric paths, discovered channel sets (e.g. Microtops `aot_<wavelength>`
@@ -80,7 +80,7 @@ row for the derived time-series products.
 ## Reference readers
 
 `netcdf-reader`, `xarray`, the netCDF library and the ARM `act` toolkit read the
-same files; ANDI/MS belongs to `pyteomics` / `pyOpenMS`. nirs4all-io adds the
+same files; ANDI/MS belongs to `pyteomics` / `pyOpenMS`. nirs4all-formats adds the
 NIRS schema validation, signal typing and provenance.
 
 ## Samples & validation

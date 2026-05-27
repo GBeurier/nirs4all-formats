@@ -22,7 +22,7 @@ XML, dispatched on an `.animl` extension by sniffing for `<AnIML` or `:AnIML`
 decodes in-memory through `open_bytes`. The reader streams the XML, locating the
 axis series inside a `SeriesSet` and reading the signal series alongside it.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — every non-axis series whose length matches the axis, named from
   the series name with the signal type inferred from that name. When several

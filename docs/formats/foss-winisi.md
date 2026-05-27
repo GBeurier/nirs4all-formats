@@ -4,7 +4,7 @@
 
 Foss NIRSystems / WinISI / ISIscan is a long-standing industrial NIR platform.
 Its native project files are vendor-closed with no reliable open reader, so
-nirs4all-io reads the exported text or CSV spectral matrix instead: `Wavelengths:`
+nirs4all-formats reads the exported text or CSV spectral matrix instead: `Wavelengths:`
 text blocks through the [spectral-matrix reader](spectral-matrix.md) and wide CSV
 exports through the [delimited-text reader](text-readers-001.md). The native
 binary formats are not decoded.
@@ -24,7 +24,7 @@ University of Cordoba (sensAIfood) dataset.
   followed by numeric wavelength headers, one sample per row; read as delimited
   text. The delimiter is auto-detected.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signal** — one spectral signal per sample row, axis in `nm`.
 - **Metadata** — `ID` is promoted to `metadata.sample_id`.
@@ -54,7 +54,7 @@ University of Cordoba (sensAIfood) dataset.
 ## Reference readers
 
 The text and CSV exports are equally readable with `pandas` or R `read.table`;
-nirs4all-io adds axis detection, target promotion and provenance. No open native
+nirs4all-formats adds axis detection, target promotion and provenance. No open native
 reader is available for the binary project formats.
 
 ## Samples & validation

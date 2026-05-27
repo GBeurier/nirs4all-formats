@@ -1,6 +1,6 @@
 # WiTec WIP (Raman)
 
-Native binary `.wip` / `.wid` (WiTec Project file) — nirs4all-io now detects
+Native binary `.wip` / `.wid` (WiTec Project file) — nirs4all-formats now detects
 signed `WIT^` and `WIT_PR06` project files. Legacy `WIT^` layouts and unknown
 `WIT_PR06` layouts are refused with ASCII-export guidance; the committed
 `Sa4.wip` `WIT_PR06` TDGraph layout decodes experimentally into spectra.

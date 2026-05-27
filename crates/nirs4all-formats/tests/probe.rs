@@ -1,0 +1,531 @@
+use std::path::Path;
+
+use nirs4all_formats::{builtin_probes, probe_path, Confidence};
+
+#[test]
+fn probes_committed_jcamp_fixture() {
+    let probes = probe_path(workspace_file("samples/jcamp_dx/TESTSPEC.DX")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "jcamp-dx" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_committed_csv_fixture() {
+    let probes = probe_path(workspace_file("samples/csv_tsv/synthetic_nirs.csv")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "delimited-text" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
+fn probes_committed_asd_fieldspec_fixtures() {
+    for relative in ["samples/asd/3L9257.000", "samples/asd/v8sample00001.asd"] {
+        let probes = probe_path(workspace_file(relative)).expect("probe ASD");
+        assert!(probes.iter().any(|probe| {
+            probe.format == "asd-fieldspec" && probe.confidence == Confidence::Definite
+        }));
+    }
+}
+
+#[test]
+fn procspec_zip_does_not_probe_as_galactic_spc() {
+    let probes = probe_path(workspace_file(
+        "samples/ocean_optics/OceanOptics_Linux.ProcSpec",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "ocean-optics-procspec" && probe.confidence == Confidence::Definite
+    }));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
+#[test]
+fn probes_committed_msa_fixture() {
+    let probes = probe_path(workspace_file(
+        "samples/msa_iso22029/ISO_22029_2022_compliance.msa",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "emsa-mas-msa" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_row_spectral_table_fixture() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_neospectra/synthetic_neospectra.csv",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+    assert!(!probes
+        .iter()
+        .any(|probe| probe.format == "ocean-optics-two-column-csv"));
+}
+
+#[test]
+fn probes_real_neospectra_ossl_wide_csv() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_neospectra/neospectra_ossl_50samples_slice.csv",
+    ))
+    .expect("probe real NeoSpectra OSSL CSV");
+
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "delimited-text" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
+fn probes_usgs_aref_single_column_dump() {
+    let probes = probe_path(workspace_file("samples/envi_sli/usgs_liba_AREF.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "usgs-aref-single-column" && probe.confidence == Confidence::Likely
+    }));
+}
+
+#[test]
+fn probes_matrix_and_sun_photometer_exports() {
+    let probes = probe_path(workspace_file(
+        "samples/foss_winisi/synthetic_winisi_export.txt",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "spectral-matrix" && probe.confidence == Confidence::Likely
+    }));
+    assert!(!probes
+        .iter()
+        .any(|probe| probe.format == "row-spectral-table"));
+
+    let probes =
+        probe_path(workspace_file("samples/microtops/synthetic_microtops.TXT")).expect("probe");
+    assert_eq!(probes[0].format, "microtops-sun-photometer");
+    assert_eq!(probes[0].confidence, Confidence::Definite);
+}
+
+#[test]
+fn probes_avantes_ascii_and_binary_fixtures() {
+    for (relative, format, confidence) in [
+        (
+            "samples/avantes/avantes_export.ttt",
+            "avantes-ascii",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/irr_820_1941.IRR",
+            "avantes-irradiance-ascii",
+            Confidence::Likely,
+        ),
+        (
+            "samples/avantes/avantes2.TRM",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/avantes_trans.TRM",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/avantes_reflect.ROH",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1305084U1.DRK",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1305084U1.REF",
+            "avantes-legacy-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/1904090M1_0003.Raw8",
+            "avantes-avasoft8-binary",
+            Confidence::Definite,
+        ),
+        (
+            "samples/avantes/eg.IRR8",
+            "avantes-avasoft8-binary",
+            Confidence::Definite,
+        ),
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe Avantes");
+        assert!(
+            probes
+                .iter()
+                .any(|probe| probe.format == format && probe.confidence == confidence),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn probes_animl_and_allotrope_asm_documents() {
+    let probes = probe_path(workspace_file("samples/animl/synthetic_nirs.animl")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "animl" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file(
+        "samples/allotrope_asm/ACSINS_absorbance_spectrum.json",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "allotrope-asm-json" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_local_allotrope_adf_when_present() {
+    let path = workspace_file("samples_local/allotrope_adf/adfsee_example.adf");
+    if !path.exists() {
+        return;
+    }
+
+    let probes = probe_path(path).expect("probe local ADF");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "allotrope-adf" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
+fn probes_siware_json_and_comment_header_text_exports() {
+    let probes = probe_path(workspace_file(
+        "samples/siware_api/synthetic_siware_api.json",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "siware-api-json" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/csv_tsv/idl_envi_output.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+}
+
+#[test]
+fn probes_shimadzu_uvprobe_text_without_claiming_spc_by_extension() {
+    let probes =
+        probe_path(workspace_file("samples/shimadzu/synthetic_uvprobe.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "row-spectral-table" && probe.confidence == Confidence::Likely
+    }));
+
+    let probes = builtin_probes(
+        b"Shimadzu UVProbe native placeholder",
+        Path::new("sample.spc"),
+    );
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "candidate-spc" && probe.confidence == Confidence::Possible));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
+#[test]
+fn probes_netcdf_containers() {
+    for relative in [
+        "samples/netcdf/synthetic_nirs.nc",
+        "samples/microtops/microtops_arc_msm114_2.nc",
+        "samples/netcdf/air_temperature.nc",
+        "samples/netcdf/pyrnet_to_l1a_output.nc",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe NetCDF container");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "netcdf-container" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn probes_andi_ms_netcdf_containers() {
+    let probes = probe_path(workspace_file("samples/andi_ms/gc01_0812_066.cdf")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "andi-ms-netcdf" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_hdf5_containers() {
+    for relative in [
+        "samples/hdf5/synthetic_nirs.h5",
+        "samples/hdf5/vlen_string_dset.h5",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe HDF5 container");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "hdf5-nirs-container" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
+
+    let probes = probe_path(workspace_file("samples/fgi/synthetic_fgi.xml")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "fgi-hdf5-xml" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_numpy_containers() {
+    let probes = probe_path(workspace_file("samples/numpy/synthetic_nirs_X.npy")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "numpy-npy" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file("samples/numpy/synthetic_nirs.npz")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "numpy-npz" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_parquet_container() {
+    let probes =
+        probe_path(workspace_file("samples/parquet/synthetic_nirs.parquet")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "parquet-container" && probe.confidence == Confidence::Likely
+    }));
+}
+
+#[test]
+fn probes_matlab_containers() {
+    let probes = probe_path(workspace_file("samples/matlab/synthetic_nirs_v5.mat")).expect("probe");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "matlab-v5" && probe.confidence == Confidence::Definite));
+
+    let probes =
+        probe_path(workspace_file("samples/matlab/synthetic_nirs_v73.mat")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "matlab-v73-hdf5" && probe.confidence == Confidence::Likely
+    }));
+
+    let probes = probe_path(workspace_file("samples/matlab/scpdata_als2004dataset.MAT"))
+        .expect("probe uppercase mat");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "matlab-v5" && probe.confidence == Confidence::Definite));
+
+    let probes =
+        probe_path(workspace_file("samples/matlab/prospectr_NIRsoil.RData")).expect("probe RData");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "rdata-rdx3-xz" && probe.confidence == Confidence::Likely));
+}
+
+#[test]
+fn probes_excel_workbook() {
+    for relative in [
+        "samples/excel/synthetic_nirs.xlsx",
+        "samples/excel/synthetic_nirs_macro_compatible.xlsm",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "excel-workbook" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn probes_real_handheld_excel_workbooks() {
+    for relative in [
+        "samples/excel/scio_forensic_P_avg.xlsx",
+        "samples/excel/nirone_forensic_T_avg.xlsx",
+        "samples/siware_neospectra/neospectra_forensic_K_avg.xlsx",
+        "samples/viavi_micronir/micronir_forensic_K_avg.xlsx",
+        "samples/viavi_micronir/micronir_forensic_T_avg.xlsx",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe real handheld xlsx");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "excel-workbook" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn probes_nicolet_omnic_files() {
+    let probes =
+        probe_path(workspace_file("samples/nicolet_omnic/2-BaSO4_0.SPA")).expect("probe spa");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "nicolet-omnic" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/nicolet_omnic/TGAIR.srs")).expect("probe srs");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "nicolet-omnic-srs" && probe.confidence == Confidence::Possible
+    }));
+}
+
+#[test]
+fn probes_perkin_elmer_sp_files() {
+    let probes = probe_path(workspace_file("samples/perkin_elmer/spectra.sp")).expect("probe sp");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "perkin-elmer-sp" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_buchi_nircal_files() {
+    let probes = probe_path(workspace_file(
+        "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
+    ))
+    .expect("probe nircal");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "buchi-nircal" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_jasco_jws_files() {
+    for relative in [
+        "samples/jasco/243.jws",
+        "samples/jasco/sample_fluorescence.jws",
+        "samples/jasco/sample_CD_HT_Abs.jws",
+    ] {
+        let probes = probe_path(workspace_file(relative)).expect("probe jws");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "jasco-jws" && probe.confidence == Confidence::Likely
+            }),
+            "{relative}"
+        );
+    }
+}
+
+#[test]
+fn probes_horiba_labspec_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_horiba/jobinyvon_test_spec.xml",
+    ))
+    .expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-jobinyvon-xml" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes =
+        probe_path(workspace_file("samples/raman_horiba/labspec_532nm_Si.txt")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-labspec-text" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes =
+        probe_path(workspace_file("samples/raman_horiba/AlN_Gd2O3_indepth.l6m")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "horiba-labspec6-binary" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_renishaw_wdf_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_renishaw/renishaw_test_spectrum.wdf",
+    ))
+    .expect("probe wdf");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "renishaw-wdf" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_trivista_tvf_files() {
+    let probes = probe_path(workspace_file(
+        "samples/raman_trivista/spec_1s_1acc_1frame_average.tvf",
+    ))
+    .expect("probe TriVista TVF");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "trivista-tvf" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_digitalsurf_sur_pro_files() {
+    let probes = probe_path(workspace_file("samples/digitalsurf/test_spectrum.pro"))
+        .expect("probe DigitalSurf PRO");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "digitalsurf-sur-pro" && probe.confidence == Confidence::Definite
+    }));
+
+    let probes = probe_path(workspace_file("samples/digitalsurf/test_spectral_map.sur"))
+        .expect("probe DigitalSurf SUR");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "digitalsurf-sur-pro" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_hamamatsu_img_files() {
+    let probes = probe_path(workspace_file("samples/hamamatsu/operate_mode.img"))
+        .expect("probe Hamamatsu IMG");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "hamamatsu-img" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_envi_standard_cube_sidecar() {
+    let probes =
+        probe_path(workspace_file("samples/envi_sli/cubescope-mini-cube.img")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "envi-standard-cube" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_aviris_erdas_lan_cube() {
+    let probes =
+        probe_path(workspace_file("samples/hyperspectral_cubes/92AV3C.lan")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "erdas-lan-aviris" && probe.confidence == Confidence::Definite
+    }));
+}
+
+#[test]
+fn probes_aviris_spc_sidecar_without_claiming_galactic_spc() {
+    let probes =
+        probe_path(workspace_file("samples/hyperspectral_cubes/92AV3C.spc")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "candidate-spc" && probe.confidence == Confidence::Possible
+    }));
+    assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
+}
+
+#[test]
+fn probes_witec_wip_magic() {
+    let probes = builtin_probes(b"WIT^\0\0\0\0", Path::new("sample.wip"));
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "witec-wip" && probe.confidence == Confidence::Definite));
+
+    let probes = probe_path(workspace_file("samples/raman_witec/Sa4.wip")).expect("probe Sa4");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "witec-wip" && probe.confidence == Confidence::Definite));
+}
+
+#[test]
+fn probes_mzml_ms_files() {
+    let probes = probe_path(workspace_file("samples/mzml/example.mzML")).expect("probe mzML");
+    assert!(probes
+        .iter()
+        .any(|probe| probe.format == "mzml-ms" && probe.confidence == Confidence::Definite));
+}
+
+fn workspace_file(relative: &str) -> std::path::PathBuf {
+    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../..")
+        .join(relative)
+}

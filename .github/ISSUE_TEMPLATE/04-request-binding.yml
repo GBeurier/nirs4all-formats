@@ -1,12 +1,12 @@
 name: 🔌 Request a language binding
-description: Ask for a nirs4all-io binding in a language that is not available yet.
+description: Ask for a nirs4all-formats binding in a language that is not available yet.
 title: "[Binding request] <language>"
 labels: ["binding-request"]
 body:
   - type: markdown
     attributes:
       value: |
-        nirs4all-io already ships **Python**, **R**, **WebAssembly / JS** and a **C ABI**. The C ABI is the foundation most other language bindings build on, so a new binding is usually a thin wrapper over it — never a reimplementation of the parsers.
+        nirs4all-formats already ships **Python**, **R**, **WebAssembly / JS** and a **C ABI**. The C ABI is the foundation most other language bindings build on, so a new binding is usually a thin wrapper over it — never a reimplementation of the parsers.
   - type: dropdown
     id: language
     attributes:

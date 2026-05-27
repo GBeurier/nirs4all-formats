@@ -32,7 +32,7 @@ bytes with the resolver serving the referenced HDF5, and plain `open_bytes`
 returns `Error::UnsupportedSidecar`. External HDF5 file/link references inside
 the data file are routed through the same resolver adapters.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals & axis** — from the HDF5 payload, via the generic HDF5 mapper
   (here, an `absorbance` signal on a wavelength axis).
@@ -69,5 +69,5 @@ A real pairing is needed before reference comparison is meaningful.
 Fixture: `samples/fgi/synthetic_fgi.xml` + `.h5` (50 records, 200-point `nm`
 axis, `absorbance`; XML `instrument`/`operator`/`date` plus HDF5 group
 attributes), covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/`. The probe reports `fgi-hdf5-xml` at
+`crates/nirs4all-formats/tests/goldens/`. The probe reports `fgi-hdf5-xml` at
 `Confidence::Definite`.

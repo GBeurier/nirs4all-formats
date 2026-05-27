@@ -4,7 +4,7 @@
 
 TVF is the file format written for Princeton Instruments TriVista triple-stage
 Raman spectrometers. Despite the historical "binary spectroscopy file" wording,
-the observed files are XML documents with ASCII frame payloads. nirs4all-io emits
+the observed files are XML documents with ASCII frame payloads. nirs4all-formats emits
 one record per frame, covering single spectra, time series, line scans, maps and
 Step-and-Glue acquisitions. The format is Raman, adjacent to the core NIRS
 point-spectrum scope.
@@ -28,7 +28,7 @@ document is an `XmlMain` / `Document` container:
 - the escaped `InfoSerialized` attribute carries `Experiment`, `Detector`,
   `Calibration`, `X-Axis`, `Y-Axis` and numbered `Spectrometer` groups.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per frame; signal units are inferred only
   when `DataLabel` clearly denotes counts.
@@ -67,7 +67,7 @@ document is an `XmlMain` / `Document` container:
 ## Reference readers
 
 Layout and fixture behaviour cross-checked against `rsciio.trivista` 0.13.0.
-RosettaSciIO defaults to the glued spectrum for Step-and-Glue; nirs4all-io also
+RosettaSciIO defaults to the glued spectrum for Step-and-Glue; nirs4all-formats also
 emits child documents so low-level consumers can inspect the source windows.
 
 ## Samples & validation

@@ -1,0 +1,56 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "avantes-legacy-binary",
+      "metadata_keys": [
+        "avantes",
+        "averages_count",
+        "detector_temperature_c",
+        "first_pixel",
+        "instrument_serial",
+        "integration_delay",
+        "integration_time_ms",
+        "last_pixel",
+        "measurement_mode",
+        "operator",
+        "point_count",
+        "version_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::avantes_binary",
+      "record_signal_type": "raw_counts",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 275.271759,
+          "axis_kind": "wavelength",
+          "axis_last": 1100.133307,
+          "axis_len": 1442,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "white_reference",
+          "role": "white_reference",
+          "shape": [
+            1442
+          ],
+          "signal_type": "raw_counts",
+          "unit": null,
+          "value_first": 856.0,
+          "value_last": 802.200012,
+          "value_sum": 4210569.07605,
+          "values_len": 1442
+        }
+      ],
+      "source_sha256": "338805b40efcb5957633cf73ca8a0406c855941c5f3e1ac9eb38070d6ab757fe",
+      "target_keys": [],
+      "warnings": [
+        "avantes_legacy_single_channel:white_reference:companion_files_required"
+      ]
+    }
+  ]
+}

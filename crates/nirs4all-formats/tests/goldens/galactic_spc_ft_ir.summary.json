@@ -1,0 +1,46 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "galactic-spc",
+      "metadata_keys": [
+        "galactic_spc",
+        "galactic_spc_log",
+        "galactic_spc_subfile",
+        "sample_id"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::galactic_spc",
+      "record_signal_type": "transmittance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 4000.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 450.0,
+          "axis_len": 1776,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "transmittance",
+          "role": "Transmission",
+          "shape": [
+            1776
+          ],
+          "signal_type": "transmittance",
+          "unit": null,
+          "value_first": 95.137497,
+          "value_last": 94.883492,
+          "value_sum": 150493.736704,
+          "values_len": 1776
+        }
+      ],
+      "source_sha256": "2e3b5e5be93b017c03a560313b61a9c2db040d11da040a81d387c09ef56501b7",
+      "target_keys": [],
+      "warnings": []
+    }
+  ]
+}

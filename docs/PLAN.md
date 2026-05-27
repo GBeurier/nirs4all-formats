@@ -1,4 +1,4 @@
-# nirs4all-io Implementation Plan
+# nirs4all-formats Implementation Plan
 
 > Status: decided. This document supersedes the earlier Python-first plan.
 > Date: 2026-05-20.
@@ -20,7 +20,7 @@
 
 ## 1. North Star
 
-`nirs4all-io` provides a universal, low-level, high-performance reader for NIRS
+`nirs4all-formats` provides a universal, low-level, high-performance reader for NIRS
 and spectroscopy files. It normalizes vendor formats into a shared
 `SpectralRecord` while preserving native axes, channels, metadata, targets,
 warnings and provenance.
@@ -32,10 +32,10 @@ The library is useful standalone and is also the I/O foundation for the wider
 
 ```text
 Rust core
-  crates/nirs4all-io-core     data model, errors, units, provenance, sniffing
-  crates/nirs4all-io          registry, readers, archive/sidecar policy
-  crates/nirs4all-io-capi     stable additive C ABI for external bindings
-  crates/nirs4all-io-cli      probe, inspect, convert, validate
+  crates/nirs4all-formats-core     data model, errors, units, provenance, sniffing
+  crates/nirs4all-formats          registry, readers, archive/sidecar policy
+  crates/nirs4all-formats-capi     stable additive C ABI for external bindings
+  crates/nirs4all-formats-cli      probe, inspect, convert, validate
 
 Bindings
   bindings/python             native Python package, numpy/pandas/sklearn/torch helpers
@@ -55,7 +55,7 @@ it must not fork format logic or maintain separate parsing rules.
 
 ## 3. Data Model
 
-The core record shape is defined in `crates/nirs4all-io-core` and documented in
+The core record shape is defined in `crates/nirs4all-formats-core` and documented in
 [`DATA_MODEL.md`](DATA_MODEL.md). Design constraints:
 
 - each signal has its own spectral axis;

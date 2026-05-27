@@ -3,7 +3,7 @@
 > **Status:** Supported (scoped) · **Vendor:** Generic / lab & handheld exports · **Extensions:** `.xlsx`, `.xlsm`
 
 Spreadsheet workbooks that store a NIRS dataset as a spectral table — one row per
-sample, numeric wavelength headers across the columns. nirs4all-io reads the
+sample, numeric wavelength headers across the columns. nirs4all-formats reads the
 OOXML workbook family (`.xlsx` and `.xlsm`) through the pure-Rust `calamine`
 crate; legacy OLE `.xls` is not yet supported.
 
@@ -32,7 +32,7 @@ Optional sibling worksheets named `metadata`/`meta`/`samples` and
 `references`/`reference`/`targets` are joined to the spectral rows by
 `sample_id`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per non-empty data row. The signal name and
   type are inferred from the axis descriptor's `data:` label (e.g. `absorbance`,
@@ -74,14 +74,14 @@ Optional sibling worksheets named `metadata`/`meta`/`samples` and
 ## Reference readers
 
 `calamine` (the underlying Rust engine), `openpyxl`, `pandas.read_excel` and R
-`readxl` read the same workbooks. nirs4all-io adds sheet selection, axis-descriptor
+`readxl` read the same workbooks. nirs4all-formats adds sheet selection, axis-descriptor
 parsing, auxiliary-sheet joins, signal typing and provenance.
 
 ## Samples & validation
 
 Fixtures live under `samples/excel/`, `samples/siware_neospectra/` and
 `samples/viavi_micronir/`, covered by golden summaries in
-`crates/nirs4all-io/tests/goldens/` (`excel_*`). Representative outputs:
+`crates/nirs4all-formats/tests/goldens/` (`excel_*`). Representative outputs:
 `synthetic_nirs.xlsx` and `synthetic_nirs_macro_compatible.xlsm` each yield 50
 records over a 200-point `nm` axis with an `absorbance` signal and a `protein`
 target; `scio_forensic_P_avg.xlsx` yields 71 `raw` records over 331 points. Probe

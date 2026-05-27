@@ -1,4 +1,4 @@
-"""Spectral Evolution `.sed` conformance: nirs4all-io vs `spectrolab` (R)."""
+"""Spectral Evolution `.sed` conformance: nirs4all-formats vs `spectrolab` (R)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from conftest import (
     fixtures_under,
     load_tolerances,
     normalize_records,
-    require_nirs4all_io,
+    require_nirs4all_formats,
     require_rscript_with,
     run_rscript,
 )
@@ -25,13 +25,13 @@ SED_DUMP = HERE / "refreaders" / "sed_dump.R"
 
 @pytest.mark.parametrize("path", SED_SAMPLES, ids=lambda p: p.name)
 def test_sed_records_match_spectrolab(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
     rscript = require_rscript_with("spectrolab")
 
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -53,13 +53,13 @@ def test_sed_records_match_spectrolab(path: Path) -> None:
     )
     if record is None:
         pytest.skip(
-            f"{path.name}: no nirs4all-io reflectance record matches length "
+            f"{path.name}: no nirs4all-formats reflectance record matches length "
             f"{len(spectrolab_values)}"
         )
     scale = _detect_scale(record["values"], spectrolab_values)
     if scale is None:
         pytest.skip(
-            f"{path.name}: spectrolab/nirs4all-io scale convention diverges"
+            f"{path.name}: spectrolab/nirs4all-formats scale convention diverges"
         )
     expected_values = [y * scale for y in spectrolab_values]
     compare_axes(record["axis"], expected_axis, TOL, label=f"{path.name}:axis")
@@ -69,7 +69,7 @@ def test_sed_records_match_spectrolab(path: Path) -> None:
 
 
 def _detect_scale(nirs_values: list[float], ref_values: list[float]) -> float | None:
-    """nirs4all-io exposes reflectance either as [0,1] fractional or
+    """nirs4all-formats exposes reflectance either as [0,1] fractional or
     [0,100] percent depending on the SED variant. spectrolab always
     returns the file's native values; detect the convention by the
     ratio at the first non-zero entry and accept only {1.0, 100.0}.

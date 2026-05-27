@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Real reference files are the single biggest unblocker for nirs4all-io. Thank you!
+        Real reference files are the single biggest unblocker for nirs4all-formats. Thank you!
 
         Ideally provide, **for the same scan**: the original raw file, a human-readable export from the vendor software (CSV / TXT / XLSX / JCAMP-DX…), the instrument model, the software version, the measurement mode, and a few control values we can verify. Data may be anonymised — keep the original format and structural metadata intact.
   - type: input
@@ -79,7 +79,7 @@ body:
     attributes:
       label: Rights & licensing
       options:
-        - label: I have the right to share these files and to allow their use for developing and testing nirs4all-io.
+        - label: I have the right to share these files and to allow their use for developing and testing nirs4all-formats.
           required: true
         - label: I understand redistributable fixtures are documented with their source and license under samples/.
           required: true

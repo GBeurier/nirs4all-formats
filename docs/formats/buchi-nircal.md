@@ -5,7 +5,7 @@
 NIRCal is the project file written by BUCHI/Bühler NIRCal software for FT-NIR
 calibration work. A `.nir` project bundles many sample spectra, a shared
 wavenumber axis, per-sample property values and per-spectrum acquisition
-metadata. nirs4all-io reads the project file emitting one `SpectralRecord` per
+metadata. nirs4all-formats reads the project file emitting one `SpectralRecord` per
 sample.
 
 ## Instruments & software
@@ -26,7 +26,7 @@ double64 array delimited by fixed-size `begin` / `end` markers; the axis is
 emitted as wavenumber in `cm-1`. The token layout follows the observed
 NIRCal 2.23 ordering.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `absorbance` `SpectralRecord` per sample; the sample id is
   stored in metadata. Duplicate sample ids remain distinguishable through

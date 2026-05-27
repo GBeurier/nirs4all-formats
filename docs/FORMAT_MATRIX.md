@@ -100,7 +100,7 @@ visible (`Suivi actuel`, `Corpus` ou `Format`).
 | MODTRAN albedo | Spectral Sciences / AFRL | `.dat` | 1 | 0 | 1 | 0 | 0 | non viable | hors périmètre | niche | P3 sourcer | Non coeur NIRS; sample réel redistribuable absent. | parseur texte |
 | ANDI / NetCDF MS | ASTM / vendor-neutral | `.cdf`, `.nc` | 1 | 1 | 0 | 0 | 0 | adjacent | hors périmètre | adjacent | P3 surveiller | Refus non-NIRS utile pour disambiguation. | pyteomics, PyMassSpec, pyOpenMS |
 | mzML / mzMLb | HUPO PSI / MS vendors | `.mzML`, `.mzMLb` | 2 | 1 | 0 | 0 | 1 | adjacent | hors périmètre | adjacent | P3 surveiller | Refus non-NIRS; `.mzMLb` seulement documenté. | pyteomics, pymzML, pyOpenMS |
-| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors périmètre | hors-scope | P3 hors-scope | Physiologie non ciblée par nirs4all-io spectroscopy. | MNE-NIRS, SNIRF |
+| fNIRS neuroscience | NIRx / SNIRF ecosystem | `.snirf`, `.nirs`, `.wl1`, `.wl2`, `.hdr` | 5 | 0 | 0 | 0 | 5 | hors-scope | hors périmètre | hors-scope | P3 hors-scope | Physiologie non ciblée par nirs4all-formats spectroscopy. | MNE-NIRS, SNIRF |
 
 ## Fichiers a sourcer pour continuer
 

@@ -1,6 +1,6 @@
-# Contributing to nirs4all-io
+# Contributing to nirs4all-formats
 
-Thanks for your interest in improving nirs4all-io — the Rust-first, low-level
+Thanks for your interest in improving nirs4all-formats — the Rust-first, low-level
 reader library for NIRS and spectroscopy file formats.
 
 There are two ways to help, and **you do not need to write code for either**:
@@ -12,7 +12,7 @@ There are two ways to help, and **you do not need to write code for either**:
 
 ## Open an issue (no code needed)
 
-Use the [issue forms](https://github.com/GBeurier/nirs4all-io/issues/new/choose):
+Use the [issue forms](https://github.com/GBeurier/nirs4all-formats/issues/new/choose):
 
 | You want to… | Use the form |
 |---|---|
@@ -62,7 +62,7 @@ only for conformance, isolated behind subprocesses).
 ```bash
 . "$HOME/.cargo/env"
 cargo test --workspace
-cargo run -p nirs4all-io-cli -- probe samples/jcamp_dx/TESTSPEC.DX
+cargo run -p nirs4all-formats-cli -- probe samples/jcamp_dx/TESTSPEC.DX
 ```
 
 ### Adding or validating a format
@@ -74,7 +74,7 @@ comparison, all documented and tested. The trail to follow:
 
 1. Place the sample under `samples/` (redistributable) or `samples_local/`
    (private), and record its source and license in the relevant sample README.
-2. Create the reader at `crates/nirs4all-io/src/readers/<fmt>.rs`, wire it into
+2. Create the reader at `crates/nirs4all-formats/src/readers/<fmt>.rs`, wire it into
    `readers/mod.rs` (`pub mod` + `pub use`, with `#[cfg(feature = "…")]` if it is
    HDF5/MATLAB/Parquet-backed), and register it in the `readers()` list in
    `registry.rs`.
@@ -97,7 +97,7 @@ subset. Run the green gate locally and update `docs/STATUS.md` after it passes.
 Golden summaries are re-blessed after a reviewed change with:
 
 ```bash
-NIRS4ALL_IO_ACCEPT_GOLDENS=1 cargo test -p nirs4all-io --test goldens
+NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1 cargo test -p nirs4all-formats --test goldens
 ```
 
 ## Code style
@@ -110,6 +110,6 @@ NIRS4ALL_IO_ACCEPT_GOLDENS=1 cargo test -p nirs4all-io --test goldens
 
 ## License
 
-nirs4all-io is MIT licensed. By contributing, you agree that your contributions
+nirs4all-formats is MIT licensed. By contributing, you agree that your contributions
 are licensed under the same terms. Fixture licenses are documented per format
 under `samples/`.

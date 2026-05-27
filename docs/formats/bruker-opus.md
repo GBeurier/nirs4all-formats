@@ -6,7 +6,7 @@ OPUS is Bruker's native FT-IR / FT-NIR / Raman file format, written by the OPUS
 software that ships with Bruker spectrometers. A single OPUS file is a binary
 container that can hold several related blocks (absorbance, reflectance, raw
 sample/reference single-beam spectra, interferograms and phase) for one
-acquisition. nirs4all-io reads modern OPUS binaries and the two-column `.dpt`
+acquisition. nirs4all-formats reads modern OPUS binaries and the two-column `.dpt`
 text export.
 
 ## Instruments & software
@@ -26,7 +26,7 @@ interchange.
 - **`.dpt` export** — two-column ASCII (wavenumber, value); the wavenumber axis
   is in `cm⁻¹`.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per file with a `signals` map using
   semantic names rather than OPUS abbreviations: `absorbance`, `reflectance`,

@@ -5,7 +5,7 @@
 `.sed` is the ASCII export written by Spectral Evolution field spectrometers
 (PSR and SR series) for reflectance and raw-DN measurements across the
 VNIR/SWIR range. The file is a key/value header followed by a `Data:` table
-whose first column is wavelength. nirs4all-io parses the table, types each
+whose first column is wavelength. nirs4all-formats parses the table, types each
 signal column and promotes the field-acquisition header into canonical
 metadata.
 
@@ -25,7 +25,7 @@ PSR-3500 family; SR-series firmware variants remain under-sampled.
   or `Reflect. [1.0]`).
 - The numeric block follows, one wavelength per row.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signals** — one signal per value column after `Wvl`. Reflectance columns are
   typed `reflectance`; DN / reference / target columns are typed `raw_counts`.
@@ -70,7 +70,7 @@ Compared full-array against `spectrolab` (R subprocess) in `tests/conformance/`;
 ## Samples & validation
 
 Three fixtures under `samples/spectral_evolution/` are golden-backed in
-`crates/nirs4all-io/tests/goldens/`: `1566060_09506_working.sed` (PSR+3500 DN +
+`crates/nirs4all-formats/tests/goldens/`: `1566060_09506_working.sed` (PSR+3500 DN +
 reflectance), `1566060_15025_not_working.sed` (broken-but-valid DN-only export
 carrying the `missing_reflectance_signal` flag) and
 `serbinsh_cvars_grape_leaf.sed` (PSR-3500 grape-leaf acquisition with canonical

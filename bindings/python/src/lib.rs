@@ -1,8 +1,8 @@
-//! PyO3 bridge for `nirs4all-io`.
+//! PyO3 bridge for `nirs4all-formats`.
 //!
 //! Exposes the registry's probe/read/walk APIs to Python without going through
 //! the CLI. Records are returned as plain Python dict/list trees that mirror
-//! the JSON shape produced by `nirs4all-io read-json`.
+//! the JSON shape produced by `nirs4all-formats read-json`.
 
 // Triggered by the `#[pyfunction]` macro expansion in pyo3 0.22.
 #![allow(clippy::useless_conversion)]
@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
 
-use nirs4all_io::{
+use nirs4all_formats::{
     open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
     walk_path, CubeMask, CubeWindow, InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions,
     WalkOutcome,

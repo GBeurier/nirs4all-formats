@@ -13,6 +13,6 @@ ASTM E1947 ANDI is the **chromatography-MS** standard, not NIR/FTIR. We list Net
 
 ## Parser hints
 
-- Reference readers: `netCDF4`, `scipy.io.netcdf_file`, `xarray`; `nirs4all-io` uses the pure-Rust `netcdf-reader` crate for the native path.
+- Reference readers: `netCDF4`, `scipy.io.netcdf_file`, `xarray`; `nirs4all-formats` uses the pure-Rust `netcdf-reader` crate for the native path.
 - For NetCDF3 use `scipy.io.netcdf_file` (no native HDF5 dep). For NetCDF4 (HDF5-backed) you need `netCDF4` or `h5netcdf`.
 - ANDI MS files have a specific variable structure (`scan_acquisition_time`, `intensity_values`, …). Detecting them is straightforward — refuse with a clear pointer to `pyteomics`.

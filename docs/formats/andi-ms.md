@@ -3,7 +3,7 @@
 > **Status:** Detected / refused · **Vendor:** ASTM / vendor-neutral · **Extensions:** `.cdf`, `.nc`
 
 ANDI/MS is the ASTM E1947 chromatography and mass-spectrometry NetCDF profile.
-nirs4all-io recognises it for disambiguation but **refuses it on read**: it is not
+nirs4all-formats recognises it for disambiguation but **refuses it on read**: it is not
 a NIRS / optical-spectroscopy interchange format. Its variables describe scan
 acquisition time, `m/z` values and ion intensities rather than a
 wavelength-indexed molecular spectrum.

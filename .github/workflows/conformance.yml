@@ -34,7 +34,7 @@ jobs:
         run: |
           Rscript -e 'install.packages(c("spectrolab", "jsonlite"), repos="https://cloud.r-project.org", quiet=TRUE)'
 
-      - name: Build nirs4all-io Python binding
+      - name: Build nirs4all-formats Python binding
         run: |
           python -m pip install maturin
           (cd bindings/python && maturin develop --release --quiet)

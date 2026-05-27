@@ -1,4 +1,4 @@
-# nirs4all-io
+# nirs4all-formats
 
 Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
 stable Python / R / WebAssembly / C bindings and conformance checks against
@@ -8,7 +8,7 @@ reference loaders.
 > format families are implemented and tested on a committed fixture corpus;
 > APIs are stable in shape but may still change before 1.0.
 
-`nirs4all-io` turns the messy zoo of vendor spectroscopy files into one clean,
+`nirs4all-formats` turns the messy zoo of vendor spectroscopy files into one clean,
 provenance-tracked data model. It does **no** chemometrics or modelling — it
 produces the records that a modelling library such as
 [`nirs4all`](https://github.com/GBeurier/nirs4all) consumes.
@@ -28,14 +28,14 @@ produces the records that a modelling library such as
 ## Quick start
 
 ```bash
-# Command line (binary: nirs4all-io)
-nirs4all-io probe     samples/jcamp_dx/TESTSPEC.DX   # which reader, and why?
-nirs4all-io read-json samples/jcamp_dx/TESTSPEC.DX   # decode to JSON records
-nirs4all-io scan      samples/ --json                # walk a directory
+# Command line (binary: nirs4all-formats)
+nirs4all-formats probe     samples/jcamp_dx/TESTSPEC.DX   # which reader, and why?
+nirs4all-formats read-json samples/jcamp_dx/TESTSPEC.DX   # decode to JSON records
+nirs4all-formats scan      samples/ --json                # walk a directory
 ```
 
 ```python
-import nirs4all_io as nio
+import nirs4all_formats as nio
 
 records = nio.open_recordset("spectrum.sed")     # lossless object model
 X, axis = records.to_numpy(signal="reflectance") # modelling-ready matrix
@@ -61,17 +61,17 @@ Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 
 | Binding | Package | Notes |
 |---|---|---|
-| Python | `nirs4all-io` (import `nirs4all_io`) | numpy / pandas / polars / sklearn / torch / xarray / `SpectroDataset` projections. [Docs](docs/bindings/python.md) |
-| R | `nirs4allio` | matrix, `data.frame`, tibble; native extendr or CLI fallback. [Docs](docs/bindings/r.md) |
-| WebAssembly / JS | `nirs4all-io-wasm` | in-browser sniffing + decoding (`fmt-hdf5` on). [Docs](docs/bindings/wasm.md) |
-| C ABI | `nirs4all-io-capi` | additive C ABI + generated header, the base for further bindings. [Docs](docs/bindings/capi.md) |
+| Python | `nirs4all-formats` (import `nirs4all_formats`) | numpy / pandas / polars / sklearn / torch / xarray / `SpectroDataset` projections. [Docs](docs/bindings/python.md) |
+| R | `nirs4allformats` | matrix, `data.frame`, tibble; native extendr or CLI fallback. [Docs](docs/bindings/r.md) |
+| WebAssembly / JS | `nirs4all-formats-wasm` | in-browser sniffing + decoding (`fmt-hdf5` on). [Docs](docs/bindings/wasm.md) |
+| C ABI | `nirs4all-formats-capi` | additive C ABI + generated header, the base for further bindings. [Docs](docs/bindings/capi.md) |
 
 ## Installation
 
 ```bash
-pip install nirs4all-io            # Python 3.10+ (extras: numpy,pandas,sklearn,torch)
-cargo add nirs4all-io              # Rust
-R CMD INSTALL bindings/r/nirs4allio  # R
+pip install nirs4all-formats            # Python 3.10+ (extras: numpy,pandas,sklearn,torch)
+cargo add nirs4all-formats              # Rust
+R CMD INSTALL bindings/r/nirs4allformats  # R
 ```
 
 Full per-language instructions, feature flags and build-from-source steps are in
@@ -81,10 +81,10 @@ Full per-language instructions, feature flags and build-from-source steps are in
 
 ```text
 crates/
-  nirs4all-io-core/   # data model, errors, sniffing contracts
-  nirs4all-io/        # reader registry + 40+ native readers + directory walker
-  nirs4all-io-capi/   # additive C ABI (cbindgen-generated header)
-  nirs4all-io-cli/    # probe / read-json / scan
+  nirs4all-formats-core/   # data model, errors, sniffing contracts
+  nirs4all-formats/        # reader registry + 40+ native readers + directory walker
+  nirs4all-formats-capi/   # additive C ABI (cbindgen-generated header)
+  nirs4all-formats-cli/    # probe / read-json / scan
 bindings/
   python/  r/  wasm/  # thin language bindings (no parser logic)
 tools/reverse-lab/    # clean-room reverse-engineering helpers
@@ -97,7 +97,7 @@ tests/                # cross-crate conformance & adversarial tests
 
 The fastest way to help is to **request a format**, **send reference files**,
 **report a misread file**, or **request a binding** through the
-[issue templates](https://github.com/GBeurier/nirs4all-io/issues/new/choose).
+[issue templates](https://github.com/GBeurier/nirs4all-formats/issues/new/choose).
 Real sample files are the single biggest unblocker. See
 [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide and the rule that shapes
 everything: **parsers live only in the Rust core**.

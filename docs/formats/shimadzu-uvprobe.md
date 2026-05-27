@@ -2,7 +2,7 @@
 
 > **Status:** Supported (scoped) · **Vendor:** Shimadzu · **Extensions:** `.txt` (export); native `.spc` (planned)
 
-UVProbe is Shimadzu's UV-Vis / NIR acquisition software. nirs4all-io reads its
+UVProbe is Shimadzu's UV-Vis / NIR acquisition software. nirs4all-formats reads its
 ASCII `.txt` export through the
 [row-spectral-table reader](row-spectral-table.md). The native Shimadzu `.spc`
 container is proprietary: it shares an extension with Galactic / Thermo GRAMS SPC
@@ -21,7 +21,7 @@ A `"Spectrum Data"` title row followed by an axis-first table: a wavelength
 column and one or more sample columns. The reader auto-detects the delimiter and
 preserves the declared axis order.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signal** — one signal per sample column (e.g. `sample_s000`), axis in `nm`.
   The signal type stays `Unknown` because the export header identifies only a
@@ -38,14 +38,14 @@ preserves the declared axis order.
 
 ## Limitations & known gaps
 
-- The native `.spc` is not decoded: nirs4all-io reports only an extension-level
+- The native `.spc` is not decoded: nirs4all-formats reports only an extension-level
   candidate unless the binary matches a known Galactic / Thermo SPC header.
 - Typed signal-role detection is pending a real UVProbe export that exposes a
   measurement-mode field.
 
 ## Reference readers
 
-The `.txt` export is readable with `pandas` or R `read.table`; nirs4all-io adds
+The `.txt` export is readable with `pandas` or R `read.table`; nirs4all-formats adds
 axis detection and provenance. For the native `.spc`, candidate references such
 as `pyfasma-spc` or Shimadzu's own export converter are noted but no
 clearly-licensed fixture exists yet.

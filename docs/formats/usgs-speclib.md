@@ -4,7 +4,7 @@
 
 USGS SPECPR is the historical binary container behind the USGS Spectral Library
 (splib06/07) and related ECOSTRESS/ASTER/JHU reflectance libraries. In practice
-these libraries are most often exchanged as ASCII text, so nirs4all-io supports
+these libraries are most often exchanged as ASCII text, so nirs4all-formats supports
 the text interchange paths today; the binary SPECPR container is not yet
 decoded.
 
@@ -26,7 +26,7 @@ Three text layouts are handled, routed to the appropriate reader:
   dedicated `usgs-aref-single-column` reader, which detects the title line and
   reads the column.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Axis-first text** (via row-spectral-table) — wavelength axis in `um`, a
   `reflectance` signal and, for splib `.asc`, a standard-deviation column typed
@@ -61,7 +61,7 @@ candidates; comparisons are not yet automated.
 
 ## Samples & validation
 
-Fixtures are golden-backed in `crates/nirs4all-io/tests/goldens/`:
+Fixtures are golden-backed in `crates/nirs4all-formats/tests/goldens/`:
 `samples/specpr/asphalt_gds366.27407.asc` (splib06, 2151 points, reflectance +
 std-dev), the ECOSTRESS/ASTER text exports under `samples/envi_sli/`
 (`ecostress_a.spectrum.txt`, `ecostress_b.spectrum.txt`,

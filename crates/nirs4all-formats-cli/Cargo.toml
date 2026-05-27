@@ -1,0 +1,18 @@
+[package]
+name = "nirs4all-formats-cli"
+description = "Command-line tools for probing and validating NIRS files."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "nirs4all-formats"
+path = "src/main.rs"
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+nirs4all-formats.workspace = true
+serde_json.workspace = true

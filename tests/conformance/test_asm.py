@@ -1,11 +1,11 @@
-"""Allotrope ASM conformance: nirs4all-io vs the canonical Allotrope JSON
+"""Allotrope ASM conformance: nirs4all-formats vs the canonical Allotrope JSON
 schema.
 
 Unlike OPUS/SPC/JCAMP, Allotrope ASM ships JSON files that are themselves
 the reference encoding — the standard does not specify a runtime parser
 beyond ``json.loads``. The harness therefore walks the canonical data-
 cube schema directly and compares the numerical arrays against
-``nirs4all_io.open_records``. This is documented in
+``nirs4all_formats.open_records``. This is documented in
 ``docs/CONFORMANCE.md`` so the lighter contract is explicit.
 """
 
@@ -23,7 +23,7 @@ from conftest import (
     fixtures_under,
     load_tolerances,
     normalize_records,
-    require_nirs4all_io,
+    require_nirs4all_formats,
 )
 
 ASM_SAMPLES = fixtures_under("allotrope_asm", suffix=(".json",))
@@ -32,12 +32,12 @@ TOL = load_tolerances()["asm"]
 
 @pytest.mark.parametrize("path", ASM_SAMPLES, ids=lambda p: p.name)
 def test_asm_records_match_canonical_json(path: Path) -> None:
-    nirs = require_nirs4all_io()
+    nirs = require_nirs4all_formats()
 
     try:
         records = normalize_records(nirs.open_records(path))
     except OSError as err:
-        pytest.skip(f"{path.name}: nirs4all-io refuses fixture ({err})")
+        pytest.skip(f"{path.name}: nirs4all-formats refuses fixture ({err})")
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
@@ -69,7 +69,7 @@ def test_asm_records_match_canonical_json(path: Path) -> None:
         break
     if not matched:
         pytest.skip(
-            f"{path.name}: no nirs4all-io record matches any ASM data-cube length"
+            f"{path.name}: no nirs4all-formats record matches any ASM data-cube length"
         )
 
 

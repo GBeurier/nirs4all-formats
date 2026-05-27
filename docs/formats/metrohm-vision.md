@@ -4,7 +4,7 @@
 
 Metrohm Vision / Vision Air drives Metrohm NIR analyzers. The native project
 database is a closed binary store, but Vision Air can export results as a
-spectral matrix. nirs4all-io reads that CSV export through the generic
+spectral matrix. nirs4all-formats reads that CSV export through the generic
 [spectral-matrix reader](row-spectral-table.md); the native project DB is not
 decoded.
 
@@ -22,7 +22,7 @@ title preamble, then a header row whose numeric columns are the wavelength axis,
 preceded by sample-identifier and property columns. The delimiter is
 auto-detected.
 
-## What nirs4all-io extracts
+## What nirs4all-formats extracts
 
 - **Signal** — one `absorbance` signal per row, axis in `nm`.
 - **Targets** — early numeric property columns (e.g. `protein`, `moisture`,
@@ -51,7 +51,7 @@ auto-detected.
 ## Reference readers
 
 Vision Air CSV exports are equally readable with `pandas` or a plain text
-parser; nirs4all-io adds axis detection, signal typing, target promotion and
+parser; nirs4all-formats adds axis detection, signal typing, target promotion and
 provenance. No open reader exists for the native project database.
 
 ## Samples & validation
