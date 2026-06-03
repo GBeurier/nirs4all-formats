@@ -28,12 +28,15 @@ console_error_panic_hook = { version = "0.1", optional = true }
 hdf5-reader = { git = "https://github.com/roteiro-gis/netcdf-rust", rev = "f0cdd2f0dbd2c6a036fc18cc4ae58d4072d7cb0b" }
 
 [features]
-default = ["fmt-hdf5"]
-# HDF5/NetCDF-backed readers (generic HDF5, FGI XML+HDF5, NetCDF MFRSR,
-# Allotrope ADF) for the WASM build. Relies on the upstream
-# `read_exact_at` wasm fix pulled by the `[patch.crates-io]` above.
-# `fmt-matlab` / `fmt-parquet` stay off (no wasm-side need yet).
+# Every reader family is available in the WASM build now that the core uses
+# pure-Rust compression (lzma-rs for RData, pure-Rust snappy for Parquet). HDF5
+# relies on the upstream `read_exact_at` wasm fix in `[patch.crates-io]` above;
+# `fmt-matlab` needs `fmt-hdf5` (MAT v7.3 is an HDF5 container). zstd-compressed
+# Parquet is the only variant that does not decode in wasm.
+default = ["fmt-hdf5", "fmt-matlab", "fmt-parquet"]
 fmt-hdf5 = ["nirs4all-formats/fmt-hdf5"]
+fmt-matlab = ["nirs4all-formats/fmt-matlab"]
+fmt-parquet = ["nirs4all-formats/fmt-parquet"]
 console-errors = ["dep:console_error_panic_hook"]
 
 [profile.release]

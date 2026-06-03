@@ -55,8 +55,8 @@ pub fn version() -> String {
 pub fn features() -> Result<JsValue, JsError> {
     let flags = FeatureFlags {
         hdf5: cfg!(feature = "fmt-hdf5"),
-        matlab: false,
-        parquet: false,
+        matlab: cfg!(feature = "fmt-matlab"),
+        parquet: cfg!(feature = "fmt-parquet"),
     };
     flags
         .serialize(&js_serializer())

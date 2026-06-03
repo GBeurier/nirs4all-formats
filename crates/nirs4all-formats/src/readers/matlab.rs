@@ -12,7 +12,6 @@ use nirs4all_formats_core::{
 };
 use rds2rust::{DataFrameData, ParseConfig, RObject, VectorData};
 use serde_json::{json, Value};
-use xz2::read::XzDecoder;
 
 use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
@@ -125,10 +124,10 @@ fn read_inner(
 
 fn read_rdata(bytes: &[u8], source: SourceFile, reader: &str) -> Result<Vec<SpectralRecord>> {
     let (decompressed, container) = if bytes.starts_with(XZ_MAGIC) {
-        let mut decoder = XzDecoder::new(bytes);
+        // Pure-Rust XZ decode (lzma-rs) so the MATLAB/RData reader works in the
+        // wasm32 build, where the C liblzma binding (`xz2`) cannot compile.
         let mut out = Vec::new();
-        decoder
-            .read_to_end(&mut out)
+        lzma_rs::xz_decompress(&mut std::io::Cursor::new(bytes), &mut out)
             .map_err(|error| Error::InvalidRecord(format!("RData XZ decode error: {error}")))?;
         (out, "rdata_rdx3_xz")
     } else {
