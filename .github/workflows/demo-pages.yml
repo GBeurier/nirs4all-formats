@@ -1,0 +1,89 @@
+name: demo-pages
+
+# Build the WebAssembly demo (demo/) and publish it to GitHub Pages.
+# Pages must be enabled once: repo Settings → Pages → Source: GitHub Actions.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "demo/**"
+      - "bindings/wasm/**"
+      - "crates/**"
+      - ".github/workflows/demo-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment; don't cancel an in-progress run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (wasm32 target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: latest
+
+      - name: Generate formats table from FORMAT_MATRIX.md
+        run: python3 demo/gen_formats.py
+
+      - name: Build wasm bundle → demo/pkg (served version)
+        run: |
+          wasm-pack build bindings/wasm \
+            --target web --release \
+            --out-dir "$GITHUB_WORKSPACE/demo/pkg" \
+            --features console-errors
+
+      - name: Build standalone single-file HTML (file:// version)
+        run: |
+          wasm-pack build bindings/wasm \
+            --target no-modules --release \
+            --out-dir "$GITHUB_WORKSPACE/demo/pkg-nomod" \
+            --features console-errors
+          python3 demo/build_standalone.py
+
+      - name: Assemble site
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          cp -r demo/. _site/
+          touch _site/.nojekyll
+          # wasm-pack drops a pkg/.gitignore that would exclude the bundle from
+          # the Pages artifact; remove it so pkg/ ships.
+          rm -f _site/pkg/.gitignore _site/pkg-nomod/.gitignore
+          # the no-modules pkg is only an input to the standalone file; don't ship it.
+          rm -rf _site/pkg-nomod
+          ls -R _site | head -50
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

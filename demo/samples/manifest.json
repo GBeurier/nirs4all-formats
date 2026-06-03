@@ -1,0 +1,61 @@
+{
+  "note": "Redistributable conformance fixtures from the nirs4all-formats `samples/` tree. Each is decoded entirely in your browser by the WebAssembly build of the Rust reader registry.",
+  "samples": [
+    {
+      "file": "synthetic_nirs.csv",
+      "label": "CSV / TSV",
+      "format": "delimited-text",
+      "blurb": "50 synthetic NIR absorbance spectra, 1100–2500 nm",
+      "accent": "teal"
+    },
+    {
+      "file": "PE1800.DX",
+      "label": "JCAMP-DX",
+      "format": "jcamp-dx",
+      "blurb": "FT-IR transmittance, 4000–700 cm⁻¹",
+      "accent": "cyan"
+    },
+    {
+      "file": "fieldspec_vnir.asd",
+      "label": "ASD FieldSpec",
+      "format": "asd-fieldspec",
+      "blurb": "VNIR/SWIR FieldSpec scan, 350–2500 nm raw DN",
+      "accent": "amber"
+    },
+    {
+      "file": "nir.spc",
+      "label": "Galactic SPC",
+      "format": "galactic-spc",
+      "blurb": "20 Kubelka–Munk NIR spectra, 1100–2498 nm",
+      "accent": "indigo"
+    },
+    {
+      "file": "opus_ftir.0",
+      "label": "Bruker OPUS",
+      "format": "bruker-opus",
+      "blurb": "FT-IR block file — 6 channels (absorbance, single-beam, interferograms, phase)",
+      "accent": "teal"
+    },
+    {
+      "file": "spectra.sp",
+      "label": "PerkinElmer SP",
+      "format": "perkin-elmer-sp",
+      "blurb": "FT-IR absorbance, 4000–700 cm⁻¹",
+      "accent": "cyan"
+    },
+    {
+      "file": "synthetic_nirs.h5",
+      "label": "HDF5",
+      "format": "hdf5-nirs-container",
+      "blurb": "50 samples × 2 channels — decoded by HDF5-in-WASM",
+      "accent": "green"
+    },
+    {
+      "file": "synthetic.dpt",
+      "label": "Bruker DPT",
+      "format": "bruker-dpt",
+      "blurb": "Plain data-point-table absorbance export",
+      "accent": "amber"
+    }
+  ]
+}

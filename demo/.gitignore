@@ -1,0 +1,8 @@
+pkg/
+pkg-nomod/
+pkg-node/
+_selftest*.html
+_shot*.html
+*.png
+# generated single-file build (large; regenerate with build_standalone.py / CI)
+nirs4all-formats-demo.html
