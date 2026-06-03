@@ -10,6 +10,7 @@ the demo (like the rest of this MIT crate) keeps clear of GPL material.
 |---|---|---|---|
 | `synthetic_nirs.csv` | delimited-text | Generated for this project | CC0 |
 | `synthetic_nirs.h5` | hdf5-nirs | Generated for this project | CC0 |
+| `synthetic_nirs_v5.mat` | matlab-mat-v5 | Generated for this project | CC0 |
 | `synthetic.dpt` | bruker-dpt | Generated for this project | CC0 |
 | `PE1800.DX` | jcamp-dx | IUPAC JCAMP-DX.org official test data, via [`nzhagen/jcamp`](https://github.com/nzhagen/jcamp) | MIT |
 | `nir.spc` | galactic-spc | [`cheminfo/spc-parser`](https://github.com/cheminfo/spc-parser) | MIT |

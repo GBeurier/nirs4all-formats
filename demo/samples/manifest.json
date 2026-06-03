@@ -51,6 +51,13 @@
       "accent": "green"
     },
     {
+      "file": "synthetic_nirs_v5.mat",
+      "label": "MATLAB",
+      "format": "matlab-mat-v5",
+      "blurb": "MAT v5 dataset — decoded by pure-Rust MATLAB-in-WASM",
+      "accent": "indigo"
+    },
+    {
       "file": "synthetic.dpt",
       "label": "Bruker DPT",
       "format": "bruker-dpt",
