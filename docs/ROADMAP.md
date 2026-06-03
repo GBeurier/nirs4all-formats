@@ -70,7 +70,13 @@ Deliverables:
   local-only rapid-scan raw/reprocessed `.srs`; `.srsx` and broader high-speed
   variants still pending;
 - Perkin Elmer Spectrum / IR reader; experimental for single-spectrum `.sp`
-  `PEPE` block files, with `.fsm` imaging refused for v1;
+  `PEPE` block files (including Spectrum 10 FT-MIR exports with trailing audit
+  blocks), with `.fsm` imaging refused for v1;
+- FOSS NIRSystems / ISIscan / WinISI native reader; experimental for `.cal`
+  (spectra + constituents) and `.nir` (spectra-only) binaries, sniffed by header
+  signature, validated against the ISIscan `.txt` exports;
+- VIAVI / JDSU MicroNIR native reader; experimental for the `.sam` `MNIR`
+  container (125 absorbance channels + 128 raw single-beam pixels);
 - BUCHI NIRCal reader; experimental for the committed `NIRCAL Project File`
   spectra, wavenumber, project identity, replicate metadata and property-target
   sections, plus per-spectrum `Spectra Info` metadata, with a redistributable
@@ -218,8 +224,9 @@ Add one family at a time:
   objective/hardware-branch metadata and later Renishaw WDF `MAP ` layout
   variants if additional derived analysis maps become part of the export model;
 - harden AnIML XML and Allotrope ASM JSON beyond the initial spectral fixtures;
-- Foss/Metrohm/Perten native formats as fixtures and reverse-engineering
-  evidence become available;
+- Foss native `.DA`/`.eqa` and Metrohm/Perten native formats as fixtures and
+  reverse-engineering evidence become available (Foss `.cal`/`.nir` are now
+  decoded; redistributable native fixtures are still wanted);
 - adjacent formats only when they help disambiguation or user workflows.
 
 Every new format repeats the same lifecycle: Experimental -> Beta -> Done.

@@ -5537,6 +5537,137 @@ fn refuses_witec_wip_binary_projects() {
     }
 }
 
+#[test]
+fn reads_foss_winisi_native_cal_synthetic() {
+    let records =
+        open_path(workspace_file("samples/foss_winisi/synthetic.cal")).expect("open WinISI .cal");
+    assert_eq!(records.len(), 2);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "foss-winisi-cal");
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 6);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.axis.order, AxisOrder::Ascending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert!((absorbance.axis.values[0] - 1000.0).abs() < 1e-6);
+    assert!((absorbance.axis.values[5] - 1014.0).abs() < 1e-6);
+    // Constituent reference values become per-record targets.
+    assert!((record.targets["moisture"].as_f64().unwrap() - 8.25).abs() < 1e-4);
+    assert!((record.targets["protein"].as_f64().unwrap() - 12.5).abs() < 1e-4);
+    assert_eq!(records[1].targets["moisture"].as_f64(), Some(7.75));
+}
+
+#[test]
+fn reads_local_foss_winisi_native_cal_matches_text_export() {
+    // The real ISIscan `.cal` is private; its decoded spectrum and constituent
+    // values are validated here against the paired `.txt` export numbers.
+    let path = workspace_file("samples_local/foss_winisi/yamtot_2026.cal");
+    if !path.exists() {
+        eprintln!("skipping local-only FOSS WinISI yamtot sample");
+        return;
+    }
+    let records = open_path(path).expect("open local WinISI .cal");
+    assert_eq!(records.len(), 18);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "foss-winisi-cal");
+    assert_eq!(record.metadata["sample_number"].as_str(), Some("416763"));
+    assert_eq!(record.metadata["product_code"].as_u64(), Some(25108));
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 1_050);
+    assert!((absorbance.axis.values[0] - 400.0).abs() < 1e-6);
+    assert!((absorbance.axis.values[1_049] - 2498.0).abs() < 1e-6);
+    // Spectrum and constituents match yamtot_2026.txt row 1 (f32 precision).
+    assert!((absorbance.values[0] - 0.736_969_6).abs() < 1e-5);
+    assert!((absorbance.values[1_049] - 0.425_638_9).abs() < 1e-5);
+    assert!((record.targets["cdpcms"].as_f64().unwrap() - 41.729_999).abs() < 1e-4);
+    assert!((record.targets["ndpcms"].as_f64().unwrap() - 3.06).abs() < 1e-4);
+}
+
+#[test]
+fn reads_viavi_micronir_native_sam_synthetic() {
+    let records = open_path(workspace_file(
+        "samples/viavi_micronir/synthetic_micronir.sam",
+    ))
+    .expect("open MicroNIR .sam");
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "viavi-micronir-sam");
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.axis.values.len(), 5);
+    // The raw single-beam pixels are exposed as a second, index-axis signal.
+    let raw = record
+        .signals
+        .get("raw_single_beam")
+        .expect("raw_single_beam");
+    assert_eq!(raw.axis.kind, AxisKind::Index);
+    assert_eq!(raw.signal_type, SignalType::SingleBeam);
+}
+
+#[test]
+fn reads_local_viavi_micronir_native_sam() {
+    let path =
+        workspace_file("samples_local/viavi_micronir/COT26A001/COT26A001_1_12052026T094104.sam");
+    if !path.exists() {
+        eprintln!("skipping local-only VIAVI MicroNIR sample");
+        return;
+    }
+    let records = open_path(path).expect("open local MicroNIR .sam");
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(
+        record.metadata["instrument_serial"].as_str(),
+        Some("N1-00281")
+    );
+    assert_eq!(record.metadata["channel_count"].as_u64(), Some(125));
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 125);
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert!((absorbance.axis.values[0] - 908.1).abs() < 0.05);
+    assert!((absorbance.axis.values[124] - 1676.2).abs() < 0.05);
+    // 128 raw detector pixels behind the 125 calibrated wavelengths.
+    let raw = record
+        .signals
+        .get("raw_single_beam")
+        .expect("raw_single_beam");
+    assert_eq!(raw.axis.values.len(), 128);
+}
+
+#[test]
+fn reads_perkin_elmer_sp_with_trailing_block_synthetic() {
+    let records = open_path(workspace_file("samples/perkin_elmer/synthetic_trailing.sp"))
+        .expect("open PerkinElmer .sp with trailing block");
+    assert_eq!(records.len(), 1);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "perkin-elmer-sp");
+    let signal = record.signals.values().next().expect("signal");
+    assert_eq!(signal.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(signal.axis.unit, "cm-1");
+}
+
+#[test]
+fn reads_local_perkin_elmer_mir_sp_matches_csv_export() {
+    let path = workspace_file("samples_local/perkin_elmer/426475_1.sp");
+    if !path.exists() {
+        eprintln!("skipping local-only PerkinElmer MIR sample");
+        return;
+    }
+    let records = open_path(path).expect("open local PerkinElmer MIR .sp");
+    assert_eq!(records.len(), 1);
+    let absorbance = records[0].signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert_eq!(absorbance.axis.values.len(), 3_551);
+    assert!((absorbance.axis.values[0] - 4000.0).abs() < 1e-6);
+    assert!((absorbance.axis.values[3_550] - 450.0).abs() < 1e-6);
+    // First ordinate matches 426475_1.csv (cm-1;A) to export precision.
+    assert!((absorbance.values[0] - 0.0305).abs() < 1e-3);
+}
+
 fn asd_metadata(relative: &str) -> Value {
     let records = open_path(workspace_file(relative)).unwrap_or_else(|err| {
         panic!("open {relative}: {err}");

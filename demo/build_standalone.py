@@ -47,10 +47,11 @@ def main() -> int:
 
     samples = {}
     for s in manifest["samples"]:
-        f = HERE / "samples" / s["file"]
-        if not f.exists():
-            sys.exit(f"sample missing: {f}")
-        samples[s["file"]] = b64(f)
+        for name in [s["file"], *s.get("sidecars", [])]:
+            f = HERE / "samples" / name
+            if not f.exists():
+                sys.exit(f"sample missing: {f}")
+            samples[name] = b64(f)
 
     formats_path = HERE / "formats.json"
     formats = json.loads(formats_path.read_text()) if formats_path.exists() else None

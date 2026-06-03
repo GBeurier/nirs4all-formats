@@ -45,13 +45,25 @@ async function getManifest() {
 }
 
 async function sampleFile(name) {
+  const logicalName = String(name);
+  const fileName = fileBaseName(logicalName);
   if (EMBED) {
-    const b64 = EMBED.samples[name];
-    if (!b64) throw new Error(`unknown sample: ${name}`);
-    return new File([b64ToBytes(b64)], name);
+    const b64 = EMBED.samples[logicalName];
+    if (!b64) throw new Error(`unknown sample: ${logicalName}`);
+    const file = new File([b64ToBytes(b64)], fileName);
+    file.n4fName = logicalName;
+    return file;
   }
-  const buf = await (await fetch(`./samples/${name}`)).arrayBuffer();
-  return new File([buf], name);
+  const buf = await (await fetch(`./samples/${logicalName}`)).arrayBuffer();
+  const file = new File([buf], fileName);
+  file.n4fName = logicalName;
+  return file;
+}
+
+async function sampleFiles(sample) {
+  const entry = typeof sample === "string" ? { file: sample } : sample;
+  const names = [entry.file, ...(entry.sidecars || [])];
+  return Promise.all(names.map(sampleFile));
 }
 
 async function getFormats() {
@@ -124,7 +136,7 @@ let wasmReady = null;
   }).catch((e) => {
     results.classList.add("show");
     results.innerHTML = statusError("WebAssembly failed to load", String(e),
-      EMBED ? "" : "When opening the file directly, use the standalone single-file build (or serve this folder over http) — ES-module WASM cannot load from a <code>file://</code> path.");
+      EMBED ? "" : "Open <code>demo/nirs4all-formats-demo.html</code> instead: it embeds the WASM and samples, so no server is needed.");
   });
 })();
 
@@ -135,8 +147,12 @@ async function maybeAutoLoad() {
   if (!m) return;
   const file = decodeURIComponent(m[1]);
   try {
-    run([await sampleFile(file)]);
-  } catch (_) { /* unknown sample name — ignore */ }
+    const man = await getManifest();
+    const sample = man.samples.find((s) => s.file === file) || { file };
+    run(await sampleFiles(sample));
+  } catch (_) {
+    try { run([await sampleFile(file)]); } catch (_) { /* unknown sample name — ignore */ }
+  }
 }
 
 /* ── dropzone wiring ─────────────────────────────────────────────────── */
@@ -186,7 +202,7 @@ async function loadSamples() {
       chip.addEventListener("click", async (e) => {
         e.stopPropagation();
         try {
-          run([await sampleFile(s.file)]);
+          run(await sampleFiles(s));
         } catch (err) {
           showResult(statusError("Could not load sample", String(err)));
         }
@@ -194,7 +210,7 @@ async function loadSamples() {
       host.appendChild(chip);
     }
   } catch (_) {
-    host.innerHTML = `<span class="leg-note">Bundled samples unavailable (serve over http to enable).</span>`;
+    host.innerHTML = `<span class="leg-note">Bundled samples unavailable here. Open the standalone HTML to use them without a server.</span>`;
   }
 }
 
@@ -285,7 +301,7 @@ async function run(files) {
   try {
     // a file may be dropped before the wasm module has finished loading
     await wasmReady;
-    const bufs = await Promise.all(files.map(async (f) => ({ name: f.name, bytes: new Uint8Array(await f.arrayBuffer()), size: f.size })));
+    const bufs = await Promise.all(files.map(async (f) => ({ name: fileLogicalName(f), bytes: new Uint8Array(await f.arrayBuffer()), size: f.size })));
 
     // Partition the dropped files into datasets: sidecar sets (ENVI .img+.hdr,
     // FGI .xml+.h5, …) are grouped; everything else is an independent dataset.
@@ -309,8 +325,33 @@ async function run(files) {
 }
 
 /* split a dropped file list into datasets, grouping sidecar sets by stem */
-const stemOf = (n) => { const b = n.replace(/^.*[\\/]/, ""); const d = b.lastIndexOf("."); return (d > 0 ? b.slice(0, d) : b).toLowerCase(); };
+const fileBaseName = (n) => String(n || "").replace(/^.*[\\/]/, "");
+const fileLogicalName = (f) => f.n4fName || f.webkitRelativePath || f.name;
+const stemOf = (n) => { const b = fileBaseName(n); const d = b.lastIndexOf("."); return (d > 0 ? b.slice(0, d) : b).toLowerCase(); };
 const extOf = (n) => { const m = /\.([^.\\/]+)$/.exec(n); return m ? m[1].toLowerCase() : ""; };
+const dirOf = (n) => {
+  const s = String(n || "").replace(/\\/g, "/");
+  const i = s.lastIndexOf("/");
+  return i >= 0 ? s.slice(0, i + 1) : "";
+};
+const withExtCase = (n, fn) => {
+  const s = String(n || "");
+  return s.replace(/\.([^.\\/]+)$/, (_, ext) => "." + fn(ext));
+};
+function sidecarKeyAliases(name, primaryName) {
+  const raw = String(name || "");
+  const primaryDir = dirOf(primaryName);
+  const rel = primaryDir && raw.replace(/\\/g, "/").startsWith(primaryDir)
+    ? raw.replace(/\\/g, "/").slice(primaryDir.length)
+    : raw;
+  const base = fileBaseName(raw);
+  const out = new Set([raw, rel, base]);
+  for (const key of [raw, rel, base]) {
+    out.add(withExtCase(key, (ext) => ext.toLowerCase()));
+    out.add(withExtCase(key, (ext) => ext.toUpperCase()));
+  }
+  return [...out].filter(Boolean);
+}
 function looksLikeSidecarSet(exts) {
   const s = new Set(exts);
   if (s.has("hdr")) return true;                                       // ENVI standard / ENVI SLI
@@ -320,9 +361,35 @@ function looksLikeSidecarSet(exts) {
   return false;
 }
 function groupFiles(files) {
-  const byStem = new Map();
-  for (const f of files) { const k = stemOf(f.name); if (!byStem.has(k)) byStem.set(k, []); byStem.get(k).push(f); }
+  const used = new Set();
   const groups = [];
+
+  // ERDAS LAN / AVIRIS uses a same-stem wavelength sidecar
+  // (`92AV3C.spc`) plus, for the classic fixture, a different-stem
+  // ground-truth sidecar (`92AV3GT.GIS`).
+  for (const f of files) {
+    if (used.has(f) || extOf(f.name) !== "lan") continue;
+    const stem = stemOf(f.name);
+    const g = [f];
+    used.add(f);
+    for (const other of files) {
+      if (used.has(other)) continue;
+      const ext = extOf(other.name);
+      if ((ext === "spc" && stemOf(other.name) === stem) || ext === "gis") {
+        g.push(other);
+        used.add(other);
+      }
+    }
+    groups.push(g);
+  }
+
+  const byStem = new Map();
+  for (const f of files) {
+    if (used.has(f)) continue;
+    const k = stemOf(f.name);
+    if (!byStem.has(k)) byStem.set(k, []);
+    byStem.get(k).push(f);
+  }
   for (const g of byStem.values()) {
     if (g.length > 1 && looksLikeSidecarSet(g.map((f) => extOf(f.name)))) groups.push(g);
     else for (const f of g) groups.push([f]); // independent files → separate datasets
@@ -350,8 +417,12 @@ function decodeGroup(bufs) {
   } catch (e) {
     const needsSidecar = bufs.length > 1 || /sidecar/i.test(String(e?.message || e));
     if (!needsSidecar) throw e;
+    if (bufs.length <= 1) throw e;
     const side = {};
-    for (const b of bufs) if (b !== primary) side[b.name] = b.bytes;
+    for (const b of bufs) {
+      if (b === primary) continue;
+      for (const key of sidecarKeyAliases(b.name, primary.name)) side[key] = b.bytes;
+    }
     records = WASM.openWithSidecars(primary.name, primary.bytes, side);
   }
   if (!Array.isArray(records) || records.length === 0) throw new Error("The reader returned an empty result.");
@@ -359,6 +430,8 @@ function decodeGroup(bufs) {
 }
 
 function hintFor(msg) {
+  if (/92AV3C\.spc|ERDAS LAN|AVIRIS/i.test(msg))
+    return "This AVIRIS/ERDAS LAN cube needs its companions. Drop <code>92AV3C.lan</code> together with <code>92AV3C.spc</code>; add <code>92AV3GT.GIS</code> if you want ground-truth labels.";
   if (/sidecar|missing ENVI binary|companion|next to/i.test(msg))
     return "This is a <b>multi-file format</b>. Drop the data file together with its sidecar(s) — e.g. ENVI <code>.img</code> + <code>.hdr</code>, or FGI <code>.xml</code> + <code>.h5</code>.";
   if (/parquet (batch|argument) error|zstd/i.test(msg))

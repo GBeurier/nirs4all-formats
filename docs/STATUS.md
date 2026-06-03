@@ -1,6 +1,28 @@
 # Project Status
 
-Last updated: 2026-05-27.
+Last updated: 2026-06-03.
+
+> 2026-06-03 — **Three native NIRS binary readers added/extended** (one agent per
+> format, each validated against ground truth). New `foss_winisi` reader decodes
+> FOSS NIRSystems / ISIscan / WinISI `.cal` (spectra + constituents) and `.nir`
+> (spectra-only) — one record per sample with constituent reference values as
+> targets — sniffed by header signature (mot de version + `ISIscan`/`NIRSystems`),
+> never by extension, which resolves the `.nir` collision with BUCHI NIRCal;
+> validated against the ISIscan `.txt` exports to float32 precision (yamtot 18
+> samples, ando4 20/9 constituents, D2026 18/5, yamtot.nir 16/0). New
+> `viavi_micronir` reader decodes the Viavi/JDSU MicroNIR `.sam` (`MNIR` .NET
+> container) into 125 absorbance channels (interpolated `nm` axis ~908.1-1676.2) +
+> 128 raw single-beam pixels, with the `\x04MNIR` Definite sniff resolving its
+> former Galactic-SPC false positive. The `perkin_elmer` reader was extended to
+> tolerate the trailing audit/CustomColumn blocks that Spectrum 10 FT-MIR `.sp`
+> exports append after the root block (31 real files validated vs their CSV
+> exports to ~5e-5) and hardened against malformed input (negative point count
+> rejected, block recursion depth-capped — no panics). Reviewed by an adversarial
+> multi-agent pass (0 bugs on the two new readers; 2 pre-existing PerkinElmer
+> robustness bugs found and fixed) and by `codex review`. Real vendor fixtures are
+> local-only under `samples_local/` (licence TBD, gitignored); committed CC0
+> synthetic goldens (`synthetic.cal`, `synthetic_micronir.sam`,
+> `synthetic_trailing.sp`) cover CI. Full green gate re-run below.
 
 > 2026-05-27 — **Renamed `nirs4all-io` → `nirs4all-formats`** (Phase 0 of the
 > formats/io redesign, distinct from this repo's internal roadmap phases). All
@@ -37,6 +59,13 @@ Experimental native readers:
 - spectral matrix exports with one spectrum per row: Foss/WinISI text, real
   Foss XDS CSV, AuroraNIR handheld CSV, OSSL NeoSpectra wide CSV, Metrohm Vision
   Air CSV and VIAVI MicroNIR CSV fixtures;
+- native vendor binaries: FOSS NIRSystems / ISIscan / WinISI `.cal`/`.nir`
+  (`foss_winisi`, one record per sample with constituent targets, sniffed by
+  header signature to avoid the BUCHI `.nir` collision), Viavi/JDSU MicroNIR
+  `.sam` (`viavi_micronir`, 125 absorbance channels + 128 raw single-beam pixels)
+  and PerkinElmer Spectrum 10 FT-MIR `.sp` with trailing audit blocks
+  (`perkin_elmer`); real fixtures are local-only, CI uses committed CC0 synthetic
+  goldens;
 - sun photometer channel exports: MFR `.OUT`, local ARM MFRSR b1 NetCDF with
   optional ARM QC YAML sidecar ranges, Microtops `.TXT`, the committed
   Microtops MAN NetCDF AOT fixture with typed aerosol-optical-thickness
@@ -275,9 +304,14 @@ and exposes:
 
 ## Last Green Gate
 
-Green locally on 2026-05-27 (post rename `nirs4all-io` → `nirs4all-formats`; all
-steps below re-run green: fmt, 259 tests, clippy, no-default + wasm builds, per-binding
-clippy, Python 27 tests, R 23 pass/2 skip, node WASM smoke+sidecars, Sphinx `-W`, C ABI):
+Green locally on 2026-06-03 (after adding the native `foss_winisi`, `viavi_micronir`
+and FT-MIR `perkin_elmer` readers): fmt clean, **274 tests** (was 259; +3 probe,
++6 reader incl. local-only real-corpus checks, +1 PerkinElmer recursion-cap unit
+test, +5 new reader unit tests), clippy `-D warnings` clean, no-default + wasm32
+builds, three new committed goldens (`foss_winisi_native_cal`,
+`viavi_micronir_native_sam`, `perkin_elmer_sp_synthetic_trailing`), Sphinx `-W`
+green, `git diff --check` clean. The Rust readers carry no parser logic into the
+bindings, which read the new formats through the unchanged registry path:
 
 ```bash
 . "$HOME/.cargo/env"
@@ -318,6 +352,11 @@ Immediate next work:
 3. continue the open-reader-backed binary batch in this order: OMNIC `.srsx`
    and high-speed variants beyond local SpectroChemPy samples, redistributable
    BUCHI NIRCal non-null target fixtures and `.cal`/NIRMaster variants;
+   (**2026-06-03 DONE for this batch**: native FOSS WinISI `.cal`/`.nir`, Viavi
+   MicroNIR `.sam`, and PerkinElmer Spectrum 10 FT-MIR `.sp` trailing blocks —
+   real fixtures local-only, CC0 synthetic goldens in CI; still want
+   redistributable native fixtures and the FOSS `.DA`/`.eqa` + MicroNIR `.pri`
+   variants);
 4. **DONE (M2, 2026-05-23)** — external reference-reader conformance
    harness under `tests/conformance/`: `brukeropus` for OPUS,
    `spc-spectra` for SPC, `jcamp` for JCAMP-DX, `spectrolab` (R,

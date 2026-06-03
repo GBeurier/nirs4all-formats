@@ -7,6 +7,10 @@ Proprietary binary. `.sp` = single spectrum, `.fsm` = imaging (Spotlight FT-IR m
 | File | Type | Size | Source | License | Notes |
 |---|---|---|---|---|---|
 | `spectra.sp` | `.sp` single | 27 KB | [`paris-saclay-cds/specio@master/specio/datasets/data/spectra.sp`](https://github.com/paris-saclay-cds/specio/blob/master/specio/datasets/data/spectra.sp) | BSD-3-Clause | The reference test fixture used by `specio`'s PE reader tests. |
+| `synthetic_trailing.sp` | `.sp` single | 294 B | Generated locally | CC0 | Synthetic PEPE `.sp` with a trailing top-level block after the root; locks in the trailing-block tolerance for the `perkin_elmer` reader. |
+
+The real FT-MIR `.sp` + paired `.csv` corpus lives in `samples_local/perkin_elmer/`
+(local-only, licence TBD).
 
 ## Parser hints
 

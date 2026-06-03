@@ -23,6 +23,11 @@ block sequences. Data-bearing blocks are tagged: f64 pair (`0x751d`), single f64
 ordinate array, axis bounds, step and point count are read from their specific
 block ids and tags.
 
+Newer Spectrum 10 FT-MIR exports append one or more trailing top-level blocks
+after the DataSet root block (e.g. a `CustomColumn` audit/history block, ~187
+bytes). These siblings are tolerated: the reader records them structurally and
+keeps reading from the canonical root block, so the spectral data is unaffected.
+
 ## What nirs4all-formats extracts
 
 - **Signals** — one `SpectralRecord` per file with the f64 ordinate array. The
@@ -36,13 +41,16 @@ block ids and tags.
   source type, beam splitter, apodization, measurement / processing / ordinate
   modes, accessory, ratio mode and scan date when present.
 - **Provenance & warnings** — a `perkin_elmer_reverse_engineered_blocks` warning,
-  source file and SHA-256.
+  source file and SHA-256. Files that carry trailing top-level blocks after the
+  root also raise `perkin_elmer_reverse_engineered_trailing_blocks` (the audit
+  block is recorded structurally but its content is not surfaced).
 
 ## Variants & support status
 
 | Variant | Status | Notes |
 |---|---|---|
 | `.sp` Spectrum single spectrum | Supported | Typed block table, f64 ordinate array, rich instrument metadata. |
+| FT-MIR `.sp` (Spectrum 10, trailing audit blocks) | Supported | Same single-spectrum path; trailing top-level audit/`CustomColumn` blocks after the root are tolerated as siblings and flagged with `perkin_elmer_reverse_engineered_trailing_blocks`. |
 | `.fsm` Spotlight imaging | Detected / refused | Recognised by the `PEPE` magic and `.fsm` extension, then refused with a clear unsupported-imaging error rather than misread as a 1D spectrum. |
 | PE NIR / Lambda variants | Planned | Need sample-backed validation. |
 
@@ -52,7 +60,13 @@ block ids and tags.
   never interpreted as a single spectrum.
 - The committed `.sp` fixture carries a footer whose scan range disagrees with
   the typed axis blocks; the reader treats the typed blocks as canonical and
-  leaves the footer text for future reverse-engineering.
+  leaves the footer text for future reverse-engineering. Likewise, the trailing
+  top-level audit/`CustomColumn` blocks of Spectrum 10 FT-MIR exports are
+  recorded structurally only — their content is left for future
+  reverse-engineering and flagged with
+  `perkin_elmer_reverse_engineered_trailing_blocks`.
+- Malformed input yields clean errors, never a panic: a negative point count is
+  rejected and container-block recursion is depth-capped.
 - PE NIR / Lambda variants are not yet sample-backed. A future split of `.sp`
   from `.fsm` would let the `.sp` scope be promoted on its own.
 
@@ -65,6 +79,13 @@ format.
 
 The real `specio` fixture `samples/perkin_elmer/spectra.sp` (1 record, `cm-1`,
 3301 points, `absorbance` with unit `A`) is golden-backed and exercised by a
-direct semantic test. The probe reports `perkin-elmer-sp` at
-`Confidence::Definite`, and `perkin-elmer-fsm` (also `Definite`) for the
-recognised-but-refused imaging variant.
+direct semantic test. The synthetic fixture
+`samples/perkin_elmer/synthetic_trailing.sp` carries a trailing top-level block
+after the root and is golden-backed to lock in the trailing-block tolerance. The
+probe reports `perkin-elmer-sp` at `Confidence::Definite`, and `perkin-elmer-fsm`
+(also `Definite`) for the recognised-but-refused imaging variant.
+
+The local-only FT-MIR corpus under `samples_local/perkin_elmer/` (31 `.sp` with
+paired `cm-1;Absorbance` CSV exports, private, licence TBD) was validated: every
+`.sp` parses to a descending `cm-1` axis (4000→450, 3551 points) and matches its
+paired CSV to export precision (~5e-5).

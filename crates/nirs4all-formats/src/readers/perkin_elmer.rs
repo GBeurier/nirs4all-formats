@@ -16,6 +16,9 @@ const DESCRIPTION_OFFSET: usize = 4;
 const DESCRIPTION_LEN: usize = 40;
 const ROOT_BLOCK_OFFSET: usize = 44;
 const BLOCK_HEADER_LEN: usize = 6;
+/// Cap on container-block nesting. Real PE files nest only a few levels; this
+/// guards a crafted chain of container blocks from overflowing the stack.
+const MAX_BLOCK_DEPTH: usize = 64;
 
 const TAG_F64_PAIR: u16 = 0x751d;
 const TAG_F64: u16 = 0x751b;
@@ -111,7 +114,7 @@ fn parse_perkin_elmer_sp(
             "missing Perkin Elmer PEPE header".to_string(),
         ));
     }
-    let blocks = parse_blocks(bytes)?;
+    let (blocks, has_trailing_blocks) = parse_blocks(bytes)?;
     let payload = parse_sp_payload(bytes, &blocks)?;
     let axis_values = axis_values(
         payload.first_x,
@@ -128,6 +131,11 @@ fn parse_perkin_elmer_sp(
             signal_type
         };
     let signal_name = safe_signal_name(&payload.signal_label, "signal");
+
+    let mut warnings = vec!["perkin_elmer_reverse_engineered_blocks".to_string()];
+    if has_trailing_blocks {
+        warnings.push("perkin_elmer_reverse_engineered_trailing_blocks".to_string());
+    }
 
     let mut metadata = metadata_from_blocks(bytes, &blocks);
     metadata.insert("description".to_string(), json!(description(bytes)));
@@ -152,7 +160,7 @@ fn parse_perkin_elmer_sp(
         },
         BTreeMap::new(),
         metadata,
-        vec!["perkin_elmer_reverse_engineered_blocks".to_string()],
+        warnings,
     )?;
     Ok(vec![record])
 }
@@ -162,7 +170,9 @@ fn parse_sp_payload(bytes: &[u8], blocks: &[Block]) -> Result<SpPayload> {
     let (signal_min, signal_max) =
         f64_pair(bytes, find_typed_block(bytes, blocks, 35699, TAG_F64_PAIR)?)?;
     let step = f64_value(bytes, find_typed_block(bytes, blocks, 35700, TAG_F64)?)?;
-    let n_points = i32_value(bytes, find_typed_block(bytes, blocks, 35701, TAG_I32)?)? as usize;
+    let n_points = i32_value(bytes, find_typed_block(bytes, blocks, 35701, TAG_I32)?)?;
+    let n_points = usize::try_from(n_points)
+        .map_err(|_| Error::InvalidRecord("Perkin Elmer point count is negative".to_string()))?;
     let axis_unit = string_value(bytes, find_typed_block(bytes, blocks, 35703, TAG_STRING)?)?;
     let signal_unit = string_value(bytes, find_typed_block(bytes, blocks, 35704, TAG_STRING)?)
         .ok()
@@ -193,7 +203,7 @@ fn parse_sp_payload(bytes: &[u8], blocks: &[Block]) -> Result<SpPayload> {
     })
 }
 
-fn parse_blocks(bytes: &[u8]) -> Result<Vec<Block>> {
+fn parse_blocks(bytes: &[u8]) -> Result<(Vec<Block>, bool)> {
     if bytes.len() < ROOT_BLOCK_OFFSET + BLOCK_HEADER_LEN {
         return Err(Error::InvalidRecord(
             "Perkin Elmer file is too short for a root block".to_string(),
@@ -206,25 +216,52 @@ fn parse_blocks(bytes: &[u8]) -> Result<Vec<Block>> {
             "Perkin Elmer root block is missing or invalid".to_string(),
         ));
     }
+    // The DataSet root block (id 120) declares its own length, but newer
+    // FT-MIR exports (Spectrum 10) append top-level audit-trail / CustomColumn
+    // history blocks *after* the root. Older exports end exactly at the root
+    // boundary. Treat anything beyond the root end as additional top-level
+    // siblings instead of refusing the file, but never read past EOF.
     let root_end = ROOT_BLOCK_OFFSET + BLOCK_HEADER_LEN + root_len as usize;
-    if root_end != bytes.len() {
+    if root_end > bytes.len() {
         return Err(Error::InvalidRecord(format!(
-            "Perkin Elmer root block ends at {root_end}, expected {}",
+            "Perkin Elmer root block ends at {root_end}, past file end {}",
             bytes.len()
         )));
     }
 
+    // Parse the root and every trailing sibling as one top-level sequence up to
+    // EOF. parse_block_sequence stops cleanly on trailing slack (a remainder
+    // that does not form an in-bounds block), so the 8-byte filler some MIR
+    // files leave inside the root payload is tolerated.
     let mut out = Vec::new();
-    parse_block_sequence(bytes, ROOT_BLOCK_OFFSET, bytes.len(), &mut out)?;
-    Ok(out)
+    let consumed = parse_block_sequence(bytes, ROOT_BLOCK_OFFSET, bytes.len(), 0, &mut out)?;
+    if out.is_empty() {
+        return Err(Error::InvalidRecord(
+            "Perkin Elmer top-level block sequence is empty".to_string(),
+        ));
+    }
+    let has_trailing_blocks = consumed > root_end;
+    Ok((out, has_trailing_blocks))
 }
 
+/// Parse a flat sequence of `[u16 id][i32 len][payload]` blocks in `[start, end)`,
+/// recursing into recognized containers. Returns the offset at which parsing
+/// stopped. Stops cleanly on trailing slack — a partial header (`< BLOCK_HEADER_LEN`
+/// bytes left) or a block whose declared length would overrun `end`; such filler
+/// is left unconsumed rather than treated as corruption. Negative lengths are the
+/// only hard error.
 fn parse_block_sequence(
     bytes: &[u8],
     start: usize,
     end: usize,
+    depth: usize,
     out: &mut Vec<Block>,
-) -> Result<()> {
+) -> Result<usize> {
+    if depth > MAX_BLOCK_DEPTH {
+        return Err(Error::InvalidRecord(
+            "Perkin Elmer block nesting is too deep".to_string(),
+        ));
+    }
     let mut offset = start;
     while offset + BLOCK_HEADER_LEN <= end {
         let id = read_u16(bytes, offset)?;
@@ -238,9 +275,9 @@ fn parse_block_sequence(
         let payload_offset = offset + BLOCK_HEADER_LEN;
         let next = payload_offset + payload_len;
         if next > end {
-            return Err(Error::InvalidRecord(format!(
-                "Perkin Elmer block {id} at {offset} extends past its parent"
-            )));
+            // Declared length overruns the parent: this is trailing slack, not a
+            // sibling. Stop here and leave the bytes unconsumed.
+            break;
         }
         let block = Block {
             id,
@@ -250,40 +287,42 @@ fn parse_block_sequence(
         };
         out.push(block.clone());
         if is_container_block(id) && payload_is_block_sequence(bytes, payload_offset, next) {
-            parse_block_sequence(bytes, payload_offset, next, out)?;
+            parse_block_sequence(bytes, payload_offset, next, depth + 1, out)?;
         }
         offset = next;
     }
-    if offset != end {
-        return Err(Error::InvalidRecord(
-            "Perkin Elmer block sequence ended on a partial header".to_string(),
-        ));
-    }
-    Ok(())
+    Ok(offset)
 }
 
 fn is_container_block(id: u16) -> bool {
     matches!(id, 120 | 121 | 122 | 123 | 124 | 35703 | 35705 | 35711)
 }
 
+/// Heuristic: does the payload `[start, end)` open with at least one well-formed
+/// child block? Used to decide whether a container id should be descended into.
+///
+/// Trailing slack is tolerated (we do not require the chain to land exactly on
+/// `end`): some FT-MIR DataSet roots leave a few filler bytes after their last
+/// real child, which would otherwise hide the whole sub-tree (axis, data array,
+/// instrument metadata) from the reader.
 fn payload_is_block_sequence(bytes: &[u8], start: usize, end: usize) -> bool {
     let mut offset = start;
     let mut saw_block = false;
     while offset + BLOCK_HEADER_LEN <= end {
         let Ok(payload_len) = read_i32(bytes, offset + 2) else {
-            return false;
+            break;
         };
         if payload_len < 0 {
-            return false;
+            break;
         }
         let next = offset + BLOCK_HEADER_LEN + payload_len as usize;
         if next > end {
-            return false;
+            break;
         }
         saw_block = true;
         offset = next;
     }
-    saw_block && offset == end
+    saw_block
 }
 
 fn metadata_from_blocks(bytes: &[u8], blocks: &[Block]) -> BTreeMap<String, serde_json::Value> {
@@ -421,10 +460,12 @@ fn f64_array(bytes: &[u8], block: &Block, expected_len: usize) -> Result<Vec<f64
         ));
     }
     let byte_len = byte_len as usize;
-    if byte_len != expected_len * 8 {
+    let expected_bytes = expected_len.checked_mul(8).ok_or_else(|| {
+        Error::InvalidRecord("Perkin Elmer f64-array length overflows".to_string())
+    })?;
+    if byte_len != expected_bytes {
         return Err(Error::InvalidRecord(format!(
-            "Perkin Elmer f64-array has {byte_len} bytes, expected {}",
-            expected_len * 8
+            "Perkin Elmer f64-array has {byte_len} bytes, expected {expected_bytes}"
         )));
     }
     let start = block.payload_offset + 6;
@@ -508,4 +549,39 @@ fn read_f64(bytes: &[u8], offset: usize) -> Result<f64> {
         .get(offset..offset + 8)
         .ok_or_else(|| Error::InvalidRecord("truncated Perkin Elmer f64 field".to_string()))?;
     Ok(f64::from_le_bytes(value.try_into().expect("slice len")))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A non-container leaf block: id 0, payload length 0 (header only).
+    fn leaf_block() -> Vec<u8> {
+        let mut block = Vec::new();
+        block.extend_from_slice(&0u16.to_le_bytes());
+        block.extend_from_slice(&0i32.to_le_bytes());
+        block
+    }
+
+    /// Wrap `inner` in a container block (id 121) whose payload is exactly `inner`.
+    fn wrap_container(inner: &[u8]) -> Vec<u8> {
+        let mut block = Vec::new();
+        block.extend_from_slice(&121u16.to_le_bytes());
+        block.extend_from_slice(&(inner.len() as i32).to_le_bytes());
+        block.extend_from_slice(inner);
+        block
+    }
+
+    #[test]
+    fn deeply_nested_containers_error_instead_of_overflowing_stack() {
+        // A crafted chain of nested container blocks must be rejected rather than
+        // recursed into until the stack overflows (SIGABRT).
+        let mut buffer = leaf_block();
+        for _ in 0..(MAX_BLOCK_DEPTH + 8) {
+            buffer = wrap_container(&buffer);
+        }
+        let mut blocks = Vec::new();
+        let result = parse_block_sequence(&buffer, 0, buffer.len(), 0, &mut blocks);
+        assert!(result.is_err());
+    }
 }

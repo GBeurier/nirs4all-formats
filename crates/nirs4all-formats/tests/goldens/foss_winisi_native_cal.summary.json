@@ -1,0 +1,109 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "foss-winisi-cal",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1000.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1014.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            6
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.1,
+          "value_last": 0.6,
+          "value_sum": 2.1,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "1d87e4746764e01e76ea539d1e64a7d0a0e7c4a14b6341f0df95b1c6e2a99f36",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    },
+    {
+      "format": "foss-winisi-cal",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1000.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1014.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            6
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.15,
+          "value_last": 0.65,
+          "value_sum": 2.4,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "1d87e4746764e01e76ea539d1e64a7d0a0e7c4a14b6341f0df95b1c6e2a99f36",
+      "target_keys": [
+        "moisture",
+        "protein"
+      ],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    }
+  ]
+}

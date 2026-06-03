@@ -44,13 +44,13 @@ that are compiled in by default but can be turned off (and are off on the
 | Bruker OPUS | Bruker | `.0`, `.1`, `.001`, `.0000`, `.dpt` | Supported (scoped) | [bruker-opus](formats/bruker-opus.md) |
 | Thermo Nicolet OMNIC | Thermo Nicolet | `.spa`, `.spg`, `.srs` | Supported (scoped) | [nicolet-omnic](formats/nicolet-omnic.md) |
 | Thermo / Galactic GRAMS SPC | Thermo / Galactic | `.spc` | Supported (scoped) | [galactic-spc](formats/galactic-spc.md) |
-| PerkinElmer Spectrum / IR | PerkinElmer | `.sp` | Supported (scoped) | [perkin-elmer](formats/perkin-elmer.md) |
+| PerkinElmer Spectrum / IR | PerkinElmer | `.sp` (incl. FT-MIR Spectrum 10) | Supported (scoped) | [perkin-elmer](formats/perkin-elmer.md) |
 | BUCHI NIRCal | BUCHI / Bühler | `.nir` | Supported (scoped) | [buchi-nircal](formats/buchi-nircal.md) |
 | JASCO JWS | JASCO | `.jws` | Supported (scoped) | [jasco-jws](formats/jasco-jws.md) |
 | Ocean Optics / Ocean Insight | Ocean Optics | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` | Supported (scoped) | [ocean-optics](formats/ocean-optics.md) |
-| Foss / WinISI exports | Foss | `.txt`, `.csv` | Supported (scoped) | [foss-winisi](formats/foss-winisi.md) |
+| Foss / WinISI | Foss | `.cal`, `.nir`, `.txt`, `.csv` | Supported (scoped) | [foss-winisi](formats/foss-winisi.md) |
 | Metrohm Vision / Vision Air export | Metrohm | `.csv` | Supported (scoped) | [metrohm-vision](formats/metrohm-vision.md) |
-| VIAVI MicroNIR export | VIAVI / JDSU | `.csv`, `.xlsx` | Supported (scoped) | [viavi-micronir](formats/viavi-micronir.md) |
+| VIAVI MicroNIR | VIAVI / JDSU | `.sam`, `.csv`, `.xlsx` | Supported (scoped) | [viavi-micronir](formats/viavi-micronir.md) |
 | Shimadzu UVProbe export | Shimadzu | `.txt` | Supported (scoped) | [shimadzu-uvprobe](formats/shimadzu-uvprobe.md) |
 | Si-Ware NeoSpectra export | Si-Ware | `.csv`, `.xlsx` | Supported (scoped) | [siware-neospectra](formats/siware-neospectra.md) |
 | Spectro Inc. SiWare API | Spectro Inc. | `.json`, `.csv` | Partial | [siware-api](formats/siware-api.md) |
@@ -132,7 +132,7 @@ specification. If you can share any of them, you will directly unblock a reader.
 
 | Format | Vendor | Extensions | Status |
 |---|---|---|---|
-| Foss NIRSystems / WinISI native | Foss | `.NIR`, `.DA`, `.cal`, `.eqa` | Blocked — native binary |
+| Foss NIRSystems / WinISI native | Foss | `.DA`, `.eqa` | Blocked — native binary (`.cal`/`.nir` now supported above) |
 | Perten DA / Inframatic native | Perten / PerkinElmer | vendor binary | Blocked — no spectral sample |
 | Bruker Tango / Matrix native | Bruker | OPUS | Planned — dedicated fixtures wanted |
 | ASD calibration companions | ASD / Malvern | `.ILL`, `.REF`, `.RAW` | Blocked — companion files |

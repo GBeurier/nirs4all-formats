@@ -15,6 +15,7 @@ pub mod erdas_lan;
 pub mod excel;
 #[cfg(feature = "fmt-hdf5")]
 pub mod fgi_xml;
+pub mod foss_winisi;
 pub mod galactic_spc;
 pub mod hamamatsu_img;
 #[cfg(feature = "fmt-hdf5")]
@@ -47,6 +48,7 @@ pub mod sun_photometer;
 pub mod svc_sig;
 pub mod trivista_tvf;
 pub mod usgs_aref;
+pub mod viavi_micronir;
 pub mod witec_wip;
 
 mod util;
@@ -68,6 +70,7 @@ pub use erdas_lan::ErdasLanReader;
 pub use excel::ExcelReader;
 #[cfg(feature = "fmt-hdf5")]
 pub use fgi_xml::FgiXmlReader;
+pub use foss_winisi::FossWinisiReader;
 pub use galactic_spc::GalacticSpcReader;
 pub use hamamatsu_img::HamamatsuImgReader;
 #[cfg(feature = "fmt-hdf5")]
@@ -98,4 +101,5 @@ pub use sun_photometer::SunPhotometerReader;
 pub use svc_sig::SvcSigReader;
 pub use trivista_tvf::TrivistaTvfReader;
 pub use usgs_aref::UsgsArefReader;
+pub use viavi_micronir::ViaviMicroNirReader;
 pub use witec_wip::WitecWipReader;

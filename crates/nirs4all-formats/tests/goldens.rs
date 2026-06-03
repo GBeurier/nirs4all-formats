@@ -107,6 +107,10 @@ const CASES: &[(&str, &str)] = &[
     ("nicolet_omnic_srs_tgair", "samples/nicolet_omnic/TGAIR.srs"),
     ("perkin_elmer_sp_spectra", "samples/perkin_elmer/spectra.sp"),
     (
+        "perkin_elmer_sp_synthetic_trailing",
+        "samples/perkin_elmer/synthetic_trailing.sp",
+    ),
+    (
         "buchi_nircal_foliar_transfer",
         "samples/buchi_nircal/muestras-tejido-foliar_transfer.nir",
     ),
@@ -547,6 +551,10 @@ const CASES: &[(&str, &str)] = &[
         "samples/foss_winisi/synthetic_winisi_export.txt",
     ),
     (
+        "foss_winisi_native_cal",
+        "samples/foss_winisi/synthetic.cal",
+    ),
+    (
         "csv_foss_xds_barleyground_sensaifood",
         "samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv",
     ),
@@ -561,6 +569,10 @@ const CASES: &[(&str, &str)] = &[
     (
         "spectral_matrix_viavi_micronir",
         "samples/viavi_micronir/synthetic_micronir.csv",
+    ),
+    (
+        "viavi_micronir_native_sam",
+        "samples/viavi_micronir/synthetic_micronir.sam",
     ),
     ("mfr_sun_photometer", "samples/mfr/synthetic_mfr.OUT"),
     (

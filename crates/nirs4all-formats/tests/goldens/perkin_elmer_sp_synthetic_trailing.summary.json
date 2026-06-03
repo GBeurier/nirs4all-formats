@@ -1,0 +1,52 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "perkin-elmer-sp",
+      "metadata_keys": [
+        "data_max",
+        "data_min",
+        "description",
+        "instrument",
+        "point_count",
+        "source_path",
+        "x_step"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::perkin_elmer",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 4000.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 3992.0,
+          "axis_len": 5,
+          "axis_order": "descending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "a",
+          "role": "a",
+          "shape": [
+            5
+          ],
+          "signal_type": "absorbance",
+          "unit": "A",
+          "value_first": 0.1,
+          "value_last": 0.15,
+          "value_sum": 1.0,
+          "values_len": 5
+        }
+      ],
+      "source_sha256": "487b468fb86d1a68c530f0209f85ef6e8e95fbb2d59dccfb8a60d53b01af3478",
+      "target_keys": [],
+      "warnings": [
+        "perkin_elmer_reverse_engineered_blocks",
+        "perkin_elmer_reverse_engineered_trailing_blocks"
+      ]
+    }
+  ]
+}

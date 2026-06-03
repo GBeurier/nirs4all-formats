@@ -20,17 +20,17 @@ Live: **https://gbeurier.github.io/nirs4all-formats/**
   reader warnings exactly as the Rust core emits them.
 - **Metadata & targets** — the decoded instrument metadata as a collapsible tree.
 
-## Two ways to run it
+## Run It Without A Server
 
-### A. Single file, no server (open it directly)
+The default local demo is the single-file build:
 
-`build.sh` also produces **`demo/nirs4all-formats-demo.html`** — one
+`build.sh` produces **`demo/nirs4all-formats-demo.html`** — one
 self-contained file with the WebAssembly module, the JS and every sample
 base64-embedded. Just **double-click it** (works from a `file://` path; no
-server, no fetch, no modules). This is the "I just want an HTML" build.
+server, no fetch, no modules).
 
 ```bash
-./demo/build.sh            # builds ./pkg AND the standalone file
+./demo/build.sh
 # → open demo/nirs4all-formats-demo.html in any browser
 ```
 
@@ -42,14 +42,15 @@ wasm-pack build bindings/wasm --target no-modules --release \
 python3 demo/build_standalone.py     # → demo/nirs4all-formats-demo.html (~4.5 MB)
 ```
 
-### B. Served (the deployable version)
+## Static Deployment Bundle
 
 The multi-file `index.html` loads the wasm-pack `--target web` bundle as an ES
 module, so it must be served over http(s) — module WASM will not load from
-`file://`. This is what GitHub Pages hosts.
+`file://`. This bundle is only for static hosting such as GitHub Pages; there is
+still no backend and nothing is uploaded.
 
 ```bash
-./demo/build.sh --serve              # build, then serve on :8000
+./demo/build.sh --serve              # optional local static-hosting check
 # → open http://localhost:8000/
 ```
 

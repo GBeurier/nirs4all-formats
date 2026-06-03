@@ -1,6 +1,6 @@
 # Implementation Dashboard
 
-Last updated: 2026-05-22.
+Last updated: 2026-06-03.
 
 This page is the compact, visual companion to `FORMAT_MATRIX.md`. The matrix is
 still the source of truth; this page makes the implementation maturity and
@@ -8,12 +8,12 @@ remaining sourcing work easier to scan.
 
 ## Variant Maturity
 
-The matrix currently tracks 58 format families and 238 known variants.
+The matrix currently tracks 58 format families and 239 known variants.
 
 | State | Count | Share | Bar |
 |---|---:|---:|---|
-| Validated | 145 | 61% | `##############################` |
-| Blocked | 58 | 24% | `############` |
+| Validated | 148 | 62% | `##############################` |
+| Blocked | 56 | 23% | `###########` |
 | Partial | 19 | 8% | `####` |
 | Planned | 16 | 7% | `###` |
 
@@ -61,7 +61,7 @@ These are the rows that should drive the next coding and sample-sourcing work.
 
 | Format | Coverage | Impact | Next action |
 |---|---|---|---|
-| Foss NIRSystems / WinISI natif | non viable | bloquant | Source `.NIR/.DA/.cal/.eqa` natives before coding. |
+| Foss NIRSystems / WinISI natif | diffusable cible | mineur | Native `.cal`/`.nir` decoded and validated vs ISIscan `.txt` exports (local-only fixtures); source `.DA`/`.eqa` to finish the family. |
 | Perten DA / Inframatic | non viable | bloquant | Source native spectral export or wavelength-bearing CSV/XLSX. |
 | ASD calibration | non viable | bloquant | Source `.asd + .ILL/.REF/.RAW` calibration sets. |
 | PP Systems UniSpec DC | non viable | bloquant | Source real two-channel `.SPU` field acquisition. |
@@ -77,16 +77,16 @@ These are the rows that should drive the next coding and sample-sourcing work.
 | Si-Ware NeoSpectra | diffusable | mineur | Source single-measurement Scanner export. |
 | Spectral Evolution / PSR | diffusable | mineur | Source SR-3500/SR-6500 variants and reference comparisons. |
 | SVC / GER SIG | diffusable | mineur | Add HR-1024i >=3.0 and byte-level reference comparisons. |
-| VIAVI MicroNIR | diffusable | mineur | Source native `.pri`; CSV/XLSX path is already useful. |
+| VIAVI MicroNIR | diffusable | mineur | Native `.sam` sample file decoded (local-only fixtures); source the `.pri` project file to finish the family. |
 
 ## Probe Confidence
 
 | Confidence | Current meaning | Examples |
 |---|---|---|
-| High | Signature, magic bytes, container schema or dedicated probe tests prevent extension-only routing. | ASD, BUCHI, OPUS, SPC, OMNIC, JWS, WDF, WIP, NetCDF/HDF5 schema refusals. |
+| High | Signature, magic bytes, container schema or dedicated probe tests prevent extension-only routing. | ASD, BUCHI, OPUS, SPC, OMNIC, JWS, WDF, WIP, WinISI ISIscan signature, MicroNIR `MNIR` magic, NetCDF/HDF5 schema refusals. |
 | Medium | Text/CSV/Excel shape is validated by content and goldens, but vendor identity can depend on export conventions. | Spectral matrices, row-oriented tables, Vision Air CSV, Foss text/CSV exports, SiWare/NeoSpectra CSV/XLSX. |
 | Guarded | A real payload is parsed, but the implementation is intentionally narrow or local-only until more fixtures arrive. | Microtops MAN NetCDF fallback, ARM MFRSR local NetCDF, Allotrope ADF local, BUCHI cannabis local, Horiba `.l6m`, WiTec `WIT_PR06`. |
-| Blocked | No reliable native sample/spec/reference pair exists. | Foss native, Perten native, ASD companions, PP Systems raw, Metrohm native, VIAVI `.pri`. |
+| Blocked | No reliable native sample/spec/reference pair exists. | Foss `.DA`/`.eqa`, Perten native, ASD companions, PP Systems raw, Metrohm native, VIAVI `.pri`. |
 
 ## Files To Source First
 

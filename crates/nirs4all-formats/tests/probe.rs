@@ -524,6 +524,42 @@ fn probes_mzml_ms_files() {
         .any(|probe| probe.format == "mzml-ms" && probe.confidence == Confidence::Definite));
 }
 
+#[test]
+fn probes_foss_winisi_native_cal_not_buchi() {
+    // FOSS / ISIscan native `.cal` must sniff by binary signature, never by
+    // extension. The `.nir` extension collides with BUCHI NIRCal, so the
+    // FOSS sniffer must win on its own header and never report `buchi-nircal`.
+    let probes = probe_path(workspace_file("samples/foss_winisi/synthetic.cal")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "foss-winisi-cal" && probe.confidence == Confidence::Definite
+    }));
+    assert!(!probes.iter().any(|probe| probe.format == "buchi-nircal"));
+}
+
+#[test]
+fn probes_viavi_micronir_native_sam_not_galactic_spc() {
+    // The MicroNIR `.sam` header byte sequence is a false positive for the old
+    // Galactic SPC sniffer; the Definite MicroNIR probe must outrank it and the
+    // file must no longer be misrouted.
+    let probes = probe_path(workspace_file(
+        "samples/viavi_micronir/synthetic_micronir.sam",
+    ))
+    .expect("probe");
+    assert_eq!(probes[0].format, "viavi-micronir-sam");
+    assert_eq!(probes[0].confidence, Confidence::Definite);
+}
+
+#[test]
+fn probes_perkin_elmer_sp_with_trailing_block() {
+    // A `.sp` carrying trailing top-level blocks after the root block still
+    // sniffs as a Definite PerkinElmer spectrum.
+    let probes =
+        probe_path(workspace_file("samples/perkin_elmer/synthetic_trailing.sp")).expect("probe");
+    assert!(probes.iter().any(|probe| {
+        probe.format == "perkin-elmer-sp" && probe.confidence == Confidence::Definite
+    }));
+}
+
 fn workspace_file(relative: &str) -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("../..")

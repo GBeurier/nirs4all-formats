@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Build the WebAssembly bundle the demo loads from `./pkg/`.
 #
-#   ./demo/build.sh            # build pkg/ then print how to serve
-#   ./demo/build.sh --serve    # build, then start a local http server
+#   ./demo/build.sh            # build pkg/ and the no-server standalone HTML
+#   ./demo/build.sh --serve    # optionally test the deployable static bundle
 #
-# The demo is a static single page: index.html + app.js + samples/ + the
-# wasm-pack output in pkg/. It must be served over http(s) — ES-module WASM
-# will not load from a file:// path.
+# The browser-first artifact is demo/nirs4all-formats-demo.html: one file with
+# the WASM, JS and samples embedded, openable from file:// with no server.
+# The multi-file index.html + app.js + pkg/ bundle is kept for GitHub Pages.
 set -euo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -40,7 +40,9 @@ if [[ "${1:-}" == "--serve" ]]; then
   exec python3 -m http.server 8000 --directory "$here"
 else
   echo
-  echo "Serve it with:"
-  echo "  python3 -m http.server 8000 --directory demo"
-  echo "then open http://localhost:8000/"
+  echo "Open the no-server demo directly:"
+  echo "  demo/nirs4all-formats-demo.html"
+  echo
+  echo "Optional static bundle test:"
+  echo "  ./demo/build.sh --serve"
 fi

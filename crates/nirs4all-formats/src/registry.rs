@@ -14,11 +14,12 @@ use crate::readers::{AllotropeAdfReader, FgiXmlReader, Hdf5Reader, NetcdfReader}
 use crate::readers::{
     AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
     BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
-    EnviSliReader, ErdasLanReader, ExcelReader, GalacticSpcReader, HamamatsuImgReader,
-    HoribaLabSpecReader, JascoJwsReader, JcampReader, MsaReader, MzmlReader, NicoletOmnicReader,
-    NumpyReader, OceanOpticsReader, PerkinElmerReader, PpSystemsReader, RenishawWdfReader,
-    ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader, SpectralTableReader,
-    SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UsgsArefReader, WitecWipReader,
+    EnviSliReader, ErdasLanReader, ExcelReader, FossWinisiReader, GalacticSpcReader,
+    HamamatsuImgReader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MsaReader, MzmlReader,
+    NicoletOmnicReader, NumpyReader, OceanOpticsReader, PerkinElmerReader, PpSystemsReader,
+    RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader,
+    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UsgsArefReader,
+    ViaviMicroNirReader, WitecWipReader,
 };
 use crate::sidecars::NoSidecars;
 
@@ -294,6 +295,8 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(NicoletOmnicReader),
         Box::new(PerkinElmerReader),
         Box::new(BuchiNircalReader),
+        Box::new(FossWinisiReader),
+        Box::new(ViaviMicroNirReader),
         Box::new(JascoJwsReader),
         Box::new(HoribaLabSpecReader),
         Box::new(RenishawWdfReader),

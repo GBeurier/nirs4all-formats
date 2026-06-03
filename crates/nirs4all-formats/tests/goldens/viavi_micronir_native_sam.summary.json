@@ -1,0 +1,83 @@
+{
+  "record_count": 1,
+  "records": [
+    {
+      "format": "viavi-micronir-sam",
+      "metadata_keys": [
+        "absorbance_signal",
+        "acquired_at",
+        "channel_count",
+        "format",
+        "format_field",
+        "format_version",
+        "instrument_model",
+        "instrument_serial",
+        "integration_time_ms",
+        "operator",
+        "raw_pixel_count",
+        "reserved_field",
+        "sample_name",
+        "scan_count",
+        "wavelength_first_nm",
+        "wavelength_last_nm"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::viavi_micronir",
+      "record_signal_type": "absorbance",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 950.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1650.0,
+          "axis_len": 5,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            5
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.1,
+          "value_last": 0.5,
+          "value_sum": 1.5,
+          "values_len": 5
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 5.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "pixel",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "raw_single_beam",
+          "role": "raw_single_beam",
+          "shape": [
+            6
+          ],
+          "signal_type": "single_beam",
+          "unit": null,
+          "value_first": 10000.0,
+          "value_last": 20000.0,
+          "value_sum": 90000.0,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "317cfce24626d73361189467858b86f121d43686fcbcd289cdb9a4e7ab17026e",
+      "target_keys": [],
+      "warnings": [
+        "viavi_micronir_reverse_engineered_header"
+      ]
+    }
+  ]
+}
