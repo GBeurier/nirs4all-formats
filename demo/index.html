@@ -299,6 +299,19 @@
     #dropveil h2 { font-family:var(--display); font-weight:600; font-size:1.5rem; margin-bottom:6px; }
     #dropveil p { color:rgba(255,255,255,.72); font-size:.9rem; font-family:var(--mono); }
 
+    /* dataset tabs — one per dataset when several files are dropped */
+    .ds-tabbar { display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px; }
+    .ds-tabs { display:flex; gap:7px; flex-wrap:wrap; }
+    .ds-tab { display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:11px; border:1px solid var(--border); background:#fff; cursor:pointer; font-family:var(--font); transition:all .18s; max-width:280px; }
+    .ds-tab:hover { border-color:var(--teal); transform:translateY(-1px); }
+    .ds-tab.active { background:var(--text); border-color:var(--text); box-shadow:var(--shadow); }
+    .ds-tab .ds-name { font-weight:600; font-size:.85rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px; }
+    .ds-tab .ds-fmt { font-family:var(--mono); font-size:.68rem; color:var(--text-3); white-space:nowrap; }
+    .ds-tab.active .ds-name { color:#fff; } .ds-tab.active .ds-fmt { color:rgba(255,255,255,.55); }
+    .ds-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .ds-dot.ok { background:var(--green); box-shadow:0 0 0 3px rgba(16,185,129,.14); }
+    .ds-dot.err { background:var(--rose); box-shadow:0 0 0 3px rgba(225,29,72,.14); }
+
     /* ── Formats coverage ledger ─────────────────────────── */
     #formats {
       position:relative; padding:88px 0 96px; border-top:1px solid var(--border-warm);

@@ -276,61 +276,93 @@ function formatRow(f) {
 async function run(files) {
   drop.classList.add("busy");
   const names = files.map((f) => f.name).join(", ");
-  const totalSize = files.reduce((a, f) => a + f.size, 0);
   setStatus(`Decoding ${names}…`);
   showResult(statusLoading(names));
-  // let the spinner paint before the (synchronous) WASM decode
-  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  // let the spinner paint before the (synchronous) WASM decode (with a timeout
+  // fallback so it never hangs if rAF doesn't fire, e.g. a backgrounded tab)
+  await new Promise((r) => { requestAnimationFrame(() => requestAnimationFrame(r)); setTimeout(r, 80); });
 
   try {
     // a file may be dropped before the wasm module has finished loading
     await wasmReady;
-    const bufs = await Promise.all(files.map(async (f) => ({ name: f.name, bytes: new Uint8Array(await f.arrayBuffer()) })));
+    const bufs = await Promise.all(files.map(async (f) => ({ name: f.name, bytes: new Uint8Array(await f.arrayBuffer()), size: f.size })));
 
-    // pick the primary file = best probe confidence (sidecars are the rest)
-    let primary = bufs[0], probes = [];
-    if (bufs.length > 1) {
-      let best = -2;
-      for (const b of bufs) {
-        let p = [];
-        try { p = WASM.probeBytes(b.name, b.bytes); } catch (_) {}
-        const score = p.length ? (confRank[p[0].confidence] ?? 0) : -1;
-        if (score > best) { best = score; primary = b; probes = p; }
+    // Partition the dropped files into datasets: sidecar sets (ENVI .img+.hdr,
+    // FGI .xml+.h5, …) are grouped; everything else is an independent dataset.
+    const groups = groupFiles(bufs);
+    const datasets = groups.map((g) => {
+      const size = g.reduce((a, b) => a + (b.size || b.bytes.length), 0);
+      try {
+        const { probes, records, primaryName } = decodeGroup(g);
+        return { ok: true, name: primaryName, size, probes, records, fileCount: g.length };
+      } catch (e) {
+        return { ok: false, name: g[0].name, size, error: String(e?.message || e), fileCount: g.length };
       }
-    } else {
-      try { probes = WASM.probeBytes(primary.name, primary.bytes); } catch (_) {}
-    }
-
-    let records;
-    try {
-      records = WASM.openBytes(primary.name, primary.bytes);
-    } catch (e) {
-      const needsSidecar = bufs.length > 1 || /sidecar/i.test(String(e?.message || e));
-      if (!needsSidecar) throw e;
-      const side = {};
-      for (const b of bufs) if (b !== primary) side[b.name] = b.bytes;
-      records = WASM.openWithSidecars(primary.name, primary.bytes, side);
-    }
-
-    if (!Array.isArray(records) || records.length === 0) {
-      showResult(statusError("No records decoded", "The reader returned an empty result for this file."));
-      return;
-    }
-    renderResults(primary.name, totalSize, probes, records, bufs.length);
+    });
+    renderDatasets(datasets);
   } catch (e) {
     const msg = String(e?.message || e);
-    const probeHint = msg.length ? msg : "No registered reader recognised this file.";
-    showResult(statusError("Could not decode this file", probeHint, hintFor(msg)));
+    showResult(statusError("Could not decode", msg.length ? msg : "No registered reader recognised this file.", hintFor(msg)));
   } finally {
     drop.classList.remove("busy");
   }
 }
 
+/* split a dropped file list into datasets, grouping sidecar sets by stem */
+const stemOf = (n) => { const b = n.replace(/^.*[\\/]/, ""); const d = b.lastIndexOf("."); return (d > 0 ? b.slice(0, d) : b).toLowerCase(); };
+const extOf = (n) => { const m = /\.([^.\\/]+)$/.exec(n); return m ? m[1].toLowerCase() : ""; };
+function looksLikeSidecarSet(exts) {
+  const s = new Set(exts);
+  if (s.has("hdr")) return true;                                       // ENVI standard / ENVI SLI
+  if (s.has("xml") && (s.has("h5") || s.has("hdf5"))) return true;      // FGI XML+HDF5
+  if ((s.has("yaml") || s.has("yml")) && (s.has("nc") || s.has("cdf"))) return true; // NetCDF MFRSR + QC
+  if (s.has("lan") || s.has("gis")) return true;                       // AVIRIS / ERDAS LAN
+  return false;
+}
+function groupFiles(files) {
+  const byStem = new Map();
+  for (const f of files) { const k = stemOf(f.name); if (!byStem.has(k)) byStem.set(k, []); byStem.get(k).push(f); }
+  const groups = [];
+  for (const g of byStem.values()) {
+    if (g.length > 1 && looksLikeSidecarSet(g.map((f) => extOf(f.name)))) groups.push(g);
+    else for (const f of g) groups.push([f]); // independent files → separate datasets
+  }
+  return groups;
+}
+
+/* decode one group (single file, or a primary + sidecars) */
+function decodeGroup(bufs) {
+  let primary = bufs[0], probes = [];
+  if (bufs.length > 1) {
+    let best = -2;
+    for (const b of bufs) {
+      let p = [];
+      try { p = WASM.probeBytes(b.name, b.bytes); } catch (_) {}
+      const score = p.length ? (confRank[p[0].confidence] ?? 0) : -1;
+      if (score > best) { best = score; primary = b; probes = p; }
+    }
+  } else {
+    try { probes = WASM.probeBytes(primary.name, primary.bytes); } catch (_) {}
+  }
+  let records;
+  try {
+    records = WASM.openBytes(primary.name, primary.bytes);
+  } catch (e) {
+    const needsSidecar = bufs.length > 1 || /sidecar/i.test(String(e?.message || e));
+    if (!needsSidecar) throw e;
+    const side = {};
+    for (const b of bufs) if (b !== primary) side[b.name] = b.bytes;
+    records = WASM.openWithSidecars(primary.name, primary.bytes, side);
+  }
+  if (!Array.isArray(records) || records.length === 0) throw new Error("The reader returned an empty result.");
+  return { probes, records, primaryName: primary.name };
+}
+
 function hintFor(msg) {
   if (/sidecar|missing ENVI binary|companion|next to/i.test(msg))
     return "This is a <b>multi-file format</b>. Drop the data file together with its sidecar(s) — e.g. ENVI <code>.img</code> + <code>.hdr</code>, or FGI <code>.xml</code> + <code>.h5</code>.";
-  if (/\.(mat|rdata|parquet)\b/i.test(msg))
-    return "The <b>MATLAB</b> and <b>Parquet</b> readers aren't compiled into the in-browser build (no WebAssembly backend). Use the Python or CLI build for those files.";
+  if (/parquet (batch|argument) error|zstd/i.test(msg))
+    return "This Parquet file likely uses <b>zstd</b> compression, the one codec without a pure-Rust decoder in the wasm build. Snappy/uncompressed Parquet works — re-save with snappy, or use the Python/CLI build.";
   if (/not NIRS|not spectroscopy|no supported axis|no spectra|no numeric spectral|contains no/i.test(msg))
     return "No spectral data was found — this file looks like metadata, a non-NIRS format, or a report rather than spectra.";
   if (/unsupported|no reader|not recognised|unrecognized/i.test(msg))
@@ -363,22 +395,78 @@ function statusError(title, detail, hint) {
 /* ── main render ─────────────────────────────────────────────────────── */
 const state = { records: null, fileName: "", signalNames: [], active: null, plot: null };
 
-function renderResults(fileName, size, probes, records, fileCount) {
-  state.records = records; state.fileName = fileName;
+let DATASETS = [], dsActive = 0;
 
-  // union of signal names, preserving first-seen order
+function renderDatasets(datasets) {
+  DATASETS = datasets;
+  dsActive = Math.max(0, datasets.findIndex((d) => d.ok));
+  results.innerHTML = "";
+  results.classList.add("show");
+
+  if (datasets.length === 1) {
+    const ds = datasets[0];
+    if (ds.ok) {
+      results.appendChild(buildResult(ds, true));
+      $("#reset").addEventListener("click", resetView);
+      activateResult();
+      setStatus(datasetSummary(ds));
+      $("#result-heading")?.focus({ preventScroll: true });
+    } else {
+      results.appendChild(statusError("Could not decode this file", ds.error, hintFor(ds.error)));
+    }
+    results.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  // multiple datasets → one tab each
+  const okCount = datasets.filter((d) => d.ok).length;
+  const bar = el("div", "ds-tabbar");
+  bar.innerHTML = `<div class="ds-tabs" id="ds-tabs" role="tablist"></div>
+    <button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New files</button>`;
+  results.appendChild(bar);
+  const content = el("div"); content.id = "ds-content"; results.appendChild(content);
+
+  const tabsEl = $("#ds-tabs");
+  datasets.forEach((ds, i) => {
+    const fmt = ds.ok ? (ds.records[0].provenance?.format || "") : "error";
+    const t = el("button", "ds-tab" + (i === dsActive ? " active" : ""));
+    t.dataset.i = i; t.setAttribute("role", "tab");
+    t.innerHTML = `<span class="ds-dot ${ds.ok ? "ok" : "err"}"></span><span class="ds-name">${esc(ds.name)}</span><span class="ds-fmt">${esc(fmt)}</span>`;
+    t.addEventListener("click", () => showDataset(i));
+    tabsEl.appendChild(t);
+  });
+  $("#reset").addEventListener("click", resetView);
+  showDataset(dsActive);
+  setStatus(`Decoded ${datasets.length} datasets (${okCount} ok) from ${datasets.length} file group${datasets.length > 1 ? "s" : ""}.`);
+  results.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function showDataset(i) {
+  dsActive = i;
+  document.querySelectorAll(".ds-tab").forEach((t) => t.classList.toggle("active", +t.dataset.i === i));
+  const content = $("#ds-content"); if (!content) return;
+  content.innerHTML = "";
+  const ds = DATASETS[i];
+  if (ds.ok) { content.appendChild(buildResult(ds, false)); activateResult(); }
+  else content.appendChild(statusError(`Could not decode ${ds.name}`, ds.error, hintFor(ds.error)));
+}
+
+const datasetSummary = (ds) => {
+  const fmt = ds.records[0].provenance?.format || "unknown";
+  const nSig = state.signalNames.length;
+  return `Decoded ${ds.name}: ${fmt}, ${ds.records.length} record${ds.records.length > 1 ? "s" : ""}, ${nSig} channel${nSig > 1 ? "s" : ""}.`;
+};
+
+// build a full result panel for one dataset; sets `state` to it (only one is
+// ever mounted at a time, so the plot/kpi singleton ids stay unique).
+function buildResult(ds, withReset) {
+  const { records, name: fileName, probes, size, fileCount } = ds;
   const names = [];
   for (const r of records) for (const k of Object.keys(r.signals || {})) if (!names.includes(k)) names.push(k);
-  state.signalNames = names;
-  state.active = names[0] || null;
-
+  state.records = records; state.fileName = fileName; state.signalNames = names; state.active = names[0] || null;
   const prov = records[0].provenance || {};
-  const fmt = prov.format || (probes[0] && probes[0].format) || "unknown";
 
-  results.innerHTML = "";
   const wrap = el("div");
-
-  /* header */
   const head = el("div", "results-head");
   head.innerHTML = `
     <div class="file-id">
@@ -386,9 +474,8 @@ function renderResults(fileName, size, probes, records, fileCount) {
       <div><div class="file-name" id="result-heading" tabindex="-1">${esc(fileName)}</div>
       <div class="file-sub">${fmtBytes(size)}${fileCount > 1 ? ` · ${fileCount} files (with sidecars)` : ""} · decoded locally</div></div>
     </div>
-    <button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>`;
+    ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}`;
   wrap.appendChild(head);
-
   wrap.appendChild(renderDetect(probes, prov));
   const kpiRow = el("div", "kpis"); kpiRow.id = "kpis"; wrap.appendChild(kpiRow);
   wrap.appendChild(renderPlotPanel());
@@ -400,17 +487,12 @@ function renderResults(fileName, size, probes, records, fileCount) {
   right.appendChild(renderMetaPanel(records[0].metadata, records[0].targets));
   grid.appendChild(right);
   wrap.appendChild(grid);
+  return wrap;
+}
 
-  results.appendChild(wrap);
-  results.classList.add("show");
-
-  $("#reset").addEventListener("click", resetView);
+function activateResult() {
   initPlot();
   selectSignal(state.active);
-  const sigSummary = state.signalNames.length === 1 ? "1 channel" : `${state.signalNames.length} channels`;
-  setStatus(`Decoded ${fileName}: ${fmt}, ${records.length} record${records.length > 1 ? "s" : ""}, ${sigSummary}.`);
-  results.scrollIntoView({ behavior: "smooth", block: "start" });
-  $("#result-heading")?.focus({ preventScroll: true });
 }
 
 function resetView() {
