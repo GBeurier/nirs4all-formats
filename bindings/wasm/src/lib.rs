@@ -22,9 +22,15 @@ use serde_wasm_bindgen::Serializer;
 use wasm_bindgen::prelude::*;
 
 fn js_serializer() -> Serializer {
-    // Produce plain JS objects (not Map) and JS numbers (not BigInt) to keep
-    // the surface compatible with vanilla `JSON.stringify` consumers.
-    Serializer::new().serialize_maps_as_objects(true)
+    // Produce plain JS objects (not Map). 64-bit integers are emitted as BigInt
+    // rather than throwing: some readers carry u64/i64 metadata (Renishaw WDF and
+    // TriVista TVF timestamps/IDs, etc.) that exceed Number.MAX_SAFE_INTEGER, and
+    // the default serializer rejects those with "can't be represented as a
+    // JavaScript number", failing the whole decode. On wasm32 `usize` is u32, so
+    // shapes/indices stay plain numbers; only genuine 64-bit fields become BigInt.
+    Serializer::new()
+        .serialize_maps_as_objects(true)
+        .serialize_large_number_types_as_bigints(true)
 }
 
 #[wasm_bindgen(start)]
