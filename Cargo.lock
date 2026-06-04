@@ -1008,6 +1008,7 @@ dependencies = [
  "sha2",
  "tempfile",
  "zip 8.6.0",
+ "zstd",
 ]
 
 [[package]]

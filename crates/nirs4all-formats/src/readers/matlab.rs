@@ -15,7 +15,7 @@ use serde_json::{json, Value};
 
 use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
-use crate::registry::ReadOptions;
+use crate::registry::{ReadOptions, SidecarRequirement};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -75,6 +75,38 @@ impl Reader for MatlabReader {
             ));
         }
         None
+    }
+
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let ext = name
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if ext != "mat" || bytes.starts_with(HDF5_MAGIC) {
+            return vec![];
+        }
+        let Ok(mat) = Mat5Document::parse(bytes) else {
+            return vec![];
+        };
+        let Some(cube) = mat
+            .values
+            .get("indian_pines_corrected")
+            .and_then(Mat5Value::as_numeric)
+        else {
+            return vec![];
+        };
+        if cube.dims.as_slice() != [145, 145, 200] {
+            return vec![];
+        }
+        vec![SidecarRequirement::new(
+            "matlab-indian-pines-cube",
+            self.name(),
+            "target_sidecar",
+            "indian_pines_gt.mat",
+            false,
+            "Indian Pines corrected cube can use its ground-truth MAT sidecar",
+        )]
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {

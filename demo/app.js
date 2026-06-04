@@ -434,8 +434,8 @@ function hintFor(msg) {
     return "This AVIRIS/ERDAS LAN cube needs its companions. Drop <code>92AV3C.lan</code> together with <code>92AV3C.spc</code>; add <code>92AV3GT.GIS</code> if you want ground-truth labels.";
   if (/sidecar|missing ENVI binary|companion|next to/i.test(msg))
     return "This is a <b>multi-file format</b>. Drop the data file together with its sidecar(s) — e.g. ENVI <code>.img</code> + <code>.hdr</code>, or FGI <code>.xml</code> + <code>.h5</code>.";
-  if (/parquet (batch|argument) error|zstd/i.test(msg))
-    return "This Parquet file likely uses <b>zstd</b> compression, the one codec without a pure-Rust decoder in the wasm build. Snappy/uncompressed Parquet works — re-save with snappy, or use the Python/CLI build.";
+  if (/parquet.*error/i.test(msg))
+    return "This Parquet file could not be decoded. Uncompressed, snappy and <b>zstd</b> Parquet all decode in the browser; the rarer gzip/brotli/lz4 codecs don't yet — re-save with snappy or zstd, or use the Python/CLI build.";
   if (/not NIRS|not spectroscopy|no supported axis|no spectra|no numeric spectral|contains no/i.test(msg))
     return "No spectral data was found — this file looks like metadata, a non-NIRS format, or a report rather than spectra.";
   if (/unsupported|no reader|not recognised|unrecognized/i.test(msg))

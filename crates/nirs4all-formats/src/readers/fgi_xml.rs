@@ -12,7 +12,7 @@ use serde_json::{json, Value};
 use crate::readers::hdf5::read_hdf5_records;
 use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{normalize_key, text_lossy_from_bytes};
-use crate::registry::ReadOptions;
+use crate::registry::{ReadOptions, SidecarRequirement};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -41,6 +41,32 @@ impl Reader for FgiXmlReader {
                 "FGI XML sidecar referencing an HDF5 spectral payload",
             )
         })
+    }
+
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let ext = name
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if ext != "xml" {
+            return vec![];
+        }
+        let text = String::from_utf8_lossy(bytes);
+        if !(text.contains("<FGIMeasurement") && text.contains("<DataReference")) {
+            return vec![];
+        }
+        let Ok(parsed) = parse_fgi_xml(&text) else {
+            return vec![];
+        };
+        vec![SidecarRequirement::new(
+            "fgi-hdf5-xml",
+            self.name(),
+            "hdf5_payload",
+            parsed.data_reference,
+            true,
+            "FGI XML stores metadata and references the HDF5 spectral payload",
+        )]
     }
 
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {

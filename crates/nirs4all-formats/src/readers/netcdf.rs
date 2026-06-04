@@ -16,7 +16,7 @@ use serde_json::{json, Value};
 
 use crate::readers::hdf5_helpers::open_hdf5;
 use crate::readers::util::{provenance, single_signal_record, SingleSignalSpec};
-use crate::registry::ReadOptions;
+use crate::registry::{ReadOptions, SidecarRequirement};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -176,6 +176,39 @@ impl Reader for NetcdfReader {
         }
     }
 
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let ext = name
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if !matches!(ext.as_str(), "nc" | "cdf") {
+            return vec![];
+        }
+        let Ok(file) = NcFile::from_bytes(bytes) else {
+            return vec![];
+        };
+        if !has_arm_mfrsr_channels(&file) {
+            return vec![];
+        }
+        let candidates = arm_mfrsr_qc_sidecar_candidates(name)
+            .into_iter()
+            .map(|p| path_display(&p))
+            .collect::<Vec<_>>();
+        let Some(path) = candidates.first().cloned() else {
+            return vec![];
+        };
+        vec![SidecarRequirement::new(
+            "arm-mfrsr-netcdf",
+            self.name(),
+            "qc_sidecar",
+            path,
+            false,
+            "ARM MFRSR NetCDF files can use a YAML QC sidecar for quality flags",
+        )
+        .with_alternatives(candidates)]
+    }
+
     fn read_path(&self, path: &Path) -> Result<Vec<nirs4all_formats_core::SpectralRecord>> {
         let base = path
             .parent()
@@ -198,6 +231,10 @@ impl Reader for NetcdfReader {
     ) -> Result<Vec<SpectralRecord>> {
         read_inner(self.name(), name, bytes, sidecars)
     }
+}
+
+fn path_display(path: &Path) -> String {
+    path.to_string_lossy().replace('\\', "/")
 }
 
 fn read_inner(

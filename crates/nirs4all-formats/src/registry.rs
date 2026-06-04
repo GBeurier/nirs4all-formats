@@ -4,6 +4,7 @@ use std::sync::Arc;
 use nirs4all_formats_core::{
     Confidence, Error, FormatProbe, Result, SidecarResolver, SpectralRecord,
 };
+use serde::Serialize;
 
 #[cfg(feature = "fmt-matlab")]
 use crate::readers::MatlabReader;
@@ -27,6 +28,17 @@ use crate::sidecars::NoSidecars;
 pub trait Reader: Send + Sync {
     fn name(&self) -> &'static str;
     fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe>;
+
+    /// Declare sidecar files a reader can use for this primary payload.
+    ///
+    /// The default is empty. Sidecar-bearing formats override this inside their
+    /// own reader module so UI/tooling can ask the registry what is missing
+    /// without duplicating format-specific naming rules.
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let _ = name;
+        let _ = bytes;
+        vec![]
+    }
 
     /// Sniff a primary file with access to companion sidecars.
     ///
@@ -110,6 +122,50 @@ pub trait Reader: Send + Sync {
         let _ = sidecars;
         self.read_bytes_with_options(name, bytes, options)
     }
+}
+
+/// A format-owned companion-file declaration for browser/no-fs callers.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct SidecarRequirement {
+    pub format: String,
+    pub reader: String,
+    pub role: String,
+    pub path: String,
+    pub required: bool,
+    pub reason: String,
+    pub alternatives: Vec<String>,
+}
+
+impl SidecarRequirement {
+    pub fn new(
+        format: impl Into<String>,
+        reader: impl Into<String>,
+        role: impl Into<String>,
+        path: impl Into<String>,
+        required: bool,
+        reason: impl Into<String>,
+    ) -> Self {
+        Self {
+            format: format.into(),
+            reader: reader.into(),
+            role: role.into(),
+            path: path.into(),
+            required,
+            reason: reason.into(),
+            alternatives: vec![],
+        }
+    }
+
+    pub fn with_alternatives(mut self, alternatives: Vec<String>) -> Self {
+        self.alternatives = alternatives;
+        self
+    }
+}
+
+/// A reader compiled into the current registry build.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct ReaderCatalogEntry {
+    pub reader: String,
 }
 
 /// Optional read controls for formats where loading every record is expensive.
@@ -345,6 +401,16 @@ fn readers() -> Vec<Box<dyn Reader>> {
     readers
 }
 
+/// Return the native readers compiled into this build.
+pub fn reader_catalog() -> Vec<ReaderCatalogEntry> {
+    readers()
+        .into_iter()
+        .map(|reader| ReaderCatalogEntry {
+            reader: reader.name().to_string(),
+        })
+        .collect()
+}
+
 /// Probe a file and return every positive candidate ordered by confidence.
 pub fn probe_path(path: impl AsRef<Path>) -> Result<Vec<FormatProbe>> {
     let path_ref = path.as_ref();
@@ -456,6 +522,40 @@ pub fn open_with_sidecars_and_options(
         });
     };
     reader.read_bytes_with_sidecars(name_ref, bytes, &sidecars, options)
+}
+
+/// Return format-owned sidecar declarations for a named in-memory payload.
+pub fn sidecar_requirements(name: impl AsRef<Path>, bytes: &[u8]) -> Vec<SidecarRequirement> {
+    let name_ref = name.as_ref();
+    let head = &bytes[..bytes.len().min(8192)];
+    let registry = readers();
+    let definite_readers = registry
+        .iter()
+        .filter_map(|reader| {
+            let probe = reader.sniff(head, name_ref)?;
+            (probe.confidence == Confidence::Definite).then_some(reader.name())
+        })
+        .collect::<Vec<_>>();
+    let mut out: Vec<SidecarRequirement> = if definite_readers.is_empty() {
+        registry
+            .iter()
+            .flat_map(|reader| reader.sidecar_requirements(name_ref, bytes))
+            .collect()
+    } else {
+        registry
+            .iter()
+            .filter(|reader| definite_readers.iter().any(|name| *name == reader.name()))
+            .flat_map(|reader| reader.sidecar_requirements(name_ref, bytes))
+            .collect()
+    };
+    out.sort_by(|a, b| {
+        b.required
+            .cmp(&a.required)
+            .then(a.format.cmp(&b.format))
+            .then(a.role.cmp(&b.role))
+            .then(a.path.cmp(&b.path))
+    });
+    out
 }
 
 /// Built-in format sniffers backed by the native readers.

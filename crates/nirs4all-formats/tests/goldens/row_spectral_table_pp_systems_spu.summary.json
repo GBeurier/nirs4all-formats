@@ -2,12 +2,12 @@
   "record_count": 1,
   "records": [
     {
-      "format": "row-spectral-table",
+      "format": "pp-systems-unispec",
       "metadata_keys": [
         "vendor"
       ],
       "quality_flags": [],
-      "reader": "nirs4all_formats::readers::spectral_table",
+      "reader": "nirs4all_formats::readers::pp_systems",
       "record_signal_type": "reflectance",
       "signal_count": 3,
       "signals": [
@@ -83,7 +83,9 @@
       ],
       "source_sha256": "d22def25041eebdc79e7fd121d08f09e1f72fb0f51b42cfc78ebacb609f075a9",
       "target_keys": [],
-      "warnings": []
+      "warnings": [
+        "pp_systems_unispec_text_export"
+      ]
     }
   ]
 }

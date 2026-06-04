@@ -9,6 +9,7 @@ Supported by `nirs4all.data.loaders.ParquetLoader` and by the native Rust
 | File | Size | Source | License |
 |---|---|---|---|
 | `synthetic_nirs.parquet` | ~50 KB | Generated locally | CC-0 | Same content as the CSV fixture (50 × 200), Zstd-compressed. |
+| `synthetic_nirs_uncompressed.parquet` | ~4.5 KB | Generated locally | CC-0 | Small NIRS table with uncompressed pages; kept as a codec baseline alongside the zstd fixture. |
 | `alltypes_plain.parquet` | 1.8 KB | [`apache/parquet-testing@master/data/alltypes_plain.parquet`](https://github.com/apache/parquet-testing/blob/master/data/alltypes_plain.parquet) | Apache-2.0 | Canonical "all types" Parquet test fixture from the Apache project — useful for negative-path tests (when a Parquet file does **not** contain spectra). |
 
 ## Parser hints

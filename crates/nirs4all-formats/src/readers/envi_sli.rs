@@ -9,7 +9,7 @@ use nirs4all_formats_core::{
 use serde_json::json;
 
 use crate::readers::util::normalize_key;
-use crate::registry::{cube_pixels, cube_region, ReadOptions};
+use crate::registry::{cube_pixels, cube_region, ReadOptions, SidecarRequirement};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -36,6 +36,78 @@ impl Reader for EnviSliReader {
             return None;
         }
         None
+    }
+
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let ext = name
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if matches!(ext.as_str(), "sli" | "img" | "dat") {
+            let Some(header) = header_rel_for(name) else {
+                return vec![];
+            };
+            return vec![SidecarRequirement::new(
+                "envi",
+                self.name(),
+                "header",
+                path_display(&header),
+                true,
+                "ENVI binary payloads need the same-stem .hdr header",
+            )];
+        }
+        if ext != "hdr" {
+            return vec![];
+        }
+
+        let text = String::from_utf8_lossy(bytes);
+        let header = parse_envi_header(&text);
+        let file_type = header_value(&header, "file type").unwrap_or_default();
+        let fallback_exts = if file_type.eq_ignore_ascii_case("ENVI Standard") {
+            vec!["img", "dat"]
+        } else if file_type.eq_ignore_ascii_case("ENVI Spectral Library") {
+            vec!["sli"]
+        } else {
+            return vec![];
+        };
+        if let Some(data_file) = header_value(&header, "data file") {
+            return vec![SidecarRequirement::new(
+                if file_type.eq_ignore_ascii_case("ENVI Standard") {
+                    "envi-standard-cube"
+                } else {
+                    "envi-sli"
+                },
+                self.name(),
+                "binary",
+                data_file,
+                true,
+                "ENVI header declares its binary data file",
+            )];
+        }
+        let Some(stem) = name.file_name().map(PathBuf::from) else {
+            return vec![];
+        };
+        let alternatives = fallback_exts
+            .iter()
+            .map(|ext| path_display(&stem.with_extension(ext)))
+            .collect::<Vec<_>>();
+        let Some(path) = alternatives.first().cloned() else {
+            return vec![];
+        };
+        vec![SidecarRequirement::new(
+            if file_type.eq_ignore_ascii_case("ENVI Standard") {
+                "envi-standard-cube"
+            } else {
+                "envi-sli"
+            },
+            self.name(),
+            "binary",
+            path,
+            true,
+            "ENVI header primary needs its binary payload next to it",
+        )
+        .with_alternatives(alternatives)]
     }
 
     fn sniff_with_sidecars(
@@ -100,6 +172,10 @@ impl Reader for EnviSliReader {
 
 fn header_rel_for(name: &Path) -> Option<PathBuf> {
     Some(PathBuf::from(name.file_name()?).with_extension("hdr"))
+}
+
+fn path_display(path: &Path) -> String {
+    path.to_string_lossy().replace('\\', "/")
 }
 
 fn read_inner(

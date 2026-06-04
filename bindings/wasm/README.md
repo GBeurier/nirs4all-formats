@@ -20,13 +20,14 @@ typings) under `pkg/` (or `pkg-node/`).
 
 ```ts
 import init, {
-  version, features, probeBytes, openBytes, openWithSidecars,
+  version, features, readerCatalog, probeBytes, openBytes, openWithSidecars,
 } from "./pkg/nirs4all_formats_wasm.js";
 
 await init();
 
 version();   // "0.1.0-alpha.0"
-features();  // { hdf5: true, matlab: false, parquet: false }
+features();  // { hdf5: true, matlab: true, parquet: true }
+readerCatalog(); // [{ reader: "nirs4all_formats::readers::jcamp" }, ...]
 
 const bytes = new Uint8Array(await file.arrayBuffer());
 
@@ -55,18 +56,25 @@ const records = openWithSidecars("cube.img", imgBytes, { "cube.hdr": hdrBytes })
 
 ## Scope & feature flags
 
-The WASM build compiles `fmt-hdf5` **on** (pure-Rust HDF5/NetCDF decoders, so
-generic HDF5, FGI XML+HDF5, NetCDF MFRSR and Allotrope ADF work) and
-`fmt-matlab` / `fmt-parquet` **off** (their C dependencies have no wasm
-backend). Call `features()` to check at runtime.
+The default WASM build compiles `fmt-hdf5`, `fmt-matlab`, and `fmt-parquet`
+**on**. HDF5/NetCDF-backed readers, MATLAB MAT/RData readers, and Parquet table
+readers are available in the browser, including snappy, uncompressed, and
+zstd-compressed Parquet pages. Call `features()` to check the active bundle at
+runtime.
 
 ## Smoke test
 
 ```bash
 node bindings/wasm/tests/smoke.js
 node bindings/wasm/tests/sidecars.test.js
+node bindings/wasm/tests/fixture_matrix.js
 ```
 
 `smoke.js` loads committed fixtures (CSV, JCAMP-DX, ASD binary, a non-data PDF)
 and asserts the probe routes each to the expected reader; `sidecars.test.js`
-exercises `openWithSidecars`.
+exercises `openWithSidecars`. `fixture_matrix.js` opens a wider set of committed
+single-file and sidecar fixtures through the WASM package, checks expected
+non-NIRS/refusal paths, and compares the exercised readers to
+`readerCatalog()`. The committed matrix covers every compiled reader except
+Allotrope ADF, whose sample is local-only/non-redistributable; see
+`samples/allotrope_adf/README.md`.

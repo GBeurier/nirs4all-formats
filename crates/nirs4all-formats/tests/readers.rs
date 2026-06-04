@@ -4356,7 +4356,11 @@ fn reads_pp_systems_row_tables_with_multiple_signals() {
         open_path(workspace_file("samples/pp_systems/synthetic_unispec.SPT")).expect("open spt");
 
     assert_eq!(records.len(), 1);
-    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert_eq!(records[0].provenance.format, "pp-systems-unispec");
+    assert_eq!(
+        records[0].provenance.reader,
+        "nirs4all_formats::readers::pp_systems"
+    );
     assert_eq!(
         records[0].metadata["vendor"]["file"].as_str(),
         Some("synthetic_unispec.SPT")
@@ -4391,7 +4395,11 @@ fn reads_pp_systems_row_tables_with_multiple_signals() {
     ))
     .expect("open spu");
     assert_eq!(records.len(), 1);
-    assert_eq!(records[0].provenance.format, "row-spectral-table");
+    assert_eq!(records[0].provenance.format, "pp-systems-unispec");
+    assert_eq!(
+        records[0].provenance.reader,
+        "nirs4all_formats::readers::pp_systems"
+    );
     assert_eq!(
         records[0].metadata["vendor"]["file"].as_str(),
         Some("synthetic_unispec_dc.SPU")
@@ -5666,6 +5674,32 @@ fn reads_local_perkin_elmer_mir_sp_matches_csv_export() {
     assert!((absorbance.axis.values[3_550] - 450.0).abs() < 1e-6);
     // First ordinate matches 426475_1.csv (cm-1;A) to export precision.
     assert!((absorbance.values[0] - 0.0305).abs() < 1e-3);
+}
+
+#[test]
+fn reads_local_perkin_elmer_csv_wavenumber_signal_export() {
+    let path = workspace_file("samples_local/perkin_elmer/426475_1.csv");
+    if !path.exists() {
+        eprintln!("skipping local-only PerkinElmer CSV sample");
+        return;
+    }
+    let records = open_path(path).expect("open local PerkinElmer CSV");
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].provenance.format, "perkin-elmer-csv");
+    assert_eq!(
+        records[0].provenance.reader,
+        "nirs4all_formats::readers::perkin_elmer"
+    );
+    let absorbance = records[0].signals.get("a").expect("absorbance");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavenumber);
+    assert_eq!(absorbance.axis.unit, "cm-1");
+    assert_eq!(absorbance.axis.order, AxisOrder::Descending);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    assert_eq!(absorbance.unit.as_deref(), Some("A"));
+    assert_eq!(absorbance.axis.values.len(), 3_551);
+    assert!((absorbance.axis.values[0] - 4000.0).abs() < 1e-6);
+    assert!((absorbance.axis.values[3_550] - 450.0).abs() < 1e-6);
+    assert!((absorbance.values[0] - 0.0305).abs() < 1e-6);
 }
 
 fn asd_metadata(relative: &str) -> Value {

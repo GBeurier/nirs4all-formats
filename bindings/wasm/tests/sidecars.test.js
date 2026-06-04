@@ -56,6 +56,25 @@ function readBytes(absolute) {
   }
 }
 
+// `.img` is shared by ENVI and Hamamatsu. A definite Hamamatsu primary must not
+// inherit ENVI's `.hdr` sidecar requirement.
+{
+  const primary = path.join(repoRoot(), 'samples/hamamatsu/focus_mode.img');
+  if (!fs.existsSync(primary)) {
+    console.warn('skip: Hamamatsu IMG fixture missing');
+  } else {
+    const requirements = wasm.sidecarRequirements(
+      'focus_mode.img',
+      readBytes(primary)
+    );
+    assert.deepEqual(
+      requirements,
+      [],
+      'Hamamatsu IMG must not be blocked by an ENVI .hdr sidecar'
+    );
+  }
+}
+
 // ERDAS LAN — axis + ground-truth sidecars
 {
   const primary = path.join(
@@ -94,6 +113,16 @@ function readBytes(absolute) {
   if (!fs.existsSync(primary)) {
     console.warn('skip: FGI fixture missing');
   } else {
+    const requirements = wasm.sidecarRequirements(
+      'synthetic_fgi.xml',
+      readBytes(primary)
+    );
+    assert.ok(
+      requirements.some(
+        (s) => s.role === 'hdf5_payload' && s.path === 'synthetic_fgi.h5'
+      ),
+      'FGI XML declares its HDF5 DataReference sidecar'
+    );
     const sidecars = {
       'synthetic_fgi.h5': readBytes(
         path.join(path.dirname(primary), 'synthetic_fgi.h5')

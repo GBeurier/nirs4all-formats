@@ -6,6 +6,7 @@ use nirs4all_formats_core::{
 };
 use serde_json::json;
 
+use crate::readers::spectral_table::{read_spectral_table_bytes, spectral_table_can_parse_text};
 use crate::readers::util::{
     safe_signal_name, signal_type_from_label, single_signal_record, SingleSignalSpec,
 };
@@ -34,14 +35,22 @@ impl Reader for PerkinElmerReader {
     }
 
     fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe> {
-        if !head.starts_with(PE_MAGIC) {
-            return None;
-        }
         let ext = path
             .extension()
             .and_then(|value| value.to_str())
             .unwrap_or_default()
             .to_ascii_lowercase();
+        if !head.starts_with(PE_MAGIC) {
+            if is_perkin_elmer_csv_export(head, path) {
+                return Some(FormatProbe::new(
+                    "perkin-elmer-csv",
+                    self.name(),
+                    Confidence::Likely,
+                    "Perkin Elmer Spectrum text export with wavenumber axis",
+                ));
+            }
+            return None;
+        }
         if ext == "fsm" {
             return Some(FormatProbe::new(
                 "perkin-elmer-fsm",
@@ -78,9 +87,71 @@ impl Reader for PerkinElmerReader {
                     .to_string(),
             ));
         }
+        if is_perkin_elmer_csv_export(bytes, path) {
+            return read_spectral_table_bytes(
+                path,
+                bytes,
+                "perkin-elmer-csv",
+                self.name(),
+                vec!["perkin_elmer_spectrum_text_export".to_string()],
+            );
+        }
         let source = SourceFile::from_bytes(path, bytes, "primary");
         parse_perkin_elmer_sp(bytes, source, self.name())
     }
+}
+
+fn is_perkin_elmer_csv_export(bytes: &[u8], path: &Path) -> bool {
+    let ext = path
+        .extension()
+        .and_then(|value| value.to_str())
+        .unwrap_or_default()
+        .to_ascii_lowercase();
+    if !matches!(ext.as_str(), "csv" | "txt") {
+        return false;
+    }
+
+    let text = String::from_utf8_lossy(bytes);
+    if !spectral_table_can_parse_text(&text, path) {
+        return false;
+    }
+
+    let mut has_perkin_elmer_preamble = false;
+    let mut has_wavenumber_absorbance_header = false;
+    for raw in text.lines().take(12) {
+        let line = raw.trim_start_matches('\u{feff}').trim();
+        let lower = line.to_ascii_lowercase();
+        if lower.contains("échantillon")
+            || lower.contains("echantillon")
+            || lower.contains("analyst date")
+            || lower.contains("spectrum")
+        {
+            has_perkin_elmer_preamble = true;
+        }
+        let delimiter = if line.matches(';').count() >= line.matches(',').count() {
+            ';'
+        } else {
+            ','
+        };
+        let fields = line
+            .split(delimiter)
+            .map(|field| field.trim().trim_matches('"').to_ascii_lowercase())
+            .collect::<Vec<_>>();
+        if fields.len() >= 2
+            && (fields[0].contains("cm-1")
+                || fields[0].contains("cm^-1")
+                || fields[0].contains("1/cm")
+                || fields[0].contains("wavenumber"))
+            && (fields[1] == "a"
+                || fields[1].contains("abs")
+                || fields[1].contains("%t")
+                || fields[1].contains("trans"))
+        {
+            has_wavenumber_absorbance_header = true;
+        }
+    }
+
+    has_perkin_elmer_preamble && has_wavenumber_absorbance_header
 }
 
 #[derive(Clone, Debug)]

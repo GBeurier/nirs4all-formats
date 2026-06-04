@@ -2,7 +2,8 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use nirs4all_formats_core::{
-    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SpectralArray, SpectralAxis,
+    AxisKind, Confidence, Error, FormatProbe, Result, SignalType, SourceFile, SpectralArray,
+    SpectralAxis, SpectralRecord,
 };
 use serde_json::{json, Value};
 
@@ -24,7 +25,7 @@ impl Reader for SpectralTableReader {
             return None;
         }
         let text = String::from_utf8_lossy(head);
-        parse_spectral_table_text(&text, path).ok().map(|_| {
+        spectral_table_can_parse_text(&text, path).then(|| {
             FormatProbe::new(
                 "row-spectral-table",
                 self.name(),
@@ -44,43 +45,69 @@ impl Reader for SpectralTableReader {
         path: &Path,
         bytes: &[u8],
     ) -> Result<Vec<nirs4all_formats_core::SpectralRecord>> {
-        let (text, source) = text_lossy_from_bytes(path, bytes);
-        let parsed = parse_spectral_table_text(&text, path)?;
-        let mut signals = BTreeMap::new();
-        let mut dominant = SignalType::Unknown;
-
-        for column in parsed.columns {
-            let signal_type = column.signal_type;
-            dominant = choose_dominant(&dominant, &signal_type);
-            let axis = SpectralAxis::new(
-                parsed.axis.clone(),
-                parsed.axis_unit.clone(),
-                parsed.axis_kind.clone(),
-            )?;
-            let signal = SpectralArray::new(
-                axis,
-                column.values,
-                vec!["x".to_string()],
-                signal_type,
-                column.unit,
-                column.role.clone(),
-                "file",
-            )?;
-            let name = unique_signal_name(&signals, &column.name);
-            signals.insert(name, signal);
-        }
-
-        let record = record_from_signals(
-            "row-spectral-table",
-            self.name(),
-            source,
-            signals,
-            dominant,
-            parsed.metadata,
-            parsed.warnings,
-        )?;
-        Ok(vec![record])
+        read_spectral_table_bytes(path, bytes, "row-spectral-table", self.name(), Vec::new())
     }
+}
+
+pub(crate) fn spectral_table_can_parse_text(text: &str, path: &Path) -> bool {
+    parse_spectral_table_text(text, path).is_ok()
+}
+
+pub(crate) fn read_spectral_table_bytes(
+    path: &Path,
+    bytes: &[u8],
+    format: &'static str,
+    reader: &str,
+    warnings: Vec<String>,
+) -> Result<Vec<SpectralRecord>> {
+    let (text, source) = text_lossy_from_bytes(path, bytes);
+    read_spectral_table_text(&text, source, path, format, reader, warnings)
+}
+
+fn read_spectral_table_text(
+    text: &str,
+    source: SourceFile,
+    path: &Path,
+    format: &'static str,
+    reader: &str,
+    mut warnings: Vec<String>,
+) -> Result<Vec<SpectralRecord>> {
+    let parsed = parse_spectral_table_text(text, path)?;
+    warnings.extend(parsed.warnings);
+    let mut signals = BTreeMap::new();
+    let mut dominant = SignalType::Unknown;
+
+    for column in parsed.columns {
+        let signal_type = column.signal_type;
+        dominant = choose_dominant(&dominant, &signal_type);
+        let axis = SpectralAxis::new(
+            parsed.axis.clone(),
+            parsed.axis_unit.clone(),
+            parsed.axis_kind.clone(),
+        )?;
+        let signal = SpectralArray::new(
+            axis,
+            column.values,
+            vec!["x".to_string()],
+            signal_type,
+            column.unit,
+            column.role.clone(),
+            "file",
+        )?;
+        let name = unique_signal_name(&signals, &column.name);
+        signals.insert(name, signal);
+    }
+
+    let record = record_from_signals(
+        format,
+        reader,
+        source,
+        signals,
+        dominant,
+        parsed.metadata,
+        warnings,
+    )?;
+    Ok(vec![record])
 }
 
 struct ParsedTable {
@@ -598,7 +625,9 @@ fn infer_axis_kind(header: &str, unit: &str) -> AxisKind {
 fn infer_signal_type(header: &str, unit_hint: Option<&str>) -> SignalType {
     let combined = format!("{} {}", header, unit_hint.unwrap_or_default());
     let lower = combined.to_ascii_lowercase();
-    if lower.contains("albedo") {
+    if lower.trim() == "a" {
+        SignalType::Absorbance
+    } else if lower.contains("albedo") {
         SignalType::Reflectance
     } else if lower.contains("standard deviation") || lower == "stddev" || lower.contains("std") {
         SignalType::Uncertainty
@@ -616,7 +645,9 @@ fn infer_signal_unit(header: &str, unit_hint: Option<&str>) -> Option<String> {
         return Some(unit.to_string());
     }
     let lower = header.to_ascii_lowercase();
-    if lower.contains('%') || lower.contains("percentage") {
+    if lower.trim() == "a" {
+        Some("A".to_string())
+    } else if lower.contains('%') || lower.contains("percentage") {
         Some("%".to_string())
     } else {
         None
@@ -671,6 +702,9 @@ fn axis_label_score(label: &str) -> u8 {
     let lower = label.to_ascii_lowercase();
     if lower.contains("wavelength")
         || lower.contains("wavenumber")
+        || lower.contains("cm-1")
+        || lower.contains("cm^-1")
+        || lower.contains("1/cm")
         || lower.contains("x-axis")
         || lower == "x"
     {

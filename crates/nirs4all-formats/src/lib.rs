@@ -14,8 +14,9 @@ pub use nirs4all_formats_core::{
 };
 pub use registry::{
     builtin_probes, open_bytes, open_bytes_with_options, open_path, open_path_with_options,
-    open_with_sidecars, open_with_sidecars_and_options, probe_path, CubeMask, CubeSelection,
-    CubeWindow, ReadOptions, Reader,
+    open_with_sidecars, open_with_sidecars_and_options, probe_path, reader_catalog,
+    sidecar_requirements, CubeMask, CubeSelection, CubeWindow, ReadOptions, Reader,
+    ReaderCatalogEntry, SidecarRequirement,
 };
 pub use sidecars::{FsSidecars, InMemorySidecars, NoSidecars};
 pub use walker::{walk_path, WalkEntry, WalkOptions, WalkOutcome, WalkStats};

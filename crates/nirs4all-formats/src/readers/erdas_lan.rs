@@ -9,7 +9,7 @@ use nirs4all_formats_core::{
 use serde_json::json;
 
 use crate::readers::util::parse_number;
-use crate::registry::{cube_pixels, cube_region, ReadOptions};
+use crate::registry::{cube_pixels, cube_region, ReadOptions, SidecarRequirement};
 use crate::sidecars::FsSidecars;
 use crate::Reader;
 
@@ -53,6 +53,39 @@ impl Reader for ErdasLanReader {
         }
     }
 
+    fn sidecar_requirements(&self, name: &Path, bytes: &[u8]) -> Vec<SidecarRequirement> {
+        let ext = name
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if ext != "lan" || !bytes.starts_with(MAGIC) {
+            return vec![];
+        }
+        let Some(file_name) = name.file_name().map(PathBuf::from) else {
+            return vec![];
+        };
+        let spc = file_name.with_extension("spc");
+        vec![
+            SidecarRequirement::new(
+                FORMAT,
+                self.name(),
+                "wavelength_sidecar",
+                path_display(&spc),
+                true,
+                "ERDAS LAN AVIRIS cubes need the same-stem .spc wavelength axis",
+            ),
+            SidecarRequirement::new(
+                FORMAT,
+                self.name(),
+                "ground_truth_sidecar",
+                "92AV3GT.GIS",
+                false,
+                "Classic AVIRIS 92AV3C fixtures may include a GIS ground-truth raster",
+            ),
+        ]
+    }
+
     fn read_path(&self, path: &Path) -> Result<Vec<SpectralRecord>> {
         self.read_path_with_options(path, &ReadOptions::default())
     }
@@ -83,6 +116,10 @@ impl Reader for ErdasLanReader {
     ) -> Result<Vec<SpectralRecord>> {
         read_inner(self.name(), name, bytes, sidecars, options)
     }
+}
+
+fn path_display(path: &Path) -> String {
+    path.to_string_lossy().replace('\\', "/")
 }
 
 fn read_inner(

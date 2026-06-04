@@ -20,7 +20,7 @@ fmt-hdf5 = ["dep:hdf5-reader", "dep:netcdf-reader", "dep:chrono"]
 # to wasm32 — every reader is available in the browser build.
 fmt-matlab = ["dep:matfile", "dep:lzma-rs", "dep:rds2rust", "fmt-hdf5"]
 # Apache Parquet tables produced by NIRS pipelines.
-fmt-parquet = ["dep:parquet", "dep:arrow-array", "dep:arrow-schema", "dep:bytes"]
+fmt-parquet = ["dep:parquet", "dep:zstd", "dep:arrow-array", "dep:arrow-schema", "dep:bytes"]
 
 [dependencies]
 nirs4all-formats-core.workspace = true
@@ -34,9 +34,10 @@ flate2 = "1.1.5"
 hdf5-reader = { version = "0.5.0", optional = true }
 matfile = { version = "0.5.0", optional = true }
 netcdf-reader = { version = "0.5.0", optional = true }
-# Pure-Rust compression only (snappy, not the C `zstd`) so Parquet
-# cross-compiles to wasm32. zstd-compressed Parquet is the only variant lost.
-parquet = { version = "58.3.0", optional = true, default-features = false, features = ["arrow", "snap"] }
+parquet = { version = "58.3.0", optional = true, default-features = false, features = ["arrow", "snap", "zstd"] }
+# `parquet/zstd` delegates to the `zstd` crate; force `no_asm` so the codec can
+# be compiled for wasm32 instead of trying to include x86 assembly objects.
+zstd = { version = "0.13", optional = true, default-features = false, features = ["no_asm"] }
 quick-xml = "0.40.1"
 rds2rust = { version = "0.1.41", optional = true }
 serde.workspace = true
@@ -44,12 +45,6 @@ serde_json.workspace = true
 sha2.workspace = true
 lzma-rs = { version = "0.3.0", optional = true }
 zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
-
-# Native builds additionally get the C `zstd` Parquet codec (Cargo unions the
-# features), so zstd-compressed Parquet still decodes off-wasm. The wasm32 build
-# stays pure-Rust (snappy/uncompressed/plain only).
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-parquet = { version = "58.3.0", optional = true, default-features = false, features = ["zstd"] }
 
 [dev-dependencies]
 tempfile = "3"

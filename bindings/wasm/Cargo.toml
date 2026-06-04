@@ -29,10 +29,9 @@ hdf5-reader = { git = "https://github.com/roteiro-gis/netcdf-rust", rev = "f0cdd
 
 [features]
 # Every reader family is available in the WASM build now that the core uses
-# pure-Rust compression (lzma-rs for RData, pure-Rust snappy for Parquet). HDF5
-# relies on the upstream `read_exact_at` wasm fix in `[patch.crates-io]` above;
-# `fmt-matlab` needs `fmt-hdf5` (MAT v7.3 is an HDF5 container). zstd-compressed
-# Parquet is the only variant that does not decode in wasm.
+# browser-compatible compression (lzma-rs for RData, snappy/zstd for Parquet).
+# HDF5 relies on the upstream `read_exact_at` wasm fix in `[patch.crates-io]`
+# above; `fmt-matlab` needs `fmt-hdf5` (MAT v7.3 is an HDF5 container).
 default = ["fmt-hdf5", "fmt-matlab", "fmt-parquet"]
 fmt-hdf5 = ["nirs4all-formats/fmt-hdf5"]
 fmt-matlab = ["nirs4all-formats/fmt-matlab"]
