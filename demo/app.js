@@ -216,12 +216,12 @@ async function loadSamples() {
 
 /* ── formats coverage table ──────────────────────────────────────────── */
 const FMT_META = {
-  supported: { label: "Supported", cls: "st-supported", dot: "var(--green)" },
-  targeted:  { label: "Scoped",    cls: "st-targeted",  dot: "var(--cyan)" },
-  partial:   { label: "Partial",   cls: "st-partial",   dot: "var(--amber)" },
-  adjacent:  { label: "Adjacent",  cls: "st-adjacent",  dot: "var(--indigo)" },
-  sourcing:  { label: "Sourcing",  cls: "st-sourcing",  dot: "var(--text-3)" },
-  outscope:  { label: "Out of scope", cls: "st-outscope", dot: "#cbd5e1" },
+  supported: { label: "Supported", cls: "st-supported", dot: "var(--green)",  desc: "Main active variants are covered and validated against reference loaders." },
+  targeted:  { label: "Scoped",    cls: "st-targeted",  dot: "var(--cyan)",   desc: "Covered and safe to publish, with an intentionally narrow scope — confirm it matches your files." },
+  partial:   { label: "Partial",   cls: "st-partial",   dot: "var(--amber)",  desc: "A reader exists but is incomplete — some variants or fields aren't decoded yet." },
+  adjacent:  { label: "Adjacent",  cls: "st-adjacent",  dot: "var(--indigo)", desc: "A neighbouring domain (Raman / mass-spec / AFM) — detected or partially read, outside the NIRS core." },
+  sourcing:  { label: "Sourcing",  cls: "st-sourcing",  dot: "var(--text-3)", desc: "Not yet implemented — blocked until real sample files or the format spec are available." },
+  outscope:  { label: "Out of scope", cls: "st-outscope", dot: "#cbd5e1",     desc: "Deliberately out of scope for this library." },
 };
 const FMT_ORDER = ["supported", "targeted", "partial", "adjacent", "sourcing", "outscope"];
 let FORMATS = null;
@@ -247,7 +247,7 @@ async function renderFormats() {
   for (const f of FORMATS) counts[f.status] = (counts[f.status] || 0) + 1;
   const legend = $("#fmt-legend");
   legend.innerHTML = FMT_ORDER.filter((k) => counts[k]).map((k) =>
-    `<button class="fmt-fl" type="button" data-st="${k}"><span class="d" style="background:${FMT_META[k].dot}"></span>${esc(FMT_META[k].label)} <span style="color:var(--text-3)">${counts[k]}</span></button>`).join("");
+    `<button class="fmt-fl" type="button" data-st="${k}" title="${esc(FMT_META[k].desc)}"><span class="d" style="background:${FMT_META[k].dot}"></span>${esc(FMT_META[k].label)} <span style="color:var(--text-3)">${counts[k]}</span></button>`).join("");
   legend.querySelectorAll(".fmt-fl").forEach((b) => b.addEventListener("click", () => {
     const st = b.dataset.st;
     if (fmtFilter.status.has(st)) fmtFilter.status.delete(st); else fmtFilter.status.add(st);
@@ -284,7 +284,7 @@ function formatRow(f) {
     <td><div class="cov" title="${f.ok} validated · ${f.partial} partial · ${f.planned} planned · ${f.blocked} blocked">
       <div class="cov-bar">${seg(f.ok, "var(--teal)")}${seg(f.partial, "var(--amber)")}${seg(f.planned, "var(--cyan-d)")}${seg(f.blocked, "#cbd5e1")}</div>
       <span class="cov-num"><b>${f.ok}</b>/${total}</span></div></td>
-    <td><span class="st ${m.cls}"><span class="d"></span>${esc(m.label)}</span></td>
+    <td><span class="st ${m.cls}" title="${esc(m.desc)}"><span class="d"></span>${esc(m.label)}</span></td>
   </tr>`;
 }
 
