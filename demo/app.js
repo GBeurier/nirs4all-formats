@@ -203,11 +203,11 @@ function initDropWave() {
   const areas = [0, 1, 2].map((i) => document.getElementById("dw-area" + i));
   if (!svg || !dotsGroup || !lines[0]) return;
 
-  const W = 600, H = 140, STEP = 4;
+  const W = 600, H = 160, STEP = 4;
   const waves = [
-    { baseY: 86, amp: 20, freq: 0.0106, phase: 0,   speed: 0.00034, color: "#0f766e", dotColor: "rgba(15,118,110,0.95)" },
-    { baseY: 98, amp: 15, freq: 0.0091, phase: 2.1, speed: 0.00027, color: "#0891b2", dotColor: "rgba(8,145,178,0.85)" },
-    { baseY: 72, amp: 12, freq: 0.0125, phase: 4.2, speed: 0.00021, color: "#059669", dotColor: "rgba(5,150,105,0.75)" },
+    { baseY: 100, amp: 34, freq: 0.0125, phase: 0,   speed: 0.00034, color: "#0f766e", dotColor: "rgba(15,118,110,0.95)" },
+    { baseY: 116, amp: 26, freq: 0.0108, phase: 2.1, speed: 0.00027, color: "#0891b2", dotColor: "rgba(8,145,178,0.85)" },
+    { baseY: 86,  amp: 20, freq: 0.0150, phase: 4.2, speed: 0.00021, color: "#059669", dotColor: "rgba(5,150,105,0.75)" },
   ];
 
   const getY = (wave, x, now) =>
@@ -350,12 +350,12 @@ async function loadSamples() {
 
 /* ── formats coverage table ──────────────────────────────────────────── */
 const FMT_META = {
-  supported: { label: "Supported", cls: "st-supported", dot: "var(--green)",  desc: "Main active variants are covered and validated against reference loaders." },
-  targeted:  { label: "Scoped",    cls: "st-targeted",  dot: "var(--cyan)",   desc: "Covered and safe to publish, with an intentionally narrow scope — confirm it matches your files." },
-  partial:   { label: "Partial",   cls: "st-partial",   dot: "var(--amber)",  desc: "A reader exists but is incomplete — some variants or fields aren't decoded yet." },
-  adjacent:  { label: "Adjacent",  cls: "st-adjacent",  dot: "var(--indigo)", desc: "A neighbouring domain (Raman / mass-spec / AFM) — detected or partially read, outside the NIRS core." },
-  sourcing:  { label: "Sourcing",  cls: "st-sourcing",  dot: "var(--text-3)", desc: "Not yet implemented — blocked until real sample files or the format spec are available." },
-  outscope:  { label: "Out of scope", cls: "st-outscope", dot: "#cbd5e1",     desc: "Deliberately out of scope for this library." },
+  supported: { label: "Supported", cls: "st-supported", dot: "var(--green)",  desc: "Fully supported: these files decode reliably, checked against trusted reference readers." },
+  targeted:  { label: "Scoped",    cls: "st-targeted",  dot: "var(--cyan)",   desc: "Supported for this format's common variants; rarer or exotic files of it may not decode." },
+  partial:   { label: "Partial",   cls: "st-partial",   dot: "var(--amber)",  desc: "Partly supported: the file opens, but some variants or columns aren't decoded yet." },
+  adjacent:  { label: "Adjacent",  cls: "st-adjacent",  dot: "var(--indigo)", desc: "A neighbouring, non-NIRS format (Raman, mass-spec, AFM): recognised and partly read, but not the focus here." },
+  sourcing:  { label: "Sourcing",  cls: "st-sourcing",  dot: "var(--text-3)", desc: "Not supported yet: building the reader needs real sample files or the format spec." },
+  outscope:  { label: "Out of scope", cls: "st-outscope", dot: "#cbd5e1",     desc: "Intentionally not supported: outside what this library aims to read." },
 };
 const FMT_ORDER = ["supported", "targeted", "partial", "adjacent", "sourcing", "outscope"];
 let FORMATS = null;
@@ -381,7 +381,7 @@ async function renderFormats() {
   for (const f of FORMATS) counts[f.status] = (counts[f.status] || 0) + 1;
   const legend = $("#fmt-legend");
   legend.innerHTML = FMT_ORDER.filter((k) => counts[k]).map((k) =>
-    `<button class="fmt-fl" type="button" data-st="${k}" title="${esc(FMT_META[k].desc)}"><span class="d" style="background:${FMT_META[k].dot}"></span>${esc(FMT_META[k].label)} <span style="color:var(--text-3)">${counts[k]}</span></button>`).join("");
+    `<button class="fmt-fl" type="button" data-st="${k}" title="${esc(FMT_META[k].desc + " · click to filter")}"><span class="d" style="background:${FMT_META[k].dot}"></span>${esc(FMT_META[k].label)} <span style="color:var(--text-3)">${counts[k]}</span></button>`).join("");
   legend.querySelectorAll(".fmt-fl").forEach((b) => b.addEventListener("click", () => {
     const st = b.dataset.st;
     if (fmtFilter.status.has(st)) fmtFilter.status.delete(st); else fmtFilter.status.add(st);
@@ -409,14 +409,21 @@ function drawFormatRows() {
 function formatRow(f) {
   const m = FMT_META[f.status] || FMT_META.sourcing;
   const total = f.variants || (f.ok + f.partial + f.planned + f.blocked) || 1;
+  // Bar shows what works: validated (teal) + partial (amber); everything else
+  // (planned/blocked) is left as the empty track so a 0-validated row reads as
+  // "nothing yet" instead of an arbitrary mix of colours.
+  const rest = Math.max(0, total - f.ok - f.partial);
   const seg = (n, col) => (n > 0 ? `<span style="flex:${n};background:${col}"></span>` : "");
+  const covTip = `${f.ok} of ${total} variants decode reliably`
+    + (f.partial ? ` · ${f.partial} partial` : "")
+    + (rest ? ` · ${rest} not yet` : "");
   const parts = f.ext.split(",").map((e) => e.trim()).filter(Boolean);
   const exts = parts.slice(0, 5).map((e) => `<code>${esc(e)}</code>`).join("") + (parts.length > 5 ? `<code>+${parts.length - 5}</code>` : "");
   return `<tr style="--rc:${m.dot}">
     <td><div class="f-name">${esc(f.name)}</div><div class="f-vendor">${esc(f.vendor)}</div></td>
     <td><div class="f-ext">${exts}</div></td>
-    <td><div class="cov" title="${f.ok} validated · ${f.partial} partial · ${f.planned} planned · ${f.blocked} blocked">
-      <div class="cov-bar">${seg(f.ok, "var(--teal)")}${seg(f.partial, "var(--amber)")}${seg(f.planned, "var(--cyan-d)")}${seg(f.blocked, "#cbd5e1")}</div>
+    <td><div class="cov" title="${esc(covTip)}">
+      <div class="cov-bar">${seg(f.ok, "var(--teal)")}${seg(f.partial, "var(--amber)")}${seg(rest, "transparent")}</div>
       <span class="cov-num"><b>${f.ok}</b>/${total}</span></div></td>
     <td><span class="st ${m.cls}" title="${esc(m.desc)}"><span class="d"></span>${esc(m.label)}</span></td>
   </tr>`;
