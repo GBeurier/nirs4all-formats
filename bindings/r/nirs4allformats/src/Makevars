@@ -15,7 +15,7 @@ $(STATLIB):
 		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
-	cd rust && cargo build --release --offline 2>/dev/null || cd rust && cargo build --release
+	cd rust && (cargo build --release --offline 2>/dev/null || cargo build --release)
 
 C_clean:
 	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR)
