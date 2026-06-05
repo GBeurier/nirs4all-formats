@@ -117,9 +117,11 @@
     .drop:hover { border-color:var(--teal); transform:translateY(-2px); box-shadow:var(--shadow-lg); }
     .drop.drag { border-color:var(--teal); border-style:solid; background:rgba(236,253,250,.92); transform:scale(1.012); box-shadow:0 24px 48px -16px rgba(13,148,136,.4); }
     .drop.busy { cursor:progress; }
-    .drop-wave { position:absolute; left:0; right:0; bottom:0; height:74px; pointer-events:none; opacity:.5; }
-    .drop-wave path { fill:none; stroke-width:2; stroke-linecap:round; stroke-dasharray:5 7; animation:flow 9s linear infinite; }
-    @keyframes flow { to { stroke-dashoffset:-240; } }
+    .drop-wave { position:absolute; left:0; right:0; bottom:0; height:112px; pointer-events:none; opacity:.9; }
+    .drop-wave .spectrum-line { fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .drop-wave .spectrum-area { stroke:none; }
+    .drop-wave .wave-dot { fill:currentColor; filter:drop-shadow(0 0 4px currentColor); }
+    .drop-wave .wave-connector { fill:none; stroke-dasharray:1.5 4; stroke-linecap:round; mix-blend-mode:multiply; }
     .drop-ico { width:60px; height:60px; margin:0 auto 16px; border-radius:16px; display:grid; place-items:center; background:rgba(13,148,136,.1); color:var(--teal); position:relative; z-index:1; transition:transform .25s; }
     .drop:hover .drop-ico { transform:translateY(-2px) scale(1.04); }
     .drop-ico svg { width:30px; height:30px; }
@@ -438,9 +440,19 @@
 
         <div>
           <div class="drop" id="drop" role="button" tabindex="0" aria-label="Drop a spectroscopy file to decode">
-            <svg class="drop-wave" viewBox="0 0 460 74" preserveAspectRatio="none" aria-hidden="true">
-              <path d="M0 52 C40 52 55 18 95 18 C140 18 150 58 200 50 C250 42 260 12 310 20 C360 28 370 56 460 40" stroke="#0d9488"/>
-              <path d="M0 60 C50 60 70 34 110 36 C160 38 175 64 225 58 C275 52 290 24 340 32 C390 40 410 58 460 52" stroke="#06b6d4" style="animation-delay:-3s"/>
+            <svg class="drop-wave" viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="dw-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".26"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient>
+                <linearGradient id="dw-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity=".2"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></linearGradient>
+                <linearGradient id="dw-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981" stop-opacity=".14"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></linearGradient>
+              </defs>
+              <path class="spectrum-area" id="dw-area0" fill="url(#dw-g0)" opacity=".7"/>
+              <path class="spectrum-area" id="dw-area1" fill="url(#dw-g1)" opacity=".55"/>
+              <path class="spectrum-area" id="dw-area2" fill="url(#dw-g2)" opacity=".35"/>
+              <path class="spectrum-line" id="dw-line0" stroke="#0f766e" stroke-width="1.3" opacity=".75"/>
+              <path class="spectrum-line" id="dw-line1" stroke="#0891b2" stroke-width="1" opacity=".55"/>
+              <path class="spectrum-line" id="dw-line2" stroke="#059669" stroke-width=".8" opacity=".35"/>
+              <g id="dw-dots"></g>
             </svg>
             <div class="drop-ico">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M3 15v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/></svg>

@@ -125,6 +125,7 @@ let wasmReady = null;
   // the wasm load — so a drop is never missed and (critically on file://) never
   // navigates the browser away to the dropped file.
   wireDropzone();
+  initDropWave();
   loadSamples();
   renderFormats();
 
@@ -188,6 +189,139 @@ function wireDropzone() {
   drop.addEventListener("dragover", () => drop.classList.add("drag"));
   drop.addEventListener("dragleave", (e) => { if (!drop.contains(e.relatedTarget)) drop.classList.remove("drag"); });
   drop.addEventListener("drop", () => drop.classList.remove("drag"));
+}
+
+/* ── drop-zone spectral wave ──────────────────────────────────────────
+   Ported from the nirs4all.org hero animation (overlapping Math.sin spectral
+   curves with short-lived dots that ride them and dotted cross-wave
+   connectors), scaled down to the drop-zone band and the demo's teal/cyan
+   palette. Pure DOM/SVG — runs in both the served and standalone builds. */
+function initDropWave() {
+  const svg = document.querySelector(".drop-wave");
+  const dotsGroup = document.getElementById("dw-dots");
+  const lines = [0, 1, 2].map((i) => document.getElementById("dw-line" + i));
+  const areas = [0, 1, 2].map((i) => document.getElementById("dw-area" + i));
+  if (!svg || !dotsGroup || !lines[0]) return;
+
+  const W = 600, H = 140, STEP = 4;
+  const waves = [
+    { baseY: 86, amp: 20, freq: 0.0106, phase: 0,   speed: 0.00034, color: "#0f766e", dotColor: "rgba(15,118,110,0.95)" },
+    { baseY: 98, amp: 15, freq: 0.0091, phase: 2.1, speed: 0.00027, color: "#0891b2", dotColor: "rgba(8,145,178,0.85)" },
+    { baseY: 72, amp: 12, freq: 0.0125, phase: 4.2, speed: 0.00021, color: "#059669", dotColor: "rgba(5,150,105,0.75)" },
+  ];
+
+  const getY = (wave, x, now) =>
+    wave.baseY
+    + Math.sin(x * wave.freq + wave.phase + now * wave.speed) * wave.amp
+    + Math.sin(x * wave.freq * 1.7 + wave.phase * 0.6 + now * wave.speed * 0.7) * wave.amp * 0.2;
+
+  const drawCurves = (now) => {
+    waves.forEach((wave, i) => {
+      let d = "";
+      for (let x = 0; x <= W; x += STEP) d += (x === 0 ? "M" : "L") + x.toFixed(1) + "," + getY(wave, x, now).toFixed(1);
+      lines[i].setAttribute("d", d);
+      areas[i].setAttribute("d", d + " L" + W + "," + H + " L0," + H + " Z");
+    });
+  };
+
+  // Respect reduced-motion: render one static frame, no loop, no dots.
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    drawCurves(0);
+    return;
+  }
+
+  // Dots ride the curves; ellipses counter preserveAspectRatio="none" scaling.
+  const MAX_DOTS = 9, DOT_SPAWN_INTERVAL = 360, MAX_CONN_DX = 95;
+  const dots = [];
+  let lastSpawn = 0, invSx = 1, invSy = 1;
+  const updateScale = () => {
+    const r = svg.getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) { invSx = W / r.width; invSy = H / r.height; }
+  };
+  updateScale();
+  window.addEventListener("resize", updateScale);
+
+  const spawnDot = (now) => {
+    if (dots.length >= MAX_DOTS) return;
+    const waveIdx = Math.floor(Math.random() * waves.length);
+    const wave = waves[waveIdx];
+    const x = 30 + Math.random() * (W - 60);
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+    el.setAttribute("cx", x.toFixed(1));
+    el.setAttribute("cy", getY(wave, x, now).toFixed(1));
+    el.setAttribute("rx", (2.6 * invSx).toFixed(2));
+    el.setAttribute("ry", (2.6 * invSy).toFixed(2));
+    el.setAttribute("fill", wave.dotColor);
+    el.setAttribute("opacity", "0");
+    el.classList.add("wave-dot");
+    el.style.color = wave.color;
+    dotsGroup.appendChild(el);
+    dots.push({ el, waveIdx, x, born: now, lifetime: 2200 + Math.random() * 800, connectors: [] });
+  };
+
+  // Connectors link dots living on DIFFERENT waves within a proximity window,
+  // so the dotted traces read as cross-spectral correlations.
+  const updateConnectors = (now) => {
+    dots.forEach((d) => { d.connectors.forEach((c) => c.remove()); d.connectors = []; });
+    const pos = dots.map((d) => ({ d, op: parseFloat(d.el.getAttribute("opacity") || "0"), y: getY(waves[d.waveIdx], d.x, now) }));
+    const seen = new Set();
+    for (let i = 0; i < pos.length; i++) {
+      const a = pos[i];
+      if (a.op < 0.18) continue;
+      let best = null;
+      for (let j = 0; j < pos.length; j++) {
+        if (i === j) continue;
+        const b = pos[j];
+        if (b.d.waveIdx === a.d.waveIdx || b.op < 0.18) continue;
+        const dx = Math.abs(a.d.x - b.d.x);
+        if (dx > MAX_CONN_DX) continue;
+        if (!best || dx < best.dx) best = { b, j, dx };
+      }
+      if (!best) continue;
+      const key = i < best.j ? i + ":" + best.j : best.j + ":" + i;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const b = best.b;
+      const op = Math.min(a.op, b.op) * 0.55 * (0.35 + 0.65 * (1 - best.dx / MAX_CONN_DX));
+      if (op < 0.03) continue;
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      line.setAttribute("d", "M" + a.d.x.toFixed(1) + "," + a.y.toFixed(1) + " L" + b.d.x.toFixed(1) + "," + b.y.toFixed(1));
+      line.setAttribute("stroke", waves[a.d.waveIdx].color);
+      line.setAttribute("stroke-width", "0.75");
+      line.setAttribute("opacity", op.toFixed(3));
+      line.classList.add("wave-connector");
+      dotsGroup.insertBefore(line, dotsGroup.firstChild);
+      a.d.connectors.push(line);
+    }
+  };
+
+  const updateDots = (now) => {
+    for (let i = dots.length - 1; i >= 0; i--) {
+      const dot = dots[i];
+      const progress = (now - dot.born) / dot.lifetime;
+      if (progress >= 1) { dot.el.remove(); dot.connectors.forEach((c) => c.remove()); dots.splice(i, 1); continue; }
+      dot.el.setAttribute("cy", getY(waves[dot.waveIdx], dot.x, now).toFixed(1));
+      let op;
+      if (progress < 0.15) op = progress / 0.15;
+      else if (progress < 0.7) op = 1;
+      else op = 1 - (progress - 0.7) / 0.3;
+      dot.el.setAttribute("opacity", (op * 0.9).toFixed(3));
+      const r = 2.1 + op * 1.3;
+      dot.el.setAttribute("rx", (r * invSx).toFixed(2));
+      dot.el.setAttribute("ry", (r * invSy).toFixed(2));
+    }
+  };
+
+  let frameId = 0;
+  const animate = (now) => {
+    drawCurves(now);
+    if (now - lastSpawn > DOT_SPAWN_INTERVAL) { spawnDot(now); lastSpawn = now; }
+    updateDots(now);
+    updateConnectors(now);
+    frameId = requestAnimationFrame(animate);
+  };
+  frameId = requestAnimationFrame(animate);
+  window.addEventListener("pagehide", () => cancelAnimationFrame(frameId), { once: true });
 }
 
 async function loadSamples() {
