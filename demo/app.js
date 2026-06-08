@@ -688,8 +688,13 @@ function buildResult(ds, withReset) {
       <div><div class="file-name" id="result-heading" tabindex="-1">${esc(fileName)}</div>
       <div class="file-sub">${fmtBytes(size)}${fileCount > 1 ? ` · ${fileCount} files (with sidecars)` : ""} · decoded locally</div></div>
     </div>
-    ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}`;
+    <div class="results-actions">
+      <button class="btn-export" id="exp-csv" title="Download the active signal as a CSV matrix (one row per spectrum)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> CSV</button>
+      <button class="btn-export" id="exp-json" title="Download the full decoded records as JSON"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> JSON</button>
+      ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
+    </div>`;
   wrap.appendChild(head);
+  wireExport(head);
   wrap.appendChild(renderDetect(probes, prov));
   const kpiRow = el("div", "kpis"); kpiRow.id = "kpis"; wrap.appendChild(kpiRow);
   wrap.appendChild(renderPlotPanel());
@@ -702,6 +707,53 @@ function buildResult(ds, withReset) {
   grid.appendChild(right);
   wrap.appendChild(grid);
   return wrap;
+}
+
+/* ── export (CSV / JSON) ─────────────────────────────────────────────────
+   Reads the singleton `state` (only one dataset panel is mounted at a time),
+   so the buttons always export the dataset currently on screen. */
+function wireExport(head) {
+  $("#exp-json", head)?.addEventListener("click", exportJSON);
+  const csv = $("#exp-csv", head);
+  if (!csv) return;
+  if (state.signalNames.length) csv.addEventListener("click", exportCSV);
+  else { csv.disabled = true; csv.title = "No spectral channels to export — try the JSON export"; }
+}
+
+// strip directory + extension from the source name for a sensible download name
+const exportBaseName = () => (state.fileName || "spectra").replace(/^.*[\\/]/, "").replace(/\.[^.]+$/, "") || "spectra";
+
+function download(filename, text, mime) {
+  const url = URL.createObjectURL(new Blob([text], { type: mime }));
+  const a = el("a"); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
+}
+
+// JSON.stringify rejects bigints (Renishaw/TriVista 64-bit metadata) → stringify them.
+const exportJSON = () =>
+  download(`${exportBaseName()}.json`, JSON.stringify(state.records, (_, v) => (typeof v === "bigint" ? v.toString() : v), 2), "application/json");
+
+const csvCell = (v) => {
+  if (v === null || v === undefined) return "";
+  const s = String(v);
+  return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+};
+
+// the active signal as a wide matrix: one row per record, axis values as the
+// header columns (the canonical NIRS spectra.csv layout). Other signals/metadata
+// stay in the lossless JSON export.
+function exportCSV() {
+  const sig = state.active;
+  const recs = state.records.filter((r) => r.signals && r.signals[sig]);
+  if (!recs.length) return;
+  const axis = recs[0].signals[sig].axis;
+  const header = ["sample", ...(axis ? axis.values : []).map(csvCell)];
+  const lines = [header.join(",")];
+  recs.forEach((r, i) => {
+    lines.push([`record_${i}`, ...(r.signals[sig].values || []).map(csvCell)].join(","));
+  });
+  download(`${exportBaseName()}__${String(sig).replace(/[^\w.-]+/g, "_")}.csv`, lines.join("\n"), "text/csv");
 }
 
 function activateResult() {

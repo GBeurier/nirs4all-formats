@@ -158,6 +158,12 @@
     .file-sub { color:var(--text-3); font-size:.78rem; font-family:var(--mono); }
     .btn-reset { display:inline-flex; align-items:center; gap:7px; padding:8px 15px; border-radius:9px; font-weight:600; font-size:.8rem; cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--text-2); transition:all .2s; font-family:var(--font); }
     .btn-reset:hover { border-color:var(--teal); color:var(--teal-d); background:rgba(13,148,136,.04); }
+    .results-actions { display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+    .btn-export { display:inline-flex; align-items:center; gap:6px; padding:8px 13px; border-radius:9px; font-weight:600; font-size:.8rem; cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--text-2); transition:all .2s; font-family:var(--font); }
+    .btn-export:hover { border-color:var(--teal); color:var(--teal-d); background:rgba(13,148,136,.04); }
+    .btn-export svg { width:14px; height:14px; }
+    .btn-export:disabled { opacity:.45; cursor:not-allowed; }
+    .btn-export:disabled:hover { border-color:var(--border); color:var(--text-2); background:#fff; }
 
     /* detection bar */
     .detect { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfdfd); box-shadow:var(--shadow); }

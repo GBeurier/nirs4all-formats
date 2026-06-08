@@ -19,6 +19,9 @@ Live: **https://gbeurier.github.io/nirs4all-formats/**
 - **Provenance** — reader name/version, schema version, source SHA-256, and the
   reader warnings exactly as the Rust core emits them.
 - **Metadata & targets** — the decoded instrument metadata as a collapsible tree.
+- **Export** — download the decoded result locally: **CSV** (the active signal as
+  a spectra matrix — one row per record, axis values as columns) or **JSON** (the
+  full `SpectralRecord[]` with signals, axes, metadata, targets and provenance).
 
 ## Run It Without A Server
 
