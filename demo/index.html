@@ -287,6 +287,24 @@
     .foot-links { display:flex; gap:18px; font-size:.84rem; }
     .foot-links a { color:var(--text-2); font-weight:500; }
 
+    /* institutional band */
+    .foot-brandbar { display:flex; align-items:center; justify-content:space-between; gap:24px 36px; flex-wrap:wrap; padding-bottom:30px; margin-bottom:26px; border-bottom:1px solid var(--border-warm); }
+    .foot-brand { display:inline-flex; align-items:center; gap:13px; }
+    .foot-brand-logo { width:42px; height:42px; border-radius:11px; box-shadow:var(--shadow); flex-shrink:0; }
+    .foot-brand-txt { display:flex; flex-direction:column; line-height:1.25; }
+    .foot-brand-txt strong { font-family:var(--display); font-size:1.06rem; font-weight:600; letter-spacing:-.01em; color:var(--text); transition:color .2s; }
+    .foot-brand:hover .foot-brand-txt strong { color:var(--teal-d); }
+    .foot-brand-txt small { font-size:.74rem; color:var(--text-3); font-weight:500; }
+    .foot-inst { display:flex; align-items:center; gap:18px 22px; flex-wrap:wrap; }
+    .foot-inst-label { font-size:.68rem; text-transform:uppercase; letter-spacing:.13em; color:var(--text-3); font-weight:600; }
+    .foot-inst-link { display:inline-flex; align-items:center; }
+    .foot-inst-link img { height:36px; width:auto; mix-blend-mode:multiply; filter:grayscale(.5); opacity:.88; transition:opacity .25s, filter .25s, transform .25s; }
+    .foot-inst-link:hover img { filter:grayscale(0); opacity:1; transform:translateY(-1px); }
+    .foot-cite { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:9px; border:1px solid var(--border); background:var(--bg); color:var(--text-2); font-weight:600; font-size:.8rem; transition:all .2s; }
+    .foot-cite:hover { border-color:var(--teal); color:var(--teal-d); background:rgba(13,148,136,.04); }
+    .foot-cite svg { width:14px; height:14px; }
+    @media (max-width:640px) { .foot-brandbar { flex-direction:column; align-items:flex-start; } }
+
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
 
     /* one-vs-many hint under the dropzone */
@@ -511,6 +529,27 @@
   </main>
 
   <footer>
+    <div class="container">
+      <div class="foot-brandbar">
+        <a class="foot-brand" href="https://nirs4all.org" target="_blank" rel="noopener">
+          <img class="foot-brand-logo" src="assets/nirs4all_logo.png" alt="nirs4all" width="42" height="42" />
+          <span class="foot-brand-txt"><strong>nirs4all.org</strong><small>Open spectroscopy for everyone</small></span>
+        </a>
+        <div class="foot-inst">
+          <span class="foot-inst-label">Developed at</span>
+          <a class="foot-inst-link" href="https://www.cirad.fr/en" target="_blank" rel="noopener" title="CIRAD — French Agricultural Research Centre for International Development">
+            <img src="assets/logo-cirad-en.jpg" alt="CIRAD" loading="lazy" decoding="async" />
+          </a>
+          <a class="foot-inst-link" href="https://umr-agap.cirad.fr" target="_blank" rel="noopener" title="UMR AGAP Institut">
+            <img src="assets/logo-agap.png" alt="UMR AGAP Institut" loading="lazy" decoding="async" />
+          </a>
+          <a class="foot-cite" href="https://github.com/GBeurier/nirs4all#citation" target="_blank" rel="noopener" title="How to cite nirs4all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8a4 4 0 0 1 4-4"/><path d="M10 9H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4"/><path d="M21 9h-5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4"/></svg>
+            Cite
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="container foot-inner">
       <span class="priv">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>

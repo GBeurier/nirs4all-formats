@@ -4,5 +4,9 @@ pkg-node/
 _selftest*.html
 _shot*.html
 *.png
+# institutional/brand logos are real committed assets — the *.png rule above is
+# only meant to drop screenshot artifacts (_shot*.png), not the demo's logos.
+!assets/
+!assets/*.png
 # generated single-file build (large; regenerate with build_standalone.py / CI)
 nirs4all-formats-demo.html

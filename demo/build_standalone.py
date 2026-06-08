@@ -18,7 +18,27 @@ Usage:
 import base64
 import json
 import pathlib
+import re
 import sys
+
+_MIME = {
+    ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+    ".svg": "image/svg+xml", ".webp": "image/webp", ".gif": "image/gif",
+}
+
+
+def inline_assets(html: str, root: pathlib.Path) -> str:
+    """Replace every src="assets/…" with a base64 data: URI so the standalone
+    file shows the institutional logos with no fetch (works from file://)."""
+    def repl(m: "re.Match[str]") -> str:
+        rel = m.group(1)
+        f = root / rel
+        if not f.exists():
+            sys.exit(f"asset missing: {f}")
+        mime = _MIME.get(f.suffix.lower(), "application/octet-stream")
+        return f'src="data:{mime};base64,{b64(f)}"'
+
+    return re.sub(r'src="(assets/[^"]+)"', repl, html)
 
 HERE = pathlib.Path(__file__).resolve().parent
 PKG = HERE / "pkg-nomod"
@@ -76,6 +96,7 @@ def main() -> int:
     if marker not in index:
         sys.exit(f"could not find {marker!r} in index.html")
     html = index.replace(marker, blob)
+    html = inline_assets(html, HERE)
 
     OUT.write_text(html)
     mb = OUT.stat().st_size / 1024 / 1024
