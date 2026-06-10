@@ -20,7 +20,7 @@ generated TypeScript typings.
 
 | Function | Signature | Returns |
 |---|---|---|
-| `version()` | `() => string` | Crate version, e.g. `"0.1.0-alpha.0"`. |
+| `version()` | `() => string` | Crate version, e.g. `"0.1.0-alpha.1"`. |
 | `features()` | `() => { hdf5: boolean, matlab: boolean, parquet: boolean }` | Which format features this bundle was compiled with. |
 | `probeBytes(filename, bytes)` | `(string, Uint8Array) => Probe[]` | Ordered candidate readers (best first). |
 | `openBytes(filename, bytes)` | `(string, Uint8Array) => SpectralRecord[]` | Decoded records (single-file formats). |

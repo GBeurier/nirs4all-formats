@@ -4,7 +4,7 @@ Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
 stable Python / R / WebAssembly / C bindings and conformance checks against
 reference loaders.
 
-> **Status:** active alpha (`0.1.0-alpha.0`). Over 40 native readers across ~58
+> **Status:** active alpha (`0.1.0-alpha.1`). Over 40 native readers across ~58
 > format families are implemented and tested on a committed fixture corpus;
 > APIs are stable in shape but may still change before 1.0.
 

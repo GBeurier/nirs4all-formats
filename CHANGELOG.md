@@ -5,7 +5,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
-## [Unreleased]
+## [0.1.0-alpha.1] - 2026-06-10
+
+First published release (PyPI + GitHub release).
 
 ### Added
 

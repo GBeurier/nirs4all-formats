@@ -3,7 +3,7 @@
 nirs4all-formats is one Rust core with thin bindings. Pick the surface you need —
 they all decode through the same readers.
 
-> **Version:** `0.1.0-alpha.0`. The project is in active alpha; APIs are stable
+> **Version:** `0.1.0-alpha.1`. The project is in active alpha; APIs are stable
 > in shape but may still change. Tagged releases publish Python wheels to PyPI
 > and attach C ABI archives to the GitHub release (see [`RELEASE.md`](RELEASE.md)).
 
@@ -38,7 +38,7 @@ Add the facade crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nirs4all-formats = "0.1.0-alpha.0"
+nirs4all-formats = "0.1.0-alpha.1"
 ```
 
 Default features bundle the HDF5, MATLAB and Parquet readers. Build a leaner
