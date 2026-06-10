@@ -537,6 +537,26 @@ fn probes_foss_winisi_native_cal_not_buchi() {
 }
 
 #[test]
+fn probes_foss_ds_series_native_nir_not_buchi() {
+    // FOSS DS-series benches share the `.nir` extension with BUCHI NIRCal but
+    // carry no ISIscan/NIRSystems string; they are pinned by the "NIRS DS"
+    // model at 0x82 and must sniff as `foss-ds-nir`, never `buchi-nircal`.
+    for fixture in [
+        "samples/foss_winisi/synthetic_ds2500.nir",
+        "samples/foss_winisi/synthetic_ds3f.nir",
+    ] {
+        let probes = probe_path(workspace_file(fixture)).expect("probe");
+        assert!(
+            probes.iter().any(|probe| {
+                probe.format == "foss-ds-nir" && probe.confidence == Confidence::Definite
+            }),
+            "{fixture} did not sniff as foss-ds-nir"
+        );
+        assert!(!probes.iter().any(|probe| probe.format == "buchi-nircal"));
+    }
+}
+
+#[test]
 fn probes_viavi_micronir_native_sam_not_galactic_spc() {
     // The MicroNIR `.sam` header byte sequence is a false positive for the old
     // Galactic SPC sniffer; the Definite MicroNIR probe must outrank it and the

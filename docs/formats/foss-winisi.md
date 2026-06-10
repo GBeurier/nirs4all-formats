@@ -19,12 +19,16 @@ its binary header carries the version word followed by an ASCII `ISIscan` /
 BUCHI NIRCal — WinISI never fires on a BUCHI file and BUCHI never fires on a
 WinISI file, so each keeps its own `.nir` payloads.
 
-Two probes are exposed, both at `Definite` confidence:
+Three probes are exposed, all at `Definite` confidence:
 
 - **`foss-winisi-cal`** — calibration `.cal` files (file-type word `2`) carrying
   per-sample spectra **and** constituent reference values.
 - **`foss-winisi-nir`** — spectra-only `.nir` files (file-type word `1`), no
   constituents.
+- **`foss-ds-nir`** — the same container emitted by the newer FOSS **DS-series**
+  benches (DS2500, DS3 F). These carry no `ISIscan`/`NIRSystems` string; they are
+  pinned instead by a `NIRS DS...` instrument model at offset `0x82`. Spectra-only
+  (file-type word `1`), decoded identically to `foss-winisi-nir`.
 
 Each sample becomes one `SpectralRecord`:
 
@@ -67,6 +71,7 @@ University of Cordoba (sensAIfood) dataset.
 |---|---|---|
 | Native `.cal` (calibration) | Supported (native) | `foss-winisi-cal` probe; spectra + constituent targets. Sniffed by header signature. |
 | Native `.nir` (spectra-only) | Supported (native) | `foss-winisi-nir` probe; spectra, no constituents. Sniffed by header signature. |
+| Native DS-series `.nir` (DS2500, DS3 F) | Supported (native) | `foss-ds-nir` probe; same container, pinned by the `NIRS DS` model at `0x82`, no `ISIscan`/`NIRSystems` string. Spectra-only. |
 | `Wavelengths:` text matrix export | Supported | Read via the spectral-matrix reader. |
 | Wide CSV export (metadata/targets + numeric headers) | Supported | Read via the delimited-text reader. |
 | Native `.DA` / `.eqa` | Not yet sampled | No binary fixture found yet; not reverse-engineered. |
@@ -103,9 +108,17 @@ Fixtures under `samples/foss_winisi/` are golden-backed / read-tested:
 `foss_xds_wheat2_sensAIfood.csv` (2 records, same wide layout). DS3 / Inframatic-style
 property-only reports are kept as expected refusals.
 
+The DS-series native path has its own golden-backed fixtures under
+`samples/foss_winisi/`: `synthetic_ds2500.nir` (`foss-ds-nir`; 4 samples,
+two-segment 100-point `nm` axis, `NIRS DS2500` model) and `synthetic_ds3f.nir`
+(3 samples, single-segment 50-point `nm` axis, `NIRS DS3 F` model).
+
 The real native corpus is **local-only** under `samples_local/foss_winisi/`
-(private, licence TBD) and validated against the ISIscan `.txt` exports:
-`yamtot_2026.cal` (18 records, axis 400–2498 nm / 1050 pts, spectra matching to
-`float32` precision ~5e-8, constituents exact), `ando4_2026.cal` (20 records /
-9 constituents), `D2026_20240328.cal` (18 / 5) and `yamtot_2026.nir`
-(16 / 0 constituents).
+(private, licence TBD). The ISIscan/NIRSystems files are validated against their
+`.txt` exports: `yamtot_2026.cal` (18 records, axis 400–2498 nm / 1050 pts,
+spectra matching to `float32` precision ~5e-8, constituents exact),
+`ando4_2026.cal` (20 records / 9 constituents), `D2026_20240328.cal` (18 / 5) and
+`yamtot_2026.nir` (16 / 0 constituents). The DS-series files have no vendor text
+export, so `fileDS2500CRAW.nir` (10 records, 400–2498 nm / 1050 pts) and
+`fileDS3FCRAW.nir` (20 records, 1100–2498 nm / 700 pts) are checked structurally
+(record count, axis endpoints, instrument model, finite plausible absorbance).

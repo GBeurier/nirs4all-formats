@@ -68,6 +68,9 @@ R CMD INSTALL bindings/r/nirs4allformats
 # WASM (wasm-pack; fmt-hdf5 ON, fmt-matlab/fmt-parquet OFF)
 (cd bindings/wasm && wasm-pack build --target nodejs --release --out-dir pkg-node) && node bindings/wasm/tests/smoke.js
 
+# Browser demo (rebuilds bindings/wasm for the web + no-modules targets, regenerates formats.json)
+./demo/build.sh            # → demo/pkg/ (Pages bundle) + demo/nirs4all-formats-demo.html (single-file, file://)
+
 # Docs (Sphinx; -W treats warnings as errors)
 sphinx-build -W -b html docs docs/_build/html
 ```
@@ -172,6 +175,10 @@ pass the green gate.
 
 - `samples/` — redistributable fixtures by format family (each with provenance/license notes);
   `samples_local/` — private/local-only fixtures (a local-only sweep runs outside CI).
+- `demo/` — static in-browser demo: drop a file, the WASM-compiled registry sniffs/decodes/renders it
+  client-side (no backend). `build.sh` rebuilds it; deployed to GitHub Pages via
+  `.github/workflows/demo-pages.yml` (live at gbeurier.github.io/nirs4all-formats). Samples shipped
+  here must be GPL-free since they go to a public site.
 - `tools/reverse-lab/` — Python clean-room reverse-engineering helpers (bitdiff CLI, etc.).
 - Key docs: `STATUS.md` (live status + next steps), `ROADMAP.md`, `FORMATS.md` (scope),
   `FORMAT_MATRIX.md` / `IMPLEMENTATION_DASHBOARD.md` (per-variant status), `CONFORMANCE.md`,

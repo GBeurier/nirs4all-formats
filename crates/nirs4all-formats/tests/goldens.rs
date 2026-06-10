@@ -555,6 +555,14 @@ const CASES: &[(&str, &str)] = &[
         "samples/foss_winisi/synthetic.cal",
     ),
     (
+        "foss_ds2500_native_nir",
+        "samples/foss_winisi/synthetic_ds2500.nir",
+    ),
+    (
+        "foss_ds3f_native_nir",
+        "samples/foss_winisi/synthetic_ds3f.nir",
+    ),
+    (
         "csv_foss_xds_barleyground_sensaifood",
         "samples/foss_winisi/foss_xds_barleyground_sensAIfood.csv",
     ),

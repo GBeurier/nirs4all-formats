@@ -1,0 +1,201 @@
+{
+  "record_count": 4,
+  "records": [
+    {
+      "format": "foss-ds-nir",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1218.0,
+          "axis_len": 100,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            100
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.623148,
+          "value_last": 0.649867,
+          "value_sum": 61.047561,
+          "values_len": 100
+        }
+      ],
+      "source_sha256": "c13ffc7b9cb547b106294b4508b89531b9641393beba5705ca09ad671dc4afe3",
+      "target_keys": [],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    },
+    {
+      "format": "foss-ds-nir",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1218.0,
+          "axis_len": 100,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            100
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.582787,
+          "value_last": 0.574747,
+          "value_sum": 60.380859,
+          "values_len": 100
+        }
+      ],
+      "source_sha256": "c13ffc7b9cb547b106294b4508b89531b9641393beba5705ca09ad671dc4afe3",
+      "target_keys": [],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    },
+    {
+      "format": "foss-ds-nir",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1218.0,
+          "axis_len": 100,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            100
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.605846,
+          "value_last": 0.652269,
+          "value_sum": 60.03397,
+          "values_len": 100
+        }
+      ],
+      "source_sha256": "c13ffc7b9cb547b106294b4508b89531b9641393beba5705ca09ad671dc4afe3",
+      "target_keys": [],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    },
+    {
+      "format": "foss-ds-nir",
+      "metadata_keys": [
+        "acquired_unix_time",
+        "acquired_utc",
+        "constituent_count",
+        "file_kind",
+        "instrument_model",
+        "master_number",
+        "product_code",
+        "record_index",
+        "sample_number",
+        "version_word"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_winisi",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 1218.0,
+          "axis_len": 100,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            100
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.656938,
+          "value_last": 0.608493,
+          "value_sum": 60.704178,
+          "values_len": 100
+        }
+      ],
+      "source_sha256": "c13ffc7b9cb547b106294b4508b89531b9641393beba5705ca09ad671dc4afe3",
+      "target_keys": [],
+      "warnings": [
+        "foss_winisi_reverse_engineered_blocks"
+      ]
+    }
+  ]
+}

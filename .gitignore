@@ -14,8 +14,11 @@ target/
 /samples.zip
 # Local-only sample directory: holds non-redistributable fixtures (license-restricted,
 # login-gated, vendor SDK demos). Tracked manually in samples_local/INDEX.md but never
-# committed. Mirror layout of samples/ (one subdir per format family).
+# committed. Mirror layout of samples/ (one subdir per format family). The tree is
+# instead committed as the encrypted `samples_local.tar.gz.enc` (see
+# scripts/samples_local_crypt.sh); only the passphrase below stays out of git.
 /samples_local/
+/samples_local.key
 *.dylib
 *.dll
 *.a

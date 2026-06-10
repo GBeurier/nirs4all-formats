@@ -61,7 +61,7 @@ These are the rows that should drive the next coding and sample-sourcing work.
 
 | Format | Coverage | Impact | Next action |
 |---|---|---|---|
-| Foss NIRSystems / WinISI natif | diffusable cible | mineur | Native `.cal`/`.nir` decoded and validated vs ISIscan `.txt` exports (local-only fixtures); source `.DA`/`.eqa` to finish the family. |
+| Foss NIRSystems / WinISI natif | diffusable cible | mineur | Native `.cal`/`.nir` decoded and validated vs ISIscan `.txt` exports; DS-series benches DS2500/DS3F (`foss-ds-nir`) decoded through the same reader (synthetic CC0 goldens + local-only real fixtures); source `.DA`/`.eqa` to finish the family. |
 | Perten DA / Inframatic | non viable | bloquant | Source native spectral export or wavelength-bearing CSV/XLSX. |
 | ASD calibration | non viable | bloquant | Source `.asd + .ILL/.REF/.RAW` calibration sets. |
 | PP Systems UniSpec DC | non viable | bloquant | Source real two-channel `.SPU` field acquisition. |

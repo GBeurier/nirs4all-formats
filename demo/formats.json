@@ -7,7 +7,7 @@
   "adjacent": 9,
   "sourcing": 6,
   "outscope": 1,
-  "validated_variants": 149,
+  "validated_variants": 150,
   "partial_variants": 19
  },
  "formats": [
@@ -336,6 +336,18 @@
    "status": "targeted"
   },
   {
+   "name": "Foss NIRSystems / WinISI natif",
+   "vendor": "Foss",
+   "ext": "`.NIR`, `.DA`, `.cal`, `.eqa`",
+   "variants": 4,
+   "ok": 3,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 1,
+   "priority": "P2",
+   "status": "targeted"
+  },
+  {
    "name": "HDF5 NIRS generique",
    "vendor": "Vendor-neutral",
    "ext": "`.h5`, `.hdf5`",
@@ -368,18 +380,6 @@
    "partial": 0,
    "planned": 1,
    "blocked": 0,
-   "priority": "P2",
-   "status": "targeted"
-  },
-  {
-   "name": "Foss NIRSystems / WinISI natif",
-   "vendor": "Foss",
-   "ext": "`.NIR`, `.DA`, `.cal`, `.eqa`",
-   "variants": 4,
-   "ok": 2,
-   "partial": 0,
-   "planned": 0,
-   "blocked": 2,
    "priority": "P2",
    "status": "targeted"
   },

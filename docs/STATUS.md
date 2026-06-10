@@ -1,6 +1,21 @@
 # Project Status
 
-Last updated: 2026-06-03.
+Last updated: 2026-06-10.
+
+> 2026-06-10 — **FOSS DS-series native `.nir` support** added to the `foss_winisi`
+> reader. The DS2500 and DS3 F benches emit the same binary container as the
+> ISIscan/WinISI files but carry no `ISIscan`/`NIRSystems` string; they are pinned
+> by the `NIRS DS` instrument model at `0x82` and decoded through the existing
+> parser as a new probe `foss-ds-nir` (spectra-only, version word `1`). Validated
+> on the real local-only corpora (`fileDS2500CRAW.nir` 10 samples / 400–2498 nm,
+> `fileDS3FCRAW.nir` 20 samples / 1100–2498 nm, customer data CEPICOP/SYNGENTA);
+> CI covered by new CC0 synthetic goldens (`foss_ds2500_native_nir`,
+> `foss_ds3f_native_nir`). The MicroNIR `.sam` (120 spectra + CSV) and PerkinElmer
+> MIR `.sp` corpora were fully integrated into `samples_local/`, which is now also
+> committed as the encrypted `samples_local.tar.gz.enc` (key gitignored, see
+> `docs/dev/SAMPLES_LOCAL_ARCHIVE.md`). Green gate re-run below (Rust core + Python
+> binding + docs locally; wasm/demo rebuild and R/node tests deferred to CI —
+> clang/node/Rscript absent on the dev box).
 
 > 2026-06-03 — **Three native NIRS binary readers added/extended** (one agent per
 > format, each validated against ground truth). New `foss_winisi` reader decodes
@@ -304,14 +319,24 @@ and exposes:
 
 ## Last Green Gate
 
-Green locally on 2026-06-03 (after adding the native `foss_winisi`, `viavi_micronir`
-and FT-MIR `perkin_elmer` readers): fmt clean, **274 tests** (was 259; +3 probe,
-+6 reader incl. local-only real-corpus checks, +1 PerkinElmer recursion-cap unit
-test, +5 new reader unit tests), clippy `-D warnings` clean, no-default + wasm32
-builds, three new committed goldens (`foss_winisi_native_cal`,
-`viavi_micronir_native_sam`, `perkin_elmer_sp_synthetic_trailing`), Sphinx `-W`
-green, `git diff --check` clean. The Rust readers carry no parser logic into the
-bindings, which read the new formats through the unchanged registry path:
+Green locally on 2026-06-10 (after adding FOSS DS-series `foss-ds-nir` support):
+fmt clean, **281 tests** (was 274; +1 probe `probes_foss_ds_series_native_nir_not_buchi`,
++3 reader incl. a local-only DS2500/DS3 F real-corpus check, +2 `foss_winisi` unit
+tests, +1 from the goldens harness picking up the two new fixtures), clippy
+`-D warnings` clean (workspace + wasm + python bindings), no-default + wasm32 core
+builds, two new committed goldens (`foss_ds2500_native_nir`, `foss_ds3f_native_nir`),
+Python binding `maturin develop` + `pytest bindings/python/tests/` (23 passed, 2
+skipped) with the new format verified through the binding, Sphinx `-W` green (via
+`uv run --no-project --with-requirements docs/requirements.txt`), `git diff --check`
+clean. The Rust reader carries no parser logic into the bindings, which read the new
+format through the unchanged registry path.
+
+**Deferred to CI** (toolchain absent on this dev box): the R `testthat` suite
+(`Rscript`), the wasm-pack build + Node smoke/sidecar tests (`node`, and `clang`
+which cc-rs needs to compile C deps for the wasm target), and the demo rebuild.
+The demo redeploys automatically — `.github/workflows/demo-pages.yml` triggers on
+`crates/**` changes and rebuilds the WebAssembly bundle in CI. `demo/formats.json`
+was regenerated locally (150 validated variants).
 
 ```bash
 . "$HOME/.cargo/env"
@@ -334,8 +359,9 @@ uv run sphinx-build -W -b html docs docs/_build/html
 git diff --check
 ```
 
-Local-only sample sweep (not in CI): `samples_local/` now has 15 successful
-reads, 5 expected refusals and 0 unexpected refusals.
+Local-only sample sweep (not in CI): `samples_local/` now also carries the full
+MicroNIR `.sam` corpus (120 spectra + CSV), the PerkinElmer MIR `.sp` corpus and the
+two FOSS DS-series `.nir` files, all committed encrypted as `samples_local.tar.gz.enc`.
 
 ## Next Agent Prompt
 

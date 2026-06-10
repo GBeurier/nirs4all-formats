@@ -5593,6 +5593,95 @@ fn reads_local_foss_winisi_native_cal_matches_text_export() {
 }
 
 #[test]
+fn reads_foss_ds2500_native_nir_synthetic() {
+    // FOSS DS2500: same container as ISIscan but a "NIRS DS..." model and no
+    // identity string; spectra-only (version 1), two declared axis segments.
+    let records = open_path(workspace_file("samples/foss_winisi/synthetic_ds2500.nir"))
+        .expect("open FOSS DS2500 .nir");
+    assert_eq!(records.len(), 4);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "foss-ds-nir");
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("NIRS DS2500")
+    );
+    assert!(record.targets.is_empty());
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 100);
+    assert_eq!(absorbance.axis.unit, "nm");
+    assert_eq!(absorbance.axis.kind, AxisKind::Wavelength);
+    assert_eq!(absorbance.signal_type, SignalType::Absorbance);
+    // Two segments: 400 nm start, then a 1100 nm segment after 40 points.
+    assert!((absorbance.axis.values[0] - 400.0).abs() < 1e-6);
+    assert!((absorbance.axis.values[40] - 1100.0).abs() < 1e-6);
+    assert!(absorbance.values.iter().all(|v| v.is_finite()));
+}
+
+#[test]
+fn reads_foss_ds3f_native_nir_synthetic() {
+    let records = open_path(workspace_file("samples/foss_winisi/synthetic_ds3f.nir"))
+        .expect("open FOSS DS3 F .nir");
+    assert_eq!(records.len(), 3);
+    let record = &records[0];
+    assert_eq!(record.provenance.format, "foss-ds-nir");
+    assert_eq!(
+        record.metadata["instrument_model"].as_str(),
+        Some("NIRS DS3 F")
+    );
+    let absorbance = record.signals.get("absorbance").expect("absorbance");
+    assert_eq!(absorbance.axis.values.len(), 50); // single segment
+    assert!((absorbance.axis.values[0] - 1100.0).abs() < 1e-6);
+    assert_eq!(absorbance.axis.order, AxisOrder::Ascending);
+}
+
+#[test]
+fn reads_local_foss_ds_series_native_nir() {
+    // Real DS2500 / DS3 F customer files are private (no vendor text export);
+    // validate record count, axis endpoints, model string and that every
+    // spectrum decodes to finite, plausible absorbance.
+    for (rel, model, samples, npts, first, last) in [
+        (
+            "samples_local/foss_winisi/fileDS2500CRAW.nir",
+            "NIRS DS2500",
+            10usize,
+            1_050usize,
+            400.0,
+            2498.0,
+        ),
+        (
+            "samples_local/foss_winisi/fileDS3FCRAW.nir",
+            "NIRS DS3 F",
+            20,
+            700,
+            1100.0,
+            2498.0,
+        ),
+    ] {
+        let path = workspace_file(rel);
+        if !path.exists() {
+            eprintln!("skipping local-only FOSS DS-series sample {rel}");
+            continue;
+        }
+        let records = open_path(path).expect("open local FOSS DS-series .nir");
+        assert_eq!(records.len(), samples);
+        let record = &records[0];
+        assert_eq!(record.provenance.format, "foss-ds-nir");
+        assert_eq!(record.metadata["instrument_model"].as_str(), Some(model));
+        let absorbance = record.signals.get("absorbance").expect("absorbance");
+        assert_eq!(absorbance.axis.values.len(), npts);
+        assert!((absorbance.axis.values[0] - first).abs() < 1e-6);
+        assert!((absorbance.axis.values[npts - 1] - last).abs() < 1e-6);
+        for spectrum in &records {
+            let sig = spectrum.signals.get("absorbance").expect("absorbance");
+            assert!(sig
+                .values
+                .iter()
+                .all(|v| v.is_finite() && *v > -1.0 && *v < 10.0));
+        }
+    }
+}
+
+#[test]
 fn reads_viavi_micronir_native_sam_synthetic() {
     let records = open_path(workspace_file(
         "samples/viavi_micronir/synthetic_micronir.sam",

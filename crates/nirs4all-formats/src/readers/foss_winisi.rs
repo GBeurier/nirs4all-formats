@@ -40,6 +40,10 @@ const VERSION_NIR: u16 = 1;
 
 const SIG_ISISCAN: &[u8] = b"ISIscan";
 const SIG_NIRSYSTEMS: &[u8] = b"NIRSystems";
+// FOSS DS-series bench analysers (DS2500, DS3 F, ...) emit the same native
+// container but carry no ISIscan/NIRSystems identity string; they are pinned by
+// the instrument model prefix at `MODEL_OFF` (e.g. "NIRS DS2500", "NIRS DS3 F").
+const SIG_DS_MODEL: &[u8] = b"NIRS DS";
 
 pub struct FossWinisiReader;
 
@@ -56,20 +60,22 @@ impl Reader for FossWinisiReader {
         // Distinguish from BUCHI NIRCal (which also uses the `.nir` extension)
         // purely by binary signature: ISIscan/WinISI files carry an ASCII
         // identity string in the header, never the "NIRCAL Project File" magic.
+        // FOSS DS-series benches omit that string but pin themselves with a
+        // "NIRS DS..." instrument model at MODEL_OFF instead.
         let window = &head[..head.len().min(256)];
-        if !contains(window, SIG_ISISCAN) && !contains(window, SIG_NIRSYSTEMS) {
+        let ds_series = is_ds_series(head);
+        if !ds_series && !contains(window, SIG_ISISCAN) && !contains(window, SIG_NIRSYSTEMS) {
             return None;
         }
-        let label = if version == VERSION_CAL {
-            "foss-winisi-cal"
-        } else {
-            "foss-winisi-nir"
-        };
         Some(FormatProbe::new(
-            label,
+            resolve_format_key(ds_series, version),
             self.name(),
             Confidence::Definite,
-            "FOSS NIRSystems / ISIscan / WinISI native header",
+            if ds_series {
+                "FOSS DS-series native header (NIRS DS model)"
+            } else {
+                "FOSS NIRSystems / ISIscan / WinISI native header"
+            },
         ))
     }
 
@@ -152,11 +158,7 @@ fn parse_header(bytes: &[u8]) -> Result<Header> {
     let constituent_names = parse_constituent_names(bytes, constituent_count);
     let master_no = ascii_field(bytes, MASTER_NO_OFF, 16);
     let instrument_model = ascii_field(bytes, MODEL_OFF, 24);
-    let format_key = if version == VERSION_CAL {
-        "foss-winisi-cal"
-    } else {
-        "foss-winisi-nir"
-    };
+    let format_key = resolve_format_key(is_ds_series(bytes), version);
 
     Ok(Header {
         version,
@@ -320,6 +322,25 @@ fn record_stride(point_count: usize) -> usize {
     RECORD_HEADER_LEN + point_count * 4 + SPECTRUM_GAP + CONSTITUENT_REGION_LEN
 }
 
+/// FOSS DS-series benches (DS2500, DS3 F, ...) write the same container as the
+/// ISIscan/WinISI files but carry a "NIRS DS..." model string at `MODEL_OFF`
+/// instead of the ISIscan/NIRSystems identity. The prefix never collides with
+/// the "NIRSystems 6500" model of the WinISI files.
+fn is_ds_series(bytes: &[u8]) -> bool {
+    bytes
+        .get(MODEL_OFF..MODEL_OFF + SIG_DS_MODEL.len())
+        .is_some_and(|slice| slice == SIG_DS_MODEL)
+}
+
+fn resolve_format_key(ds_series: bool, version: u16) -> &'static str {
+    match (ds_series, version == VERSION_CAL) {
+        (true, true) => "foss-ds-cal",
+        (true, false) => "foss-ds-nir",
+        (false, true) => "foss-winisi-cal",
+        (false, false) => "foss-winisi-nir",
+    }
+}
+
 fn overflow() -> Error {
     Error::InvalidRecord("FOSS WinISI record offset overflows usize".to_string())
 }
@@ -432,6 +453,26 @@ mod tests {
     fn record_stride_matches_real_layout() {
         // 1050 points -> 256 + 4200 + 24 + 128 == 4608.
         assert_eq!(record_stride(1050), 4608);
+        // DS3 F single-segment layout: 700 points -> 256 + 2800 + 24 + 128.
+        assert_eq!(record_stride(700), 3208);
+    }
+
+    #[test]
+    fn ds_series_model_is_recognised() {
+        let mut head = vec![0u8; MODEL_OFF + 16];
+        head[MODEL_OFF..MODEL_OFF + 11].copy_from_slice(b"NIRS DS2500");
+        assert!(is_ds_series(&head));
+
+        head[MODEL_OFF..MODEL_OFF + 11].copy_from_slice(b"NIRSystems6");
+        assert!(!is_ds_series(&head));
+    }
+
+    #[test]
+    fn format_key_separates_family_and_kind() {
+        assert_eq!(resolve_format_key(true, VERSION_NIR), "foss-ds-nir");
+        assert_eq!(resolve_format_key(true, VERSION_CAL), "foss-ds-cal");
+        assert_eq!(resolve_format_key(false, VERSION_NIR), "foss-winisi-nir");
+        assert_eq!(resolve_format_key(false, VERSION_CAL), "foss-winisi-cal");
     }
 
     #[test]

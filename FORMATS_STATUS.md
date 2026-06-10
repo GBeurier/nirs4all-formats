@@ -68,11 +68,11 @@ Vue compacte de tous les formats de la lib, dérivée de
 | AnIML | IUPAC / ASTM | spectral synthétique | `.animl` | limité | oui |
 | FGI HDF5 + XML | FGI | mapping synthétique | `.h5` + `.xml` | limité | oui |
 | MODTRAN albedo | Spectral Sciences | synthétique, hors-scope | `.dat` | limité | oui |
-| Foss NIRSystems / WinISI **natif** | Foss | binaire fermé non décodé | `.NIR` `.DA` `.cal` `.eqa` | rien | oui |
+| Foss NIRSystems / WinISI **natif** | Foss | `.cal`/`.nir` décodés (ISIscan + DS2500/DS3F) ; reste `.DA`/`.eqa` | `.NIR` `.DA` `.cal` `.eqa` | partiel | oui |
 | Perten DA / Inframatic | Perten / PerkinElmer | binaire non décodé | binaire `.csv` | rien | oui |
 | ASD calibration | ASD / Malvern | compagnons absents | `.ILL` `.REF` `.RAW` | rien | oui |
 | ANDI / NetCDF MS | ASTM | détecté/refusé (hors-scope) | `.cdf` `.nc` | rien | non |
 | mzML / mzMLb | HUPO PSI | détecté/refusé (hors-scope) | `.mzML` `.mzMLb` | rien | non |
 | fNIRS neuroscience | NIRx / SNIRF | hors-scope | `.snirf` `.nirs` `.wl1/2` | rien | non |
 
-**Bilan** : ~30 `ok`, 17 `partiel`, 8 `limité`, 6 `rien`.
+**Bilan** : ~30 `ok`, 18 `partiel`, 8 `limité`, 5 `rien`.

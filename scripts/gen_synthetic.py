@@ -298,4 +298,65 @@ with open(f"{OUT}/shimadzu/synthetic_uvprobe.txt", "w") as f:
     for j in range(n_wl):
         f.write(f"{wl[j]:.4f},{X[0,j]:.6f}\n")
 
+# 25. FOSS DS-series native .nir binaries (CC0 stand-ins for the local-only
+#     DS2500 / DS3 F customer files). Same container as the ISIscan/WinISI
+#     reader; version word 1 (spectra-only), model "NIRS DS..." at 0x82 so the
+#     foss_winisi reader sniffs them as `foss-ds-nir`.
+import struct  # noqa: E402
+
+
+def _write_foss_ds_nir(path, model, serial, segments, n_samples, seed):
+    """segments: list of (n_points, start_nm, step_nm). Layout mirrors
+    crates/nirs4all-formats/src/readers/foss_winisi.rs (DATA_START 0x380,
+    256-byte record header + npts*4 f32 spectrum + 24 gap + 128 zero region)."""
+    rng = np.random.default_rng(seed)
+    n_points = sum(s[0] for s in segments)
+    axis = np.concatenate([s[1] + s[2] * np.arange(s[0]) for s in segments])
+
+    buf = bytearray(0x380)
+    struct.pack_into("<H", buf, 0x00, 1)            # version: 1 = .nir
+    struct.pack_into("<H", buf, 0x02, n_samples)    # sample count
+    struct.pack_into("<H", buf, 0x06, n_points)     # data points
+    struct.pack_into("<H", buf, 0x08, 0)            # constituent count
+    desc = f"{model.split()[-1]} SYNTHETIC CC0".encode("ascii")
+    buf[0x12:0x12 + len(desc)] = desc
+    buf[0x59:0x59 + len(serial)] = serial.encode("ascii")
+    buf[0x82:0x82 + len(model)] = model.encode("ascii")
+    struct.pack_into("<H", buf, 0xA0, len(segments))  # segment count
+    for i, (pts, start, step) in enumerate(segments):
+        struct.pack_into("<H", buf, 0xA2 + i * 2, pts)
+        struct.pack_into("<f", buf, 0xCC + i * 4, float(start))
+        struct.pack_into("<f", buf, 0xE8 + i * 4, float(step))
+        struct.pack_into("<f", buf, 0x104 + i * 4, float(start + step * (pts - 1)))
+
+    # Smooth, plausible absorbance: a couple of Gaussian bands + mild offset.
+    base = (0.6
+            + 0.4 * np.exp(-((axis - 1450) / 80) ** 2)
+            + 0.3 * np.exp(-((axis - 1940) / 60) ** 2))
+    for s in range(n_samples):
+        rec = bytearray(0x100)
+        sample_no = f"SYN{s:04d}-00".encode("ascii")
+        rec[0:len(sample_no)] = sample_no
+        struct.pack_into("<i", rec, 18, 0)                       # product code
+        struct.pack_into("<I", rec, 214, 1_700_000_000 + s * 60)  # unix time
+        spectrum = (base + 0.05 * rng.standard_normal(n_points)).astype("<f4")
+        rec += spectrum.tobytes()
+        rec += b"\x00" * 24       # gap
+        rec += b"\x00" * 128      # constituent region (empty for .nir)
+        buf += rec
+
+    Path(path).write_bytes(buf)
+
+
+_write_foss_ds_nir(
+    f"{OUT}/foss_winisi/synthetic_ds2500.nir",
+    model="NIRS DS2500", serial="90000001",
+    segments=[(40, 400.0, 2.0), (60, 1100.0, 2.0)], n_samples=4, seed=2500,
+)
+_write_foss_ds_nir(
+    f"{OUT}/foss_winisi/synthetic_ds3f.nir",
+    model="NIRS DS3 F", serial="90000002",
+    segments=[(50, 1100.0, 2.0)], n_samples=3, seed=3030,
+)
+
 print("Synthetic samples generated.")

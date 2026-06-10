@@ -48,8 +48,9 @@ See [Getting started](docs/getting_started.md) and the
 
 Over 40 readers cover delimited/Excel tables, Bruker OPUS, Thermo SPC & Nicolet
 OMNIC, JCAMP-DX, ASD FieldSpec, Spectral Evolution, SVC/GER, Avantes, Ocean
-Optics, ENVI/AVIRIS hyperspectral cubes, HDF5/NetCDF/MATLAB, Allotrope, AnIML,
-Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
+Optics, FOSS NIRSystems / WinISI & DS-series (DS2500, DS3 F), VIAVI MicroNIR,
+PerkinElmer Spectrum, ENVI/AVIRIS hyperspectral cubes, HDF5/NetCDF/MATLAB,
+Allotrope, AnIML, Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 
 - **[Supported-format catalogue](docs/SUPPORTED_FORMATS.md)** — the public list
   with per-format pages, vendors, extensions and support status.
