@@ -99,24 +99,37 @@ for c in $CORE_CRATES; do
     cp -R "$REPO/crates/$c/src"     "$VENDORED/$c/src"
 done
 
-# 1a. LITE build — trim the heavy optional readers from the vendored facade
-#     manifest. The extendr staticlib already requests the facade with
-#     `default-features = false` (see the generated [dependencies] below), so the
-#     heavy readers are not COMPILED. But `cargo vendor` (step 3) collects the
-#     UNION of every reachable dependency, optional ones included, so the
-#     unstripped manifest would still drag the full Arrow/Parquet/HDF5/netCDF/
-#     MATLAB closure into vendor.tar.xz (~14 MB) and blow CRAN's 5 MB limit.
-#     Removing the optional deps + the [features] block from the vendored facade
-#     Cargo.toml makes the dependency graph lite-only, so cargo vendor collects
-#     just the core closure (~3.6 MB). The facade source gates every heavy reader
-#     behind `#[cfg(feature = "fmt-*")]`, which simply evaluate to false when the
-#     feature is undefined, so the trimmed manifest still compiles the core
-#     readers (and the graceful-degradation stubs) cleanly. The full-reader
-#     sibling package (nirs4allformatsfull) ships an UNSTRIPPED configure.
+# 1a. LITE build — trim the heavy optional readers AND the test-only
+#     [dev-dependencies] from the vendored facade manifest. The extendr staticlib
+#     already requests the facade with `default-features = false` (see the
+#     generated [dependencies] below), so the heavy readers are not COMPILED. But
+#     `cargo vendor` (step 3) collects the UNION of every reachable dependency,
+#     optional AND dev ones included, so the unstripped manifest would still drag
+#     two large closures into vendor.tar.xz and blow CRAN's 5 MB limit:
+#       - the optional readers: the full Arrow/Parquet/HDF5/netCDF/MATLAB closure;
+#       - the facade's [dev-dependencies] `tempfile` (test-only, used only in
+#         crates/nirs4all-formats/src/sidecars.rs tests): `tempfile` pulls
+#         `getrandom 0.4` -> the WASI `wit-bindgen` toolchain (wit-parser,
+#         wit-component, wasm-encoder, wasmparser, wasip2/3, r-efi) plus
+#         `rustix` / `linux-raw-sys` / `windows-sys` — ~5 MB compressed, NONE of
+#         it needed for the R package build. `cargo vendor` from the R crate's own
+#         manifest never saw these (the facade was a path-dep there), but this
+#         configure COPIES the facade into the vendored tree as a workspace ROOT
+#         member, so cargo vendor resolves its dev-deps too.
+#     Removing the optional deps + the [features] block + the [dev-dependencies]
+#     table from the vendored facade Cargo.toml makes the dependency graph
+#     lite-only, so cargo vendor collects just the core closure (~3.6 MB). The
+#     facade source gates every heavy reader behind `#[cfg(feature = "fmt-*")]`,
+#     which simply evaluate to false when the feature is undefined, so the trimmed
+#     manifest still compiles the core readers (and the graceful-degradation stubs)
+#     cleanly; dropping the dev-deps is invisible to the build because R never runs
+#     the crate's `cargo test`. The full-reader sibling package
+#     (nirs4allformatsfull) ships an UNSTRIPPED configure.
 FACADE_MANIFEST="$VENDORED/nirs4all-formats/Cargo.toml"
 if command -v python3 >/dev/null 2>&1; then
-    echo "nirs4allformats configure: LITE — trimming heavy optional readers from the vendored facade manifest"
-    python3 - "$FACADE_MANIFEST" <<'PY'
+    echo "nirs4allformats configure: LITE — trimming heavy optional readers and test-only dev-dependencies from the vendored facade manifest"
+    for m in "$VENDORED"/*/Cargo.toml; do
+        python3 - "$m" <<'PY'
 import re, sys
 
 p = sys.argv[1]
@@ -125,9 +138,19 @@ lines = open(p).read().splitlines()
 # Walk the manifest table-by-table. Rewrite [features] to declare the feature
 # NAMES with empty arrays (so the source's `#[cfg(feature = "fmt-*")]` gates are
 # recognised — no `unexpected_cfgs` warnings — yet enable nothing, hence no
-# optional deps), and drop every `optional = true` dependency line from
-# [dependencies] (the heavy Arrow/Parquet/HDF5/netCDF/MATLAB readers + codecs).
-out, section, dropped = [], None, []
+# optional deps), drop every `optional = true` dependency line from
+# [dependencies] (the heavy Arrow/Parquet/HDF5/netCDF/MATLAB readers + codecs),
+# and delete every [dev-dependencies] table (incl. target-scoped variants like
+# `[target.'cfg(...)'.dev-dependencies]`) in full — they are test-only and pull a
+# multi-MB WASI/getrandom closure into the vendor tree for no build benefit.
+out, section, dropped, dev_dropped = [], None, [], 0
+
+
+def is_dev_deps(name):
+    # Matches `dev-dependencies` and `target.<cfg>.dev-dependencies`.
+    return name == "dev-dependencies" or name.endswith(".dev-dependencies")
+
+
 for ln in lines:
     header = re.match(r"\s*\[([^\]]+)\]\s*$", ln)
     if header:
@@ -148,10 +171,18 @@ for ln in lines:
                 'fmt-parquet = []',
             ]
             continue
+        if is_dev_deps(section):
+            # Drop the whole [dev-dependencies] table header; its body lines are
+            # skipped below until the next `[` header re-assigns `section`.
+            dev_dropped += 1
+            continue
         out.append(ln)
         continue
     if section == "features":
         # Skip the original feature lines; we emitted the trimmed table above.
+        continue
+    if section is not None and is_dev_deps(section):
+        # Skip the dev-dependency body lines (up to the next table header).
         continue
     if section == "dependencies" and "optional = true" in ln:
         dropped.append(ln.strip())
@@ -159,8 +190,9 @@ for ln in lines:
     out.append(ln)
 
 open(p, "w").write("\n".join(out) + "\n")
-print(f"  trimmed {len(dropped)} optional reader dependency line(s)")
+print(f"  {p}: trimmed {len(dropped)} optional reader dep line(s), dropped {dev_dropped} [dev-dependencies] table(s)")
 PY
+    done
 else
     echo "nirs4allformats configure: ERROR — python3 required to trim the LITE facade manifest" >&2
     exit 1
