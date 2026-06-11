@@ -1,6 +1,6 @@
 Package: nirs4allformats
 Title: R Binding for nirs4all-formats
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: person("Gregory", "Beurier", email = "gregory.beurier@cirad.fr", role = c("aut", "cre"))
 Description: Thin R binding for the Rust-first nirs4all-formats NIRS file loading
     core. When installed via R CMD INSTALL with Cargo available the package
