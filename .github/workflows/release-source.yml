@@ -63,6 +63,9 @@ jobs:
           path: .
           format: cyclonedx-json
           output-file: dist/${{ steps.meta.outputs.prefix }}.cdx.json
+          # Do NOT let the action auto-attach its own default-named SBOM to the
+          # Release (it would duplicate our dist/<prefix>.cdx.json). We attach it.
+          upload-release-assets: false
 
       - name: SHA256SUMS
         working-directory: dist
