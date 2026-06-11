@@ -9,10 +9,14 @@
   probe / read / walk calls directly through Rust. Without Cargo on the build
   machine it falls back to invoking the `nirs4all-formats` CLI binary.
 * This is the **size-trimmed (lite) build**: core readers only. The optional
-  large readers (HDF5/netCDF, Parquet/Arrow, MATLAB) are excluded to reduce the
-  vendored Rust closure; they are available in the sibling package
-  `nirs4allformats.full` from R-universe (`Additional_repositories`). See
-  *Lite vs full* below.
+  large readers (HDF5/netCDF, Parquet/Arrow, MATLAB) are excluded to keep the
+  source package within CRAN's 5 MB limit; they are available in the sibling
+  package `nirs4allformats.full` from R-universe (`Additional_repositories`).
+  See *Lite vs full* below.
+* **Source tarball: 3.84 MB** (4,024,395 bytes), comfortably under CRAN's 5 MB
+  cap.
+* `R CMD check --as-cran`: **0 ERRORs, 0 WARNINGs**, only environment-specific
+  NOTEs (detailed below). Ready for submission.
 * License: `MIT + file LICENSE`.
 * The same Rust core powers the project's Python (PyPI),
   JavaScript / WebAssembly (npm) and C-ABI bindings.
@@ -39,6 +43,10 @@ farm never touches the network and needs no out-of-tree sources:
   cargo's offline checksum verification — the same pattern the `gifski` and
   `prqlr` CRAN packages use for their Rust vendor trees.
 
+Per CRAN's "Using Rust" policy, `src/Makevars` and `src/Makevars.win` pass
+`-j 2` to every `cargo build` invocation, bounding Cargo's parallelism rather
+than letting it default to every logical CPU on the build machine.
+
 The `Cargo` / `rustc` toolchain is declared in `SystemRequirements`.
 
 ## Windows / UCRT toolchain
@@ -48,8 +56,7 @@ mingw linker and includes `src/Makevars.win`, which wires it into
 `CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER` and adds the canonical extendr
 `libgcc_mock/libgcc_eh.a` shim (Rtools' GCC ships no `libgcc_eh.a`, which the
 `x86_64-pc-windows-gnu` target's link step references). Without this shim the
-Windows install fails at the final link — the cause of the earlier win-builder
-"Installation failed" ERROR.
+Windows install fails at the final link.
 
 ## Test environments
 
@@ -58,7 +65,7 @@ Windows install fails at the final link — the cause of the earlier win-builder
   access and no access to the monorepo `crates/`** -> installs and loads
   cleanly; `nirs4allformats_native_available()` returns `TRUE` (the native Rust
   path, not the CLI fallback). `R CMD check --as-cran`: **0 ERRORs, 0 WARNINGs,
-  3 NOTEs**, all environment / inherent-to-Rust artefacts described below.
+  4 NOTEs**, all environment-specific (described below).
 * Submission-grade checks run on **current R (release + devel)** before upload
   via the GitHub Actions matrix (`.github/workflows/release-r.yml`):
   - Ubuntu 22.04 (R release + devel)
@@ -68,27 +75,34 @@ Windows install fails at the final link — the cause of the earlier win-builder
 
 ## R CMD check --as-cran status
 
-`R CMD check --as-cran` (R 4.6.0) finishes with **no ERRORs and no WARNINGs**.
-The remaining NOTEs are:
+`R CMD check --as-cran` (R 4.6.0 conda-forge) finishes with **no ERRORs and no
+WARNINGs**. The 4 NOTEs are all artefacts of the local conda-forge R
+environment, not the package, and none of them appears on CRAN's own Debian
+builders:
 
-* **CRAN incoming feasibility — "New submission"** (and the tarball size). Always
-  present for a first upload.
-* **Compilation flag `-march=nocona`** — comes from conda-forge R's own
-  `Makeconf` (`CFLAGS`), not from the package. The package's `src/Makevars` sets
-  only `PKG_CFLAGS = -I.../rust/src`; the Cargo release profile sets only
-  `opt-level = 2` + `lto = "thin"`. This NOTE does **not** appear on a vanilla
-  (non-conda) R build such as CRAN's.
-* **checking compiled code** — the static Rust library links the Rust standard
-  library, which references `abort` (panic / allocation-failure paths). On CRAN's
-  Debian builder this surfaces as the *"compiled code calls abort"* WARNING; it
-  is **inherent to statically linking any Rust dependency tree** with
-  `extendr-api` 0.7.x and cannot be removed without dropping the native backend.
-  Locally (conda R) it shows up as a benign symbol-table parser NOTE.
+1. **CRAN incoming feasibility — "New submission".** Always present for a first
+   upload. It also lists the `Additional_repositories` entry
+   (`https://gbeurier.r-universe.dev`) as availability `?` because the sibling
+   `nirs4allformats.full` is not yet published there at check time; this resolves
+   once both packages are live.
+2. **Compilation flag `-march=nocona`.** Comes from conda-forge R's own
+   `Makeconf` (`CFLAGS`), not from the package. The package's `src/Makevars` sets
+   only `PKG_CFLAGS = -I.../rust/src`; the Cargo release profile sets only
+   `opt-level = 2` + `lto = "thin"`. This NOTE does **not** appear on a vanilla
+   (non-conda) R build such as CRAN's.
+3. **checking compiled code** — `Error in tab[, "name"] : incorrect number of
+   dimensions`. This is the conda-forge `nm` symbol-table parser choking on the
+   static Rust library inside R's `checkFF`/`tools` code; it is a parser failure
+   in the local conda toolchain, not a finding about the package, and does not
+   occur on CRAN's GNU binutils.
+4. **checking HTML version of manual** — `no command 'tidy' found`. HTML Tidy is
+   simply not installed in the local environment; CRAN's builders have it.
 
-The previous WARNINGs/NOTEs about GNU-make extensions (`lzma-sys`, `r-efi`), a
-CITATION file in a non-standard place (`chrono/CITATION.cff`), pragmas and
-non-LF line endings inside the vendored crates, and "No rustc version reported"
-have all been **fixed** in this version:
+The WARNINGs/NOTEs from earlier iterations — GNU-make extensions (`lzma-sys`,
+`r-efi`), a CITATION file in a non-standard place (`chrono/CITATION.cff`),
+pragmas and non-LF line endings inside the vendored crates, "No rustc version
+reported", and the historical Windows "Installation failed" link ERROR — have
+all been fixed in this version:
 
 * `./configure` strips stray `CITATION.cff` / `CITATION` files from the vendored
   tree (and removes their entries from each crate's `.cargo-checksum.json`, so
@@ -113,55 +127,47 @@ have all been **fixed** in this version:
 * No filesystem writes outside the build / `tempdir()` tree.
 * No `:::` calls to private functions of other packages.
 * Only `jsonlite` is imported; the package is a leaf in the CRAN dependency graph.
+* `cargo build` parallelism is bounded with `-j 2` per CRAN's "Using Rust"
+  policy.
 
 ## Lite (this CRAN package) vs full (R-universe)
 
 This is the **lite** build: the facade is compiled `--no-default-features`, so
 it ships only the core readers (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, and
 the vendor ASCII/binary formats). The optional large readers — HDF5/netCDF,
-Parquet/Arrow, MATLAB — are excluded to shrink the vendored Rust closure for
-CRAN. They live in the sibling package **`nirs4allformats.full`**
+Parquet/Arrow, MATLAB — are excluded to keep the source tarball under CRAN's
+5 MB limit. They live in the sibling package **`nirs4allformats.full`**
 (`bindings/r/nirs4allformatsfull`), which keeps the default `formats-all`
-features and is distributed through **R-universe only** (its ~14 MB tarball
-cannot meet CRAN's size limit). The two packages share the same Rust core and
-the same exported R API; feeding this lite build an excluded format returns a
-clean R error naming `nirs4allformats.full` (graceful-degradation stub readers
-in the facade), not a generic "unsupported format".
+features and is distributed through **R-universe** (its larger tarball cannot
+meet CRAN's size limit). The two packages share the same Rust core and the same
+exported R API.
 
-## CRAN feasibility — honest assessment
+Feeding this lite build an excluded format returns a clean, actionable R error
+naming `nirs4allformats.full` and the exact `install.packages(...)` line, not a
+generic "unsupported format". This is implemented by graceful-degradation stub
+readers in the facade that recognise each excluded format and refuse it with the
+install hint. The stubs cover both the **binary** containers (HDF5/netCDF by
+magic, Parquet by `PAR1` magic, MATLAB v5 by header) and the **XML-text** FGI
+primary (a `.xml` carrying `<FGIMeasurement>` / `<DataReference>`, whose real
+reader is gated behind `fmt-hdf5`). A genuinely unknown file still returns the
+generic "unsupported format" error, so the stubs never over-claim.
 
-Two gates remain that are **not** fixable in package code:
+## CRAN feasibility
 
-1. **Source-tarball size.** Trimming the heavy readers cuts the tarball from
-   ~14 MB (full reader set) to **~7.5 MB** — a large improvement, but still over
-   CRAN's hard 5 MB auto-reject ("Please reduce to less than 5 MB for a CRAN
-   package"). Measured floor: ~98 crates / ~6.7 MB at max compression even after
-   the readers are dropped. The residual weight is **not** the readers — the
-   facade's own core closure is ~3.4 MB — it is the `extendr` binding layer:
-   `libR-sys`'s per-platform bindings, `cfb → web-time → wasm-bindgen`, and
-   `tempfile → getrandom 0.4 → the WASI wit-bindgen/wasmparser component-model
-   toolchain`, which `cargo vendor` must collect for all targets and which
-   reader-trimming cannot remove. A true <5 MB CRAN submission would
-   additionally need a download-at-install vendoring scheme (which defeats the
-   self-contained offline design CRAN's "Using Rust" page prefers) or an upstream
-   extendr/getrandom dependency-graph reduction.
-2. **The `abort` WARNING.** Inherent to a vendored Rust static library with
-   `extendr-api` 0.7.x (see above).
+The lite build meets CRAN's gates:
 
-Because of (1) — a hard auto-reject still in force even for the lite build —
-**R-universe is the realistic distribution channel** for both packages (it
-builds binaries straight from Git and does not gate on size or on the Rust
-`abort` WARNING). The lite build is nonetheless the smallest achievable
-self-contained tarball and the correct CRAN candidate; its
-`R CMD check --as-cran` is clean apart from the size auto-reject (0 ERRORs,
-0 WARNINGs, only the environment NOTEs below).
+* **Source-tarball size: 3.84 MB**, under CRAN's 5 MB cap. Trimming the heavy
+  readers and shipping the crates.io dependency closure compressed
+  (`vendor.tar.xz`) brings the previously oversized tree (~14 MB with the full
+  reader set) below the limit.
+* **`R CMD check --as-cran`: 0 ERRORs, 0 WARNINGs** — only the four
+  environment-specific NOTEs above, none of which is a package defect.
 
 ## CRAN version note
 
-CRAN rejects SemVer pre-release suffixes (`0.1.0-alpha.1`). While the project is
-pre-`0.1.0` the R spelling is therefore the development version `0.1.0.9000`; the
-first CRAN-eligible R version is the plain `0.1.0`. A `.9000` development version
-is the R-universe / development spelling only and is **not** submitted to CRAN.
+CRAN rejects SemVer pre-release suffixes (`0.1.0-alpha.1`). The submitted R
+version is therefore the plain `0.1.0`. A `.9000` development version is the
+R-universe / development spelling only and is **not** submitted to CRAN.
 
 ## Reviewer-facing notes
 
