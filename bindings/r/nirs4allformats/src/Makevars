@@ -15,6 +15,11 @@ $(STATLIB):
 		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
+	# Report the toolchain version to the install log BEFORE compiling. R CMD
+	# check --as-cran scans the lines preceding the first "Compiling" for a
+	# `rustc <ver>` line; without it the "Rust compilation" check emits the
+	# "No rustc version reported prior to compilation" WARNING.
+	@rustc --version || true
 	# Self-contained vendored build: extract the cargo-vendored crates.io deps
 	# (shipped compressed to dodge R's tarball dotfile stripping), then build
 	# OFFLINE against them. The crates.io source replacement is passed INLINE via
@@ -28,6 +33,17 @@ $(STATLIB):
 			--config 'source.vendored-sources.directory="vendor"'; \
 	else \
 		cd rust && cargo build --release; \
+	fi
+	# Post-build prune (R CMD check / CRAN). The staticlib is now linked, so the
+	# cargo build-script scratch ($(LIBDIR)/build holds the generated zstd-sys
+	# flag_check.c + zstd.h that trip the "line endings"/"pragmas" NOTEs) and the
+	# extracted crates.io vendor tree (lzma-sys / r-efi GNU Makefiles -> the GNU
+	# extensions WARNING, vendored zstd headers -> a pragmas NOTE) are no longer
+	# needed. Removing them stops R CMD check from scanning third-party build
+	# artefacts the package compiles but does not author. Skipped when
+	# NOT_CRAN=true (dev inner loop keeps the cache for incremental rebuilds).
+	@if [ "$(NOT_CRAN)" != "true" ]; then \
+		rm -rf "$(LIBDIR)/build" "$(CURDIR)/rust/vendor"; \
 	fi
 
 C_clean:

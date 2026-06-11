@@ -209,25 +209,32 @@ Self-contained source tarball: the package vendors everything it needs to build
 offline. src/rust/vendored/ holds the two workspace core crates copied from the
 project monorepo (relative path deps rewritten by ./configure), and
 src/rust/vendor.tar.xz holds every crates.io transitive dependency produced by
-`cargo vendor`, shipped compressed and extracted by src/Makevars(.win) which
-build offline with the crates.io source replacement passed INLINE to cargo (so
-the package ships no hidden .cargo/ directory). This mirrors the arrow, gifski
-and polars CRAN packages. The Cargo / rustc toolchain is declared in
-SystemRequirements; the install is fully offline.
+`cargo vendor`, shipped compressed (xz) and extracted by src/Makevars(.win)
+which build offline with the crates.io source replacement passed INLINE to cargo
+(so the package ships no hidden .cargo/ directory). This mirrors the gifski and
+prqlr CRAN packages. The Cargo / rustc toolchain is declared in
+SystemRequirements; the install is fully offline. On Windows, src/Makevars.ucrt
+points CARGO_LINKER at Rtools' mingw linker and src/Makevars.win adds the
+canonical extendr libgcc_eh shim (Rtools' GCC ships no libgcc_eh.a, which the
+x86_64-pc-windows-gnu link step references).
 
-Test environments: local Ubuntu/WSL2 R 4.3.3 (offline standalone install from
+Test environments: local Ubuntu/WSL2 R 4.6.0 (offline standalone install from
 outside the monorepo -> installs, loads, native path active); CI matrix
 (release-r.yml) on Ubuntu 22.04 (R release + devel), macOS 14 (R release,
 arm64), Windows Server 2022 (R release); win-builder + R-hub v2 run manually
 before submission.
 
-R CMD check --as-cran: 0 ERRORs. The 1 WARNING + the NOTEs all come from the
-bundled third-party Rust sources extracted from src/rust/vendor.tar.xz
-(GNU-make extensions in lzma-sys Makefiles, a CITATION.cff in chrono, pragmas
-in zstd-sys) or the local toolchain (installed size ~15.7Mb from the Arrow /
-Parquet / HDF5 reader closure; -march=nocona from conda-forge R's Makeconf;
-offline NTP / incoming-feasibility), not from the package's own R or build
-logic. The package ships no hidden .cargo/ directory, sets no -O3 /
+R CMD check --as-cran: 0 ERRORs, 0 WARNINGs, 3 NOTEs. The NOTEs are: "New
+submission"; -march=nocona (from conda-forge R's Makeconf, not the package -
+absent on vanilla R); and the compiled-code check (the static Rust library
+references abort via std's panic / allocation-failure paths - inherent to
+linking any Rust dependency tree with extendr 0.7.x; surfaces as a WARNING on
+CRAN's Debian builder). The earlier GNU-make-extensions / CITATION / pragmas /
+line-endings / "No rustc version" findings are all fixed (./configure strips
+vendored CITATION files + patches the cargo checksums; src/Makevars(.win) prune
+$(LIBDIR)/build + the extracted vendor/ tree after linking and echo `rustc
+--version`; .Rbuildignore excludes src/rust/target/; inst/WORDLIST carries the
+domain vocabulary). The package ships no hidden .cargo/ directory, sets no -O3 /
 -march=native / -Werror, does no network access during install/examples/tests,
 and imports only jsonlite.
 
@@ -240,11 +247,21 @@ Maintainer: Grégory Beurier (CIRAD), gregory.beurier@cirad.fr.
 > submitted to CRAN**. The first CRAN-eligible R version is the plain `0.1.0`
 > cut by `scripts/bump_version.sh --bump 0.1.0`.
 
-> **Heads-up (CRAN size):** the installed package is ~15.7 MB and the source
-> tarball ~14 MB (the full Arrow / Parquet / HDF5 reader closure). That is large
-> for CRAN's comfort; **R-universe has no such limit and is the lower-friction
-> target.** If CRAN pushes back on size, ship via R-universe + the GitHub
-> Release and revisit a feature-trimmed CRAN variant.
+> **CRAN feasibility verdict — R-universe is the realistic target.** The source
+> tarball is ~14 MB (almost entirely `src/rust/vendor.tar.xz`, the compressed
+> crates.io closure for the full Arrow / Parquet / HDF5 / zstd / lzma reader
+> set). CRAN's submission checker **auto-rejects tarballs over 5 MB** ("Please
+> reduce to less than 5 MB for a CRAN package") — a hard gate this package cannot
+> clear without dropping readers. The documented relief (a manually-granted size
+> increase, or pinned download-at-install) is uncertain at this size and the
+> latter defeats the self-contained offline design. Independently, the static
+> Rust library carries the inherent `abort` WARNING (extendr 0.7.x + std). **Ship
+> via R-universe** (`gbeurier.r-universe.dev` — builds binaries from Git, no size
+> or WARNING gate; see *R → R-universe* above) + the GitHub Release. CRAN remains
+> a stretch goal that would need a feature-trimmed variant under 5 MB; the local
+> `R CMD check --as-cran` is otherwise clean (0 ERRORs, 0 WARNINGs, only the
+> "New submission" / `-march=nocona` / Rust-`abort` NOTEs), so a trimmed variant
+> would be submission-ready on every axis except size.
 
 After uploading, CRAN emails a confirmation link — click it to complete.
 

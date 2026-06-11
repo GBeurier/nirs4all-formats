@@ -22,7 +22,7 @@ new format means writing a new Rust reader, not new R code.
 R CMD INSTALL bindings/r/nirs4allformats
 ```
 
-When [Cargo](https://www.rust-lang.org/tools/install) (Rust's package manager)
+When [Cargo](https://rust-lang.org/tools/install/) (Rust's package manager)
 is on `PATH` at install time, the package compiles a native extendr static
 library from `src/rust/` and calls the Rust core directly. Without Cargo, the
 package still installs and falls back to invoking the `nirs4all-formats` command-line

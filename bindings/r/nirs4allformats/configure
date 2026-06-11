@@ -175,6 +175,47 @@ TOML
 echo "nirs4allformats configure: cargo vendor (crates.io transitive deps)"
 ( cd "$RUST" && cargo vendor --versioned-dirs vendor ) >/dev/null
 
+# 3a. Strip stray CITATION.cff / CITATION files from the vendored crates. R CMD
+#     check (--as-cran) reports any CITATION found outside inst/ as a NOTE
+#     ("CITATION file in a non-standard place"); chrono ships a top-level
+#     CITATION.cff that would trip it. Removing the file alone would break
+#     cargo's OFFLINE checksum verification, so we also drop its entry from the
+#     crate's `.cargo-checksum.json` (cargo only verifies the files it lists).
+#     Verified: chrono still builds offline after the strip+patch. python3 is the
+#     vendoring host's JSON editor; it is only needed when vendoring (CRAN's
+#     install never reaches this branch — it unpacks the already-stripped tree).
+if command -v python3 >/dev/null 2>&1; then
+    echo "nirs4allformats configure: stripping stray CITATION files from vendored crates"
+    python3 - "$RUST/vendor" <<'PY'
+import json, os, sys
+root = sys.argv[1]
+removed = 0
+for name in os.listdir(root):
+    d = os.path.join(root, name)
+    cj = os.path.join(d, ".cargo-checksum.json")
+    if not os.path.isdir(d) or not os.path.exists(cj):
+        continue
+    with open(cj) as fh:
+        meta = json.load(fh)
+    files = meta.get("files", {})
+    changed = False
+    for fname in list(files):
+        if os.path.basename(fname) in ("CITATION.cff", "CITATION"):
+            fp = os.path.join(d, fname)
+            if os.path.exists(fp):
+                os.remove(fp)
+            del files[fname]
+            changed = True
+            removed += 1
+    if changed:
+        with open(cj, "w") as fh:
+            json.dump(meta, fh)
+print(f"  stripped {removed} CITATION file(s) from the vendored tree")
+PY
+else
+    echo "nirs4allformats configure: WARNING python3 not found — leaving CITATION files in the vendored tree (R CMD check will emit a non-standard-CITATION NOTE)" >&2
+fi
+
 echo "nirs4allformats configure: compressing vendor/ -> vendor.tar.xz (avoids R's tarball dotfile stripping)"
 ( cd "$RUST" && tar cJf vendor.tar.xz vendor && rm -rf vendor )
 

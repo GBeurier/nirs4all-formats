@@ -1,13 +1,16 @@
 Package: nirs4allformats
-Title: R Binding for nirs4all-formats
+Title: Read Near-Infrared Spectroscopy and Spectral File Formats
 Version: 0.1.0
 Authors@R: person("Gregory", "Beurier", email = "gregory.beurier@cirad.fr", role = c("aut", "cre"))
-Description: Thin R binding for the Rust-first nirs4all-formats NIRS file loading
-    core. When installed via R CMD INSTALL with Cargo available the package
-    compiles a native extendr-api static library from src/rust/ and dispatches
-    probe/read/walk calls directly through Rust. Without Cargo the package
-    falls back to invoking the nirs4all-formats CLI binary.
+Description: Thin R binding for the Rust-first 'nirs4all-formats' near-infrared
+    spectroscopy (NIRS) file-loading core. When installed via R CMD INSTALL with
+    Cargo available, the package compiles a native 'extendr' static library from
+    'src/rust/' and dispatches probe, read, and walk calls directly through Rust.
+    Without Cargo it falls back to invoking the 'nirs4all-formats' command-line
+    interface.
 SystemRequirements: Cargo (Rust's package manager), rustc
+URL: https://github.com/GBeurier/nirs4all-formats
+BugReports: https://github.com/GBeurier/nirs4all-formats/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:

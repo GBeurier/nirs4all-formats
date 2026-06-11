@@ -16,17 +16,39 @@ $(STATLIB):
 		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
+	# `rustc` links the x86_64-pc-windows-gnu target against `-lgcc_eh`, but
+	# Rtools' GCC ships no `libgcc_eh.a`, so the final link fails ("Installation
+	# failed") without this shim: an empty libgcc_eh.a on LIBRARY_PATH satisfies
+	# the linker. This is the canonical extendr Windows workaround. See
+	# https://github.com/r-windows/rtools-packages/blob/2407b23f1e0925bbb20a4162c963600105236318/mingw-w64-gcc/PKGBUILD#L313-L316
+	mkdir -p $(TARGET_DIR)/libgcc_mock
+	touch $(TARGET_DIR)/libgcc_mock/libgcc_eh.a
+	# Report the toolchain version to the install log BEFORE compiling, so the
+	# R CMD check --as-cran "Rust compilation" check finds a `rustc <ver>` line
+	# (otherwise it WARNs "No rustc version reported prior to compilation").
+	@rustc --version || true
 	# Self-contained vendored build: extract the cargo-vendored crates.io deps
 	# (shipped compressed), then build OFFLINE with the crates.io source
 	# replacement passed INLINE via --config (no hidden .cargo/ dir). Rtools
 	# provides tar/xz; the dev fallback (no vendor.tar.xz) builds online.
-	@if [ -f rust/vendor.tar.xz ]; then \
+	# CARGO_LINKER (Rtools mingw linker) comes from Makevars.ucrt on R >= 4.2;
+	# CARGO_TARGET_..._LINKER + LIBRARY_PATH wire in the linker and the gcc_eh shim.
+	export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER="$(CARGO_LINKER)" && \
+	export LIBRARY_PATH="$${LIBRARY_PATH};$(CURDIR)/$(TARGET_DIR)/libgcc_mock" && \
+	if [ -f rust/vendor.tar.xz ]; then \
 		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
 		cd rust && cargo build --release --target $(TARGET) --offline \
 			--config 'source.crates-io.replace-with="vendored-sources"' \
 			--config 'source.vendored-sources.directory="vendor"'; \
 	else \
 		cd rust && cargo build --release --target $(TARGET); \
+	fi
+	# Post-build prune (R CMD check / CRAN) — see src/Makevars. The staticlib is
+	# linked, so drop the cargo build-script scratch ($(LIBDIR)/build) and the
+	# extracted crates.io vendor tree so R CMD check does not scan third-party
+	# build artefacts. Skipped when NOT_CRAN=true.
+	@if [ "$(NOT_CRAN)" != "true" ]; then \
+		rm -rf "$(LIBDIR)/build" "$(CURDIR)/rust/vendor"; \
 	fi
 
 C_clean:
