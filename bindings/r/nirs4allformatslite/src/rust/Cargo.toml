@@ -1,0 +1,27 @@
+[package]
+name = "nirs4allformats-r"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+name = "nirs4allformats_r"
+
+[dependencies]
+extendr-api = { version = "0.7", default-features = false }
+# LITE build: full MINUS Parquet. `default-features = false` drops the facade's
+# `formats-all` meta-feature; the explicit `fmt-hdf5` + `fmt-matlab` features then
+# re-enable the HDF5/netCDF and MATLAB readers, while `fmt-parquet` stays OFF so
+# the Arrow/Parquet/zstd closure (the single biggest dependency) is never pulled.
+# Only the Parquet excluded-stub stays active. ./configure regenerates this
+# section verbatim for the vendored tarball; keep the two in sync. The complete
+# build lives in the sibling package nirs4allformats.
+nirs4all-formats = { path = "../../../../../crates/nirs4all-formats", default-features = false, features = ["fmt-hdf5", "fmt-matlab"] }
+nirs4all-formats-core = { path = "../../../../../crates/nirs4all-formats-core" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = 2
+lto = "thin"

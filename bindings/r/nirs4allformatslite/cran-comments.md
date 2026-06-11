@@ -3,28 +3,24 @@
 ## Submission summary
 
 * This is a **new submission**.
-* `nirs4allformats` — a thin R binding for the Rust-first `nirs4all-formats`
+* `nirs4allformats.lite` — a thin R binding for the Rust-first `nirs4all-formats`
   NIRS / spectroscopy file-loading engine. The package compiles a small
   `extendr-api` static library from `src/rust/` at install time and dispatches
   probe / read / walk calls directly through Rust. Without Cargo on the build
   machine it falls back to invoking the `nirs4all-formats` CLI binary.
-* This is the **default / complete build**: every reader, including the optional
-  large ones (HDF5/netCDF, Parquet/Arrow, MATLAB) on top of the core readers
-  (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...). A smaller sibling package
-  `nirs4allformats.lite` drops only the Parquet/Arrow reader for size-sensitive
-  installs. See *Complete vs lite* below.
-* **Source tarball: 13.3 MB** (13,936,340 bytes). CRAN's guidance is that source
-  tarballs should, if possible, not exceed 10 MB; this complete build (every
-  reader) is over that soft cap and would need a CRAN size exception, so the
-  R-universe channel and the GitHub Release are the primary distribution. The
-  crates.io dependency closure is shipped compressed (`vendor.tar.xz`) and the
-  test-only `[dev-dependencies]` are stripped from the vendored manifests; the
-  residual weight is the Apache Arrow/Parquet, HDF5/netCDF and MATLAB (`rds2rust`
-  → `getrandom 0.4` WASI) closures, which `cargo vendor` collects for every
-  target. The smaller `nirs4allformats.lite` (Parquet dropped) is ~10.7 MB.
+* This is the **smaller variant**: full **minus** the Parquet/Arrow reader (the
+  single biggest dependency). It keeps HDF5/netCDF, MATLAB and every core reader
+  (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...). The default / complete
+  package `nirs4allformats` adds Parquet/Arrow. See *Lite vs complete* below.
+* **Source tarball: 10.7 MB** (11,197,025 bytes). Dropping the Parquet/Arrow
+  reader saves ~2.7 MB versus the complete `nirs4allformats` build (13.3 MB).
+  The residual weight is the kept HDF5/netCDF + MATLAB closure — in particular
+  the MATLAB/RData reader's `rds2rust` → `tempfile` → `getrandom 0.4` WASI
+  toolchain, which `cargo vendor` collects for every target; the test-only
+  `[dev-dependencies]` are stripped from the vendored manifests.
 * `R CMD check --as-cran`: **0 ERRORs**, only the Rust-static-library `abort`
-  WARNING (inherent to linking extendr 0.7.x + std; surfaces on CRAN's Debian
-  builder) and environment-specific NOTEs (detailed below).
+  WARNING (inherent to linking extendr 0.7.x + std) and environment-specific
+  NOTEs (detailed below).
 * License: `MIT + file LICENSE`.
 * The same Rust core powers the project's Python (PyPI),
   JavaScript / WebAssembly (npm) and C-ABI bindings.
@@ -51,10 +47,10 @@ farm never touches the network and needs no out-of-tree sources:
   cargo's offline checksum verification — the same pattern the `gifski` and
   `prqlr` CRAN packages use for their Rust vendor trees.
 
-`./configure` also strips the test-only `[dev-dependencies]` from the vendored
-crate manifests before `cargo vendor`, so the multi-MB WASI/`getrandom` closure
-that `tempfile` drags in (and which the R package never compiles) is kept out of
-the tarball.
+`./configure` rewrites the vendored facade manifest to drop **only** the
+Parquet/Arrow reader (and the test-only `[dev-dependencies]`), so `cargo vendor`
+never collects the Arrow/Parquet/zstd closure; the HDF5/netCDF and MATLAB
+readers stay.
 
 Per CRAN's "Using Rust" policy, `src/Makevars` and `src/Makevars.win` pass
 `-j 2` to every `cargo build` invocation, bounding Cargo's parallelism rather
@@ -106,13 +102,14 @@ findings are:
    the local conda toolchain, not a finding about the package, and absent on
    CRAN's GNU binutils.
 
-The full reader set vendors the Apache Arrow/Parquet, HDF5/netCDF and MATLAB + xz
-codec closures. Their bundled GNU Makefiles (`lzma-sys`, `r-efi`) and vendored
-zstd headers would trip the GNU-make-extensions WARNING / pragmas NOTE if left in
-the check tree; `src/Makevars(.win)` prune the extracted `vendor/` tree and the
-cargo build-script scratch (`$(LIBDIR)/build`) immediately after linking, and
-`./configure` strips stray `CITATION.cff`/`CITATION` files (patching each crate's
-`.cargo-checksum.json` so the offline checksum still verifies).
+Dropping the Parquet reader removes the Arrow/Parquet/zstd closure (the single
+biggest dependency); the remaining HDF5/netCDF + MATLAB closure still ships the
+`lzma-sys`/`r-efi` GNU Makefiles and vendored headers. `src/Makevars(.win)` prune
+the extracted `vendor/` tree and the cargo build-script scratch
+(`$(LIBDIR)/build`) immediately after linking, and `./configure` strips stray
+`CITATION.cff`/`CITATION` files (patching each crate's `.cargo-checksum.json` so
+the offline checksum still verifies), so those third-party build artefacts are
+not scanned by `R CMD check`.
 
 ## Anti-patterns avoided
 
@@ -126,22 +123,21 @@ cargo build-script scratch (`$(LIBDIR)/build`) immediately after linking, and
 * `cargo build` parallelism is bounded with `-j 2` per CRAN's "Using Rust"
   policy.
 
-## Complete (this package) vs lite
+## Lite (this package) vs complete
 
-This is the **complete** build: the facade is compiled with its default
-`formats-all` features, so it ships every reader — the core readers plus the
-optional large ones (HDF5/netCDF, Parquet/Arrow, MATLAB). The smaller sibling
-package **`nirs4allformats.lite`** (`bindings/r/nirs4allformatslite`) compiles
-the facade with `default-features = false, features = ["fmt-hdf5", "fmt-matlab"]`,
-which keeps HDF5/netCDF, MATLAB and every core reader and drops **only** the
-Parquet/Arrow reader (the single biggest dependency). The two packages share the
-same Rust core and the same exported R API.
+This is the **lite** build: the facade is compiled
+`default-features = false, features = ["fmt-hdf5", "fmt-matlab"]`, so it ships
+every reader **except** the Parquet/Arrow one — it keeps HDF5/netCDF, MATLAB and
+all core readers. The default / complete package **`nirs4allformats`**
+(`bindings/r/nirs4allformats`) keeps the default `formats-all` features and adds
+the Parquet/Arrow reader. The two packages share the same Rust core and the same
+exported R API.
 
-Feeding the lite build a Parquet file returns a clean, actionable R error naming
-`nirs4allformats` (this package) and the exact `install.packages(...)` line, not
-a generic "unsupported format". This is implemented by a graceful-degradation
-stub reader in the facade that recognises the Parquet `PAR1` magic and refuses it
-with the install hint. A genuinely unknown file still returns the generic
+Feeding this lite build a Parquet file returns a clean, actionable R error naming
+`nirs4allformats` and the exact `install.packages(...)` line, not a generic
+"unsupported format". This is implemented by a graceful-degradation stub reader
+in the facade that recognises the Parquet `PAR1` magic and refuses it with the
+install hint. A genuinely unknown file still returns the generic
 "unsupported format" error, so the stub never over-claims.
 
 ## CRAN version note

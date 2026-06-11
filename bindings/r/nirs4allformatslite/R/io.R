@@ -593,7 +593,7 @@ nirs4allformats_repo_root <- function() {
   starts <- unique(c(
     Sys.getenv("NIRS4ALL_FORMATS_REPO", unset = ""),
     getwd(),
-    system.file(package = "nirs4allformats.full")
+    system.file(package = "nirs4allformats.lite")
   ))
   starts <- starts[nzchar(starts)]
   for (start in starts) {

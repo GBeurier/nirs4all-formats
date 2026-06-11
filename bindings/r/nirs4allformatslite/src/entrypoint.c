@@ -7,10 +7,10 @@
 
 extern SEXP R_init_nirs4allformats_r_extendr(DllInfo *);
 
-/* Package name is `nirs4allformats.full`; R maps the `.` in the package name to
+/* Package name is `nirs4allformats.lite`; R maps the `.` in the package name to
  * `_` for the C init symbol (Writing R Extensions, "Registering native
- * routines"), so the entry point is R_init_nirs4allformats_full. The extendr
+ * routines"), so the entry point is R_init_nirs4allformats_lite. The extendr
  * static library and its init routine keep the crate name (nirs4allformats_r). */
-void R_init_nirs4allformats_full(DllInfo *info) {
+void R_init_nirs4allformats_lite(DllInfo *info) {
     R_init_nirs4allformats_r_extendr(info);
 }

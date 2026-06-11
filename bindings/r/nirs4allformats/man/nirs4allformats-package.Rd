@@ -7,9 +7,13 @@
 \title{nirs4allformats: R Binding for nirs4all-formats}
 \description{
 Thin R binding for the Rust-first \code{nirs4all-formats} NIRS/spectroscopy file
-reading core. It auto-detects each file by content, decodes it through a
-single Rust registry, and surfaces the canonical, provenance-tracked records
-with R-native ergonomics (lists, matrices, data frames, tibbles).
+reading core. This is the complete build: it ships every reader, including
+the optional large ones (HDF5/netCDF, Parquet/Arrow, MATLAB) on top of the
+core readers. The smaller sibling package \code{nirs4allformats.lite} drops only
+the Parquet/Arrow reader; the exported R API is identical. It auto-detects
+each file by content, decodes it through a single Rust registry, and surfaces
+the canonical, provenance-tracked records with R-native ergonomics (lists,
+matrices, data frames, tibbles).
 
 Parser logic lives only in Rust: this package never reimplements any format
 parsing. A new format is a new Rust reader, not new R code. The binding only
@@ -46,6 +50,6 @@ version introspection.}
 \code{\link[=nirs4allformats_open_dataset]{nirs4allformats_open_dataset()}}, \code{\link[=nirs4allformats_open_records]{nirs4allformats_open_records()}}.
 }
 \author{
-\strong{Maintainer}: G. Beurier \email{beurier@cirad.fr}
+\strong{Maintainer}: Gregory Beurier \email{gregory.beurier@cirad.fr}
 }
 \keyword{internal}

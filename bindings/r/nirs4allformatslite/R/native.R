@@ -29,14 +29,14 @@
 #' @seealso [nirs4allformats_open_bytes()], [nirs4allformats_open_with_sidecars()].
 #' @export
 nirs4allformats_native_available <- function() {
-  isTRUE(is.loaded("wrap__nirs4allformats_native_probe", PACKAGE = "nirs4allformats.full"))
+  isTRUE(is.loaded("wrap__nirs4allformats_native_probe", PACKAGE = "nirs4allformats.lite"))
 }
 
 nirs4allformats_native_call <- function(symbol, ...) {
   if (!nirs4allformats_native_available()) {
     return(NULL)
   }
-  args <- list(paste0("wrap__", symbol), ..., PACKAGE = "nirs4allformats.full")
+  args <- list(paste0("wrap__", symbol), ..., PACKAGE = "nirs4allformats.lite")
   payload <- do.call(.Call, args)
   if (!is.character(payload) || length(payload) != 1L) {
     stop(sprintf("native symbol %s did not return a JSON string", symbol), call. = FALSE)

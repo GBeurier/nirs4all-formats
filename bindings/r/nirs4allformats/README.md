@@ -1,13 +1,34 @@
 # nirs4allformats
 
-R binding for [`nirs4all-formats`](../../..), the Rust-first low-level reader library
-for NIRS and spectroscopy file formats. It auto-detects each file by content,
-decodes it through a single Rust registry, and surfaces the canonical,
+R binding for [`nirs4all-formats`](../../..), the Rust-first low-level reader
+library for NIRS and spectroscopy file formats. It auto-detects each file by
+content, decodes it through a single Rust registry, and surfaces the canonical,
 provenance-tracked records with R-native ergonomics: nested lists, a spectral
 matrix, a wide data frame, or a tibble.
 
 `nirs4all-formats` does no modelling itself; it produces the records that the
 `nirs4all` modelling library consumes.
+
+## Complete vs lite
+
+This is the **default / complete** package: it ships **every reader**, including
+the optional large ones — HDF5/netCDF, Parquet/Arrow and MATLAB — on top of the
+core readers (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...).
+
+The smaller sibling package [`nirs4allformats.lite`](../nirs4allformatslite)
+drops **only** the Parquet/Arrow reader (the single biggest dependency) for
+size-sensitive installs, keeping HDF5/netCDF, MATLAB and every core reader. Its
+exported API is identical; feeding it a Parquet file returns an actionable error
+pointing here. Both packages are on R-universe, and both ship a source tarball on
+the GitHub Release.
+
+```r
+install.packages(
+  "nirs4allformats",
+  repos = c(nirs4all = "https://gbeurier.r-universe.dev",
+            CRAN = "https://cloud.r-project.org")
+)
+```
 
 ## Parsers live only in Rust
 
@@ -140,8 +161,8 @@ present, else from the source-file basename and 0-based row index.
 | `nirs4allformats_native_available()` | Whether the native backend is loaded. |
 | `nirs4allformats_version()` | Binding version string. |
 
-See `?nirs4allformats` and the per-function help pages (e.g. `?nirs4allformats_open_dataset`)
-for full details.
+See `?nirs4allformats` and the per-function help pages (e.g.
+`?nirs4allformats_open_dataset`) for full details.
 
 ## License
 

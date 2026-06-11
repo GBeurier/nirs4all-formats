@@ -1,10 +1,10 @@
-//! Graceful-degradation tests for the feature-trimmed (lite) build.
+//! Graceful-degradation tests for a feature-trimmed build.
 //!
-//! Compiled only when a heavy reader feature is OFF — i.e. the configuration the
-//! CRAN lite R package (`nirs4allformats`) ships. They assert that an excluded
-//! format is RECOGNISED (so the registry stops at the stub) and that the read
-//! returns the actionable "install the full build" error rather than the
-//! generic "unsupported format".
+//! Compiled only when a heavy reader feature is OFF — e.g. the configuration the
+//! smaller `nirs4allformats.lite` R package ships (Parquet dropped). They assert
+//! that an excluded format is RECOGNISED (so the registry stops at the stub) and
+//! that the read returns the actionable "install the complete build" error
+//! rather than the generic "unsupported format".
 //!
 //! In-memory magic bytes are used so the test needs no fixture files.
 
@@ -12,10 +12,11 @@
 
 use nirs4all_formats::open_bytes;
 
+#[cfg(not(feature = "fmt-hdf5"))]
 const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
 
-/// Every excluded-reader error must name the format and point at the full
-/// R-universe build.
+/// Every excluded-reader error must name the format and point at the complete
+/// `nirs4allformats` build.
 fn assert_excluded(name: &str, magic: &[u8]) {
     let err = open_bytes(name, magic).expect_err("excluded format must be refused");
     let message = err.to_string();
@@ -24,8 +25,8 @@ fn assert_excluded(name: &str, magic: &[u8]) {
         "{name}: expected the excluded-build error, got {message:?}"
     );
     assert!(
-        message.contains("nirs4allformats.full"),
-        "{name}: error must point at the full R-universe build, got {message:?}"
+        message.contains("nirs4allformats"),
+        "{name}: error must point at the complete nirs4allformats build, got {message:?}"
     );
     // It must NOT be the generic catch-all.
     assert!(

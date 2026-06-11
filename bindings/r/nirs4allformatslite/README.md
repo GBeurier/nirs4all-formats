@@ -1,30 +1,29 @@
-# nirs4allformats.full
+# nirs4allformats.lite
 
-**Full-reader build** of the R binding for [`nirs4all-formats`](../../..), the
+Smaller variant of the R binding for [`nirs4all-formats`](../../..), the
 Rust-first low-level reader library for NIRS and spectroscopy file formats. It
 auto-detects each file by content, decodes it through a single Rust registry,
-and surfaces the canonical, provenance-tracked records with R-native
-ergonomics: nested lists, a spectral matrix, a wide data frame, or a tibble.
+and surfaces the canonical, provenance-tracked records with R-native ergonomics:
+nested lists, a spectral matrix, a wide data frame, or a tibble.
 
 `nirs4all-formats` does no modelling itself; it produces the records that the
 `nirs4all` modelling library consumes.
 
-## Full vs lite (CRAN)
+## Lite vs complete
 
-This package (`nirs4allformats.full`) ships **every reader**, including the
-optional large ones — HDF5/netCDF, Parquet/Arrow and MATLAB. Because the
-vendored Rust closure for that full reader set exceeds CRAN's source-tarball
-size limit, this package is distributed through **R-universe only** and is not
-submitted to CRAN.
+This package (`nirs4allformats.lite`) ships every reader **except** the
+Parquet/Arrow reader — the single biggest dependency. It keeps HDF5/netCDF,
+MATLAB and every core reader (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...),
+which makes its source tarball noticeably smaller for size-sensitive installs.
 
-The size-trimmed CRAN package [`nirs4allformats`](../nirs4allformats) ships the
-**core readers only** (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...). Its
-exported API is identical; feeding it an excluded format returns an actionable
-error pointing here. Install this full build from R-universe:
+The default / complete package [`nirs4allformats`](../nirs4allformats) adds the
+Parquet/Arrow reader. The exported R API is identical; feeding this lite build a
+Parquet file returns an actionable error pointing there. Both packages are on
+R-universe:
 
 ```r
 install.packages(
-  "nirs4allformats.full",
+  "nirs4allformats.lite",
   repos = c(nirs4all = "https://gbeurier.r-universe.dev",
             CRAN = "https://cloud.r-project.org")
 )
@@ -40,7 +39,7 @@ new format means writing a new Rust reader, not new R code.
 ## Installation
 
 ```sh
-R CMD INSTALL bindings/r/nirs4allformatsfull
+R CMD INSTALL bindings/r/nirs4allformatslite
 ```
 
 When [Cargo](https://rust-lang.org/tools/install/) (Rust's package manager)
@@ -73,7 +72,7 @@ library is not loaded.
 ## Worked example
 
 ```r
-library(nirs4allformats.full)
+library(nirs4allformats.lite)
 
 # Load a file into a flat, rectangular dataset.
 ds <- nirs4allformats_open_dataset("samples/csv_tsv/synthetic_nirs.csv")
@@ -161,8 +160,8 @@ present, else from the source-file basename and 0-based row index.
 | `nirs4allformats_native_available()` | Whether the native backend is loaded. |
 | `nirs4allformats_version()` | Binding version string. |
 
-See `?\`nirs4allformats.full\`` and the per-function help pages (e.g.
-`?nirs4allformats_open_dataset`) for full details.
+See `?\`nirs4allformats.lite\`` and the per-function help pages (e.g. `?nirs4allformats_open_dataset`)
+for full details.
 
 ## License
 

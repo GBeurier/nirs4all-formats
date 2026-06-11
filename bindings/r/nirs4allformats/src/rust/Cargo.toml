@@ -10,12 +10,14 @@ name = "nirs4allformats_r"
 
 [dependencies]
 extendr-api = { version = "0.7", default-features = false }
-# LITE / CRAN build: core readers only (default features off drops the heavy
-# fmt-hdf5/fmt-matlab/fmt-parquet readers to stay under CRAN's 5 MB tarball
-# limit). ./configure regenerates this section verbatim for the vendored
-# tarball; keep the two in sync. The full-reader build lives in the sibling
-# package nirs4allformatsfull.
-nirs4all-formats = { path = "../../../../../crates/nirs4all-formats", default-features = false }
+# COMPLETE / DEFAULT build: every reader. The facade's default features
+# (`formats-all`) pull in fmt-hdf5/fmt-matlab/fmt-parquet (Arrow/Parquet,
+# HDF5/netCDF, MATLAB + xz codecs). This is the canonical package
+# `nirs4allformats`. The smaller sibling `nirs4allformats.lite` sets
+# `default-features = false, features = ["fmt-hdf5", "fmt-matlab"]` (drops only
+# Parquet/Arrow). ./configure regenerates this section verbatim for the vendored
+# tarball WITHOUT trimming optional readers; keep in sync.
+nirs4all-formats = { path = "../../../../../crates/nirs4all-formats" }
 nirs4all-formats-core = { path = "../../../../../crates/nirs4all-formats-core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

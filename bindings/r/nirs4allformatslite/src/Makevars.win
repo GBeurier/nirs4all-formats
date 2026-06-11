@@ -13,7 +13,7 @@ $(SHLIB): $(STATLIB)
 
 $(STATLIB):
 	@if ! command -v cargo >/dev/null; then \
-		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
+		echo "Cargo is required to build nirs4allformats.lite. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
 	# `rustc` links the x86_64-pc-windows-gnu target against `-lgcc_eh`, but

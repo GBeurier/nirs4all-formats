@@ -12,7 +12,7 @@ $(SHLIB): $(STATLIB)
 
 $(STATLIB):
 	@if ! command -v cargo >/dev/null; then \
-		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
+		echo "Cargo is required to build nirs4allformats.lite. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
 	# Report the toolchain version to the install log BEFORE compiling. R CMD

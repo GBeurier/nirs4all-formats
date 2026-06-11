@@ -2,10 +2,10 @@
 //!
 //! The heavy readers (`fmt-hdf5`, `fmt-matlab`, `fmt-parquet`) pull in large
 //! crates.io closures (Apache Arrow / Parquet, pure-Rust HDF5 / NetCDF, the
-//! MATLAB + xz codecs). A size-constrained distribution — notably the CRAN
-//! "lite" build of the R binding (`nirs4allformats`), which compiles the
-//! facade with `--no-default-features` to stay under CRAN's 5 MB tarball
-//! limit — drops those features.
+//! MATLAB + xz codecs). A size-constrained distribution may drop some of them —
+//! notably the smaller `nirs4allformats.lite` R package, which compiles the
+//! facade with `default-features = false, features = ["fmt-hdf5", "fmt-matlab"]`
+//! so it keeps HDF5/netCDF + MATLAB and drops only the Parquet/Arrow reader.
 //!
 //! Without these stubs a user who feeds an HDF5 / NetCDF / Parquet / MATLAB
 //! file to a trimmed build would get the generic
@@ -38,11 +38,11 @@ const HDF5_MAGIC: &[u8] = b"\x89HDF\r\n\x1a\n";
 fn excluded_error(format: &str, feature: &str) -> Error {
     Error::InvalidRecord(format!(
         "the {format} reader is not available in this build of 'nirs4all-formats' \
-         (core readers only; the '{feature}' feature is disabled). This is the \
-         size-trimmed CRAN build of the R package 'nirs4allformats'. Install the \
-         full build, which ships every reader (HDF5/netCDF, Parquet/Arrow, \
-         MATLAB), from R-universe: \
-         install.packages(\"nirs4allformats.full\", repos = c(nirs4all = \
+         (the '{feature}' feature is disabled). This is the smaller R package \
+         'nirs4allformats.lite', which drops the Parquet/Arrow reader. Install the \
+         complete package 'nirs4allformats', which ships every reader \
+         (HDF5/netCDF, Parquet/Arrow, MATLAB), from R-universe: \
+         install.packages(\"nirs4allformats\", repos = c(nirs4all = \
          \"https://gbeurier.r-universe.dev\", CRAN = \
          \"https://cloud.r-project.org\"))"
     ))

@@ -1,4 +1,6 @@
-# Build, check, and (eventually) submit the nirs4allformats R package.
+# Build, check, and (eventually) submit the nirs4allformats R packages
+# (the complete `nirs4allformats` and the smaller `nirs4allformats.lite`, dir
+# bindings/r/nirs4allformatslite).
 #
 # Triggers
 # --------
@@ -48,6 +50,7 @@ jobs:
       matrix:
         pkg:
           - nirs4allformats
+          - nirs4allformatslite
         cfg:
           - label: linux-release
             runs_on: ubuntu-22.04
@@ -137,7 +140,7 @@ jobs:
   # Build the source tarball that the maintainer uploads to CRAN.
   # =========================================================================
   build-tarball:
-    name: Build CRAN source tarball (${{ matrix.pkg }})
+    name: Build source tarball (${{ matrix.pkg }})
     needs: check
     runs-on: ubuntu-22.04
     strategy:
@@ -145,6 +148,7 @@ jobs:
       matrix:
         pkg:
           - nirs4allformats
+          - nirs4allformatslite
     steps:
       - uses: actions/checkout@v4
         with:
@@ -173,7 +177,10 @@ jobs:
         # (no external crates/; CRAN's farm compiles offline from the bundle).
         run: ./configure
 
-      - name: R CMD build (produces nirs4allformats_${VER}.tar.gz)
+      # The built tarball is named after the DESCRIPTION Package field, which may
+      # differ from the directory: nirs4allformatslite/ produces
+      # nirs4allformats.lite_<ver>.tar.gz. Match the actual *.tar.gz, not the dir.
+      - name: R CMD build (produces <Package>_${VER}.tar.gz)
         working-directory: bindings/r/${{ matrix.pkg }}
         run: R CMD build .
 
@@ -182,12 +189,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ../../../dist-r
-          mv ${{ matrix.pkg }}_*.tar.gz ../../../dist-r/
+          mv *_*.tar.gz ../../../dist-r/
 
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.pkg }}-cran-tarball
-          path: dist-r/${{ matrix.pkg }}_*.tar.gz
+          path: dist-r/*_*.tar.gz
           if-no-files-found: error
           retention-days: 90
 

@@ -1,5 +1,8 @@
 #!/bin/sh
-# Generate a SELF-CONTAINED src/rust/ tree for the nirs4allformats R package.
+# Generate a SELF-CONTAINED src/rust/ tree for the nirs4allformats R package
+# (the DEFAULT / COMPLETE reader build — every reader incl. HDF5/netCDF,
+# Parquet/Arrow and MATLAB). The smaller sibling nirs4allformats.lite
+# (bindings/r/nirs4allformatslite) drops only the Parquet/Arrow reader.
 #
 # The package is an extendr (Rust) binding. Its src/rust/Cargo.toml reaches the
 # workspace core crates via RELATIVE paths `../../../../../crates/...`, which
@@ -99,35 +102,21 @@ for c in $CORE_CRATES; do
     cp -R "$REPO/crates/$c/src"     "$VENDORED/$c/src"
 done
 
-# 1a. LITE build — trim the heavy optional readers AND the test-only
-#     [dev-dependencies] from the vendored facade manifest. The extendr staticlib
-#     already requests the facade with `default-features = false` (see the
-#     generated [dependencies] below), so the heavy readers are not COMPILED. But
+# 1a. FULL build (complete reader set). The vendored facade manifest keeps its
+#     default features (`formats-all` -> every reader: HDF5/netCDF, Parquet/Arrow,
+#     MATLAB), so the optional readers and the `[features]` table are LEFT INTACT
+#     (the staticlib's [dependencies] below uses default features). We only strip
+#     the test-only [dev-dependencies] tables from the vendored crate manifests:
 #     `cargo vendor` (step 3) collects the UNION of every reachable dependency,
-#     optional AND dev ones included, so the unstripped manifest would still drag
-#     two large closures into vendor.tar.xz and blow CRAN's 5 MB limit:
-#       - the optional readers: the full Arrow/Parquet/HDF5/netCDF/MATLAB closure;
-#       - the facade's [dev-dependencies] `tempfile` (test-only, used only in
-#         crates/nirs4all-formats/src/sidecars.rs tests): `tempfile` pulls
-#         `getrandom 0.4` -> the WASI `wit-bindgen` toolchain (wit-parser,
-#         wit-component, wasm-encoder, wasmparser, wasip2/3, r-efi) plus
-#         `rustix` / `linux-raw-sys` / `windows-sys` — ~5 MB compressed, NONE of
-#         it needed for the R package build. `cargo vendor` from the R crate's own
-#         manifest never saw these (the facade was a path-dep there), but this
-#         configure COPIES the facade into the vendored tree as a workspace ROOT
-#         member, so cargo vendor resolves its dev-deps too.
-#     Removing the optional deps + the [features] block + the [dev-dependencies]
-#     table from the vendored facade Cargo.toml makes the dependency graph
-#     lite-only, so cargo vendor collects just the core closure (~3.6 MB). The
-#     facade source gates every heavy reader behind `#[cfg(feature = "fmt-*")]`,
-#     which simply evaluate to false when the feature is undefined, so the trimmed
-#     manifest still compiles the core readers (and the graceful-degradation stubs)
-#     cleanly; dropping the dev-deps is invisible to the build because R never runs
-#     the crate's `cargo test`. The full-reader sibling package
-#     (nirs4allformatsfull) ships an UNSTRIPPED configure.
-FACADE_MANIFEST="$VENDORED/nirs4all-formats/Cargo.toml"
+#     dev ones included, and the facade's `tempfile` dev-dep pulls a multi-MB WASI
+#     closure (`getrandom 0.4` -> `wit-bindgen`/`wasmparser`/`wasip2/3`/`r-efi` +
+#     `rustix`/`linux-raw-sys`/`windows-sys`) that the R package never compiles
+#     (R never runs the crate's `cargo test`). Removing it is a harmless ~4 MB
+#     saving with no effect on the build. This mirrors the dev-dep strip the lite
+#     sibling (nirs4allformats.lite) also applies; the lite additionally drops the
+#     Parquet optional readers.
 if command -v python3 >/dev/null 2>&1; then
-    echo "nirs4allformats configure: LITE — trimming heavy optional readers and test-only dev-dependencies from the vendored facade manifest"
+    echo "nirs4allformats configure: FULL — stripping test-only dev-dependencies from the vendored facade manifest (keeping every reader)"
     for m in "$VENDORED"/*/Cargo.toml; do
         python3 - "$m" <<'PY'
 import re, sys
@@ -135,15 +124,12 @@ import re, sys
 p = sys.argv[1]
 lines = open(p, encoding="utf-8").read().splitlines()
 
-# Walk the manifest table-by-table. Rewrite [features] to declare the feature
-# NAMES with empty arrays (so the source's `#[cfg(feature = "fmt-*")]` gates are
-# recognised — no `unexpected_cfgs` warnings — yet enable nothing, hence no
-# optional deps), drop every `optional = true` dependency line from
-# [dependencies] (the heavy Arrow/Parquet/HDF5/netCDF/MATLAB readers + codecs),
-# and delete every [dev-dependencies] table (incl. target-scoped variants like
+# Delete every [dev-dependencies] table (incl. target-scoped variants like
 # `[target.'cfg(...)'.dev-dependencies]`) in full — they are test-only and pull a
-# multi-MB WASI/getrandom closure into the vendor tree for no build benefit.
-out, section, dropped, dev_dropped = [], None, [], 0
+# multi-MB WASI/getrandom closure into the vendor tree for no build benefit. The
+# [features] table and every optional dependency are LEFT untouched: this is the
+# complete build, so all readers stay.
+out, section, dev_dropped = [], None, 0
 
 
 def is_dev_deps(name):
@@ -155,22 +141,6 @@ for ln in lines:
     header = re.match(r"\s*\[([^\]]+)\]\s*$", ln)
     if header:
         section = header.group(1)
-        if section == "features":
-            # Re-emit a self-consistent, all-empty feature table.
-            out += [
-                "[features]",
-                "# LITE build: feature names kept (so the facade source's",
-                "# `#[cfg(feature = \"fmt-*\")]` gates compile without",
-                "# `unexpected_cfgs` warnings) but enable NOTHING — the heavy",
-                "# readers are excluded from the CRAN package. The full build",
-                "# (nirs4allformatsfull) ships the unstripped manifest.",
-                'default = []',
-                'formats-all = []',
-                'fmt-hdf5 = []',
-                'fmt-matlab = []',
-                'fmt-parquet = []',
-            ]
-            continue
         if is_dev_deps(section):
             # Drop the whole [dev-dependencies] table header; its body lines are
             # skipped below until the next `[` header re-assigns `section`.
@@ -178,23 +148,17 @@ for ln in lines:
             continue
         out.append(ln)
         continue
-    if section == "features":
-        # Skip the original feature lines; we emitted the trimmed table above.
-        continue
     if section is not None and is_dev_deps(section):
         # Skip the dev-dependency body lines (up to the next table header).
-        continue
-    if section == "dependencies" and "optional = true" in ln:
-        dropped.append(ln.strip())
         continue
     out.append(ln)
 
 open(p, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
-print(f"  {p}: trimmed {len(dropped)} optional reader dep line(s), dropped {dev_dropped} [dev-dependencies] table(s)")
+print(f"  {p}: dropped {dev_dropped} [dev-dependencies] table(s)")
 PY
     done
 else
-    echo "nirs4allformats configure: ERROR — python3 required to trim the LITE facade manifest" >&2
+    echo "nirs4allformats configure: ERROR — python3 required to trim the dev-dependencies" >&2
     exit 1
 fi
 
@@ -251,16 +215,12 @@ name = "nirs4allformats_r"
 
 [dependencies]
 extendr-api = { version = "0.7", default-features = false }
-# LITE / CRAN build: core readers only. `default-features = false` drops the
-# heavy `formats-all` readers (fmt-hdf5 [hdf5-reader + netcdf-reader], fmt-matlab
-# [matfile + lzma-rs], fmt-parquet [arrow + parquet + zstd]) and their large
-# crates.io closure, keeping the vendored source tarball under CRAN's 5 MB hard
-# limit. The ~50 pure-Rust core readers (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV,
-# Excel, ...) stay. Feeding an excluded format (HDF5/netCDF, Parquet, MATLAB) to
-# this build returns an actionable error pointing at the full R-universe package
-# (the facade's graceful-degradation stub readers). The full-reader sibling
-# package `nirs4allformatsfull` keeps the default features.
-nirs4all-formats = { path = "vendored/nirs4all-formats", default-features = false }
+# COMPLETE build: default features ON — the facade's `formats-all` keeps every
+# reader (HDF5/netCDF, Parquet/Arrow, MATLAB). This is the canonical package
+# `nirs4allformats`. The smaller sibling `nirs4allformats.lite` sets
+# `default-features = false, features = ["fmt-hdf5", "fmt-matlab"]` here, which
+# drops ONLY the Parquet/Arrow reader.
+nirs4all-formats = { path = "vendored/nirs4all-formats" }
 nirs4all-formats-core = { path = "vendored/nirs4all-formats-core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

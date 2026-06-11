@@ -1,11 +1,11 @@
-#' nirs4allformats.full: Full-Reader R Binding for nirs4all-formats
+#' nirs4allformats.lite: No-Parquet R Binding for nirs4all-formats
 #'
 #' @description
-#' Full-reader build of the R binding for the Rust-first `nirs4all-formats`
-#' NIRS/spectroscopy file reading core. It ships every reader, including the
-#' optional large ones (HDF5/netCDF, Parquet/Arrow, MATLAB) that the
-#' size-trimmed CRAN package `nirs4allformats` excludes. The exported API is
-#' identical to `nirs4allformats`; only the compiled reader set differs. It
+#' Smaller variant of the R binding for the Rust-first `nirs4all-formats`
+#' NIRS/spectroscopy file reading core. It ships every reader except the
+#' Parquet/Arrow reader (the single biggest dependency): it keeps HDF5/netCDF,
+#' MATLAB and all core readers. The complete build with Parquet support is the
+#' sibling package `nirs4allformats`; the exported R API is identical. It
 #' auto-detects each file by content, decodes it through a single Rust registry,
 #' and surfaces the canonical, provenance-tracked records with R-native
 #' ergonomics (lists, matrices, data frames, tibbles).

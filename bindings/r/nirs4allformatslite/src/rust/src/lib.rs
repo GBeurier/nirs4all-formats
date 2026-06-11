@@ -22,9 +22,9 @@ fn to_string<T: serde::Serialize>(value: &T) -> std::result::Result<String, Erro
 /// Returning `Err` from an `#[extendr]` function makes extendr 0.7 `unwrap()`
 /// the value and *panic*, which surfaces in R as the opaque
 /// "User function panicked" condition — the reader's own message (e.g. the
-/// graceful-degradation "this reader is excluded from this CRAN build, install
-/// nirs4allformats.full" notice for HDF5/Parquet/MATLAB inputs) is lost to
-/// stderr. `throw_r_error` instead performs an `Rf_error`, so the message lands
+/// graceful-degradation "this reader is excluded from this build, install
+/// nirs4allformats" notice the lite build returns for a Parquet input) is lost
+/// to stderr. `throw_r_error` instead performs an `Rf_error`, so the message lands
 /// in `conditionMessage()` where `tryCatch`/`stop` handlers can read it.
 fn unwrap_or_throw<T, E: std::fmt::Display>(result: std::result::Result<T, E>) -> T {
     match result {

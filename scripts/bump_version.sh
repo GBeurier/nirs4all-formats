@@ -238,9 +238,17 @@ update_with_sed \
     "^version[[:space:]]*=[[:space:]]*\"([0-9A-Za-z.-]+)\"" \
     "s/^(version[[:space:]]*=[[:space:]]*\")[0-9A-Za-z.-]+(\")/\1${CARGO_VERSION}\2/"
 
-# R extendr static-lib crate (bindings/r/nirs4allformats/src/rust/Cargo.toml)
+# R extendr static-lib crates — both packages share the crate version.
+#   bindings/r/nirs4allformats/src/rust/Cargo.toml      (complete build)
+#   bindings/r/nirs4allformatslite/src/rust/Cargo.toml  (no-Parquet lite build)
 update_with_sed \
     "bindings/r/nirs4allformats/src/rust/Cargo.toml" \
+    "${CARGO_VERSION}" \
+    "^version[[:space:]]*=[[:space:]]*\"([0-9A-Za-z.-]+)\"" \
+    "s/^(version[[:space:]]*=[[:space:]]*\")[0-9A-Za-z.-]+(\")/\1${CARGO_VERSION}\2/"
+
+update_with_sed \
+    "bindings/r/nirs4allformatslite/src/rust/Cargo.toml" \
     "${CARGO_VERSION}" \
     "^version[[:space:]]*=[[:space:]]*\"([0-9A-Za-z.-]+)\"" \
     "s/^(version[[:space:]]*=[[:space:]]*\")[0-9A-Za-z.-]+(\")/\1${CARGO_VERSION}\2/"
@@ -263,9 +271,15 @@ update_with_sed \
 
 # --- R DESCRIPTION target --------------------------------------------------
 
-# R DESCRIPTION (Version: X.Y.Z[.9000])
+# R DESCRIPTION (Version: X.Y.Z[.9000]) — both packages.
 update_with_sed \
     "bindings/r/nirs4allformats/DESCRIPTION" \
+    "${R_VERSION}" \
+    "^Version:[[:space:]]+([0-9.]+)" \
+    "s/^(Version:[[:space:]]+)[0-9.]+/\1${R_VERSION}/"
+
+update_with_sed \
+    "bindings/r/nirs4allformatslite/DESCRIPTION" \
     "${R_VERSION}" \
     "^Version:[[:space:]]+([0-9.]+)" \
     "s/^(Version:[[:space:]]+)[0-9.]+/\1${R_VERSION}/"

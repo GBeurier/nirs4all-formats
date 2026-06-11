@@ -2,10 +2,12 @@
 # workspace version in the root Cargo.toml ([workspace.package] version):
 #   - bindings/python/Cargo.toml          (Cargo SemVer)
 #   - bindings/wasm/Cargo.toml            (Cargo SemVer)
-#   - bindings/r/nirs4allformats/src/rust/Cargo.toml   (Cargo SemVer)
+#   - bindings/r/nirs4allformats/src/rust/Cargo.toml      (Cargo SemVer)
+#   - bindings/r/nirs4allformatslite/src/rust/Cargo.toml  (Cargo SemVer)
 #   - bindings/python/pyproject.toml      (PEP 440)
 #   - bindings/python/python/nirs4all_formats/_version.py (PEP 440)
-#   - bindings/r/nirs4allformats/DESCRIPTION  (R version spelling)
+#   - bindings/r/nirs4allformats/DESCRIPTION      (R version spelling)
+#   - bindings/r/nirs4allformatslite/DESCRIPTION  (R version spelling)
 #
 # Local equivalent:  scripts/bump_version.sh --check
 #

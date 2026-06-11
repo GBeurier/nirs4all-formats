@@ -1,7 +1,9 @@
 #!/bin/sh
-# Generate a SELF-CONTAINED src/rust/ tree for the nirs4allformats.full R
-# package (the FULL reader build; R-universe only — the vendored closure is too
-# large for CRAN). The size-trimmed CRAN sibling is bindings/r/nirs4allformats.
+# Generate a SELF-CONTAINED src/rust/ tree for the nirs4allformats.lite R
+# package (the SMALLER variant — full MINUS the Parquet/Arrow reader). It keeps
+# HDF5/netCDF, MATLAB and every core reader; only the Parquet/Arrow reader (the
+# single biggest dependency) is dropped. The default / complete sibling is
+# bindings/r/nirs4allformats.
 #
 # The package is an extendr (Rust) binding. Its src/rust/Cargo.toml reaches the
 # workspace core crates via RELATIVE paths `../../../../../crates/...`, which
@@ -47,7 +49,7 @@
 set -e
 
 PKG_ROOT=$(cd "$(dirname "$0")" && pwd)
-REPO=$(cd "$PKG_ROOT/../../.." && pwd)   # bindings/r/nirs4allformats -> repo root
+REPO=$(cd "$PKG_ROOT/../../.." && pwd)   # bindings/r/nirs4allformatslite -> repo root
 RUST="$PKG_ROOT/src/rust"
 VENDORED="$RUST/vendored"          # copied workspace core crates (plain dirs)
 VENDOR_ARCHIVE="$RUST/vendor.tar.xz"  # compressed cargo-vendored crates.io deps
@@ -61,7 +63,7 @@ VENDORED_PRESENT=0
 [ -f "$VENDORED/nirs4all-formats-core/Cargo.toml" ] && [ -f "$VENDOR_ARCHIVE" ] && VENDORED_PRESENT=1
 
 if [ "${N4FMT_R_VENDOR:-0}" != "1" ] && [ "$VENDORED_PRESENT" = "1" ]; then
-    echo "nirs4allformats configure: using bundled vendored Rust tree (offline build)"
+    echo "nirs4allformats.lite configure: using bundled vendored Rust tree (offline build)"
     echo "  vendored crates : $VENDORED"
     echo "  cargo vendor    : $VENDOR_ARCHIVE (extracted by src/Makevars)"
     exit 0
@@ -71,7 +73,7 @@ if [ "${N4FMT_R_VENDOR:-0}" != "1" ] && [ "$VENDORED_PRESENT" = "0" ]; then
     # Neither forced-vendor nor a pre-vendored tarball: a raw checkout where the
     # committed src/rust/Cargo.toml (relative paths) and an online `cargo build`
     # are expected (dev inner loop). Leave the tree as-is.
-    echo "nirs4allformats configure: no vendored tree and N4FMT_R_VENDOR!=1 — using in-repo src/rust/Cargo.toml (dev mode, needs the monorepo + network)"
+    echo "nirs4allformats.lite configure: no vendored tree and N4FMT_R_VENDOR!=1 — using in-repo src/rust/Cargo.toml (dev mode, needs the monorepo + network)"
     exit 0
 fi
 
@@ -79,11 +81,11 @@ fi
 # N4FMT_R_VENDOR=1: in-repo vendoring.
 # ---------------------------------------------------------------------------
 command -v cargo >/dev/null 2>&1 || {
-    echo "nirs4allformats configure(vendor): ERROR — cargo not found; install Rust from https://rustup.rs" >&2
+    echo "nirs4allformats.lite configure(vendor): ERROR — cargo not found; install Rust from https://rustup.rs" >&2
     exit 1
 }
 
-echo "nirs4allformats configure: CRAN/R-universe self-contained build — vendoring the Rust core from the checkout"
+echo "nirs4allformats.lite configure: CRAN/R-universe self-contained build — vendoring the Rust core from the checkout"
 
 # 1. Copy the workspace core crates into src/rust/vendored/ (always fresh).
 #    Copy sources only (Cargo.toml + src/). tests/ and any local target/ are
@@ -93,7 +95,7 @@ rm -rf "$VENDORED" "$VENDOR_ARCHIVE" "$RUST/vendor-config.toml" "$RUST/vendor" "
 mkdir -p "$VENDORED"
 for c in $CORE_CRATES; do
     [ -d "$REPO/crates/$c" ] || {
-        echo "nirs4allformats configure(vendor): ERROR — $REPO/crates/$c not found" >&2
+        echo "nirs4allformats.lite configure(vendor): ERROR — $REPO/crates/$c not found" >&2
         exit 1
     }
     mkdir -p "$VENDORED/$c"
@@ -101,12 +103,139 @@ for c in $CORE_CRATES; do
     cp -R "$REPO/crates/$c/src"     "$VENDORED/$c/src"
 done
 
-# FULL build: the vendored facade manifest is copied UNTOUCHED — its default
-# features (`formats-all`) keep every reader (HDF5/netCDF, Parquet/Arrow,
-# MATLAB), so `cargo vendor` (step 3) collects the full ~14 MB closure. That
-# exceeds CRAN's 5 MB limit, which is why this package ships through R-universe
-# only. The size-trimmed CRAN sibling (nirs4allformats) trims this manifest in
-# its own configure.
+# 1a. LITE build — full MINUS Parquet. Rewrite the vendored facade manifest so it
+#     keeps the HDF5/netCDF + MATLAB readers but NOT the Parquet/Arrow one, and
+#     drop the test-only [dev-dependencies]. The staticlib (see [dependencies]
+#     below) already requests the facade with
+#     `default-features = false, features = ["fmt-hdf5", "fmt-matlab"]`, so for
+#     the staticlib build `fmt-parquet` is never activated. But `cargo vendor`
+#     (step 3) resolves the UNION of every workspace MEMBER with its OWN default
+#     features — and the facade is copied in as a workspace member whose own
+#     `default = ["formats-all"]` would re-activate `fmt-parquet`, dragging the
+#     whole Arrow/Parquet/zstd closure (the biggest single dependency) into
+#     vendor.tar.xz. We therefore rewrite the facade's [features] so nothing
+#     pulls Parquet, and physically delete the Parquet-only optional dependency
+#     lines so cargo never resolves them. Likewise the facade's [dev-dependencies]
+#     `tempfile` pulls a multi-MB WASI/`getrandom 0.4` closure
+#     (`wit-bindgen`/`wasmparser`/`wasip2/3`/`r-efi` + `rustix`/`linux-raw-sys`/
+#     `windows-sys`) that the R package never compiles (R never runs the crate's
+#     `cargo test`); we drop those tables too.
+#
+#     What is KEPT: every fmt-hdf5 / fmt-matlab optional dep (hdf5-reader,
+#     netcdf-reader, chrono, matfile, lzma-rs, rds2rust) and the real
+#     `fmt-hdf5`/`fmt-matlab` feature mappings, so those readers COMPILE for real.
+#     Only the Parquet reader is excluded; its `#[cfg(not(feature="fmt-parquet"))]`
+#     graceful-degradation stub stays active and returns an actionable error.
+PARQUET_OPTIONAL_DEPS="parquet zstd arrow-array arrow-schema bytes"
+if command -v python3 >/dev/null 2>&1; then
+    echo "nirs4allformats.lite configure: trimming the Parquet reader + test-only dev-dependencies from the vendored facade manifest (keeping HDF5/netCDF + MATLAB)"
+    for m in "$VENDORED"/*/Cargo.toml; do
+        python3 - "$m" "$PARQUET_OPTIONAL_DEPS" <<'PY'
+import re, sys
+
+p = sys.argv[1]
+parquet_deps = set(sys.argv[2].split())
+lines = open(p, encoding="utf-8").read().splitlines()
+
+# Walk the manifest table-by-table:
+#   [features]          -> re-emit so NOTHING activates fmt-parquet (default = [],
+#                          formats-all keeps only fmt-hdf5 + fmt-matlab, fmt-parquet
+#                          kept as an empty name so the source's
+#                          `#[cfg(feature="fmt-parquet")]` gates still compile
+#                          without `unexpected_cfgs`). fmt-hdf5 / fmt-matlab and
+#                          their real dep: mappings are preserved verbatim.
+#   [dependencies]      -> delete the Parquet-only optional dep lines so cargo
+#                          never resolves the Arrow/Parquet/zstd closure.
+#   [dev-dependencies]  -> delete the whole table (incl. target-scoped variants);
+#                          test-only, drags a multi-MB WASI closure for no build
+#                          benefit.
+out, section, dropped_par, dev_dropped, feature_lines = [], None, [], 0, []
+
+
+def is_dev_deps(name):
+    return name == "dev-dependencies" or name.endswith(".dev-dependencies")
+
+
+def dep_name(ln):
+    # `name = ...` or `name.workspace = true`; return the bare crate name.
+    m = re.match(r"\s*([A-Za-z0-9_-]+)\s*(?:\.[A-Za-z0-9_-]+)?\s*=", ln)
+    return m.group(1) if m else None
+
+
+for ln in lines:
+    header = re.match(r"\s*\[([^\]]+)\]\s*$", ln)
+    if header:
+        section = header.group(1)
+        if section == "features":
+            feature_lines = []  # collect the original feature lines, rewrite below
+            continue
+        if is_dev_deps(section):
+            dev_dropped += 1
+            continue
+        out.append(ln)
+        continue
+    if section == "features":
+        feature_lines.append(ln)
+        continue
+    if section is not None and is_dev_deps(section):
+        continue
+    if section == "dependencies":
+        name = dep_name(ln)
+        if name in parquet_deps:
+            dropped_par.append(ln.strip())
+            continue
+    out.append(ln)
+
+# Re-emit the [features] table verbatim EXCEPT drop fmt-parquet from formats-all
+# and reduce default to [] (so vendoring the facade member never activates
+# Parquet). Keep fmt-hdf5 / fmt-matlab and their dep: mappings, and keep
+# fmt-parquet as an empty feature so the cfg gates still resolve.
+def rewrite_features(orig):
+    table = ["[features]",
+             "# LITE build: full MINUS Parquet. default reduced to [] and",
+             "# fmt-parquet emptied + dropped from formats-all so cargo never",
+             "# vendors the Arrow/Parquet/zstd closure; fmt-hdf5 / fmt-matlab keep",
+             "# their real readers. The complete build (nirs4allformats) ships the",
+             "# unstripped manifest."]
+    seen = set()
+    for ln in orig:
+        key = re.match(r"\s*([A-Za-z0-9_-]+)\s*=", ln)
+        if not key:
+            # comments / blanks inside the original features table: skip, we
+            # provide our own header above.
+            continue
+        k = key.group(1)
+        seen.add(k)
+        if k == "default":
+            table.append("default = []")
+        elif k == "formats-all":
+            table.append('formats-all = ["fmt-hdf5", "fmt-matlab"]')
+        elif k == "fmt-parquet":
+            table.append("fmt-parquet = []")
+        else:
+            table.append(ln.strip())
+    # Defensive: ensure the names exist even if the source ever drops one.
+    for k, v in (("default", "default = []"),
+                 ("formats-all", 'formats-all = ["fmt-hdf5", "fmt-matlab"]'),
+                 ("fmt-parquet", "fmt-parquet = []")):
+        if k not in seen:
+            table.append(v)
+    return table
+
+
+if feature_lines:
+    # Insert the rewritten features table where the original [features] was: it is
+    # simplest to append it at the end of the manifest (TOML table order is free).
+    out += rewrite_features(feature_lines)
+
+open(p, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
+print(f"  {p}: dropped {len(dropped_par)} Parquet optional dep line(s), {dev_dropped} [dev-dependencies] table(s)")
+PY
+    done
+else
+    echo "nirs4allformats.lite configure: ERROR — python3 required to trim the LITE facade manifest" >&2
+    exit 1
+fi
 
 # 2. The copied crate Cargo.tomls use `.workspace = true` for version/edition/
 #    license/authors/repository AND for several dependencies (serde, serde_json,
@@ -161,12 +290,15 @@ name = "nirs4allformats_r"
 
 [dependencies]
 extendr-api = { version = "0.7", default-features = false }
-# FULL build: default features ON — the facade's `formats-all` keeps every
-# reader (HDF5/netCDF, Parquet/Arrow, MATLAB). The resulting vendored closure
-# (~14 MB) exceeds CRAN's 5 MB limit, so this package ships through R-universe
-# only. The size-trimmed CRAN sibling `nirs4allformats` sets
-# `default-features = false` here.
-nirs4all-formats = { path = "vendored/nirs4all-formats" }
+# LITE build: full MINUS Parquet. `default-features = false` drops the facade's
+# `formats-all` meta-feature; the explicit `fmt-hdf5` + `fmt-matlab` features
+# re-enable the HDF5/netCDF and MATLAB readers (matfile + lzma-rs, hdf5-reader +
+# netcdf-reader + chrono), while `fmt-parquet` stays OFF — so the Arrow/Parquet/
+# zstd closure (the single biggest dependency) is never compiled or vendored.
+# Feeding a Parquet input returns an actionable error pointing at the complete
+# package `nirs4allformats` (the facade's graceful-degradation Parquet stub). The
+# complete sibling keeps the default features.
+nirs4all-formats = { path = "vendored/nirs4all-formats", default-features = false, features = ["fmt-hdf5", "fmt-matlab"] }
 nirs4all-formats-core = { path = "vendored/nirs4all-formats-core" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -186,7 +318,7 @@ TOML
 #    (src/rust/), unlike a `--config <file>` whose relative paths resolve against
 #    the file's own dir; and crucially the package then ships NO hidden
 #    `.cargo/` directory (which would trip R CMD check's "hidden files" NOTE).
-echo "nirs4allformats configure: cargo vendor (crates.io transitive deps)"
+echo "nirs4allformats.lite configure: cargo vendor (crates.io transitive deps)"
 ( cd "$RUST" && cargo vendor --versioned-dirs vendor ) >/dev/null
 
 # 3a. Strip stray CITATION.cff / CITATION files from the vendored crates. R CMD
@@ -199,7 +331,7 @@ echo "nirs4allformats configure: cargo vendor (crates.io transitive deps)"
 #     vendoring host's JSON editor; it is only needed when vendoring (CRAN's
 #     install never reaches this branch — it unpacks the already-stripped tree).
 if command -v python3 >/dev/null 2>&1; then
-    echo "nirs4allformats configure: stripping stray CITATION files from vendored crates"
+    echo "nirs4allformats.lite configure: stripping stray CITATION files from vendored crates"
     python3 - "$RUST/vendor" <<'PY'
 import json, os, sys
 root = sys.argv[1]
@@ -227,13 +359,13 @@ for name in os.listdir(root):
 print(f"  stripped {removed} CITATION file(s) from the vendored tree")
 PY
 else
-    echo "nirs4allformats configure: WARNING python3 not found — leaving CITATION files in the vendored tree (R CMD check will emit a non-standard-CITATION NOTE)" >&2
+    echo "nirs4allformats.lite configure: WARNING python3 not found — leaving CITATION files in the vendored tree (R CMD check will emit a non-standard-CITATION NOTE)" >&2
 fi
 
-echo "nirs4allformats configure: compressing vendor/ -> vendor.tar.xz (avoids R's tarball dotfile stripping)"
+echo "nirs4allformats.lite configure: compressing vendor/ -> vendor.tar.xz (avoids R's tarball dotfile stripping)"
 ( cd "$RUST" && tar cJf vendor.tar.xz vendor && rm -rf vendor )
 
-echo "nirs4allformats configure: self-contained Rust tree ready"
+echo "nirs4allformats.lite configure: self-contained Rust tree ready"
 echo "  vendored crates : $(ls "$VENDORED" | tr '\n' ' ')"
 echo "  vendor archive  : $VENDOR_ARCHIVE ($(du -h "$VENDOR_ARCHIVE" | cut -f1))"
 echo "  source replace  : passed INLINE to cargo by src/Makevars (--config), no .cargo/ dir"

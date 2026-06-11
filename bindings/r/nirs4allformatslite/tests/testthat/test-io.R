@@ -50,15 +50,28 @@ test_that("walk_path returns parsed entries", {
   }
 })
 
-test_that("optional large readers are available in the full build", {
-  # The defining difference from the size-trimmed CRAN package: the HDF5 and
-  # Parquet readers (and MATLAB) are compiled in, so these read instead of
-  # raising the lite-build "not available" error.
+test_that("non-Parquet large readers ARE available in the lite build", {
+  # This build drops ONLY the Parquet/Arrow reader; HDF5/netCDF and MATLAB are
+  # compiled in, so these read for real instead of raising the excluded-reader
+  # error.
   for (relative in c(
     "samples/hdf5/synthetic_nirs.h5",
-    "samples/parquet/synthetic_nirs.parquet"
+    "samples/matlab/synthetic_nirs_v5.mat"
   )) {
     records <- nirs4allformats_open_records(sample_path(relative))
     expect_true(length(records) >= 1L, label = relative)
   }
+})
+
+test_that("a Parquet input returns the actionable nirs4allformats error", {
+  # Parquet is the only excluded reader in the lite build. Feeding one must raise
+  # a clean R error naming the complete package nirs4allformats, not the generic
+  # "unsupported format" (the graceful-degradation stub).
+  path <- sample_path("samples/parquet/synthetic_nirs.parquet")
+  err <- tryCatch(
+    nirs4allformats_open_records(path),
+    error = function(e) conditionMessage(e)
+  )
+  expect_true(grepl("not available in this build", err, fixed = TRUE))
+  expect_true(grepl("nirs4allformats", err, fixed = TRUE))
 })
