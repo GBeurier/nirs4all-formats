@@ -148,6 +148,11 @@ if [[ "${MODE}" == "bump" ]]; then
     sed -i -E "/^\[workspace\.package\]/,/^\[/{s/^(version[[:space:]]*=[[:space:]]*\")[^\"]+(\")/\1${NEW_VERSION}\2/}" \
         "${CARGO_TOML}"
     echo "  bumped [workspace.package] version to ${NEW_VERSION}"
+    # Keep the intra-workspace dep versions in [workspace.dependencies] in sync —
+    # crates.io publishing requires `version` alongside `path` on these deps.
+    sed -i -E "s|^(nirs4all-formats(-core)? = \{ path = \"[^\"]+\", version = \")[^\"]+(\" \})|\1${NEW_VERSION}\3|" \
+        "${CARGO_TOML}"
+    echo "  synced [workspace.dependencies] intra-dep versions to ${NEW_VERSION}"
     MODE="sync"
 fi
 
