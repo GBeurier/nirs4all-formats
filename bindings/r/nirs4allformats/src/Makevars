@@ -15,9 +15,22 @@ $(STATLIB):
 		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
-	cd rust && (cargo build --release --offline 2>/dev/null || cargo build --release)
+	# Self-contained vendored build: extract the cargo-vendored crates.io deps
+	# (shipped compressed to dodge R's tarball dotfile stripping), then build
+	# OFFLINE against them. The crates.io source replacement is passed INLINE via
+	# --config (resolves `vendor` against rust/, and ships NO hidden .cargo/ dir
+	# that would trip R CMD check). If vendor.tar.xz is absent (in-repo dev), fall
+	# back to an ONLINE build against the committed relative-path Cargo.toml.
+	@if [ -f rust/vendor.tar.xz ]; then \
+		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
+		cd rust && cargo build --release --offline \
+			--config 'source.crates-io.replace-with="vendored-sources"' \
+			--config 'source.vendored-sources.directory="vendor"'; \
+	else \
+		cd rust && cargo build --release; \
+	fi
 
 C_clean:
-	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR)
+	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR) $(CURDIR)/rust/vendor
 
 clean: C_clean

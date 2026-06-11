@@ -1,8 +1,21 @@
 ^cran-comments\.md$
+# R-universe pre-build hook runs from the git checkout before R CMD build;
+# it must NOT ship in the source tarball.
+^\.prepare$
+# Rust build output must NEVER ship. CRAN and R-universe compile from the
+# vendored sources. The vendored core crates src/rust/vendored/, the
+# cargo-vendored crates.io deps src/rust/vendor.tar.xz, the workspace Cargo.toml
+# and Cargo.lock are the self-contained build inputs and DO ship --
+# intentionally NOT ignored here. Only the extracted scratch dir and the
+# compiled target/ are excluded.
+^src/rust/vendor$
 ^src/rust/target$
 ^src/.*\.o$
 ^src/.*\.so$
 ^src/.*\.dll$
+^src/.*\.dylib$
+^src/.*\.a$
 ^\.Rbuildignore$
+^\.gitignore$
 ^.*\.Rproj$
 ^\.Rproj\.user$
