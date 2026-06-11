@@ -75,6 +75,14 @@ cargo add nirs4all-formats              # Rust
 R CMD INSTALL bindings/r/nirs4allformats  # R
 ```
 
+> **R users — install the prebuilt binary from R-universe.** This package is
+> distributed via R-universe rather than CRAN (its full Arrow/Parquet/HDF5/zstd
+> reader closure exceeds CRAN's 5 MB source-tarball limit):
+>
+> ```r
+> install.packages("nirs4allformats", repos = c("https://gbeurier.r-universe.dev", getOption("repos")))
+> ```
+
 Full per-language instructions, feature flags and build-from-source steps are in
 [docs/installation.md](docs/installation.md).
 
