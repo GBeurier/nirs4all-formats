@@ -8,6 +8,11 @@
   `extendr-api` static library from `src/rust/` at install time and dispatches
   probe / read / walk calls directly through Rust. Without Cargo on the build
   machine it falls back to invoking the `nirs4all-formats` CLI binary.
+* This is the **size-trimmed (lite) build**: core readers only. The optional
+  large readers (HDF5/netCDF, Parquet/Arrow, MATLAB) are excluded to reduce the
+  vendored Rust closure; they are available in the sibling package
+  `nirs4allformats.full` from R-universe (`Additional_repositories`). See
+  *Lite vs full* below.
 * License: `MIT + file LICENSE`.
 * The same Rust core powers the project's Python (PyPI),
   JavaScript / WebAssembly (npm) and C-ABI bindings.
@@ -109,28 +114,47 @@ have all been **fixed** in this version:
 * No `:::` calls to private functions of other packages.
 * Only `jsonlite` is imported; the package is a leaf in the CRAN dependency graph.
 
+## Lite (this CRAN package) vs full (R-universe)
+
+This is the **lite** build: the facade is compiled `--no-default-features`, so
+it ships only the core readers (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, and
+the vendor ASCII/binary formats). The optional large readers — HDF5/netCDF,
+Parquet/Arrow, MATLAB — are excluded to shrink the vendored Rust closure for
+CRAN. They live in the sibling package **`nirs4allformats.full`**
+(`bindings/r/nirs4allformatsfull`), which keeps the default `formats-all`
+features and is distributed through **R-universe only** (its ~14 MB tarball
+cannot meet CRAN's size limit). The two packages share the same Rust core and
+the same exported R API; feeding this lite build an excluded format returns a
+clean R error naming `nirs4allformats.full` (graceful-degradation stub readers
+in the facade), not a generic "unsupported format".
+
 ## CRAN feasibility — honest assessment
 
 Two gates remain that are **not** fixable in package code:
 
-1. **Source-tarball size.** The tarball is ~14 MB; almost all of it is
-   `src/rust/vendor.tar.xz`, the compressed crates.io closure for the full
-   reader set (Apache Arrow / Parquet, pure-Rust HDF5 / NetCDF, zstd / lzma
-   codecs). CRAN's submission checker **auto-rejects tarballs over 5 MB**
-   ("Please reduce to less than 5 MB for a CRAN package"); the documented relief
-   is a manually-granted limit increase (uncertain for ~14 MB) or pinned
-   download-at-install (which defeats the self-contained offline design CRAN's
-   "Using Rust" page otherwise prefers). The size cannot be brought under 5 MB
-   without dropping readers.
+1. **Source-tarball size.** Trimming the heavy readers cuts the tarball from
+   ~14 MB (full reader set) to **~7.5 MB** — a large improvement, but still over
+   CRAN's hard 5 MB auto-reject ("Please reduce to less than 5 MB for a CRAN
+   package"). Measured floor: ~98 crates / ~6.7 MB at max compression even after
+   the readers are dropped. The residual weight is **not** the readers — the
+   facade's own core closure is ~3.4 MB — it is the `extendr` binding layer:
+   `libR-sys`'s per-platform bindings, `cfb → web-time → wasm-bindgen`, and
+   `tempfile → getrandom 0.4 → the WASI wit-bindgen/wasmparser component-model
+   toolchain`, which `cargo vendor` must collect for all targets and which
+   reader-trimming cannot remove. A true <5 MB CRAN submission would
+   additionally need a download-at-install vendoring scheme (which defeats the
+   self-contained offline design CRAN's "Using Rust" page prefers) or an upstream
+   extendr/getrandom dependency-graph reduction.
 2. **The `abort` WARNING.** Inherent to a vendored Rust static library with
    `extendr-api` 0.7.x (see above).
 
-Because of (1) — a hard auto-reject — **R-universe is the realistic distribution
-channel** for this package (it builds binaries straight from Git and does not
-gate on size or on the Rust `abort` WARNING). A CRAN submission would require
-either a feature-trimmed variant under 5 MB or a maintainer size-exception
-request, and even then must carry the inherent Rust `abort` WARNING. This file
-is kept for the day a trimmed CRAN variant is attempted.
+Because of (1) — a hard auto-reject still in force even for the lite build —
+**R-universe is the realistic distribution channel** for both packages (it
+builds binaries straight from Git and does not gate on size or on the Rust
+`abort` WARNING). The lite build is nonetheless the smallest achievable
+self-contained tarball and the correct CRAN candidate; its
+`R CMD check --as-cran` is clean apart from the size auto-reject (0 ERRORs,
+0 WARNINGs, only the environment NOTEs below).
 
 ## CRAN version note
 

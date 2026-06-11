@@ -150,27 +150,51 @@ One-time: own the `@nirs4all` scope on [npmjs.com](https://www.npmjs.com)
 the `@nirs4all/formats-wasm` package and add it as the GitHub Actions secret
 `NPM_TOKEN`.
 
+### Lite (CRAN) vs full (R-universe) — two packages, one core
+
+The R binding ships as **two packages** built from the same Rust core and
+exposing the **same `nirs4allformats_*` API**; only the compiled reader set and
+the package name differ:
+
+| Package | Dir | Readers | Channel | Tarball |
+|---|---|---|---|---|
+| **`nirs4allformats`** (lite) | `bindings/r/nirs4allformats` | core only (JCAMP-DX, SPC, OPUS, ASD, ENVI, CSV, Excel, ...) — facade built `--no-default-features` | **CRAN** (and R-universe, for consistency) | ~7.5 MB |
+| **`nirs4allformats.full`** | `bindings/r/nirs4allformatsfull` | **every** reader incl. HDF5/netCDF, Parquet/Arrow, MATLAB — facade default `formats-all` | **R-universe only** | ~13–14 MB |
+
+The lite build's `./configure` trims the heavy optional readers from the
+vendored facade manifest so `cargo vendor` collects only the core closure. The
+facade carries feature-gated **graceful-degradation stubs**: feeding the lite
+build an excluded format (HDF5/netCDF/Parquet/MATLAB) returns a clean R error
+naming `nirs4allformats.full`, not the generic "unsupported format". The full
+build keeps the default features and so vendors the full closure.
+
 ### R → R-universe (registration) — follow-up
 
 R-universe builds binaries (Windows/macOS/Linux) straight from Git — no review,
 no submission. Users then
-`install.packages("nirs4allformats", repos = "https://gbeurier.r-universe.dev")`.
+`install.packages("nirs4allformats", repos = "https://gbeurier.r-universe.dev")`
+(or `"nirs4allformats.full"` for the full reader set).
 
-- **Registry repo**: public `GBeurier/GBeurier.r-universe.dev` with a
-  `packages.json` entry:
+- **Registry repo**: public `GBeurier/GBeurier.r-universe.dev` with one
+  `packages.json` entry per package (both lite and full):
   ```json
-  { "package": "nirs4allformats", "url": "https://github.com/GBeurier/nirs4all-formats", "subdir": "bindings/r/nirs4allformats" }
+  { "package": "nirs4allformats",      "url": "https://github.com/GBeurier/nirs4all-formats", "subdir": "bindings/r/nirs4allformats" },
+  { "package": "nirs4allformats.full", "url": "https://github.com/GBeurier/nirs4all-formats", "subdir": "bindings/r/nirs4allformatsfull" }
   ```
   No `branch` field → it tracks `main`.
 - **GitHub App** (one manual browser step): install
   <https://github.com/apps/r-universe> on the `GBeurier` account.
 - **Verify**: watch <https://gbeurier.r-universe.dev> (it *shows* the
   `R CMD check` result but, unlike CRAN, does not block on a NOTE/WARNING).
+  The full build's GNU-make-extensions WARNING (from the vendored
+  lzma-sys/r-efi Makefiles) is expected and not gated by R-universe.
 
 ### R → CRAN (submission)
 
 CRAN is the canonical R repo; submission is a **manual web form** with human
-review. Get the **self-contained** source tarball — either:
+review. **CRAN submission uses the LITE `nirs4allformats_<version>.tar.gz`
+only** — never the `nirs4allformats.full` tarball (that is R-universe-only). Get
+the **self-contained** lite source tarball — either:
 
 - download **`nirs4allformats_<version>.tar.gz`** from the matching GitHub
   Release (built + `--as-cran`-checked by `release-r.yml`), **or**
@@ -180,7 +204,7 @@ review. Get the **self-contained** source tarball — either:
 
   ```bash
   cd bindings/r/nirs4allformats && N4FMT_R_VENDOR=1 ./configure
-  cd .. && R CMD build nirs4allformats        # → nirs4allformats_<version>.tar.gz
+  cd .. && R CMD build nirs4allformats        # → nirs4allformats_<version>.tar.gz (LITE)
   ```
 
 Upload **only `nirs4allformats_<version>.tar.gz`** at
@@ -247,21 +271,33 @@ Maintainer: Grégory Beurier (CIRAD), gregory.beurier@cirad.fr.
 > submitted to CRAN**. The first CRAN-eligible R version is the plain `0.1.0`
 > cut by `scripts/bump_version.sh --bump 0.1.0`.
 
-> **CRAN feasibility verdict — R-universe is the realistic target.** The source
-> tarball is ~14 MB (almost entirely `src/rust/vendor.tar.xz`, the compressed
-> crates.io closure for the full Arrow / Parquet / HDF5 / zstd / lzma reader
-> set). CRAN's submission checker **auto-rejects tarballs over 5 MB** ("Please
-> reduce to less than 5 MB for a CRAN package") — a hard gate this package cannot
-> clear without dropping readers. The documented relief (a manually-granted size
-> increase, or pinned download-at-install) is uncertain at this size and the
-> latter defeats the self-contained offline design. Independently, the static
-> Rust library carries the inherent `abort` WARNING (extendr 0.7.x + std). **Ship
-> via R-universe** (`gbeurier.r-universe.dev` — builds binaries from Git, no size
-> or WARNING gate; see *R → R-universe* above) + the GitHub Release. CRAN remains
-> a stretch goal that would need a feature-trimmed variant under 5 MB; the local
-> `R CMD check --as-cran` is otherwise clean (0 ERRORs, 0 WARNINGs, only the
-> "New submission" / `-march=nocona` / Rust-`abort` NOTEs), so a trimmed variant
-> would be submission-ready on every axis except size.
+> **CRAN feasibility verdict — the LITE build is the CRAN candidate; size is
+> still the binding gate.** The full reader set's tarball is ~14 MB (almost
+> entirely `src/rust/vendor.tar.xz`, the compressed crates.io closure for the
+> full Arrow / Parquet / HDF5 / zstd / lzma reader set). CRAN's submission
+> checker **auto-rejects tarballs over 5 MB**. The **lite** package
+> (`bindings/r/nirs4allformats`, facade `--no-default-features`) drops those
+> heavy readers and cuts the tarball to **~7.5 MB** — a large improvement, but
+> still over 5 MB. Measured floor: the lite closure is ~98 crates / ~6.7 MB at
+> max compression even after trimming the readers. The residual weight is **not**
+> the readers; it is the extendr binding layer's own closure — `libR-sys`'s
+> per-platform bindings, `cfb → web-time → wasm-bindgen`, and
+> `tempfile → getrandom 0.4 → the WASI `wit-bindgen`/`wasmparser` component-model
+> toolchain` — which `cargo vendor` must collect for all targets and which
+> reader-trimming cannot remove. (The facade closure *alone* is ~3.4 MB / 63
+> crates, as previously measured; the gap is the R glue.) So the lite build is
+> the right semantic split and the smallest achievable self-contained tarball,
+> but a true <5 MB CRAN submission would additionally require a
+> download-at-install vendoring scheme — which defeats the offline design CRAN's
+> "Using Rust" page prefers — or an upstream extendr/getrandom dependency-graph
+> reduction. Independently, the static Rust library carries the inherent `abort`
+> WARNING (extendr 0.7.x + std). **Ship via R-universe**
+> (`gbeurier.r-universe.dev` — builds binaries from Git, no size or WARNING gate;
+> see *Lite vs full* and *R → R-universe* above) + the GitHub Release for both
+> packages. The lite build's local `R CMD check --as-cran` is otherwise clean
+> (0 ERRORs, 0 WARNINGs, only the "New submission" / `-march=nocona` /
+> Rust-`abort` NOTEs), so it is submission-ready on every axis except the size
+> auto-reject.
 
 After uploading, CRAN emails a confirmation link — click it to complete.
 
