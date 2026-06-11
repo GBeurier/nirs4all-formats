@@ -77,7 +77,7 @@ def test_nd_projection_flattens_non_x_dims_into_samples() -> None:
 
 
 def test_nd_projection_records_sample_coordinates() -> None:
-    import pandas as pd  # noqa: F401  (ensures pandas available)
+    pytest.importorskip("pandas")  # optional dep — skip (not fail) when absent
 
     rs = SpectralRecordSet.from_dicts([_record_2d()])
     frame = rs.to_pandas(signal="intensity")

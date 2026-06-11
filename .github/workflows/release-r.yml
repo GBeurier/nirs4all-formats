@@ -72,7 +72,10 @@ jobs:
       #
       # The build is offline; disable the incoming-feasibility URL check.
       _R_CHECK_CRAN_INCOMING_REMOTE_: false
-      CARGO_NET_OFFLINE: "true"
+      # NB: CARGO_NET_OFFLINE is NOT job-wide — the "Vendor" step below runs
+      # `cargo vendor`, which MUST reach crates.io. It is set only on the
+      # R CMD check step (the offline INSTALL); the Makevars also passes
+      # `cargo build --offline`, so the install build is offline regardless.
     steps:
       - uses: actions/checkout@v4
         with:
@@ -109,6 +112,8 @@ jobs:
 
       - name: R CMD check --as-cran
         uses: r-lib/actions/check-r-package@v2
+        env:
+          CARGO_NET_OFFLINE: "true"   # the INSTALL build is offline from the bundle
         with:
           working-directory: bindings/r/${{ matrix.pkg }}
           # r-lib/actions/check-r-package interpolates these into
