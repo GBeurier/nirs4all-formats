@@ -133,7 +133,7 @@ if command -v python3 >/dev/null 2>&1; then
 import re, sys
 
 p = sys.argv[1]
-lines = open(p).read().splitlines()
+lines = open(p, encoding="utf-8").read().splitlines()
 
 # Walk the manifest table-by-table. Rewrite [features] to declare the feature
 # NAMES with empty arrays (so the source's `#[cfg(feature = "fmt-*")]` gates are
@@ -189,7 +189,7 @@ for ln in lines:
         continue
     out.append(ln)
 
-open(p, "w").write("\n".join(out) + "\n")
+open(p, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
 print(f"  {p}: trimmed {len(dropped)} optional reader dep line(s), dropped {dev_dropped} [dev-dependencies] table(s)")
 PY
     done
@@ -303,7 +303,7 @@ for name in os.listdir(root):
     cj = os.path.join(d, ".cargo-checksum.json")
     if not os.path.isdir(d) or not os.path.exists(cj):
         continue
-    with open(cj) as fh:
+    with open(cj, encoding="utf-8") as fh:
         meta = json.load(fh)
     files = meta.get("files", {})
     changed = False
@@ -316,7 +316,7 @@ for name in os.listdir(root):
             changed = True
             removed += 1
     if changed:
-        with open(cj, "w") as fh:
+        with open(cj, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(meta, fh)
 print(f"  stripped {removed} CITATION file(s) from the vendored tree")
 PY

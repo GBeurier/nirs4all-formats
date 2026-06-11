@@ -209,7 +209,7 @@ for name in os.listdir(root):
     cj = os.path.join(d, ".cargo-checksum.json")
     if not os.path.isdir(d) or not os.path.exists(cj):
         continue
-    with open(cj) as fh:
+    with open(cj, encoding="utf-8") as fh:
         meta = json.load(fh)
     files = meta.get("files", {})
     changed = False
@@ -222,7 +222,7 @@ for name in os.listdir(root):
             changed = True
             removed += 1
     if changed:
-        with open(cj, "w") as fh:
+        with open(cj, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(meta, fh)
 print(f"  stripped {removed} CITATION file(s) from the vendored tree")
 PY
