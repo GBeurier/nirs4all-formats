@@ -122,7 +122,10 @@ jobs:
     name: Publish to PyPI
     needs: [python-wheels, python-sdist]
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'workflow_dispatch' }}
+    # Gate to production tags only. Pre-release tags (anything containing '-',
+    # e.g. v0.1.0-alpha.1) are excluded so they never reach PyPI — mirrors
+    # nirs4all-methods' release-wheels.yml / release-python.yml convention.
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-') && github.event_name != 'workflow_dispatch' }}
     environment:
       name: pypi
       url: https://pypi.org/p/nirs4all-formats
@@ -133,6 +136,39 @@ jobs:
         with:
           path: dist
           merge-multiple: true
+      - name: Validate tag matches the built wheel/sdist version
+        run: |
+          set -euo pipefail
+          # The tag minus the leading 'v' must equal the PEP 440 package
+          # version baked into the wheels + sdist. PEP 440 alpha/beta/rc
+          # spellings (0.1.0a1, 0.1.0b2, 0.1.0rc1) are allowed alongside a
+          # plain X.Y.Z; SemVer pre-release tags (with '-') are already gated
+          # out of this job above. scripts/bump_version.sh keeps the package
+          # version in sync with the Cargo workspace SoT.
+          tag_version="${GITHUB_REF_NAME#v}"
+          # nirs4all-formats normalizes to nirs4all_formats-<version>-... for
+          # wheels and nirs4all_formats-<version>.tar.gz for the sdist.
+          dist_file=$(ls dist/nirs4all_formats-*.whl dist/nirs4all_formats-*.tar.gz 2>/dev/null | head -n1 || true)
+          if [[ -z "${dist_file}" ]]; then
+            echo "::error::no nirs4all_formats wheel/sdist found in dist/ to validate" >&2
+            ls -la dist/ >&2 || true
+            exit 1
+          fi
+          base=$(basename "${dist_file}")
+          # Strip the package prefix, then take the version up to the first
+          # '-' (wheels) or '.tar.gz' (sdist).
+          rest="${base#nirs4all_formats-}"
+          dist_version="${rest%%-*}"          # wheel:  0.1.0a1-cp310-...  -> 0.1.0a1
+          dist_version="${dist_version%.tar.gz}"  # sdist: 0.1.0a1.tar.gz -> 0.1.0a1
+          if [[ ! "${tag_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+)?$ ]]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} is not a release version (vX.Y.Z[aN|bN|rcN])" >&2
+            exit 1
+          fi
+          if [[ "${tag_version}" != "${dist_version}" ]]; then
+            echo "::error::Tag version (${tag_version}) != built package version (${dist_version})" >&2
+            exit 1
+          fi
+          echo "tag ${GITHUB_REF_NAME} matches built package version ${dist_version}."
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist
@@ -141,7 +177,9 @@ jobs:
     name: Attach release artifacts
     needs: [python-wheels, python-sdist, c-abi-archive, r-source]
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.ref, 'refs/tags/v') && github.event_name != 'workflow_dispatch' }}
+    # Same gate as publish-pypi: production tags only, pre-release tags ('-')
+    # excluded so a pre-release never cuts a public GitHub Release.
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-') && github.event_name != 'workflow_dispatch' }}
     permissions:
       contents: write
     steps:

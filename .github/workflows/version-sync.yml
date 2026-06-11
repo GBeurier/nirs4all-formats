@@ -1,0 +1,52 @@
+# Fail the PR if any downstream binding manifest drifts from the canonical
+# workspace version in the root Cargo.toml ([workspace.package] version):
+#   - bindings/python/Cargo.toml          (Cargo SemVer)
+#   - bindings/wasm/Cargo.toml            (Cargo SemVer)
+#   - bindings/r/nirs4allformats/src/rust/Cargo.toml   (Cargo SemVer)
+#   - bindings/python/pyproject.toml      (PEP 440)
+#   - bindings/python/python/nirs4all_formats/_version.py (PEP 440)
+#   - bindings/r/nirs4allformats/DESCRIPTION  (R version spelling)
+#
+# Local equivalent:  scripts/bump_version.sh --check
+#
+# Bumping the version on a working branch:
+#   scripts/bump_version.sh --bump X.Y.Z[-pre]   # rewrites the SoT
+#   scripts/bump_version.sh                       # syncs every binding manifest
+
+name: version-sync
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: manifest version consistency
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify scripts/bump_version.sh exists and is executable
+        run: |
+          if [ ! -x scripts/bump_version.sh ]; then
+            echo "ERROR: scripts/bump_version.sh missing or not executable" >&2
+            exit 1
+          fi
+
+      - name: Check every manifest is in sync with the Cargo workspace version
+        run: scripts/bump_version.sh --check
