@@ -10,6 +10,7 @@ exclude = [
     "bindings/python",
     "bindings/wasm",
     "bindings/r/nirs4allformats/src/rust",
+    "bindings/r/nirs4allformatsfull/src/rust",
 ]
 
 [workspace.package]
