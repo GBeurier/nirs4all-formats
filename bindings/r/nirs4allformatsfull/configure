@@ -1,0 +1,239 @@
+#!/bin/sh
+# Generate a SELF-CONTAINED src/rust/ tree for the nirs4allformats.full R
+# package (the FULL reader build; R-universe only — the vendored closure is too
+# large for CRAN). The size-trimmed CRAN sibling is bindings/r/nirs4allformats.
+#
+# The package is an extendr (Rust) binding. Its src/rust/Cargo.toml reaches the
+# workspace core crates via RELATIVE paths `../../../../../crates/...`, which
+# only resolve INSIDE the monorepo. CRAN unpacks the source tarball with no
+# `crates/`, and R-universe builds from the package subdir — so the off-tree
+# build would be FATAL without vendoring. This is the Rust analog of
+# nirs4all-methods' `N4M_R_VENDOR=1 ./configure` C++ vendoring.
+#
+# Two modes:
+#
+#   N4FMT_R_VENDOR=1  -> in-repo vendoring (forced). Copy the workspace core
+#                        crates (nirs4all-formats-core, nirs4all-formats) from
+#                        the checkout into src/rust/vendored/, emit a
+#                        src/rust/Cargo.toml that points at those copies (paths
+#                        INSIDE the tarball), `cargo vendor` every crates.io
+#                        transitive dependency, compress it to
+#                        src/rust/vendor.tar.xz, and write
+#                        src/rust/.cargo/config.toml so the R install builds
+#                        OFFLINE (CRAN / R-universe installs never hit the
+#                        network). The source tarball ships src/rust/vendored/,
+#                        src/rust/vendor.tar.xz, the workspace Cargo.toml +
+#                        Cargo.lock, and .cargo/config.toml.
+#
+#                        The crates.io deps are shipped COMPRESSED (vendor.tar.xz,
+#                        extracted by src/Makevars at build time) rather than as a
+#                        raw directory because `R CMD build`'s tarball step strips
+#                        VCS dotfiles (.gitmodules, ...) and a few bundled-C
+#                        artifacts from inside the vendored crates, which would
+#                        break cargo's offline checksum verification. Shipping the
+#                        archive byte-for-byte avoids that (this is the same
+#                        pattern the arrow / gifski / polars CRAN packages use for
+#                        their Rust vendor trees).
+#
+#   (default)         -> already-vendored build. When src/rust/vendor.tar.xz and
+#                        src/rust/vendored/ are already present (the installing
+#                        user unpacked the CRAN source tarball and has no repo),
+#                        DO NOT re-vendor: the bundled tree is used as-is.
+#                        src/Makevars extracts vendor.tar.xz and `cargo build
+#                        --offline` compiles it.
+#
+# This script writes NO Makevars (src/Makevars / src/Makevars.win are committed,
+# layout-stable, and extract vendor.tar.xz then `cargo build` against src/rust/).
+set -e
+
+PKG_ROOT=$(cd "$(dirname "$0")" && pwd)
+REPO=$(cd "$PKG_ROOT/../../.." && pwd)   # bindings/r/nirs4allformats -> repo root
+RUST="$PKG_ROOT/src/rust"
+VENDORED="$RUST/vendored"          # copied workspace core crates (plain dirs)
+VENDOR_ARCHIVE="$RUST/vendor.tar.xz"  # compressed cargo-vendored crates.io deps
+
+# The two workspace crates the extendr bridge depends on. Inspecting their
+# Cargo.toml [dependencies] for `path =`: nirs4all-formats -> nirs4all-formats-core
+# is the only intra-workspace path dep; both are copied below.
+CORE_CRATES="nirs4all-formats-core nirs4all-formats"
+
+VENDORED_PRESENT=0
+[ -f "$VENDORED/nirs4all-formats-core/Cargo.toml" ] && [ -f "$VENDOR_ARCHIVE" ] && VENDORED_PRESENT=1
+
+if [ "${N4FMT_R_VENDOR:-0}" != "1" ] && [ "$VENDORED_PRESENT" = "1" ]; then
+    echo "nirs4allformats configure: using bundled vendored Rust tree (offline build)"
+    echo "  vendored crates : $VENDORED"
+    echo "  cargo vendor    : $VENDOR_ARCHIVE (extracted by src/Makevars)"
+    exit 0
+fi
+
+if [ "${N4FMT_R_VENDOR:-0}" != "1" ] && [ "$VENDORED_PRESENT" = "0" ]; then
+    # Neither forced-vendor nor a pre-vendored tarball: a raw checkout where the
+    # committed src/rust/Cargo.toml (relative paths) and an online `cargo build`
+    # are expected (dev inner loop). Leave the tree as-is.
+    echo "nirs4allformats configure: no vendored tree and N4FMT_R_VENDOR!=1 — using in-repo src/rust/Cargo.toml (dev mode, needs the monorepo + network)"
+    exit 0
+fi
+
+# ---------------------------------------------------------------------------
+# N4FMT_R_VENDOR=1: in-repo vendoring.
+# ---------------------------------------------------------------------------
+command -v cargo >/dev/null 2>&1 || {
+    echo "nirs4allformats configure(vendor): ERROR — cargo not found; install Rust from https://rustup.rs" >&2
+    exit 1
+}
+
+echo "nirs4allformats configure: CRAN/R-universe self-contained build — vendoring the Rust core from the checkout"
+
+# 1. Copy the workspace core crates into src/rust/vendored/ (always fresh).
+#    Copy sources only (Cargo.toml + src/). tests/ and any local target/ are
+#    excluded so the vendored crate carries no [dev-dependencies] surface and no
+#    build artefacts. These plain dirs ship in the tarball as-is (no dotfiles).
+rm -rf "$VENDORED" "$VENDOR_ARCHIVE" "$RUST/vendor-config.toml" "$RUST/vendor" "$RUST/.cargo" "$RUST/Cargo.lock"
+mkdir -p "$VENDORED"
+for c in $CORE_CRATES; do
+    [ -d "$REPO/crates/$c" ] || {
+        echo "nirs4allformats configure(vendor): ERROR — $REPO/crates/$c not found" >&2
+        exit 1
+    }
+    mkdir -p "$VENDORED/$c"
+    cp "$REPO/crates/$c/Cargo.toml" "$VENDORED/$c/Cargo.toml"
+    cp -R "$REPO/crates/$c/src"     "$VENDORED/$c/src"
+done
+
+# FULL build: the vendored facade manifest is copied UNTOUCHED — its default
+# features (`formats-all`) keep every reader (HDF5/netCDF, Parquet/Arrow,
+# MATLAB), so `cargo vendor` (step 3) collects the full ~14 MB closure. That
+# exceeds CRAN's 5 MB limit, which is why this package ships through R-universe
+# only. The size-trimmed CRAN sibling (nirs4allformats) trims this manifest in
+# its own configure.
+
+# 2. The copied crate Cargo.tomls use `.workspace = true` for version/edition/
+#    license/authors/repository AND for several dependencies (serde, serde_json,
+#    sha2, thiserror, nirs4all-formats-core). Those inherit from the MONOREPO
+#    [workspace], which is NOT in the tarball. So we make src/rust/ a self-
+#    contained workspace ROOT that re-declares [workspace.package] and
+#    [workspace.dependencies] with the same values, plus the two vendored crates
+#    as members. The copied crate manifests then resolve unchanged.
+#
+#    This same manifest is also the extendr staticlib [package]; it points at
+#    the vendored core crates through the local [workspace.dependencies].
+cat > "$RUST/Cargo.toml" <<'TOML'
+# GENERATED by ./configure (N4FMT_R_VENDOR=1) — self-contained vendored workspace.
+#
+# This manifest is BOTH the workspace root AND the extendr staticlib package.
+# The two core crates under vendored/ are workspace members; they inherit
+# version/deps from [workspace.package] / [workspace.dependencies] below, which
+# mirror the monorepo root Cargo.toml (the source tarball has no monorepo).
+[workspace]
+resolver = "2"
+members = [
+    "vendored/nirs4all-formats-core",
+    "vendored/nirs4all-formats",
+]
+
+[workspace.package]
+version = "0.1.0-alpha.1"
+edition = "2021"
+license = "MIT"
+authors = ["G. Beurier <beurier@cirad.fr>"]
+repository = "https://github.com/GBeurier/nirs4all-formats"
+homepage = "https://github.com/GBeurier/nirs4all-formats"
+readme = "README.md"
+
+[workspace.dependencies]
+nirs4all-formats-core = { path = "vendored/nirs4all-formats-core" }
+nirs4all-formats = { path = "vendored/nirs4all-formats" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.10"
+thiserror = "2.0"
+
+[package]
+name = "nirs4allformats-r"
+version = "0.1.0-alpha.1"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["staticlib"]
+name = "nirs4allformats_r"
+
+[dependencies]
+extendr-api = { version = "0.7", default-features = false }
+# FULL build: default features ON — the facade's `formats-all` keeps every
+# reader (HDF5/netCDF, Parquet/Arrow, MATLAB). The resulting vendored closure
+# (~14 MB) exceeds CRAN's 5 MB limit, so this package ships through R-universe
+# only. The size-trimmed CRAN sibling `nirs4allformats` sets
+# `default-features = false` here.
+nirs4all-formats = { path = "vendored/nirs4all-formats" }
+nirs4all-formats-core = { path = "vendored/nirs4all-formats-core" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = 2
+lto = "thin"
+TOML
+
+# 3. cargo vendor every crates.io transitive dep, then compress it. The
+#    crates.io source replacement (`[source.crates-io] replace-with =
+#    "vendored-sources"`, `[source.vendored-sources] directory = "vendor"`) is
+#    NOT written to a config file — src/Makevars passes it INLINE via
+#    `cargo build --config source.crates-io.replace-with=...
+#    --config source.vendored-sources.directory="vendor"`. Inline --config
+#    KEY=VALUE resolves the relative `vendor` directory against the cargo CWD
+#    (src/rust/), unlike a `--config <file>` whose relative paths resolve against
+#    the file's own dir; and crucially the package then ships NO hidden
+#    `.cargo/` directory (which would trip R CMD check's "hidden files" NOTE).
+echo "nirs4allformats configure: cargo vendor (crates.io transitive deps)"
+( cd "$RUST" && cargo vendor --versioned-dirs vendor ) >/dev/null
+
+# 3a. Strip stray CITATION.cff / CITATION files from the vendored crates. R CMD
+#     check (--as-cran) reports any CITATION found outside inst/ as a NOTE
+#     ("CITATION file in a non-standard place"); chrono ships a top-level
+#     CITATION.cff that would trip it. Removing the file alone would break
+#     cargo's OFFLINE checksum verification, so we also drop its entry from the
+#     crate's `.cargo-checksum.json` (cargo only verifies the files it lists).
+#     Verified: chrono still builds offline after the strip+patch. python3 is the
+#     vendoring host's JSON editor; it is only needed when vendoring (CRAN's
+#     install never reaches this branch — it unpacks the already-stripped tree).
+if command -v python3 >/dev/null 2>&1; then
+    echo "nirs4allformats configure: stripping stray CITATION files from vendored crates"
+    python3 - "$RUST/vendor" <<'PY'
+import json, os, sys
+root = sys.argv[1]
+removed = 0
+for name in os.listdir(root):
+    d = os.path.join(root, name)
+    cj = os.path.join(d, ".cargo-checksum.json")
+    if not os.path.isdir(d) or not os.path.exists(cj):
+        continue
+    with open(cj) as fh:
+        meta = json.load(fh)
+    files = meta.get("files", {})
+    changed = False
+    for fname in list(files):
+        if os.path.basename(fname) in ("CITATION.cff", "CITATION"):
+            fp = os.path.join(d, fname)
+            if os.path.exists(fp):
+                os.remove(fp)
+            del files[fname]
+            changed = True
+            removed += 1
+    if changed:
+        with open(cj, "w") as fh:
+            json.dump(meta, fh)
+print(f"  stripped {removed} CITATION file(s) from the vendored tree")
+PY
+else
+    echo "nirs4allformats configure: WARNING python3 not found — leaving CITATION files in the vendored tree (R CMD check will emit a non-standard-CITATION NOTE)" >&2
+fi
+
+echo "nirs4allformats configure: compressing vendor/ -> vendor.tar.xz (avoids R's tarball dotfile stripping)"
+( cd "$RUST" && tar cJf vendor.tar.xz vendor && rm -rf vendor )
+
+echo "nirs4allformats configure: self-contained Rust tree ready"
+echo "  vendored crates : $(ls "$VENDORED" | tr '\n' ' ')"
+echo "  vendor archive  : $VENDOR_ARCHIVE ($(du -h "$VENDOR_ARCHIVE" | cut -f1))"
+echo "  source replace  : passed INLINE to cargo by src/Makevars (--config), no .cargo/ dir"

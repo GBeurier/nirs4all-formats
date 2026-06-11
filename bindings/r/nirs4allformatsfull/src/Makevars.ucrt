@@ -1,0 +1,8 @@
+# R >= 4.2 on Windows uses the UCRT toolchain (Rtools42+). cargo does not find
+# Rtools' linker in the location it expects for the x86_64-pc-windows-gnu target,
+# so we point CARGO_LINKER at the Rtools mingw linker and let Makevars.win wire
+# it into CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER. This mirrors the canonical
+# extendr (helloextendr / rextendr) Windows setup.
+CARGO_LINKER = x86_64-w64-mingw32.static.posix-gcc.exe
+
+include Makevars.win

@@ -1,0 +1,28 @@
+Package: nirs4allformats.full
+Title: Read Near-Infrared Spectroscopy and Spectral File Formats (Full Reader Set)
+Version: 0.1.0
+Authors@R: person("Gregory", "Beurier", email = "gregory.beurier@cirad.fr", role = c("aut", "cre"))
+Description: Full-reader build of the R binding for the Rust-first
+    'nirs4all-formats' near-infrared spectroscopy (NIRS) file-loading core. It
+    ships every reader, including the optional large ones (HDF5/netCDF,
+    Parquet/Arrow, MATLAB) that the size-trimmed CRAN package 'nirs4allformats'
+    excludes to stay within CRAN's source-tarball size limit. The exported API
+    is identical to 'nirs4allformats'; only the compiled reader set differs.
+    Because the vendored Rust closure for the full reader set exceeds CRAN's
+    size limit, this package is distributed through the R-universe repository
+    only and is not submitted to CRAN. When installed via R CMD INSTALL with
+    Cargo available, the package compiles a native 'extendr' static library from
+    'src/rust/' and dispatches probe, read, and walk calls directly through Rust.
+SystemRequirements: Cargo (Rust's package manager), rustc
+URL: https://github.com/GBeurier/nirs4all-formats
+BugReports: https://github.com/GBeurier/nirs4all-formats/issues
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    jsonlite
+Suggests:
+    testthat (>= 3.0.0),
+    tibble
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3
