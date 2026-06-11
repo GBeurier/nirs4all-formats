@@ -738,9 +738,37 @@ const CASES: &[(&str, &str)] = &[
     ),
 ];
 
+/// Whether a golden case needs a reader that may be feature-trimmed out.
+///
+/// In a feature-trimmed (lite) build the heavy readers (`fmt-hdf5`,
+/// `fmt-matlab`, `fmt-parquet`) are not compiled, so their fixtures hit the
+/// graceful-degradation stub and have no golden output. Skip them there; the
+/// stub behaviour is covered by tests/excluded_stubs.rs. With every feature on
+/// this always returns false and the full case set runs.
+fn requires_trimmed_reader(relative_path: &str) -> bool {
+    let p = relative_path;
+    let needs_hdf5 = p.contains("samples/netcdf/")
+        || p.contains("samples/hdf5/")
+        || p.contains("samples/fgi/")
+        || p.ends_with(".nc")
+        || p.ends_with(".h5")
+        || p.ends_with(".adf");
+    let needs_parquet = p.ends_with(".parquet");
+    let needs_matlab = p.contains("samples/matlab/")
+        || p.ends_with(".mat")
+        || p.ends_with(".MAT")
+        || p.ends_with(".RData");
+    (needs_hdf5 && cfg!(not(feature = "fmt-hdf5")))
+        || (needs_parquet && cfg!(not(feature = "fmt-parquet")))
+        || (needs_matlab && cfg!(not(feature = "fmt-matlab")))
+}
+
 #[test]
 fn reader_outputs_match_golden_summaries() -> Result<(), Box<dyn Error>> {
     for (name, relative_path) in CASES {
+        if requires_trimmed_reader(relative_path) {
+            continue;
+        }
         let records = open_path(workspace_file(relative_path))?;
         let actual = serde_json::to_string_pretty(&summarize_records(&records))? + "\n";
         let golden_path = golden_file(name);

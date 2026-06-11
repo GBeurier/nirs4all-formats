@@ -203,6 +203,9 @@ fn reads_scio_csv_exports() {
     assert_close(reflectance.values[255], 1.014440433213);
 }
 
+// NetCDF-backed — needs the fmt-hdf5 reader; in a trimmed (lite) build the
+// input hits the graceful-degradation stub instead (see tests/excluded_stubs.rs).
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_microtops_man_netcdf_and_refuses_pyrnet() {
     let records = open_path(workspace_file(

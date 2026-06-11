@@ -2,6 +2,7 @@ use nirs4all_formats::open_path;
 
 #[test]
 fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
+    // Core-reader fixtures — always present regardless of feature set.
     for (relative, expected) in [
         (
             "samples/foss_winisi/synthetic_ds3_report.csv",
@@ -12,24 +13,8 @@ fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
             "no numeric spectral headers found",
         ),
         (
-            "samples/netcdf/f03tst_open_mem.nc",
-            "not a supported NIRS spectroscopy schema",
-        ),
-        (
-            "samples/netcdf/air_temperature.nc",
-            "NetCDF contains no spectra variable",
-        ),
-        (
-            "samples/netcdf/pyrnet_to_l1a_output.nc",
-            "no Microtops aot_* channel set",
-        ),
-        (
             "samples/microtops/microtops_arc_msm114_2_header.txt",
             "no numeric spectral headers found",
-        ),
-        (
-            "samples/hdf5/vlen_string_dset.h5",
-            "HDF5 contains no spectra dataset with matching wavelength axis",
         ),
         (
             "samples/animl/Example3.animl",
@@ -58,19 +43,36 @@ fn refuses_committed_non_spectral_sidecars_reports_and_negative_fixtures() {
     ] {
         assert_refusal(relative, expected);
     }
+    // HDF5/netCDF schema-rejection messages only exist when the reader is
+    // compiled. In a feature-trimmed (lite) build these inputs hit the
+    // graceful-degradation stub instead (covered by tests/excluded_stubs.rs).
+    #[cfg(feature = "fmt-hdf5")]
+    for (relative, expected) in [
+        (
+            "samples/netcdf/f03tst_open_mem.nc",
+            "not a supported NIRS spectroscopy schema",
+        ),
+        (
+            "samples/netcdf/air_temperature.nc",
+            "NetCDF contains no spectra variable",
+        ),
+        (
+            "samples/netcdf/pyrnet_to_l1a_output.nc",
+            "no Microtops aot_* channel set",
+        ),
+        (
+            "samples/hdf5/vlen_string_dset.h5",
+            "HDF5 contains no spectra dataset with matching wavelength axis",
+        ),
+    ] {
+        assert_refusal(relative, expected);
+    }
 }
 
 #[test]
 fn refuses_local_non_spectral_sidecars_and_derived_products_when_present() {
+    // Core-reader fixtures.
     for (relative, expected) in [
-        (
-            "samples_local/netcdf/arm_mar_aosmet_20180201.nc",
-            "not a supported NIRS spectroscopy schema",
-        ),
-        (
-            "samples_local/hyperspectral_cubes/indian_pines_gt.mat",
-            "contains no supported structured NIRS dataset",
-        ),
         (
             "samples_local/pp_systems/arc_lter_unispec_dc_2007_2019_indices.csv",
             "derived vegetation-index product",
@@ -87,6 +89,22 @@ fn refuses_local_non_spectral_sidecars_and_derived_products_when_present() {
         let path = workspace_file(relative);
         if path.exists() {
             assert_refusal(relative, expected);
+        }
+    }
+    // HDF5/netCDF-backed fixture — only when its reader is compiled.
+    #[cfg(feature = "fmt-hdf5")]
+    {
+        let relative = "samples_local/netcdf/arm_mar_aosmet_20180201.nc";
+        if workspace_file(relative).exists() {
+            assert_refusal(relative, "not a supported NIRS spectroscopy schema");
+        }
+    }
+    // MATLAB fixture — only when the MATLAB reader is compiled.
+    #[cfg(feature = "fmt-matlab")]
+    {
+        let relative = "samples_local/hyperspectral_cubes/indian_pines_gt.mat";
+        if workspace_file(relative).exists() {
+            assert_refusal(relative, "contains no supported structured NIRS dataset");
         }
     }
 }

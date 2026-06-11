@@ -179,6 +179,7 @@ fn probes_animl_and_allotrope_asm_documents() {
     }));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn probes_local_allotrope_adf_when_present() {
     let path = workspace_file("samples_local/allotrope_adf/adfsee_example.adf");
@@ -226,6 +227,7 @@ fn probes_shimadzu_uvprobe_text_without_claiming_spc_by_extension() {
     assert!(!probes.iter().any(|probe| probe.format == "galactic-spc"));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn probes_netcdf_containers() {
     for relative in [
@@ -244,6 +246,7 @@ fn probes_netcdf_containers() {
     }
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn probes_andi_ms_netcdf_containers() {
     let probes = probe_path(workspace_file("samples/andi_ms/gc01_0812_066.cdf")).expect("probe");
@@ -252,6 +255,7 @@ fn probes_andi_ms_netcdf_containers() {
     }));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn probes_hdf5_containers() {
     for relative in [
@@ -286,6 +290,7 @@ fn probes_numpy_containers() {
         .any(|probe| probe.format == "numpy-npz" && probe.confidence == Confidence::Definite));
 }
 
+#[cfg(feature = "fmt-parquet")]
 #[test]
 fn probes_parquet_container() {
     let probes =
@@ -295,6 +300,7 @@ fn probes_parquet_container() {
     }));
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn probes_matlab_containers() {
     let probes = probe_path(workspace_file("samples/matlab/synthetic_nirs_v5.mat")).expect("probe");

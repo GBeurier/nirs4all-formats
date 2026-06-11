@@ -112,17 +112,20 @@ fn erdas_lan_aviris_in_memory_matches_path() {
     );
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn fgi_xml_hdf5_in_memory_matches_path() {
     assert_records_match("samples/fgi/synthetic_fgi.xml", &["synthetic_fgi.h5"], None);
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn matlab_v73_in_memory_matches_path() {
     // MATLAB v7.3 is HDF5-backed; no external sidecar.
     assert_records_match("samples/matlab/synthetic_nirs_v73.mat", &[], None);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn generic_hdf5_in_memory_matches_path() {
     // Reuse FGI's HDF5 payload via the generic HDF5 reader path; the
@@ -140,6 +143,7 @@ fn generic_hdf5_in_memory_matches_path() {
     assert_eq!(from_bytes.len(), from_path.len());
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn matlab_v5_nir_shootout_in_memory_matches_path() {
     // Regression: a path-only structured MAT v5 reader still works through
@@ -151,21 +155,28 @@ fn matlab_v5_nir_shootout_in_memory_matches_path() {
     );
 }
 
+// HDF5 external-resolver fixtures + helpers — only used by the fmt-hdf5 tests
+// below; gated together so a feature-trimmed build has no unused-item warnings.
+#[cfg(feature = "fmt-hdf5")]
 fn fixture_file(name: &str) -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .join("tests/fixtures/hdf5_external")
         .join(name)
 }
 
+#[cfg(feature = "fmt-hdf5")]
 const EXPECTED_BANDS: usize = 8;
+#[cfg(feature = "fmt-hdf5")]
 const EXPECTED_SAMPLES: usize = 4;
 
+#[cfg(feature = "fmt-hdf5")]
 fn build_expected_spectra() -> Vec<f64> {
     (0..EXPECTED_SAMPLES * EXPECTED_BANDS)
         .map(|i| (i as f64) + 1.0)
         .collect()
 }
 
+#[cfg(feature = "fmt-hdf5")]
 fn assert_external_resolver_payload(primary_name: &str, sidecar_names: &[&str]) {
     let primary_path = fixture_file(primary_name);
     if !primary_path.exists() {
@@ -206,11 +217,13 @@ fn assert_external_resolver_payload(primary_name: &str, sidecar_names: &[&str]) 
     );
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn hdf5_external_link_resolver_serves_linked_dataset() {
     assert_external_resolver_payload("primary_link.h5", &["linked.h5"]);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn hdf5_external_file_resolver_serves_external_dataset() {
     assert_external_resolver_payload("primary_file.h5", &["external_dataset.h5"]);

@@ -2829,6 +2829,7 @@ fn reads_numpy_npz_canonical_dataset() {
     assert!((signal.values[199] + 0.1465858221).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-parquet")]
 #[test]
 fn reads_parquet_spectral_matrix() {
     let records =
@@ -2851,6 +2852,7 @@ fn reads_parquet_spectral_matrix() {
     assert!((signal.values[199] + 0.1465858247).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-parquet")]
 #[test]
 fn rejects_non_spectral_parquet_table() {
     let err = open_path(workspace_file("samples/parquet/alltypes_plain.parquet"))
@@ -3763,6 +3765,7 @@ fn refuses_neospectra_ossl_schema_descriptor_as_non_spectral() {
         .contains("no numeric spectral headers found"));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_synthetic_nirs_netcdf_dataset() {
     let records =
@@ -3782,6 +3785,7 @@ fn reads_synthetic_nirs_netcdf_dataset() {
     assert!((absorbance.values[0] - 0.036742717027664185).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn rejects_non_nirs_netcdf_containers() {
     let err = open_path(workspace_file("samples/netcdf/air_temperature.nc"))
@@ -3789,6 +3793,7 @@ fn rejects_non_nirs_netcdf_containers() {
     assert!(err.to_string().contains("no spectra variable"));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn refuses_andi_ms_netcdf_chromatography() {
     let err = open_path(workspace_file("samples/andi_ms/gc01_0812_066.cdf"))
@@ -3800,6 +3805,7 @@ fn refuses_andi_ms_netcdf_chromatography() {
     assert!(message.contains("pyteomics.openms.ANDIMS"));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_synthetic_nirs_hdf5_dataset() {
     let records = open_path(workspace_file("samples/hdf5/synthetic_nirs.h5")).expect("open hdf5");
@@ -3843,6 +3849,7 @@ fn reads_synthetic_nirs_hdf5_dataset() {
     assert!((reflectance.values[199] - 1.4014765).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_hdf5_data_group_aliases_and_transposed_matrix() {
     let records = open_path(workspace_file("samples/hdf5/generic_aliases_data_group.h5"))
@@ -3882,6 +3889,7 @@ fn reads_hdf5_data_group_aliases_and_transposed_matrix() {
     assert!((third.values[3] - 0.33).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_nested_fgi_hdf5_payload() {
     let records = open_path(workspace_file("samples/fgi/synthetic_fgi.h5")).expect("open fgi hdf5");
@@ -3902,6 +3910,7 @@ fn reads_nested_fgi_hdf5_payload() {
     assert_eq!(absorbance.signal_type, SignalType::Absorbance);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_fgi_xml_sidecar_with_hdf5_payload() {
     let records = open_path(workspace_file("samples/fgi/synthetic_fgi.xml")).expect("open fgi xml");
@@ -3928,6 +3937,7 @@ fn reads_fgi_xml_sidecar_with_hdf5_payload() {
     assert_eq!(absorbance.signal_type, SignalType::Absorbance);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn rejects_non_nirs_hdf5_containers() {
     let err =
@@ -3935,6 +3945,7 @@ fn rejects_non_nirs_hdf5_containers() {
     assert!(err.to_string().contains("no spectra dataset"));
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_synthetic_matlab_v5_dataset() {
     let records =
@@ -3960,6 +3971,7 @@ fn reads_synthetic_matlab_v5_dataset() {
     assert!((absorbance.values[199] + 0.1465858247257086).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_synthetic_matlab_v73_dataset() {
     let records = open_path(workspace_file("samples/matlab/synthetic_nirs_v73.mat"))
@@ -3984,6 +3996,7 @@ fn reads_synthetic_matlab_v73_dataset() {
     assert!((absorbance.values[199] + 0.1465858247257086).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_eigenvector_corn_matlab_dso_dataset() {
     let records =
@@ -4012,6 +4025,7 @@ fn reads_eigenvector_corn_matlab_dso_dataset() {
     assert_eq!(records[79].targets["starch"].as_f64(), Some(64.853));
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_eigenvector_nir_shootout_matlab_dso_dataset() {
     let records = open_path(workspace_file(
@@ -4053,6 +4067,7 @@ fn reads_eigenvector_nir_shootout_matlab_dso_dataset() {
     assert_eq!(records[654].targets["assay"].as_f64(), Some(197.5));
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_spectrochempy_dso_matlab_dataset() {
     let records =
@@ -4086,6 +4101,7 @@ fn reads_spectrochempy_dso_matlab_dataset() {
     );
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_spectrochempy_als2004_matlab_dataset() {
     let records = open_path(workspace_file("samples/matlab/scpdata_als2004dataset.MAT"))
@@ -4111,6 +4127,7 @@ fn reads_spectrochempy_als2004_matlab_dataset() {
     );
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_local_indian_pines_matlab_cube_when_present() {
     let path = workspace_file("samples_local/hyperspectral_cubes/indian_pines_corrected.mat");
@@ -4161,6 +4178,7 @@ fn reads_local_indian_pines_matlab_cube_when_present() {
     assert_eq!(last.signals["raw_counts"].values[199], 1000.0);
 }
 
+#[cfg(feature = "fmt-matlab")]
 #[test]
 fn reads_prospectr_nirsoil_rdata_dataset() {
     let records = open_path(workspace_file("samples/matlab/prospectr_NIRsoil.RData"))
@@ -4691,6 +4709,7 @@ fn reads_local_microtops_man_ascii_when_present() {
     );
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_local_arm_mfrsr_netcdf_when_present() {
     let path = workspace_file("samples_local/mfr/arm_mfrsr_sgp_E11_20210329.nc");
@@ -4786,6 +4805,7 @@ fn reads_local_arm_mfrsr_netcdf_when_present() {
         .contains(&"arm_mfrsr_sidecar_diffuse_hemispheric_irradiance_filter4_suspect".to_string()));
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_local_arm_surfspecalb_netcdf_when_present() {
     let path = workspace_file("samples_local/netcdf/arm_nsa_surfspecalb_20160609.nc");
@@ -4929,6 +4949,7 @@ fn reads_allotrope_asm_spectrum_cubes_and_endpoints() {
     assert!((endpoint.values[0] - 3.41797666666667).abs() < 0.000001);
 }
 
+#[cfg(feature = "fmt-hdf5")]
 #[test]
 fn reads_local_allotrope_adf_data_cubes_when_present() {
     let path = workspace_file("samples_local/allotrope_adf/adfsee_example.adf");
