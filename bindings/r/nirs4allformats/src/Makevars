@@ -26,13 +26,16 @@ $(STATLIB):
 	# --config (resolves `vendor` against rust/, and ships NO hidden .cargo/ dir
 	# that would trip R CMD check). If vendor.tar.xz is absent (in-repo dev), fall
 	# back to an ONLINE build against the committed relative-path Cargo.toml.
+	# `-j 2` bounds Cargo's parallelism as required by CRAN's "Using Rust" policy
+	# (https://cran.r-project.org/web/packages/using_rust.html); without it Cargo
+	# defaults to every logical CPU on the build machine.
 	@if [ -f rust/vendor.tar.xz ]; then \
 		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
-		cd rust && cargo build --release --offline \
+		cd rust && cargo build --release -j 2 --offline \
 			--config 'source.crates-io.replace-with="vendored-sources"' \
 			--config 'source.vendored-sources.directory="vendor"'; \
 	else \
-		cd rust && cargo build --release; \
+		cd rust && cargo build --release -j 2; \
 	fi
 	# Post-build prune (R CMD check / CRAN). The staticlib is now linked, so the
 	# cargo build-script scratch ($(LIBDIR)/build holds the generated zstd-sys

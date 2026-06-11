@@ -33,15 +33,17 @@ $(STATLIB):
 	# provides tar/xz; the dev fallback (no vendor.tar.xz) builds online.
 	# CARGO_LINKER (Rtools mingw linker) comes from Makevars.ucrt on R >= 4.2;
 	# CARGO_TARGET_..._LINKER + LIBRARY_PATH wire in the linker and the gcc_eh shim.
+	# `-j 2` bounds Cargo's parallelism as required by CRAN's "Using Rust" policy
+	# (https://cran.r-project.org/web/packages/using_rust.html).
 	export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER="$(CARGO_LINKER)" && \
 	export LIBRARY_PATH="$${LIBRARY_PATH};$(CURDIR)/$(TARGET_DIR)/libgcc_mock" && \
 	if [ -f rust/vendor.tar.xz ]; then \
 		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
-		cd rust && cargo build --release --target $(TARGET) --offline \
+		cd rust && cargo build --release -j 2 --target $(TARGET) --offline \
 			--config 'source.crates-io.replace-with="vendored-sources"' \
 			--config 'source.vendored-sources.directory="vendor"'; \
 	else \
-		cd rust && cargo build --release --target $(TARGET); \
+		cd rust && cargo build --release -j 2 --target $(TARGET); \
 	fi
 	# Post-build prune (R CMD check / CRAN) — see src/Makevars. The staticlib is
 	# linked, so drop the cargo build-script scratch ($(LIBDIR)/build) and the
