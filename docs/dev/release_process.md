@@ -166,15 +166,21 @@ no submission. Users then
 - **Verify**: watch <https://gbeurier.r-universe.dev> (it *shows* the
   `R CMD check` result but, unlike CRAN, does not block on a NOTE/WARNING).
 
-### R → CRAN (submission) — follow-up
+### R → CRAN (submission)
 
 CRAN is the canonical R repo; submission is a **manual web form** with human
-review. Build the source tarball locally or take it from the `r-source` job's
-artifact / the attached Release asset:
+review. Get the **self-contained** source tarball — either:
 
-```bash
-cd bindings/r && R CMD build nirs4allformats   # → nirs4allformats_<version>.tar.gz
-```
+- download **`nirs4allformats_<version>.tar.gz`** from the matching GitHub
+  Release (built + `--as-cran`-checked by `release-r.yml`), **or**
+- build it locally — the `./configure` vendor step is **required** so the
+  tarball is self-contained (a plain `R CMD build` ships unresolved
+  `../crates` path deps and is uninstallable off-tree):
+
+  ```bash
+  cd bindings/r/nirs4allformats && N4FMT_R_VENDOR=1 ./configure
+  cd .. && R CMD build nirs4allformats        # → nirs4allformats_<version>.tar.gz
+  ```
 
 Upload **only `nirs4allformats_<version>.tar.gz`** at
 <https://cran.r-project.org/submit.html>:
@@ -182,15 +188,62 @@ Upload **only `nirs4allformats_<version>.tar.gz`** at
 | Field | Value |
 |---|---|
 | Your name | `Gregory Beurier` |
-| Your email | `beurier@cirad.fr` (matches the `Maintainer:` in DESCRIPTION) |
-| Upload | the package's `.tar.gz` |
-| Optional comment | the release notes (see `cran-comments.md`, which is `.Rbuildignore`d) |
+| Your email | **`gregory.beurier@cirad.fr`** — must match the `Maintainer` (`cre`) in `DESCRIPTION` **exactly** |
+| Upload | `nirs4allformats_<version>.tar.gz` (the R source tarball only — never a binary, the repo zip, or the Python sdist) |
+| Optional comment to CRAN | **paste the block below** |
+
+**Paste-ready CRAN submission comment** (kept in sync with
+`bindings/r/nirs4allformats/cran-comments.md`):
+
+```text
+This is a new submission.
+
+nirs4allformats is a thin R binding for the Rust-first nirs4all-formats NIRS /
+spectroscopy file-loading engine. It compiles a small extendr-api static
+library from src/rust/ at install time and dispatches probe / read / walk calls
+through Rust; without Cargo it falls back to the nirs4all-formats CLI binary.
+License: MIT + file LICENSE.
+
+Self-contained source tarball: the package vendors everything it needs to build
+offline. src/rust/vendored/ holds the two workspace core crates copied from the
+project monorepo (relative path deps rewritten by ./configure), and
+src/rust/vendor.tar.xz holds every crates.io transitive dependency produced by
+`cargo vendor`, shipped compressed and extracted by src/Makevars(.win) which
+build offline with the crates.io source replacement passed INLINE to cargo (so
+the package ships no hidden .cargo/ directory). This mirrors the arrow, gifski
+and polars CRAN packages. The Cargo / rustc toolchain is declared in
+SystemRequirements; the install is fully offline.
+
+Test environments: local Ubuntu/WSL2 R 4.3.3 (offline standalone install from
+outside the monorepo -> installs, loads, native path active); CI matrix
+(release-r.yml) on Ubuntu 22.04 (R release + devel), macOS 14 (R release,
+arm64), Windows Server 2022 (R release); win-builder + R-hub v2 run manually
+before submission.
+
+R CMD check --as-cran: 0 ERRORs. The 1 WARNING + the NOTEs all come from the
+bundled third-party Rust sources extracted from src/rust/vendor.tar.xz
+(GNU-make extensions in lzma-sys Makefiles, a CITATION.cff in chrono, pragmas
+in zstd-sys) or the local toolchain (installed size ~15.7Mb from the Arrow /
+Parquet / HDF5 reader closure; -march=nocona from conda-forge R's Makeconf;
+offline NTP / incoming-feasibility), not from the package's own R or build
+logic. The package ships no hidden .cargo/ directory, sets no -O3 /
+-march=native / -Werror, does no network access during install/examples/tests,
+and imports only jsonlite.
+
+Maintainer: Grégory Beurier (CIRAD), gregory.beurier@cirad.fr.
+```
 
 > **CRAN version note:** CRAN rejects SemVer pre-release suffixes
-> (`0.1.0-alpha.1`). The R spelling is therefore `0.1.0.9000` while the project
-> is pre-`0.1.0`; the first CRAN-eligible R version is the plain `0.1.0` cut by
-> `scripts/bump_version.sh --bump 0.1.0`. **A `.9000` dev version is not
-> submitted to CRAN** — it is the R-universe / development spelling only.
+> (`0.1.0-alpha.1`). While the project is pre-`0.1.0` the R spelling is the
+> development version `0.1.0.9000`, which is **R-universe / dev only and is NOT
+> submitted to CRAN**. The first CRAN-eligible R version is the plain `0.1.0`
+> cut by `scripts/bump_version.sh --bump 0.1.0`.
+
+> **Heads-up (CRAN size):** the installed package is ~15.7 MB and the source
+> tarball ~14 MB (the full Arrow / Parquet / HDF5 reader closure). That is large
+> for CRAN's comfort; **R-universe has no such limit and is the lower-friction
+> target.** If CRAN pushes back on size, ship via R-universe + the GitHub
+> Release and revisit a feature-trimmed CRAN variant.
 
 After uploading, CRAN emails a confirmation link — click it to complete.
 
