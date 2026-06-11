@@ -48,7 +48,17 @@ they are downloadable from one place.
 
 | Binding | Registry | Exact file(s) | Upload |
 |---|---|---|---|
-| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64/aarch64 manylinux2014, macOS x86_64/arm64, Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
+| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64/aarch64 manylinux2014, Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
+
+> **macOS binary wheels are deferred for the initial release.** The default
+> `formats-all` feature set links the **system HDF5** (`fmt-hdf5`; `fmt-matlab`
+> requires it), whose transitive homebrew `liblzma` is built for macOS 15 — so
+> `delocate` rejects the wheel against an 11.0 deployment target. A portable
+> macOS wheel needs a **from-source static HDF5 build** (tracked follow-up).
+> Until then **macOS users `pip install nirs4all-formats` and get the sdist**,
+> which compiles against their own HDF5; Linux + Windows wheels ship the full
+> feature set, and the C-ABI macOS archives (`x86_64`/`aarch64-apple-darwin`)
+> are published on the GitHub Release.
 | R `nirs4allformats` | CRAN | **`nirs4allformats_<version>.tar.gz`** (source tarball) | **Manual** — web form (see *R → CRAN* below) |
 | R `nirs4allformats` | R-universe | — (built from Git, no upload) | **Automated once registered** — registry repo + app (see *R → R-universe*) |
 | JS / WASM `@nirs4all/formats-wasm` | npm | the staged `pkg/` package (via `npm publish`) | **Manual today** — `release-npm.yml` is the follow-up (needs `NPM_TOKEN`) |

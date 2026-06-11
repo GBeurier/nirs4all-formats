@@ -20,7 +20,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        # macOS binary wheels are deferred for the initial release. The default
+        # "formats-all" feature set links the system HDF5 (fmt-hdf5; fmt-matlab
+        # requires it), whose transitive homebrew liblzma is built for macOS 15,
+        # so delocate rejects the wheel against an 11.0 deployment target. A
+        # portable macOS wheel needs a from-source static HDF5 build (tracked as
+        # a follow-up). Until then macOS users install the sdist, which builds
+        # against their own HDF5; Linux + Windows wheels ship the full feature
+        # set. See docs/dev/release_process.md.
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
