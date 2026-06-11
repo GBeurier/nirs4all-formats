@@ -7,6 +7,8 @@ use nirs4all_formats_core::{
 use serde::Serialize;
 
 #[cfg(not(feature = "fmt-hdf5"))]
+use crate::readers::ExcludedFgiXmlReader;
+#[cfg(not(feature = "fmt-hdf5"))]
 use crate::readers::ExcludedHdf5NetcdfReader;
 #[cfg(not(feature = "fmt-matlab"))]
 use crate::readers::ExcludedMatlabReader;
@@ -382,11 +384,15 @@ fn readers() -> Vec<Box<dyn Reader>> {
         readers.push(Box::new(AllotropeAdfReader));
         readers.push(Box::new(Hdf5Reader));
     }
-    // Graceful-degradation stub for HDF5/netCDF when the heavy reader is trimmed
-    // out: recognises the container magic and returns an actionable error
-    // instead of the generic "unsupported format".
+    // Graceful-degradation stubs for the `fmt-hdf5` readers when that feature is
+    // trimmed out: recognise the binary container magic (HDF5/netCDF) or the FGI
+    // XML markers and return an actionable error instead of the generic
+    // "unsupported format".
     #[cfg(not(feature = "fmt-hdf5"))]
-    readers.push(Box::new(ExcludedHdf5NetcdfReader));
+    {
+        readers.push(Box::new(ExcludedFgiXmlReader));
+        readers.push(Box::new(ExcludedHdf5NetcdfReader));
+    }
     #[cfg(feature = "fmt-matlab")]
     readers.push(Box::new(MatlabReader));
     #[cfg(not(feature = "fmt-matlab"))]

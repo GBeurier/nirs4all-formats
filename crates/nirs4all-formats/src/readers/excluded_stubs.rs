@@ -96,6 +96,48 @@ impl Reader for ExcludedHdf5NetcdfReader {
     }
 }
 
+/// FGI XML sidecar stub (`fmt-hdf5` disabled).
+///
+/// Unlike the binary container stubs above, the real
+/// [`FgiXmlReader`](crate::readers::FgiXmlReader) — also gated behind
+/// `fmt-hdf5`, because it reads the HDF5 payload the XML references — detects a
+/// TEXT (XML) primary file: a `.xml` whose head contains both `<FGIMeasurement`
+/// and `<DataReference`. The binary-magic HDF5/netCDF stub never matches it, so
+/// without this stub an FGI XML primary falls through to the generic
+/// "unsupported format" error. This stub mirrors the real reader's sniff and
+/// returns the same actionable "install the full build" message.
+#[cfg(not(feature = "fmt-hdf5"))]
+pub struct ExcludedFgiXmlReader;
+
+#[cfg(not(feature = "fmt-hdf5"))]
+impl Reader for ExcludedFgiXmlReader {
+    fn name(&self) -> &'static str {
+        "nirs4all_formats::readers::excluded_fgi_xml"
+    }
+
+    fn sniff(&self, head: &[u8], path: &Path) -> Option<FormatProbe> {
+        let ext = path
+            .extension()
+            .and_then(|value| value.to_str())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if ext != "xml" {
+            return None;
+        }
+        let text = String::from_utf8_lossy(head);
+        (text.contains("<FGIMeasurement") && text.contains("<DataReference"))
+            .then(|| excluded_probe("FGI XML/HDF5", self.name()))
+    }
+
+    fn read_path(&self, _path: &Path) -> Result<Vec<SpectralRecord>> {
+        Err(excluded_error("FGI XML/HDF5", "fmt-hdf5"))
+    }
+
+    fn read_bytes(&self, _name: &Path, _bytes: &[u8]) -> Result<Vec<SpectralRecord>> {
+        Err(excluded_error("FGI XML/HDF5", "fmt-hdf5"))
+    }
+}
+
 /// Apache Parquet container stub (`fmt-parquet` disabled).
 ///
 /// Recognised by the `PAR1` magic on a `.parquet` file, matching the real

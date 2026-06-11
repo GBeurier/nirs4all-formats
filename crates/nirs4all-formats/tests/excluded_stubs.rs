@@ -46,6 +46,19 @@ fn netcdf_classic_input_yields_actionable_error() {
     assert_excluded("sample.nc", b"CDF\x01\0\0\0\0");
 }
 
+/// FGI is an XML *text* primary (not a binary magic), so the HDF5/netCDF stub's
+/// magic sniff never matches it. The dedicated FGI XML stub must catch a `.xml`
+/// carrying the `<FGIMeasurement>` / `<DataReference>` markers.
+#[cfg(not(feature = "fmt-hdf5"))]
+#[test]
+fn fgi_xml_input_yields_actionable_error() {
+    let xml = br#"<?xml version="1.0"?>
+<FGIMeasurement>
+  <DataReference path="payload.h5"/>
+</FGIMeasurement>"#;
+    assert_excluded("sample.xml", xml);
+}
+
 #[cfg(not(feature = "fmt-parquet"))]
 #[test]
 fn parquet_input_yields_actionable_error() {

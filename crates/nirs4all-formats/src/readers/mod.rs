@@ -74,6 +74,8 @@ pub use envi_sli::EnviSliReader;
 pub use erdas_lan::ErdasLanReader;
 pub use excel::ExcelReader;
 #[cfg(not(feature = "fmt-hdf5"))]
+pub use excluded_stubs::ExcludedFgiXmlReader;
+#[cfg(not(feature = "fmt-hdf5"))]
 pub use excluded_stubs::ExcludedHdf5NetcdfReader;
 #[cfg(not(feature = "fmt-matlab"))]
 pub use excluded_stubs::ExcludedMatlabReader;
