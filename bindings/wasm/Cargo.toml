@@ -4,7 +4,7 @@ description = "WebAssembly bindings for nirs4all-formats."
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
-authors = ["G. Beurier <beurier@cirad.fr>"]
+authors = ["Gregory Beurier <gregory.beurier@cirad.fr>"]
 repository = "https://github.com/GBeurier/nirs4all-formats"
 publish = false
 

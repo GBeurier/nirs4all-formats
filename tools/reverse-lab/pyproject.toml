@@ -9,7 +9,7 @@ description = "Reverse-engineering helpers for nirs4all-formats formats."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "G. Beurier", email = "beurier@cirad.fr" }]
+authors = [{ name = "Gregory Beurier", email = "gregory.beurier@cirad.fr" }]
 dependencies = []
 
 [project.scripts]

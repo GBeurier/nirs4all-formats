@@ -9,7 +9,7 @@ description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "G. Beurier", email = "beurier@cirad.fr" }]
+authors = [{ name = "Gregory Beurier", email = "gregory.beurier@cirad.fr" }]
 dependencies = []
 
 [project.optional-dependencies]
