@@ -102,21 +102,13 @@ jobs:
           path: nirs4all-formats-capi-${{ matrix.target }}.*
           if-no-files-found: error
 
-  r-source:
-    name: R source tarball
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: r-lib/actions/setup-r@v2
-      - uses: dtolnay/rust-toolchain@stable
-      - name: Build R source tarball
-        run: |
-          R CMD build bindings/r/nirs4allformats
-      - uses: actions/upload-artifact@v4
-        with:
-          name: r-source
-          path: nirs4allformats_*.tar.gz
-          if-no-files-found: error
+  # NOTE: the R source-tarball build lives in its own workflow now —
+  # .github/workflows/release-r.yml. That job runs N4FMT_R_VENDOR=1 ./configure
+  # to vendor the Rust core + cargo-vendored deps so the tarball installs OFFLINE
+  # with no monorepo `crates/` (the naive `R CMD build bindings/r/nirs4allformats`
+  # that used to live here produced a tarball with unresolved ../../../../../crates
+  # path deps, which is uninstallable off-tree). release-r.yml also attaches the
+  # CRAN tarball to the Release on non-rc tags, replacing this job's old artifact.
 
   publish-pypi:
     name: Publish to PyPI
@@ -175,7 +167,7 @@ jobs:
 
   github-release:
     name: Attach release artifacts
-    needs: [python-wheels, python-sdist, c-abi-archive, r-source]
+    needs: [python-wheels, python-sdist, c-abi-archive]
     runs-on: ubuntu-latest
     # Same gate as publish-pypi: production tags only, pre-release tags ('-')
     # excluded so a pre-release never cuts a public GitHub Release.
