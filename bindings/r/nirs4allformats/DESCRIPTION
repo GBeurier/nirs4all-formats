@@ -7,10 +7,18 @@ Description: Thin R binding for the Rust-first 'nirs4all-formats' near-infrared
     Cargo available, the package compiles a native 'extendr' static library from
     'src/rust/' and dispatches probe, read, and walk calls directly through Rust.
     Without Cargo it falls back to invoking the 'nirs4all-formats' command-line
-    interface.
+    interface. This CRAN build ships the core readers (JCAMP-DX, Galactic SPC,
+    Bruker OPUS, ASD, ENVI, CSV, Excel, and many vendor ASCII/binary formats).
+    The optional large readers (HDF5/netCDF, Parquet/Arrow, MATLAB) are excluded
+    to keep the source package within CRAN's size limit; they are available in
+    the full build 'nirs4allformats.full' from the R-universe repository (see
+    'Additional_repositories') or by building from source with the
+    'formats-all' Cargo feature. Feeding an excluded format to this build returns
+    an actionable error naming the full package.
 SystemRequirements: Cargo (Rust's package manager), rustc
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
+Additional_repositories: https://gbeurier.r-universe.dev
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:

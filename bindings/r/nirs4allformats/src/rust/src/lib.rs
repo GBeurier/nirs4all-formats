@@ -17,15 +17,27 @@ fn to_string<T: serde::Serialize>(value: &T) -> std::result::Result<String, Erro
     serde_json::to_string(value).map_err(|err| Error::Other(err.to_string()))
 }
 
-fn map_io_err<E: std::fmt::Display>(err: E) -> Error {
-    Error::Other(err.to_string())
+/// Unwrap a `nirs4all-formats` result or raise a clean R-level error.
+///
+/// Returning `Err` from an `#[extendr]` function makes extendr 0.7 `unwrap()`
+/// the value and *panic*, which surfaces in R as the opaque
+/// "User function panicked" condition — the reader's own message (e.g. the
+/// graceful-degradation "this reader is excluded from this CRAN build, install
+/// nirs4allformats.full" notice for HDF5/Parquet/MATLAB inputs) is lost to
+/// stderr. `throw_r_error` instead performs an `Rf_error`, so the message lands
+/// in `conditionMessage()` where `tryCatch`/`stop` handlers can read it.
+fn unwrap_or_throw<T, E: std::fmt::Display>(result: std::result::Result<T, E>) -> T {
+    match result {
+        Ok(value) => value,
+        Err(err) => throw_r_error(err.to_string()),
+    }
 }
 
 /// Probe a file and return the JSON candidates.
 /// @export
 #[extendr]
 fn nirs4allformats_native_probe(path: &str) -> Result<String> {
-    let probes = probe_path(path).map_err(map_io_err)?;
+    let probes = unwrap_or_throw(probe_path(path));
     to_string(&probes)
 }
 
@@ -45,7 +57,7 @@ fn nirs4allformats_native_read(
     let cols_opt = window_from_integers(cols, "cols")?;
     let pixels_opt = pixels_from_matrix(pixels)?;
     let options = build_options(rows_opt, cols_opt, pixels_opt)?;
-    let records = open_path_with_options(path, &options).map_err(map_io_err)?;
+    let records = unwrap_or_throw(open_path_with_options(path, &options));
     to_string(&records)
 }
 
@@ -64,7 +76,7 @@ fn nirs4allformats_native_read_bytes(
     let cols_opt = window_from_integers(cols, "cols")?;
     let pixels_opt = pixels_from_matrix(pixels)?;
     let options = build_options(rows_opt, cols_opt, pixels_opt)?;
-    let records = open_bytes_with_options(name, bytes, &options).map_err(map_io_err)?;
+    let records = unwrap_or_throw(open_bytes_with_options(name, bytes, &options));
     to_string(&records)
 }
 
@@ -94,8 +106,7 @@ fn nirs4allformats_native_read_with_sidecars(
         resolver.insert(PathBuf::from(key.to_string()), raw.to_vec());
     }
     let arc: Arc<dyn SidecarResolver> = Arc::new(resolver);
-    let records =
-        open_with_sidecars_and_options(name, bytes, arc, &options).map_err(map_io_err)?;
+    let records = unwrap_or_throw(open_with_sidecars_and_options(name, bytes, arc, &options));
     to_string(&records)
 }
 
@@ -121,7 +132,7 @@ fn nirs4allformats_native_walk(
         skip_unsupported: !include_unsupported,
         read_options: ReadOptions::default(),
     };
-    let entries = walk_path(path, &options).map_err(map_io_err)?;
+    let entries = unwrap_or_throw(walk_path(path, &options));
     let payload: Vec<serde_json::Value> = entries
         .into_iter()
         .map(|entry| match entry.outcome {
@@ -219,9 +230,8 @@ fn build_options(
     if has_window {
         let (row_start, row_end) = rows.unwrap_or((0, None));
         let (col_start, col_end) = cols.unwrap_or((0, None));
-        return Ok(ReadOptions::default().with_cube_window(CubeWindow::new(
-            row_start, row_end, col_start, col_end,
-        )));
+        return Ok(ReadOptions::default()
+            .with_cube_window(CubeWindow::new(row_start, row_end, col_start, col_end)));
     }
     Ok(ReadOptions::default())
 }

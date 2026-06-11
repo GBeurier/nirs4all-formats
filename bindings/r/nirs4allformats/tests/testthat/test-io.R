@@ -49,3 +49,21 @@ test_that("walk_path returns parsed entries", {
     expect_equal(entry$format, "asd-fieldspec")
   }
 })
+
+test_that("excluded readers return the actionable lite-build error", {
+  # This CRAN build ships core readers only; HDF5/netCDF, Parquet and MATLAB are
+  # excluded. Feeding one must raise a clean R error naming the full package,
+  # not the generic "unsupported format" (the graceful-degradation stubs).
+  for (relative in c(
+    "samples/hdf5/synthetic_nirs.h5",
+    "samples/parquet/synthetic_nirs.parquet"
+  )) {
+    path <- sample_path(relative)
+    err <- tryCatch(
+      nirs4allformats_open_records(path),
+      error = function(e) conditionMessage(e)
+    )
+    expect_true(grepl("not available in this build", err, fixed = TRUE), label = relative)
+    expect_true(grepl("nirs4allformats.full", err, fixed = TRUE), label = relative)
+  }
+})

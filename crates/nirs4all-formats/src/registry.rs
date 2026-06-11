@@ -6,6 +6,12 @@ use nirs4all_formats_core::{
 };
 use serde::Serialize;
 
+#[cfg(not(feature = "fmt-hdf5"))]
+use crate::readers::ExcludedHdf5NetcdfReader;
+#[cfg(not(feature = "fmt-matlab"))]
+use crate::readers::ExcludedMatlabReader;
+#[cfg(not(feature = "fmt-parquet"))]
+use crate::readers::ExcludedParquetReader;
 #[cfg(feature = "fmt-matlab")]
 use crate::readers::MatlabReader;
 #[cfg(feature = "fmt-parquet")]
@@ -376,11 +382,20 @@ fn readers() -> Vec<Box<dyn Reader>> {
         readers.push(Box::new(AllotropeAdfReader));
         readers.push(Box::new(Hdf5Reader));
     }
+    // Graceful-degradation stub for HDF5/netCDF when the heavy reader is trimmed
+    // out: recognises the container magic and returns an actionable error
+    // instead of the generic "unsupported format".
+    #[cfg(not(feature = "fmt-hdf5"))]
+    readers.push(Box::new(ExcludedHdf5NetcdfReader));
     #[cfg(feature = "fmt-matlab")]
     readers.push(Box::new(MatlabReader));
+    #[cfg(not(feature = "fmt-matlab"))]
+    readers.push(Box::new(ExcludedMatlabReader));
     readers.push(Box::new(NumpyReader));
     #[cfg(feature = "fmt-parquet")]
     readers.push(Box::new(ParquetReader));
+    #[cfg(not(feature = "fmt-parquet"))]
+    readers.push(Box::new(ExcludedParquetReader));
     readers.extend([
         Box::new(AnimlReader) as Box<dyn Reader>,
         Box::new(SiwareApiReader),

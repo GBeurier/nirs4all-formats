@@ -13,6 +13,11 @@ pub mod digitalsurf;
 pub mod envi_sli;
 pub mod erdas_lan;
 pub mod excel;
+// Graceful-degradation stubs for readers excluded from a feature-trimmed build.
+// Compiled only when at least one heavy reader feature is OFF; with the full
+// `formats-all` default every reader exists and no stub is needed.
+#[cfg(not(all(feature = "fmt-hdf5", feature = "fmt-matlab", feature = "fmt-parquet")))]
+pub mod excluded_stubs;
 #[cfg(feature = "fmt-hdf5")]
 pub mod fgi_xml;
 pub mod foss_winisi;
@@ -68,6 +73,12 @@ pub use digitalsurf::DigitalSurfReader;
 pub use envi_sli::EnviSliReader;
 pub use erdas_lan::ErdasLanReader;
 pub use excel::ExcelReader;
+#[cfg(not(feature = "fmt-hdf5"))]
+pub use excluded_stubs::ExcludedHdf5NetcdfReader;
+#[cfg(not(feature = "fmt-matlab"))]
+pub use excluded_stubs::ExcludedMatlabReader;
+#[cfg(not(feature = "fmt-parquet"))]
+pub use excluded_stubs::ExcludedParquetReader;
 #[cfg(feature = "fmt-hdf5")]
 pub use fgi_xml::FgiXmlReader;
 pub use foss_winisi::FossWinisiReader;
