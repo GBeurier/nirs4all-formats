@@ -126,13 +126,15 @@ jobs:
     # e.g. v0.1.0-alpha.1) are excluded so they never reach PyPI — mirrors
     # nirs4all-methods' release-wheels.yml / release-python.yml convention.
     if: ${{ startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-') && github.event_name != 'workflow_dispatch' }}
-    # NOTE: deliberately NO `environment:` here. PyPI Trusted Publishing matches
-    # the OIDC token's claims against the configured publisher; declaring a
-    # GitHub `environment` adds an `environment` claim the publisher must ALSO
-    # match. We keep the publisher config minimal (owner + repo + workflow, no
-    # environment) so the Trusted Publisher only needs owner=GBeurier,
-    # repo=nirs4all-formats, workflow=release.yml with the Environment field
-    # left BLANK. See docs/dev/release_process.md.
+    # Use the `pypi` GitHub environment so the OIDC token carries an
+    # `environment: pypi` claim — matching the Trusted Publisher configured on
+    # pypi.org with Environment = `pypi`. This is the SAME convention as
+    # nirs4all-methods (release-wheels.yml / release-python.yml), so every
+    # publisher across the ecosystem is created identically: owner=GBeurier,
+    # repo=<this repo>, workflow=<this file>, Environment=`pypi`.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/nirs4all-formats
     permissions:
       id-token: write
     steps:

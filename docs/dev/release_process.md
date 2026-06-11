@@ -122,14 +122,15 @@ also gated on `github.event_name != 'workflow_dispatch'`.
 | Owner | `GBeurier` |
 | Repository name | `nirs4all-formats` |
 | Workflow filename | `release.yml` |
-| Environment | *(leave BLANK)* |
+| Environment | **`pypi`** |
 
-> The `publish-pypi` job intentionally declares no GitHub `environment:`, so the
-> OIDC token carries no `environment` claim. The Trusted Publisher MUST be
-> created with the **Environment field empty** — a publisher that specifies an
-> environment will NOT match and the upload fails with `invalid-publisher`.
-> Because the project does not exist on PyPI yet, create this as a **pending
-> publisher** (same form, at the URL above).
+> The `publish-pypi` job runs in the GitHub `pypi` environment, so the OIDC
+> token carries an `environment: pypi` claim — the Trusted Publisher MUST be
+> created with **Environment = `pypi`** (same as nirs4all-methods'
+> `release-wheels.yml`). A publisher whose Environment field differs (blank or
+> anything else) fails with `invalid-publisher`. Because the project does not
+> exist on PyPI yet, create this as a **pending publisher** (same form, at the
+> URL above). **One convention across the whole ecosystem: Environment = `pypi`.**
 
 ### JS → npm (`@nirs4all/formats-wasm`) — follow-up
 
