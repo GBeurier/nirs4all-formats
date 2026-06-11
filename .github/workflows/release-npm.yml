@@ -60,7 +60,13 @@ jobs:
       - name: Install wasm-pack
         uses: jetli/wasm-pack-action@v0.4.0
         with:
-          version: latest
+          # PIN the version. `version: latest` is non-deterministic with this
+          # action: the v0.1.0 release run resolved it to the ancient v0.9.1,
+          # whose bundled wasm-opt cannot parse modern wasm-bindgen output and
+          # died with "Fatal: error in parsing input". A pinned modern wasm-pack
+          # ships a wasm-opt that handles it (the demo-pages build that resolved
+          # to v0.15.0 succeeded on the same commit).
+          version: 'v0.15.0'
 
       - uses: actions/setup-node@v4
         with:

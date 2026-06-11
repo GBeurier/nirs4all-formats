@@ -39,7 +39,11 @@ jobs:
       - name: Install wasm-pack
         uses: jetli/wasm-pack-action@v0.4.0
         with:
-          version: latest
+          # Pinned: `version: latest` is non-deterministic with this action and
+          # can resolve to an ancient wasm-pack (v0.9.1) whose wasm-opt fails to
+          # parse modern wasm ("Fatal: error in parsing input"). See
+          # release-npm.yml.
+          version: 'v0.15.0'
 
       - name: Generate formats table from FORMAT_MATRIX.md
         run: python3 demo/gen_formats.py
