@@ -68,13 +68,24 @@ read_workspace_version() {
 to_pep440() {
     local v="$1"
     local base="${v%%-*}"          # X.Y.Z
+    if [[ ! "${base}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo "error: version base '${base}' is not X.Y.Z" >&2
+        exit 2
+    fi
     local pre=""
     [[ "${v}" == *-* ]] && pre="${v#*-}"
     if [[ -z "${pre}" ]]; then
         printf '%s' "${base}"
         return 0
     fi
-    # Split pre into kind + optional numeric (alpha.1 -> alpha 1; alpha -> alpha 0)
+    # The pre-release must be exactly alpha[.N] | beta[.N] | rc[.N] with a
+    # canonical numeric N (no leading zeros). Reject anything else so we never
+    # emit invalid / non-canonical PEP 440 (e.g. 'alpha.foo' -> 'afoo',
+    # 'alpha.01' -> 'a01' which PyPI normalises to 'a1' and breaks tag↔version).
+    if [[ ! "${pre}" =~ ^(alpha|beta|rc)(\.(0|[1-9][0-9]*))?$ ]]; then
+        echo "error: unsupported pre-release '${pre}' (want alpha[.N]|beta[.N]|rc[.N], N canonical)" >&2
+        exit 2
+    fi
     local kind num
     kind="${pre%%.*}"
     if [[ "${pre}" == *.* ]]; then num="${pre#*.}"; else num="0"; fi
@@ -82,10 +93,6 @@ to_pep440() {
         alpha) printf '%sa%s'  "${base}" "${num}" ;;
         beta)  printf '%sb%s'  "${base}" "${num}" ;;
         rc)    printf '%src%s' "${base}" "${num}" ;;
-        *)
-            echo "error: unsupported pre-release '${pre}' for PEP 440 translation" >&2
-            exit 2
-            ;;
     esac
 }
 

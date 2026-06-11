@@ -152,8 +152,13 @@ jobs:
           rest="${base#nirs4all_formats-}"
           dist_version="${rest%%-*}"          # wheel:  0.1.0a1-cp310-...  -> 0.1.0a1
           dist_version="${dist_version%.tar.gz}"  # sdist: 0.1.0a1.tar.gz -> 0.1.0a1
-          if [[ ! "${tag_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+((a|b|rc)[0-9]+)?$ ]]; then
-            echo "::error::Tag ${GITHUB_REF_NAME} is not a release version (vX.Y.Z[aN|bN|rcN])" >&2
+          # Auto-publish to the real PyPI index is PRODUCTION-ONLY: the tag must
+          # be a plain vX.Y.Z. This is stricter than the job-level
+          # !contains('-') gate (which lets a PEP 440 prerelease spelling like
+          # v0.1.0a1 slip through, since it has no '-'); pre-releases are
+          # published via workflow_dispatch -> TestPyPI, never auto on a tag.
+          if [[ ! "${tag_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} is not a production release version (vX.Y.Z); pre-releases are not auto-published to PyPI" >&2
             exit 1
           fi
           if [[ "${tag_version}" != "${dist_version}" ]]; then
