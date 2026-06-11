@@ -48,9 +48,14 @@ jobs:
             if [ -n "${DRY}" ]; then
               cargo publish -p "${crate}" --dry-run --allow-dirty
             else
+              # --no-verify: skip cargo's re-build verification at publish time.
+              # The facade pulls the system-HDF5 reader closure (fmt-hdf5) which
+              # this runner doesn't have, and the build is already verified by
+              # ci.yml. Packaging (file/dep resolution) still runs, so a broken
+              # manifest is still caught.
               # crates.io is immutable: tolerate an already-uploaded version on
               # a resumed run, but fail on any other error.
-              if ! cargo publish -p "${crate}" 2>&1 | tee /tmp/pub.log; then
+              if ! cargo publish -p "${crate}" --no-verify 2>&1 | tee /tmp/pub.log; then
                 grep -qiE 'already (exists|uploaded)|is already being published|crate version .* is already' /tmp/pub.log \
                   || { echo "::error::publish ${crate} failed"; exit 1; }
               fi
