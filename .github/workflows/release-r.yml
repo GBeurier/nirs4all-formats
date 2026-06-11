@@ -114,6 +114,9 @@ jobs:
         uses: r-lib/actions/check-r-package@v2
         env:
           CARGO_NET_OFFLINE: "true"   # the INSTALL build is offline from the bundle
+          # Point the integration tests at the checked-out samples/ tree so they
+          # run on CI; off-tree (CRAN) the var is unset and those tests skip.
+          NIRS4ALL_FORMATS_REPO: ${{ github.workspace }}
         with:
           working-directory: bindings/r/${{ matrix.pkg }}
           # r-lib/actions/check-r-package interpolates these into

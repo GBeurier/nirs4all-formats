@@ -1,9 +1,21 @@
 sample_path <- function(relative) {
   env_root <- Sys.getenv("NIRS4ALL_FORMATS_REPO", unset = "")
-  if (nzchar(env_root)) {
-    return(file.path(env_root, relative))
+  root <- if (nzchar(env_root)) {
+    env_root
+  } else {
+    # Fragile fallback: walk up to a presumed repo root. Its depth depends on
+    # where R CMD check creates the .Rcheck tree, so do NOT require it to exist.
+    normalizePath(file.path(testthat::test_path(), "../../../../.."), mustWork = FALSE)
   }
-  file.path(normalizePath(file.path(testthat::test_path(), "../../../../..")), relative)
+  p <- file.path(root, relative)
+  # The sample fixtures live in the repo's samples/ tree and are NOT bundled in
+  # the package (too large for CRAN). When they are unreachable — an installed /
+  # CRAN / off-tree check — skip rather than error. CI sets NIRS4ALL_FORMATS_REPO
+  # so the tests actually run against the checked-out samples.
+  if (!file.exists(p)) {
+    testthat::skip(paste("sample fixture not available off-tree:", relative))
+  }
+  p
 }
 
 test_that("records are loaded through the Rust backend", {

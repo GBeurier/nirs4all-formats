@@ -66,6 +66,10 @@ before-all = "yum install -y openssl-devel || apt-get install -y libssl-dev || t
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
+# The macOS runner builds BOTH archs, so the cross target must be installed
+# (else `cargo` fails with E0463 "can't find crate for core"). A platform
+# before-all overrides the top-level one, so re-include the maturin install.
+before-all = "rustup target add x86_64-apple-darwin aarch64-apple-darwin && pip install maturin"
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
