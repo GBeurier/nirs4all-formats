@@ -70,6 +70,11 @@ archs = ["x86_64", "arm64"]
 # (else `cargo` fails with E0463 "can't find crate for core"). A platform
 # before-all overrides the top-level one, so re-include the maturin install.
 before-all = "rustup target add x86_64-apple-darwin aarch64-apple-darwin && pip install maturin"
+# The Rust toolchain links a macOS floor above the default 10.9 wheel tag, so
+# delocate rejects the wheel ("dependencies do not satisfy target 10.9"). Pin
+# the deployment target (11.0, as nirs4all-methods does) so the wheel tag, the
+# compiled minimum, and delocate's check all agree.
+environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
