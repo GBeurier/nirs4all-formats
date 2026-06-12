@@ -12,13 +12,19 @@
 # to a short directory under the session temp instead of $(CURDIR)/rust/target.
 # TMPDIR is exported by R during install; fall back to TEMP/TMP, then /tmp.
 TARGET ?= $(subst 64,x86_64,$(subst 32,i686,$(WIN)))-pc-windows-gnu
-# Short build root under the session temp (R exports TMPDIR; fall back TEMP/TMP,
-# then /tmp). Backslashes are normalised to forward slashes so the path is safe
-# for both the Rtools shell (mkdir/rm) and the native cargo.exe.
-WIN_TMP_RAW = $(if $(TMPDIR),$(TMPDIR),$(if $(TEMP),$(TEMP),$(if $(TMP),$(TMP),/tmp)))
-WIN_TMP = $(subst \,/,$(WIN_TMP_RAW))
-TARGET_DIR = $(WIN_TMP)/n4ffull
-CARGOTMP = $(WIN_TMP)/n4ffull-ch
+# Short, deterministic build root. R CMD check installs into the deep
+# <pkg>.Rcheck/00_pkg_src/<pkg>/src tree (~200 chars); cargo then writes the heavy
+# C crates' objects at target/<triple>/release/build/lzma-sys-<hash>/out/
+# <hash>-lzma_encoder_optimum_fast.o, overrunning Windows MAX_PATH (260) so the
+# cc-rs `ar` step fails. We therefore relocate the cargo target dir (and the
+# build-local CARGO_HOME) onto the short Rtools /tmp mount. `cygpath -m` renders it
+# as a NATIVE Windows path (e.g. C:/rtools4x/tmp) that cargo.exe accepts directly,
+# avoiding both the MAX_PATH overrun and the backslash/MSYS-conversion hazards of
+# $(TMPDIR)/$(TEMP). rust_clean removes it after linking; each matrix job runs on
+# its own runner so the fixed name never collides.
+SHORT_TMP := $(shell command -v cygpath >/dev/null 2>&1 && cygpath -m /tmp 2>/dev/null || echo /tmp)
+TARGET_DIR = $(SHORT_TMP)/n4ffull
+CARGOTMP = $(SHORT_TMP)/n4ffull-ch
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libnirs4allformats_r.a
 PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll

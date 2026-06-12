@@ -93,6 +93,16 @@ mingw linker and includes `src/Makevars.win`, which wires it into
 `x86_64-pc-windows-gnu` target's link step references). Without this shim the
 Windows install fails at the final link.
 
+Because `R CMD check` installs into the deep
+`<pkg>.Rcheck/00_pkg_src/<pkg>/src` tree (already ~200 chars), `src/Makevars.win`
+relocates the cargo target dir and the build-local `CARGO_HOME` onto the short
+Rtools `/tmp` mount (`cygpath -m /tmp`, a native Windows path cargo accepts) so the
+heavy C crates' object files (e.g. `lzma-sys`'s
+`.../build/lzma-sys-<hash>/out/<hash>-lzma_encoder_optimum_fast.o`) do not overrun
+Windows' 260-char `MAX_PATH`, which otherwise makes the `cc-rs` archive step fail.
+The longer package name `nirs4allformats.lite` makes this the binding constraint
+here.
+
 ## Test environments
 
 * Local development (Ubuntu/WSL2, R 4.6.0 conda-forge, rustc 1.95): standalone
