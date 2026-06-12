@@ -3,17 +3,27 @@
 # build-local CARGO_HOME + CARGO_TARGET_DIR (never ~/.cargo), version echoed to
 # the log before compiling, post-link rust_clean wipes all Rust scratch from the
 # package source.
+#
+# WINDOWS MAX_PATH (260). R CMD check installs into
+# <pkg>.Rcheck/00_pkg_src/<pkg>/src, an already ~200-char path. Cargo then writes
+# the heavy C-library crates' object files at target/<triple>/release/build/
+# lzma-sys-<hash>/out/<hash>-lzma_encoder_optimum_fast.o, which pushes the full
+# path past 260 and makes the cc-rs `ar` step fail ("No such file or directory").
+# So on Windows the cargo target dir (and the build-local CARGO_HOME) are RELOCATED
+# to a short directory under the session temp instead of $(CURDIR)/rust/target.
+# TMPDIR is exported by R during install; fall back to TEMP/TMP, then /tmp.
 TARGET ?= $(subst 64,x86_64,$(subst 32,i686,$(WIN)))-pc-windows-gnu
-TARGET_DIR = $(CURDIR)/rust/target
+# Short build root under the session temp (R exports TMPDIR; fall back TEMP/TMP,
+# then /tmp). Backslashes are normalised to forward slashes so the path is safe
+# for both the Rtools shell (mkdir/rm) and the native cargo.exe.
+WIN_TMP_RAW = $(if $(TMPDIR),$(TMPDIR),$(if $(TEMP),$(TEMP),$(if $(TMP),$(TMP),/tmp)))
+WIN_TMP = $(subst \,/,$(WIN_TMP_RAW))
+TARGET_DIR = $(WIN_TMP)/n4flite
+CARGOTMP = $(WIN_TMP)/n4flite-ch
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libnirs4allformats_r.a
 PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll
 PKG_CFLAGS = -I$(CURDIR)/rust/src
-
-# Build-local cargo registry/cache (CRAN Policy: no writes to ~/.cargo at install
-# time). On Windows cargo also defaults CARGO_HOME to %USERPROFILE%\.cargo, so
-# this redirect matters here too.
-CARGOTMP = $(CURDIR)/.cargo
 
 all: $(SHLIB) rust_clean
 
@@ -42,7 +52,8 @@ $(STATLIB):
 	# (shipped compressed), then build OFFLINE with the crates.io source
 	# replacement passed INLINE via --config (no hidden .cargo/ dir). Rtools
 	# provides tar/xz; the dev fallback (no vendor.tar.xz) builds online.
-	# CARGO_HOME=$(CARGOTMP) keeps cargo off %USERPROFILE%\.cargo (CRAN Policy).
+	# CARGO_HOME=$(CARGOTMP) keeps cargo off %USERPROFILE%\.cargo (CRAN Policy) and,
+	# like CARGO_TARGET_DIR, lives under the short session temp to dodge MAX_PATH.
 	# CARGO_LINKER (Rtools mingw linker) comes from Makevars.ucrt on R >= 4.2;
 	# CARGO_TARGET_..._LINKER + LIBRARY_PATH wire in the linker and the gcc_eh shim.
 	# `-j 2` bounds Cargo's parallelism as required by CRAN's "Using Rust" policy.
@@ -60,9 +71,9 @@ $(STATLIB):
 	fi
 
 # Post-link cleanup — see src/Makevars. Runs after $(SHLIB) links $(STATLIB),
-# wiping the whole target/, the build-local CARGO_HOME and the extracted vendor/
-# so R CMD check does not scan third-party build artefacts. Skipped when
-# NOT_CRAN=true.
+# wiping the relocated target/ + CARGO_HOME (both under the session temp) and the
+# extracted vendor/ so R CMD check does not scan third-party build artefacts.
+# Skipped when NOT_CRAN=true.
 rust_clean: $(SHLIB)
 	@if [ "$(NOT_CRAN)" != "true" ]; then \
 		rm -Rf "$(TARGET_DIR)" "$(CARGOTMP)" "$(CURDIR)/rust/vendor"; \
