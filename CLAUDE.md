@@ -177,7 +177,7 @@ pass the green gate.
   `samples_local/` — private/local-only fixtures (a local-only sweep runs outside CI).
 - `demo/` — static in-browser demo: drop a file, the WASM-compiled registry sniffs/decodes/renders it
   client-side (no backend). `build.sh` rebuilds it; deployed to GitHub Pages via
-  `.github/workflows/demo-pages.yml` (live at gbeurier.github.io/nirs4all-formats). Samples shipped
+  `.github/workflows/demo-pages.yml` (live at formats.nirs4all.org). Samples shipped
   here must be GPL-free since they go to a public site.
 - `tools/reverse-lab/` — Python clean-room reverse-engineering helpers (bitdiff CLI, etc.).
 - Key docs: `STATUS.md` (live status + next steps), `ROADMAP.md`, `FORMATS.md` (scope),

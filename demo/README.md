@@ -6,7 +6,7 @@ compiled to WebAssembly — sniffs the format, decodes the spectra, and renders
 the axes, signal channels, metadata and provenance. Nothing is uploaded; there
 is no backend.
 
-Live: **https://gbeurier.github.io/nirs4all-formats/**
+Live: **https://formats.nirs4all.org/**
 
 ## What it shows
 
