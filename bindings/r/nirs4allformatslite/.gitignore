@@ -7,6 +7,11 @@ src/rust/vendor.tar.xz
 src/rust/.cargo/
 src/rust/Cargo.lock
 src/rust/target/
+# Build-local CARGO_HOME set by src/Makevars (CARGO_HOME=$(CURDIR)/.cargo, where
+# $(CURDIR) is src/ at install time); transient, wiped by the rust_clean rule.
+src/.cargo/
+# Built source tarballs (R CMD build output) -- never committed.
+*.tar.gz
 # Compiled R artefacts (must never be committed; CRAN compiles from source).
 src/*.o
 src/*.so

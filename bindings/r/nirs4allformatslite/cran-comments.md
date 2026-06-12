@@ -52,9 +52,35 @@ Parquet/Arrow reader (and the test-only `[dev-dependencies]`), so `cargo vendor`
 never collects the Arrow/Parquet/zstd closure; the HDF5/netCDF and MATLAB
 readers stay.
 
+## CRAN Policy compliance: no writes to the user's `HOME`, no `target/` shipped
+
+The install **never touches `~/.cargo` or `~/.rustup`**, per CRAN Policy.
+`src/Makevars` and `src/Makevars.win` set, before every `cargo` invocation:
+
+* `CARGO_HOME=$(CURDIR)/.cargo` — a build-local cargo registry/cache inside the
+  package build tree, so cargo's index/git-db never land in the user's
+  `~/.cargo` (the canonical extendr / `rextendr` and `gifski` pattern);
+* `CARGO_TARGET_DIR=$(CURDIR)/rust/target` — the build output stays inside the
+  package build tree.
+
+Both are wiped by a `rust_clean` Make rule that runs **after** the staticlib is
+linked into the package `.so` (`all: $(SHLIB) rust_clean`): it removes the entire
+`target/`, the build-local `CARGO_HOME`, and the extracted `vendor/`, so the
+installed source tree carries **no `target/`, no `.cargo/`, and no extracted
+`vendor/`** for `R CMD check` to scan. The committed build inputs
+(`rust/vendored/`, `rust/vendor.tar.xz`, `rust/Cargo.toml`) are untouched. This
+was verified by installing the built tarball under a **pristine fake `HOME`**
+with `CARGO_HOME`/`RUSTUP_HOME` unset and `CARGO_NET_OFFLINE=true`: the fake
+`HOME` stays empty (no `.cargo` created) and the build succeeds offline.
+
 Per CRAN's "Using Rust" policy, `src/Makevars` and `src/Makevars.win` pass
 `-j 2` to every `cargo build` invocation, bounding Cargo's parallelism rather
 than letting it default to every logical CPU on the build machine.
+
+`src/Makevars` and `src/Makevars.win` echo `rustc --version` and
+`cargo --version` (to stderr) **before** the first `Compiling` line, so the
+`R CMD check --as-cran` "Rust compilation" check finds the reported toolchain
+version (otherwise it WARNs "No rustc version reported prior to compilation").
 
 The `Cargo` / `rustc` toolchain is declared in `SystemRequirements`.
 
@@ -86,10 +112,15 @@ Windows install fails at the final link.
 `R CMD check --as-cran` (R 4.6.0 conda-forge) finishes with **no ERRORs**. The
 findings are:
 
-1. **Compiled code — `abort`.** The static Rust library references `abort` via
-   std's panic / allocation-failure paths. This is inherent to linking any Rust
-   dependency tree with extendr 0.7.x and surfaces as a WARNING on CRAN's Debian
-   builder. It is not a defect in the package's own code.
+1. **Compiled code — `Found 'abort'`.** The static Rust library references
+   `abort` through the **Rust standard-library runtime**, not through any package
+   logic: Rust's panic handler and its allocation-error handler call `abort()`
+   when a panic must terminate or an allocation fails. Every extendr / Rust CRAN
+   package links this symbol; there is no clean way to remove it (it is part of
+   `std`, and even a `panic = "abort"` profile keeps the allocation-failure
+   `abort`). It surfaces as a WARNING on CRAN's Debian builder and is the known,
+   justified WARNING CRAN tolerates for Rust packages. It does not indicate a
+   defect in the package's own C or R code.
 2. **CRAN incoming feasibility — "New submission".** Always present for a first
    upload.
 3. **Compilation flag `-march=nocona`.** Comes from conda-forge R's own
@@ -103,13 +134,20 @@ findings are:
    CRAN's GNU binutils.
 
 Dropping the Parquet reader removes the Arrow/Parquet/zstd closure (the single
-biggest dependency); the remaining HDF5/netCDF + MATLAB closure still ships the
-`lzma-sys`/`r-efi` GNU Makefiles and vendored headers. `src/Makevars(.win)` prune
-the extracted `vendor/` tree and the cargo build-script scratch
-(`$(LIBDIR)/build`) immediately after linking, and `./configure` strips stray
-`CITATION.cff`/`CITATION` files (patching each crate's `.cargo-checksum.json` so
-the offline checksum still verifies), so those third-party build artefacts are
-not scanned by `R CMD check`.
+biggest dependency); the remaining HDF5/netCDF + MATLAB closure still vendors the
+`lzma-sys` and `r-efi` crates. Their bundled third-party build artefacts —
+`lzma-sys`'s GNU-extension Makefiles (`xz-5.2/dos/Makefile`,
+`xz-5.2/po/Makevars`, the autotools `Makefile.am`/`.inc` inputs), `half`'s
+`Makefile.toml`, `r-efi/Makefile`, and chrono's top-level `CITATION.cff` — would
+otherwise trip the "GNU make extensions" WARNING and the "CITATION file in a
+non-standard place" NOTE. None is used by the build (every C-library crate
+compiles through its own `build.rs`/`cc`), so `./configure` **deletes them from
+the vendored crates before packing `vendor.tar.xz`** and removes their entries
+from each crate's `.cargo-checksum.json` (cargo only verifies the files it lists,
+so the offline build still checksum-verifies — confirmed by an offline install).
+With these in place `R CMD check --as-cran` reports
+**`GNU extensions in Makefiles ... OK`**, **`pragmas ... OK`**,
+**`line endings in Makefiles ... OK`** and **`Rust compilation ... OK`**.
 
 ## Anti-patterns avoided
 

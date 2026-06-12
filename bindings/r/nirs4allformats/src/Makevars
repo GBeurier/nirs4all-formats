@@ -1,12 +1,30 @@
+# Self-contained extendr (Rust) staticlib build for the COMPLETE nirs4allformats
+# package. Mirrors the canonical CRAN "Using Rust" / rextendr Makevars pattern:
+# every cargo invocation runs with a BUILD-LOCAL CARGO_HOME and CARGO_TARGET_DIR
+# (never the user's ~/.cargo / ~/.rustup, per CRAN Policy), and a post-link
+# `rust_clean` rule wipes all Rust build scratch out of the package source so
+# R CMD check --as-cran never scans third-party build artefacts.
 TARGET_DIR = $(CURDIR)/rust/target
 LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libnirs4allformats_r.a
 PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r
 PKG_CFLAGS = -I$(CURDIR)/rust/src
 
-.PHONY: all clean C_clean $(STATLIB)
+# Build-local cargo state. CRAN Policy forbids writing to the user's HOME at
+# install time; the cargo registry/cache (~/.cargo) and target dir must both
+# live INSIDE the package build tree and be removed afterwards. CARGO_HOME holds
+# the registry index + git db; pointing it here keeps cargo off ~/.cargo. The
+# rust/vendor tree is extracted from vendor.tar.xz so the build is fully OFFLINE
+# and never reaches the network either.
+CARGOTMP = $(CURDIR)/.cargo
 
-all: $(SHLIB)
+# `all` links the SHLIB, THEN runs rust_clean (which depends on $(SHLIB), so it
+# is sequenced last). rust_clean removes the whole target/ + CARGOTMP + the
+# extracted vendor/ so nothing Rust-related is left in the installed source for
+# R CMD check to scan.
+all: $(SHLIB) rust_clean
+
+.PHONY: all rust_clean clean C_clean $(STATLIB)
 
 $(SHLIB): $(STATLIB)
 
@@ -15,21 +33,27 @@ $(STATLIB):
 		echo "Cargo is required to build nirs4allformats. Install Rust from https://rustup.rs."; \
 		exit 1; \
 	fi
-	# Report the toolchain version to the install log BEFORE compiling. R CMD
-	# check --as-cran scans the lines preceding the first "Compiling" for a
-	# `rustc <ver>` line; without it the "Rust compilation" check emits the
-	# "No rustc version reported prior to compilation" WARNING.
-	@rustc --version || true
+	# Report the toolchain version to the install log (stderr) BEFORE compiling.
+	# R CMD check --as-cran scans the lines preceding the first "Compiling" for a
+	# `rustc <ver>` / `cargo <ver>` line; without it the "Rust compilation" check
+	# emits the "No rustc version reported prior to compilation" WARNING.
+	@rustc --version >&2 || true
+	@cargo --version >&2 || true
 	# Self-contained vendored build: extract the cargo-vendored crates.io deps
 	# (shipped compressed to dodge R's tarball dotfile stripping), then build
 	# OFFLINE against them. The crates.io source replacement is passed INLINE via
 	# --config (resolves `vendor` against rust/, and ships NO hidden .cargo/ dir
 	# that would trip R CMD check). If vendor.tar.xz is absent (in-repo dev), fall
 	# back to an ONLINE build against the committed relative-path Cargo.toml.
+	#
+	# CARGO_HOME=$(CARGOTMP) keeps cargo's registry/cache out of ~/.cargo (CRAN
+	# Policy). CARGO_TARGET_DIR is the in-package target/ that rust_clean wipes.
 	# `-j 2` bounds Cargo's parallelism as required by CRAN's "Using Rust" policy
 	# (https://cran.r-project.org/web/packages/using_rust.html); without it Cargo
 	# defaults to every logical CPU on the build machine.
-	@if [ -f rust/vendor.tar.xz ]; then \
+	export CARGO_HOME="$(CARGOTMP)" && \
+	export CARGO_TARGET_DIR="$(TARGET_DIR)" && \
+	if [ -f rust/vendor.tar.xz ]; then \
 		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
 		cd rust && cargo build --release -j 2 --offline \
 			--config 'source.crates-io.replace-with="vendored-sources"' \
@@ -37,19 +61,22 @@ $(STATLIB):
 	else \
 		cd rust && cargo build --release -j 2; \
 	fi
-	# Post-build prune (R CMD check / CRAN). The staticlib is now linked, so the
-	# cargo build-script scratch ($(LIBDIR)/build holds the generated zstd-sys
-	# flag_check.c + zstd.h that trip the "line endings"/"pragmas" NOTEs) and the
-	# extracted crates.io vendor tree (lzma-sys / r-efi GNU Makefiles -> the GNU
-	# extensions WARNING, vendored zstd headers -> a pragmas NOTE) are no longer
-	# needed. Removing them stops R CMD check from scanning third-party build
-	# artefacts the package compiles but does not author. Skipped when
-	# NOT_CRAN=true (dev inner loop keeps the cache for incremental rebuilds).
+
+# Post-link cleanup. Runs AFTER $(SHLIB) has linked $(STATLIB) into the package
+# .so, so the whole Rust scratch can go: the entire target/ (build-script scratch
+# such as zstd-sys' generated flag_check.c / zstd.h -> "line endings"/"pragmas"
+# NOTEs, plus .fingerprint/deps/incremental), the build-local CARGO_HOME, and the
+# extracted vendor/ tree. This is what stops R CMD check --as-cran from scanning
+# third-party build artefacts the package compiles but does not author. The
+# committed inputs (rust/vendored/, rust/vendor.tar.xz, rust/Cargo.toml) are NOT
+# touched. Skipped when NOT_CRAN=true (dev inner loop keeps the cache for
+# incremental rebuilds).
+rust_clean: $(SHLIB)
 	@if [ "$(NOT_CRAN)" != "true" ]; then \
-		rm -rf "$(LIBDIR)/build" "$(CURDIR)/rust/vendor"; \
+		rm -Rf "$(TARGET_DIR)" "$(CARGOTMP)" "$(CURDIR)/rust/vendor"; \
 	fi
 
 C_clean:
-	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR) $(CURDIR)/rust/vendor
+	rm -Rf $(SHLIB) $(OBJECTS) $(STATLIB) $(TARGET_DIR) $(CARGOTMP) $(CURDIR)/rust/vendor
 
 clean: C_clean

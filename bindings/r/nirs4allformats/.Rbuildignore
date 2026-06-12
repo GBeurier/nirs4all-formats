@@ -6,10 +6,12 @@
 # vendored sources. The vendored core crates src/rust/vendored/, the
 # cargo-vendored crates.io deps src/rust/vendor.tar.xz, the workspace Cargo.toml
 # and Cargo.lock are the self-contained build inputs and DO ship --
-# intentionally NOT ignored here. Only the extracted scratch dir and the
-# compiled target/ are excluded.
+# intentionally NOT ignored here. Only the extracted scratch dir, the compiled
+# target/, and the build-local CARGO_HOME (.cargo) are excluded.
 ^src/rust/vendor(/|$)
 ^src/rust/target(/|$)
+^src/\.cargo(/|$)
+^src/rust/\.cargo(/|$)
 ^src/.*\.o$
 ^src/.*\.so$
 ^src/.*\.dll$

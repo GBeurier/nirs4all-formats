@@ -243,22 +243,54 @@ TOML
 echo "nirs4allformats configure: cargo vendor (crates.io transitive deps)"
 ( cd "$RUST" && cargo vendor --versioned-dirs vendor ) >/dev/null
 
-# 3a. Strip stray CITATION.cff / CITATION files from the vendored crates. R CMD
-#     check (--as-cran) reports any CITATION found outside inst/ as a NOTE
-#     ("CITATION file in a non-standard place"); chrono ships a top-level
-#     CITATION.cff that would trip it. Removing the file alone would break
-#     cargo's OFFLINE checksum verification, so we also drop its entry from the
-#     crate's `.cargo-checksum.json` (cargo only verifies the files it lists).
-#     Verified: chrono still builds offline after the strip+patch. python3 is the
+# 3a. Strip CRAN-tripping stray files from the vendored crates — two classes:
+#
+#       * stray CITATION.cff / CITATION (R CMD check --as-cran NOTEs any CITATION
+#         outside inst/: "CITATION file in a non-standard place"; chrono ships a
+#         top-level CITATION.cff);
+#       * GNU-extension Makefiles bundled inside C-library crates that cargo
+#         compiles via their own build.rs and NEVER invokes
+#         (lzma-sys' xz-5.2/dos/Makefile, xz-5.2/po/Makevars, the autotools
+#         Makefile.am/.inc inputs; r-efi's maintenance Makefile). R CMD check's
+#         "GNU make extensions" WARNING scans every Makefile/Makevars/GNUmakefile
+#         in the unpacked+installed tree, including the extracted vendor/, so they
+#         must go. Verified: lzma-sys' build.rs compiles the C sources directly
+#         with `cc` (no Makefile reference) and r-efi's Makefile is CI-only — both
+#         build fine offline after removal.
+#
+#     Removing a file alone would break cargo's OFFLINE checksum verification, so
+#     we also drop its entry from the crate's `.cargo-checksum.json` (cargo only
+#     verifies the files it lists). Walk recursively: the offending Makefiles are
+#     nested several levels deep inside the C-source subtrees. python3 is the
 #     vendoring host's JSON editor; it is only needed when vendoring (CRAN's
 #     install never reaches this branch — it unpacks the already-stripped tree).
 if command -v python3 >/dev/null 2>&1; then
-    echo "nirs4allformats configure: stripping stray CITATION files from vendored crates"
+    echo "nirs4allformats configure: stripping stray CITATION + GNU-make Makefiles from vendored crates"
     python3 - "$RUST/vendor" <<'PY'
-import json, os, sys
+import json, os, re, sys
+
 root = sys.argv[1]
-removed = 0
-for name in os.listdir(root):
+
+# A vendored file is dropped if its BASENAME is a stray CITATION or any
+# Make-family file: Makefile / GNUmakefile / Makevars, the autotools
+# Makefile.am / Makefile.in / Makefile.inc inputs, and the cargo-make
+# Makefile.toml task config (half-2.7.1). None are used by the R build (every
+# C-library crate compiles via its own build.rs/`cc`); they only exist to trip
+# R CMD check's "GNU make extensions" scan of the unpacked+installed tree.
+# Matching the basename covers the deep-nested copies
+# (e.g. xz-5.2/src/liblzma/lzma/Makefile.inc) because the .cargo-checksum.json
+# keys them by crate-relative path. NB: a real R-package Makefile.win is NOT in
+# the vendor tree, so it is never affected.
+CITATION = {"CITATION.cff", "CITATION"}
+MAKE_RE = re.compile(r"^(GNU)?[Mm]ake(file|vars)(\.(am|in|inc|toml))?$")
+
+
+def is_stray(basename):
+    return basename in CITATION or bool(MAKE_RE.match(basename))
+
+
+cit_removed = mk_removed = 0
+for name in sorted(os.listdir(root)):
     d = os.path.join(root, name)
     cj = os.path.join(d, ".cargo-checksum.json")
     if not os.path.isdir(d) or not os.path.exists(cj):
@@ -268,20 +300,25 @@ for name in os.listdir(root):
     files = meta.get("files", {})
     changed = False
     for fname in list(files):
-        if os.path.basename(fname) in ("CITATION.cff", "CITATION"):
-            fp = os.path.join(d, fname)
-            if os.path.exists(fp):
-                os.remove(fp)
-            del files[fname]
-            changed = True
-            removed += 1
+        base = os.path.basename(fname)
+        if not is_stray(base):
+            continue
+        fp = os.path.join(d, fname)
+        if os.path.exists(fp):
+            os.remove(fp)
+        del files[fname]
+        changed = True
+        if base in CITATION:
+            cit_removed += 1
+        else:
+            mk_removed += 1
     if changed:
         with open(cj, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(meta, fh)
-print(f"  stripped {removed} CITATION file(s) from the vendored tree")
+print(f"  stripped {cit_removed} CITATION + {mk_removed} GNU-make file(s) from the vendored tree")
 PY
 else
-    echo "nirs4allformats configure: WARNING python3 not found — leaving CITATION files in the vendored tree (R CMD check will emit a non-standard-CITATION NOTE)" >&2
+    echo "nirs4allformats configure: WARNING python3 not found — leaving stray CITATION/Makefiles in the vendored tree (R CMD check will emit NOTEs/WARNINGs)" >&2
 fi
 
 echo "nirs4allformats configure: compressing vendor/ -> vendor.tar.xz (avoids R's tarball dotfile stripping)"
