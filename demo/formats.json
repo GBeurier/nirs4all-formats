@@ -1,8 +1,8 @@
 {
  "summary": {
   "families": 59,
-  "supported": 25,
-  "targeted": 16,
+  "supported": 26,
+  "targeted": 15,
   "partial": 2,
   "adjacent": 9,
   "sourcing": 6,
@@ -11,6 +11,18 @@
   "partial_variants": 19
  },
  "formats": [
+  {
+   "name": "Axis-first tables",
+   "vendor": "Generic / instrument exports",
+   "ext": "`.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU`",
+   "variants": 8,
+   "ok": 8,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "P3",
+   "status": "supported"
+  },
   {
    "name": "Ocean Optics SpectraSuite / OceanView / Jaz / CRAIC",
    "vendor": "Ocean Optics / Ocean Insight",
@@ -24,20 +36,8 @@
    "status": "supported"
   },
   {
-   "name": "Tables axe-first",
-   "vendor": "Generique / exports instrument",
-   "ext": "`.csv`, `.tsv`, `.txt`, `.dat`, `.asc`, `.SPT`, `.SPU`",
-   "variants": 8,
-   "ok": 8,
-   "partial": 0,
-   "planned": 0,
-   "blocked": 0,
-   "priority": "P3",
-   "status": "supported"
-  },
-  {
-   "name": "Avantes ASCII",
-   "vendor": "Avantes",
+   "name": "Advantages ASCII",
+   "vendor": "Advantages",
    "ext": "`.ttt`, `.trt`, `.tit`, `.tat`, `.IRR`, `.txt`",
    "variants": 6,
    "ok": 6,
@@ -60,8 +60,8 @@
    "status": "supported"
   },
   {
-   "name": "MATLAB MAT / RData",
-   "vendor": "MATLAB / R ecosystem",
+   "name": "MATLAB MAT/RData",
+   "vendor": "MATLAB/R ecosystem",
    "ext": "`.mat`, `.MAT`, `.RData`",
    "variants": 6,
    "ok": 5,
@@ -120,15 +120,27 @@
    "status": "supported"
   },
   {
-   "name": "Matrices spectrales",
-   "vendor": "Generique / Foss / Metrohm / VIAVI",
-   "ext": "`.csv`, `.txt`",
+   "name": "Delimited spectral tables",
+   "vendor": "Generic",
+   "ext": "`.csv`, `.tsv`, `.txt`",
    "variants": 3,
    "ok": 3,
    "partial": 0,
    "planned": 0,
    "blocked": 0,
    "priority": "P3",
+   "status": "supported"
+  },
+  {
+   "name": "Foss NIRSystems / WinISI native",
+   "vendor": "Foss",
+   "ext": "`.NIR`, `.DA`, `.cal`, `.eqa`",
+   "variants": 4,
+   "ok": 3,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 1,
+   "priority": "P2",
    "status": "supported"
   },
   {
@@ -144,9 +156,9 @@
    "status": "supported"
   },
   {
-   "name": "Tables spectrales delimitees",
-   "vendor": "Generique",
-   "ext": "`.csv`, `.tsv`, `.txt`",
+   "name": "Spectral matrices",
+   "vendor": "Generic / Foss / Metrohm / VIAVI",
+   "ext": "`.csv`, `.txt`",
    "variants": 3,
    "ok": 3,
    "partial": 0,
@@ -204,9 +216,9 @@
    "status": "supported"
   },
   {
-   "name": "Bruker OPUS natif",
+   "name": "Bruker OPUS native",
    "vendor": "Bruker",
-   "ext": "`.0`, `.1`, `.001`, `.0000`, sans extension fixe",
+   "ext": "`.0`, `.1`, `.001`, `.0000`, without fixed extension",
    "variants": 5,
    "ok": 2,
    "partial": 1,
@@ -229,7 +241,7 @@
   },
   {
    "name": "Excel spectral",
-   "vendor": "Generique / lab",
+   "vendor": "Generic / lab",
    "ext": "`.xlsx`, `.xlsm`, `.xls`",
    "variants": 3,
    "ok": 2,
@@ -253,7 +265,7 @@
   },
   {
    "name": "NumPy",
-   "vendor": "Python / NumPy",
+   "vendor": "Python/NumPy",
    "ext": "`.npy`, `.npz`",
    "variants": 2,
    "ok": 2,
@@ -301,7 +313,7 @@
   },
   {
    "name": "Parquet",
-   "vendor": "Apache / generique",
+   "vendor": "Apache / generic",
    "ext": "`.parquet`",
    "variants": 1,
    "ok": 1,
@@ -312,8 +324,8 @@
    "status": "supported"
   },
   {
-   "name": "Avantes AvaSoft 6/7 binaire",
-   "vendor": "Avantes",
+   "name": "Avantes AvaSoft 6/7 binary",
+   "vendor": "Advantages",
    "ext": "`.TRM`, `.ABS`, `.ROH`, `.DRK`, `.REF`",
    "variants": 5,
    "ok": 4,
@@ -336,31 +348,7 @@
    "status": "targeted"
   },
   {
-   "name": "Foss NIRSystems / WinISI natif",
-   "vendor": "Foss",
-   "ext": "`.NIR`, `.DA`, `.cal`, `.eqa`",
-   "variants": 4,
-   "ok": 3,
-   "partial": 0,
-   "planned": 0,
-   "blocked": 1,
-   "priority": "P2",
-   "status": "targeted"
-  },
-  {
-   "name": "HDF5 NIRS generique",
-   "vendor": "Vendor-neutral",
-   "ext": "`.h5`, `.hdf5`",
-   "variants": 4,
-   "ok": 3,
-   "partial": 0,
-   "planned": 0,
-   "blocked": 1,
-   "priority": "P1",
-   "status": "targeted"
-  },
-  {
-   "name": "NetCDF NIRS generique",
+   "name": "Generic NetCDF NIRS",
    "vendor": "Vendor-neutral",
    "ext": "`.nc`, `.cdf`",
    "variants": 5,
@@ -372,7 +360,19 @@
    "status": "targeted"
   },
   {
-   "name": "Allotrope ASM",
+   "name": "HDF5 NIRS generic",
+   "vendor": "Vendor-neutral",
+   "ext": "`.h5`, `.hdf5`",
+   "variants": 4,
+   "ok": 3,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 1,
+   "priority": "P1",
+   "status": "targeted"
+  },
+  {
+   "name": "ASM allotrope",
    "vendor": "Allotrope / Benchling",
    "ext": "`.json`",
    "variants": 3,
@@ -408,8 +408,8 @@
    "status": "targeted"
   },
   {
-   "name": "Avantes AvaSoft 8 binaire",
-   "vendor": "Avantes",
+   "name": "Avantes AvaSoft 8 binary",
+   "vendor": "Advantages",
    "ext": "`.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8`",
    "variants": 9,
    "ok": 1,
@@ -422,7 +422,7 @@
   {
    "name": "Bruker Tango / MPA / Matrix",
    "vendor": "Bruker",
-   "ext": "OPUS natif",
+   "ext": "native OPUS",
    "variants": 3,
    "ok": 1,
    "partial": 0,
@@ -470,7 +470,7 @@
   {
    "name": "Metrohm Vision / Vision Air",
    "vendor": "Metrohm",
-   "ext": "`.csv`, `.xlsx`, base projet native",
+   "ext": "`.csv`, `.xlsx`, native project base",
    "variants": 3,
    "ok": 1,
    "partial": 0,
@@ -624,7 +624,7 @@
    "status": "adjacent"
   },
   {
-   "name": "WiTec WIP / WID",
+   "name": "WiTec WIP/WID",
    "vendor": "WiTec",
    "ext": "`.wip`, `.wid`, `.txt`",
    "variants": 5,
@@ -674,7 +674,7 @@
   {
    "name": "Perten DA / Inframatic",
    "vendor": "Perten / PerkinElmer",
-   "ext": "binaire vendeur, `.csv`",
+   "ext": "vendor binary, `.csv`",
    "variants": 2,
    "ok": 0,
    "partial": 0,
