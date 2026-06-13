@@ -2,16 +2,18 @@ Package: nirs4allformats
 Title: Read Near-Infrared Spectroscopy and Spectral File Formats
 Version: 0.1.0
 Authors@R: person("Gregory", "Beurier", email = "gregory.beurier@cirad.fr", role = c("aut", "cre"))
-Description: Thin R binding for the Rust-first 'nirs4all-formats' near-infrared
-    spectroscopy (NIRS) file-loading core. When installed via R CMD INSTALL with
-    Cargo available, the package compiles a native 'extendr' static library from
-    'src/rust/' and dispatches probe, read, and walk calls directly through Rust.
-    Without Cargo it falls back to invoking the 'nirs4all-formats' command-line
+Description: Thin 'R' binding for the 'nirs4all-formats' near-infrared
+    spectroscopy (NIRS) file-loading core written in 'Rust'. When installed via
+    'R CMD INSTALL' with 'Cargo' available, the package compiles a native
+    'extendr' static library from 'src/rust/' and dispatches probe, read, and
+    walk calls directly through 'Rust'.
+    Without 'Cargo' it falls back to invoking the 'nirs4all-formats' command-line
     interface. This is the complete build: it ships every reader, including the
-    optional large ones (HDF5/netCDF, Parquet/Arrow, MATLAB) on top of the core
-    readers (JCAMP-DX, Galactic SPC, Bruker OPUS, ASD, ENVI, CSV, Excel, and many
-    vendor ASCII/binary formats). A smaller sibling package 'nirs4allformats.lite'
-    drops only the Parquet/Arrow reader for size-sensitive installs.
+    optional large ones ('HDF5'/'netCDF', 'Parquet'/'Arrow', 'MATLAB') on top of the
+    core readers ('JCAMP-DX', 'Galactic SPC', 'Bruker OPUS', 'ASD', 'ENVI',
+    'CSV', 'Excel', and many vendor ASCII/binary formats). A smaller sibling
+    package 'nirs4allformats.lite' drops only the 'Parquet'/'Arrow' reader for
+    size-sensitive installs.
 SystemRequirements: Cargo (Rust's package manager), rustc
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
