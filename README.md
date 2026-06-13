@@ -116,9 +116,12 @@ everything: **parsers live only in the Rust core**.
 - no chemometrics or modelling algorithms here;
 - no GUI;
 - no parser logic inside language bindings;
-- no GPL reference reader linked into the MIT runtime core (GPL readers are used
+- no GPL reference reader linked into the runtime core (GPL readers are used
   only for conformance, isolated behind subprocesses).
 
 ## License
 
-MIT. Fixture licenses are documented per format under `samples/`.
+`nirs4all-formats` is dual-licensed open-source — **`CeCILL-2.1 OR AGPL-3.0-or-later`** (your
+choice). See [`LICENSING.md`](LICENSING.md), the full texts under [`LICENSES/`](LICENSES/), and
+third-party attributions in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). Fixture licenses are
+documented per format under `samples/`.
