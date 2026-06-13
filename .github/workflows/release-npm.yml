@@ -154,4 +154,18 @@ jobs:
         working-directory: bindings/wasm/pkg-node
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        # npm has no `--skip-existing`: re-publishing an already-published
+        # version is a hard 403 ("You cannot publish over the previously
+        # published versions"), which killed the v0.1.0 re-run. Make the step
+        # idempotent by pre-checking the registry and skipping the publish when
+        # this exact version is already live, so a retried release is a no-op
+        # instead of a failure.
+        run: |
+          set -euo pipefail
+          PKG_VER=$(node -p "require('./package.json').version")
+          PKG_NAME=$(node -p "require('./package.json').name")
+          if npm view "${PKG_NAME}@${PKG_VER}" version >/dev/null 2>&1; then
+            echo "${PKG_NAME}@${PKG_VER} is already published; skipping."
+          else
+            npm publish --access public
+          fi

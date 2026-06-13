@@ -193,9 +193,16 @@ jobs:
             exit 1
           fi
           echo "tag ${GITHUB_REF_NAME} matches built package version ${dist_version}."
+      # skip-existing makes re-running a release on the SAME tag idempotent: if
+      # the wheels/sdist for this version are already on PyPI (a partial prior
+      # run uploaded some files, or the whole version published and the job is
+      # retried), twine skips them instead of aborting with "400 File already
+      # exists". Without it the v0.1.0 re-run died on the first already-present
+      # wheel (nirs4all_formats-0.1.0-cp310-abi3-manylinux2014_x86_64.whl).
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist
+          skip-existing: true
 
   github-release:
     name: Attach release artifacts

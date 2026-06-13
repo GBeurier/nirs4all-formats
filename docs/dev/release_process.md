@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Development — Release Process
 
 How each binding of `nirs4all-formats` is versioned, gated, and published. The
