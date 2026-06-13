@@ -11,6 +11,7 @@ target/
 *.so
 *.pyd
 .coverage
+coverage.xml
 /samples.zip
 # Local-only sample directory: holds non-redistributable fixtures (license-restricted,
 # login-gated, vendor SDK demos). Tracked manually in samples_local/INDEX.md but never

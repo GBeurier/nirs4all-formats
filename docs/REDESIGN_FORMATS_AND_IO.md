@@ -56,7 +56,7 @@
     re-orchestrate / generalize / make format-compatible** — we are free to re-architect (the originals
     lack recul); we do **not** modify the originals and do **not** rewrite from a blank algorithm. See the
     **Reuse Map (Appendix D)**.
-  - **Phase 2 — Rust MVP, `dag-ml-data`-compatible**, "très vite" after Phase 1: translate the copied
+  - **Phase 2 — Rust MVP, `dag-ml-data`-compatible**, soon after Phase 1: translate the copied
     Python logic to Rust. `dag-ml-data` is **planned now** (Appendix H.2 + readiness gate J) but its
     *implementation* waits until that lib is complete enough (gaps: no Python pkg, no `Wavenumber` axis,
     no nirs4all connector).
@@ -665,7 +665,7 @@ Legend: `[S]`mall / `[M]`edium / `[L]`arge / `[XL]`. Acceptance criteria abbrevi
   declaration element (roles, column selectors, merge modes, join cardinality + coverage, lookup tables,
   partitions, folds, params) with ≥1 runnable example + a fixture. **Gate: every vocabulary element has
   ≥1 cookbook entry + a passing fixture** — *undocumented vocabulary is treated as unshipped* (the user's
-  adoption bar: "sinon ce ne sera pas utilisé").
+  adoption bar: "otherwise it will not be used").
 
 ### EPIC 3 — Resolver + Inference + `DatasetPlan` (R-INFER) *(Phase 1; full spec in Appendix F)*
 - 3.1 `[M]` Resolver for all input kinds → `InputSet` (stable identity + hash + sidecar grouping).
