@@ -63,12 +63,13 @@ try {
 
 ## Scope
 
-The WASM build compiles `fmt-hdf5` **on**, so single-file HDF5/NetCDF payloads
-and the HDF5-backed sidecar formats (FGI XML+HDF5, NetCDF MFRSR, Allotrope ADF)
-decode in the browser. `fmt-matlab` and `fmt-parquet` are **off** because their
-C dependencies (libhdf5 via MATLAB v7.3 outside the pure-Rust stack, liblzma,
-Arrow) lack a wasm backend in the current dependency tree. Check `features()` at
-runtime.
+The WASM build compiles `fmt-hdf5`, `fmt-matlab` and `fmt-parquet` **on**, so
+single-file HDF5/NetCDF payloads, MATLAB MAT / RData, Parquet tables and the
+HDF5-backed sidecar formats (FGI XML+HDF5, NetCDF MFRSR, Allotrope ADF) all
+decode in the browser. The core uses browser-compatible compression
+(`lzma-rs` for RData, snappy/zstd for Parquet) and a pure-Rust HDF5 stack, so no
+C dependency is needed. Check `features()` at runtime to confirm what a given
+bundle was compiled with.
 
 Sidecar formats (ENVI Standard, ENVI SLI, AVIRIS/ERDAS LAN, FGI XML+HDF5,
 NetCDF MFRSR) return `UnsupportedSidecar` from `openBytes`; route them through

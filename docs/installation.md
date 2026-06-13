@@ -83,8 +83,10 @@ run from a source checkout where `cargo run -p nirs4all-formats-cli` is availabl
 
 ## WebAssembly / JavaScript
 
-Built with `wasm-pack`. The WASM build compiles `fmt-hdf5` **on** and
-`fmt-matlab` / `fmt-parquet` **off**.
+Built with `wasm-pack`. The WASM build compiles `fmt-hdf5`, `fmt-matlab` and
+`fmt-parquet` **on** — the core uses a pure-Rust HDF5 stack and
+browser-compatible compression, so every reader family is available in the
+browser. Check `features()` at runtime to confirm.
 
 ```bash
 # Browser (ES modules)

@@ -1,7 +1,3 @@
----
-orphan: true
----
-
 # Release Procedure
 
 This file documents the Phase 6 release pipeline shipped in M4. The

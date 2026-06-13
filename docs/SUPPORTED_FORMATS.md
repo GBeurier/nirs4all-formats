@@ -6,9 +6,11 @@ file by content (magic bytes, container schema or text shape) and route it to
 the best match. This page is the public catalogue of what is covered today.
 
 For the internal, variant-by-variant tracking (including counts and the exact
-files still being sourced), see [`FORMAT_MATRIX.md`](FORMAT_MATRIX.md) and
-[`IMPLEMENTATION_DASHBOARD.md`](IMPLEMENTATION_DASHBOARD.md). Each format below
-links to a detailed page.
+files still being sourced), see
+[`FORMAT_MATRIX.md`](https://github.com/GBeurier/nirs4all-formats/blob/main/docs/FORMAT_MATRIX.md)
+and
+[`IMPLEMENTATION_DASHBOARD.md`](https://github.com/GBeurier/nirs4all-formats/blob/main/docs/IMPLEMENTATION_DASHBOARD.md)
+in the repository. Each format below links to a detailed page.
 
 ## Status legend
 

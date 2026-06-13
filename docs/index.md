@@ -1,7 +1,7 @@
 # nirs4all-formats
 
 Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
-stable Python / R / WebAssembly / C bindings and conformance checks against
+matching Python / R / WebAssembly / C bindings and conformance checks against
 reference loaders.
 
 nirs4all-formats auto-detects each file by content, decodes it through a single Rust
@@ -21,6 +21,21 @@ getting_started
 installation
 usage
 SUPPORTED_FORMATS
+```
+
+```{toctree}
+:caption: Reference
+:maxdepth: 2
+
+DATA_MODEL
+OUTPUTS
+CLI
+CONFORMANCE
+INTEGRATION_NIRS4ALL
+RELEASE
+VERSIONING
+SECURITY
+LICENSE_MATRIX
 ```
 
 ```{toctree}
@@ -86,36 +101,39 @@ formats/viavi-micronir
 formats/witec-wip
 ```
 
-```{toctree}
-:caption: Reference
-:maxdepth: 1
+## The nirs4all ecosystem
 
-DATA_MODEL
-CLI
-CONFORMANCE
-RELEASE
-VERSIONING
-SECURITY
-INTEGRATION_NIRS4ALL
-LICENSE_MATRIX
-```
+<!-- RTD slugs are assumed equal to the repo name; edit a :link: URL below if a slug differs at import. -->
 
-```{toctree}
-:caption: Project & internals
-:maxdepth: 1
+::::{grid} 1 2 2 2
+:gutter: 2
 
-PLAN
-DIRECTIONS
-ROADMAP
-STATUS
-FORMATS
-FORMAT_MATRIX
-IMPLEMENTATION_DASHBOARD
-FORMAT_GAPS
-MISSING_SAMPLES
-Formats_extract
-OUTPUTS
-REVERSE_ENGINEERING
-FIXTURE_GOVERNANCE
-CI_MATRIX
-```
+:::{grid-item-card} nirs4all
+:link: https://nirs4all.readthedocs.io/en/latest/
+Main Python modelling library — pipelines, SpectroDataset, predictions.
+:::
+:::{grid-item-card} nirs4all-methods
+:link: https://nirs4all-methods.readthedocs.io/en/latest/
+Portable C-ABI PLS/NIRS engine (libn4m) + bindings.
+:::
+:::{grid-item-card} nirs4all-io
+:link: https://nirs4all-io.readthedocs.io/en/latest/
+Dataset-assembly bridge → SpectroDataset.
+:::
+:::{grid-item-card} nirs4all-datasets
+:link: https://nirs4all-datasets.readthedocs.io/en/latest/
+Curated DOI-pinned NIRS dataset catalog (n4a-datasets).
+:::
+:::{grid-item-card} nirs4all-lite
+:link: https://nirs4all-lite.readthedocs.io/en/latest/
+Portable aggregate distribution (Rust + bindings).
+:::
+:::{grid-item-card} dag-ml
+:link: https://dag-ml.readthedocs.io/en/latest/
+Reproducible, OOF/leakage-safe ML coordinator.
+:::
+:::{grid-item-card} dag-ml-data
+:link: https://dag-ml-data.readthedocs.io/en/latest/
+Typed sample-aligned multi-source data contracts.
+:::
+::::
