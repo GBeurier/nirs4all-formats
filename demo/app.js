@@ -369,13 +369,13 @@ async function renderFormats() {
   const s = data.summary || {};
 
   const stats = [
-    { n: s.families ?? FORMATS.length, l: "format families" },
-    { n: s.validated_variants ?? "—", l: "validated variants", c: "c-ok" },
-    { n: s.supported ?? "—", l: "fully supported", c: "c-ok" },
-    { n: s.partial_variants ?? "—", l: "partial variants", c: "c-part" },
-    { n: s.sourcing ?? 0, l: "need samples", c: "c-src" },
+    { n: s.families ?? FORMATS.length, l: "format families", a: "var(--teal)" },
+    { n: s.validated_variants ?? "—", l: "validated variants", c: "c-ok", a: "var(--teal-d)" },
+    { n: s.supported ?? "—", l: "fully supported", c: "c-ok", a: "var(--teal-d)" },
+    { n: s.partial_variants ?? "—", l: "partial variants", c: "c-part", a: "var(--amber)" },
+    { n: s.sourcing ?? 0, l: "need samples", c: "c-src", a: "var(--text-3)" },
   ];
-  $("#fmt-stats").innerHTML = stats.map((x) => `<div class="fmt-stat"><div class="n ${x.c || ""}">${esc(x.n)}</div><div class="l">${esc(x.l)}</div></div>`).join("");
+  $("#fmt-stats").innerHTML = stats.map((x) => `<div class="fmt-stat" style="--accent:${x.a}"><div class="n ${x.c || ""}">${esc(x.n)}</div><div class="l">${esc(x.l)}</div></div>`).join("");
 
   const counts = {};
   for (const f of FORMATS) counts[f.status] = (counts[f.status] || 0) + 1;
