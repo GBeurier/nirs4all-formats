@@ -82,6 +82,9 @@ University of Cordoba (sensAIfood) dataset.
 - The native `.cal` / `.nir` reader is reverse-engineered (hence the
   `foss_winisi_reverse_engineered_blocks` warning); the wavelength axis is
   reconstructed from the file's segment table of `f32` start/step/end values.
+- Native sample-block strides are detected from record headers. Most 1050-point
+  files use the compact 24-byte post-spectrum gap, while DS3 F 700-point files
+  use the 128-byte-aligned variant.
 - The real native vendor binaries are **local-only** under
   `samples_local/foss_winisi/` (private, licence TBD); only the synthetic
   `synthetic.cal` fixture is redistributable.

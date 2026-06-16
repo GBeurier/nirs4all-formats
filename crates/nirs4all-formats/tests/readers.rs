@@ -5660,22 +5660,26 @@ fn reads_local_foss_ds_series_native_nir() {
     // Real DS2500 / DS3 F customer files are private (no vendor text export);
     // validate record count, axis endpoints, model string and that every
     // spectrum decodes to finite, plausible absorbance.
-    for (rel, model, samples, npts, first, last) in [
+    for (rel, model, first_sample, samples, npts, first, last, second_first) in [
         (
             "samples_local/foss_winisi/fileDS2500CRAW.nir",
             "NIRS DS2500",
+            "DQ250293-001",
             10usize,
             1_050usize,
             400.0,
             2498.0,
+            0.957_714_7,
         ),
         (
             "samples_local/foss_winisi/fileDS3FCRAW.nir",
             "NIRS DS3 F",
+            "DQ260267-001",
             20,
             700,
             1100.0,
             2498.0,
+            0.099_972_2,
         ),
     ] {
         let path = workspace_file(rel);
@@ -5688,10 +5692,19 @@ fn reads_local_foss_ds_series_native_nir() {
         let record = &records[0];
         assert_eq!(record.provenance.format, "foss-ds-nir");
         assert_eq!(record.metadata["instrument_model"].as_str(), Some(model));
+        assert_eq!(
+            record.metadata["sample_number"].as_str(),
+            Some(first_sample)
+        );
         let absorbance = record.signals.get("absorbance").expect("absorbance");
         assert_eq!(absorbance.axis.values.len(), npts);
         assert!((absorbance.axis.values[0] - first).abs() < 1e-6);
         assert!((absorbance.axis.values[npts - 1] - last).abs() < 1e-6);
+        let second_absorbance = records[1].signals.get("absorbance").expect("absorbance");
+        assert!(
+            (second_absorbance.values[0] - second_first).abs() < 1e-6,
+            "{rel} second spectrum starts at wrong offset"
+        );
         for spectrum in &records {
             let sig = spectrum.signals.get("absorbance").expect("absorbance");
             assert!(sig

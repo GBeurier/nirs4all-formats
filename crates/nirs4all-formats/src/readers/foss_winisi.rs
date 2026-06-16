@@ -27,10 +27,10 @@ const CONSTITUENT_NAME_LEN: usize = 16;
 // --- Per-sample record layout (fixed stride from 0x380) ---
 const DATA_START: usize = 0x380; // first sample block (constant for .cal and .nir)
 const RECORD_HEADER_LEN: usize = 0x100; // metadata header, then the spectrum
-const SAMPLE_NUMBER_LEN: usize = 11; // ASCII sample-number string at block start
-const PRODUCT_CODE_OFF: usize = 18; // i32 within the metadata header
+const SAMPLE_NUMBER_LEN: usize = 18; // NUL-padded sample-number field before product code
+const PRODUCT_CODE_OFF: usize = SAMPLE_NUMBER_LEN; // i32 within the metadata header
 const TIMESTAMP_OFF: usize = 214; // u32 unix timestamp within the metadata header
-const SPECTRUM_GAP: usize = 24; // zero bytes between spectrum and constituent values
+const SPECTRUM_GAP: usize = 24; // compact-layout zero bytes between spectrum and values
 const CONSTITUENT_REGION_LEN: usize = 128; // 32 f32 slots reserved per record
 const MAX_SEGMENTS: usize = 7; // segment arrays are 7 slots wide before they overlap
 const MAX_CONSTITUENTS: usize = 32; // constituent value region capacity
@@ -111,14 +111,16 @@ fn parse_foss_winisi(
     reader: &str,
 ) -> Result<Vec<SpectralRecord>> {
     let header = parse_header(bytes)?;
-    let stride = record_stride(header.point_count);
+    let stride = detect_record_stride(bytes, &header)?;
 
     let mut records = Vec::with_capacity(header.sample_count);
     for index in 0..header.sample_count {
         let base = DATA_START
             .checked_add(stride.checked_mul(index).ok_or_else(overflow)?)
             .ok_or_else(overflow)?;
-        records.push(parse_record(bytes, &header, base, index, &source, reader)?);
+        records.push(parse_record(
+            bytes, &header, base, stride, index, &source, reader,
+        )?);
     }
     Ok(records)
 }
@@ -233,6 +235,7 @@ fn parse_record(
     bytes: &[u8],
     header: &Header,
     base: usize,
+    stride: usize,
     index: usize,
     source: &SourceFile,
     reader: &str,
@@ -240,7 +243,10 @@ fn parse_record(
     let spectrum_off = base + RECORD_HEADER_LEN;
     let values = read_f32_vec(bytes, spectrum_off, header.point_count)?;
 
-    let constituent_off = spectrum_off + header.point_count * 4 + SPECTRUM_GAP;
+    let constituent_off = base
+        .checked_add(stride)
+        .and_then(|end| end.checked_sub(CONSTITUENT_REGION_LEN))
+        .ok_or_else(overflow)?;
     let targets = parse_targets(bytes, header, constituent_off)?;
 
     let sample_number = ascii_field(bytes, base, SAMPLE_NUMBER_LEN);
@@ -320,6 +326,123 @@ fn parse_targets(
 
 fn record_stride(point_count: usize) -> usize {
     RECORD_HEADER_LEN + point_count * 4 + SPECTRUM_GAP + CONSTITUENT_REGION_LEN
+}
+
+fn aligned_record_stride(point_count: usize) -> usize {
+    align_up(RECORD_HEADER_LEN + point_count * 4, CONSTITUENT_REGION_LEN) + CONSTITUENT_REGION_LEN
+}
+
+fn align_up(value: usize, alignment: usize) -> usize {
+    debug_assert!(alignment.is_power_of_two());
+    (value + alignment - 1) & !(alignment - 1)
+}
+
+fn detect_record_stride(bytes: &[u8], header: &Header) -> Result<usize> {
+    let compact = record_stride(header.point_count);
+    let aligned = aligned_record_stride(header.point_count);
+    let minimum_payload = RECORD_HEADER_LEN
+        .checked_add(header.point_count.checked_mul(4).ok_or_else(overflow)?)
+        .ok_or_else(overflow)?;
+
+    let mut candidates = vec![compact, aligned];
+    if let Some(data_len) = bytes.len().checked_sub(DATA_START) {
+        if data_len % header.sample_count == 0 {
+            candidates.push(data_len / header.sample_count);
+        }
+    }
+    candidates.sort_unstable();
+    candidates.dedup();
+
+    let mut best = None;
+    for stride in candidates {
+        let minimum_stride = minimum_payload
+            .checked_add(CONSTITUENT_REGION_LEN)
+            .ok_or_else(overflow)?;
+        if stride < minimum_stride || !stride_fits(bytes.len(), header.sample_count, stride)? {
+            continue;
+        }
+        let score = stride_score(bytes, header.sample_count, stride);
+        match best {
+            None => best = Some((score, stride)),
+            Some((best_score, best_stride))
+                if score > best_score || (score == best_score && stride < best_stride) =>
+            {
+                best = Some((score, stride));
+            }
+            _ => {}
+        }
+    }
+
+    if let Some((score, stride)) = best {
+        if score > 0 {
+            return Ok(stride);
+        }
+    }
+    if stride_fits(bytes.len(), header.sample_count, compact)? {
+        return Ok(compact);
+    }
+    Err(Error::InvalidRecord(
+        "FOSS WinISI sample blocks extend past end of file".to_string(),
+    ))
+}
+
+fn stride_fits(file_len: usize, sample_count: usize, stride: usize) -> Result<bool> {
+    let last_base = DATA_START
+        .checked_add(
+            stride
+                .checked_mul(sample_count.saturating_sub(1))
+                .ok_or_else(overflow)?,
+        )
+        .ok_or_else(overflow)?;
+    Ok(last_base
+        .checked_add(stride)
+        .is_some_and(|end| end <= file_len))
+}
+
+fn stride_score(bytes: &[u8], sample_count: usize, stride: usize) -> usize {
+    (0..sample_count)
+        .map(|index| {
+            let Some(base) = DATA_START.checked_add(stride.saturating_mul(index)) else {
+                return 0;
+            };
+            record_start_score(bytes, base)
+        })
+        .sum()
+}
+
+fn record_start_score(bytes: &[u8], base: usize) -> usize {
+    let Some(first) = bytes.get(base).copied() else {
+        return 0;
+    };
+    let mut score = 0;
+    if first.is_ascii_alphanumeric() && ascii_field_is_plausible(bytes, base, 32) {
+        score += 2;
+    }
+    if read_i32(bytes, base + PRODUCT_CODE_OFF)
+        .ok()
+        .is_some_and(|value| (-1_000_000..=1_000_000).contains(&value))
+    {
+        score += 1;
+    }
+    if read_u32(bytes, base + TIMESTAMP_OFF)
+        .ok()
+        .is_some_and(|value| value == 0 || (946_684_800..=4_102_444_800).contains(&value))
+    {
+        score += 1;
+    }
+    score
+}
+
+fn ascii_field_is_plausible(bytes: &[u8], offset: usize, max_len: usize) -> bool {
+    let end = offset.saturating_add(max_len).min(bytes.len());
+    let Some(slice) = bytes.get(offset..end) else {
+        return false;
+    };
+    let field = slice.split(|byte| *byte == 0).next().unwrap_or(slice);
+    !field.is_empty()
+        && field
+            .iter()
+            .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.'))
 }
 
 /// FOSS DS-series benches (DS2500, DS3 F, ...) write the same container as the
@@ -451,10 +574,31 @@ mod tests {
 
     #[test]
     fn record_stride_matches_real_layout() {
-        // 1050 points -> 256 + 4200 + 24 + 128 == 4608.
+        // The common 1050-point layout lands on the same stride with both
+        // compact padding and 128-byte alignment.
         assert_eq!(record_stride(1050), 4608);
-        // DS3 F single-segment layout: 700 points -> 256 + 2800 + 24 + 128.
+        assert_eq!(aligned_record_stride(1050), 4608);
+        // DS3 F real files align the post-spectrum region to 128 bytes:
+        // 256 + 2800 + 16 + 128 == 3200. Older synthetic fixtures use the
+        // compact 24-byte gap and therefore remain at 3208.
         assert_eq!(record_stride(700), 3208);
+        assert_eq!(aligned_record_stride(700), 3200);
+    }
+
+    #[test]
+    fn detects_aligned_ds3f_stride_from_record_headers() {
+        let bytes = stride_fixture(700, 3, aligned_record_stride(700));
+        let header = parse_header(&bytes).expect("header");
+
+        assert_eq!(detect_record_stride(&bytes, &header).unwrap(), 3200);
+    }
+
+    #[test]
+    fn keeps_compact_stride_from_record_headers() {
+        let bytes = stride_fixture(50, 3, record_stride(50));
+        let header = parse_header(&bytes).expect("header");
+
+        assert_eq!(detect_record_stride(&bytes, &header).unwrap(), 608);
     }
 
     #[test]
@@ -481,5 +625,43 @@ mod tests {
             parse_header(&[0x02, 0x00, 0x01]),
             Err(Error::InvalidRecord(_))
         ));
+    }
+
+    fn stride_fixture(point_count: usize, sample_count: usize, stride: usize) -> Vec<u8> {
+        let len = DATA_START + stride * sample_count;
+        let mut bytes = vec![0u8; len];
+        write_u16(&mut bytes, VERSION_OFF, VERSION_NIR);
+        write_u16(&mut bytes, SAMPLE_COUNT_OFF, sample_count as u16);
+        write_u16(&mut bytes, POINT_COUNT_OFF, point_count as u16);
+        write_u16(&mut bytes, CONSTITUENT_COUNT_OFF, 0);
+        bytes[MODEL_OFF..MODEL_OFF + SIG_DS_MODEL.len()].copy_from_slice(SIG_DS_MODEL);
+        write_u16(&mut bytes, SEGMENT_COUNT_OFF, 1);
+        write_u16(&mut bytes, SEGMENT_POINTS_OFF, point_count as u16);
+        write_f32(&mut bytes, SEGMENT_START_OFF, 1100.0);
+        write_f32(&mut bytes, SEGMENT_STEP_OFF, 2.0);
+        write_f32(
+            &mut bytes,
+            SEGMENT_END_OFF,
+            1100.0 + 2.0 * (point_count.saturating_sub(1)) as f32,
+        );
+
+        for index in 0..sample_count {
+            let base = DATA_START + stride * index;
+            let sample = format!("SYN{index:04}-00");
+            bytes[base..base + sample.len()].copy_from_slice(sample.as_bytes());
+            bytes[base + PRODUCT_CODE_OFF..base + PRODUCT_CODE_OFF + 4]
+                .copy_from_slice(&(index as i32).to_le_bytes());
+            bytes[base + TIMESTAMP_OFF..base + TIMESTAMP_OFF + 4]
+                .copy_from_slice(&(1_700_000_000u32 + index as u32).to_le_bytes());
+        }
+        bytes
+    }
+
+    fn write_u16(bytes: &mut [u8], offset: usize, value: u16) {
+        bytes[offset..offset + 2].copy_from_slice(&value.to_le_bytes());
+    }
+
+    fn write_f32(bytes: &mut [u8], offset: usize, value: f32) {
+        bytes[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
     }
 }
