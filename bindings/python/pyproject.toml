@@ -8,7 +8,8 @@ version = "0.2.0"
 description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "CeCILL-2.1 OR AGPL-3.0-or-later"
+license-files = ["LICENSE", "LICENSES/*.txt"]
 authors = [{ name = "Gregory Beurier", email = "gregory.beurier@cirad.fr" }]
 dependencies = []
 

@@ -17,7 +17,7 @@ Description: Smaller variant of the 'R' binding for the 'nirs4all-formats'
 SystemRequirements: Cargo (Rust's package manager), rustc
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
-License: MIT + file LICENSE
+License: file LICENSE
 Encoding: UTF-8
 Imports:
     jsonlite
