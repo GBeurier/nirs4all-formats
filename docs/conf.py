@@ -8,6 +8,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.mathjax",
+    "sphinxext.opengraph",
 ]
 
 myst_enable_extensions = [
@@ -56,3 +57,15 @@ exclude_patterns = [
     "dev",
     "reviews",
 ]
+
+html_static_path = ["_static"]
+html_favicon = "_static/brand/favicon.ico"
+
+html_theme_options = {
+    "light_logo": "brand/horizontal.svg",
+    "dark_logo": "brand/horizontal-dark.svg",
+}
+
+# Open Graph / social cards
+ogp_site_url = "https://nirs4all-formats.readthedocs.io/en/latest/"
+ogp_image = "https://nirs4all-formats.readthedocs.io/en/latest/_static/brand/og.png"

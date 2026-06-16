@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/horizontal-dark.svg">
+    <img alt="nirs4all-formats" src="assets/brand/horizontal.svg" width="440">
+  </picture>
+</p>
+
 # nirs4all-formats
 
 Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with

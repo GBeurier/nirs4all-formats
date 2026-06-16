@@ -9,8 +9,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="nirs4all-formats — read spectrometer files in your browser" />
   <meta property="og:description" content="Drag a vendor spectroscopy file. It is decoded locally by the Rust reader registry compiled to WebAssembly. No upload, no server." />
+  <meta property="og:image" content="assets/brand/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="assets/brand/og.png" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d9488'/%3E%3Cpath d='M4 20 Q9 8 13 16 T20 15 T28 11' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="assets/brand/icon.svg" />
+  <link rel="icon" href="assets/brand/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="assets/brand/icon-180.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -64,6 +69,7 @@
     .nav-inner { display:flex; align-items:center; gap:14px; height:62px; }
     .nav-logo { display:flex; align-items:center; gap:11px; font-family:var(--display); font-weight:600; font-size:1.06rem; color:var(--text); margin-right:auto; letter-spacing:-.01em; }
     .nav-logo .mark { width:32px; height:32px; border-radius:9px; flex-shrink:0; box-shadow:0 4px 12px -3px rgba(13,148,136,.5); }
+    .nav-logo-img { height:30px; width:auto; display:block; flex-shrink:0; }
     .nav-logo small { color:var(--text-3); font-family:var(--mono); font-size:.66rem; font-weight:500; letter-spacing:.02em; }
     .nav-links { display:flex; gap:4px; align-items:center; }
     .nav-links a { padding:7px 13px; border-radius:8px; color:var(--text-2); font-size:.86rem; font-weight:500; transition:all .2s; }
@@ -433,8 +439,8 @@
   <nav id="nav">
     <div class="container nav-inner">
       <a class="nav-logo" href="./">
-        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#0d9488"/><path d="M4 21 Q8.5 8 12 16 T18.5 15 T28 10" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>nirs4all-formats <small>· wasm reader</small></span>
+        <img class="nav-logo-img" src="assets/brand/horizontal.svg" alt="nirs4all-formats" height="30" />
+        <small>· wasm reader</small>
       </a>
       <div class="badge"><span class="live-dot"></span> 100% in-browser</div>
       <div class="nav-links">
@@ -534,7 +540,7 @@
     <div class="container">
       <div class="foot-brandbar">
         <a class="foot-brand" href="https://nirs4all.org" target="_blank" rel="noopener">
-          <img class="foot-brand-logo" src="assets/nirs4all_logo.png" alt="nirs4all" width="42" height="42" />
+          <img class="foot-brand-logo" src="assets/brand/icon.svg" alt="nirs4all" width="42" height="42" />
           <span class="foot-brand-txt"><strong>nirs4all.org</strong><small>Open spectroscopy for everyone</small></span>
         </a>
         <div class="foot-inst">

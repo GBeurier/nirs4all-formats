@@ -8,5 +8,6 @@ _shot*.html
 # only meant to drop screenshot artifacts (_shot*.png), not the demo's logos.
 !assets/
 !assets/*.png
+!assets/brand/*.png
 # generated single-file build (large; regenerate with build_standalone.py / CI)
 nirs4all-formats-demo.html
