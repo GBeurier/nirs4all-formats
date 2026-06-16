@@ -44,3 +44,8 @@ asd_reader_*.log
 # agent session scratch
 .claude/
 .codegraph/
+
+# --- untracked build/process docs (kept locally, 2026-06-16) ---
+docs/PLAN.md
+docs/Formats_extract.md
+docs/dev/IMPL_PLAN_2026_05_22.md
