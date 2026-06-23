@@ -22,6 +22,11 @@ jobs:
           python-version: "3.11"
 
       - uses: r-lib/actions/setup-r@v2
+        with:
+          # Serve precompiled Linux binaries from Posit Package Manager so the
+          # spectrolab dependency chain (shiny -> fs/sass/bslib) installs cleanly
+          # instead of failing to build from source.
+          use-public-rspm: true
 
       - name: Install Python reference readers
         run: |
@@ -34,8 +39,11 @@ jobs:
           python -m pip install -r tests/conformance/requirements.txt
 
       - name: Install R spectrolab reference reader
+        # Skip-tolerant: install.packages only warns on failure, so a flaky
+        # install lets the SED/SIG tests skip rather than failing the job. Errors
+        # stay visible (no quiet=TRUE); repos comes from use-public-rspm above.
         run: |
-          Rscript -e 'install.packages(c("spectrolab", "jsonlite"), repos="https://cloud.r-project.org", quiet=TRUE)'
+          Rscript -e 'install.packages(c("spectrolab", "jsonlite"))'
 
       - name: Build nirs4all-formats Python binding
         run: |
