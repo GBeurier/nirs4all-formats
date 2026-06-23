@@ -39,8 +39,11 @@ jobs:
 
       - name: Build nirs4all-formats Python binding
         run: |
-          python -m pip install maturin
-          (cd bindings/python && maturin develop --release --quiet)
+          # `maturin develop` needs an active virtualenv; setup-python is a bare
+          # interpreter, so build+install the PyO3 binding via pip's PEP 517
+          # maturin backend (build isolation pulls maturin) into the same env as
+          # the reference readers above. Mirrors ci.yml.
+          python -m pip install -e "bindings/python[numpy]"
 
       - name: Run conformance suite
         run: |
