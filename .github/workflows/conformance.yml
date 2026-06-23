@@ -26,7 +26,10 @@ jobs:
       - name: Install Python reference readers
         run: |
           python -m pip install --upgrade pip
-          python -m pip install setuptools
+          # spc-spectra's setup.py imports the package (and numpy) at build time
+          # and ships no build-system requirements, so it is installed with
+          # --no-build-isolation against pre-seeded build deps.
+          python -m pip install setuptools wheel numpy
           python -m pip install --no-build-isolation spc-spectra
           python -m pip install -r tests/conformance/requirements.txt
 
