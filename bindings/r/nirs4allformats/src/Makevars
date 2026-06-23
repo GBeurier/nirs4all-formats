@@ -4,6 +4,17 @@
 # (never the user's ~/.cargo / ~/.rustup, per CRAN Policy), and a post-link
 # `rust_clean` rule wipes all Rust build scratch out of the package source so
 # R CMD check --as-cran never scans third-party build artefacts.
+#
+# macOS CRAN farm PATH: cargo lives in ~/.cargo/bin but the macOS check builders
+# run R CMD INSTALL with a PATH that EXCLUDES it (the Linux/Windows farms have
+# cargo on PATH; the macOS ones do not), so the `command -v cargo` guard below
+# fails there and the install errors with "Installation failed" on every macOS
+# flavor while Linux/Windows stay OK. Append the standard rustup bin dir so cargo
+# is found on the macOS farm too; CRAN's "Using Rust" guidance notes the personal
+# ~/.cargo/bin is "often not on the path" and scripts must look for it. Exported so
+# every recipe shell (the guard AND the cargo build) sees it.
+export PATH := $(PATH):$(HOME)/.cargo/bin
+
 TARGET_DIR = $(CURDIR)/rust/target
 LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libnirs4allformats_r.a
