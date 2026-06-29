@@ -39,6 +39,8 @@ pub mod netcdf;
 pub mod nicolet_omnic;
 pub mod numpy;
 pub mod ocean_optics;
+#[cfg(feature = "fmt-openspecy")]
+pub mod openspecy;
 #[cfg(feature = "fmt-parquet")]
 pub mod parquet;
 pub mod perkin_elmer;
@@ -100,6 +102,8 @@ pub use netcdf::NetcdfReader;
 pub use nicolet_omnic::NicoletOmnicReader;
 pub use numpy::NumpyReader;
 pub use ocean_optics::OceanOpticsReader;
+#[cfg(feature = "fmt-openspecy")]
+pub use openspecy::OpenSpecyReader;
 #[cfg(feature = "fmt-parquet")]
 pub use parquet::ParquetReader;
 pub use perkin_elmer::PerkinElmerReader;

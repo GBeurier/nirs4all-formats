@@ -1,0 +1,143 @@
+{
+  "record_count": 3,
+  "records": [
+    {
+      "format": "openspecy-rds",
+      "metadata_keys": [
+        "container",
+        "fields",
+        "format",
+        "modality",
+        "openspecy_class",
+        "spectrum_column",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::openspecy",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 650.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 3500.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "intensity",
+          "role": "intensity",
+          "shape": [
+            6
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.1,
+          "value_last": 0.33,
+          "value_sum": 1.98,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "9bccbffa33805932031f68228b30430c2e19075e317d0c8058a9cfe7ea2aabb3",
+      "target_keys": [
+        "spectrum_identity"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "openspecy-rds",
+      "metadata_keys": [
+        "container",
+        "fields",
+        "format",
+        "modality",
+        "openspecy_class",
+        "spectrum_column",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::openspecy",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 650.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 3500.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "intensity",
+          "role": "intensity",
+          "shape": [
+            6
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.02,
+          "value_last": 0.1,
+          "value_sum": 2.04,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "9bccbffa33805932031f68228b30430c2e19075e317d0c8058a9cfe7ea2aabb3",
+      "target_keys": [
+        "spectrum_identity"
+      ],
+      "warnings": []
+    },
+    {
+      "format": "openspecy-rds",
+      "metadata_keys": [
+        "container",
+        "fields",
+        "format",
+        "modality",
+        "openspecy_class",
+        "spectrum_column",
+        "spectrum_index"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::openspecy",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 650.0,
+          "axis_kind": "wavenumber",
+          "axis_last": 3500.0,
+          "axis_len": 6,
+          "axis_order": "ascending",
+          "axis_unit": "cm-1",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "intensity",
+          "role": "intensity",
+          "shape": [
+            6
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.5,
+          "value_last": 0.99,
+          "value_sum": 3.09,
+          "values_len": 6
+        }
+      ],
+      "source_sha256": "9bccbffa33805932031f68228b30430c2e19075e317d0c8058a9cfe7ea2aabb3",
+      "target_keys": [
+        "spectrum_identity"
+      ],
+      "warnings": []
+    }
+  ]
+}

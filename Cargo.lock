@@ -996,6 +996,7 @@ dependencies = [
  "chrono",
  "flate2",
  "hdf5-reader",
+ "indexmap",
  "lzma-rs",
  "matfile",
  "netcdf-reader",

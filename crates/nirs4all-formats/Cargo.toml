@@ -10,7 +10,7 @@ repository.workspace = true
 [features]
 default = ["formats-all"]
 # Convenience meta-feature enabling every reader.
-formats-all = ["fmt-hdf5", "fmt-matlab", "fmt-parquet"]
+formats-all = ["fmt-hdf5", "fmt-matlab", "fmt-parquet", "fmt-openspecy"]
 # HDF5/NetCDF-backed readers (Hdf5, NetCDF, Allotrope ADF, FGI XML+HDF5).
 # Required by `fmt-matlab` because MATLAB v7.3 files are HDF5 containers.
 # `chrono` powers the ARM MFRSR `time:units` epoch parsing.
@@ -21,6 +21,9 @@ fmt-hdf5 = ["dep:hdf5-reader", "dep:netcdf-reader", "dep:chrono"]
 fmt-matlab = ["dep:matfile", "dep:lzma-rs", "dep:rds2rust", "fmt-hdf5"]
 # Apache Parquet tables produced by NIRS pipelines.
 fmt-parquet = ["dep:parquet", "dep:zstd", "dep:arrow-array", "dep:arrow-schema", "dep:bytes"]
+# OpenSpecy Raman/(FT)IR spectra saved as R `.rds` (gzip/XDR), decoded with the
+# pure-Rust `rds2rust` parser (no R, no shelling out).
+fmt-openspecy = ["dep:rds2rust"]
 
 [dependencies]
 nirs4all-formats-core.workspace = true
@@ -48,3 +51,6 @@ zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
 
 [dev-dependencies]
 tempfile = "3"
+# Used by the OpenSpecy reader's unit tests to build R data.frame fixtures
+# in-memory; matches the `indexmap` version `rds2rust` exposes in `DataFrameData`.
+indexmap = "2"
