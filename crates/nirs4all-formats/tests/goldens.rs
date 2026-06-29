@@ -509,6 +509,10 @@ const CASES: &[(&str, &str)] = &[
         "rdata_prospectr_nirsoil",
         "samples/matlab/prospectr_NIRsoil.RData",
     ),
+    (
+        "openspecy_synthetic_minilib",
+        "samples/openspecy/synthetic_minilib.rds",
+    ),
     ("excel_synthetic_nirs", "samples/excel/synthetic_nirs.xlsx"),
     (
         "excel_synthetic_nirs_xlsm",
@@ -758,9 +762,11 @@ fn requires_trimmed_reader(relative_path: &str) -> bool {
         || p.ends_with(".mat")
         || p.ends_with(".MAT")
         || p.ends_with(".RData");
+    let needs_openspecy = p.ends_with(".rds");
     (needs_hdf5 && cfg!(not(feature = "fmt-hdf5")))
         || (needs_parquet && cfg!(not(feature = "fmt-parquet")))
         || (needs_matlab && cfg!(not(feature = "fmt-matlab")))
+        || (needs_openspecy && cfg!(not(feature = "fmt-openspecy")))
 }
 
 #[test]

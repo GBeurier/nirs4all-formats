@@ -16,6 +16,8 @@ use crate::readers::ExcludedMatlabReader;
 use crate::readers::ExcludedParquetReader;
 #[cfg(feature = "fmt-matlab")]
 use crate::readers::MatlabReader;
+#[cfg(feature = "fmt-openspecy")]
+use crate::readers::OpenSpecyReader;
 #[cfg(feature = "fmt-parquet")]
 use crate::readers::ParquetReader;
 #[cfg(feature = "fmt-hdf5")]
@@ -397,6 +399,8 @@ fn readers() -> Vec<Box<dyn Reader>> {
     readers.push(Box::new(MatlabReader));
     #[cfg(not(feature = "fmt-matlab"))]
     readers.push(Box::new(ExcludedMatlabReader));
+    #[cfg(feature = "fmt-openspecy")]
+    readers.push(Box::new(OpenSpecyReader));
     readers.push(Box::new(NumpyReader));
     #[cfg(feature = "fmt-parquet")]
     readers.push(Box::new(ParquetReader));

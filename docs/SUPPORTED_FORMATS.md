@@ -95,6 +95,7 @@ Cube readers expose pixel selection (rectangular ROI window or an ordered sparse
 | Generic NetCDF NIRS | Vendor-neutral | `.nc`, `.cdf` | Supported (scoped, `fmt-hdf5`) | [netcdf](formats/netcdf.md) |
 | FGI HDF5 + XML | FGI | `.h5` / `.hdf5` + `.xml` | Experimental (`fmt-hdf5`) | [fgi-hdf5-xml](formats/fgi-hdf5-xml.md) |
 | MATLAB MAT / RData | MATLAB / R ecosystem | `.mat`, `.RData` | Supported (scoped, `fmt-matlab`) | [matlab](formats/matlab.md) |
+| OpenSpecy Raman / (FT)IR | OpenSpecy (R) | `.rds` | Supported (scoped, `fmt-openspecy`) | [openspecy](formats/openspecy.md) |
 | Allotrope ASM | Allotrope / Benchling | `.json` | Supported (scoped) | [allotrope-asm](formats/allotrope-asm.md) |
 | Allotrope ADF | Allotrope Foundation | `.adf` | Experimental (`fmt-hdf5`) | [allotrope-adf](formats/allotrope-adf.md) |
 | AnIML | IUPAC / ASTM | `.animl` | Experimental | [animl](formats/animl.md) |
