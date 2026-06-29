@@ -40,8 +40,9 @@ against them out-of-tree.
   `saveRDS()` defaults). `bzip2`/`xz`-compressed `.rds` are not decoded.
 - The legacy single-spectrum form (a `data.frame` with `wavenumber` +
   `intensity` columns) is also accepted.
-- When a very large library comes back from the RDS parser without its
-  `names`/`class` attributes, the three parts are located structurally by shape,
-  so the spectra still load (metadata may then be absent).
+- When a large library omits names/class attributes or stores `metadata` as
+  `NULL`, the three parts are located structurally by shape, so the spectra
+  still load. Per-spectrum identity/modality fields are emitted only when the
+  source RDS actually contains a metadata table.
 - Intensity semantics are reported as `unknown` unless the metadata names them
   via an `intensity_units` field.

@@ -24,11 +24,11 @@
 //!
 //! - The legacy single-spectrum form (a `data.frame` with `wavenumber` and
 //!   `intensity` columns) is also accepted.
-//! - When the container's `names`/`class` attributes are absent (which can
-//!   happen for very large reference libraries), the three parts are located
-//!   structurally by shape, so the spectra still load.
+//! - When the container's `names`/`class` attributes are absent, the three parts
+//!   are located structurally by shape, so the spectra still load.
 //! - `metadata` is optional; records still load (keyed by their column name)
-//!   when it is `NULL` or missing.
+//!   when it is `NULL` or missing. Per-spectrum identities are not fabricated
+//!   when the RDS object does not contain them.
 //!
 //! ## Limitations
 //!
@@ -727,8 +727,7 @@ mod tests {
 
     #[test]
     fn falls_back_to_structural_detection_without_names() {
-        // Bare list [wavenumber, spectra] - no names, no class, no metadata. This
-        // mirrors how very large libraries can come back from the RDS parser.
+        // Bare list [wavenumber, spectra] - no names, no class, no metadata.
         let wavenumber = real(vec![650.0, 1000.0, 1500.0, 2000.0]);
         let spectra = frame(
             vec![
@@ -748,6 +747,28 @@ mod tests {
         );
         assert!(!records[0].metadata.contains_key("fields"));
         assert_eq!(records[0].signal_type, SignalType::Unknown);
+    }
+
+    #[test]
+    fn accepts_null_metadata_slot() {
+        let wavenumber = real(vec![650.0, 1000.0, 1500.0]);
+        let spectra = frame(
+            vec![
+                ("s1", real(vec![0.1, 0.4, 0.8])),
+                ("s2", real(vec![0.0, 0.1, 0.9])),
+            ],
+            3,
+        );
+        let object = RObject::List(vec![wavenumber, spectra, RObject::Null]);
+
+        let records = records_from_openspecy(&object, source(), "rds_gzip").unwrap();
+        assert_eq!(records.len(), 2);
+        assert_eq!(
+            records[1].metadata.get("spectrum_column").unwrap(),
+            &json!("s2")
+        );
+        assert!(!records[0].metadata.contains_key("fields"));
+        assert!(records[0].targets.is_empty());
     }
 
     #[test]

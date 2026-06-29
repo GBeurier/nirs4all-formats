@@ -81,6 +81,7 @@ formats/netcdf
 formats/nicolet-omnic
 formats/numpy
 formats/ocean-optics
+formats/openspecy
 formats/parquet
 formats/perkin-elmer
 formats/pp-systems-unispec

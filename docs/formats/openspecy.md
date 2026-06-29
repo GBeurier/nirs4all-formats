@@ -60,7 +60,7 @@ generic R container), so the OpenSpecy shape is validated on read; a non-OpenSpe
 | Canonical `OpenSpecy` list (gzip RDS) | Supported | `wavenumber` + `spectra` + `metadata`; one record per spectrum. |
 | Canonical `OpenSpecy` list (uncompressed XDR RDS) | Supported | Same mapping, no gzip wrapper. |
 | Legacy single-spectrum `data.frame` (`wavenumber` + `intensity`) | Supported | Emitted as one record. |
-| Attribute-stripped large library | Supported (degraded) | Parts located structurally by shape; spectra load, metadata may be absent. |
+| Attribute-stripped or metadata-free large library | Supported (degraded) | Parts located structurally by shape; spectra load, but metadata is only emitted if present in the RDS object. |
 | `bzip2` / `xz`-compressed `.rds` | Not supported | Only gzip + uncompressed XDR are decoded. |
 
 ## Limitations & known gaps
@@ -69,11 +69,10 @@ generic R container), so the OpenSpecy shape is validated on read; a non-OpenSpe
   XDR). `bzip2`/`xz`-compressed `.rds` files are rejected with a parse error.
 - Intensity semantics are reported as `unknown` unless the metadata names them
   via an `intensity_units` field (mapped to absorbance/transmittance/...).
-- Very large reference libraries (tens of thousands of spectra) can come back
-  from the underlying RDS parser without their `names`/`class` attributes and
-  with a `NULL` `metadata` slot. The spectra and wavenumber axis still load via
-  structural shape detection, so the records remain usable, but per-spectrum
-  metadata (identity, modality) is then unavailable.
+- Some public `nobaseline.rds` exports contain a `NULL` `metadata` slot. The
+  spectra and wavenumber axis still load via structural shape detection, but
+  per-spectrum metadata (identity, modality) cannot be reconstructed from that
+  RDS object alone.
 
 ## Reference readers
 
