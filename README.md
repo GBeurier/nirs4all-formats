@@ -20,6 +20,10 @@ provenance-tracked data model. It does **no** chemometrics or modelling — it
 produces the records that a modelling library such as
 [`nirs4all`](https://github.com/GBeurier/nirs4all) consumes.
 
+Part of the [open-source NIRS tools](https://nirs4all.org/open-source-nirs-tools.html)
+ecosystem: file readers, datasets, methods, browser modelling, reproducible pipelines,
+papers, benchmarks, and release dashboards for near-infrared spectroscopy.
+
 ## Why
 
 - **One API, any format.** `open_path` / `open_bytes` sniff each file by content
