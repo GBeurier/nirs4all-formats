@@ -1,7 +1,7 @@
 [package]
 name = "nirs4all-formats-wasm"
 description = "WebAssembly bindings for nirs4all-formats."
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 license = "CECILL-2.1 OR AGPL-3.0-or-later"
 authors = ["Gregory Beurier <gregory.beurier@cirad.fr>"]
