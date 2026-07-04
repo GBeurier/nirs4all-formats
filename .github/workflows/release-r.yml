@@ -80,7 +80,7 @@ jobs:
       # R CMD check step (the offline INSTALL); the Makevars also passes
       # `cargo build --offline`, so the install build is offline regardless.
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
@@ -131,7 +131,7 @@ jobs:
 
       - name: Upload check artifacts on failure
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: rcheck-${{ matrix.pkg }}-${{ matrix.cfg.label }}
           path: bindings/r/${{ matrix.pkg }}.Rcheck/
@@ -150,7 +150,7 @@ jobs:
           - nirs4allformats
           - nirs4allformatslite
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
@@ -191,7 +191,7 @@ jobs:
           mkdir -p ../../../dist-r
           mv *_*.tar.gz ../../../dist-r/
 
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ${{ matrix.pkg }}-cran-tarball
           path: dist-r/*_*.tar.gz
@@ -211,14 +211,14 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: '*-cran-tarball'
           merge-multiple: true
           path: dist-r/
 
       - name: Upload to the matching Release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
+        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3.0.1
         with:
           files: dist-r/*.tar.gz
           fail_on_unmatched_files: true
