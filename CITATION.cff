@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "nirs4all-formats"
+abstract: >-
+  Low-level Rust readers for ~58 NIRS/spectroscopy file-format families (OPUS, JCAMP, SPC, ASD,
+  ENVI, OpenSpecy, and more), with Python/R/WASM/C bindings; part of the nirs4all ecosystem.
+type: software
+authors:
+  - family-names: Beurier
+    given-names: Gregory
+    email: beurier@cirad.fr
+    affiliation: CIRAD
+repository-code: "https://github.com/GBeurier/nirs4all-formats"
+url: "https://nirs4all.org"
+license:
+  - CECILL-2.1
+  - AGPL-3.0-or-later
+version: "0.2.1"
+keywords:
+  - NIRS
+  - spectroscopy
+  - file-formats
+  - parsers
+  - rust
+  - chemometrics

@@ -1,0 +1,72 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: "ci"
+
+  # Rust: root workspace + the binding crates excluded from the workspace.
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      rust:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+
+  - package-ecosystem: "cargo"
+    directory: "/bindings/wasm"
+    schedule:
+      interval: "weekly"
+    groups:
+      rust-wasm:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+
+  - package-ecosystem: "cargo"
+    directory: "/bindings/python"
+    schedule:
+      interval: "weekly"
+    groups:
+      rust-python:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+
+  - package-ecosystem: "cargo"
+    directory: "/bindings/r/nirs4allformats/src/rust"
+    schedule:
+      interval: "weekly"
+    groups:
+      rust-r:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+
+  - package-ecosystem: "cargo"
+    directory: "/bindings/r/nirs4allformatslite/src/rust"
+    schedule:
+      interval: "weekly"
+    groups:
+      rust-r-lite:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"
+
+  - package-ecosystem: "pip"
+    directory: "/bindings/python"
+    schedule:
+      interval: "weekly"
+    groups:
+      python:
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore"

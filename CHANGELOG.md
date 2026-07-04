@@ -5,6 +5,24 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.1] - 2026-06-29
+
+Consolidates the 0.1.0 → 0.2.1 releases (the CHANGELOG had lagged at `0.1.0-alpha.1`). The reader API
+and `SpectralRecord` shape are stable; this line graduates the project past alpha.
+
+### Added
+- **OpenSpecy RDS reader** (new format family).
+- **R bindings**: `nirs4allformats` LITE/CRAN build (core readers), `nirs4allformats.full` R-universe
+  build, and a self-contained vendored build for off-tree CRAN / R-universe installs.
+- Release machinery: `version-guard`, `version-sync`, and `release-source.yml` (source archive + SBOM +
+  build provenance + checksums); a consolidated `release_process.md`.
+- Privacy-respecting GoatCounter analytics beacon on the demo page.
+
+### Fixed
+- macOS wheel: pin the deployment target (11.0) and the cross-compile Rust target for delocate.
+- Pin `wasm-pack` to a working version (jetli "latest" resolved to a broken build).
+- R test fixtures skip off-tree builds cleanly.
+
 ## [0.1.0-alpha.1] - 2026-06-10
 
 First published release (PyPI + GitHub release).

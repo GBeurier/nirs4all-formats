@@ -46,19 +46,19 @@ jobs:
   build-and-publish:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
 
       # Some wasm deps compile bundled C to wasm32 (zstd-sys / lzma-sys) and need
       # clang; ubuntu-latest ships it (the demo-pages.yml wasm build relies on
       # the same). wasm-pack via the same action the repo already uses.
       - name: Install wasm-pack
-        uses: jetli/wasm-pack-action@v0.4.0
+        uses: jetli/wasm-pack-action@0d096b08b4e5a7de8c28de67e11e945404e9eefa # v0.4.0
         with:
           # PIN the version. `version: latest` is non-deterministic with this
           # action: the v0.1.0 release run resolved it to the ancient v0.9.1,
@@ -68,7 +68,7 @@ jobs:
           # to v0.15.0 succeeded on the same commit).
           version: 'v0.15.0'
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
