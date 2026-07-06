@@ -111,7 +111,7 @@ nio.open_bytes("spectrum.jdx", payload)        # payload: bytes
 ```
 
 ```js
-import init, { openBytes } from "nirs4all-formats-wasm";
+import init, { openBytes } from "@nirs4all/formats-wasm";
 await init();
 openBytes("spectrum.jdx", new Uint8Array(buffer));
 ```

@@ -20,7 +20,7 @@ fi
 echo "▸ generating formats table → demo/formats.json"
 python3 "$here/gen_formats.py"
 
-echo "▸ building nirs4all-formats-wasm (web target) → demo/pkg"
+echo "▸ building @nirs4all/formats-wasm (web target) → demo/pkg"
 wasm-pack build "$repo/bindings/wasm" \
   --target web --release \
   --out-dir "$here/pkg" \

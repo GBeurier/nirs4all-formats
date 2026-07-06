@@ -13,8 +13,9 @@ wasm-pack build bindings/wasm --target web    --release                  # brows
 wasm-pack build bindings/wasm --target nodejs --release --out-dir pkg-node  # Node / Bun
 ```
 
-The output is the `nirs4all-formats-wasm` package: JS glue, the `.wasm` binary and
-generated TypeScript typings.
+The published npm package is `@nirs4all/formats-wasm`. Local `wasm-pack`
+builds still emit JS glue, the `.wasm` binary and generated TypeScript typings
+under `pkg/` / `pkg-node/`.
 
 ## API
 
@@ -44,7 +45,7 @@ probing; pass the whole buffer or just the head.
 
 ```ts
 import init, { version, features, probeBytes, openBytes, openWithSidecars }
-  from "nirs4all-formats-wasm";
+  from "@nirs4all/formats-wasm";
 
 await init();
 console.log(version(), features());

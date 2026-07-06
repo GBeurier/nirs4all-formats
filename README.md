@@ -75,7 +75,7 @@ Allotrope, AnIML, Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 |---|---|---|
 | Python | `nirs4all-formats` (import `nirs4all_formats`) | numpy / pandas / polars / sklearn / torch / xarray / `SpectroDataset` projections. [Docs](docs/bindings/python.md) |
 | R | `nirs4allformats` | matrix, `data.frame`, tibble; native extendr or CLI fallback. [Docs](docs/bindings/r.md) |
-| WebAssembly / JS | `nirs4all-formats-wasm` | in-browser sniffing + decoding (`fmt-hdf5` on). [Docs](docs/bindings/wasm.md) |
+| WebAssembly / JS | `@nirs4all/formats-wasm` | in-browser sniffing + decoding (`fmt-hdf5` on). [Docs](docs/bindings/wasm.md) |
 | C ABI | `nirs4all-formats-capi` | additive C ABI + generated header, the base for further bindings. [Docs](docs/bindings/capi.md) |
 
 ## Installation

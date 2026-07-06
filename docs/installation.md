@@ -95,8 +95,9 @@ wasm-pack build bindings/wasm --target web --release
 wasm-pack build bindings/wasm --target nodejs --release --out-dir pkg-node
 ```
 
-This produces the `nirs4all-formats-wasm` package (JS glue + `.wasm` + TypeScript
-typings) under `bindings/wasm/pkg*`.
+This produces the local JS glue, `.wasm` binary and TypeScript typings under
+`bindings/wasm/pkg*`. Tagged releases publish that surface as
+`@nirs4all/formats-wasm`.
 
 ## C ABI
 
