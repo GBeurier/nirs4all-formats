@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "nirs4all-formats"
-version = "0.2.3"
+version = "0.2.4"
 description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -14,7 +14,7 @@ authors = [{ name = "Gregory Beurier", email = "gregory.beurier@cirad.fr" }]
 dependencies = []
 
 [project.optional-dependencies]
-numpy = ["numpy>=1.24"]
+numpy = ["numpy>=1.24,<2.5"]
 pandas = ["pandas>=2.0"]
 sklearn = ["scikit-learn>=1.3"]
 torch = ["torch>=2.1"]

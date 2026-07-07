@@ -1,6 +1,6 @@
 Package: nirs4allformats.lite
 Title: Read Near-Infrared Spectroscopy and Spectral File Formats (No 'Parquet')
-Version: 0.2.3
+Version: 0.2.4
 Authors@R: person("Gregory", "Beurier", email = "gregory.beurier@cirad.fr", role = c("aut", "cre"))
 Description: Smaller variant of the 'R' binding for the 'nirs4all-formats'
     near-infrared spectroscopy (NIRS) file-loading core written in 'Rust'. When

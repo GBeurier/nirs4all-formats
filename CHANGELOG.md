@@ -5,6 +5,13 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.4] - 2026-07-07
+
+### Fixed
+- Pin the Python `numpy` optional extra below NumPy 2.5 so cibuildwheel's
+  manylinux2014 wheel tests install binary-compatible NumPy wheels instead of
+  attempting to build a newer NumPy sdist with GCC 10.2.
+
 ## [0.2.1] - 2026-06-29
 
 Consolidates the 0.1.0 → 0.2.1 releases (the CHANGELOG had lagged at `0.1.0-alpha.1`). The reader API
