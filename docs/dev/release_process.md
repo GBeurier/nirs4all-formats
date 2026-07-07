@@ -5,17 +5,19 @@ orphan: true
 # Development — Release Process
 
 How each binding of `nirs4all-formats` is versioned, gated, and published. The
-Python wheels + sdist and the source/provenance bundle publish automatically;
-the R (CRAN / R-universe) and JS/WASM (npm) legs are **wired by a follow-up**
-and their manual web-form / scope steps are documented below.
+Python wheels + sdist, Rust crates, npm WASM package, R source tarballs, and
+the source/provenance bundle publish from CI. R-universe registration and any
+CRAN submission remain maintainer-managed registry steps and are documented
+below.
 
 The authoritative build workflow is [`.github/workflows/release.yml`](../../.github/workflows/release.yml);
-the source/SBOM/provenance bundle is [`.github/workflows/release-source.yml`](../../.github/workflows/release-source.yml).
+per-surface publishers live in `release-crates.yml`, `release-npm.yml`,
+`release-r.yml`, and `release-source.yml`.
 
 ## Single source of truth
 
 The canonical version is the **`[workspace.package] version` in the root
-`Cargo.toml`** (Cargo SemVer, currently `0.1.0-alpha.1`).
+`Cargo.toml`** (Cargo SemVer, currently `0.2.4`).
 `scripts/bump_version.sh` propagates it to every binding manifest, translating
 the spelling each ecosystem requires:
 
@@ -41,8 +43,9 @@ bumps **independently** from the Rust semver — see
 | Binding | Package | Registry | Automation | Trigger |
 |---------|---------|----------|------------|---------|
 | Python | `nirs4all-formats` | PyPI | **Automated** — `release.yml` (`python-wheels` cibuildwheel matrix + `python-sdist` maturin) publishes via Trusted Publishing | push tag `v*` (non-pre-release) → PyPI |
-| R | `nirs4allformats` | CRAN / R-universe | **Build CI-automated** — `release.yml` (`r-source` job: `R CMD build`) attaches the tarball to the Release. **CRAN submission is the irreducible manual web form; R-universe is a registry entry.** Wired by the follow-up. | tag push attaches the tarball |
-| JS / WASM | `@nirs4all/formats-wasm` | npm | **Manual today; automated `release-npm.yml` is the follow-up.** WASM module built with `wasm-pack`, published with `npm publish`. | — |
+| Rust crates | `nirs4all-formats-core`, `nirs4all-formats`, `nirs4all-formats-capi`, `nirs4all-formats-cli` | crates.io | **Automated** — `release-crates.yml` publishes leaf-first. | push tag `v*` (non-pre-release) + `CARGO_REGISTRY_TOKEN` |
+| R | `nirs4allformats` / `nirs4allformats.lite` | R-universe / GitHub Release (CRAN deferred) | **Build CI-automated** — `release-r.yml` installs, smokes, builds and attaches source tarballs. R-universe builds from Git once registered; CRAN submission is a manual web form. | tag push attaches the tarballs |
+| JS / WASM | `@nirs4all/formats-wasm` | npm | **Automated** — `release-npm.yml` builds the nodejs package, smokes it and publishes with provenance. | push tag `v*` (non-pre-release) + `NPM_TOKEN` |
 | Source + provenance | — | GitHub Release | **Automated** — `release-source.yml` (reproducible git-archive tar.gz + zip, CycloneDX SBOM, `SHA256SUMS`, keyless Sigstore provenance) | push tag `v*` (non-pre-release) |
 
 ## Exact release artifacts — what each binding ships, and where to upload it
@@ -53,6 +56,7 @@ they are downloadable from one place.
 | Binding | Registry | Exact file(s) | Upload |
 |---|---|---|---|
 | Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64/aarch64 manylinux2014, Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
+| Rust crates | crates.io | the four workspace crates (`nirs4all-formats-core` / `nirs4all-formats` / `nirs4all-formats-capi` / `nirs4all-formats-cli`) | **Automated** — `cargo publish`, leaf-first |
 
 > **macOS binary wheels are deferred for the initial release.** The default
 > `formats-all` feature set links the **system HDF5** (`fmt-hdf5`; `fmt-matlab`
@@ -63,9 +67,8 @@ they are downloadable from one place.
 > which compiles against their own HDF5; Linux + Windows wheels ship the full
 > feature set, and the C-ABI macOS archives (`x86_64`/`aarch64-apple-darwin`)
 > are published on the GitHub Release.
-| R `nirs4allformats` | CRAN | **`nirs4allformats_<version>.tar.gz`** (source tarball) | **Manual** — web form (see *R → CRAN* below) |
-| R `nirs4allformats` | R-universe | — (built from Git, no upload) | **Automated once registered** — registry repo + app (see *R → R-universe*) |
-| JS / WASM `@nirs4all/formats-wasm` | npm | the staged `pkg/` package (via `npm publish`) | **Manual today** — `release-npm.yml` is the follow-up (needs `NPM_TOKEN`) |
+| R `nirs4allformats` / `nirs4allformats.lite` | R-universe / GitHub Release | **`nirs4allformats_<version>.tar.gz`** and **`nirs4allformats.lite_<version>.tar.gz`** | **Automated to the Release**; R-universe builds from Git once registered |
+| JS / WASM `@nirs4all/formats-wasm` | npm | the staged `pkg-node/` package (via `npm publish`) | **Automated** — `release-npm.yml` (needs `NPM_TOKEN`) |
 | Source + provenance | GitHub Release | `nirs4all-formats-<version>-src.tar.gz` · `…-src.zip` · `nirs4all-formats-<version>.cdx.json` (SBOM) · `SHA256SUMS` | **Automated** — `release-source.yml` |
 
 **For R/CRAN, upload the source `.tar.gz` only** — never a binary, the GitHub
@@ -103,7 +106,7 @@ Run these before tagging or publishing anything:
 **excluded from publishing**: both the `publish-pypi` and `github-release` jobs
 gate on `!contains(github.ref_name, '-')`, matching the nirs4all-methods
 convention, so a pre-release never reaches PyPI or cuts a public Release. To
-publish the current alpha to PyPI, tag it with the PEP 440 spelling
+publish a prerelease to PyPI, tag it with the PEP 440 spelling
 (`v0.1.0a1`) — the `publish-pypi` job validates that the tag minus `v` equals
 the built wheel/sdist version (`X.Y.Z[aN|bN|rcN]`).
 
@@ -132,14 +135,13 @@ also gated on `github.event_name != 'workflow_dispatch'`.
 > token carries an `environment: pypi` claim — the Trusted Publisher MUST be
 > created with **Environment = `pypi`** (same as nirs4all-methods'
 > `release-wheels.yml`). A publisher whose Environment field differs (blank or
-> anything else) fails with `invalid-publisher`. Because the project does not
-> exist on PyPI yet, create this as a **pending publisher** (same form, at the
-> URL above). **One convention across the whole ecosystem: Environment = `pypi`.**
+> anything else) fails with `invalid-publisher`. Existing project publishers
+> must still use **Environment = `pypi`**.
 
-### JS → npm (`@nirs4all/formats-wasm`) — follow-up
+### JS → npm (`@nirs4all/formats-wasm`)
 
-The npm leg (`release-npm.yml`) is **wired by the follow-up**. Manual build +
-publish until then:
+The npm leg (`release-npm.yml`) builds and publishes the package on
+non-prerelease `vX.Y.Z` tags. For local dry-runs or manual validation:
 
 ```bash
 # 0. Gate: scripts/bump_version.sh --check (syncs bindings/wasm/Cargo.toml).
@@ -148,11 +150,9 @@ cd bindings/wasm/pkg
 npm publish --access public      # scoped public package; needs npm login + 2FA
 ```
 
-One-time: own the `@nirs4all` scope on [npmjs.com](https://www.npmjs.com)
-(*Add Organization* → create the free org `nirs4all`), and — for the automated
-`release-npm.yml` — generate a granular **Automation** token with read+write on
-the `@nirs4all/formats-wasm` package and add it as the GitHub Actions secret
-`NPM_TOKEN`.
+One-time: own the `@nirs4all` scope on [npmjs.com](https://www.npmjs.com) and
+add a granular **Automation** token with read+write on
+`@nirs4all/formats-wasm` as the GitHub Actions secret `NPM_TOKEN`.
 
 ### Complete (default) vs lite (no Parquet) — two packages, one core
 
@@ -176,7 +176,7 @@ build a Parquet file returns a clean R error naming the complete package
 `nirs4allformats`, not the generic "unsupported format". The complete build keeps
 the default features and so vendors the full closure.
 
-### R → R-universe (registration) — follow-up
+### R → R-universe (registration)
 
 R-universe builds binaries (Windows/macOS/Linux) straight from Git — no review,
 no submission. Users then

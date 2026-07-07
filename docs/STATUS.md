@@ -1,6 +1,6 @@
 # Project Status
 
-Last updated: 2026-06-10.
+Last updated: 2026-07-07.
 
 > 2026-06-10 — **FOSS DS-series native `.nir` support** added to the `foss_winisi`
 > reader. The DS2500 and DS3 F benches emit the same binary container as the
@@ -56,14 +56,11 @@ Last updated: 2026-06-10.
 
 ## Current Checkpoint
 
-Phase 0 is complete and Phase 1 has started:
-
-- format inventory and fixture corpus already exist;
-- Rust workspace is scaffolded and pushed to GitHub;
-- Python and R binding skeletons exist;
-- reverse-engineering helper package exists;
-- GitHub Actions and RTD configuration exist;
-- first native Rust readers are implemented and tested on committed samples.
+V1 RC status: package manifests are at `0.2.4`, with Python, Rust, WASM, R,
+C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
+publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
+R-universe can lag until its from-Git rebuild catches up. The reader matrix below
+is the current implementation surface, not the old Phase 0/Phase 1 scaffold.
 
 Experimental native readers:
 
@@ -274,7 +271,8 @@ In-memory reads:
   `roteiro-gis/netcdf-rust` PR #46, pulled via a pinned `[patch.crates-io]`
   in `bindings/wasm/Cargo.toml` until `hdf5-reader` 0.5.1 ships), so the
   HDF5-backed sidecar formats (FGI XML+HDF5, NetCDF MFRSR) decode under
-  WASM too. `fmt-matlab` / `fmt-parquet` stay off.
+  WASM too. `fmt-matlab` and `fmt-parquet` are now enabled in the default
+  WASM build.
 
 Python bridge — native PyO3 extension `nirs4all_formats._native` built with
 maturin (mixed `python/` + `src/` layout). Falls back to the CLI subprocess
@@ -301,13 +299,12 @@ CLI when the native symbols are absent:
   `nirs4allformats_probe_path`, `nirs4allformats_walk_path`;
 - `matrix`, `data.frame` and optional tibble conversion.
 
-JS / WebAssembly bridge — new `bindings/wasm/` crate built with `wasm-pack`
-for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`
-on (pure-Rust HDF5/NetCDF decoders) and `fmt-matlab` / `fmt-parquet` off,
-and exposes:
+JS / WebAssembly bridge — `bindings/wasm/` crate built with `wasm-pack`
+for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
+`fmt-matlab` and `fmt-parquet` on by default, and exposes:
 
-- `version()`, `features()` (reports `{ hdf5: true, matlab: false,
-  parquet: false }`);
+- `version()`, `features()` (reports `{ hdf5: true, matlab: true,
+  parquet: true }`);
 - `probeBytes(filename, Uint8Array)` returning the ordered candidate readers;
 - `openBytes(filename, Uint8Array)` returning the decoded `SpectralRecord`
   list for every single-file reader, including single-file HDF5/NetCDF.

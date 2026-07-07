@@ -26,9 +26,11 @@ jobs, so it can be used as a dry-run before tagging.
 1. Bump the workspace version in `Cargo.toml` (and `bindings/python/pyproject.toml`).
 2. Update `docs/STATUS.md` "Last Green Gate" with the release tag.
 3. Verify the green gate locally (cargo fmt, test, clippy, sphinx, bindings).
-4. Commit, then tag: `git tag v0.1.0 && git push --tags`.
-5. CI runs the four build jobs, then publishes to PyPI and the GitHub
-   release if all wheels succeed.
+4. Commit, then tag: `git tag vX.Y.Z && git push --tags`.
+5. CI runs the build/publish fan-out. Python publishes to PyPI, Rust crates
+   publish to crates.io, WASM publishes to npm, R source tarballs attach to the
+   GitHub Release/R-universe flow, and the GitHub Release receives the built
+   artifacts when the registry jobs succeed.
 
 ## Dry-run flow
 

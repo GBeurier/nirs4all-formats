@@ -107,11 +107,11 @@ support in-memory reads" string.
 
 ### WASM HDF5 support (F3, resolved 2026-05-25)
 
-`fmt-hdf5` is now on by default in `bindings/wasm/Cargo.toml`, so the
-WASM binding decodes generic HDF5, FGI XML+HDF5, NetCDF MFRSR (with its
-QC YAML sidecar) and Allotrope ADF. The `features()` JS export reports
-`{ hdf5: true, matlab: false, parquet: false }`; `fmt-matlab` and
-`fmt-parquet` stay off (no wasm-side need yet).
+`fmt-hdf5`, `fmt-matlab` and `fmt-parquet` are now on by default in
+`bindings/wasm/Cargo.toml`, so the WASM binding decodes generic HDF5, FGI
+XML+HDF5, NetCDF MFRSR (with its QC YAML sidecar), Allotrope ADF, MATLAB and
+Parquet fixtures. The `features()` JS export reports
+`{ hdf5: true, matlab: true, parquet: true }`.
 
 This was previously blocked because `hdf5-reader` 0.5.0 declared
 `read_exact_at` only under `#[cfg(unix)]` / `#[cfg(windows)]` while

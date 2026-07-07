@@ -11,7 +11,7 @@ Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
 stable Python / R / WebAssembly / C bindings and conformance checks against
 reference loaders.
 
-> **Status:** active alpha (`0.1.0-alpha.1`). Over 40 native readers across ~58
+> **Status:** V1 RC release train (`0.2.4`). Over 40 native readers across ~58
 > format families are implemented and tested on a committed fixture corpus;
 > APIs are stable in shape but may still change before 1.0.
 
@@ -83,12 +83,13 @@ Allotrope, AnIML, Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 ```bash
 pip install nirs4all-formats            # Python 3.10+ (extras: numpy,pandas,sklearn,torch)
 cargo add nirs4all-formats              # Rust
-R CMD INSTALL bindings/r/nirs4allformats  # R
+install.packages("nirs4allformats", repos = c("https://gbeurier.r-universe.dev", getOption("repos")))  # R
 ```
 
 > **R users — install the prebuilt binary from R-universe.** This package is
-> distributed via R-universe rather than CRAN (its full Arrow/Parquet/HDF5/zstd
-> reader closure exceeds CRAN's 5 MB source-tarball limit):
+> distributed via R-universe and GitHub Release assets rather than CRAN. The
+> R-universe binary can lag the latest tag until its rebuild catches up, so use
+> the GitHub Release source tarball when an exact RC version is required:
 >
 > ```r
 > install.packages("nirs4allformats", repos = c("https://gbeurier.r-universe.dev", getOption("repos")))
