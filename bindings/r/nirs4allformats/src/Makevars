@@ -28,6 +28,7 @@ PKG_CFLAGS = -I$(CURDIR)/rust/src
 # rust/vendor tree is extracted from vendor.tar.xz so the build is fully OFFLINE
 # and never reaches the network either.
 CARGOTMP = $(CURDIR)/.cargo
+LIBRSYS_BINDINGS_PATH = $(CURDIR)/rust/libR-sys-bindings
 
 # `all` links the SHLIB, THEN runs rust_clean (which depends on $(SHLIB), so it
 # is sequenced last). rust_clean removes the whole target/ + CARGOTMP + the
@@ -64,6 +65,7 @@ $(STATLIB):
 	# defaults to every logical CPU on the build machine.
 	export CARGO_HOME="$(CARGOTMP)" && \
 	export CARGO_TARGET_DIR="$(TARGET_DIR)" && \
+	export LIBRSYS_BINDINGS_PATH="$(LIBRSYS_BINDINGS_PATH)" && \
 	if [ -f rust/vendor.tar.xz ]; then \
 		[ -d rust/vendor ] || ( echo "extracting rust/vendor.tar.xz"; cd rust && tar xJf vendor.tar.xz ); \
 		cd rust && cargo build --release -j 2 --offline \
