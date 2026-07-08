@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Quality gates — nirs4all-formats
 
 A Rust workspace (the reader core) with Python / R / WASM / C bindings. Parsers live only in Rust.

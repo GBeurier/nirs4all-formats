@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Repository audit — nirs4all-formats
 
 > Generated from the automated pre-release audit (workflow wf_1fc87351-29f); the **Deepest hardening roadmap** section records the fullest realistic hardening even where the pragmatic pass does not implement it. Reviewed at Codex Gate 1.
@@ -77,7 +81,7 @@ nirs4all-formats is a mature, release-ready Rust-first parser library with an un
 | low | repo-weight | Large binary fixtures are tracked in git (samples_local.tar.gz.enc 47MB, samples/raman_witec/Sa4.wip 19MB, multiple 5-9MB cubes) inflating clone size; not Git-LFS managed. |
 
 ## Security
-- **info** — No plausible real secrets found in tracked source (crates/bindings/src/tools/scripts). All token references are ${{ secrets.* }} in workflows (CARGO_REGISTRY_TOKEN, NPM_TOKEN) or gitignored (samples_local.key).
+- **info** — No plausible real secrets found in tracked source (crates/bindings/src/tools/scripts). All token references are `${{ secrets.* }}` in workflows (CARGO_REGISTRY_TOKEN, NPM_TOKEN) or gitignored (samples_local.key).
 - **low** — PyPI publish uses OIDC trusted publishing with an environment: pypi gate (good). But the pypi environment is not shown to have required reviewers/branch protection here; combined with tag-pinned (non-SHA) actions this is the main residual supply-chain exposure.
 - **info** — samples_local.tar.gz.enc (46MB encrypted corpus) is committed; passphrase samples_local.key is gitignored. Encryption-at-rest is fine, but a committed encrypted blob means a future key leak retroactively exposes non-redistributable/license-restricted fixtures. Confirm the AES scheme in scripts/samples_local_crypt.sh is authenticated.
 - **info** — docs/SECURITY.md correctly states the threat model (parsing untrusted binary files, fail-closed, bound reads/decompression, reject path traversal/symlinks) — appropriate for a parser library; ensure fuzzing/adversarial coverage backs these claims (tests/adversarial/ exists).

@@ -21,7 +21,7 @@ under `pkg/` / `pkg-node/`.
 
 | Function | Signature | Returns |
 |---|---|---|
-| `version()` | `() => string` | Crate version, e.g. `"0.2.4"`. |
+| `version()` | `() => string` | Crate version, e.g. `"0.2.6"`. |
 | `features()` | `() => { hdf5: boolean, matlab: boolean, parquet: boolean }` | Which format features this bundle was compiled with. |
 | `probeBytes(filename, bytes)` | `(string, Uint8Array) => Probe[]` | Ordered candidate readers (best first). |
 | `openBytes(filename, bytes)` | `(string, Uint8Array) => SpectralRecord[]` | Decoded records (single-file formats). |

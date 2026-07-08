@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Release checklist — nirs4all-formats
 
 **Multi-registry, immutable fan-out.** A `vX.Y.Z` tag drives `release.yml` (+ `release-crates/npm/r/source`)

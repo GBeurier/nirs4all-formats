@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Codex Gate 3 — main diff review (nirs4all-formats)
 
 **Reviewer:** Codex CLI 0.142.5 — `codex exec review --uncommitted`, 2026-07-04 (background, long budget).

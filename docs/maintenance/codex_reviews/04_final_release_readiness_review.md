@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Codex Gate 4 — final release-readiness (nirs4all-formats)
 
 Consolidated into the ecosystem-level **Gate 5**. Per-repo Codex effort was concentrated on **Gate 3**

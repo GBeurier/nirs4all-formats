@@ -1,3 +1,7 @@
+---
+orphan: true
+---
+
 # Final hardening report — nirs4all-formats
 
 **Date:** 2026-07-04 · **Branch:** `main` · **Operator:** Claude (Opus 4.8) · **Reviewer:** Codex CLI 0.142.5

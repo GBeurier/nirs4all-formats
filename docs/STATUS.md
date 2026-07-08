@@ -56,7 +56,7 @@ Last updated: 2026-07-07.
 
 ## Current Checkpoint
 
-V1 RC status: package manifests are at `0.2.4`, with Python, Rust, WASM, R,
+V1 RC status: package manifests are at `0.2.6`, with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
 R-universe can lag until its from-Git rebuild catches up. The reader matrix below
