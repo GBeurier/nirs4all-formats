@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "nirs4all-formats"
-version = "0.2.4"
+version = "0.2.5"
 description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
