@@ -828,13 +828,11 @@ fn decode_single_peak_line(
     let mut numeric_iter = numeric_tokens.into_iter();
     for field in fields {
         match field {
-            PeakField::X => match numeric_iter.next() {
-                Some(value) => {
-                    peak.x = value * xfactor;
-                    have_x = true;
-                }
-                None => return None,
-            },
+            PeakField::X => {
+                let value = numeric_iter.next()?;
+                peak.x = value * xfactor;
+                have_x = true;
+            }
             PeakField::Y => {
                 if let Some(value) = numeric_iter.next() {
                     peak.y = Some(value * yfactor);
