@@ -9,7 +9,7 @@ crate-type = ["staticlib"]
 name = "nirs4allformats_r"
 
 [dependencies]
-extendr-api = { version = "0.7", default-features = false }
+extendr-api = { version = "0.9", default-features = false }
 # LITE build: full MINUS Parquet. `default-features = false` drops the facade's
 # `formats-all` meta-feature; the explicit `fmt-hdf5` + `fmt-matlab` features then
 # re-enable the HDF5/netCDF and MATLAB readers, while `fmt-parquet` stays OFF so
