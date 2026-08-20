@@ -354,7 +354,12 @@ fn rdata_matrix_axis(
     columns
         .iter()
         .map(|value| {
-            value.as_ref().parse::<f64>().map_err(|error| {
+            let value = value.as_ref().ok_or_else(|| {
+                Error::InvalidRecord(format!(
+                    "prospectr NIRsoil {context} wavelength label is missing"
+                ))
+            })?;
+            value.parse::<f64>().map_err(|error| {
                 Error::InvalidRecord(format!(
                     "prospectr NIRsoil wavelength label {value:?} is not numeric: {error}"
                 ))

@@ -380,7 +380,10 @@ fn find_scale(
             if excluded_scale_id == Some(dataset.name()) {
                 continue;
             }
-            if dataset.ndim() == 1 && dataset.num_elements() == axis_len as u64 {
+            let element_count = dataset.num_elements().map_err(|error| {
+                Error::InvalidRecord(format!("ADF scale element count error: {error}"))
+            })?;
+            if dataset.ndim() == 1 && element_count == axis_len as u64 {
                 let axis_semantics = semantics.scales.get(dataset.name());
                 let (unit, kind) = axis_semantics
                     .map(|semantics| axis_mapping_for_component(&semantics.component_type))
