@@ -302,9 +302,10 @@ fn as_container(object: &RObject) -> Option<Container<'_>> {
             let elements = list_elements(object)?;
             let names = names_from(attribute(attributes, "names"), elements.len());
             let class = match attribute(attributes, "class") {
-                Some(RObject::Character(VectorData::Owned(values))) => {
-                    values.iter().map(|v| v.to_string()).collect()
-                }
+                Some(RObject::Character(VectorData::Owned(values))) => values
+                    .iter()
+                    .filter_map(|value| value.as_ref().map(ToString::to_string))
+                    .collect(),
                 _ => Vec::new(),
             };
             Some(Container {
@@ -489,12 +490,10 @@ fn names_from(names: Option<&RObject>, len: usize) -> Vec<Option<String>> {
             let mut out: Vec<Option<String>> = values
                 .iter()
                 .map(|value| {
-                    let s = value.to_string();
-                    if s.is_empty() {
-                        None
-                    } else {
-                        Some(s)
-                    }
+                    value.as_ref().and_then(|value| {
+                        let value = value.to_string();
+                        (!value.is_empty()).then_some(value)
+                    })
                 })
                 .collect();
             out.resize(len, None);
@@ -578,6 +577,7 @@ fn cell_value(column: &RObject, index: usize) -> Value {
     match column {
         RObject::Character(VectorData::Owned(values)) => values
             .get(index)
+            .and_then(|value| value.as_ref())
             .map(|value| {
                 let s = value.to_string();
                 // R serialises NA character as the literal "NA"; treat empty as null.
@@ -623,6 +623,7 @@ fn cell_value(column: &RObject, index: usize) -> Value {
                     None
                 }
             })
+            .and_then(|level| level.as_ref())
             .map(|level| json!(level.to_string()))
             .unwrap_or(Value::Null),
         _ => Value::Null,
@@ -641,12 +642,14 @@ mod tests {
 
     fn chr(values: &[&str]) -> RObject {
         RObject::Character(VectorData::Owned(
-            values.iter().map(|s| Arc::from(*s)).collect(),
+            values.iter().map(|s| Some(Arc::from(*s))).collect(),
         ))
     }
 
-    fn row_names(n: usize) -> Vec<Arc<str>> {
-        (1..=n).map(|i| Arc::from(i.to_string().as_str())).collect()
+    fn row_names(n: usize) -> Vec<Option<Arc<str>>> {
+        (1..=n)
+            .map(|i| Some(Arc::from(i.to_string().as_str())))
+            .collect()
     }
 
     fn frame(columns: Vec<(&str, RObject)>, rows: usize) -> RObject {

@@ -672,7 +672,11 @@ fn block_payload<'a>(bytes: &'a [u8], block: &WdfBlock) -> &'a [u8] {
 fn sha256_hex(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);
-    format!("{:x}", hasher.finalize())
+    hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 #[derive(Default)]

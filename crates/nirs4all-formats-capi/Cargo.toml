@@ -15,4 +15,4 @@ nirs4all-formats.workspace = true
 serde_json.workspace = true
 
 [build-dependencies]
-cbindgen = "0.27"
+cbindgen = "0.29"

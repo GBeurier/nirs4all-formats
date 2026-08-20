@@ -6,7 +6,7 @@
 use std::path::PathBuf;
 use std::sync::Arc;
 
-use extendr_api::prelude::*;
+use extendr_api::{prelude::*, Result as RResult};
 use nirs4all_formats::{
     open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
     walk_path, CubeMask, CubeWindow, InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions,
@@ -36,7 +36,7 @@ fn unwrap_or_throw<T, E: std::fmt::Display>(result: std::result::Result<T, E>) -
 /// Probe a file and return the JSON candidates.
 /// @export
 #[extendr]
-fn nirs4allformats_native_probe(path: &str) -> Result<String> {
+fn nirs4allformats_native_probe(path: &str) -> RResult<String> {
     let probes = unwrap_or_throw(probe_path(path));
     to_string(&probes)
 }
@@ -52,7 +52,7 @@ fn nirs4allformats_native_read(
     rows: Nullable<Integers>,
     cols: Nullable<Integers>,
     pixels: Nullable<RMatrix<i32>>,
-) -> Result<String> {
+) -> RResult<String> {
     let rows_opt = window_from_integers(rows, "rows")?;
     let cols_opt = window_from_integers(cols, "cols")?;
     let pixels_opt = pixels_from_matrix(pixels)?;
@@ -71,7 +71,7 @@ fn nirs4allformats_native_read_bytes(
     rows: Nullable<Integers>,
     cols: Nullable<Integers>,
     pixels: Nullable<RMatrix<i32>>,
-) -> Result<String> {
+) -> RResult<String> {
     let rows_opt = window_from_integers(rows, "rows")?;
     let cols_opt = window_from_integers(cols, "cols")?;
     let pixels_opt = pixels_from_matrix(pixels)?;
@@ -93,7 +93,7 @@ fn nirs4allformats_native_read_with_sidecars(
     rows: Nullable<Integers>,
     cols: Nullable<Integers>,
     pixels: Nullable<RMatrix<i32>>,
-) -> Result<String> {
+) -> RResult<String> {
     let rows_opt = window_from_integers(rows, "rows")?;
     let cols_opt = window_from_integers(cols, "cols")?;
     let pixels_opt = pixels_from_matrix(pixels)?;
@@ -119,7 +119,7 @@ fn nirs4allformats_native_walk(
     include_hidden: bool,
     follow_symlinks: bool,
     include_unsupported: bool,
-) -> Result<String> {
+) -> RResult<String> {
     let max_depth = match max_depth {
         Nullable::NotNull(depth) if depth >= 0 => Some(depth as usize),
         Nullable::NotNull(_) => return Err(Error::Other("max_depth must be >= 0".into())),
@@ -163,31 +163,32 @@ fn nirs4allformats_native_walk(
 fn window_from_integers(
     value: Nullable<Integers>,
     label: &str,
-) -> Result<Option<(usize, Option<usize>)>> {
+) -> RResult<Option<(usize, Option<usize>)>> {
     let Nullable::NotNull(values) = value else {
         return Ok(None);
     };
     if values.len() != 2 {
         return Err(Error::Other(format!("{label} must have length 2")));
     }
-    let start = values[0].inner();
+    let start = Option::<i32>::from(values[0])
+        .ok_or_else(|| Error::Other(format!("{label} start must not be NA")))?;
     let end = values[1];
     if start < 0 {
         return Err(Error::Other(format!("{label} start must be >= 0")));
     }
-    let end_opt = if end.is_na() {
-        None
-    } else {
-        let e = end.inner();
-        if e < 0 {
-            return Err(Error::Other(format!("{label} end must be >= 0")));
+    let end_opt = match Option::<i32>::from(end) {
+        None => None,
+        Some(e) => {
+            if e < 0 {
+                return Err(Error::Other(format!("{label} end must be >= 0")));
+            }
+            Some(e as usize)
         }
-        Some(e as usize)
     };
     Ok(Some((start as usize, end_opt)))
 }
 
-fn pixels_from_matrix(matrix: Nullable<RMatrix<i32>>) -> Result<Option<Vec<(usize, usize)>>> {
+fn pixels_from_matrix(matrix: Nullable<RMatrix<i32>>) -> RResult<Option<Vec<(usize, usize)>>> {
     let Nullable::NotNull(matrix) = matrix else {
         return Ok(None);
     };
@@ -216,7 +217,7 @@ fn build_options(
     rows: Option<(usize, Option<usize>)>,
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
-) -> Result<ReadOptions> {
+) -> RResult<ReadOptions> {
     let has_window = rows.is_some() || cols.is_some();
     let has_mask = pixels.is_some();
     if has_window && has_mask {

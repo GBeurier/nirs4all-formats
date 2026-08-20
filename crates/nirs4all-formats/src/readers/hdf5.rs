@@ -354,7 +354,10 @@ fn find_axis_dataset(
         if dataset.ndim() != 1 {
             continue;
         }
-        let axis_len = usize::try_from(dataset.num_elements())
+        let element_count = dataset
+            .num_elements()
+            .map_err(|error| Error::InvalidRecord(format!("HDF5 axis dimension error: {error}")))?;
+        let axis_len = usize::try_from(element_count)
             .map_err(|_| Error::InvalidRecord("HDF5 axis dimension is too large".to_string()))?;
         if let Some(layout) = infer_spectra_layout(rows, cols, axis_len) {
             return Ok(Some(((*name).to_string(), dataset, layout)));
@@ -422,13 +425,16 @@ fn target_columns(
     let mut targets = Vec::new();
     for dataset in datasets {
         let name = dataset.name();
+        let element_count = dataset.num_elements().map_err(|error| {
+            Error::InvalidRecord(format!("HDF5 target dimension error: {error}"))
+        })?;
         if spectra_names
             .iter()
             .any(|spectra_name| spectra_name == name)
             || name == axis_name
             || is_axis_dataset_name(name)
             || dataset.ndim() != 1
-            || dataset.num_elements() != sample_count as u64
+            || element_count != sample_count as u64
         {
             continue;
         }
@@ -673,7 +679,7 @@ fn attribute_value(attribute: &Attribute) -> Option<Value> {
             return Some(json!(values));
         }
     }
-    if attribute.num_elements() == 1 {
+    if attribute.num_elements().ok() == Some(1) {
         if let Ok(value) = attribute.read_as_f64() {
             return Some(json!(value));
         }

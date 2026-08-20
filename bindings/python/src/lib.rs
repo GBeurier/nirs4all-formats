@@ -4,7 +4,7 @@
 //! the CLI. Records are returned as plain Python dict/list trees that mirror
 //! the JSON shape produced by `nirs4all-formats read-json`.
 
-// Triggered by the `#[pyfunction]` macro expansion in pyo3 0.22.
+// Triggered by the `#[pyfunction]` macro expansion in PyO3.
 #![allow(clippy::useless_conversion)]
 
 use std::collections::HashMap;
@@ -62,10 +62,10 @@ fn build_options(
 /// Probe a file and return JSON-like candidates ordered by confidence.
 #[pyfunction]
 #[pyo3(name = "probe_path", text_signature = "(path)")]
-fn py_probe_path(py: Python<'_>, path: PathBuf) -> PyResult<PyObject> {
+fn py_probe_path(py: Python<'_>, path: PathBuf) -> PyResult<Py<PyAny>> {
     let probes = probe_path(&path).map_err(map_err)?;
     let value = to_json(probes)?;
-    Ok(pythonize(py, &value).map_err(map_err)?.into())
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 /// Read a file and return JSON-like records.
@@ -87,11 +87,11 @@ fn py_open_path(
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
     single_record: bool,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let options = build_options(rows, cols, pixels, single_record)?;
     let records = open_path_with_options(&path, &options).map_err(map_err)?;
     let value = to_json(records)?;
-    Ok(pythonize(py, &value).map_err(map_err)?.into())
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 /// Read raw bytes through the native registry. `name` is the input file name
@@ -113,11 +113,11 @@ fn py_open_bytes(
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
     single_record: bool,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let options = build_options(rows, cols, pixels, single_record)?;
     let records = open_bytes_with_options(&name, bytes, &options).map_err(map_err)?;
     let value = to_json(records)?;
-    Ok(pythonize(py, &value).map_err(map_err)?.into())
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 /// Read raw bytes plus a mapping of relative sidecar names to byte
@@ -140,7 +140,7 @@ fn py_open_with_sidecars(
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
     single_record: bool,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let options = build_options(rows, cols, pixels, single_record)?;
     let mut map = InMemorySidecars::new();
     for (key, value) in sidecars {
@@ -150,7 +150,7 @@ fn py_open_with_sidecars(
     let records =
         open_with_sidecars_and_options(&name, bytes, resolver, &options).map_err(map_err)?;
     let value = to_json(records)?;
-    Ok(pythonize(py, &value).map_err(map_err)?.into())
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 /// Walk a directory or file and return one entry per visited file.
@@ -186,7 +186,7 @@ fn py_walk_path(
     cols: Option<(usize, Option<usize>)>,
     pixels: Option<Vec<(usize, usize)>>,
     single_record: bool,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let read_options = build_options(rows, cols, pixels, single_record)?;
     let options = WalkOptions {
         max_depth,
@@ -222,7 +222,7 @@ fn py_walk_path(
         })
         .collect();
     let value = serde_json::Value::Array(payload);
-    Ok(pythonize(py, &value).map_err(map_err)?.into())
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 #[pymodule]
@@ -235,7 +235,7 @@ fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
 
     // Constants surfacing the underlying library facilities.
-    let formats = PyDict::new_bound(m.py());
+    let formats = PyDict::new(m.py());
     formats.set_item("native", true)?;
     m.add("BACKEND", formats)?;
     Ok(())
