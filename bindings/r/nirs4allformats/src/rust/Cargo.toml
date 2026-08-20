@@ -9,7 +9,7 @@ crate-type = ["staticlib"]
 name = "nirs4allformats_r"
 
 [dependencies]
-extendr-api = { version = "0.7", default-features = false }
+extendr-api = { version = "0.9", default-features = false }
 # COMPLETE / DEFAULT build: every reader. The facade's default features
 # (`formats-all`) pull in fmt-hdf5/fmt-matlab/fmt-parquet (Arrow/Parquet,
 # HDF5/netCDF, MATLAB + xz codecs). This is the canonical package

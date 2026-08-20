@@ -269,10 +269,15 @@ impl SourceFile {
     pub fn from_bytes(path: impl AsRef<Path>, bytes: &[u8], role: impl Into<String>) -> Self {
         let mut hasher = Sha256::new();
         hasher.update(bytes);
+        let sha256 = hasher
+            .finalize()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect();
         Self {
             path: path.as_ref().to_string_lossy().into_owned(),
             archive: None,
-            sha256: format!("{:x}", hasher.finalize()),
+            sha256,
             role: role.into(),
         }
     }
@@ -354,6 +359,15 @@ mod tests {
         let axis = SpectralAxis::new(vec![9000.0, 8500.0, 8000.0], "cm-1", AxisKind::Wavenumber)
             .expect("axis");
         assert_eq!(axis.order, AxisOrder::Descending);
+    }
+
+    #[test]
+    fn source_file_hashes_bytes_as_lowercase_hex() {
+        let source = SourceFile::from_bytes("sample.dat", b"abc", "primary");
+        assert_eq!(
+            source.sha256,
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        );
     }
 
     #[test]

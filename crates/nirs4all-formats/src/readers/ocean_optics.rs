@@ -459,7 +459,10 @@ fn verify_procspec_signature(
         warnings.push("ocean_optics_procspec_signature_missing_hash".to_string());
         return "missing_hash".to_string();
     };
-    let actual = format!("{:x}", Sha512::digest(xml_bytes));
+    let actual = Sha512::digest(xml_bytes)
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
     if actual.eq_ignore_ascii_case(&expected) {
         "verified".to_string()
     } else {

@@ -143,7 +143,11 @@ fn compute_link_parent_id(bytes: &[u8]) -> String {
     hasher.update(&bytes[..cap]);
     hasher.update((bytes.len() as u64).to_le_bytes());
     let digest = hasher.finalize();
-    format!("jcamp-{:x}", digest)
+    let digest = digest
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
+    format!("jcamp-{digest}")
         .chars()
         .take("jcamp-".len() + 16)
         .collect()

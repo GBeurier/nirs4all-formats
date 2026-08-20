@@ -1000,7 +1000,12 @@ fn expected_element_count(
             dataspace.dims.len()
         )));
     }
-    usize::try_from(dataspace.num_elements()).map_err(|_| {
+    let element_count = dataspace.num_elements().map_err(|error| {
+        Error::InvalidRecord(format!(
+            "NetCDF4/HDF5 layout fallback: {name} element count error: {error}"
+        ))
+    })?;
+    usize::try_from(element_count).map_err(|_| {
         Error::InvalidRecord(format!(
             "NetCDF4/HDF5 layout fallback: {name} element count overflows usize"
         ))
@@ -1537,7 +1542,7 @@ fn hdf5_attribute_value(attribute: &Attribute) -> Option<Value> {
             return Some(json!(values));
         }
     }
-    if attribute.num_elements() == 1 {
+    if attribute.num_elements().ok() == Some(1) {
         if let Ok(value) = attribute.read_as_f64() {
             return Some(json_f64(value));
         }
@@ -2083,7 +2088,10 @@ fn arm_mfrsr_sample_count(file: &NcFile) -> Result<usize> {
             "ARM MFRSR time variable is not 1-D".to_string(),
         ));
     }
-    usize::try_from(variable.num_elements())
+    let element_count = variable.num_elements().map_err(|error| {
+        Error::InvalidRecord(format!("ARM MFRSR time dimension error: {error}"))
+    })?;
+    usize::try_from(element_count)
         .map_err(|_| Error::InvalidRecord("ARM MFRSR time dimension is too large".to_string()))
 }
 
@@ -2204,7 +2212,10 @@ fn hdf5_andi_ms_markers(file: &Hdf5File) -> Vec<&'static str> {
 fn find_axis_variable(file: &NcFile, band_count: usize) -> Result<(&str, &NcVariable)> {
     for name in ["wavelengths", "wavelength", "wavelength_nm", "x"] {
         if let Ok(variable) = file.variable(name) {
-            if variable.ndim() == 1 && variable.num_elements() == band_count as u64 {
+            let element_count = variable.num_elements().map_err(|error| {
+                Error::InvalidRecord(format!("NetCDF axis dimension error: {error}"))
+            })?;
+            if variable.ndim() == 1 && element_count == band_count as u64 {
                 return Ok((variable.name(), variable));
             }
         }
@@ -2224,12 +2235,15 @@ fn target_columns(
         .variables()
         .map_err(|error| Error::InvalidRecord(format!("NetCDF metadata error: {error}")))?
     {
+        let element_count = variable.num_elements().map_err(|error| {
+            Error::InvalidRecord(format!("NetCDF target dimension error: {error}"))
+        })?;
         if matches!(
             variable.name(),
             "spectra" | "wavelengths" | "wavelength" | "x"
         ) || variable.name() == axis_name
             || variable.ndim() != 1
-            || variable.num_elements() != sample_count as u64
+            || element_count != sample_count as u64
         {
             continue;
         }
