@@ -41,7 +41,7 @@ parquet = { version = "59.2.0", optional = true, default-features = false, featu
 # `parquet/zstd` delegates to the `zstd` crate; force `no_asm` so the codec can
 # be compiled for wasm32 instead of trying to include x86 assembly objects.
 zstd = { version = "0.13", optional = true, default-features = false, features = ["no_asm"] }
-quick-xml = "0.41.0"
+quick-xml = "0.42.0"
 rds2rust = { version = "0.2.0", optional = true }
 serde.workspace = true
 serde_json.workspace = true
