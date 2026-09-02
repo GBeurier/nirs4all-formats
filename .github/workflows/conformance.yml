@@ -55,4 +55,6 @@ jobs:
 
       - name: Run conformance suite
         run: |
+          # tests/conformance/conftest.py turns an all-skipped run into a hard
+          # failure, so a missing binding/reference environment cannot go green.
           python -m pytest -m conformance tests/conformance/ -ra

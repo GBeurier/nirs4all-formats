@@ -3,7 +3,7 @@
 nirs4all-formats is one Rust core with thin bindings. Pick the surface you need —
 they all decode through the same readers.
 
-> **Version:** `0.2.6`. The project is in the V1 RC release train; APIs are
+> **Version:** `0.2.8`. The project is in the V1 RC release train; APIs are
 > stable in shape but may still change before 1.0. Tagged releases publish
 > Python wheels, Rust crates, the WASM package, R source tarballs and GitHub
 > Release assets (see [`RELEASE.md`](RELEASE.md)).
@@ -16,11 +16,14 @@ Requires Python 3.10+.
 pip install nirs4all-formats
 ```
 
-The wheel ships the native extension — no Rust toolchain needed. Optional
-projections pull their own dependencies via extras:
+Linux x86_64 and Windows AMD64 wheels ship the native extension, so those
+installs need no Rust toolchain. macOS and Linux aarch64 currently build the
+sdist and therefore need Rust plus the documented native build prerequisites.
+NumPy is a base dependency because the public lossless record model uses NumPy
+arrays. Other optional projections pull their own dependencies via extras:
 
 ```bash
-pip install "nirs4all-formats[numpy,pandas,sklearn,torch]"
+pip install "nirs4all-formats[pandas,sklearn,torch]"
 ```
 
 `to_polars()` needs `polars`, `to_xarray()` needs `xarray`, and
@@ -39,7 +42,7 @@ Add the facade crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nirs4all-formats = "0.2.6"
+nirs4all-formats = "0.2.8"
 ```
 
 Default features bundle the HDF5, MATLAB and Parquet readers. Build a leaner

@@ -17,7 +17,7 @@ per-surface publishers live in `release-crates.yml`, `release-npm.yml`,
 ## Single source of truth
 
 The canonical version is the **`[workspace.package] version` in the root
-`Cargo.toml`** (Cargo SemVer, currently `0.2.6`).
+`Cargo.toml`** (Cargo SemVer, currently `0.2.8`).
 `scripts/bump_version.sh` propagates it to every binding manifest, translating
 the spelling each ecosystem requires:
 
@@ -55,7 +55,7 @@ they are downloadable from one place.
 
 | Binding | Registry | Exact file(s) | Upload |
 |---|---|---|---|
-| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64/aarch64 manylinux2014, Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
+| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64 manylinux2014 and Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
 | Rust crates | crates.io | the four workspace crates (`nirs4all-formats-core` / `nirs4all-formats` / `nirs4all-formats-capi` / `nirs4all-formats-cli`) | **Automated** — `cargo publish`, leaf-first |
 
 > **macOS binary wheels are deferred for the initial release.** The default
@@ -70,6 +70,15 @@ they are downloadable from one place.
 | R `nirs4allformats` / `nirs4allformats.lite` | R-universe / GitHub Release | **`nirs4allformats_<version>.tar.gz`** and **`nirs4allformats.lite_<version>.tar.gz`** | **Automated to the Release**; R-universe builds from Git once registered |
 | JS / WASM `@nirs4all/formats-wasm` | npm | the staged `pkg-node/` package (via `npm publish`) | **Automated** — `release-npm.yml` (needs `NPM_TOKEN`) |
 | Source + provenance | GitHub Release | `nirs4all-formats-<version>-src.tar.gz` · `…-src.zip` · `nirs4all-formats-<version>.cdx.json` (SBOM) · `SHA256SUMS` | **Automated** — `release-source.yml` |
+
+Public source archives are built with `git archive`. `.gitattributes` excludes
+the tracked legacy local/customer corpus blob, and
+`scripts/check_release_archive.py` fails the workflow if an archive contains a
+`samples_local` tree, encrypted payload, or key file, using case-insensitive
+matching after normalizing POSIX and Windows path separators. This safeguard
+also makes the SBOM scanner consume the audited extracted archive instead of
+the checkout. It does not resolve the separate policy debt of the encrypted
+blob remaining in Git history.
 
 **For R/CRAN, upload the source `.tar.gz` only** — never a binary, the GitHub
 repo zip, or the Python artifacts. The PyPI files publish from CI (no manual
@@ -236,7 +245,8 @@ nirs4allformats is a thin R binding for the Rust-first nirs4all-formats NIRS /
 spectroscopy file-loading engine. It compiles a small extendr-api static
 library from src/rust/ at install time and dispatches probe / read / walk calls
 through Rust; without Cargo it falls back to the nirs4all-formats CLI binary.
-License: MIT + file LICENSE.
+License: `CeCILL-2.1 OR AGPL-3.0-or-later`; the R package carries the bundled
+license file declared by `DESCRIPTION`.
 
 Self-contained source tarball: the package vendors everything it needs to build
 offline. src/rust/vendored/ holds the two workspace core crates copied from the

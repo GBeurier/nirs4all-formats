@@ -11,7 +11,7 @@ Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
 stable Python / R / WebAssembly / C bindings and conformance checks against
 reference loaders.
 
-> **Status:** V1 RC release train (`0.2.6`). Over 40 native readers across ~58
+> **Status:** V1 RC release train (`0.2.8`). Over 40 native readers across ~58
 > format families are implemented and tested on a committed fixture corpus;
 > APIs are stable in shape but may still change before 1.0.
 
@@ -81,7 +81,7 @@ Allotrope, AnIML, Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 ## Installation
 
 ```bash
-pip install nirs4all-formats            # Python 3.10+ (extras: numpy,pandas,sklearn,torch)
+pip install nirs4all-formats            # Python 3.10+; NumPy included (extras: pandas,sklearn,torch)
 cargo add nirs4all-formats              # Rust
 install.packages("nirs4allformats", repos = c("https://gbeurier.r-universe.dev", getOption("repos")))  # R
 ```

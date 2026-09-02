@@ -13,7 +13,8 @@ surface over it.
 
 ```bash
 pip install nirs4all-formats                                  # Python 3.10+
-pip install "nirs4all-formats[numpy,pandas,sklearn,torch]"    # projection extras
+pip install nirs4all-formats                                  # includes NumPy
+pip install "nirs4all-formats[pandas,sklearn,torch]"          # other projection extras
 ```
 
 `to_polars()` needs `polars`, `to_xarray()` needs `xarray`, and
@@ -64,4 +65,4 @@ The usage guide, supported-format catalogue and data model live in the
 
 ## License
 
-MIT.
+`CeCILL-2.1 OR AGPL-3.0-or-later`. See the repository `LICENSING.md`.

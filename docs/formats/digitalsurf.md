@@ -66,7 +66,7 @@ per-stream raw/zlib lengths) precedes the zlib streams. Raw points are signed
 
 Layout and fixture values cross-checked against `rsciio.digitalsurf` 0.13.0.
 RosettaSciIO is GPL-3.0; it is used only as an external conformance reference and
-is never imported or linked by the MIT runtime.
+is never imported or linked by the dual-licensed runtime.
 
 ## Samples & validation
 

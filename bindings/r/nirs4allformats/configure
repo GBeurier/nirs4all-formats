@@ -189,7 +189,7 @@ members = [
 [workspace.package]
 version = "0.1.0-alpha.1"
 edition = "2021"
-license = "MIT"
+license = "CECILL-2.1 OR AGPL-3.0-or-later"
 authors = ["G. Beurier <beurier@cirad.fr>"]
 repository = "https://github.com/GBeurier/nirs4all-formats"
 homepage = "https://github.com/GBeurier/nirs4all-formats"
