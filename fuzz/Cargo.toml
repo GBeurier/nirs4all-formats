@@ -1,0 +1,19 @@
+[package]
+name = "nirs4all-formats-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+nirs4all-formats = { path = "../crates/nirs4all-formats", default-features = false }
+
+[[bin]]
+name = "registry_open_bytes"
+path = "fuzz_targets/registry_open_bytes.rs"
+test = false
+doc = false
+bench = false
