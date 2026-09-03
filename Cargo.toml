@@ -11,6 +11,7 @@ exclude = [
     "bindings/wasm",
     "bindings/r/nirs4allformats/src/rust",
     "bindings/r/nirs4allformatslite/src/rust",
+    "fuzz",
 ]
 
 [workspace.package]
