@@ -17,7 +17,7 @@ per-surface publishers live in `release-crates.yml`, `release-npm.yml`,
 ## Single source of truth
 
 The canonical version is the **`[workspace.package] version` in the root
-`Cargo.toml`** (Cargo SemVer, currently `0.2.8`).
+`Cargo.toml`** (Cargo SemVer, currently `0.2.9`).
 `scripts/bump_version.sh` propagates it to every binding manifest, translating
 the spelling each ecosystem requires:
 

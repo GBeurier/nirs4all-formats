@@ -3,7 +3,7 @@
 nirs4all-formats is one Rust core with thin bindings. Pick the surface you need —
 they all decode through the same readers.
 
-> **Version:** `0.2.8`. The project is in the V1 RC release train; APIs are
+> **Version:** `0.2.9`. The project is in the V1 RC release train; APIs are
 > stable in shape but may still change before 1.0. Tagged releases publish
 > Python wheels, Rust crates, the WASM package, R source tarballs and GitHub
 > Release assets (see [`RELEASE.md`](RELEASE.md)).
@@ -42,7 +42,7 @@ Add the facade crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-nirs4all-formats = "0.2.8"
+nirs4all-formats = "0.2.9"
 ```
 
 Default features bundle the HDF5, MATLAB and Parquet readers. Build a leaner
