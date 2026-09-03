@@ -33,7 +33,7 @@ jobs:
     # Production tags only (non pre-release); dispatch may dry-run any time.
     if: ${{ github.event_name == 'workflow_dispatch' || (startsWith(github.ref, 'refs/tags/v') && !contains(github.ref_name, '-')) }}
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Publish workspace crates (leaf-first) to crates.io
