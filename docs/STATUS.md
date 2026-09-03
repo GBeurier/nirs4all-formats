@@ -1,6 +1,12 @@
 # Project Status
 
-Last updated: 2026-09-02.
+Last updated: 2026-09-03.
+
+> 2026-09-03 — **0.2.9 dependency security candidate.** The direct XML
+> parser and the Excel reader chain now converge on `quick-xml` 0.41.0 through
+> `calamine` 0.36.1, resolving `RUSTSEC-2026-0194` and
+> `RUSTSEC-2026-0195`. The lock also advances `crossbeam-epoch` to 0.9.20 for
+> `RUSTSEC-2026-0204`. Public reader and binding contracts are unchanged.
 
 > 2026-09-02 — **0.2.8 release qualification hardening.** Public source
 > archives now exclude local/customer corpus material and are checked by a
@@ -64,7 +70,8 @@ Last updated: 2026-09-02.
 
 ## Current Checkpoint
 
-V1 RC status: package manifests are at `0.2.8`, with Python, Rust, WASM, R,
+V1 RC status: package manifests are at the unpublished `0.2.9` security
+candidate, with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
 R-universe can lag until its from-Git rebuild catches up. The reader matrix below
@@ -324,14 +331,14 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
 
 ## Last Green Gate
 
-Green locally on 2026-09-02 for the 0.2.8 qualification lot: fmt clean,
-**292 Rust tests** across 21 suites, workspace + Python + WASM clippy
-`-D warnings` clean, host and `wasm32-unknown-unknown` no-default builds green,
-Python binding tests **21 passed / 4 skipped**, reference conformance **52 passed /
-31 documented skips**, and Sphinx `-W` green across 72 sources. The strict
-negative conformance check returned non-zero for an intentionally unprepared
-environment with 83/83 cases skipped. Source-archive policy tests accepted a
-clean `git archive` and rejected an archive containing encrypted material.
+Green locally on 2026-09-03 for the 0.2.9 dependency-security lot: fmt clean,
+**292 Rust tests** across 21 suites and workspace clippy
+`-D warnings` clean, with **10 focused Excel/AnIML/XML/ProcSpec parser tests**
+green. `cargo audit` reports zero
+vulnerabilities after removing the three newly detected RustSec findings; four
+non-vulnerability warnings remain explicit for transitive `paste`, `anyhow`,
+`lru` and `memmap2`. Binding, docs and cross-platform jobs remain delegated to
+the candidate CI before publication.
 
 **Deferred to CI** (toolchain absent on this dev box): the R `testthat` suite
 (`Rscript`) and the wasm-pack Node smoke/sidecar tests (`clang` is missing, so

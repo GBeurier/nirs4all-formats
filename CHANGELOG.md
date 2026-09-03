@@ -5,6 +5,21 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.9] - 2026-09-03
+
+### Security
+
+- Upgrade the direct XML parser to `quick-xml` 0.41.0 and the Excel reader to
+  `calamine` 0.36.1, collapsing both XML dependency paths onto the patched
+  `quick-xml` line and resolving `RUSTSEC-2026-0194` and
+  `RUSTSEC-2026-0195` without changing the public parsing contracts.
+- Refresh `crossbeam-epoch` to 0.9.20 to resolve `RUSTSEC-2026-0204`, found by
+  the same release-candidate audit through the HDF5/NetCDF reader chain.
+
+### Changed
+
+- Synchronize Rust, Python, R and WASM package versions at `0.2.9`.
+
 ## [0.2.8] - 2026-09-02
 
 ### Fixed
