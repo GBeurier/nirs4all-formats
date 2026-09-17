@@ -41,8 +41,11 @@ def test_jcamp_records_match_python_jcamp(path: Path) -> None:
     if not records:
         pytest.skip(f"{path.name}: no spectral records emitted")
 
+    readfile = getattr(jcamp, "jcamp_readfile", None) or getattr(jcamp, "readfile", None)
+    if readfile is None:
+        pytest.skip("jcamp reference reader exposes neither jcamp_readfile nor readfile")
     try:
-        ref = jcamp.jcamp_readfile(str(path))
+        ref = readfile(str(path))
     except Exception as err:  # noqa: BLE001 — bubble JCAMP errors
         pytest.skip(f"{path.name}: jcamp reader rejects fixture ({err})")
     if "x" not in ref or "y" not in ref:

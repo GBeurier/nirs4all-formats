@@ -631,7 +631,12 @@ fn parse_map_analysis_data_range(payload: &[u8], pset_declared_len: usize) -> Op
     }
     let value_count = value_bytes.len() / 4;
     let mut values = Vec::with_capacity(value_count);
-    for chunk in value_bytes.chunks_exact(4) {
+    for chunk in value_bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
+    {
         let value = f32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]) as f64;
         if !value.is_finite() {
             return None;

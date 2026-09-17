@@ -660,11 +660,17 @@ fn read_compressed_payload(
 fn decode_points(raw: &[u8], point_size: usize) -> Result<Vec<i32>> {
     match point_size {
         2 => Ok(raw
-            .chunks_exact(2)
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|chunk| chunk.as_slice())
             .map(|chunk| i16::from_le_bytes([chunk[0], chunk[1]]) as i32)
             .collect()),
         4 => Ok(raw
-            .chunks_exact(4)
+            .as_chunks::<4>()
+            .0
+            .iter()
+            .map(|chunk| chunk.as_slice())
             .map(|chunk| i32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]))
             .collect()),
         _ => Err(Error::InvalidRecord(format!(

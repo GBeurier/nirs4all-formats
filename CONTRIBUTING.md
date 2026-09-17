@@ -110,6 +110,6 @@ NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1 cargo test -p nirs4all-formats --test goldens
 
 ## License
 
-nirs4all-formats is MIT licensed. By contributing, you agree that your contributions
-are licensed under the same terms. Fixture licenses are documented per format
-under `samples/`.
+nirs4all-formats is dual-licensed under `CeCILL-2.1 OR AGPL-3.0-or-later`.
+By contributing, you agree that your contributions are licensed under the same
+terms. Fixture licenses are documented per format under `samples/`.

@@ -14,7 +14,8 @@ Produced by AvaSoft across the AvaSpec range. ASCII wave tables come from
 AvaSoft 6/7 (`Wave;...` columns) and AvaSoft 8 text exports; binary files are the
 native per-measurement records. Reference behaviour was compared against the
 documented `lightr` parser layout and its formulas; `lightr` is GPL and remains
-a conformance reference only — no runtime dependency is linked into the MIT core.
+a conformance reference only — no runtime dependency is linked into the
+dual-licensed core.
 
 ## File structure
 

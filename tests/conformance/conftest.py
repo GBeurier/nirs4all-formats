@@ -27,14 +27,49 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SAMPLES_ROOT = REPO_ROOT / "samples"
 HERE = Path(__file__).resolve().parent
+_executed_cases = 0
 
 
-def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+def pytest_collection_modifyitems(
+    config: pytest.Config, items: list[pytest.Item]
+) -> None:
     """Auto-apply the `conformance` marker to every test in this folder."""
 
     marker = pytest.mark.conformance
     for item in items:
         item.add_marker(marker)
+
+
+def pytest_sessionstart(session: pytest.Session) -> None:
+    """Reset the strict-gate counter for this pytest session."""
+
+    global _executed_cases
+    _executed_cases = 0
+
+
+def pytest_runtest_logreport(report: pytest.TestReport) -> None:
+    """Count conformance cases that reached a non-skipped call phase."""
+
+    global _executed_cases
+    if report.when == "call" and not report.skipped:
+        _executed_cases += 1
+
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session: pytest.Session, exitstatus: int) -> None:
+    """Reject an all-skipped conformance run instead of reporting false green."""
+
+    if exitstatus != pytest.ExitCode.OK or _executed_cases != 0:
+        return
+
+    terminal = session.config.pluginmanager.get_plugin("terminalreporter")
+    if terminal is not None:
+        terminal.write_sep(
+            "!",
+            "conformance gate failed: zero non-skipped cases executed",
+            red=True,
+        )
+    session.exitstatus = pytest.ExitCode.TESTS_FAILED
 
 
 @dataclass(frozen=True)
@@ -111,7 +146,11 @@ def require_rscript_with(package: str):
     if rscript is None:
         pytest.skip("Rscript not available")
     probe = subprocess.run(
-        [rscript, "-e", f"requireNamespace('{package}', quietly=TRUE) || quit(status=1)"],
+        [
+            rscript,
+            "-e",
+            f"requireNamespace('{package}', quietly=TRUE) || quit(status=1)",
+        ],
         capture_output=True,
         text=True,
     )
@@ -120,7 +159,9 @@ def require_rscript_with(package: str):
     return rscript
 
 
-def fixtures_under(*relative_dirs: str, suffix: tuple[str, ...] = (), exclude: Iterable[str] = ()) -> list[Path]:
+def fixtures_under(
+    *relative_dirs: str, suffix: tuple[str, ...] = (), exclude: Iterable[str] = ()
+) -> list[Path]:
     """Enumerate sample files under `samples/<dir>/` matching the suffix
     list, excluding any path stems explicitly listed.
     """
@@ -151,8 +192,12 @@ def within(value: float, expected: float, tol: Tolerance, axis: bool) -> bool:
     return diff <= bound
 
 
-def compare_axes(left: list[float], right: list[float], tol: Tolerance, *, label: str) -> None:
-    assert len(left) == len(right), f"{label}: axis length mismatch ({len(left)} vs {len(right)})"
+def compare_axes(
+    left: list[float], right: list[float], tol: Tolerance, *, label: str
+) -> None:
+    assert len(left) == len(right), (
+        f"{label}: axis length mismatch ({len(left)} vs {len(right)})"
+    )
     for index, (a, b) in enumerate(zip(left, right)):
         assert within(a, b, tol, axis=True), (
             f"{label}: axis[{index}] differs ({a} vs {b}, tolerance "
@@ -160,8 +205,12 @@ def compare_axes(left: list[float], right: list[float], tol: Tolerance, *, label
         )
 
 
-def compare_values(left: list[float], right: list[float], tol: Tolerance, *, label: str) -> None:
-    assert len(left) == len(right), f"{label}: values length mismatch ({len(left)} vs {len(right)})"
+def compare_values(
+    left: list[float], right: list[float], tol: Tolerance, *, label: str
+) -> None:
+    assert len(left) == len(right), (
+        f"{label}: values length mismatch ({len(left)} vs {len(right)})"
+    )
     for index, (a, b) in enumerate(zip(left, right)):
         assert within(a, b, tol, axis=False), (
             f"{label}: values[{index}] differs ({a} vs {b}, tolerance "

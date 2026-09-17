@@ -46,7 +46,24 @@ jobs:
             crate="$1"
             echo "::group::publish ${crate} (dry=${DRY:-0})"
             if [ -n "${DRY}" ]; then
-              cargo publish -p "${crate}" --dry-run --allow-dirty
+              # A dry run does not upload the leaf crate, so the next package
+              # cannot resolve this new version from crates.io. Patch only the
+              # unpublished workspace crates to their local paths; production
+              # publishing below still verifies the real registry chain.
+              local_args=()
+              if [ "${crate}" != "nirs4all-formats-core" ]; then
+                local_args+=(
+                  --config
+                  'patch.crates-io.nirs4all-formats-core.path="crates/nirs4all-formats-core"'
+                )
+              fi
+              if [ "${crate}" = "nirs4all-formats-capi" ] || [ "${crate}" = "nirs4all-formats-cli" ]; then
+                local_args+=(
+                  --config
+                  'patch.crates-io.nirs4all-formats.path="crates/nirs4all-formats"'
+                )
+              fi
+              cargo publish -p "${crate}" --dry-run --allow-dirty "${local_args[@]}"
             else
               # --no-verify: skip cargo's re-build verification at publish time.
               # The facade pulls the system-HDF5 reader closure (fmt-hdf5) which

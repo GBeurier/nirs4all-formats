@@ -896,7 +896,7 @@ fn read_hdf5_1d_f64_via_layout(
     let element_count = expected_element_count(name, &dataspace)?;
     let raw = read_contiguous_bytes(file, name, contiguous, element_count, size as usize)?;
     let mut values = Vec::with_capacity(element_count);
-    for chunk in raw.chunks_exact(8) {
+    for chunk in raw.as_chunks::<8>().0.iter().map(|chunk| chunk.as_slice()) {
         let bytes: [u8; 8] = chunk.try_into().unwrap();
         let value = match byte_order {
             ByteOrder::LittleEndian => f64::from_le_bytes(bytes),
@@ -933,7 +933,7 @@ fn read_hdf5_1d_i64_via_layout(
     let element_count = expected_element_count(name, &dataspace)?;
     let raw = read_contiguous_bytes(file, name, contiguous, element_count, size as usize)?;
     let mut values = Vec::with_capacity(element_count);
-    for chunk in raw.chunks_exact(8) {
+    for chunk in raw.as_chunks::<8>().0.iter().map(|chunk| chunk.as_slice()) {
         let bytes: [u8; 8] = chunk.try_into().unwrap();
         let value = match byte_order {
             ByteOrder::LittleEndian => i64::from_le_bytes(bytes),
