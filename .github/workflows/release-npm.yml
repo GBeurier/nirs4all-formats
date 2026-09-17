@@ -11,8 +11,8 @@
 # - push tag v*.*.*  -> build + smoke + (non-rc) publish to npm
 # - workflow_dispatch (publish input) -> build + smoke + (publish=true) publish
 #
-# Publish requires the NPM_TOKEN repository secret (an automation token for the
-# @nirs4all org) AND that the @nirs4all npm scope is owned by the maintainer.
+# Publish uses npm trusted publishing when configured for this repository and
+# workflow, or the NPM_TOKEN repository secret as the token-based fallback.
 # Provenance (publishConfig.provenance=true, injected below) needs the
 # id-token: write permission and a public repo.
 name: release-npm
@@ -70,9 +70,14 @@ jobs:
 
       - uses: actions/setup-node@v7.0.0
         with:
-          node-version: "20"
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
+
+      - name: Install npm with trusted publishing support
+        # OIDC needs Node >=22.14 and npm >=11.5.1; Node 20's bundled npm
+        # cannot fall back to a configured trusted publisher when tokens expire.
+        run: npm install --global npm@11.19.1
 
       - name: Build the WASM module (wasm-pack, nodejs target)
         # --scope nirs4all primes the generated package.json with the @nirs4all
