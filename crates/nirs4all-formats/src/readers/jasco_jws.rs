@@ -297,7 +297,10 @@ fn extract_base_path(bytes: &[u8]) -> Option<String> {
         return None;
     }
     let utf16 = bytes[start..end]
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
         .map(|chunk| u16::from_be_bytes([chunk[0], chunk[1]]))
         .take_while(|value| *value != 0)
         .collect::<Vec<_>>();
@@ -309,7 +312,12 @@ fn extract_base_path(bytes: &[u8]) -> Option<String> {
 fn extract_utf16le_strings(bytes: &[u8]) -> Vec<String> {
     let mut out = Vec::new();
     let mut current = Vec::new();
-    for chunk in bytes.chunks_exact(2) {
+    for chunk in bytes
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
+    {
         let value = u16::from_le_bytes([chunk[0], chunk[1]]);
         if (0x20..=0x7e).contains(&value) {
             current.push(value);

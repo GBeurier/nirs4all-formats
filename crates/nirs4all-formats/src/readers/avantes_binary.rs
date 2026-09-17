@@ -133,7 +133,12 @@ fn read_legacy(
         let mut sample = Vec::with_capacity(point_count);
         let mut white = Vec::with_capacity(point_count);
         let mut dark = Vec::with_capacity(point_count);
-        for triple in data[..point_count * 3].chunks_exact(3) {
+        for triple in data[..point_count * 3]
+            .as_chunks::<3>()
+            .0
+            .iter()
+            .map(|chunk| chunk.as_slice())
+        {
             sample.push(triple[0] as f64);
             white.push(triple[1] as f64);
             dark.push(triple[2] as f64);
@@ -806,7 +811,12 @@ fn decode_f32_slice(bytes: &[u8]) -> Result<Vec<f32>> {
         )));
     }
     let mut values = Vec::with_capacity(bytes.len() / 4);
-    for chunk in bytes.chunks_exact(4) {
+    for chunk in bytes
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
+    {
         values.push(f32::from_le_bytes(chunk.try_into().expect("chunk width")));
     }
     Ok(values)

@@ -1596,7 +1596,10 @@ fn parse_mat5_matrix(bytes: &[u8], endian: Mat5Endian) -> Result<Mat5Value> {
         ));
     }
     let dims = dims_bytes
-        .chunks_exact(4)
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
         .map(|chunk| mat5_i32(chunk, endian))
         .map(|value| {
             if value < 0 {
@@ -1834,7 +1837,10 @@ fn mat5_chars(data_type: Mat5DataType, bytes: &[u8], endian: Mat5Endian) -> Resu
                 ));
             }
             Ok(bytes
-                .chunks_exact(2)
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
                 .filter_map(|chunk| char::from_u32(mat5_u16(chunk, endian) as u32))
                 .collect())
         }
@@ -1845,7 +1851,10 @@ fn mat5_chars(data_type: Mat5DataType, bytes: &[u8], endian: Mat5Endian) -> Resu
                 ));
             }
             Ok(bytes
-                .chunks_exact(4)
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
                 .filter_map(|chunk| char::from_u32(mat5_u32(chunk, endian)))
                 .collect())
         }
