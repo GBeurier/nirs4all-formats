@@ -82,7 +82,7 @@ sourced.
 ## Reference readers
 
 `lightr` is the practical external reference for this family (with `pavo` for R);
-both stay conformance-only because the Rust core is MIT.
+both stay conformance-only and are not linked into the dual-licensed Rust core.
 
 ## Samples & validation
 

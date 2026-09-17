@@ -39,14 +39,14 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]" pytest
       - name: Test
-        run: python -m pytest tools/reverse-lab/tests bindings/python/tests
+        run: python -m pytest tools/reverse-lab/tests bindings/python/tests tests/release
 
   r:
     name: R binding
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: r-lib/actions/setup-r@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2
+      - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
       - uses: dtolnay/rust-toolchain@stable
       - name: Install dependencies
         run: |

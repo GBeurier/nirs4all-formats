@@ -153,11 +153,9 @@ fn parse_animl_text(text: &str) -> Result<ParsedAniml> {
                 }
             }
             Ok(Event::Text(event)) => {
-                let text = event
-                    .decode()
-                    .map_err(|error| Error::InvalidRecord(format!("AnIML text error: {error}")))?;
+                let text = event.as_ref();
                 if stack.last().is_some_and(|tag| tag == "F" || tag == "D") {
-                    if let Some(value) = parse_number(&text) {
+                    if let Some(value) = parse_number(text) {
                         if let Some(auto_values) = &mut current_auto_values {
                             if stack.iter().any(|tag| tag == "StartValue") {
                                 auto_values.start_value = Some(value);
@@ -317,20 +315,16 @@ fn tag_name(event: &BytesStart<'_>) -> String {
     local_name(event.name().as_ref())
 }
 
-fn local_name(name: &[u8]) -> String {
-    let local = name
-        .iter()
-        .rposition(|byte| *byte == b':')
-        .map_or(name, |index| &name[index + 1..]);
-    String::from_utf8_lossy(local).into_owned()
+fn local_name(name: &str) -> String {
+    name.rsplit(':').next().unwrap_or(name).to_string()
 }
 
 fn attr_value(event: &BytesStart<'_>, key: &str) -> Option<String> {
     event
         .attributes()
         .flatten()
-        .find(|attr| attr.key.as_ref() == key.as_bytes())
-        .map(|attr| String::from_utf8_lossy(attr.value.as_ref()).into_owned())
+        .find(|attr| attr.key.as_ref() == key)
+        .map(|attr| attr.value.into_owned())
 }
 
 fn attr_usize(event: &BytesStart<'_>, key: &str) -> Option<usize> {

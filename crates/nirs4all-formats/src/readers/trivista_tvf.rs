@@ -895,19 +895,15 @@ fn parse_xml(text: &str, context: &str) -> Result<XmlNode> {
                 }
             }
             Ok(Event::Text(event)) => {
-                let text = event.decode().map_err(|error| {
-                    Error::InvalidRecord(format!("{context} text error: {error}"))
-                })?;
+                let text = event.as_ref();
                 if let Some(node) = stack.last_mut() {
-                    node.text.push_str(&text);
+                    node.text.push_str(text);
                 }
             }
             Ok(Event::CData(event)) => {
-                let text = event.decode().map_err(|error| {
-                    Error::InvalidRecord(format!("{context} CDATA error: {error}"))
-                })?;
+                let text = event.as_ref();
                 if let Some(node) = stack.last_mut() {
-                    node.text.push_str(&text);
+                    node.text.push_str(text);
                 }
             }
             Ok(Event::End(_)) => {
@@ -959,12 +955,8 @@ fn node_from_start(event: &BytesStart<'_>, context: &str) -> Result<XmlNode> {
     })
 }
 
-fn local_name(name: &[u8]) -> String {
-    let local = name
-        .iter()
-        .rposition(|byte| *byte == b':')
-        .map_or(name, |index| &name[index + 1..]);
-    String::from_utf8_lossy(local).into_owned()
+fn local_name(name: &str) -> String {
+    name.rsplit(':').next().unwrap_or(name).to_string()
 }
 
 fn attr<'a>(node: &'a XmlNode, key: &str) -> Option<&'a str> {
