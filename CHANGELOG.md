@@ -5,6 +5,44 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.9] - 2026-09-03
+
+### Security
+
+- Upgrade the direct XML parser to `quick-xml` 0.41.0 and the Excel reader to
+  `calamine` 0.36.1, collapsing both XML dependency paths onto the patched
+  `quick-xml` line and resolving `RUSTSEC-2026-0194` and
+  `RUSTSEC-2026-0195` without changing the public parsing contracts.
+- Refresh `crossbeam-epoch` to 0.9.20 to resolve `RUSTSEC-2026-0204`, found by
+  the same release-candidate audit through the HDF5/NetCDF reader chain.
+
+### Changed
+
+- Synchronize Rust, Python, R and WASM package versions at `0.2.9`.
+
+## [0.2.8] - 2026-09-02
+
+### Fixed
+
+- Exclude the tracked local/customer corpus archive from public source
+  archives and fail release qualification if local, encrypted, or key material
+  is present in an archive, including case variants and Windows-style member
+  separators.
+- Fail reference-reader conformance when zero non-skipped cases execute,
+  preventing an unavailable binding or reference environment from producing a
+  false-green gate.
+- Declare NumPy as the base Python runtime dependency used by the public record
+  model, and make wheel smoke tests qualify the default install without extras.
+- Align licensing and platform documentation with the release workflows
+  actually in use; ship both project license texts in every Rust crate and C
+  ABI archive.
+- Make the crates.io dry-run validate unpublished workspace versions through
+  local path patches while leaving the production registry chain unchanged.
+
+### Changed
+
+- Synchronize Rust, Python, R and WASM package versions at `0.2.8`.
+
 ## [0.2.4] - 2026-07-07
 
 ### Fixed

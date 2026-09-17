@@ -1,12 +1,14 @@
 # License Matrix
 
-The runtime code is MIT. Fixture and reference-reader licenses vary and are
-tracked per format under `samples/`.
+The runtime code is dual-licensed under
+`CeCILL-2.1 OR AGPL-3.0-or-later`. Fixture and reference-reader licenses vary
+and are tracked per format under `samples/`.
 
 ## Runtime Rule
 
-The Rust crates, Python package, R package and reverse-lab code are MIT.
-Runtime parser dependencies must remain permissive. Current container helpers
+The Rust crates, Python package, R package and reverse-lab code use the project
+dual license (`CeCILL-2.1 OR AGPL-3.0-or-later`). Runtime parser dependencies
+must remain compatible with those terms. Current container helpers
 include pure-Rust crates such as `calamine`, `hdf5-reader`, `matfile` and
 `cfb`; the added `cfb` OLE2 reader is MIT, with immediate transitive
 dependencies under MIT / Apache-2.0-compatible terms. `flate2` is used for
@@ -27,9 +29,14 @@ Rust core.
 
 ## Fixture Rule
 
-Every committed fixture needs source, license and hash documentation. Private
-or non-redistributable fixtures must stay outside the public repository and be
-referenced only by local manifest entries.
+Every committed redistributable fixture needs source, license and hash
+documentation. Private or non-redistributable fixtures must stay outside public
+release archives and be referenced only by local manifest entries. The legacy
+encrypted `samples_local.tar.gz.enc` blob remains in Git history pending a
+separate repository-policy decision; `.gitattributes` excludes it from
+`git archive`, and `scripts/check_release_archive.py` makes that exclusion a
+release gate. Encryption and archive exclusion do not make the tracked blob a
+redistributable fixture or erase the history-level policy debt.
 
 Horiba / JobinYvon fixtures are split across GPL-3.0 RosettaSciIO XML samples
 and MIT text/map samples from SpectroChemPy data and `ccoverstreet/horiba-raman`.

@@ -39,7 +39,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]" pytest
       - name: Test
-        run: python -m pytest tools/reverse-lab/tests bindings/python/tests
+        run: python -m pytest tools/reverse-lab/tests bindings/python/tests tests/release
 
   r:
     name: R binding

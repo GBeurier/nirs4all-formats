@@ -56,5 +56,5 @@ behavior and reference-loader comparison are all documented and tested.
 ## Relationship To Existing Libraries
 
 Existing R/Python/JS/C++ readers are reference sources for conformance and
-reverse engineering. They are not runtime dependencies of the MIT core unless
-their license and architecture make that explicitly acceptable.
+reverse engineering. They are not runtime dependencies of the dual-licensed
+core unless their license and architecture make that explicitly acceptable.

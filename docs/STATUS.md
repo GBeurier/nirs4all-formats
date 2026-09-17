@@ -1,6 +1,20 @@
 # Project Status
 
-Last updated: 2026-07-07.
+Last updated: 2026-09-03.
+
+> 2026-09-03 — **0.2.9 dependency security candidate.** The direct XML
+> parser and the Excel reader chain now converge on `quick-xml` 0.41.0 through
+> `calamine` 0.36.1, resolving `RUSTSEC-2026-0194` and
+> `RUSTSEC-2026-0195`. The lock also advances `crossbeam-epoch` to 0.9.20 for
+> `RUSTSEC-2026-0204`. Public reader and binding contracts are unchanged.
+
+> 2026-09-02 — **0.2.8 release qualification hardening.** Public source
+> archives now exclude local/customer corpus material and are checked by a
+> fail-closed inventory gate. Reference-reader conformance also fails when no
+> non-skipped case executes. Licensing and Python platform documentation now
+> match the package metadata and active workflows. The encrypted local corpus
+> remains tracked in Git history pending a separate repository-policy decision;
+> archive exclusion does not erase that debt.
 
 > 2026-06-10 — **FOSS DS-series native `.nir` support** added to the `foss_winisi`
 > reader. The DS2500 and DS3 F benches emit the same binary container as the
@@ -56,7 +70,8 @@ Last updated: 2026-07-07.
 
 ## Current Checkpoint
 
-V1 RC status: package manifests are at `0.2.6`, with Python, Rust, WASM, R,
+V1 RC status: package manifests are at the unpublished `0.2.9` security
+candidate, with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
 R-universe can lag until its from-Git rebuild catches up. The reader matrix below
@@ -316,24 +331,19 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
 
 ## Last Green Gate
 
-Green locally on 2026-06-10 (after adding FOSS DS-series `foss-ds-nir` support):
-fmt clean, **281 tests** (was 274; +1 probe `probes_foss_ds_series_native_nir_not_buchi`,
-+3 reader incl. a local-only DS2500/DS3 F real-corpus check, +2 `foss_winisi` unit
-tests, +1 from the goldens harness picking up the two new fixtures), clippy
-`-D warnings` clean (workspace + wasm + python bindings), no-default + wasm32 core
-builds, two new committed goldens (`foss_ds2500_native_nir`, `foss_ds3f_native_nir`),
-Python binding `maturin develop` + `pytest bindings/python/tests/` (23 passed, 2
-skipped) with the new format verified through the binding, Sphinx `-W` green (via
-`uv run --no-project --with-requirements docs/requirements.txt`), `git diff --check`
-clean. The Rust reader carries no parser logic into the bindings, which read the new
-format through the unchanged registry path.
+Green locally on 2026-09-03 for the 0.2.9 dependency-security lot: fmt clean,
+**292 Rust tests** across 21 suites and workspace clippy
+`-D warnings` clean, with **10 focused Excel/AnIML/XML/ProcSpec parser tests**
+green. `cargo audit` reports zero
+vulnerabilities after removing the three newly detected RustSec findings; four
+non-vulnerability warnings remain explicit for transitive `paste`, `anyhow`,
+`lru` and `memmap2`. Binding, docs and cross-platform jobs remain delegated to
+the candidate CI before publication.
 
 **Deferred to CI** (toolchain absent on this dev box): the R `testthat` suite
-(`Rscript`), the wasm-pack build + Node smoke/sidecar tests (`node`, and `clang`
-which cc-rs needs to compile C deps for the wasm target), and the demo rebuild.
-The demo redeploys automatically — `.github/workflows/demo-pages.yml` triggers on
-`crates/**` changes and rebuilds the WebAssembly bundle in CI. `demo/formats.json`
-was regenerated locally (150 validated variants).
+(`Rscript`) and the wasm-pack Node smoke/sidecar tests (`clang` is missing, so
+`zstd-sys` cannot build for WASM). The Rust WASM target itself and the WASM crate
+clippy gate are green.
 
 ```bash
 . "$HOME/.cargo/env"
@@ -413,15 +423,16 @@ Immediate next work:
    `jcamp_xydata_x_checkpoint_drift` carrying absolute and relative
    deltas. Sourcing real PEAK TABLE / PEAK ASSIGNMENTS fixtures remains
    open (synthetic-only path retained as the contract).
-7. **DONE (M4, 2026-05-23)** — Phase 6 release pipeline shipped:
-   `.github/workflows/release.yml` builds Python wheels via
-   `cibuildwheel` (manylinux2014 x86_64+aarch64, macOS x86_64+arm64,
-   Windows AMD64; CPython 3.10-3.13), a `maturin sdist`, per-OS C ABI
+7. **DONE (M4, 2026-05-23; matrix revised for the V1 RC)** — Phase 6 release
+   pipeline shipped. `.github/workflows/release.yml` currently builds Python
+   wheels via `cibuildwheel` for manylinux2014 x86_64 and Windows AMD64
+   (CPython 3.10-3.13), plus a `maturin sdist` used for macOS and Linux
+   aarch64 source installs. It also builds per-OS C ABI
    archives (`nirs4all-formats-capi-<target>.{tar.gz,zip}` with the
-   `cbindgen`-generated `nirs4all_formats.h` + LICENSE), and the R source
-   tarball. Tagged releases publish to PyPI via OIDC trusted publishing
-   and attach every artifact to the GitHub release; `workflow_dispatch`
-   provides a dry-run path. See `docs/RELEASE.md` for the tag flow,
+   `cbindgen`-generated `nirs4all_formats.h` and both project license
+   texts). Tagged releases publish to PyPI via OIDC trusted publishing;
+   the separate `release-r.yml` builds and attaches the R source tarballs.
+   `workflow_dispatch` provides a dry-run path. See `docs/RELEASE.md` for the tag flow,
    per-wheel capability matrix and rollback procedure. Locally
    validated: the C smoke
    `crates/nirs4all-formats-capi/examples/probe_version.c` builds against

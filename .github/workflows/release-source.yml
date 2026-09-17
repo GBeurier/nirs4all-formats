@@ -57,10 +57,24 @@ jobs:
           rm -f dist/src.tar
           ls -la dist/
 
+      - name: Reject private/local material in public archives
+        run: |
+          python scripts/check_release_archive.py \
+            "dist/${{ steps.meta.outputs.prefix }}-src.tar.gz" \
+            "dist/${{ steps.meta.outputs.prefix }}-src.zip"
+
+      - name: Prepare audited public source for SBOM
+        run: |
+          mkdir -p sbom-root
+          tar -xzf "dist/${{ steps.meta.outputs.prefix }}-src.tar.gz" \
+            --strip-components=1 -C sbom-root
+
       - name: Generate CycloneDX SBOM (syft)
         uses: anchore/sbom-action@3ad7283483fc7af8ff2b4ea19663c2d5ca935e26 # v0.24.2
         with:
-          path: .
+          # Scan the already-audited public archive, never the checkout that
+          # still contains the tracked encrypted local corpus blob.
+          path: sbom-root
           format: cyclonedx-json
           output-file: dist/${{ steps.meta.outputs.prefix }}.cdx.json
           # Do NOT let the action auto-attach its own default-named SBOM to the

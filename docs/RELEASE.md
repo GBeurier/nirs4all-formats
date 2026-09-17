@@ -6,20 +6,20 @@ authoritative workflow lives at
 
 ## Pipeline overview
 
-`release.yml` runs four parallel build jobs and two conditional publish
+`release.yml` runs three parallel build jobs and two conditional publish
 jobs:
 
 | Job | Output | Triggers |
 |---|---|---|
-| `python-wheels` | Python wheels via `cibuildwheel` for Linux (manylinux2014, x86_64 + aarch64), macOS (x86_64 + arm64) and Windows (AMD64) on CPython 3.10–3.13. | every push of a `v*` tag and every `workflow_dispatch`. |
+| `python-wheels` | Python wheels via `cibuildwheel` for Linux manylinux2014 x86_64 and Windows AMD64 on CPython 3.10–3.13. | every push of a `v*` tag and every `workflow_dispatch`. |
 | `python-sdist` | Source distribution built by `maturin sdist`. | same. |
-| `c-abi-archive` | `nirs4all-formats-capi-<target>.{tar.gz,zip}` per OS containing `lib/libnirs4all_formats_capi.{a,so,dylib,dll}`, the generated `include/nirs4all_formats.h`, and `LICENSE`. | same. |
-| `r-source` | `nirs4allformats_<version>.tar.gz` source tarball built via `R CMD build`. | same. |
+| `c-abi-archive` | `nirs4all-formats-capi-<target>.{tar.gz,zip}` per OS containing `lib/libnirs4all_formats_capi.{a,so,dylib,dll}`, the generated `include/nirs4all_formats.h`, `LICENSING.md`, and both project license texts. | same. |
 | `publish-pypi` | Publishes wheels + sdist to PyPI via OIDC trusted publishing (no token). | only on a `v*` tag. |
-| `github-release` | Attaches every artifact (wheels, sdist, C ABI archives, R source) to the GitHub Release. | only on a `v*` tag. |
+| `github-release` | Attaches the wheels, sdist and C ABI archives to the GitHub Release. | only on a `v*` tag. |
 
-`workflow_dispatch` runs the four build jobs but skips both publish
-jobs, so it can be used as a dry-run before tagging.
+`workflow_dispatch` runs the three build jobs but skips both publish jobs, so
+it can be used as a dry-run before tagging. R source packages are built and
+attached separately by `release-r.yml`.
 
 ## Tag-to-release flow
 
@@ -47,6 +47,12 @@ artifacts from the workflow-run UI to validate them locally:
   `crates/nirs4all-formats-capi/examples/probe_version.c` smoke against it
   (the example documents the exact compile flags).
 
+For a local qualification bundle, generate the SBOM and release receipt before
+the checksum manifest. `SHA256SUMS` must cover every deliverable and evidence
+file, including `release-receipt.json` (but not the manifest itself). A
+CycloneDX dependency graph advertised as complete must also contain a node for
+every component; artifact-file leaves use an explicit empty `dependsOn` list.
+
 ## Rollback / yank
 
 PyPI wheels are immutable. Use
@@ -63,10 +69,9 @@ wheel ships with the full feature set today:
 | Platform | Default features | Notes |
 |---|---|---|
 | Linux manylinux2014 x86_64 | `fmt-hdf5`, `fmt-matlab`, `fmt-parquet` | Full coverage. |
-| Linux manylinux2014 aarch64 | full | Full coverage. |
-| macOS x86_64 | full | Full coverage. |
-| macOS arm64 | full | Full coverage. |
 | Windows AMD64 | full | Full coverage. |
+| Linux aarch64 | source build | No wheel is produced by the current x86_64 Linux runner. |
+| macOS x86_64 / arm64 | source build | Python installs from the sdist; C ABI archives are built separately for both architectures. |
 
 If a future feature requires a C dependency that fails on a specific
 platform, document the per-OS gating here and add an override under
