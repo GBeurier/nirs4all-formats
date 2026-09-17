@@ -363,7 +363,7 @@ fn read_f32_values(bytes: &[u8], offset: usize, count: usize) -> Option<Vec<f64>
     let byte_len = count.checked_mul(4)?;
     let data = bytes.get(offset..offset.checked_add(byte_len)?)?;
     let mut out = Vec::with_capacity(count);
-    for chunk in data.chunks_exact(4) {
+    for chunk in data.as_chunks::<4>().0.iter().map(|chunk| chunk.as_slice()) {
         out.push(f32::from_le_bytes(chunk.try_into().ok()?) as f64);
     }
     Some(out)
@@ -534,19 +534,15 @@ fn parse_xml(text: &str) -> Result<XmlNode> {
                 }
             }
             Ok(Event::Text(event)) => {
-                let text = event.decode().map_err(|error| {
-                    Error::InvalidRecord(format!("Horiba XML text error: {error}"))
-                })?;
+                let text = event.as_ref();
                 if let Some(node) = stack.last_mut() {
-                    node.text.push_str(&text);
+                    node.text.push_str(text);
                 }
             }
             Ok(Event::CData(event)) => {
-                let text = event.decode().map_err(|error| {
-                    Error::InvalidRecord(format!("Horiba XML CDATA error: {error}"))
-                })?;
+                let text = event.as_ref();
                 if let Some(node) = stack.last_mut() {
-                    node.text.push_str(&text);
+                    node.text.push_str(text);
                 }
             }
             Ok(Event::End(_)) => {
@@ -594,20 +590,16 @@ fn tag_name(event: &BytesStart<'_>) -> String {
     local_name(event.name().as_ref())
 }
 
-fn local_name(name: &[u8]) -> String {
-    let local = name
-        .iter()
-        .rposition(|byte| *byte == b':')
-        .map_or(name, |index| &name[index + 1..]);
-    String::from_utf8_lossy(local).into_owned()
+fn local_name(name: &str) -> String {
+    name.rsplit(':').next().unwrap_or(name).to_string()
 }
 
 fn attr_value(event: &BytesStart<'_>, key: &str) -> Option<String> {
     event
         .attributes()
         .flatten()
-        .find(|attr| attr.key.as_ref() == key.as_bytes())
-        .map(|attr| String::from_utf8_lossy(attr.value.as_ref()).into_owned())
+        .find(|attr| attr.key.as_ref() == key)
+        .map(|attr| attr.value.into_owned())
 }
 
 fn find_first(node: &XmlNode, predicate: impl Fn(&XmlNode) -> bool + Copy) -> Option<&XmlNode> {

@@ -233,11 +233,17 @@ fn decode_payload(bytes: &[u8], file_type: i16) -> Result<Vec<f64>> {
     match file_type {
         0 => Ok(bytes.iter().map(|value| f64::from(*value)).collect()),
         2 => Ok(bytes
-            .chunks_exact(2)
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|chunk| chunk.as_slice())
             .map(|chunk| f64::from(u16::from_le_bytes([chunk[0], chunk[1]])))
             .collect()),
         3 => Ok(bytes
-            .chunks_exact(4)
+            .as_chunks::<4>()
+            .0
+            .iter()
+            .map(|chunk| chunk.as_slice())
             .map(|chunk| f64::from(u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]])))
             .collect()),
         other => Err(Error::InvalidRecord(format!(
@@ -359,7 +365,10 @@ fn read_f32_array(bytes: &[u8], offset: usize, size: usize) -> Result<Vec<f64>> 
         ));
     }
     Ok(bytes[offset..end]
-        .chunks_exact(4)
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
         .map(|chunk| f32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]) as f64)
         .collect())
 }

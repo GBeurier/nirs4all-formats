@@ -521,7 +521,10 @@ fn read_u16_le_values(bytes: &[u8], range: Range<usize>) -> Result<Vec<f64>> {
         ));
     }
     Ok(bytes[range]
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
         .map(|chunk| f64::from(u16::from_le_bytes([chunk[0], chunk[1]])))
         .collect())
 }
@@ -533,7 +536,10 @@ fn read_f64_values(bytes: &[u8], range: Range<usize>) -> Result<Vec<f64>> {
         ));
     }
     Ok(bytes[range]
-        .chunks_exact(8)
+        .as_chunks::<8>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
         .map(|chunk| {
             f64::from_le_bytes(
                 chunk

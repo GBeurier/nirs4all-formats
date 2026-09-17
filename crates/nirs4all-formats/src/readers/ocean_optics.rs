@@ -325,14 +325,12 @@ fn parse_procspec_xml(xml: &str) -> Result<ProcSpecXml> {
     loop {
         match reader.read_event() {
             Ok(Event::Start(event)) => {
-                stack.push(String::from_utf8_lossy(event.name().as_ref()).into_owned());
+                stack.push(event.name().as_ref().to_string());
             }
             Ok(Event::Text(event)) => {
-                let text = event.decode().map_err(|error| {
-                    Error::InvalidRecord(format!("ProcSpec XML text error: {error}"))
-                })?;
+                let text = event.as_ref();
                 if stack.last().is_some_and(|tag| tag == "double") {
-                    if let Some(value) = parse_number(&text) {
+                    if let Some(value) = parse_number(text) {
                         match procspec_array_from_stack(&stack) {
                             Some("wavelengths") => parsed.wavelengths.push(value),
                             Some("sample") => parsed.sample.push(value),

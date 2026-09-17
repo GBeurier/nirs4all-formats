@@ -167,9 +167,7 @@ fn parse_fgi_xml(text: &str) -> Result<ParsedFgiXml> {
                     continue;
                 };
                 if stack.iter().any(|tag| tag == "Metadata") && field != "Metadata" {
-                    let value = event.decode().map_err(|error| {
-                        Error::InvalidRecord(format!("FGI XML text error: {error}"))
-                    })?;
+                    let value = event.as_ref();
                     parsed
                         .metadata
                         .insert(normalize_key(field), json!(value.trim()));
@@ -204,13 +202,12 @@ fn resolve_data_reference(xml_path: &Path, reference: &str) -> PathBuf {
 }
 
 fn attr_value(event: &BytesStart<'_>, name: &str) -> Option<String> {
-    event.attributes().flatten().find_map(|attr| {
-        (local_name(attr.key.as_ref()) == name)
-            .then(|| String::from_utf8_lossy(attr.value.as_ref()).to_string())
-    })
+    event
+        .attributes()
+        .flatten()
+        .find_map(|attr| (local_name(attr.key.as_ref()) == name).then(|| attr.value.into_owned()))
 }
 
-fn local_name(name: &[u8]) -> String {
-    let text = String::from_utf8_lossy(name);
-    text.rsplit(':').next().unwrap_or(&text).to_string()
+fn local_name(name: &str) -> String {
+    name.rsplit(':').next().unwrap_or(name).to_string()
 }

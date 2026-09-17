@@ -535,82 +535,162 @@ fn decode_numeric_payload(payload: &[u8], data_type: usize, byte_order: usize) -
             values.extend(payload.iter().map(|value| *value as f64));
         }
         (2, false) => {
-            for chunk in payload.chunks_exact(2) {
+            for chunk in payload
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i16::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (2, true) => {
-            for chunk in payload.chunks_exact(2) {
+            for chunk in payload
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i16::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (3, false) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (3, true) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i32::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (4, false) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(f32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (4, true) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(f32::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (5, false) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(f64::from_le_bytes(chunk.try_into().expect("chunk width")));
             }
         }
         (5, true) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(f64::from_be_bytes(chunk.try_into().expect("chunk width")));
             }
         }
         (12, false) => {
-            for chunk in payload.chunks_exact(2) {
+            for chunk in payload
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u16::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (12, true) => {
-            for chunk in payload.chunks_exact(2) {
+            for chunk in payload
+                .as_chunks::<2>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u16::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (13, false) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u32::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (13, true) => {
-            for chunk in payload.chunks_exact(4) {
+            for chunk in payload
+                .as_chunks::<4>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u32::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (14, false) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i64::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (14, true) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(i64::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (15, false) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u64::from_le_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }
         (15, true) => {
-            for chunk in payload.chunks_exact(8) {
+            for chunk in payload
+                .as_chunks::<8>()
+                .0
+                .iter()
+                .map(|chunk| chunk.as_slice())
+            {
                 values.push(u64::from_be_bytes(chunk.try_into().expect("chunk width")) as f64);
             }
         }

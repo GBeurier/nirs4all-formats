@@ -577,7 +577,12 @@ fn decode_numeric_value(kind: char, width: usize, endian: Endian, chunk: &[u8]) 
 
 fn decode_unicode_string(chunk: &[u8], endian: Endian) -> Result<String> {
     let mut out = String::new();
-    for item in chunk.chunks_exact(4) {
+    for item in chunk
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|chunk| chunk.as_slice())
+    {
         let codepoint = match endian {
             Endian::Big => u32::from_be_bytes(item.try_into().expect("unicode width")),
             Endian::Little | Endian::NotApplicable => {
