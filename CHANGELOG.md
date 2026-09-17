@@ -5,6 +5,22 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.10] - 2026-09-17
+
+### Fixed
+
+- Migrate XML readers to the UTF-8 event API in `quick-xml` 0.42, restoring
+  compilation after the grouped dependency update without changing reader contracts.
+- Use fixed-size slice chunks compatible with the current Clippy gate.
+- Reconcile main with the published 0.2.9 history, retaining its security fixes,
+  source-archive exclusions, licensing and release qualification checks.
+
+### Changed
+
+- Update grouped Rust dependencies and GitHub Actions, including the HDF5,
+  NetCDF and RDS reader dependency migrations already integrated on main.
+- Synchronize Rust, Python, R and WASM package versions at `0.2.10`.
+
 ## [0.2.9] - 2026-09-03
 
 ### Security

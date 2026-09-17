@@ -2,10 +2,12 @@
 
 Last updated: 2026-09-17.
 
-> 2026-09-17 — **Dependency maintenance.** Reconciled the published 0.2.9
+> 2026-09-17 — **0.2.10 dependency maintenance.** Reconciled the published 0.2.9
 > release history with main, preserving its security and public-archive policy.
 > Migrated the XML readers to quick-xml 0.42's UTF-8 events and replaced
 > fixed-size `chunks_exact` iteration for compatibility with current Clippy.
+> GitHub CI (Rust, Python, R and docs), reference-reader conformance and the
+> npm/WASM release dry-run pass. All four C ABI platform archives also build.
 
 > 2026-09-03 — **0.2.9 dependency security candidate.** The direct XML
 > parser and the Excel reader chain now converge on `quick-xml` 0.41.0 through
@@ -75,8 +77,8 @@ Last updated: 2026-09-17.
 
 ## Current Checkpoint
 
-Package manifests are aligned with the published `0.2.9` release while the next
-dependency-maintenance release is qualified, with Python, Rust, WASM, R,
+Package manifests are aligned at `0.2.10` for the dependency-maintenance release,
+with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
 R-universe can lag until its from-Git rebuild catches up. The reader matrix below
@@ -336,12 +338,14 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
 
 ## Last Green Gate
 
-2026-09-17 dependency maintenance: workspace formatting, Clippy with
+2026-09-17 dependency maintenance (`v0.2.10`): workspace formatting, Clippy with
 `-D warnings`, all workspace Rust tests (including existing XML goldens),
 no-default-features build, Sphinx `-W`, and Python bindings/reverse-lab/archive
 policy tests passed locally (36 passed, 4 optional-dependency skips).
 Python tests used a freshly compiled native extension. No goldens were
-re-blessed. R and WASM/platform distribution checks run on GitHub Actions;
+re-blessed. GitHub CI run `35197792529` passed Rust, Python, R and docs;
+conformance run `35197827257` and npm/WASM dry-run `35197692594` also passed.
+All four C ABI archive builds passed in distribution dry-run `35197695210`.
 R and clang are unavailable on this local host.
 
 Green locally on 2026-09-03 for the 0.2.9 dependency-security lot: fmt clean,
