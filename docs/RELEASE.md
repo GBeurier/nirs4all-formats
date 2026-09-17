@@ -53,6 +53,27 @@ file, including `release-receipt.json` (but not the manifest itself). A
 CycloneDX dependency graph advertised as complete must also contain a node for
 every component; artifact-file leaves use an explicit empty `dependsOn` list.
 
+## npm authentication and retry
+
+`release-npm.yml` uses Node 24 and npm 11.19.1, enabling npm trusted
+publishing. In the settings for `@nirs4all/formats-wasm` on npm, the GitHub
+trusted publisher must name owner `GBeurier`, repository `nirs4all-formats`,
+and workflow `release-npm.yml`, with permission to publish. Configuring this
+trust is a package-owner action; upgrading the workflow alone does not grant it.
+The `NPM_TOKEN` repository secret remains the fallback for token-based uploads.
+
+A successful WASM build/smoke followed by HTTP 401 or E404 at upload can indicate
+missing or expired publishing credentials, even though the public package exists.
+After restoring credentials or the trusted-publisher configuration, retry the
+workflow with `publish=true` on the reviewed release ref. Existing versions are
+skipped; never move a published tag to change authentication configuration.
+
+```bash
+gh workflow run release-npm.yml --ref main --field publish=true
+```
+
+Verify that main still carries the intended release version before dispatching.
+
 ## Rollback / yank
 
 PyPI wheels are immutable. Use
