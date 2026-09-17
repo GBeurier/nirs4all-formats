@@ -1,6 +1,11 @@
 # Project Status
 
-Last updated: 2026-09-03.
+Last updated: 2026-09-17.
+
+> 2026-09-17 — **Dependency maintenance.** Reconciled the published 0.2.9
+> release history with main, preserving its security and public-archive policy.
+> Migrated the XML readers to quick-xml 0.42's UTF-8 events and replaced
+> fixed-size `chunks_exact` iteration for compatibility with current Clippy.
 
 > 2026-09-03 — **0.2.9 dependency security candidate.** The direct XML
 > parser and the Excel reader chain now converge on `quick-xml` 0.41.0 through
@@ -70,8 +75,8 @@ Last updated: 2026-09-03.
 
 ## Current Checkpoint
 
-V1 RC status: package manifests are at the unpublished `0.2.9` security
-candidate, with Python, Rust, WASM, R,
+Package manifests are aligned with the published `0.2.9` release while the next
+dependency-maintenance release is qualified, with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
 R-universe can lag until its from-Git rebuild catches up. The reader matrix below
@@ -330,6 +335,14 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-09-17 dependency maintenance: workspace formatting, Clippy with
+`-D warnings`, all workspace Rust tests (including existing XML goldens),
+no-default-features build, Sphinx `-W`, and Python bindings/reverse-lab/archive
+policy tests passed locally (36 passed, 4 optional-dependency skips).
+Python tests used a freshly compiled native extension. No goldens were
+re-blessed. R and WASM/platform distribution checks run on GitHub Actions;
+R and clang are unavailable on this local host.
 
 Green locally on 2026-09-03 for the 0.2.9 dependency-security lot: fmt clean,
 **292 Rust tests** across 21 suites and workspace clippy
