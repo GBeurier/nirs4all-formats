@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: CeCILL-2.1 OR AGPL-3.0-or-later
 #
 # bump_version.sh — nirs4all-formats version source-of-truth syncer.
 #

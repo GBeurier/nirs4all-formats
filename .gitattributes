@@ -1,0 +1,6 @@
+# Local/customer corpora are retained in the private development history but
+# must never be included in public source archives made with `git archive`.
+samples_local/ export-ignore
+samples_local/** export-ignore
+samples_local.tar.gz.enc export-ignore
+

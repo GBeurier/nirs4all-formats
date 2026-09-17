@@ -165,4 +165,5 @@ for full details.
 
 ## License
 
-MIT. See [`LICENSE`](LICENSE).
+`CeCILL-2.1 OR AGPL-3.0-or-later`. See [`LICENSE`](LICENSE) and the repository
+`LICENSING.md`.

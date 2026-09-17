@@ -4,7 +4,7 @@ Reverse engineering is part of the project, not an informal side task.
 
 ## Rules
 
-- Keep runtime code clean-room and MIT-compatible.
+- Keep runtime code clean-room and compatible with the project dual license.
 - Record fixture origin, license and hash before analysis.
 - Prefer controlled differences between related files.
 - Write observations and false starts in `docs/reviews/` or `docs/formats/`.

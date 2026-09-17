@@ -188,6 +188,7 @@ pass the green gate.
 ## Release
 
 `.github/workflows/release.yml` (tag-triggered, with `workflow_dispatch` dry-run) builds Python
-wheels via `cibuildwheel` (manylinux2014 x86_64+aarch64, macOS x86_64+arm64, Windows AMD64; CPython
-3.10–3.13), a maturin sdist, per-OS C ABI archives (with generated `nirs4all_formats.h`), and the R source
-tarball; tagged releases publish to PyPI via OIDC trusted publishing. See `docs/RELEASE.md`.
+wheels via `cibuildwheel` for manylinux2014 x86_64 and Windows AMD64 (CPython 3.10–3.13), plus a
+maturin sdist used for macOS and Linux aarch64 source installs. It also builds per-OS C ABI archives
+(with generated `nirs4all_formats.h`); tagged releases publish to PyPI via OIDC trusted publishing.
+R source tarballs are built and attached by the separate `release-r.yml`. See `docs/RELEASE.md`.

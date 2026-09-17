@@ -55,9 +55,11 @@ Reference readers wired in M2:
 | Generic HDF5 | `h5py` | BSD | Direct Python import. |
 
 GPL-licensed readers (`spectrolab`, `opusreader2`) stay isolated through
-subprocess boundaries and are never imported into the MIT runtime library
+subprocess boundaries and are never imported into the dual-licensed runtime library
 path. Missing reference readers (R + `spectrolab` not installed, etc.)
-make the matching tests skip rather than fail.
+make the matching tests skip rather than fail. The suite itself is strict: if
+zero non-skipped cases execute, the run fails instead of reporting a vacuous
+green result.
 
 ### Per-format tolerances
 
@@ -81,10 +83,10 @@ reader has structural limitations (e.g. `jcamp_readfile` concatenates
 top-level multi-block JCAMP files into a single axis, breaking the
 length-pairing logic). Each skip carries a one-line rationale.
 
-### Current coverage (2026-05-23)
+### Current coverage (V1 qualification)
 
-Initial M2 run on the committed corpus: **67 passed, 16 skipped, 0
-failed** across 7 format harnesses. Skip reasons cluster around:
+The V1 qualification run on the committed corpus recorded **52 passed, 31
+skipped, 0 failed** across 7 format harnesses. Skip reasons cluster around:
 
 - non-spectral fixtures the reader refuses (vlen strings, peak
   assignments) — expected refusal path;

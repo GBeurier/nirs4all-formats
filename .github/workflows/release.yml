@@ -87,9 +87,11 @@ jobs:
         run: |
           cargo build --release --target ${{ matrix.target }} -p nirs4all-formats-capi
           STAGING="nirs4all-formats-capi-${{ matrix.target }}"
-          mkdir -p "$STAGING/lib" "$STAGING/include"
+          mkdir -p "$STAGING/lib" "$STAGING/include" "$STAGING/LICENSES"
           cp crates/nirs4all-formats-capi/include/nirs4all_formats.h "$STAGING/include/"
           cp LICENSE "$STAGING/"
+          cp LICENSING.md "$STAGING/"
+          cp LICENSES/CeCILL-2.1.txt LICENSES/AGPL-3.0-or-later.txt "$STAGING/LICENSES/"
           # Linux + macOS layouts
           for lib in target/${{ matrix.target }}/release/libnirs4all_formats_capi.*; do
             if [ -f "$lib" ]; then cp "$lib" "$STAGING/lib/"; fi
