@@ -43,20 +43,20 @@ test_that("flat dataset rejects mixed spectral identities", {
   records <- nirs4allformats_open_records(
     sample_path("samples/csv_tsv/synthetic_nirs.csv"))
   records <- records[1:2]
-  original <- nirs4allformats_dataset_from_records(records)
+  original <- nirs4allformats:::nirs4allformats_dataset_from_records(records)
   expect_equal(dim(original$x), c(2, 200))
   signal <- names(records[[2]]$signals)[[1]]
   wrong_unit <- records
   wrong_unit[[2]]$signals[[signal]]$axis$unit <- "cm-1"
-  expect_error(nirs4allformats_dataset_from_records(wrong_unit),
+  expect_error(nirs4allformats:::nirs4allformats_dataset_from_records(wrong_unit),
                "different axes or units")
   wrong_kind <- records
   wrong_kind[[2]]$signals[[signal]]$axis$kind <- "wavenumber"
-  expect_error(nirs4allformats_dataset_from_records(wrong_kind),
+  expect_error(nirs4allformats:::nirs4allformats_dataset_from_records(wrong_kind),
                "different axes or units")
   wrong_type <- records
   wrong_type[[2]]$signals[[signal]]$signal_type <- "reflectance"
-  expect_error(nirs4allformats_dataset_from_records(wrong_type),
+  expect_error(nirs4allformats:::nirs4allformats_dataset_from_records(wrong_type),
                "different signal types")
 })
 
