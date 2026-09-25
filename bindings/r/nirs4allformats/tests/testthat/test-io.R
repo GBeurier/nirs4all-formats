@@ -33,6 +33,31 @@ test_that("dataset converts to matrix and data.frame", {
   expect_equal(nrow(as.data.frame(dataset)), 50)
   expect_equal(dataset$sample_ids[[1]], "S000")
   expect_equal(names(dataset$targets), "protein")
+  expect_equal(dataset$axis_kind, "wavelength")
+  expect_equal(length(dataset$provenance), 50)
+  expect_equal(dataset$provenance[[1]]$format, "delimited-text")
+  expect_true(nzchar(dataset$provenance[[1]]$sources[[1]]$sha256))
+})
+
+test_that("flat dataset rejects mixed spectral identities", {
+  records <- nirs4allformats_open_records(
+    sample_path("samples/csv_tsv/synthetic_nirs.csv"))
+  records <- records[1:2]
+  original <- nirs4allformats_dataset_from_records(records)
+  expect_equal(dim(original$x), c(2, 200))
+  signal <- names(records[[2]]$signals)[[1]]
+  wrong_unit <- records
+  wrong_unit[[2]]$signals[[signal]]$axis$unit <- "cm-1"
+  expect_error(nirs4allformats_dataset_from_records(wrong_unit),
+               "different axes or units")
+  wrong_kind <- records
+  wrong_kind[[2]]$signals[[signal]]$axis$kind <- "wavenumber"
+  expect_error(nirs4allformats_dataset_from_records(wrong_kind),
+               "different axes or units")
+  wrong_type <- records
+  wrong_type[[2]]$signals[[signal]]$signal_type <- "reflectance"
+  expect_error(nirs4allformats_dataset_from_records(wrong_type),
+               "different signal types")
 })
 
 test_that("probe_path returns candidate readers", {

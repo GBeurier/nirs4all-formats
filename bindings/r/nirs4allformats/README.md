@@ -133,9 +133,12 @@ named list with:
 | `metadata` | List of per-record metadata lists (preserved verbatim). |
 | `signal_type` | Signal type of the selected channel. |
 | `axis_unit` | Unit string of the spectral axis (e.g. `"nm"`). |
+| `axis_kind` | Axis kind (e.g. `"wavelength"`). |
 | `formats` | Source format per row. |
+| `provenance` | Full Rust provenance per row, including reader and source hashes. |
 
-All records must share the same spectral axis, so this object is intended for a
+All records must share the same spectral coordinates, unit, kind and signal
+type, so this object is intended for a
 homogeneous set of spectra. For heterogeneous or N-dimensional data, work from
 `nirs4allformats_open_records()` directly.
 
