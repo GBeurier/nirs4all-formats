@@ -50,12 +50,13 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - name: Install dependencies
         run: |
-          Rscript -e 'install.packages("jsonlite", repos = "https://cloud.r-project.org")'
-      - name: Install package
-        run: R CMD INSTALL bindings/r/nirs4allformats
-      - name: Smoke test
+          Rscript -e 'install.packages(c("jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+      - name: Install and test both R packages
         run: |
-          Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); library(nirs4allformats); records <- nirs4allformats_open_records("samples/csv_tsv/synthetic_nirs.csv"); dataset <- nirs4allformats_open_dataset("samples/csv_tsv/synthetic_nirs.csv"); stopifnot(length(records) == 50L, all(dim(as.matrix(dataset)) == c(50L, 200L)), nrow(as.data.frame(dataset)) == 50L)'
+          R CMD INSTALL bindings/r/nirs4allformats
+          Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); testthat::test_package("nirs4allformats", stop_on_failure = TRUE)'
+          R CMD INSTALL bindings/r/nirs4allformatslite
+          Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); testthat::test_package("nirs4allformats.lite", stop_on_failure = TRUE)'
 
   docs:
     name: Docs
