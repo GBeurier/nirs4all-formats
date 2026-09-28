@@ -86,14 +86,14 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
 
-      - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           r-version: ${{ matrix.cfg.r_version }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-pandoc@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-pandoc@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
 
-      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           working-directory: bindings/r/${{ matrix.pkg }}
           extra-packages: |
@@ -114,7 +114,7 @@ jobs:
         run: cd bindings/r/${{ matrix.pkg }} && N4FMT_R_VENDOR=1 ./configure
 
       - name: R CMD check --as-cran
-        uses: r-lib/actions/check-r-package@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+        uses: r-lib/actions/check-r-package@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         env:
           CARGO_NET_OFFLINE: "true"   # the INSTALL build is offline from the bundle
           # Point the integration tests at the checked-out samples/ tree so they
@@ -156,14 +156,14 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
 
-      - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           r-version: "release"
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-pandoc@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-pandoc@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
 
-      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           working-directory: bindings/r/${{ matrix.pkg }}
           extra-packages: any::knitr any::rmarkdown
