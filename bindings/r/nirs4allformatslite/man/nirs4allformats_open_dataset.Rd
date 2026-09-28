@@ -25,7 +25,9 @@ key (zero columns when none were parsed).}
 \item{\code{metadata}}{List of per-record metadata lists.}
 \item{\code{signal_type}}{Signal type of the selected channel.}
 \item{\code{axis_unit}}{Unit string of the spectral axis (e.g. \code{"nm"}).}
+\item{\code{axis_kind}}{Kind of spectral axis (e.g. \code{"wavelength"}).}
 \item{\code{formats}}{Character vector of the source format per row.}
+\item{\code{provenance}}{List of Rust provenance records, one per row.}
 }
 Use \code{\link[=as.matrix]{as.matrix()}} / \code{\link[=as.data.frame]{as.data.frame()}} / \code{\link[=nirs4allformats_as_tibble]{nirs4allformats_as_tibble()}} to project
 it into common R shapes.
@@ -33,8 +35,9 @@ it into common R shapes.
 \description{
 Loads a file with \code{\link[=nirs4allformats_open_records]{nirs4allformats_open_records()}} and projects one signal per
 record into a rectangular, R-friendly dataset: a samples-by-wavelengths
-matrix plus sample IDs, targets and metadata. All records must share the same
-spectral axis (an error is raised otherwise), so this is intended for a
+matrix plus sample IDs, targets, metadata and provenance. All records must
+share spectral coordinates, axis kind/unit and signal type (an error is raised
+otherwise), so this is intended for a
 homogeneous set of spectra. For heterogeneous or N-dimensional data, work
 from \code{\link[=nirs4allformats_open_records]{nirs4allformats_open_records()}} directly.
 
