@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
         with:
           # Serve precompiled Linux binaries from Posit Package Manager so the
           # spectrolab dependency chain (shiny -> fs/sass/bslib) installs cleanly
