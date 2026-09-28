@@ -26,11 +26,14 @@ When a pre-provisioned nightly Rust toolchain and `cargo-fuzz` are available,
 start a campaign explicitly from the repository root:
 
 ```bash
-cargo +nightly fuzz run registry_open_bytes fuzz/corpus/registry_open_bytes -- \
+mkdir -p fuzz/campaign/registry_open_bytes
+cp fuzz/corpus/registry_open_bytes/* fuzz/campaign/registry_open_bytes/
+cargo +nightly fuzz run registry_open_bytes fuzz/campaign/registry_open_bytes -- \
   -dict=fuzz/dictionaries/registry_open_bytes.dict -max_len=1048577
 ```
 
-The `max_len` includes the one-byte selector. This repository does not install
-toolchains, fetch dependencies, or start fuzz campaigns automatically. The
-minimal harness disables optional format features; separate full-feature and
-sidecar-aware targets remain future work.
+The campaign writes only to the ignored scratch corpus, preserving the five
+tracked provenance seeds. The `max_len` includes the one-byte selector. This
+repository does not install toolchains, fetch dependencies, or start fuzz
+campaigns automatically. The minimal harness disables optional format features;
+separate full-feature and sidecar-aware targets remain future work.

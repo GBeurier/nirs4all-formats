@@ -19,6 +19,11 @@ under **BSD** terms. Principal direct dependencies include:
 > Note: GPL-licensed reference readers are used only for **conformance testing**, isolated behind
 > subprocesses, and are **not** linked into the shipped library.
 
+The developer-only fuzz seed `fuzz/corpus/registry_open_bytes/02-msa-minimum-metadata`
+copies `samples/msa_iso22029/minimum_metadata.msa` (Git blob
+`f0b8195d640f2ea64db4ac023847541f7956c273`). The [sample provenance](samples/msa_iso22029/README.md)
+identifies RosettaSciIO and GPL-3.0. This fixture is not linked into the library.
+
 For the exhaustive, version-pinned dependency tree and its licenses, run:
 
 ```
