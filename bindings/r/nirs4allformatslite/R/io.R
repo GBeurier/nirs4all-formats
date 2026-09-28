@@ -59,8 +59,9 @@ nirs4allformats_open_records <- function(path) {
 #' @description
 #' Loads a file with [nirs4allformats_open_records()] and projects one signal per
 #' record into a rectangular, R-friendly dataset: a samples-by-wavelengths
-#' matrix plus sample IDs, targets and metadata. All records must share the same
-#' spectral axis (an error is raised otherwise), so this is intended for a
+#' matrix plus sample IDs, targets, metadata and provenance. All records must
+#' share spectral coordinates, axis kind/unit and signal type (an error is raised
+#' otherwise), so this is intended for a
 #' homogeneous set of spectra. For heterogeneous or N-dimensional data, work
 #' from [nirs4allformats_open_records()] directly.
 #'
@@ -114,7 +115,9 @@ nirs4allformats_open_records <- function(path) {
 #'     \item{`metadata`}{List of per-record metadata lists.}
 #'     \item{`signal_type`}{Signal type of the selected channel.}
 #'     \item{`axis_unit`}{Unit string of the spectral axis (e.g. `"nm"`).}
+#'     \item{`axis_kind`}{Kind of spectral axis (e.g. `"wavelength"`).}
 #'     \item{`formats`}{Character vector of the source format per row.}
+#'     \item{`provenance`}{List of Rust provenance records, one per row.}
 #'   }
 #'   Use [as.matrix()] / [as.data.frame()] / [nirs4allformats_as_tibble()] to project
 #'   it into common R shapes.
@@ -136,6 +139,10 @@ nirs4allformats_open_records <- function(path) {
 #' @export
 nirs4allformats_open_dataset <- function(path, signal = NULL) {
   records <- nirs4allformats_open_records(path)
+  nirs4allformats_dataset_from_records(records, signal)
+}
+
+nirs4allformats_dataset_from_records <- function(records, signal = NULL) {
   if (length(records) == 0) {
     stop("Rust reader returned no records", call. = FALSE)
   }
@@ -143,10 +150,12 @@ nirs4allformats_open_dataset <- function(path, signal = NULL) {
   rows <- list()
   sample_ids <- character()
   metadata <- list()
+  provenance <- list()
   formats <- character()
   targets <- list()
   wavelengths <- NULL
   axis_unit <- "index"
+  axis_kind <- "index"
   signal_type <- "unknown"
 
   for (row_index in seq_along(records)) {
@@ -155,6 +164,9 @@ nirs4allformats_open_dataset <- function(path, signal = NULL) {
     signal_payload <- selected$payload
     values <- as.numeric(unlist(signal_payload$values, use.names = FALSE))
     axis_values <- as.numeric(unlist(signal_payload$axis$values, use.names = FALSE))
+    row_unit <- signal_payload$axis$unit %||% "index"
+    row_kind <- signal_payload$axis$kind %||% "index"
+    row_type <- signal_payload$signal_type %||% record$signal_type %||% "unknown"
     if (length(values) == 0 || length(axis_values) == 0) {
       stop(sprintf("Record %d contains an empty signal", row_index), call. = FALSE)
     }
@@ -163,14 +175,22 @@ nirs4allformats_open_dataset <- function(path, signal = NULL) {
     }
     if (is.null(wavelengths)) {
       wavelengths <- axis_values
-      axis_unit <- signal_payload$axis$unit %||% "index"
-      signal_type <- signal_payload$signal_type %||% record$signal_type %||% "unknown"
-    } else if (!identical(axis_values, wavelengths)) {
-      stop("Cannot build one dataset from records with different axes", call. = FALSE)
+      axis_unit <- row_unit
+      axis_kind <- row_kind
+      signal_type <- row_type
+    } else if (!identical(axis_values, wavelengths) ||
+               !identical(row_unit, axis_unit) ||
+               !identical(row_kind, axis_kind)) {
+      stop("Cannot build one dataset from records with different axes or units",
+           call. = FALSE)
+    } else if (!identical(row_type, signal_type)) {
+      stop("Cannot build one dataset from records with different signal types",
+           call. = FALSE)
     }
 
     rows[[row_index]] <- values
     metadata[[row_index]] <- record$metadata %||% list()
+    provenance[[row_index]] <- record$provenance %||% list()
     sample_ids[[row_index]] <- nirs4allformats_sample_id(record, metadata[[row_index]], row_index)
     formats[[row_index]] <- record$provenance$format %||% "unknown"
 
@@ -198,8 +218,10 @@ nirs4allformats_open_dataset <- function(path, signal = NULL) {
       targets = target_frame,
       sample_ids = unlist(sample_ids, use.names = FALSE),
       metadata = metadata,
+      provenance = provenance,
       signal_type = signal_type,
       axis_unit = axis_unit,
+      axis_kind = axis_kind,
       formats = unlist(formats, use.names = FALSE)
     ),
     class = "nirs4allformats_dataset"

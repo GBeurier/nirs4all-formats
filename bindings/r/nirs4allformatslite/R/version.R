@@ -14,5 +14,5 @@
 #' @seealso [nirs4allformats_native_available()].
 #' @export
 nirs4allformats_version <- function() {
-  "0.1.0.9000"
+  as.character(utils::packageVersion("nirs4allformats.lite"))
 }

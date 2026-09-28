@@ -14,13 +14,14 @@ Description: Smaller variant of the 'R' binding for the 'nirs4all-formats'
     formats). The complete build with 'Parquet' support is the sibling package
     'nirs4allformats'; feeding this build a 'Parquet' input returns an actionable
     error naming it.
-SystemRequirements: Cargo (Rust's package manager), rustc
+SystemRequirements: Cargo (Rust's package manager), rustc, GNU make
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
 License: file LICENSE
 Encoding: UTF-8
 Imports:
-    jsonlite
+    jsonlite,
+    utils
 Suggests:
     testthat (>= 3.0.0),
     tibble

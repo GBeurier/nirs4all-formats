@@ -14,13 +14,14 @@ Description: Thin 'R' binding for the 'nirs4all-formats' near-infrared
     'CSV', 'Excel', and many vendor ASCII/binary formats). A smaller sibling
     package 'nirs4allformats.lite' drops only the 'Parquet'/'Arrow' reader for
     size-sensitive installs.
-SystemRequirements: Cargo (Rust's package manager), rustc
+SystemRequirements: Cargo (Rust's package manager), rustc, GNU make
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
 License: file LICENSE
 Encoding: UTF-8
 Imports:
-    jsonlite
+    jsonlite,
+    utils
 Suggests:
     testthat (>= 3.0.0),
     tibble

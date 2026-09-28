@@ -1,3 +1,3 @@
 test_that("version is exposed", {
-  expect_equal(nirs4allformats_version(), "0.1.0.9000")
+  expect_equal(nirs4allformats_version(), as.character(utils::packageVersion("nirs4allformats.lite")))
 })
