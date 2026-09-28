@@ -47,10 +47,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2
+        with:
+          use-public-rspm: true
       - uses: dtolnay/rust-toolchain@stable
+      - name: Install R test system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libuv1-dev
       - name: Install dependencies
         run: |
-          Rscript -e 'install.packages(c("jsonlite", "testthat"), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages(c("jsonlite", "testthat"))'
+          Rscript -e 'stopifnot(requireNamespace("jsonlite", quietly = TRUE), requireNamespace("testthat", quietly = TRUE))'
       - name: Install and test both R packages
         run: |
           R CMD INSTALL bindings/r/nirs4allformats
