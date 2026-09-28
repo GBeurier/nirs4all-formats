@@ -1,3 +1,5 @@
 /artifacts/
 /coverage/
 /target/
+/Cargo.lock
+/campaign/
