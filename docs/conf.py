@@ -34,13 +34,11 @@ html_theme = "furo"
 # Excluded: internal planning / status / inventory / reverse-engineering artifacts.
 # These are tracked in-repo for maintainers but are not part of the published,
 # end-user documentation site. Keeping them out of the build avoids "document
-# isn't in any toctree" warnings under -W. REDESIGN_FORMATS_AND_IO.md also uses
-# illustrative pseudo-JSON/TOML fences that no strict Pygments lexer accepts.
+# isn't in any toctree" warnings under -W.
 exclude_patterns = [
     "_build",
     "Thumbs.db",
     ".DS_Store",
-    "REDESIGN_FORMATS_AND_IO.md",
     "PLAN.md",
     "DIRECTIONS.md",
     "ROADMAP.md",
