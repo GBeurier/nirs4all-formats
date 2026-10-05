@@ -1789,7 +1789,12 @@ fn parse_mat5_char(
                 "MATLAB UTF-16 dimensions do not match payload".into(),
             ));
         }
-        let units: Vec<_> = data.chunks_exact(2).map(|b| mat5_u16(b, endian)).collect();
+        let units: Vec<_> = data
+            .as_chunks::<2>()
+            .0
+            .iter()
+            .map(|b| mat5_u16(b, endian))
+            .collect();
         let rows = (0..row_count)
             .map(|row| {
                 let units: Vec<_> = (0..col_count)
