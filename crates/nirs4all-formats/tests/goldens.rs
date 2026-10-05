@@ -5,6 +5,11 @@ use nirs4all_formats::{open_path, SpectralRecord};
 use serde_json::{json, Value};
 
 const CASES: &[(&str, &str)] = &[
+    ("unscrambler_synthetic", "samples/unscrambler/synthetic.00D"),
+    (
+        "matlab_unscrambler_synthetic",
+        "samples/matlab/synthetic_unscrambler.mat",
+    ),
     ("asd_legacy_float", "samples/asd/3L9257.000"),
     ("asd_v6_double", "samples/asd/v6sample00000.asd"),
     ("asd_v7_field_double", "samples/asd/v7_field_44231B009.asd"),

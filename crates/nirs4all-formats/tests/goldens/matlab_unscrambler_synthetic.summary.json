@@ -1,0 +1,109 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "matlab-unscrambler-export",
+      "metadata_keys": [
+        "container",
+        "matrix",
+        "matrix_orientation",
+        "missing_value_count",
+        "sample_id",
+        "sample_index",
+        "schema",
+        "signal_columns",
+        "variable_labels"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::matlab",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 3.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal_2",
+          "role": "signal",
+          "shape": [
+            4
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 10.0,
+          "value_last": 31.0,
+          "value_sum": 82.0,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "564f213aa83ab3b4e053029b8c1fd6067fa9b5fa46a8ca8b3e81bc694bb0e943",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": [
+        "Signal calibration and physical type are unavailable; generated index axes and unknown signal types are used",
+        "Labelled columns outside signal blocks are exposed as targets; their modelling roles are not specified"
+      ]
+    },
+    {
+      "format": "matlab-unscrambler-export",
+      "metadata_keys": [
+        "container",
+        "matrix",
+        "matrix_orientation",
+        "missing_value_count",
+        "sample_id",
+        "sample_index",
+        "schema",
+        "signal_columns",
+        "variable_labels"
+      ],
+      "quality_flags": [
+        "missing_values"
+      ],
+      "reader": "nirs4all_formats::readers::matlab",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 3.0,
+          "axis_len": 4,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "signal_2",
+          "role": "signal",
+          "shape": [
+            4
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 20.0,
+          "value_last": 41.0,
+          "value_sum": 122.0,
+          "values_len": 4
+        }
+      ],
+      "source_sha256": "564f213aa83ab3b4e053029b8c1fd6067fa9b5fa46a8ca8b3e81bc694bb0e943",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": [
+        "Signal calibration and physical type are unavailable; generated index axes and unknown signal types are used",
+        "Labelled columns outside signal blocks are exposed as targets; their modelling roles are not specified"
+      ]
+    }
+  ]
+}

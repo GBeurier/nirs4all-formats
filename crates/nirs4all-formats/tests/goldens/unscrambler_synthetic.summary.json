@@ -1,0 +1,162 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "unscrambler-00d",
+      "metadata_keys": [
+        "container",
+        "dataset_label",
+        "matrix",
+        "matrix_orientation",
+        "missing_value_count",
+        "sample_groups",
+        "sample_id",
+        "sample_index",
+        "signal_columns",
+        "variable_groups",
+        "variable_labels",
+        "vendor_dataset",
+        "vendor_sample_descriptor"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::unscrambler",
+      "record_signal_type": "unknown",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 1.0,
+          "axis_len": 2,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "nir",
+          "role": "signal",
+          "shape": [
+            2
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 10.0,
+          "value_last": 11.0,
+          "value_sum": 21.0,
+          "values_len": 2
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 1.0,
+          "axis_len": 2,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "nmr",
+          "role": "signal",
+          "shape": [
+            2
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 30.0,
+          "value_last": 31.0,
+          "value_sum": 61.0,
+          "values_len": 2
+        }
+      ],
+      "source_sha256": "30b50b6701899594017056faebdbd4fdd79709362076845ae734f9cf745bcd1c",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": [
+        "Signal calibration and physical type are unavailable; generated index axes and unknown signal types are used",
+        "Labelled columns outside signal blocks are exposed as targets; their modelling roles are not specified"
+      ]
+    },
+    {
+      "format": "unscrambler-00d",
+      "metadata_keys": [
+        "container",
+        "dataset_label",
+        "matrix",
+        "matrix_orientation",
+        "missing_value_count",
+        "sample_groups",
+        "sample_id",
+        "sample_index",
+        "signal_columns",
+        "variable_groups",
+        "variable_labels",
+        "vendor_sample_descriptor"
+      ],
+      "quality_flags": [
+        "missing_values"
+      ],
+      "reader": "nirs4all_formats::readers::unscrambler",
+      "record_signal_type": "unknown",
+      "signal_count": 2,
+      "signals": [
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 1.0,
+          "axis_len": 2,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "nir",
+          "role": "signal",
+          "shape": [
+            2
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 20.0,
+          "value_last": 21.0,
+          "value_sum": 41.0,
+          "values_len": 2
+        },
+        {
+          "axis_first": 0.0,
+          "axis_kind": "index",
+          "axis_last": 1.0,
+          "axis_len": 2,
+          "axis_order": "ascending",
+          "axis_unit": "index",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "nmr",
+          "role": "signal",
+          "shape": [
+            2
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 40.0,
+          "value_last": 41.0,
+          "value_sum": 81.0,
+          "values_len": 2
+        }
+      ],
+      "source_sha256": "30b50b6701899594017056faebdbd4fdd79709362076845ae734f9cf745bcd1c",
+      "target_keys": [
+        "protein"
+      ],
+      "warnings": [
+        "Signal calibration and physical type are unavailable; generated index axes and unknown signal types are used",
+        "Labelled columns outside signal blocks are exposed as targets; their modelling roles are not specified"
+      ]
+    }
+  ]
+}

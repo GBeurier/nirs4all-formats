@@ -1,6 +1,16 @@
 # Implementation Dashboard
 
-Last updated: 2026-06-03.
+Last updated: 2026-10-05.
+
+## New local corpus support
+
+Unscrambler `.00D` binary revision 35 is now read natively, with leaf signal
+groups, labelled targets and missing values. MATLAB v5 exports with
+`VarLabels0` / `ObjLabels` are also mapped. The paired local corpus is checked
+value by value; synthetic tests run without the private samples. Both paths
+use index axes because no physical calibration is supplied. Historical counts
+below describe the earlier sourcing inventory; this addition is tracked in
+`FORMAT_MATRIX.md` and `formats/unscrambler.md`.
 
 This page is the compact, visual companion to `FORMAT_MATRIX.md`. The matrix is
 still the source of truth; this page makes the implementation maturity and

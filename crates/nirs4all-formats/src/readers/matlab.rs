@@ -492,6 +492,10 @@ fn read_matlab_v5_structured(
 ) -> Result<Vec<SpectralRecord>> {
     let mat = Mat5Document::parse(bytes)?;
 
+    if let Some(records) = records_from_unscrambler_export(&mat, reader, source.clone())? {
+        return Ok(records);
+    }
+
     if let Some(records) = records_from_eigenvector_corn(&mat, reader, source.clone())? {
         return Ok(records);
     }
@@ -511,6 +515,59 @@ fn read_matlab_v5_structured(
     Err(Error::InvalidRecord(
         "MATLAB MAT file contains no supported structured NIRS dataset".to_string(),
     ))
+}
+
+fn records_from_unscrambler_export(
+    mat: &Mat5Document,
+    reader: &str,
+    source: SourceFile,
+) -> Result<Option<Vec<SpectralRecord>>> {
+    use super::labelled_matrix::{self, LabelledMatrix};
+    let Some(labels) = mat.values.get("VarLabels0") else {
+        return Ok(None);
+    };
+    let char_rows = |value: &Mat5Value| -> Result<Vec<String>> {
+        match value {
+            Mat5Value::Char { rows, .. } => Ok(rows.clone()),
+            _ => Err(Error::InvalidRecord(
+                "Unscrambler MAT labels must be character matrices".into(),
+            )),
+        }
+    };
+    let labels = char_rows(labels)?;
+    let objects = char_rows(mat.require("ObjLabels")?)?;
+    let candidates: Vec<_> = mat
+        .values
+        .values()
+        .filter_map(Mat5Value::as_numeric)
+        .filter(|m| m.dims.len() == 2 && m.rows() == objects.len() && m.cols() == labels.len())
+        .collect();
+    if candidates.len() != 1 {
+        return Err(Error::InvalidRecord(
+            "Unscrambler MAT export must contain exactly one matrix matching ObjLabels/VarLabels0"
+                .into(),
+        ));
+    }
+    let matrix = candidates[0];
+    let metadata = BTreeMap::from([
+        ("container".into(), json!("matlab_v5")),
+        ("schema".into(), json!("unscrambler_labelled_export")),
+    ]);
+    labelled_matrix::records(
+        LabelledMatrix {
+            name: matrix.name.clone(),
+            rows: matrix.rows(),
+            labels,
+            objects,
+            values: matrix.values.clone(),
+            groups: vec![],
+            metadata,
+        },
+        "matlab-unscrambler-export",
+        reader,
+        source,
+    )
+    .map(Some)
 }
 
 fn records_from_eigenvector_corn(
@@ -1403,6 +1460,7 @@ enum Mat5Value {
     Char {
         name: String,
         value: String,
+        rows: Vec<String>,
     },
     Cell(Mat5Cell),
     Struct {
@@ -1587,6 +1645,11 @@ fn parse_mat5_matrix(bytes: &[u8], endian: Mat5Endian) -> Result<Mat5Value> {
         ));
     }
     let flag_word = mat5_u32(&flags_bytes[0..4], endian);
+    if flag_word & 0x800 != 0 {
+        return Err(Error::InvalidRecord(
+            "MATLAB structured mapper does not support complex arrays".into(),
+        ));
+    }
     let class = Mat5ArrayClass::from_u32(flag_word & 0xff)?;
 
     let (dims_tag, dims_bytes) = read_mat5_subelement(bytes, &mut cursor, endian)?;
@@ -1715,9 +1778,52 @@ fn parse_mat5_char(
     endian: Mat5Endian,
 ) -> Result<Mat5Value> {
     let (tag, data) = read_mat5_subelement(bytes, cursor, endian)?;
+    let row_count = dims.first().copied().unwrap_or(0);
+    let col_count = dims.get(1).copied().unwrap_or(1);
+    if matches!(tag.data_type, Mat5DataType::UInt16 | Mat5DataType::Utf16) {
+        if dims.len() != 2
+            || !data.len().is_multiple_of(2)
+            || row_count.checked_mul(col_count) != Some(data.len() / 2)
+        {
+            return Err(Error::InvalidRecord(
+                "MATLAB UTF-16 dimensions do not match payload".into(),
+            ));
+        }
+        let units: Vec<_> = data.chunks_exact(2).map(|b| mat5_u16(b, endian)).collect();
+        let rows = (0..row_count)
+            .map(|row| {
+                let units: Vec<_> = (0..col_count)
+                    .map(|col| units[row + col * row_count])
+                    .collect();
+                String::from_utf16(&units)
+                    .map(|s| s.trim_matches(['\0', ' ']).to_string())
+                    .map_err(|_| {
+                        Error::InvalidRecord(
+                            "MATLAB character matrix contains invalid UTF-16".into(),
+                        )
+                    })
+            })
+            .collect::<Result<Vec<_>>>()?;
+        let value = rows.join("\n");
+        return Ok(Mat5Value::Char { name, value, rows });
+    }
     let chars = mat5_chars(tag.data_type, data, endian)?;
+    if dims.len() != 2 || row_count.checked_mul(col_count) != Some(chars.len()) {
+        return Err(Error::InvalidRecord(
+            "MATLAB character dimensions do not match payload".into(),
+        ));
+    }
+    let rows = (0..row_count)
+        .map(|row| {
+            (0..col_count)
+                .map(|col| chars[row + col * row_count])
+                .collect::<String>()
+                .trim_matches(['\0', ' '])
+                .to_string()
+        })
+        .collect();
     let value = mat5_char_matrix_to_string(&dims, chars);
-    Ok(Mat5Value::Char { name, value })
+    Ok(Mat5Value::Char { name, value, rows })
 }
 
 fn parse_mat5_numeric(
@@ -1827,9 +1933,14 @@ fn mat5_ascii(bytes: &[u8]) -> Result<String> {
 
 fn mat5_chars(data_type: Mat5DataType, bytes: &[u8], endian: Mat5Endian) -> Result<Vec<char>> {
     match data_type {
-        Mat5DataType::Int8 | Mat5DataType::UInt8 | Mat5DataType::Utf8 => {
+        Mat5DataType::Int8 | Mat5DataType::UInt8 => {
             Ok(bytes.iter().copied().map(char::from).collect::<Vec<char>>())
         }
+        Mat5DataType::Utf8 => std::str::from_utf8(bytes)
+            .map(|s| s.chars().collect())
+            .map_err(|_| {
+                Error::InvalidRecord("MATLAB character payload contains invalid UTF-8".into())
+            }),
         Mat5DataType::UInt16 | Mat5DataType::Utf16 => {
             if !bytes.len().is_multiple_of(2) {
                 return Err(Error::InvalidRecord(

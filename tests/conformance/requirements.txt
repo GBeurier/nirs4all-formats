@@ -23,6 +23,9 @@ allotropy>=0.1.61
 h5py>=3.10
 numpy>=1.24
 
+# MATLAB labelled exports / paired Unscrambler reference (BSD-3-Clause).
+scipy>=1.10
+
 # pytest runner (already in the dev environment but pinned here for
 # reproducibility when running the conformance suite standalone).
 pytest>=8.0

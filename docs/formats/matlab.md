@@ -62,12 +62,18 @@ target vector.
 |---|---|---|
 | MAT v5 numeric (`X` + axis + `y`) | Supported | Column-major arrays via `matfile`. |
 | MAT v5 Eigenvector data set objects | Supported | Schema-mapped; multi-signal + labelled targets. |
+| MAT v5 Unscrambler labelled export | Supported (scoped) | One dimension-matched numeric matrix plus `VarLabels0` / `ObjLabels`; labelled targets and unlabelled signal blocks, index axes. |
 | MAT v7.3 (HDF5) | Supported | Via `hdf5-reader`; both matrix orientations. |
 | prospectr `NIRsoil.RData` | Supported | RDX3/XZ workspace, mapped from the data.frame. |
 | Indian Pines cube + `_gt.mat` | Experimental (local-only) | One record per pixel, generated band index. |
 | Arbitrary MATLAB structs / RData objects | Planned | Generic heterogeneous structures not yet mapped. |
 
 ## Limitations & known gaps
+
+- Unscrambler labelled exports preserve row/column labels and missing values,
+  but omit the native variable groups and physical calibration. Their unlabelled
+  columns use contiguous unknown signals and index axes. See
+  [Unscrambler](unscrambler.md) for the mapping conventions and native reader.
 
 - Unknown MATLAB structs/objects are not treated as generic numeric arrays:
   their spectra, labels, axis scales and targets live inside nested objects
