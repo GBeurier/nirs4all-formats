@@ -123,7 +123,9 @@ fn text(bytes: &[u8]) -> Result<String> {
         return Err(invalid("misaligned UTF-16 string"));
     }
     let units: Vec<_> = bytes
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
         .map(|b| u16::from_le_bytes([b[0], b[1]]))
         .take_while(|&c| c != 0)
         .collect();
@@ -174,8 +176,10 @@ type Decoded = (LabelledMatrix, serde_json::Value, Vec<Vec<u32>>);
 
 fn words(bytes: &[u8]) -> Vec<u32> {
     bytes
-        .chunks_exact(4)
-        .map(|b| u32::from_le_bytes(b.try_into().expect("four bytes")))
+        .as_chunks::<4>()
+        .0
+        .iter()
+        .map(|b| u32::from_le_bytes(*b))
         .collect()
 }
 
@@ -248,22 +252,28 @@ fn decode(bytes: &[u8]) -> Result<Decoded> {
     metadata.insert("container".into(), json!("unscrambler_00d_revision_35"));
     metadata.insert("dataset_label".into(), json!(text(dataset_label.data)?));
     let mut sample_groups = Vec::new();
-    for item in row_groups.data.chunks_exact(600) {
+    for item in row_groups.data.as_chunks::<600>().0.iter() {
         sample_groups.push(
             json!({"name": text(&item[..80])?, "sample_indices": selection(&item[88..344], rows)?, "vendor_flags": [u32_at(item, 80)?, u32_at(item, 84)?], "vendor_tail": words(&item[344..])}),
         );
     }
     metadata.insert("sample_groups".into(), json!(sample_groups));
-    let sample_descriptors = row_info.data.chunks_exact(128).map(words).collect();
+    let sample_descriptors = row_info
+        .data
+        .as_chunks::<128>()
+        .0
+        .iter()
+        .map(|bytes| words(bytes))
+        .collect();
     let vendor_metadata = json!({
         "file_header_hex": header_hex,
         "dataset_header_words": words(header.data),
         "settings_words": words(settings.data),
-        "column_descriptors": col_info.data.chunks_exact(92).map(words).collect::<Vec<_>>(),
+        "column_descriptors": col_info.data.as_chunks::<92>().0.iter().map(|bytes| words(bytes)).collect::<Vec<_>>(),
     });
     let mut groups = Vec::new();
     let mut group_metadata = Vec::new();
-    for item in col_groups.data.chunks_exact(600) {
+    for item in col_groups.data.as_chunks::<600>().0.iter() {
         let name = text(&item[..80])?;
         let columns = selection(&item[88..344], cols)?;
         group_metadata.push(json!({"name": name, "column_indices": columns, "vendor_flags": [u32_at(item, 80)?, u32_at(item, 84)?], "vendor_tail": words(&item[344..])}));
@@ -272,9 +282,11 @@ fn decode(bytes: &[u8]) -> Result<Decoded> {
     metadata.insert("variable_groups".into(), json!(group_metadata));
     let values = data
         .data
-        .chunks_exact(4)
+        .as_chunks::<4>()
+        .0
+        .iter()
         .map(|b| {
-            let value = f32::from_le_bytes(b.try_into().expect("four bytes"));
+            let value = f32::from_le_bytes(*b);
             // Vendor missing sentinel; confirmed against NaNs in the paired export.
             if value == -9.973e23_f32 {
                 f64::NAN
@@ -292,13 +304,17 @@ fn decode(bytes: &[u8]) -> Result<Decoded> {
             metadata,
             labels: labels
                 .data
-                .chunks_exact(32)
-                .map(text)
+                .as_chunks::<32>()
+                .0
+                .iter()
+                .map(|bytes| text(bytes))
                 .collect::<Result<_>>()?,
             objects: objects
                 .data
-                .chunks_exact(32)
-                .map(text)
+                .as_chunks::<32>()
+                .0
+                .iter()
+                .map(|bytes| text(bytes))
                 .collect::<Result<_>>()?,
         },
         vendor_metadata,
