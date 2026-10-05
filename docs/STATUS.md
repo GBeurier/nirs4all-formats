@@ -1,6 +1,15 @@
 # Project Status
 
-Last updated: 2026-09-17.
+Last updated: 2026-10-05.
+
+> 2026-10-05 — **0.2.11 Unscrambler / MATLAB support.** Native Unicode
+> non-design `.00D` revision 35 and labelled MATLAB v5 exports are supported.
+> All 529,308 values in the user-supplied private pair are checked against the
+> export, including 151 missing values. Six native signal blocks and 66 target
+> columns are preserved; the group-free MAT export retains one unlabelled block.
+> CC0 synthetic fixtures, goldens, SciPy conformance and the byte-layout report
+> qualify the implementation. Unknown calibration uses index axes and explicit
+> warnings. Original samples stay local-only.
 
 > 2026-09-17 — **0.2.10 dependency maintenance.** Reconciled the published 0.2.9
 > release history with main, preserving its security and public-archive policy.
@@ -77,7 +86,7 @@ Last updated: 2026-09-17.
 
 ## Current Checkpoint
 
-Package manifests are aligned at `0.2.10` for the dependency-maintenance release,
+Package manifests are aligned at `0.2.11` for the Unscrambler / MATLAB release,
 with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
@@ -337,6 +346,15 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-10-05 Unscrambler / MATLAB (`v0.2.11`): workspace tests, formatting and
+Clippy with warnings denied pass locally, including the paired local corpus;
+the native reader also passes with no optional features. Python helpers,
+bindings, release-archive tests and available reference-reader conformance pass
+(92 passed, 33 skipped: optional references / R unavailable). The two added
+SciPy cases execute and pass; original goldens are unchanged, with two new
+synthetic summaries reviewed. Documentation builds with warnings denied.
+R and full WASM distribution qualification run in the release-candidate CI.
 
 2026-09-17 dependency maintenance (`v0.2.10`): workspace formatting, Clippy with
 `-D warnings`, all workspace Rust tests (including existing XML goldens),

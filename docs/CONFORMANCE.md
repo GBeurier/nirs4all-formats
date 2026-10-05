@@ -53,6 +53,7 @@ Reference readers wired in M2:
 | SVC/GER `.sig` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sig_dump.R`). |
 | Allotrope ASM | canonical ASM JSON schema | n/a | `json.load` plus a walker over the standard `*… data cube` containers. ASM is itself the canonical encoding; no separate runtime reader exists. |
 | Generic HDF5 | `h5py` | BSD | Direct Python import. |
+| Unscrambler `.00D` / labelled MAT | SciPy `loadmat` on the paired export | BSD-3-Clause | Every signal/target value compared; public synthetic pair always runs, private corpus runs when present. |
 
 GPL-licensed readers (`spectrolab`, `opusreader2`) stay isolated through
 subprocess boundaries and are never imported into the dual-licensed runtime library

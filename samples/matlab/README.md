@@ -16,6 +16,13 @@ Already supported by `nirs4all` via `MatlabLoader`. Many academic NIR datasets a
 
 ## Parser hints
 
+`synthetic_unscrambler.mat` is a CC0-1.0 fixture containing invented labelled
+matrix values, paired with `samples/unscrambler/synthetic.00D`. Regenerate both
+with `python3 scripts/gen_unscrambler_fixtures.py` (stdlib only). SHA-256:
+`564f213aa83ab3b4e053029b8c1fd6067fa9b5fa46a8ca8b3e81bc694bb0e943`.
+It exercises `VarLabels0`, `ObjLabels`, target mapping and missing values;
+the user-supplied export stays under `samples_local/matlab/`.
+
 - Reference readers:
   - Python: `scipy.io.loadmat` for v5; `h5py` or `mat73` for v7.3.
   - R: `R.matlab::readMat()`; for `.RData` use `load()` or `pyreadr.read_r()`.

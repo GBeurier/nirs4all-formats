@@ -5,6 +5,31 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.11] - 2026-10-05
+
+### Added
+
+- Native Unscrambler `.00D` Unicode non-design binary revision 35 reader,
+  available in all builds: column-major matrices, leaf signal groups, labelled
+  targets, sample identities, vendor metadata and missing-value handling.
+- MATLAB v5 Unscrambler exports with `VarLabels0` / `ObjLabels`, selecting the
+  numeric matrix by dimensions and preserving every variable without inferring
+  absent group boundaries, physical units or calibration.
+- CC0 synthetic paired fixtures, golden summaries, every-value SciPy conformance,
+  local paired-corpus checks and a byte-layout reverse engineering report.
+- Validation of native counts, offsets, revisions, selections and overlapping
+  groups; Unicode labels, compressed/endian MAT variants and malformed inputs.
+
+### Fixed
+
+- Preserve UTF-16 surrogate pairs and empty label rows in MATLAB character
+  matrices. Reject complex structured arrays instead of discarding imaginary data.
+
+### Changed
+
+- Synchronize this repository's Rust, Python, R and WASM packages at `0.2.11`.
+  User-supplied fixtures remain local-only and are excluded from public artifacts.
+
 ## [0.2.10] - 2026-09-17
 
 ### Fixed

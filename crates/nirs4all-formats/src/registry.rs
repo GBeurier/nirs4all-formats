@@ -29,8 +29,8 @@ use crate::readers::{
     HamamatsuImgReader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MsaReader, MzmlReader,
     NicoletOmnicReader, NumpyReader, OceanOpticsReader, PerkinElmerReader, PpSystemsReader,
     RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader,
-    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UsgsArefReader,
-    ViaviMicroNirReader, WitecWipReader,
+    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UnscramblerReader,
+    UsgsArefReader, ViaviMicroNirReader, WitecWipReader,
 };
 use crate::sidecars::NoSidecars;
 
@@ -361,6 +361,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(NicoletOmnicReader),
         Box::new(PerkinElmerReader),
         Box::new(BuchiNircalReader),
+        Box::new(UnscramblerReader),
         Box::new(FossWinisiReader),
         Box::new(ViaviMicroNirReader),
         Box::new(JascoJwsReader),

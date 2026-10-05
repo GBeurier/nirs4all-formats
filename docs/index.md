@@ -74,6 +74,7 @@ formats/horiba-labspec
 formats/jasco-jws
 formats/jcamp-dx
 formats/matlab
+formats/unscrambler
 formats/metrohm-vision
 formats/msa-iso22029
 formats/mzml
