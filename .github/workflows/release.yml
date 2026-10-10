@@ -41,7 +41,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse bindings/python
       - name: Upload wheels
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
@@ -60,7 +60,7 @@ jobs:
         run: python -m pip install maturin
       - name: Build sdist
         run: maturin sdist --manifest-path bindings/python/Cargo.toml --out dist
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: sdist
           path: dist/*.tar.gz
@@ -106,7 +106,7 @@ jobs:
           else
             tar czf "${STAGING}.tar.gz" "$STAGING/"
           fi
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v7.0.2
         with:
           name: c-abi-${{ matrix.target }}
           path: nirs4all-formats-capi-${{ matrix.target }}.*
@@ -147,13 +147,13 @@ jobs:
       # archive") and aborted before any upload. Wheels live under wheels-*, the
       # sdist under the `sdist` artifact.
       - name: Download Python wheels
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@v8.0.2
         with:
           path: dist
           pattern: wheels-*
           merge-multiple: true
       - name: Download Python sdist
-        uses: actions/download-artifact@v8.0.1
+        uses: actions/download-artifact@v8.0.2
         with:
           name: sdist
           path: dist
@@ -217,7 +217,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/download-artifact@v8.0.1
+      - uses: actions/download-artifact@v8.0.2
         with:
           path: artifacts
           merge-multiple: true
