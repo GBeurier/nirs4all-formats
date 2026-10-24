@@ -52,7 +52,7 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
-      - uses: Swatinem/rust-cache@f0d9c3887740aee45f6153b24b3a6b815192ec16 # v2
+      - uses: Swatinem/rust-cache@c8037a86dde8214a8310e9f54a8fc61ab362aa31 # v2
 
       # Some wasm deps compile bundled C to wasm32 (zstd-sys / lzma-sys) and need
       # clang; ubuntu-latest ships it (the demo-pages.yml wasm build relies on
@@ -68,7 +68,7 @@ jobs:
           # to v0.15.0 succeeded on the same commit).
           version: 'v0.15.0'
 
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
