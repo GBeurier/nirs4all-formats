@@ -28,6 +28,8 @@ function sidecars(entries) {
 }
 
 const openCases = [
+  ['rod', 'samples/rod/synthetic.rod', 'raman-open-database'],
+  ['unscrambler', 'samples/unscrambler/synthetic.00D', 'unscrambler-00d'],
   ['csv_like', 'samples/csv_tsv/synthetic_nirs.csv', 'delimited-text'],
   ['jcamp', 'samples/jcamp_dx/TESTSPEC.DX', 'jcamp-dx'],
   ['asd', 'samples/asd/soil.asd', 'asd-fieldspec'],

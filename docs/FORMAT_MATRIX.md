@@ -310,3 +310,11 @@ github.com/kebasaa/SCIO-read, ehu.eus/ccwintco (Indian Pines), NOAA Lauder.
 | Specim IQ demo cube | Specim has discontinued the product (“end-of-life” page); only the 7z archive Arabidopsis Zenodo 1345007 (123 MB) exists — too big, and the raw/processed mix is ​​not isolated. |
 | Thermo OMNIC `.srsx` | No public fixture found (S.T.Japan demo libraries `.spg` behind form); the `.srs` channel, including local rapid-scan, is experimentally covered. |
 | VIAVI MicroNIR `.pri` native | Binary project format, customer-only; the native `.sam` (sample) is decoded (reader `viavi_micronir`, fixtures local-only) and real CSV/XLSX exports are covered via UvA forensic. Only the `.pri` project remains unaffected. |
+
+### Raman Open Database (`.rod`)
+
+`raman-open-database` reads the Raman shift/intensity loop and scalar CIF fields
+from ROD records, retaining units and source metadata. The reader is scoped to
+single-spectrum ROD records; it is not a general CIF parser. Validation includes
+219 public records fetched from the Raman Open Database across ten axis groups,
+in addition to a synthetic reader test. Source: https://solsa.crystallography.net/rod/.
