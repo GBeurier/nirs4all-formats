@@ -28,7 +28,7 @@ use crate::readers::{
     EnviSliReader, ErdasLanReader, ExcelReader, FossWinisiReader, GalacticSpcReader,
     HamamatsuImgReader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MsaReader, MzmlReader,
     NicoletOmnicReader, NumpyReader, OceanOpticsReader, PerkinElmerReader, PpSystemsReader,
-    RenishawWdfReader, ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader,
+    RenishawWdfReader, RodReader, ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader,
     SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UnscramblerReader,
     UsgsArefReader, ViaviMicroNirReader, WitecWipReader,
 };
@@ -356,6 +356,7 @@ fn enumerate_window(
 
 fn readers() -> Vec<Box<dyn Reader>> {
     let mut readers: Vec<Box<dyn Reader>> = vec![
+        Box::new(RodReader),
         Box::new(JcampReader),
         Box::new(BrukerOpusReader),
         Box::new(NicoletOmnicReader),

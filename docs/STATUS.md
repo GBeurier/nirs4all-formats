@@ -1,6 +1,9 @@
 # Project Status
 
-Last updated: 2026-10-05.
+Last updated: 2026-10-28.
+
+> 2026-10-28 — **0.2.12 Raman Open Database support.** ROD `.rod` records
+> expose the original Raman axis, intensity and scalar metadata.
 
 > 2026-10-05 — **0.2.11 Unscrambler / MATLAB support.** Native Unicode
 > non-design `.00D` revision 35 and labelled MATLAB v5 exports are supported.
@@ -86,7 +89,7 @@ Last updated: 2026-10-05.
 
 ## Current Checkpoint
 
-Package manifests are aligned at `0.2.11` for the Unscrambler / MATLAB release,
+Package manifests are aligned at `0.2.12` for the Raman Open Database release,
 with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
@@ -346,6 +349,14 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-10-28 Raman Open Database (`v0.2.12` candidate): workspace formatting,
+Clippy with warnings denied, workspace tests, version sync, sdist and wheel
+archive checks, and the installed wheel's Python tests pass (21 passed, 4
+optional skips). Available conformance: 54 passed, 31 skipped for missing R or reference
+reader limitations. The full-feature and no-default-features WASM builds, Node smoke, 53-fixture
+coverage matrix, sidecar tests and ROD origin smoke pass. R binding checks
+require R, which is unavailable in this local environment and remains a CI gate.
 
 2026-10-05 Unscrambler / MATLAB (`v0.2.11`): workspace tests, formatting and
 Clippy with warnings denied pass locally, including the paired local corpus;
