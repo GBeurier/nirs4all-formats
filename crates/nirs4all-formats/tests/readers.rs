@@ -4083,7 +4083,7 @@ fn reads_spectrochempy_dso_matlab_dataset() {
         (records[0].metadata["pressure_bar"]
             .as_f64()
             .expect("pressure")
-            - 7.3072899386666675e-06)
+            - 7.307_289_938_666_667_5e-6)
             .abs()
             < 1e-12
     );
@@ -4094,7 +4094,7 @@ fn reads_spectrochempy_dso_matlab_dataset() {
     assert_eq!(absorbance.axis.order, AxisOrder::Descending);
     assert!((absorbance.axis.values[0] - 2210.059237650298).abs() < 0.000001);
     assert!((absorbance.axis.values[425] - 1800.2533144385284).abs() < 0.000001);
-    assert!((absorbance.values[0] - 9.120255708694458e-05).abs() < 0.000001);
+    assert!((absorbance.values[0] - 9.120_255_708_694_458e-5).abs() < 0.000001);
     assert!((absorbance.values[425] - 0.0006451588124036789).abs() < 0.000001);
     assert!(
         (records[19].signals["absorbance"].values[425] - 0.0012210346758365631).abs() < 0.000001
