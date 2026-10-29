@@ -109,3 +109,10 @@ semver:
 - major bump only for incompatible re-shapes.
 
 Update `docs/VERSIONING.md` whenever the ABI moves.
+
+### Rust 1.88 dependency resolution
+
+The workspace and independently built Python, WASM and R bindings use Cargo resolver 3.
+Fresh builds prefer dependency releases compatible with the declared Rust 1.88 minimum;
+this avoids selecting `uuid >=1.27` (via `cfb`), which requires Rust 1.89.
+The resolver does not suppress security audits or alter parsing/numerical behavior.
