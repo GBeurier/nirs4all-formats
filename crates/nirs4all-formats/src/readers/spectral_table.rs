@@ -608,7 +608,7 @@ fn infer_wavelength_unit_from_values(path: &Path, axis: &[f64]) -> String {
 }
 
 fn infer_axis_kind(header: &str, unit: &str) -> AxisKind {
-    let lower = format!("{} {}", header, unit).to_ascii_lowercase();
+    let lower = format!("{header} {unit}").to_ascii_lowercase();
     if lower.contains("cm-1") || lower.contains("wavenumber") {
         AxisKind::Wavenumber
     } else if lower.contains("hz") {

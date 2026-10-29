@@ -3,6 +3,7 @@ name = "nirs4all-formats"
 description = "Rust-first NIRS and spectroscopy file loading facade."
 version.workspace = true
 edition.workspace = true
+rust-version = "1.88"
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -30,13 +31,13 @@ nirs4all-formats-core.workspace = true
 arrow-array = { version = "60.0.0", optional = true }
 arrow-schema = { version = "60.0.0", optional = true }
 bytes = { version = "1", optional = true }
-calamine = "0.36.1"
+calamine = "0.37.0"
 chrono = { version = "0.4", default-features = false, optional = true, features = ["alloc"] }
 cfb = "0.15.0"
 flate2 = "1.1.5"
-hdf5-reader = { version = "0.9.1", optional = true }
+hdf5-reader = { package = "nirs4all-hdf5-reader", version = "=0.9.3-nirs4all.1", path = "../../vendor/hdf5-reader", optional = true }
 matfile = { version = "0.5.0", optional = true }
-netcdf-reader = { version = "0.9.1", optional = true }
+netcdf-reader = { package = "nirs4all-netcdf-reader", version = "=0.9.3-nirs4all.1", path = "../../vendor/netcdf-reader", optional = true }
 parquet = { version = "60.0.0", optional = true, default-features = false, features = ["arrow", "snap", "zstd"] }
 # `parquet/zstd` delegates to the `zstd` crate; force `no_asm` so the codec can
 # be compiled for wasm32 instead of trying to include x86 assembly objects.
@@ -47,7 +48,7 @@ serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true
 lzma-rs = { version = "0.3.0", optional = true }
-zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+zip = { version = "9.1.0", default-features = false, features = ["deflate"] }
 
 [dev-dependencies]
 tempfile = "3"

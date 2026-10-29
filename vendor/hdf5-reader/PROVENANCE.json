@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "downstream_package": "nirs4all-hdf5-reader",
+  "downstream_version": "0.9.3-nirs4all.1",
+  "upstream_package": "hdf5-reader",
+  "upstream_version": "0.9.3",
+  "upstream_registry": "https://crates.io",
+  "upstream_crate_sha256": "c50e22fc5c53e8e23edd603050ac342ea4cde1898b64bf86266d60f6a9cc3963",
+  "upstream_vcs": {
+    "git": {
+      "sha1": "3d708fd40c6809f5d215bd2d9f15e9a05de84bd0"
+    },
+    "path_in_vcs": "hdf5-reader"
+  },
+  "license": "MIT OR Apache-2.0",
+  "changes": [
+    "Distinct downstream package identity and Rust 1.85 floor",
+    "lru upgraded to exact 0.18.5 to remediate RUSTSEC-2026-0253"
+  ],
+  "upstream_source_sha256": {
+    "src/attribute_api.rs": "d450a87a0923a5e835dcdb283c1c7d45e63652a28b500a49f1e2d9f41081ea83",
+    "src/btree_v1.rs": "6aac11fdb8911480fc638348659eeaed246cbbff5dd127cad957ada9f78a3d9c",
+    "src/btree_v2.rs": "36897aef9439121921dfbd573edbd446a6f13d9393c9dd4f8e70221e5c91e60a",
+    "src/cache.rs": "91552122c2d4a378e4e9830cdf9de704d196f2d072a4d4d74164bc6b7134a1ac",
+    "src/checksum.rs": "4697049349b0f9f1131e4bfa96b81dc45e9584158fc31432489491d04fbc9419",
+    "src/chunk_index.rs": "10a777aae588702777aa15f68ce00c76de5ec0a089546b231d8d24b14a135bc9",
+    "src/dataset.rs": "13683760cf0f9a393909517feeb3467dc0896a3570d738cf0db29ef85a9eead2",
+    "src/datatype_api.rs": "49fee0dd72f083644848eec5a768b0f6ca5ce742f088fdbb0b8cdc6efbfed06a",
+    "src/error.rs": "3d07709e476dc3fcecdfa15fbd5be215b1a7c8e5bc7f8e61bcc4e2ff0e2585c3",
+    "src/extensible_array.rs": "2bd54463b5c602f702f3bb515008301d44ac8875b51e7cfc9740d9e00a582fde",
+    "src/filters/deflate.rs": "49e14030b7d1656aa0c193d91be5a6cb670d4eaf94b652be3327ba5cde0cf045",
+    "src/filters/fletcher32.rs": "80ac50c90bc0f5aff947a71cb0d47027174c154da1819463a1d8df9ff8cc4ba0",
+    "src/filters/lz4.rs": "40f9bb810b0501b5c640905164b23e9056d44fae8a552deb60b050914d918d07",
+    "src/filters/mod.rs": "8dac60a949d3855b00324eb30d68bc353ccb96605b5c1069201fd7994db29068",
+    "src/filters/nbit.rs": "60cfaf1abfd736bbd9b5a9bb07ac1f2d4e4121a3dd8dad1152565bf0760a07ff",
+    "src/filters/scaleoffset.rs": "e6a83219a4a4746fba76df6f31d2f9fd26b0f725f9271e1f62045c0650517cd0",
+    "src/filters/shuffle.rs": "511351d5459beb770bfca11725606e3c6658ce47d89e2971fb98cf66ae2fc1be",
+    "src/fixed_array.rs": "7b45164967fed5c98b3e5a0c94543b2ba5ea0c328424c0d387e1f826b86aefa7",
+    "src/fractal_heap.rs": "8438ecd7ed1c314c8b57d42773838e8a484924eef19910d98b055d4547f526ec",
+    "src/global_heap.rs": "887e8a63e462053d77475ee6b87f09a19ac8d387822a55e699a557dbcb4951f7",
+    "src/group.rs": "dd19cfdcf4efbe3fedd600110203dd95e85305abbc15c3abe81acc3751ddbb1a",
+    "src/io.rs": "589621880155b776b5cbd3aa637675e7b9df39fd0d95c39adc00922ae2704f7b",
+    "src/lib.rs": "8a7806b8fd93e9cfbdf65abe2a8461ec689dae059ef79dfead83c6c5dd6d23b4",
+    "src/local_heap.rs": "b3d6fc565e7d9ff7b2599d6961f5cee884595b821f4d9a5081556b75e4d21a01",
+    "src/messages/attribute.rs": "f02842e5878982785f0b64cd5b4a0d927a9a438ba10392857610f12b422ec5d6",
+    "src/messages/attribute_info.rs": "95bd3648eb7d4388b9de9ed4a1e72d12a7c2f1b3d0c71482fae6221315d262a0",
+    "src/messages/btree_k.rs": "fe9649fd0d398575ae9347c92384dd0dccd9fb53cae7f3a1fcbca2906afa6cd8",
+    "src/messages/continuation.rs": "6a462c49154ad7f176a493d5c8fecc950e1c772b14ab0692a7f5bfdb3ee8dee8",
+    "src/messages/dataspace.rs": "24054741d6b8fc9b7ab5f2cbfbcedc762d0f3104d899f5810917d92fd16f6fa3",
+    "src/messages/datatype.rs": "42437abb94aba788374ad8769c284cac94c053a71265b3cc123e2ab01aa22018",
+    "src/messages/external_files.rs": "0e660d862e619276ef6d4fa0f307862a08a18d03f1a0dc819794eeee5e209788",
+    "src/messages/fill_value.rs": "182ae332c7e11b21db97d1e427593e46a2573b846b638f2d69e10ab759f7b8dc",
+    "src/messages/filter_pipeline.rs": "3ef8bf0f99a54655a049c2617e176db57f69731957c3d01b992fdcdb41005059",
+    "src/messages/group_info.rs": "f028d7afb028f981cadfb75cd23413c1e61d80b6aac30b2dcb14900345abba0e",
+    "src/messages/layout.rs": "261bc049a8f4566785f4ea7484b8f7645423206ccdc1364ab541237fc559b474",
+    "src/messages/link.rs": "7b4ab91992e1abd5a2cf2a1f4abf4404782cc9da5733cff3cead7427e76bd136",
+    "src/messages/link_info.rs": "4ac49bd26b47d98ca4d585369f5dd779eac1421e0254b67d2c62d5c1dea4a81d",
+    "src/messages/mod.rs": "379f35317e81da9aa10d994adb4c8d7e6a34228440e31d3f03480dcb9c54a39b",
+    "src/messages/modification_time.rs": "2fa9f219f8f7c6fde7dd3fadf6b37fa5701f3e9105021edfdcfccf904aa3d9dd",
+    "src/messages/shared.rs": "f80431faf089e51534f3147b9eae81c33353a431aef8c1459929370bd16ad503",
+    "src/messages/shared_table.rs": "78027dc7d53d80e081d3e4a4892afa501eff9aea4ba2123ac6ba9467bba90c5c",
+    "src/messages/symbol_table_msg.rs": "f7cb628336027e04f5b47c056e24ccf1643497a9d30ed6e995d53749173ca576",
+    "src/object_header.rs": "bff85df33715d386f0a534d3046705bde979597c78f1b5d91f7f3402b823f0c2",
+    "src/reference.rs": "690a8bc74bf9ae47ba1441e6b2b91641606f6b4e5a0f837fd58eedd8fa09c259",
+    "src/shared_message_table.rs": "50128adef484709e57a4b953ff5dbe93790efbbf2b49fb26177fd684cfc2d8cf",
+    "src/storage.rs": "2f43fe73dec3cd89367378dcf67e4d517813e7c6b5f5533f84261e4c62f45058",
+    "src/superblock.rs": "64c28f4b45ab80fc434b0f5f1dac83ff6fafb63577db6c15f405136440ff0fed",
+    "src/symbol_table.rs": "b553ba1f5859b187bc22aa146cbec1b1b6e38c611d4ffa92b183f8e327985753"
+  },
+  "bundled_license_texts": {
+    "LICENSE-MIT": {
+      "source": "https://raw.githubusercontent.com/roteiro-gis/netcdf-rust/3d708fd40c6809f5d215bd2d9f15e9a05de84bd0/LICENSE-MIT",
+      "sha256": "24a4eeee33afc227bd3e796f772741250b2c93eae1cdba65e775ef8005dfb4b1"
+    },
+    "LICENSE-APACHE": {
+      "source": "https://raw.githubusercontent.com/roteiro-gis/netcdf-rust/3d708fd40c6809f5d215bd2d9f15e9a05de84bd0/LICENSE-APACHE",
+      "sha256": "7e1c4927d7c8765c73e234c2da19c423dfafc9c662e6d028277f9e77476445bb"
+    }
+  }
+}

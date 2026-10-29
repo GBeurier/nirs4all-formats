@@ -1,0 +1,48 @@
+[package]
+name = "netcdf-reader"
+description = "Pure-Rust NetCDF-3 classic and NetCDF-4 (HDF5-backed) file reader"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme = "../README.md"
+documentation = "https://docs.rs/netcdf-reader"
+keywords = ["netcdf", "hdf5", "decoder", "scientific-data", "read-only"]
+categories = ["science", "parser-implementations"]
+
+[lints]
+workspace = true
+
+[dependencies]
+netcdf-core = { version = "0.9.3", path = "../netcdf-core" }
+ndarray = { workspace = true }
+thiserror = { workspace = true }
+memmap2 = { workspace = true }
+hdf5-reader = { version = "0.9.3", path = "../hdf5-reader", optional = true }
+rayon = { version = "1", optional = true }
+
+[dev-dependencies]
+tempfile = "3"
+criterion = "0.5"
+netcdf = { version = "0.12", features = ["static"] }
+proptest = "1"
+peak_alloc = "0.2"
+
+[features]
+default = ["netcdf4", "rayon"]
+netcdf4 = ["dep:hdf5-reader"]
+# Parallel reads for the classic backend do not require the HDF5 stack; when
+# `netcdf4` is also enabled, forward `rayon` to `hdf5-reader` as well.
+rayon = ["dep:rayon", "hdf5-reader?/rayon"]
+cf = ["dep:chrono"]
+bench-memory-profile = []
+
+[dependencies.chrono]
+version = "0.4"
+optional = true
+
+[[bench]]
+name = "compare_georust"
+harness = false

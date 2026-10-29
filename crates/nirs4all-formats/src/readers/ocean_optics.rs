@@ -168,7 +168,15 @@ fn parse_procspec_archive(path: &Path, bytes: &[u8]) -> Result<(SourceFile, Pars
         let file = archive.by_index(index).map_err(|error| {
             Error::InvalidRecord(format!("Ocean Optics ProcSpec ZIP member error: {error}"))
         })?;
-        names.push(file.name().to_string());
+        names.push(
+            file.name()
+                .map_err(|error| {
+                    Error::InvalidRecord(format!(
+                        "Ocean Optics ProcSpec ZIP member name error: {error}"
+                    ))
+                })?
+                .into_owned(),
+        );
     }
     let xml_name = names
         .iter()
@@ -440,15 +448,13 @@ fn verify_procspec_signature(
     let hash_value = xml_tag_text(signature_xml, "hashValue");
     if file_name.as_deref() != Some(xml_name) {
         warnings.push(format!(
-            "ocean_optics_procspec_signature_file_mismatch: expected {xml_name}, found {:?}",
-            file_name
+            "ocean_optics_procspec_signature_file_mismatch: expected {xml_name}, found {file_name:?}"
         ));
         return "mismatch".to_string();
     }
     if hash_algorithm.as_deref() != Some("SHA-512") {
         warnings.push(format!(
-            "ocean_optics_procspec_signature_algorithm_unsupported: {:?}",
-            hash_algorithm
+            "ocean_optics_procspec_signature_algorithm_unsupported: {hash_algorithm:?}"
         ));
         return "unsupported".to_string();
     }

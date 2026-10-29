@@ -49,3 +49,6 @@ asd_reader_*.log
 docs/PLAN.md
 docs/Formats_extract.md
 docs/dev/IMPL_PLAN_2026_05_22.md
+
+# Licensed assets materialized by maturin develop, regenerated from vendor/.
+/bindings/python/python/nirs4all_formats/_vendor/
