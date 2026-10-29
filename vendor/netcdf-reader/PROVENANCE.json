@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "downstream_package": "nirs4all-netcdf-reader",
+  "downstream_version": "0.9.3-nirs4all.1",
+  "upstream_package": "netcdf-reader",
+  "upstream_version": "0.9.3",
+  "upstream_registry": "https://crates.io",
+  "upstream_crate_sha256": "773d8adb7844401741abb4786fef0e96cff721542bf1cca2b6e5a85e26a79518",
+  "upstream_vcs": {
+    "git": {
+      "sha1": "3d708fd40c6809f5d215bd2d9f15e9a05de84bd0"
+    },
+    "path_in_vcs": "netcdf-reader"
+  },
+  "license": "MIT OR Apache-2.0",
+  "changes": [
+    "Distinct downstream package identity and Rust 1.85 floor",
+    "HDF5 dependency redirected to the separately identified nirs4all security backport"
+  ],
+  "upstream_source_sha256": {
+    "src/cf/axes.rs": "13be78f68255b727b21941495b1683d11a6f0ce731a17965935adbed59b42031",
+    "src/cf/bounds.rs": "17ffc45db0989c808d80f3919984ba42f9590c9122408befc06a47e1e477698f",
+    "src/cf/crs.rs": "2f87cc8f517446768b3ba84e1acb236bcf6746eb1bab8148e81bfd7c8a05230a",
+    "src/cf/mod.rs": "29d0eed5f2c4d110a7182900ffb8e61e35a4da2f9523ee9b48d4c25dd5f2007f",
+    "src/cf/time.rs": "b92b330af8d76d64573e63136e0801542f33510854df6853dea4bc213ae4e6b7",
+    "src/classic/data.rs": "1a32f780ad522b7624ceee94d5ea76f7c294e7dd088dd82921aee6347a006e8e",
+    "src/classic/header.rs": "a428b834edbbace63c725f1ebc08ef3683ea5eac07ee056818a4e1ec2d09d18d",
+    "src/classic/mod.rs": "129aaa7626e40116bc715f71cd5c53201c8f31b114524a11a8de643f7fdc2bc1",
+    "src/classic/storage.rs": "79bade957e26c5cfb2a28e8da0eca569c2dc3c52d8ced7a3146354160b72b27b",
+    "src/classic/types.rs": "9fe2dd3a7aceb863cd3bef4870aac29c02064d2f830611a04d1989924c3ac8c3",
+    "src/classic/variable.rs": "c5c8d3e8cdbd621b01660ec1561bdbe01984a1ed58f84085f61d5992c3aad4ac",
+    "src/error.rs": "eb2f0ad3ffd310804e1bba665713799a01677c87e6868a52522609cf65a8b4b1",
+    "src/lib.rs": "3bd98abd9d48643b976ada4f7160c408d9b3d7f3524e85f2216f81089a1ac855",
+    "src/masked.rs": "a1a4b5b691bfa859c4be977329d236af5114286571121f43661f8afa27716435",
+    "src/nc4/attributes.rs": "85e0f6fabf31d2e5fd6299e03b75dd634d708aa2b80bd132f0bcab999f3180ef",
+    "src/nc4/dimensions.rs": "39e387a9cfa7b659882f12fa813124a70ccab3d64a752f7ad212f29fcf33cb77",
+    "src/nc4/groups.rs": "7ee002d6fc6f9dfc95cd8979f311bdfcaefb0df410adb5f9b852630274d523b9",
+    "src/nc4/mod.rs": "d063257a5f6ff5163cb3335e7c6c1d6c9a278d21ea0e14b7c15be5f2baabea95",
+    "src/nc4/types.rs": "8935f3302299de580f1953eb2ff4f74433d648f8554e72bdda650f62eade9750",
+    "src/nc4/variables.rs": "c3dce236701c59be9c77da5ed3806b3884db149caf369c494493bed618daef67",
+    "src/types.rs": "63905e39f6928a08f535394e770d577b880bda9195fcf76759e63ae19032ef20",
+    "src/unpack.rs": "389a13a47a282ed95dcfcdb3df07ba039a3c66603d966b4eacd2f6ff8b634977",
+    "src/user_defined.rs": "45803f57ab037a2fcb24e6ad7b5a8f7fb1cf6e50d8f60ad34c8133e1782f7ba2"
+  },
+  "bundled_license_texts": {
+    "LICENSE-MIT": {
+      "source": "https://raw.githubusercontent.com/roteiro-gis/netcdf-rust/3d708fd40c6809f5d215bd2d9f15e9a05de84bd0/LICENSE-MIT",
+      "sha256": "24a4eeee33afc227bd3e796f772741250b2c93eae1cdba65e775ef8005dfb4b1"
+    },
+    "LICENSE-APACHE": {
+      "source": "https://raw.githubusercontent.com/roteiro-gis/netcdf-rust/3d708fd40c6809f5d215bd2d9f15e9a05de84bd0/LICENSE-APACHE",
+      "sha256": "7e1c4927d7c8765c73e234c2da19c423dfafc9c662e6d028277f9e77476445bb"
+    }
+  }
+}

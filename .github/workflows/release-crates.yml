@@ -4,7 +4,7 @@
 # only publishes on a non-pre-release vX.Y.Z tag, and a workflow_dispatch dry-run
 # (cargo publish --dry-run) is the way to validate first.
 #
-# Crates are published leaf-first (core -> facade -> capi -> cli): each crate's
+# Crates are published leaf-first (reader backports -> core -> facade -> capi -> cli): each crate's
 # path+version deps resolve to the just-published crates.io version of the one
 # before it, with a short wait for the sparse index to catch up. Re-runs tolerate
 # "already uploaded" so a partial run can be resumed.
@@ -44,6 +44,10 @@ jobs:
           set -euo pipefail
           publish() {
             crate="$1"
+            package_args=(-p "${crate}")
+            if [ "$#" -gt 1 ]; then
+              package_args=(--manifest-path "$2")
+            fi
             echo "::group::publish ${crate} (dry=${DRY:-0})"
             if [ -n "${DRY}" ]; then
               # A dry run does not upload the leaf crate, so the next package
@@ -51,7 +55,13 @@ jobs:
               # unpublished workspace crates to their local paths; production
               # publishing below still verifies the real registry chain.
               local_args=()
-              if [ "${crate}" != "nirs4all-formats-core" ]; then
+              if [ "${crate}" != "nirs4all-hdf5-reader" ]; then
+                local_args+=(--config 'patch.crates-io.nirs4all-hdf5-reader.path="vendor/hdf5-reader"')
+              fi
+              if [ "${crate}" != "nirs4all-hdf5-reader" ] && [ "${crate}" != "nirs4all-netcdf-reader" ]; then
+                local_args+=(--config 'patch.crates-io.nirs4all-netcdf-reader.path="vendor/netcdf-reader"')
+              fi
+              if [[ "${crate}" == nirs4all-formats* ]] && [ "${crate}" != "nirs4all-formats-core" ]; then
                 local_args+=(
                   --config
                   'patch.crates-io.nirs4all-formats-core.path="crates/nirs4all-formats-core"'
@@ -63,7 +73,7 @@ jobs:
                   'patch.crates-io.nirs4all-formats.path="crates/nirs4all-formats"'
                 )
               fi
-              cargo publish -p "${crate}" --dry-run --allow-dirty "${local_args[@]}"
+              cargo publish "${package_args[@]}" --dry-run --allow-dirty "${local_args[@]}"
             else
               # --no-verify: skip cargo's re-build verification at publish time.
               # The facade pulls the system-HDF5 reader closure (fmt-hdf5) which
@@ -72,7 +82,7 @@ jobs:
               # manifest is still caught.
               # crates.io is immutable: tolerate an already-uploaded version on
               # a resumed run, but fail on any other error.
-              if ! cargo publish -p "${crate}" --no-verify 2>&1 | tee /tmp/pub.log; then
+              if ! cargo publish "${package_args[@]}" --no-verify 2>&1 | tee /tmp/pub.log; then
                 grep -qiE 'already (exists|uploaded)|is already being published|crate version .* is already' /tmp/pub.log \
                   || { echo "::error::publish ${crate} failed"; exit 1; }
               fi
@@ -81,6 +91,8 @@ jobs:
             fi
             echo "::endgroup::"
           }
+          publish nirs4all-hdf5-reader vendor/hdf5-reader/Cargo.toml
+          publish nirs4all-netcdf-reader vendor/netcdf-reader/Cargo.toml
           publish nirs4all-formats-core
           publish nirs4all-formats
           publish nirs4all-formats-capi

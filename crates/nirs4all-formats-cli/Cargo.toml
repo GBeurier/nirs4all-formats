@@ -3,6 +3,7 @@ name = "nirs4all-formats-cli"
 description = "Command-line tools for probing and validating NIRS files."
 version.workspace = true
 edition.workspace = true
+rust-version = "1.88"
 license.workspace = true
 authors.workspace = true
 repository.workspace = true

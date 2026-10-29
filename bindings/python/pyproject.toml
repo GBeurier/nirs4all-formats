@@ -1,10 +1,10 @@
 [build-system]
-requires = ["maturin>=1.7,<2"]
+requires = ["maturin>=1.15,<2"]
 build-backend = "maturin"
 
 [project]
 name = "nirs4all-formats"
-version = "0.2.12"
+version = "0.2.13"
 description = "Python bindings for the Rust-first nirs4all-formats NIRS loader."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,11 +18,16 @@ numpy = ["numpy>=1.24,<2.5"]
 pandas = ["pandas>=2.0"]
 sklearn = ["scikit-learn>=1.3"]
 torch = ["torch>=2.1"]
-dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.10", "maturin>=1.7"]
+dev = ["pytest>=8", "ruff>=0.8", "mypy>=1.10", "maturin>=1.15"]
 
 [tool.maturin]
+# The native build copies the same licensed backport sources used to compile.
+include = [{ path = "reader-backports/**/*", from = "out-dir", to = "nirs4all_formats/_vendor/" }]
 python-source = "python"
 module-name = "nirs4all_formats._native"
+# maturin develop materializes OUT_DIR assets beside editable Python sources.
+# Exclude that generated copy; binary builds add the authoritative OUT_DIR once.
+exclude = ["python/nirs4all_formats/_vendor/**", "**/__pycache__/**", "**/*.pyc"]
 features = ["pyo3/extension-module"]
 
 [tool.pytest.ini_options]

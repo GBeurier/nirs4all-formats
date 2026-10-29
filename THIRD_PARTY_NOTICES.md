@@ -1,7 +1,8 @@
 # Third-Party Notices — nirs4all-formats
 
-`nirs4all-formats` is distributed under `CeCILL-2.1 OR AGPL-3.0-or-later`. It does **not**
-vendor the components below — they are pulled from their official distributions — but their
+`nirs4all-formats` is distributed under `CeCILL-2.1 OR AGPL-3.0-or-later`. The two explicitly identified reader security backports under `vendor/` are bundled with their
+MIT/Apache-2.0 licenses and SHA-256 provenance. Other dependencies are pulled from their
+official distributions; their
 licenses are acknowledged here as a courtesy and for compliance. Licenses are reported on a
 best-effort basis; the authoritative text always ships with each upstream project.
 
@@ -32,3 +33,17 @@ cargo deny check licenses   # if cargo-deny is configured
 ```
 
 License-family texts are bundled under [`LICENSES/`](LICENSES/): MIT, Apache-2.0, BSD-3-Clause.
+
+## Bundled reader security backports
+
+`vendor/hdf5-reader` and `vendor/netcdf-reader` retain the original 0.9.3 sources and
+licenses, with new package identities `nirs4all-hdf5-reader` and
+`nirs4all-netcdf-reader` version `0.9.3-nirs4all.1`. Their `PROVENANCE.json` records
+the upstream archive digest, revision and every unchanged source digest. The only
+functional dependency change is HDF5's `lru` 0.16.4 → 0.18.5, fixing
+RUSTSEC-2026-0253. No parser or numerical implementation is replaced.
+
+These packages must be published in HDF5 → netCDF → Formats order before a public
+Formats crate release. Normal versioned path dependencies make this requirement
+visible to consumers; no root-only `[patch]` hides it. Local Python/R/WASM builds
+use the bundled sources.
