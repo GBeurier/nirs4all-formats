@@ -1,6 +1,10 @@
 # Project Status
 
-Last updated: 2026-10-28.
+Last updated: 2026-10-29.
+
+> 2026-10-29 — **0.2.13 security and packaging candidate.** Licensed HDF5/netCDF
+> backports preserve parser sources and remove the unsound cache dependency.
+> Actual publication is verified separately from these local qualifications.
 
 > 2026-10-28 — **0.2.12 Raman Open Database support.** ROD `.rod` records
 > expose the original Raman axis, intensity and scalar metadata.
@@ -89,7 +93,7 @@ Last updated: 2026-10-28.
 
 ## Current Checkpoint
 
-Package manifests are aligned at `0.2.12` for the Raman Open Database release,
+Package manifests are aligned at `0.2.13` for the security and packaging release,
 with Python, Rust, WASM, R,
 C ABI and source/provenance release workflows wired. PyPI, crates.io and npm
 publish on non-prerelease tags; R source tarballs attach to GitHub Releases and
@@ -349,6 +353,19 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-10-29 (`v0.2.13` candidate): workspace formatting, Clippy with warnings
+denied and 300 Rust tests pass. Rust 1.88 and no-default-feature gates pass.
+The licensed HDF5 backport passes its 271 original unit tests; both standalone
+backport crates package and verify. All five independent dependency locks pass
+`cargo audit --deny warnings` with no vulnerabilities, warnings or ignores.
+Python bindings plus release tests pass (36 passed, 4 optional skips). The final
+wheel and a wheel built from the final sdist carry byte-verified sources, original
+VCS evidence and MIT/Apache licenses without editable caches. The final complete
+and lite R source archives install offline and pass 37 and 38 checks, with no
+skips or warnings. Actual WASM builds, Node smoke and sidecar tests pass. PyO3
+0.29.3/pythonize 0.29 is retained because pythonize 0.30 is not published. No
+scientific golden or parser algorithm is changed by this security release.
 
 2026-10-28 Raman Open Database (`v0.2.12` candidate): workspace formatting,
 Clippy with warnings denied, workspace tests, version sync, sdist and wheel

@@ -5,6 +5,30 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.2.13] - 2026-10-29
+
+### Security
+
+- Replace the unsound HDF5 cache closure with the separately identified,
+  MIT/Apache-licensed `nirs4all-hdf5-reader` and `nirs4all-netcdf-reader`
+  `0.9.3-nirs4all.1` backports using `lru` 0.18.5. Upstream parser source bytes
+  remain unchanged; original source hashes, VCS evidence and both licenses ship
+  with Rust, Python, R and WASM distributions.
+- Update ZIP, Arrow/Parquet and supported dependencies while keeping the public
+  record model and real ZSTD codec support. Native packages require Rust 1.88.
+
+### Fixed
+
+- Propagate fallible ZIP member names without bypassing path validation.
+- Retain the compatible PyO3 0.29.3 / pythonize 0.29 pair.
+- Execute installed R tests and produce standalone R source packages with the
+  licensed reader backports. Exclude editable Python caches from distributions.
+
+### Changed
+
+- Synchronize Rust, Python, R and WASM at `0.2.13`; publish the two backport crates
+  before the Formats crates. Publication remains gated by the release workflows.
+
 ## [0.2.12] - 2026-10-28
 
 ### Added
