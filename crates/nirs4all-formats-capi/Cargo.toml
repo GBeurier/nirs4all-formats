@@ -3,6 +3,7 @@ name = "nirs4all-formats-capi"
 description = "C ABI surface for the Rust nirs4all-formats core."
 version.workspace = true
 edition.workspace = true
+rust-version = "1.88"
 license.workspace = true
 authors.workspace = true
 repository.workspace = true

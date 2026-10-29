@@ -102,6 +102,20 @@ for c in $CORE_CRATES; do
     cp -R "$REPO/crates/$c/src"     "$VENDORED/$c/src"
 done
 
+# Include distinctly named security backports as local, licensed source packages.
+# Their dependency paths stay within the R source tarball; registry vendor/
+# remains reserved for Cargo checksum-verified registry dependencies.
+rm -rf "$RUST/patched-readers"
+mkdir -p "$RUST/patched-readers"
+for reader in hdf5-reader netcdf-reader; do
+    mkdir -p "$RUST/patched-readers/$reader"
+    for item in Cargo.toml UPSTREAM-Cargo.toml README.md PROVENANCE.json LICENSE-MIT LICENSE-APACHE src tests; do
+        cp -R "$REPO/vendor/$reader/$item" "$RUST/patched-readers/$reader/$item"
+    done
+done
+sed 's|../../vendor/|../../patched-readers/|g' "$VENDORED/nirs4all-formats/Cargo.toml" > "$VENDORED/nirs4all-formats/Cargo.toml.tmp"
+mv "$VENDORED/nirs4all-formats/Cargo.toml.tmp" "$VENDORED/nirs4all-formats/Cargo.toml"
+
 # 1a. FULL build (complete reader set). The vendored facade manifest keeps its
 #     default features (`formats-all` -> every reader: HDF5/netCDF, Parquet/Arrow,
 #     MATLAB), so the optional readers and the `[features]` table are LEFT INTACT
@@ -180,6 +194,7 @@ cat > "$RUST/Cargo.toml" <<'TOML'
 # version/deps from [workspace.package] / [workspace.dependencies] below, which
 # mirror the monorepo root Cargo.toml (the source tarball has no monorepo).
 [workspace]
+exclude = ["patched-readers/hdf5-reader", "patched-readers/netcdf-reader"]
 resolver = "2"
 members = [
     "vendored/nirs4all-formats-core",
@@ -187,7 +202,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.0-alpha.1"
+version = "@N4FMT_VERSION@"
 edition = "2021"
 license = "CECILL-2.1 OR AGPL-3.0-or-later"
 authors = ["G. Beurier <beurier@cirad.fr>"]
@@ -200,12 +215,12 @@ nirs4all-formats-core = { path = "vendored/nirs4all-formats-core" }
 nirs4all-formats = { path = "vendored/nirs4all-formats" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-sha2 = "0.10"
+sha2 = "0.11"
 thiserror = "2.0"
 
 [package]
 name = "nirs4allformats-r"
-version = "0.1.0-alpha.1"
+version = "@N4FMT_VERSION@"
 edition = "2021"
 publish = false
 
@@ -214,7 +229,7 @@ crate-type = ["staticlib"]
 name = "nirs4allformats_r"
 
 [dependencies]
-extendr-api = { version = "0.7", default-features = false }
+extendr-api = { version = "0.9", default-features = false }
 # COMPLETE build: default features ON — the facade's `formats-all` keeps every
 # reader (HDF5/netCDF, Parquet/Arrow, MATLAB). This is the canonical package
 # `nirs4allformats`. The smaller sibling `nirs4allformats.lite` sets
@@ -229,6 +244,27 @@ serde_json = "1.0"
 opt-level = 2
 lto = "thin"
 TOML
+
+# Keep the generated workspace identity synchronized with the actual source.
+# The old template silently stamped 0.1.0-alpha.1 on current release sources.
+cargo metadata --manifest-path "$REPO/Cargo.toml" --no-deps --format-version 1 > "$RUST/workspace-metadata.json"
+python3 - "$RUST/Cargo.toml" "$RUST/workspace-metadata.json" <<'PYMETA'
+import json, re, sys
+from pathlib import Path
+manifest = Path(sys.argv[1])
+metadata = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+core = next(package for package in metadata["packages"] if package["name"] == "nirs4all-formats-core")
+text = manifest.read_text(encoding="utf-8")
+text = text.replace('version = "@N4FMT_VERSION@"', 'version = ' + json.dumps(core["version"]))
+start = text.index("[workspace.package]")
+end = text.index("[workspace.dependencies]", start)
+section = text[start:end]
+for field in ("license", "authors", "repository", "homepage"):
+    section = re.sub(r"^" + field + r" = .*", field + " = " + json.dumps(core[field]), section, flags=re.MULTILINE)
+text = text[:start] + section + text[end:]
+manifest.write_text(text, encoding="utf-8")
+PYMETA
+rm "$RUST/workspace-metadata.json"
 
 # 3. cargo vendor every crates.io transitive dep, then compress it. The
 #    crates.io source replacement (`[source.crates-io] replace-with =

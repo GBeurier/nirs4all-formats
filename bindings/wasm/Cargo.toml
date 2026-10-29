@@ -1,8 +1,9 @@
 [package]
 name = "nirs4all-formats-wasm"
 description = "WebAssembly bindings for nirs4all-formats."
-version = "0.2.12"
+version = "0.2.13"
 edition = "2021"
+rust-version = "1.88"
 license = "CECILL-2.1 OR AGPL-3.0-or-later"
 authors = ["Gregory Beurier <gregory.beurier@cirad.fr>"]
 repository = "https://github.com/GBeurier/nirs4all-formats"
@@ -21,17 +22,12 @@ serde_json = "1.0"
 serde-wasm-bindgen = "0.6"
 console_error_panic_hook = { version = "0.1", optional = true }
 
-# Pull the upstream wasm32 linkability fix (merge commit of PR #46)
-# until it is published as hdf5-reader 0.5.1. Remove this patch and
-# bump the `hdf5-reader` requirement once 0.5.1 lands on crates.io.
-[patch.crates-io]
-hdf5-reader = { git = "https://github.com/roteiro-gis/netcdf-rust", rev = "f0cdd2f0dbd2c6a036fc18cc4ae58d4072d7cb0b" }
-
 [features]
 # Every reader family is available in the WASM build now that the core uses
 # browser-compatible compression (lzma-rs for RData, snappy/zstd for Parquet).
-# HDF5 relies on the upstream `read_exact_at` wasm fix in `[patch.crates-io]`
-# above; `fmt-matlab` needs `fmt-hdf5` (MAT v7.3 is an HDF5 container).
+# HDF5 0.9.3 already includes the upstream wasm read_exact_at fix. The facade
+# uses the licensed local lru security backport; no obsolete Git patch is needed.
+# `fmt-matlab` needs `fmt-hdf5` (MAT v7.3 is an HDF5 container).
 default = ["fmt-hdf5", "fmt-matlab", "fmt-parquet"]
 fmt-hdf5 = ["nirs4all-formats/fmt-hdf5"]
 fmt-matlab = ["nirs4all-formats/fmt-matlab"]
