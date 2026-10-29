@@ -168,7 +168,15 @@ fn parse_procspec_archive(path: &Path, bytes: &[u8]) -> Result<(SourceFile, Pars
         let file = archive.by_index(index).map_err(|error| {
             Error::InvalidRecord(format!("Ocean Optics ProcSpec ZIP member error: {error}"))
         })?;
-        names.push(file.name().to_string());
+        names.push(
+            file.name()
+                .map_err(|error| {
+                    Error::InvalidRecord(format!(
+                        "Ocean Optics ProcSpec ZIP member name error: {error}"
+                    ))
+                })?
+                .into_owned(),
+        );
     }
     let xml_name = names
         .iter()

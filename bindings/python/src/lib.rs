@@ -47,9 +47,8 @@ fn build_options(
     } else if has_window {
         let (row_start, row_end) = rows.unwrap_or((0, None));
         let (col_start, col_end) = cols.unwrap_or((0, None));
-        ReadOptions::default().with_cube_window(CubeWindow::new(
-            row_start, row_end, col_start, col_end,
-        ))
+        ReadOptions::default()
+            .with_cube_window(CubeWindow::new(row_start, row_end, col_start, col_end))
     } else {
         ReadOptions::default()
     };

@@ -137,3 +137,7 @@ everything: **parsers live only in the Rust core**.
 choice). See [`LICENSING.md`](LICENSING.md), the full texts under [`LICENSES/`](LICENSES/), and
 third-party attributions in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). Fixture licenses are
 documented per format under `samples/`.
+
+The 0.2.13 security candidate requires Rust 1.88 for its Arrow/Parquet and
+patched ZSTD dependency graph. Bundled reader backports keep their independently
+qualified Rust 1.85 floor and original MIT/Apache-2.0 source provenance.

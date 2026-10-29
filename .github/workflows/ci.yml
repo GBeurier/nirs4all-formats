@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-python@v7.0.0
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.11"
       - uses: dtolnay/rust-toolchain@stable
@@ -58,9 +58,9 @@ jobs:
           Rscript -e 'stopifnot(requireNamespace("jsonlite", quietly = TRUE), requireNamespace("testthat", quietly = TRUE))'
       - name: Install and test both R packages
         run: |
-          R CMD INSTALL bindings/r/nirs4allformats
+          R CMD INSTALL --install-tests bindings/r/nirs4allformats
           Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); testthat::test_package("nirs4allformats", stop_on_failure = TRUE)'
-          R CMD INSTALL bindings/r/nirs4allformatslite
+          R CMD INSTALL --install-tests bindings/r/nirs4allformatslite
           Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); testthat::test_package("nirs4allformats.lite", stop_on_failure = TRUE)'
 
   docs:
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-python@v7.0.0
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.11"
       - name: Build docs

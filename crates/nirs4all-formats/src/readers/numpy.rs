@@ -98,8 +98,11 @@ fn read_npz_file(reader: &str, source: SourceFile, bytes: &[u8]) -> Result<Vec<S
         .map_err(|error| Error::InvalidRecord(format!("NumPy NPZ ZIP container error: {error}")))?;
     let names = archive
         .file_names()
-        .map(ToString::to_string)
-        .collect::<Vec<_>>();
+        .map(|name| name.map(std::borrow::Cow::into_owned))
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .map_err(|error| {
+            Error::InvalidRecord(format!("NumPy NPZ ZIP member name error: {error}"))
+        })?;
     let x_name = find_member(&names, "X.npy").ok_or_else(|| {
         Error::InvalidRecord("NumPy NPZ missing canonical X.npy spectra array".to_string())
     })?;
