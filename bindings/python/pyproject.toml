@@ -27,7 +27,7 @@ python-source = "python"
 module-name = "nirs4all_formats._native"
 # maturin develop materializes OUT_DIR assets beside editable Python sources.
 # Exclude that generated copy; binary builds add the authoritative OUT_DIR once.
-exclude = ["python/nirs4all_formats/_vendor/**"]
+exclude = ["python/nirs4all_formats/_vendor/**", "**/__pycache__/**", "**/*.pyc"]
 features = ["pyo3/extension-module"]
 
 [tool.pytest.ini_options]

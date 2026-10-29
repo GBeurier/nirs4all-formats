@@ -109,7 +109,7 @@ rm -rf "$RUST/patched-readers"
 mkdir -p "$RUST/patched-readers"
 for reader in hdf5-reader netcdf-reader; do
     mkdir -p "$RUST/patched-readers/$reader"
-    for item in Cargo.toml UPSTREAM-Cargo.toml README.md PROVENANCE.json LICENSE-MIT LICENSE-APACHE src tests; do
+    for item in Cargo.toml UPSTREAM-Cargo.toml UPSTREAM-VCS.json README.md PROVENANCE.json LICENSE-MIT LICENSE-APACHE src tests; do
         cp -R "$REPO/vendor/$reader/$item" "$RUST/patched-readers/$reader/$item"
     done
 done

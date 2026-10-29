@@ -20,6 +20,8 @@ def test_backport_preserves_upstream_source_and_bundled_license(reader):
     assert manifest["package"]["version"] == provenance["downstream_version"]
     assert provenance["downstream_package"] != provenance["upstream_package"]
     assert len(provenance["upstream_crate_sha256"]) == 64
+    assert json.loads((directory / "UPSTREAM-VCS.json").read_text()) == provenance["upstream_vcs"]
+    assert not (directory / ".cargo_vcs_info.json").exists()
     actual_sources = {
         str(path.relative_to(directory))
         for path in (directory / "src").rglob("*")
