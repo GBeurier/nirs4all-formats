@@ -448,15 +448,13 @@ fn verify_procspec_signature(
     let hash_value = xml_tag_text(signature_xml, "hashValue");
     if file_name.as_deref() != Some(xml_name) {
         warnings.push(format!(
-            "ocean_optics_procspec_signature_file_mismatch: expected {xml_name}, found {:?}",
-            file_name
+            "ocean_optics_procspec_signature_file_mismatch: expected {xml_name}, found {file_name:?}"
         ));
         return "mismatch".to_string();
     }
     if hash_algorithm.as_deref() != Some("SHA-512") {
         warnings.push(format!(
-            "ocean_optics_procspec_signature_algorithm_unsupported: {:?}",
-            hash_algorithm
+            "ocean_optics_procspec_signature_algorithm_unsupported: {hash_algorithm:?}"
         ));
         return "unsupported".to_string();
     }
