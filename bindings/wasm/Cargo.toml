@@ -4,6 +4,8 @@ description = "WebAssembly bindings for nirs4all-formats."
 version = "0.2.13"
 edition = "2021"
 rust-version = "1.88"
+# Prefer dependencies compatible with the declared MSRV on fresh builds.
+resolver = "3"
 license = "CECILL-2.1 OR AGPL-3.0-or-later"
 authors = ["Gregory Beurier <gregory.beurier@cirad.fr>"]
 repository = "https://github.com/GBeurier/nirs4all-formats"
