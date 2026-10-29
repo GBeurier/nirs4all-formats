@@ -35,7 +35,7 @@ categories = [
     "parser-implementations",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/dunkean/nirs4all-formats"
+repository = "https://github.com/GBeurier/nirs4all-formats"
 
 [features]
 default = [
