@@ -25,6 +25,7 @@ fn main() {
         for file in [
             "Cargo.toml",
             "UPSTREAM-Cargo.toml",
+            "UPSTREAM-VCS.json",
             "README.md",
             "PROVENANCE.json",
             "LICENSE-MIT",
