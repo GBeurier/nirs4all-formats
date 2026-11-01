@@ -354,9 +354,9 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
 
 ## Last Green Gate
 
-2026-11-01 delimited-text gaps (unreleased): workspace formatting, Clippy with
-warnings denied, workspace tests (22 suites) and the no-default-features build
-pass. One golden summary changed by review: the NeoSpectra OSSL slice now
+2026-11-02 delimited-text gaps (`v0.2.14` candidate): workspace formatting,
+Clippy with warnings denied, workspace tests (22 suites), version sync and the
+no-default-features native and wasm32 builds pass. One golden summary changed by review: the NeoSpectra OSSL slice now
 reports its trailing truncation-marker row as a skipped-row warning.
 
 2026-10-29 (`v0.2.13` candidate): workspace formatting, Clippy with warnings

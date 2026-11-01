@@ -1,7 +1,7 @@
 [package]
 name = "nirs4all-formats-wasm"
 description = "WebAssembly bindings for nirs4all-formats."
-version = "0.2.13"
+version = "0.2.14"
 edition = "2021"
 rust-version = "1.88"
 # Prefer dependencies compatible with the declared MSRV on fresh builds.
