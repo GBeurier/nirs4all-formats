@@ -94,18 +94,25 @@ impl Reader for CsvLikeReader {
             .collect();
 
         let mut records = Vec::new();
+        let mut skipped_rows = Vec::new();
         for (row_index, line) in lines.enumerate() {
             let cells = split_delimited(line, delimiter);
-            if cells.len() < headers.len() {
-                continue;
-            }
+            // Missing or non-numeric spectral cells are gaps (NaN), so every
+            // spectrum keeps its row and stays aligned with sibling tables.
             let values: Vec<f64> = spectral_indices
                 .iter()
-                .filter_map(|index| parse_number(&cells[*index]))
+                .map(|index| {
+                    cells
+                        .get(*index)
+                        .and_then(|cell| parse_number(cell))
+                        .unwrap_or(f64::NAN)
+                })
                 .collect();
-            if values.len() != axis.len() {
+            if values.iter().all(|value| value.is_nan()) {
+                skipped_rows.push(row_index);
                 continue;
             }
+            let has_gaps = values.iter().any(|value| value.is_nan());
 
             let mut targets = BTreeMap::<String, Value>::new();
             let mut metadata = BTreeMap::<String, Value>::new();
@@ -124,7 +131,7 @@ impl Reader for CsvLikeReader {
             }
             metadata.insert("row_index".to_string(), json!(row_index));
 
-            records.push(single_signal_record(
+            let mut record = single_signal_record(
                 "delimited-text",
                 self.name(),
                 source.clone(),
@@ -141,7 +148,22 @@ impl Reader for CsvLikeReader {
                 targets,
                 metadata,
                 Vec::new(),
-            )?);
+            )?;
+            if has_gaps {
+                record
+                    .quality_flags
+                    .push("missing_spectral_values".to_string());
+            }
+            records.push(record);
+        }
+        if let Some(first) = skipped_rows.first() {
+            let warning = format!(
+                "skipped {} delimited row(s) without numeric spectral values (first at data row {first})",
+                skipped_rows.len()
+            );
+            for record in &mut records {
+                record.provenance.warnings.push(warning.clone());
+            }
         }
         Ok(records)
     }
@@ -153,4 +175,32 @@ fn is_sample_id_header(header: &str) -> bool {
         normalized.as_str(),
         "sample" | "sample_id" | "sampleid" | "id" | "id_layer_uuid_txt"
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn keeps_rows_with_missing_spectral_values_as_gaps() {
+        let text = "1000;1010;1020\n0.1;0.2;0.3\n0.1;;0.3\n0.4;0.5\n;;\n0.7;0.8;0.9\n";
+        let records = CsvLikeReader
+            .read_bytes(Path::new("x.csv"), text.as_bytes())
+            .unwrap();
+        let rows: Vec<u64> = records
+            .iter()
+            .map(|record| record.metadata["row_index"].as_u64().unwrap())
+            .collect();
+        assert_eq!(rows, vec![0, 1, 2, 4]);
+        assert!(records[1].signals["signal"].values[1].is_nan());
+        assert!(records[2].signals["signal"].values[2].is_nan());
+        assert_eq!(records[1].quality_flags, vec!["missing_spectral_values"]);
+        assert!(records[0].quality_flags.is_empty());
+        assert_eq!(
+            records[0].provenance.warnings,
+            vec![
+                "skipped 1 delimited row(s) without numeric spectral values (first at data row 3)"
+            ]
+        );
+    }
 }

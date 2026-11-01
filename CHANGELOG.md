@@ -5,6 +5,16 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [Unreleased]
+
+### Fixed
+
+- The delimited-text reader no longer drops a spectrum with missing or
+  non-numeric spectral cells, which misaligned it with sibling target and
+  metadata tables. Such cells are kept as `NaN` gaps and the record carries the
+  `missing_spectral_values` quality flag. Rows without any numeric spectral
+  value are still skipped, now with a provenance warning.
+
 ## [0.2.13] - 2026-10-29
 
 ### Security
