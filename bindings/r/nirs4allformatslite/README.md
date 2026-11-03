@@ -165,5 +165,6 @@ for full details.
 
 ## License
 
-`CeCILL-2.1 OR AGPL-3.0-or-later`. See [`LICENSE`](LICENSE) and the repository
-`LICENSING.md`.
+`CeCILL-2.1 OR AGPL-3.0-or-later` (R: `CeCILL-2.1 | AGPL (>= 3)`). The texts ship as
+[`inst/LICENSE`](inst/LICENSE) (AGPL-3.0-or-later) and
+[`inst/LICENSE-CeCILL-2.1`](inst/LICENSE-CeCILL-2.1); see the repository `LICENSING.md`.
