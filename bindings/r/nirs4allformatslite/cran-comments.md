@@ -21,8 +21,8 @@
 * `R CMD check --as-cran`: **0 ERRORs**, only the Rust-static-library `abort`
   WARNING (inherent to linking extendr 0.7.x + std) and environment-specific
   NOTEs (detailed below).
-* License: project dual license (`CeCILL-2.1 OR AGPL-3.0-or-later`), with the
-  bundled file declared in `DESCRIPTION`.
+* License: project dual license `CeCILL-2.1 | AGPL (>= 3)` (SPDX
+  `CECILL-2.1 OR AGPL-3.0-or-later`), both standard R license specifications.
 * The same Rust core powers the project's Python (PyPI),
   JavaScript / WebAssembly (npm) and C-ABI bindings.
 
