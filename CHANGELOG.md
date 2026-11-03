@@ -5,6 +5,15 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [Unreleased]
+
+### Changed
+
+- The R packages `nirs4allformats` and `nirs4allformatslite` declare the dual license
+  `CeCILL-2.1 | AGPL (>= 3)` (SPDX `CECILL-2.1 OR AGPL-3.0-or-later`) instead of
+  `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
+  and npm metadata already declared the dual license.
+
 ## [0.2.14] - 2026-11-02
 
 ### Fixed

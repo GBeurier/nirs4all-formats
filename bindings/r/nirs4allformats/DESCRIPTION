@@ -17,7 +17,7 @@ Description: Thin 'R' binding for the 'nirs4all-formats' near-infrared
 SystemRequirements: Cargo (Rust's package manager), rustc, GNU make
 URL: https://github.com/GBeurier/nirs4all-formats
 BugReports: https://github.com/GBeurier/nirs4all-formats/issues
-License: file LICENSE
+License: CeCILL-2.1 | AGPL (>= 3)
 Encoding: UTF-8
 Imports:
     jsonlite,
