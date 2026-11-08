@@ -39,6 +39,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <!-- Shared nirs4all-ui browser entry (local, staged by the release build). Before the page <style> so host rules win. -->
+  <link rel="stylesheet" href="./vendor/ui/browser.css" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -249,6 +251,18 @@
     .leg-item .sw { width:13px; height:3px; border-radius:2px; }
     .leg-note { color:var(--text-3); font-size:.74rem; font-family:var(--mono); }
     .leg-grad { width:64px; height:9px; border-radius:3px; }
+
+    /* axis groups: shared-UI mounts (card + explorer) and the legacy canvas renderer */
+    .ugroup { border-top:1px solid var(--border); }
+    .ugroup:first-child { border-top:none; }
+    .ugroup-head { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px; padding:14px 20px 4px; }
+    .ugroup-head h4 { font-family:var(--display); font-size:.9rem; font-weight:600; }
+    .ugroup-meta { font-family:var(--mono); font-size:.72rem; color:var(--text-3); }
+    .ugroup-card, .ugroup-chart { padding:6px 20px 0; }
+    .ugroup .kpis { margin:10px 20px 8px; }
+    .legacy-note { margin:6px 20px 8px; padding:8px 12px; border-left:3px solid var(--amber); background:var(--bg-alt); font-size:.78rem; color:var(--text-2); }
+    .sel-line { display:flex; align-items:center; gap:10px; padding:10px 20px; border-top:1px solid var(--border); font-family:var(--mono); font-size:.74rem; color:var(--text-2); }
+    .sel-line button { font:inherit; padding:2px 10px; border-radius:7px; border:1px solid var(--border); background:#fff; cursor:pointer; }
 
     /* tables / kv */
     .kv { display:grid; grid-template-columns:auto 1fr; gap:7px 16px; font-size:.84rem; }
@@ -592,6 +606,7 @@
     </div>
   </footer>
 
+  <script src="./vendor/ui/nirs4all-ui-browser.iife.js" defer></script>
   <script src="./app.js" defer></script>
     <!-- GoatCounter privacy-friendly analytics (no cookies) -->
     <script data-goatcounter="https://nirs4all.goatcounter.com/count" data-goatcounter-settings='{"path": "/formats"}' async src="//gc.zgo.at/count.js"></script>
