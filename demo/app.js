@@ -586,6 +586,7 @@ function hintFor(msg) {
 
 /* ── status cards ────────────────────────────────────────────────────── */
 function showResult(node) {
+  unmountAll();
   results.innerHTML = "";
   results.appendChild(node);
   results.classList.add("show");
@@ -607,13 +608,44 @@ function statusError(title, detail, hint) {
 }
 
 /* ── main render ─────────────────────────────────────────────────────── */
-const state = { records: null, fileName: "", signalNames: [], active: null, plot: null };
+// `mounts` holds every live shared-UI handle (card + explorer roots); `explorers`
+// the subset that takes selection updates; `legacy` the canvas renderers; `ids`
+// maps each unique DISPLAY id (record + signal) back to its record. The ids are
+// labels only: they are never parsed and are not scientific observation ids.
+const state = { records: null, fileName: "", signalNames: [], active: null, mounts: [], explorers: [], legacy: [], ids: new Map(), selected: null };
+
+/* ── shared nirs4all-ui browser entry ────────────────────────────────────
+   Per-group record summary (DatasetPreviewCard, view only) and the valid 1-D
+   spectra chart (SpectraExplorer) are React islands from the local
+   `Nirs4allUIBrowser` IIFE. Each island lives in a dedicated, empty host div
+   that this file never writes into with innerHTML; every handle is retained and
+   unmounted BEFORE any container is cleared, so no React root is orphaned. */
+function sharedUI() {
+  const ui = window.Nirs4allUIBrowser;
+  if (!ui || typeof ui.mountDatasetPreview !== "function" || typeof ui.mountSpectraExplorer !== "function")
+    throw new Error("The shared nirs4all-ui browser bundle is not loaded.");
+  return ui;
+}
+function mountShared(fn, host, props) {
+  const handle = sharedUI()[fn](host, props);
+  state.mounts.push(handle);
+  return handle;
+}
+function unmountAll() {
+  for (const h of state.mounts.splice(0)) {
+    try { h.unmount(); } catch (e) { console.error(e); }
+  }
+  state.explorers = [];
+  for (const p of state.legacy.splice(0)) p.destroy();
+  state.selected = null;
+}
 
 let DATASETS = [], dsActive = 0;
 
 function renderDatasets(datasets) {
   DATASETS = datasets;
   dsActive = Math.max(0, datasets.findIndex((d) => d.ok));
+  unmountAll();
   results.innerHTML = "";
   results.classList.add("show");
 
@@ -659,6 +691,7 @@ function showDataset(i) {
   dsActive = i;
   document.querySelectorAll(".ds-tab").forEach((t) => t.classList.toggle("active", +t.dataset.i === i));
   const content = $("#ds-content"); if (!content) return;
+  unmountAll();
   content.innerHTML = "";
   const ds = DATASETS[i];
   if (ds.ok) { content.appendChild(buildResult(ds, false)); activateResult(); }
@@ -740,13 +773,42 @@ const csvCell = (v) => {
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 };
 
+// Records can share one CSV header only when their axes match exactly (same
+// comparator as the shared chart groups: kind, unit, order, length, every value ===)
+// and each record's values line up with that axis. Chart orientation is irrelevant here.
+function csvAxisProblem(recs, sig) {
+  const first = recs[0].signals[sig];
+  for (let i = 0; i < recs.length; i++) {
+    const s = recs[i].signals[sig];
+    if (!first.axis || !first.axis.values) {
+      if (s.axis && s.axis.values) return `record ${i + 1} has an axis but record 1 has none.`;
+      continue;
+    }
+    if (!s.axis || !s.axis.values) return `record ${i + 1} of signal "${sig}" has no axis.`;
+    if (!sameAxis(first.axis, s.axis)) return `record ${i + 1} of signal "${sig}" has a different axis than record 1.`;
+    if (!s.values || s.values.length !== first.axis.values.length) return `record ${i + 1} of signal "${sig}" has ${s.values ? s.values.length : 0} values for ${first.axis.values.length} axis points.`;
+  }
+  return null;
+}
+
 // the active signal as a wide matrix: one row per record, axis values as the
 // header columns (the canonical NIRS spectra.csv layout). Other signals/metadata
 // stay in the lossless JSON export.
 function exportCSV() {
   const sig = state.active;
   const recs = state.records.filter((r) => r.signals && r.signals[sig]);
+  $("#csv-refusal")?.remove();
   if (!recs.length) return;
+  const problem = csvAxisProblem(recs, sig);
+  if (problem) {
+    // One header row cannot describe rows on different axes: refuse, never write a
+    // header that is wrong for some rows. The JSON export keeps every record's own axis.
+    const msg = `CSV export refused: ${problem} A single CSV header cannot describe records on different axes. Use the JSON export, which keeps each record's own axis.`;
+    const note = el("p", "legacy-note"); note.id = "csv-refusal"; note.setAttribute("role", "alert"); note.textContent = msg;
+    $(".results-head")?.after(note);
+    setStatus(msg);
+    return;
+  }
   const axis = recs[0].signals[sig].axis;
   const header = ["sample", ...(axis ? axis.values : []).map(csvCell)];
   const lines = [header.join(",")];
@@ -757,11 +819,12 @@ function exportCSV() {
 }
 
 function activateResult() {
-  initPlot();
+  buildTabs();
   selectSignal(state.active);
 }
 
 function resetView() {
+  unmountAll();
   results.classList.remove("show");
   results.innerHTML = "";
   fileInput.value = "";
@@ -798,31 +861,28 @@ function renderDetect(probes, prov) {
   return node;
 }
 
-/* KPIs (records/signals constant; channels/range/type depend on active signal) */
-function renderKpis(active) {
+/* KPI cards. The page-level row only holds quantities that do not depend on one
+   axis (records, signals, group count); channels / axis range / signal type are
+   reported per axis group, never from the first record's axis. */
+function kpiNode(k) {
+  const n = el("div", "kpi"); n.style.setProperty("--accent", k.acc);
+  n.innerHTML = `<div class="k-label">${esc(k.label)}</div><div class="k-val">${esc(k.val)}</div><div class="k-unit">${esc(k.unit || "")}</div>`;
+  return n;
+}
+
+function renderKpis(plan) {
   const recs = state.records;
   const sigCount = Math.max(...recs.map((r) => Object.keys(r.signals || {}).length));
-  const s0 = firstSignal(active);
-  const ax = s0 ? s0.axis : null;
-  const xs = ax ? ax.values.filter(Number.isFinite) : [];
-  const lo = xs.length ? Math.min(...xs) : NaN, hi = xs.length ? Math.max(...xs) : NaN;
-  const stype = s0 ? (s0.signal_type || recs[0].signal_type) : recs[0].signal_type;
   const kpis = [
     { label: "Records", val: fmtInt(recs.length), unit: recs.length === 1 ? "spectrum" : "spectra", acc: "var(--teal)" },
     { label: "Signals / record", val: sigCount, unit: state.signalNames.join(" · ").slice(0, 28), acc: "var(--cyan)" },
-    { label: "Channels", val: s0 ? fmtInt(s0.values.length) : "—", unit: ax ? KIND[ax.kind] || ax.kind : "", acc: "var(--indigo)" },
-    { label: "Axis range", val: xs.length ? `${fmtNum(lo, 5)}–${fmtNum(hi, 5)}` : "—", unit: ax ? prettyUnit(ax.unit) + (ax.order ? " · " + ax.order : "") : "", acc: "var(--amber)" },
-    { label: "Signal type", val: sigLabel(stype), unit: ax ? KIND[ax.kind] || "" : "", acc: "var(--green)" },
+    { label: "Chart groups", val: plan.groups.length + plan.legacy.length, unit: `${plan.groups.length} shared · ${plan.legacy.length} legacy`, acc: "var(--indigo)" },
   ];
   const host = $("#kpis"); host.innerHTML = "";
-  for (const k of kpis) {
-    const n = el("div", "kpi"); n.style.setProperty("--accent", k.acc);
-    n.innerHTML = `<div class="k-label">${esc(k.label)}</div><div class="k-val">${esc(k.val)}</div><div class="k-unit">${esc(k.unit || "")}</div>`;
-    host.appendChild(n);
-  }
+  for (const k of kpis) host.appendChild(kpiNode(k));
 }
 
-/* plot panel */
+/* plot panel: a dedicated container; its children are built and torn down by drawSignal */
 function renderPlotPanel() {
   const p = el("div", "panel plot-panel");
   p.innerHTML = `
@@ -831,18 +891,14 @@ function renderPlotPanel() {
       <h3>Spectra</h3>
       <div class="plot-tools"><div class="sig-tabs" id="sig-tabs"></div></div>
     </div>
-    <div class="plot-wrap">
-      <canvas class="spectra" id="spectra"></canvas>
-      <div class="plot-readout" id="readout"></div>
-    </div>
-    <div class="plot-legend" id="legend"></div>`;
+    <div id="plot-groups"></div>`;
   return p;
 }
 
 /* signals table */
 function renderSignalsPanel() {
   const p = el("div", "panel");
-  p.innerHTML = `<div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 20h16"/><path d="M7 14l3-4 3 3 4-6"/></svg></span><h3>Signal channels</h3><span class="ph-meta">${state.signalNames.length} channel${state.signalNames.length > 1 ? "s" : ""}</span></div>`;
+  p.innerHTML = `<div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 20h16"/><path d="M7 14l3-4 3 3 4-6"/></svg></span><h3>Signal channels</h3><span class="ph-meta">${state.signalNames.length} channel${state.signalNames.length > 1 ? "s" : ""}${state.records.length > 1 ? " · described from record 1" : ""}</span></div>`;
   const body = el("div", "panel-body");
   const r0 = state.records[0];
   const tbl = el("table", "sig-table");
@@ -994,33 +1050,94 @@ function buildTabs() {
 }
 
 function selectSignal(name) {
+  // New signal → new axis geometry: release every island before touching the DOM,
+  // then remount (the explorer keeps hover/band state that a shorter axis would strand).
+  unmountAll();
+  $("#csv-refusal")?.remove();
   state.active = name;
   [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", t.textContent.trim() === name));
-  renderKpis(name);
-  drawSignal(name);
+  const plan = planSignal(name);
+  renderKpis(plan);
+  drawSignal(name, plan);
 }
 
-/* collect overlay series for a signal across records (1-D only) */
-function collectSeries(name) {
-  const out = []; let skipped = 0; let axis = null;
-  const recs = state.records;
-  for (let i = 0; i < recs.length; i++) {
-    const s = recs[i].signals && recs[i].signals[name];
-    if (!s) continue;
-    if (!s.dims || s.dims.length !== 1 || s.dims[0] !== "x") { skipped++; continue; }
-    if (!axis) axis = s.axis;
-    const label = recs.length > 1 ? `#${i + 1}` : sigLabel(s.signal_type || name);
-    out.push({ x: s.axis.values, y: s.values, label, _i: i });
+/* ── axis grouping ────────────────────────────────────────────────────────
+   Records carrying the active signal are split into
+   • shared groups: valid 1-D spectra whose axes match EXACTLY (kind, unit, native
+     order, length and every value ===; no tolerance, resampling, reversal or
+     flattening) and whose kind the shared chart orients correctly;
+   • legacy groups: everything the shared chart must not draw. They stay on the
+     original canvas renderer (one canvas per kind/unit) with an explicit note;
+   • multidimensional signals, which neither renderer draws (as before), listed
+     in a note. */
+const SHARED_KINDS = new Set(["wavelength", "index", "time"]);
+const LEGACY_WHY = {
+  "reversed-orientation": "wavenumber, frequency and energy axes are drawn high-to-low by the original canvas; the shared chart draws ascending only, and arrays are never reversed",
+  "unsupported-orientation": "the axis kind has no declared orientation in the shared chart",
+  "nonfinite-axis": "the axis holds non-finite values",
+  "length-mismatch": "the axis length differs from the number of values (the canvas plots the shared prefix)",
+  "empty-axis": "the axis is empty",
+  "missing-axis": "the signal has no axis",
+  "missing-values": "the signal has no values",
+};
+
+function legacyReason(sig) {
+  const ax = sig.axis;
+  if (!ax || !ax.values) return "missing-axis";
+  if (!sig.values) return "missing-values";
+  if (ax.values.length !== sig.values.length) return "length-mismatch";
+  if (ax.values.length === 0) return "empty-axis";
+  for (let i = 0; i < ax.values.length; i++) if (typeof ax.values[i] !== "number" || !Number.isFinite(ax.values[i])) return "nonfinite-axis";
+  if (!SHARED_KINDS.has(ax.kind)) return REVERSED_KIND.has(ax.kind) ? "reversed-orientation" : "unsupported-orientation";
+  return null;
+}
+
+function sameAxis(a, b) {
+  if (a.kind !== b.kind || a.unit !== b.unit || a.order !== b.order || a.values.length !== b.values.length) return false;
+  for (let i = 0; i < a.values.length; i++) if (a.values[i] !== b.values[i]) return false;
+  return true;
+}
+
+function planSignal(name) {
+  const groups = [], legacy = new Map(), multi = [];
+  state.records.forEach((rec, i) => {
+    const sig = rec.signals && rec.signals[name];
+    if (!sig) return;
+    if (!sig.dims || sig.dims.length !== 1 || sig.dims[0] !== "x") { multi.push({ i, sig }); return; }
+    const reason = legacyReason(sig);
+    if (reason) {
+      const ax = sig.axis || null;
+      const key = ax ? `${ax.kind}|${ax.unit}` : "none";
+      if (!legacy.has(key)) legacy.set(key, { axis: ax, members: [] });
+      legacy.get(key).members.push({ i, sig, reason });
+      return;
+    }
+    let g = groups.find((c) => sameAxis(c.axis, sig.axis));
+    if (!g) { g = { axis: sig.axis, members: [] }; groups.push(g); }
+    g.members.push({ i, sig });
+  });
+  return { groups, legacy: [...legacy.values()], multi };
+}
+
+const displayId = (i, name) => `record ${i + 1} · ${name}`;
+const kindLabel = (ax) => (ax ? KIND[ax.kind] || ax.kind || "unknown kind" : "no axis");
+const axisLabel = (ax) => (ax ? `${kindLabel(ax)}${ax.unit ? " / " + prettyUnit(ax.unit) : ""}` : "no axis");
+function sampleLabel(rec) {
+  const m = rec && rec.metadata;
+  if (!m) return undefined;
+  for (const k of ["sample_id", "sample_name", "name"]) {
+    if (typeof m[k] === "string" && m[k]) return m[k];
+    if (typeof m[k] === "number") return String(m[k]);
   }
-  // colours
-  const single = out.length === 1;
-  const baseCol = sigColor(firstSignal(name)?.signal_type, state.signalNames.indexOf(name));
-  if (out.length <= 8) {
-    out.forEach((sr, i) => (sr.color = single ? baseCol : PALETTE[i % PALETTE.length]));
-  } else {
-    out.forEach((sr, i) => (sr.color = ramp(i / (out.length - 1)))); // teal→cyan→indigo stack
-  }
-  return { series: out, skipped, axis };
+  return undefined;
+}
+function seriesColors(count, base) {
+  if (count <= 8) return (k) => (count === 1 ? base : PALETTE[k % PALETTE.length]);
+  return (k) => ramp(k / (count - 1)); // teal→cyan→indigo stack
+}
+function commonSignalType(members) {
+  const types = new Set(members.map((m) => m.sig.signal_type || state.records[m.i].signal_type));
+  return types.size === 1 ? [...types][0] : null;
 }
 
 // teal → cyan → indigo ramp
@@ -1032,33 +1149,177 @@ function ramp(t) {
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-function drawSignal(name) {
-  const { series, skipped, axis } = collectSeries(name);
-  state.plot.setData(series, axis);
-  renderLegend(series, skipped, axis);
+function drawSignal(name, plan) {
+  const host = $("#plot-groups"); if (!host) return;
+  host.replaceChildren(); // islands were already unmounted by selectSignal
+  state.ids = new Map();
+  const total = plan.groups.length + plan.legacy.length;
+  plan.groups.forEach((g, k) => appendSharedGroup(host, g, k, total, name));
+  plan.legacy.forEach((g, k) => appendLegacyGroup(host, g, plan.groups.length + k, total, name));
+  if (plan.multi.length) host.appendChild(multiNote(plan.multi));
+  if (!total) host.appendChild(el("div", "plot-legend", `<span class="leg-note">No 1-D spectra to plot for this signal.</span>`));
+  if (plan.groups.length) host.appendChild(selectionLine());
 }
 
-function renderLegend(series, skipped, axis) {
-  const host = $("#legend"); if (!host) return;
-  host.innerHTML = "";
-  if (!series.length) { host.appendChild(el("span", "leg-note", "No 1-D spectra to plot for this signal.")); return; }
-  if (series.length <= 8) {
-    for (const sr of series) host.appendChild(el("span", "leg-item", `<span class="sw" style="background:${sr.color}"></span>${esc(sr.label)}`));
-  } else {
+function legendInto(host, items) {
+  if (items.length <= 8) {
+    for (const it of items) host.appendChild(el("span", "leg-item", `<span class="sw" style="background:${it.color}"></span>${esc(it.label)}`));
+  } else if (items.length) {
     const grad = el("span", "leg-item");
-    grad.innerHTML = `<span class="leg-grad" style="background:linear-gradient(90deg,#0d9488,#06b6d4,#4f46e5)"></span><b>${series.length} spectra</b> overlaid`;
+    grad.innerHTML = `<span class="leg-grad" style="background:linear-gradient(90deg,#0d9488,#06b6d4,#4f46e5)"></span><b>${items.length} spectra</b> overlaid`;
     host.appendChild(grad);
   }
-  const unit = axis ? `${KIND[axis.kind] || axis.kind} / ${prettyUnit(axis.unit)}` : "";
-  if (unit) host.appendChild(el("span", "leg-note", `· x: ${unit}`));
-  if (skipped) host.appendChild(el("span", "leg-note", `· ${skipped} non-1-D record${skipped > 1 ? "s" : ""} skipped`));
 }
 
-/* ── canvas spectral plot ────────────────────────────────────────────── */
-function initPlot() {
-  state.plot = new SpectralPlot($("#spectra"), $("#readout"));
-  buildTabs();
+function groupHead(k, total, declared, count) {
+  return el("div", "ugroup-head", `<h4>Axis group ${k + 1} of ${total}</h4><span class="ugroup-meta">${esc(declared)} · ${fmtInt(count)} record${count === 1 ? "" : "s"}</span>`);
 }
+
+// Card view for one exact-axis group. Built host-side and passed as `view` only:
+// the card's `dataset` input would default the unit to nm and word counts as
+// "samples". Records and channels are what the decoded group actually holds.
+function groupView(k, name, axis, members) {
+  const declared = axisLabel(axis);
+  const n = axis.values.length;
+  const recLabel = `${fmtInt(members.length)} record${members.length === 1 ? "" : "s"}`;
+  const chLabel = `${fmtInt(n)} channel${n === 1 ? "" : "s"}`;
+  return {
+    id: `axis-group-${k + 1}`,
+    title: `${name} · group ${k + 1}`,
+    description: `${declared} axis, ${axis.order ? axis.order + " native order" : "native order"}`,
+    taskKind: "unknown",
+    taskLabel: "Spectral records",
+    sampleCount: members.length,
+    sampleCountLabel: recLabel,
+    featureCount: n,
+    featureCountLabel: chLabel,
+    targetCount: null,
+    targetCountLabel: null,
+    classCount: null,
+    classCountLabel: null,
+    spectralRangeLabel: null,
+    splitCounts: [],
+    splitSummaryLabel: null,
+    tags: [],
+    badges: [{ id: "axis", label: declared, tone: "muted" }],
+    stats: [
+      { id: "samples", label: "Records", value: fmtInt(members.length), detail: null, tone: "default" },
+      { id: "features", label: "Channels", value: fmtInt(n), detail: declared, tone: "default" },
+    ],
+  };
+}
+
+function appendSharedGroup(host, g, k, total, name) {
+  const { axis, members } = g;
+  const declared = axisLabel(axis);
+  const node = el("section", "ugroup"); node.dataset.route = "shared";
+  node.setAttribute("aria-label", `Axis group ${k + 1} of ${total}: ${declared}`);
+  node.appendChild(groupHead(k, total, declared, members.length));
+  const cardHost = el("div", "ugroup-card"); node.appendChild(cardHost);
+
+  let lo = Infinity, hi = -Infinity;
+  for (const v of axis.values) { if (v < lo) lo = v; if (v > hi) hi = v; }
+  const stype = commonSignalType(members);
+  const kp = el("div", "kpis");
+  kp.appendChild(kpiNode({ label: "Axis range", val: `${fmtNum(lo, 5)}–${fmtNum(hi, 5)}`, unit: prettyUnit(axis.unit) + (axis.order ? " · " + axis.order : ""), acc: "var(--amber)" }));
+  kp.appendChild(kpiNode({ label: "Signal type", val: stype ? sigLabel(stype) : "mixed", unit: kindLabel(axis), acc: "var(--green)" }));
+  node.appendChild(kp);
+
+  const chartHost = el("div", "ugroup-chart"); node.appendChild(chartHost);
+  const legend = el("div", "plot-legend"); node.appendChild(legend);
+  host.appendChild(node);
+
+  const colorAt = seriesColors(members.length, sigColor(members[0].sig.signal_type, state.signalNames.indexOf(name)));
+  const ids = new Set();
+  const series = members.map(({ i, sig }, c) => {
+    const id = displayId(i, name);
+    ids.add(id);
+    state.ids.set(id, { recordIndex: i, signal: name, group: k });
+    const s = { id, values: Array.from(sig.values, (v) => (v === undefined ? null : v)), color: colorAt(c) };
+    const label = sampleLabel(state.records[i]);
+    if (label !== undefined) s.label = label;
+    return s;
+  });
+  legendInto(legend, members.map(({ i, sig }, c) => ({ color: colorAt(c), label: state.records.length > 1 ? `#${i + 1}` : sigLabel(sig.signal_type || name) })));
+
+  const axisArr = Array.from(axis.values);
+  const yType = commonSignalType(members);
+  const title = `${fileBaseName(state.fileName)} · ${name} · ${declared}${total > 1 ? ` · group ${k + 1} of ${total}` : ""}`;
+  const props = (selected) => ({ axis: axisArr, series, axisUnit: prettyUnit(axis.unit) || kindLabel(axis), yLabel: yType ? sigLabel(yType) : name, title, selected, onSelect: selectRecord, locale: "en" });
+
+  mountShared("mountDatasetPreview", cardHost, { view: groupView(k, name, axis, members) });
+  const handle = mountShared("mountSpectraExplorer", chartHost, props([]));
+  state.explorers.push({ handle, props, ids });
+}
+
+function appendLegacyGroup(host, g, k, total, name) {
+  const { axis, members } = g;
+  const declared = axisLabel(axis);
+  const node = el("section", "ugroup"); node.dataset.route = "legacy";
+  node.setAttribute("aria-label", `Axis group ${k + 1} of ${total}: ${declared} (original canvas)`);
+  node.appendChild(groupHead(k, total, declared, members.length));
+  const note = el("p", "legacy-note"); note.setAttribute("role", "note"); node.appendChild(note);
+  const wrap = el("div", "plot-wrap");
+  const canvas = el("canvas", "spectra");
+  const readout = el("div", "plot-readout");
+  wrap.append(canvas, readout); node.appendChild(wrap);
+  const legend = el("div", "plot-legend"); node.appendChild(legend);
+  host.appendChild(node);
+
+  const colorAt = seriesColors(members.length, sigColor(members[0].sig.signal_type, state.signalNames.indexOf(name)));
+  const series = members.map(({ i, sig }, c) => ({
+    x: sig.axis ? sig.axis.values : undefined, y: sig.values, _i: i, color: colorAt(c),
+    label: state.records.length > 1 ? `#${i + 1}` : sigLabel(sig.signal_type || name),
+  }));
+  const plot = new SpectralPlot(canvas, readout);
+  plot.setData(series, axis);
+  state.legacy.push(plot);
+
+  const counts = {};
+  for (const m of members) counts[m.reason] = (counts[m.reason] || 0) + 1;
+  const why = Object.entries(counts).map(([r, c]) => `${c} record${c === 1 ? "" : "s"}: ${LEGACY_WHY[r]}`).join("; ");
+  const drawn = plot.series.length;
+  note.textContent = `Original canvas renderer, ${drawn} of ${members.length} record${members.length === 1 ? "" : "s"} drawn. ${why}.`;
+  canvas.setAttribute("role", "img");
+  canvas.setAttribute("aria-label", `${name}, ${declared}: ${drawn} spectra drawn on the original canvas`);
+  legendInto(legend, series.filter((s) => s.x && s.y && s.x.length));
+}
+
+function multiNote(multi) {
+  const shown = multi.slice(0, 12).map((m) => m.i + 1).join(", ") + (multi.length > 12 ? `, … +${multi.length - 12} more` : "");
+  const dims = [...new Set(multi.map((m) => (m.sig.dims || []).join("·") || "no dims"))].join(", ");
+  const p = el("p", "legacy-note");
+  p.setAttribute("role", "note");
+  p.textContent = `${multi.length} record${multi.length === 1 ? "" : "s"} carry a multidimensional signal (dims ${dims}); the 1-D charts do not draw them. Records: ${shown}.`;
+  return p;
+}
+
+/* ── selection: new host display state, resolved through the host-held id map ── */
+function selectionText() {
+  const hit = state.selected !== null ? state.ids.get(state.selected) : null;
+  if (!hit) return "No record selected. Hover a curve and click it, or focus a chart and press ↑ / ↓ (Esc clears).";
+  const label = sampleLabel(state.records[hit.recordIndex]);
+  return `Selected: record ${hit.recordIndex + 1} · signal ${hit.signal} · axis group ${hit.group + 1}${label ? " · " + label : ""}`;
+}
+
+function selectionLine() {
+  const line = el("div", "sel-line");
+  const text = el("span"); text.id = "sel-text"; text.setAttribute("role", "status"); text.textContent = selectionText();
+  const clear = el("button", null, "Clear selection"); clear.type = "button"; clear.id = "sel-clear";
+  clear.addEventListener("click", () => selectRecord(null));
+  line.append(text, clear);
+  return line;
+}
+
+function selectRecord(id) {
+  if (id !== null && !state.ids.has(id)) return; // only ids this host issued
+  state.selected = id;
+  // same geometry: update selection only, never remount
+  for (const ex of state.explorers) ex.handle.update(ex.props(id !== null && ex.ids.has(id) ? [id] : []));
+  const out = $("#sel-text"); if (out) out.textContent = selectionText();
+}
+
+/* ── canvas spectral plot (original renderer) ─────────────────────────── */
 
 class SpectralPlot {
   constructor(canvas, readout) {
@@ -1072,6 +1333,8 @@ class SpectralPlot {
     canvas.addEventListener("pointermove", (e) => this.onMove(e));
     canvas.addEventListener("pointerleave", () => this.clearCursor());
   }
+
+  destroy() { this._ro.disconnect(); }
 
   setData(series, axis) {
     this.series = series.filter((s) => s.x && s.y && s.x.length);
