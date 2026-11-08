@@ -7,7 +7,13 @@ mod readers;
 mod registry;
 mod sidecars;
 mod walker;
+mod xlsx_cells;
 
+pub use nirs4all_formats_core::xlsx_cells::{
+    DecodedCell, DecodedSheet, DecodedWorkbook, XlsxCellOrigin, XlsxCellValue, XlsxDateKind,
+    XlsxDecodeError, XlsxDecodeLimits, XlsxDecodeUsage, XlsxUsedExtent, XLSX_CELLS_OPERATION,
+    XLSX_CELLS_VERSION,
+};
 pub use nirs4all_formats_core::{
     AxisKind, AxisOrder, Confidence, Error, FormatProbe, Provenance, Result, SidecarResolver,
     SignalType, SourceFile, SpectralArray, SpectralAxis, SpectralRecord,
@@ -20,3 +26,4 @@ pub use registry::{
 };
 pub use sidecars::{FsSidecars, InMemorySidecars, NoSidecars};
 pub use walker::{walk_path, WalkEntry, WalkOptions, WalkOutcome, WalkStats};
+pub use xlsx_cells::decode_xlsx_cells;

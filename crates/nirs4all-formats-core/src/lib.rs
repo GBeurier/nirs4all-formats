@@ -8,6 +8,7 @@ pub mod model;
 pub mod sidecar;
 pub mod signal;
 pub mod sniff;
+pub mod xlsx_cells;
 
 pub use error::{Error, Result};
 pub use model::{
@@ -16,3 +17,8 @@ pub use model::{
 pub use sidecar::SidecarResolver;
 pub use signal::SignalType;
 pub use sniff::{Confidence, FormatProbe};
+pub use xlsx_cells::{
+    DecodedCell, DecodedSheet, DecodedWorkbook, XlsxCellOrigin, XlsxCellValue, XlsxDateKind,
+    XlsxDecodeError, XlsxDecodeLimits, XlsxDecodeUsage, XlsxUsedExtent, XLSX_CELLS_OPERATION,
+    XLSX_CELLS_VERSION,
+};
