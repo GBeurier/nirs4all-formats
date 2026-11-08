@@ -1,34 +1,46 @@
-# Repository Guidelines
+# Formats contributor instructions
 
-## Project Structure & Module Organization
+## Ownership and navigation
 
-This is a Rust-first spectroscopy/NIRS reader library. Core data types and sniffing contracts are in `crates/nirs4all-formats-core/`; the reader registry and format implementations are in `crates/nirs4all-formats/`; the CLI is in `crates/nirs4all-formats-cli/`; and the C ABI scaffold is in `crates/nirs4all-formats-capi/`. Bindings live under `bindings/python/`, `bindings/r/nirs4allformats/`, and `bindings/wasm/`. Rust integration tests and golden summaries are under `crates/nirs4all-formats/tests/`; conformance tests are under `tests/conformance/`. Fixtures belong in `samples/` when redistributable and `samples_local/` when private.
+- Formats decodes vendor formats, including vendor containers such as HDF5; never `.n4a`. Parsers/sniffing live only in Rust; Python/R/WASM/C bindings call the registry and convert records. No modelling or GUI policy belongs here.
+- [IO](../nirs4all-io/AGENTS.md) owns inspection, configuration and dataset assembly; [Core](../nirs4all-core/AGENTS.md) owns the directed `.n4a` byte container/inventory. Sibling links are optional workspace navigation.
+- Core types/sniff contracts: `crates/nirs4all-formats-core/`; registry/readers: `crates/nirs4all-formats/`; CLI/C ABI: their sibling crates. Binding crates are excluded from workspace tests and need their own gates.
+- Start with [scope/roadmap](docs/ROADMAP.md), [current worklist and full gate](docs/STATUS.md), [data model](docs/DATA_MODEL.md) and [conformance](docs/CONFORMANCE.md).
+- Detailed commands/contracts are retained in [operations](AGENT_OPERATIONS.md).
 
-## Build, Test, and Development Commands
+- Formats has no dependency on the Python `nirs4all` library; it produces the records consumed downstream.
 
-Source Cargo first if needed: `. "$HOME/.cargo/env"`.
+## Reader and fixture invariants
 
-- `cargo fmt --all --check` checks Rust formatting.
-- `cargo clippy --workspace --all-targets -- -D warnings` runs Rust linting with warnings as errors.
-- `cargo test --workspace` runs the Rust test suite, including golden checks.
-- `cargo run -p nirs4all-formats-cli -- probe samples/jcamp_dx/TESTSPEC.DX` exercises CLI probing.
-- `python -m pip install -e tools/reverse-lab -e "bindings/python[numpy,pandas]" pytest` installs Python helpers for local testing.
-- `python -m pytest tools/reverse-lab/tests bindings/python/tests` runs Python tests.
-- `R CMD INSTALL bindings/r/nirs4allformats` builds and installs the R binding.
-- `sphinx-build -W -b html docs docs/_build/html` builds docs with warnings as failures.
+- Each signal owns its axis; preserve dimensions, units/order, masks/quality flags, metadata and provenance hashes/warnings.
+- Implement bytes/no-filesystem paths when possible; sidecar-required formats must refuse the unsupported path explicitly.
+- Reader acceptance covers sniffing, normalized output, metadata/provenance/warnings, truncation/corruption and reference comparisons, not a single parsed file.
+- Keep goldens distinct from full-array reference conformance and respect named tolerances/skips.
+- Register new readers and feature gates in both module/registry lists.
+- Add licensed samples and per-format docs; update FORMAT_MATRIX/IMPLEMENTATION_DASHBOARD on support changes.
+- Rebless goldens only after review with the documented opt-in.
+- Never import/link GPL reference readers into the MIT runtime.
+- Isolate them in conformance subprocesses.
+- Commit redistributable fixtures in `samples/`; restricted/private fixtures stay in `samples_local/`; public demo samples must be GPL-free.
 
-## Coding Style & Naming Conventions
+## Commands and conventions
 
-Use Rust 2021 style and `rustfmt`; keep `clippy` clean. Python targets 3.10+, uses Ruff with a 100-character line length, and mypy strict mode. Name new Rust readers by format in `snake_case` under `crates/nirs4all-formats/src/readers/` and register them through the existing registry. Parsers must live in Rust; bindings only call the core and convert records.
+Source Cargo's environment if needed: `. "$HOME/.cargo/env"`. Run the full current sequence in `docs/STATUS.md`, including feature/no-fs, binding and docs checks; update that status only with actual evidence.
 
-## Testing Guidelines
+```bash
+cargo fmt --all --check
+cargo clippy --workspace --all-targets -- -D warnings
+cargo test --workspace
+```
 
-Add focused Rust tests in `crates/nirs4all-formats/tests/`. Golden expectations live in `crates/nirs4all-formats/tests/goldens/`; re-bless only after review with `NIRS4ALL_FORMATS_ACCEPT_GOLDENS=1 cargo test -p nirs4all-formats --test goldens`. Use `pytest -m conformance tests/conformance/` for reference-reader comparisons.
+- Use Rust 2021/rustfmt; Python 3.10+, Ruff at configured 100 columns and strict mypy. Reader names are snake_case. Focused Rust tests/goldens belong under `crates/nirs4all-formats/tests/`; reference checks use `tests/conformance/`.
+- Keep area-first focused commits (python/core/WASM/cubes/docs); PRs state behavior, checks, issue and fixture/license impact.
+- Release/build variants and commands are in operations and [release documentation](docs/RELEASE.md), not a frozen release claim.
 
-## Commit & Pull Request Guidelines
+## Working rules
 
-Recent commits use short scopes such as `python: ...`, `core: ...`, `WASM: ...`, `cubes: ...`, and `docs: ...`. Keep commits focused and mention the affected area first. Pull requests should describe behavior changes, list tests run, link issues, and note fixture provenance or license changes. Update `docs/FORMAT_MATRIX.md`, `docs/IMPLEMENTATION_DASHBOARD.md`, or per-format pages when reader support changes.
-
-## Security & Configuration Tips
-
-Do not import or link GPL reference readers into the MIT runtime path; use them only through isolated conformance subprocesses. Keep private or license-restricted fixtures in `samples_local/`, not in committed `samples/`.
+- Read applicable local and deeper instructions before editing. Preserve dirty/concurrent work; make authorized owner fixes and propagate affected contracts/bindings/consumers. Do not reset another author's work.
+- Use CodeGraph FIRST for implementation navigation only if this checkout's root already has `.codegraph/`; use its exact projectPath or run the CLI here. Never auto-index or silently substitute an ancestor index.
+- Unindexed code and documentation use ordinary source navigation. Explicit source, tests and build tools are final authority. Owner links are navigation; this policy works without a parent workspace.
+- All application/project content is English: UI text/subtitles/tooltips/errors, docs/comments/docstrings, test/fixture prose, reports/issues/PRs, commits and generated material. Preserve identifiers, quotations and historical/provenance meaning; converse with the maintainer in French.
+- Do not commit credentials, private data, generated workspaces, caches or build outputs. Follow local licensing/fixture restrictions and report actual commands/exits/skips; a command reference grants no execution/publication permission.
