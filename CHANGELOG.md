@@ -14,6 +14,14 @@ still change before 1.0.
   `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
   and npm metadata already declared the dual license.
 
+## [0.2.15] - Unreleased
+
+### Added
+
+- Expose the native XLSX decoded-cell API and its typed limits/usage model for
+  IO materialization. Reader ownership remains in Formats; the record schema
+  and C ABI 0.1.0 are unchanged.
+
 ## [0.2.14] - 2026-11-02
 
 ### Fixed
