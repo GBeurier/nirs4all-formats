@@ -32,7 +32,8 @@ pub struct XlsxDecodeUsage {
 
 impl XlsxDecodeUsage {
     pub fn total_decoded_bytes(self) -> Option<u64> {
-        self.archive_decoded_bytes.checked_add(self.shared_copy_bytes)
+        self.archive_decoded_bytes
+            .checked_add(self.shared_copy_bytes)
     }
 }
 
@@ -62,9 +63,14 @@ pub enum XlsxDateKind {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum XlsxCellValue {
     /// Complete ASCII `[+-]?[0-9]+`, without an integer storage-domain limit.
-    IntegerLexeme { token: String },
+    IntegerLexeme {
+        token: String,
+    },
     /// Bits decoded by calamine, with the original decimal/exponent spelling.
-    Float64 { bits: u64, token: String },
+    Float64 {
+        bits: u64,
+        token: String,
+    },
     Text(String),
     Bool(bool),
     Empty,

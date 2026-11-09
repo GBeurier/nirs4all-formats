@@ -70,7 +70,7 @@ mask must not relabel the whole column as numeric text.
 
 ## Pinned decoding and intentional refusals
 
-Calamine is pinned to `=0.37.0` with `dates`. Re-run the focused fixtures before
+Calamine is pinned to `=0.38.0` with `dates`. Re-run the focused fixtures before
 changing that dependency. The only lexical reader added here is the Formats
 XML overlay, using the existing zip and quick-xml dependencies.
 
@@ -105,9 +105,12 @@ need no numeric token. An empty `v` stays Empty. Last-child semantics remain:
 
 Worksheet resolution follows the pinned dependency precisely. The
 `_rels/.rels` officeDocument Target supplies `xl_path` by cutting at its last
-slash and removing a leading slash; no slash means an empty base. Read
-`{xl_path}workbook.xml` and `{xl_path}_rels/workbook.xml.rels`. A sheet target
-starting with `/` loses that slash; otherwise prepend `xl_path`. ZIP cache
+slash and removing a leading slash; no slash means an empty base. The remaining
+basename supplies `workbook_name` (the pinned dependency retains `workbook.xml`
+only for an empty basename). Read `{xl_path}{workbook_name}` and
+`{xl_path}_rels/{workbook_name}.rels`. A declared custom name cannot alias
+`workbook.xml`; missing custom relationships refuse without trying `workbook.xml`.
+A sheet target starting with `/` loses that slash; otherwise prepend `xl_path`. ZIP cache
 keys use `name.replace('\\', "/").to_ascii_lowercase()`. **Lookup keys only
 lowercase the requested path**, then fall back to the exact raw requested path
 on a cache miss. Lookup does not normalize backslashes, URI segments or `..`.

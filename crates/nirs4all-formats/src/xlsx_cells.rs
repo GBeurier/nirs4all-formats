@@ -185,19 +185,29 @@ fn sheet_paths(
         }
     }
     let target = target.ok_or_else(|| decode_error("officeDocument relationship not found"))?;
-    let xl_path = target
-        .rfind('/')
-        .map(|i| &target[..=i])
-        .map(|path| path.strip_prefix('/').unwrap_or(path))
-        .unwrap_or("");
-    let rels = relationships(archive, cache, &format!("{xl_path}_rels/workbook.xml.rels"))?;
+    let (directory, name) = match target.rfind('/') {
+        Some(i) => target.split_at(i + 1),
+        None => ("", target.as_str()),
+    };
+    let xl_path = directory.strip_prefix('/').unwrap_or(directory);
+    // Calamine retains its initial name only when the target basename is empty.
+    let workbook_name = if name.is_empty() {
+        "workbook.xml"
+    } else {
+        name
+    };
+    let rels = relationships(
+        archive,
+        cache,
+        &format!("{xl_path}_rels/{workbook_name}.rels"),
+    )?;
     let mut targets = HashMap::new();
     for rel in rels {
         if let Some(id) = rel.get("Id") {
             targets.insert(id.clone(), rel.get("Target").cloned().unwrap_or_default());
         }
     }
-    let path = format!("{xl_path}workbook.xml");
+    let path = format!("{xl_path}{workbook_name}");
     // Calamine admits a missing workbook part with no sheets.
     let key = path.to_ascii_lowercase();
     let zip_name = cache.get(&key).map(String::as_str).unwrap_or(&path);

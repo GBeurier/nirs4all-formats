@@ -14,6 +14,12 @@ still change before 1.0.
   `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
   and npm metadata already declared the dual license.
 
+## [0.2.16] - Unreleased
+
+### Security
+
+- Update the pinned Calamine dependency to 0.38.0 for RUSTSEC-2026-0436.
+
 ## [0.2.15] - Unreleased
 
 ### Added
