@@ -20,15 +20,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # macOS binary wheels are deferred for the initial release. The default
-        # "formats-all" feature set links the system HDF5 (fmt-hdf5; fmt-matlab
-        # requires it), whose transitive homebrew liblzma is built for macOS 15,
-        # so delocate rejects the wheel against an 11.0 deployment target. A
-        # portable macOS wheel needs a from-source static HDF5 build (tracked as
-        # a follow-up). Until then macOS users install the sdist, which builds
-        # against their own HDF5; Linux + Windows wheels ship the full feature
-        # set. See docs/dev/release_process.md.
-        os: [ubuntu-latest, windows-latest]
+        # macos-15 is an Apple Silicon runner and builds the arm64 wheel only
+        # (macOS x86_64 is not published). The wheel is self-contained: the
+        # HDF5/NetCDF readers are pure Rust, and [tool.cibuildwheel.macos] in
+        # bindings/python/pyproject.toml sets LZMA_API_STATIC so liblzma-sys
+        # (pulled in by rds2rust) compiles its bundled xz sources instead of
+        # linking a Homebrew liblzma that delocate rejects against the 11.0
+        # deployment target. See docs/dev/release_process.md.
+        os: [ubuntu-latest, windows-latest, macos-15]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7.0.1

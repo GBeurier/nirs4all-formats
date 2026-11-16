@@ -55,18 +55,18 @@ they are downloadable from one place.
 
 | Binding | Registry | Exact file(s) | Upload |
 |---|---|---|---|
-| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64 manylinux2014 and Windows AMD64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
+| Python `nirs4all-formats` | PyPI | `nirs4all_formats-<version>-*.whl` (cibuildwheel: Linux x86_64 manylinux2014, Windows AMD64 and macOS arm64, cp310–cp313) + `nirs4all_formats-<version>.tar.gz` (maturin sdist) | **Automated** — Trusted Publishing, *no manual upload* |
 | Rust crates | crates.io | the four workspace crates (`nirs4all-formats-core` / `nirs4all-formats` / `nirs4all-formats-capi` / `nirs4all-formats-cli`) | **Automated** — `cargo publish`, leaf-first |
 
-> **macOS binary wheels are deferred for the initial release.** The default
-> `formats-all` feature set links the **system HDF5** (`fmt-hdf5`; `fmt-matlab`
-> requires it), whose transitive homebrew `liblzma` is built for macOS 15 — so
-> `delocate` rejects the wheel against an 11.0 deployment target. A portable
-> macOS wheel needs a **from-source static HDF5 build** (tracked follow-up).
-> Until then **macOS users `pip install nirs4all-formats` and get the sdist**,
-> which compiles against their own HDF5; Linux + Windows wheels ship the full
-> feature set, and the C-ABI macOS archives (`x86_64`/`aarch64-apple-darwin`)
-> are published on the GitHub Release.
+> **macOS wheels are arm64 only** (`macosx_11_0_arm64`, built on an Apple Silicon
+> runner). They were first deferred because `liblzma-sys` (a transitive
+> dependency of `rds2rust`) links a Homebrew `liblzma` whenever `pkg-config`
+> finds one, and that dylib targets the runner's own macOS — so `delocate`
+> rejects the wheel against the 11.0 deployment target. `LZMA_API_STATIC=1` in
+> `[tool.cibuildwheel.macos]` compiles the bundled xz sources instead, which
+> keeps the wheel free of external dylibs. macOS x86_64 installs build the
+> sdist; the C-ABI macOS archives (`x86_64`/`aarch64-apple-darwin`) are
+> published on the GitHub Release.
 | R `nirs4allformats` / `nirs4allformats.lite` | R-universe / GitHub Release | **`nirs4allformats_<version>.tar.gz`** and **`nirs4allformats.lite_<version>.tar.gz`** | **Automated to the Release**; R-universe builds from Git once registered |
 | JS / WASM `@nirs4all/formats-wasm` | npm | the staged `pkg-node/` package (via `npm publish`) | **Automated** — `release-npm.yml` (needs `NPM_TOKEN`) |
 | Source + provenance | GitHub Release | `nirs4all-formats-<version>-src.tar.gz` · `…-src.zip` · `nirs4all-formats-<version>.cdx.json` (SBOM) · `SHA256SUMS` | **Automated** — `release-source.yml` |

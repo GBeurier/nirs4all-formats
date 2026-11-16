@@ -44,10 +44,10 @@ strict = true
 # ---------------------------------------------------------------------------
 # cibuildwheel configuration for the Phase 6 release pipeline (M4).
 #
-# The release workflow currently runs cibuildwheel on Linux x86_64 and Windows
-# AMD64. macOS uses the sdist until its HDF5 closure is portable, and Linux
-# aarch64 has no native runner/emulation lane yet. The per-platform settings
-# below document the intended configuration if either lane is enabled later.
+# The release workflow runs cibuildwheel on Linux x86_64, Windows AMD64 and
+# macOS arm64. macOS x86_64 is not published, and Linux aarch64 has no native
+# runner/emulation lane yet; its setting below documents the intended
+# configuration if that lane is enabled later.
 # ---------------------------------------------------------------------------
 
 [tool.cibuildwheel]
@@ -68,16 +68,15 @@ manylinux-aarch64-image = "manylinux2014"
 before-all = "yum install -y openssl-devel || apt-get install -y libssl-dev || true"
 
 [tool.cibuildwheel.macos]
-archs = ["x86_64", "arm64"]
-# The macOS runner builds BOTH archs, so the cross target must be installed
-# (else `cargo` fails with E0463 "can't find crate for core"). A platform
-# before-all overrides the top-level one, so re-include the maturin install.
-before-all = "rustup target add x86_64-apple-darwin aarch64-apple-darwin && pip install maturin"
-# The Rust toolchain links a macOS floor above the default 10.9 wheel tag, so
-# delocate rejects the wheel ("dependencies do not satisfy target 10.9"). Pin
-# the deployment target (11.0, as nirs4all-methods does) so the wheel tag, the
-# compiled minimum, and delocate's check all agree.
-environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
+archs = ["arm64"]
+# MACOSX_DEPLOYMENT_TARGET: the Rust toolchain links a macOS floor above the
+# default wheel tag, so pin 11.0 (the oldest Apple Silicon release, as
+# nirs4all-methods does) so the wheel tag, the compiled minimum and delocate's
+# check all agree.
+# LZMA_API_STATIC: liblzma-sys (via rds2rust) otherwise links a Homebrew liblzma
+# when pkg-config finds one. That dylib targets the runner's own macOS, so
+# delocate rejects the wheel against 11.0. Compile the bundled xz sources.
+environment = { MACOSX_DEPLOYMENT_TARGET = "11.0", LZMA_API_STATIC = "1" }
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]

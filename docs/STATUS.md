@@ -530,9 +530,9 @@ Immediate next work:
    open (synthetic-only path retained as the contract).
 7. **DONE (M4, 2026-05-23; matrix revised for the V1 RC)** — Phase 6 release
    pipeline shipped. `.github/workflows/release.yml` currently builds Python
-   wheels via `cibuildwheel` for manylinux2014 x86_64 and Windows AMD64
-   (CPython 3.10-3.13), plus a `maturin sdist` used for macOS and Linux
-   aarch64 source installs. It also builds per-OS C ABI
+   wheels via `cibuildwheel` for manylinux2014 x86_64, Windows AMD64 and
+   macOS arm64 (CPython 3.10-3.13), plus a `maturin sdist` used for macOS
+   x86_64 and Linux aarch64 source installs. It also builds per-OS C ABI
    archives (`nirs4all-formats-capi-<target>.{tar.gz,zip}` with the
    `cbindgen`-generated `nirs4all_formats.h` and both project license
    texts). Tagged releases publish to PyPI via OIDC trusted publishing;
