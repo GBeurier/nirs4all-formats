@@ -25,12 +25,12 @@ use crate::readers::{AllotropeAdfReader, FgiXmlReader, Hdf5Reader, NetcdfReader}
 use crate::readers::{
     AllotropeAsmReader, AnimlReader, AsdReader, AvantesAsciiReader, AvantesBinaryReader,
     BrukerDptReader, BrukerOpusReader, BuchiNircalReader, CsvLikeReader, DigitalSurfReader,
-    EnviSliReader, ErdasLanReader, ExcelReader, FossWinisiReader, GalacticSpcReader,
-    HamamatsuImgReader, HoribaLabSpecReader, JascoJwsReader, JcampReader, MsaReader, MzmlReader,
-    NicoletOmnicReader, NumpyReader, OceanOpticsReader, PerkinElmerReader, PpSystemsReader,
-    RenishawWdfReader, RodReader, ScioCsvReader, SedReader, SiwareApiReader, SpectralMatrixReader,
-    SpectralTableReader, SunPhotometerReader, SvcSigReader, TrivistaTvfReader, UnscramblerReader,
-    UsgsArefReader, ViaviMicroNirReader, WitecWipReader,
+    EnviSliReader, ErdasLanReader, ExcelReader, FossNsasDaReader, FossWinisiReader,
+    GalacticSpcReader, HamamatsuImgReader, HoribaLabSpecReader, JascoJwsReader, JcampReader,
+    MsaReader, MzmlReader, NicoletOmnicReader, NumpyReader, OceanOpticsReader, PerkinElmerReader,
+    PpSystemsReader, RenishawWdfReader, RodReader, ScioCsvReader, SedReader, SiwareApiReader,
+    SpectralMatrixReader, SpectralTableReader, SunPhotometerReader, SvcSigReader,
+    TrivistaTvfReader, UnscramblerReader, UsgsArefReader, ViaviMicroNirReader, WitecWipReader,
 };
 use crate::sidecars::NoSidecars;
 
@@ -363,6 +363,7 @@ fn readers() -> Vec<Box<dyn Reader>> {
         Box::new(PerkinElmerReader),
         Box::new(BuchiNircalReader),
         Box::new(UnscramblerReader),
+        Box::new(FossNsasDaReader),
         Box::new(FossWinisiReader),
         Box::new(ViaviMicroNirReader),
         Box::new(JascoJwsReader),

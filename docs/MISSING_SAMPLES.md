@@ -34,7 +34,7 @@ These have a synthetic file matching the documented shape, but no real vendor bi
 | # | Format | Instrument | Vendor | Specific version / variant | Status | Why missing | Where it might come from |
 |---|---|---|---|---|---|---|---|
 | 2 | `.ILL` / `.REF` / `.RAW` | FieldSpec Pro / FS3 / FS4 / HandHeld calibration companions | ASD / Malvern Panalytical | all revisions | ⚪ | Vendor SDK only — never redistributed; SPECCHIO has partial readers behind login. | ASD instrument SDK; SPECCHIO partner agreement. |
-| 3 | `.NIR` / `.cal` native | NIRSystems 5000 / 6500 / XDS / DA / DS | Foss | WinISI II `.cal` (spectra + constituents) and spectra-only `.nir` binary | 🟡 (local) | **Resolved 2026-06-03, kept local** — the native reader sniffs the WinISI header signature (never the extension, so no collision with BUCHI `.nir`) and decodes absorbance spectra, constituent reference targets and acquisition metadata; validated against ISIscan `.txt` exports to float32 precision. Committed CC0 golden `samples/foss_winisi/synthetic.cal`; real vendor files are local-only under `samples_local/foss_winisi/`. `.DA` database and `.eqa` equation companions remain unsampled. | A Foss WinISI II owner for a redistributable fixture and `.DA`/`.eqa` companions. |
+| 3 | `.NIR` / `.cal` native | NIRSystems 5000 / 6500 / XDS / DA / DS | Foss | WinISI II `.cal` (spectra + constituents) and spectra-only `.nir` binary | 🟡 (local) | **Resolved 2026-06-03, kept local** — the native reader sniffs the WinISI header signature (never the extension, so no collision with BUCHI `.nir`) and decodes absorbance spectra, constituent reference targets and acquisition metadata; validated against ISIscan `.txt` exports to float32 precision. Committed CC0 golden `samples/foss_winisi/synthetic.cal`; real vendor files are local-only under `samples_local/foss_winisi/`. Observed NSAS/Rapitec 6500 `.DA` now decoded and validated against the paired SPC (75 spectra); `.eqa` and other DA variants remain unsampled. | A Foss WinISI II owner for a redistributable fixture, other DA variants and equation companions. |
 | 4 | DA / Inframatic native | DA 7250 / Inframatic 9500 | Perten (PerkinElmer) | binary feed-analyzer files | ⚪ | Customer-only. The agro-feed user community shares CSV reports, not binaries. | A Perten DA / Inframatic owner. |
 | 5 | Vision project DB | NIRS XDS / DS2500 / Vision Air | Metrohm | native project file (post-2010 firmware) | ⚪ | Closed format; only the CSV/Excel export path is public. | A Metrohm Vision Air customer. |
 | 6 | `.spc` (Shimadzu native) | UVProbe UV-1900 / UV-2700 | Shimadzu | proprietary `.spc` (NOT Galactic) | ⚪ | Header magic differs from Galactic; only experimental readers exist (`pyfasma-spc`). | A UVProbe user; vendor support for the binary spec. |
@@ -104,7 +104,7 @@ These have at least one real sample, but specific instrument or firmware revisio
 - **1** directory (`allotrope_adf/`) has no redistributable fixture, but a
   local `adfsee` ADF now validates detection and numeric data-cube decoding.
 - **Critical missing pieces without a documented text fallback**: ASD `.ILL` /
-  `.REF` / `.RAW` calibration triplet, Foss `.DA/.eqa` companions, Perten DA /
+  `.REF` / `.RAW` calibration triplet, additional Foss `.DA` variants and `.eqa` companions, Perten DA /
   Inframatic native, Metrohm Vision Air native, VIAVI `.pri` project, Horiba
   `.l6s` single-spectrum binary, Bruker OPUS 5/6 legacy, Thermo OMNIC `.srsx`,
   Shimadzu UVProbe `.spc` native. The 2026-05-20 sweep specifically unblocked

@@ -63,6 +63,13 @@
       "format": "bruker-dpt",
       "blurb": "Plain data-point-table absorbance export",
       "accent": "amber"
+    },
+    {
+      "file": "synthetic_nsas.da",
+      "label": "Rapitec / NSAS DA",
+      "format": "foss-nsas-da",
+      "blurb": "3 synthetic NIR absorbance spectra, 400–2498 nm; CC0 fixture",
+      "accent": "teal"
     }
   ]
 }

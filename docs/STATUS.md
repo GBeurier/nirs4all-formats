@@ -1,6 +1,17 @@
 # Project Status
 
-Last updated: 2026-10-29.
+Last updated: 2026-11-16.
+
+> 2026-11-16 — **Legacy Rapitec / NSAS DA recovery.** The new `foss_nsas_da`
+> reader supports the observed NIRSystems 6500, 1050-point layout. All 75 private
+> spectra (78750 float32 values, 400–2498 nm) match the paired SPC payloads
+> byte-for-byte. Acquisition metadata and all opaque header/trailer bytes are
+> retained; conformance reconstructs the original DA exactly. The original SPC
+> declares seven subfiles despite containing 75 physical blocks; only a temporary
+> reference copy is repaired for independent `spc-spectra` comparison. Public CC0
+> fixtures, a new golden, adversarial tests and an independent Astra review cover
+> the observed variant. Original calibration equations and the `.CA`/`.OPR`/
+> `RAPITEC.RAM` workflow remain unverified; original files stay local-only.
 
 > 2026-10-29 — **0.2.13 security and packaging candidate.** Licensed HDF5/netCDF
 > backports preserve parser sources and remove the unsound cache dependency.
@@ -353,6 +364,32 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+Publication checkout on current `main` (`0.2.17`): 318 workspace tests pass
+(one private-corpus test ignored), workspace Clippy, formatting, version sync
+and Sphinx with warnings denied pass. The demo includes a verified CC0 NSAS
+fixture and the format catalogue is regenerated from the matrix.
+
+2026-11-16 NSAS DA local qualification: `cargo fmt --all --check`, workspace
+tests (**316 passed, one private-corpus test ignored by default**), workspace
+Clippy with warnings denied, no-default-features native and wasm32 builds,
+and independent Python/WASM binding Clippy gates pass (exit 0). All four focused
+DA tests pass with `--include-ignored`, including the supplied private pair.
+The freshly rebuilt Python extension passes 27 binding/reverse-lab tests;
+reference conformance records 54 passed / 33 skipped. Both DA/SPC reference cases
+pass with exact full-array and complete DA byte-reconstruction equality.
+Only the new synthetic golden was added; existing summaries are unchanged.
+Ruff, `git diff --check` and Sphinx with warnings denied pass (exit 0). Docs use
+the declared isolated environment:
+`uv run --no-project --with-requirements docs/requirements.txt sphinx-build -W -b html docs docs/_build/html`.
+
+This is **not a complete distribution green gate**: the attempted R suite cannot
+start (`Rscript` absent, exit 127), and default-feature `wasm-pack` fails because
+`zstd-sys` cannot find `clang` (exit 1). Node smoke, sidecar and fixture-matrix
+execution therefore remain unvalidated for a fresh bundle; local Node 12 also
+cannot parse the existing optional-chaining syntax. The pure-Rust no-fs build and
+native WASM binding Clippy do pass. The publication checkout adds a CC0 synthetic
+DA example to the web demo; it retains the existing GitHub Pages deployment workflow.
 
 2026-11-02 delimited-text gaps (`v0.2.14` candidate): workspace formatting,
 Clippy with warnings denied, workspace tests (22 suites), version sync and the

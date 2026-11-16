@@ -19,6 +19,7 @@ coverage.xml
 # instead committed as the encrypted `samples_local.tar.gz.enc` (see
 # scripts/samples_local_crypt.sh); only the passphrase below stays out of git.
 /samples_local/
+/_todo/
 /samples_local.key
 *.dylib
 *.dll

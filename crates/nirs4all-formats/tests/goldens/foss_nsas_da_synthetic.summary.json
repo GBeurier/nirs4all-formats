@@ -1,0 +1,161 @@
+{
+  "record_count": 3,
+  "records": [
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_trailer_hex",
+        "instrument_model",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            1050
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.5,
+          "value_last": 0.756104,
+          "value_sum": 659.454346,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "b091b1812ac0e63d82e797c4da52f54e1132c29488c3ac16965d312c535958a3",
+      "target_keys": [],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
+      ]
+    },
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_trailer_hex",
+        "instrument_model",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            1050
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.625,
+          "value_last": 0.881104,
+          "value_sum": 790.704346,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "b091b1812ac0e63d82e797c4da52f54e1132c29488c3ac16965d312c535958a3",
+      "target_keys": [],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
+      ]
+    },
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_trailer_hex",
+        "instrument_model",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "absorbance",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 1050,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "absorbance",
+          "role": "absorbance",
+          "shape": [
+            1050
+          ],
+          "signal_type": "absorbance",
+          "unit": null,
+          "value_first": 0.75,
+          "value_last": 1.006104,
+          "value_sum": 921.954346,
+          "values_len": 1050
+        }
+      ],
+      "source_sha256": "b091b1812ac0e63d82e797c4da52f54e1132c29488c3ac16965d312c535958a3",
+      "target_keys": [],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
+      ]
+    }
+  ]
+}

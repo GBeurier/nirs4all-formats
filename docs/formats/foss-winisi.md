@@ -1,6 +1,6 @@
 # Foss / WinISI
 
-> **Status:** Supported (scoped) · **Vendor:** Foss (NIRSystems) · **Extensions:** native `.cal`, `.nir`; `.txt`, `.csv` (exports); native `.DA`, `.eqa` (not yet sampled)
+> **Status:** Supported (scoped) · **Vendor:** Foss (NIRSystems) · **Extensions:** native `.cal`, `.nir`; `.txt`, `.csv` (exports); legacy `.DA` through the separate NSAS reader; `.eqa` unsampled
 
 Foss NIRSystems / WinISI / ISIscan is a long-standing industrial NIR platform.
 nirs4all-formats now decodes the native `.cal` / `.nir` binaries directly through a
@@ -8,7 +8,8 @@ reverse-engineered reader, and still reads the exported text or CSV spectral
 matrix where only an export is available: `Wavelengths:` text blocks through the
 [spectral-matrix reader](spectral-matrix.md) and wide CSV exports through the
 [delimited-text reader](text-readers-001.md). The remaining native project
-formats (`.DA`, `.eqa`) are not yet sampled.
+format `.eqa` is not yet sampled. The observed legacy Rapitec/NIRSystems 6500
+`.DA` layout is decoded by the separate [FOSS NSAS DA reader](foss-nsas-da.md).
 
 ## Native `.cal` / `.nir` reader
 
@@ -74,7 +75,8 @@ University of Cordoba (sensAIfood) dataset.
 | Native DS-series `.nir` (DS2500, DS3 F) | Supported (native) | `foss-ds-nir` probe; same container, pinned by the `NIRS DS` model at `0x82`, no `ISIscan`/`NIRSystems` string. Spectra-only. |
 | `Wavelengths:` text matrix export | Supported | Read via the spectral-matrix reader. |
 | Wide CSV export (metadata/targets + numeric headers) | Supported | Read via the delimited-text reader. |
-| Native `.DA` / `.eqa` | Not yet sampled | No binary fixture found yet; not reverse-engineered. |
+| Legacy NSAS / Rapitec `.DA` | Experimental, observed layout | Separate `foss-nsas-da` reader, 6500/1050-point records, validated against paired SPC. |
+| Native `.eqa`, other `.DA` variants | Not yet sampled | Equation files and broader legacy variants remain unverified. |
 | DS3 / Inframatic property-only reports | Detected / refused | No numeric spectral headers, so explicitly refused. |
 
 ## Limitations & known gaps
@@ -88,8 +90,9 @@ University of Cordoba (sensAIfood) dataset.
 - The real native vendor binaries are **local-only** under
   `samples_local/foss_winisi/` (private, licence TBD); only the synthetic
   `synthetic.cal` fixture is redistributable.
-- The remaining native `.DA` / `.eqa` formats are not yet sampled or
-  reverse-engineered, so calibration-equation payloads are not extracted.
+- Calibration-equation payloads are not extracted. The separate NSAS `.DA`
+  reader recovers the observed legacy spectra; `.eqa` and other DA variants
+  remain unverified.
 - The export path does not replace the native reader; it only covers the
   text / CSV interchange where no native binary is available.
 

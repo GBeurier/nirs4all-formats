@@ -47,6 +47,7 @@ const openCases = [
   ['hamamatsu_img', 'samples/hamamatsu/focus_mode.img', 'hamamatsu-img'],
   ['galactic_spc', 'samples/galactic_spc/nir.spc', 'galactic-spc'],
   ['foss_winisi', 'samples/foss_winisi/synthetic.cal', 'foss-winisi-cal'],
+  ['foss_nsas_da', 'samples/foss_nsas_da/synthetic.da', 'foss-nsas-da'],
   ['viavi_micronir', 'samples/viavi_micronir/synthetic_micronir.sam', 'viavi-micronir-sam'],
   ['scio_csv', 'samples/scio/scio_app_scan.csv', 'scio-csv'],
   ['avantes_ascii', 'samples/avantes/avantes_export.ttt', 'avantes-ascii'],

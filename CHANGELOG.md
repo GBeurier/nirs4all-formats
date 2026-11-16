@@ -7,6 +7,13 @@ still change before 1.0.
 
 ## [Unreleased]
 
+### Added
+
+- Decode the observed legacy Rapitec / NIRSystems 6500 NSAS `.DA` layout: 1050-point
+  absorbance records, acquisition metadata, transducer values and preserved opaque
+  fields. Includes CC0 fixtures and exact full-array comparison with paired SPC
+  exports; private originals remain local-only.
+
 ### Changed
 
 - The R packages `nirs4allformats` and `nirs4allformatslite` declare the dual license

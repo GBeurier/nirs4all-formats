@@ -1,13 +1,13 @@
 {
  "summary": {
-  "families": 59,
-  "supported": 26,
-  "targeted": 15,
-  "partial": 2,
+  "families": 62,
+  "supported": 27,
+  "targeted": 16,
+  "partial": 3,
   "adjacent": 9,
   "sourcing": 6,
   "outscope": 1,
-  "validated_variants": 150,
+  "validated_variants": 156,
   "partial_variants": 19
  },
  "formats": [
@@ -48,6 +48,18 @@
    "status": "supported"
   },
   {
+   "name": "MATLAB MAT/RData",
+   "vendor": "MATLAB/R ecosystem",
+   "ext": "`.mat`, `.MAT`, `.RData`",
+   "variants": 7,
+   "ok": 6,
+   "partial": 1,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "P2",
+   "status": "supported"
+  },
+  {
    "name": "JCAMP-DX",
    "vendor": "Vendor-neutral / IUPAC",
    "ext": "`.jdx`, `.dx`, `.jcm`, `.jcamp`",
@@ -57,18 +69,6 @@
    "planned": 0,
    "blocked": 1,
    "priority": "P1",
-   "status": "supported"
-  },
-  {
-   "name": "MATLAB MAT/RData",
-   "vendor": "MATLAB/R ecosystem",
-   "ext": "`.mat`, `.MAT`, `.RData`",
-   "variants": 6,
-   "ok": 5,
-   "partial": 1,
-   "planned": 0,
-   "blocked": 0,
-   "priority": "P2",
    "status": "supported"
   },
   {
@@ -141,6 +141,18 @@
    "planned": 0,
    "blocked": 1,
    "priority": "P2",
+   "status": "supported"
+  },
+  {
+   "name": "OpenSpecy Raman/(FT)IR",
+   "vendor": "OpenSpecy (R)",
+   "ext": "`.rds`",
+   "variants": 3,
+   "ok": 3,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "P3",
    "status": "supported"
   },
   {
@@ -492,6 +504,18 @@
    "status": "targeted"
   },
   {
+   "name": "Rapitec / FOSS NSAS DA",
+   "vendor": "Perstorp / FOSS NIRSystems",
+   "ext": "`.DA`",
+   "variants": 1,
+   "ok": 1,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "P2",
+   "status": "targeted"
+  },
+  {
    "name": "Shimadzu UVProbe",
    "vendor": "Shimadzu",
    "ext": "`.spc`, `.txt`",
@@ -525,6 +549,18 @@
    "planned": 0,
    "blocked": 1,
    "priority": "P1",
+   "status": "partial"
+  },
+  {
+   "name": "Unscrambler non-design data",
+   "vendor": "CAMO / The Unscrambler",
+   "ext": "`.00D`",
+   "variants": 1,
+   "ok": 1,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "scoped",
    "status": "partial"
   },
   {

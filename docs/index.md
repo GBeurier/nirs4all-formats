@@ -28,6 +28,7 @@ SUPPORTED_FORMATS
 :maxdepth: 2
 
 DATA_MODEL
+NON_SPECTRAL_PROFILES
 OUTPUTS
 CLI
 CONFORMANCE
@@ -67,6 +68,7 @@ formats/excel
 formats/felix-f750
 formats/fgi-hdf5-xml
 formats/foss-winisi
+formats/foss-nsas-da
 formats/galactic-spc
 formats/hamamatsu-img
 formats/hdf5

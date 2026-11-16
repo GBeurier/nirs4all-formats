@@ -51,6 +51,7 @@ that are compiled in by default but can be turned off (and are off on the
 | JASCO JWS | JASCO | `.jws` | Supported (scoped) | [jasco-jws](formats/jasco-jws.md) |
 | Ocean Optics / Ocean Insight | Ocean Optics | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` | Supported (scoped) | [ocean-optics](formats/ocean-optics.md) |
 | Foss / WinISI | Foss | `.cal`, `.nir`, `.txt`, `.csv` | Supported (scoped) | [foss-winisi](formats/foss-winisi.md) |
+| FOSS NSAS / Rapitec | FOSS NIRSystems / Perstorp | `.DA` | Experimental (6500, 1050 points) | [foss-nsas-da](formats/foss-nsas-da.md) |
 | Metrohm Vision / Vision Air export | Metrohm | `.csv` | Supported (scoped) | [metrohm-vision](formats/metrohm-vision.md) |
 | VIAVI MicroNIR | VIAVI / JDSU | `.sam`, `.csv`, `.xlsx` | Supported (scoped) | [viavi-micronir](formats/viavi-micronir.md) |
 | Shimadzu UVProbe export | Shimadzu | `.txt` | Supported (scoped) | [shimadzu-uvprobe](formats/shimadzu-uvprobe.md) |
@@ -136,7 +137,7 @@ specification. If you can share any of them, you will directly unblock a reader.
 
 | Format | Vendor | Extensions | Status |
 |---|---|---|---|
-| Foss NIRSystems / WinISI native | Foss | `.DA`, `.eqa` | Blocked — native binary (`.cal`/`.nir` now supported above) |
+| Foss NIRSystems / WinISI native | Foss | other `.DA`, `.eqa` | Additional DA variants and equation files remain unsampled; observed NSAS 6500 DA supported above. |
 | Perten DA / Inframatic native | Perten / PerkinElmer | vendor binary | Blocked — no spectral sample |
 | Bruker Tango / Matrix native | Bruker | OPUS | Planned — dedicated fixtures wanted |
 | ASD calibration companions | ASD / Malvern | `.ILL`, `.REF`, `.RAW` | Blocked — companion files |

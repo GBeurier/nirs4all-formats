@@ -48,6 +48,7 @@ Reference readers wired in M2:
 |---|---|---|---|
 | Bruker OPUS | `brukeropus` | MIT | Direct Python import. |
 | Galactic SPC | `spc-spectra` | MIT | Direct Python import. |
+| FOSS NSAS DA | `spc-spectra` on the paired export | MIT | Every spectrum and axis value, exact equality; public synthetic pair and conditional private pair. The private SPC's inconsistent declared count is repaired only in a temporary reference copy after physical block validation. |
 | JCAMP-DX | `jcamp` (`jcamp_readfile`) | MIT | Direct Python import. |
 | Spectral Evolution `.sed` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sed_dump.R`). |
 | SVC/GER `.sig` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sig_dump.R`). |

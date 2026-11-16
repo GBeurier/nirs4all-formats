@@ -20,6 +20,7 @@ pub mod excel;
 pub mod excluded_stubs;
 #[cfg(feature = "fmt-hdf5")]
 pub mod fgi_xml;
+pub mod foss_nsas_da;
 pub mod foss_winisi;
 pub mod galactic_spc;
 pub mod hamamatsu_img;
@@ -88,6 +89,7 @@ pub use excluded_stubs::ExcludedMatlabReader;
 pub use excluded_stubs::ExcludedParquetReader;
 #[cfg(feature = "fmt-hdf5")]
 pub use fgi_xml::FgiXmlReader;
+pub use foss_nsas_da::FossNsasDaReader;
 pub use foss_winisi::FossWinisiReader;
 pub use galactic_spc::GalacticSpcReader;
 pub use hamamatsu_img::HamamatsuImgReader;
