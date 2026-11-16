@@ -33,7 +33,11 @@ TARGET_DIR = $(SHORT_TMP)/n4ffull
 CARGOTMP = $(SHORT_TMP)/n4ffull-ch
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libnirs4allformats_r.a
-PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll
+# System import libraries the Rust standard library needs when R links the
+# static library. `-lsynchronization` supplies WaitOnAddress/WakeByAddress*:
+# Rust >= 1.100 no longer embeds those imports in the static library (`rustc
+# --print native-static-libs` lists it), and it is harmless with older Rust.
+PKG_LIBS = -L$(LIBDIR) -lnirs4allformats_r -lws2_32 -ladvapi32 -luserenv -lbcrypt -lntdll -lsynchronization
 PKG_CFLAGS = -I$(CURDIR)/rust/src
 
 all: $(SHLIB) rust_clean
