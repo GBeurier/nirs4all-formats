@@ -129,12 +129,12 @@ jobs:
           error-on: '"error"'
           upload-snapshots: true
 
-      - name: Upload check artifacts on failure
+      # check-r-package already uploads the check directory; the job log only
+      # says "Installation failed", so print the compiler/linker output here.
+      - name: Show the install log on failure
         if: failure()
-        uses: actions/upload-artifact@v7.0.2
-        with:
-          name: rcheck-${{ matrix.pkg }}-${{ matrix.cfg.label }}
-          path: bindings/r/${{ matrix.pkg }}.Rcheck/
+        shell: bash
+        run: tail -n 80 bindings/r/${{ matrix.pkg }}/check/*.Rcheck/00install.out
 
   # =========================================================================
   # Build the source tarball that the maintainer uploads to CRAN.

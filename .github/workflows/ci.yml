@@ -99,6 +99,53 @@ jobs:
           R CMD INSTALL --install-tests bindings/r/nirs4allformatslite
           Rscript -e 'Sys.setenv(NIRS4ALL_FORMATS_REPO=getwd()); testthat::test_package("nirs4allformats.lite", stop_on_failure = TRUE)'
 
+  # The Windows build links the Rust static library with the Rtools linker, so
+  # it depends on the current stable Rust and Rtools, not only on this tree.
+  # Run the same vendored, offline R CMD check as release-r.yml on every pull
+  # request so a break is seen before a release tag.
+  r-windows:
+    name: R CMD check (Windows) / ${{ matrix.pkg }}
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg:
+          - nirs4allformats
+          - nirs4allformatslite
+    env:
+      _R_CHECK_CRAN_INCOMING_REMOTE_: false
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: r-lib/actions/setup-r@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-pandoc@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+      - uses: r-lib/actions/setup-r-dependencies@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        with:
+          working-directory: bindings/r/${{ matrix.pkg }}
+          extra-packages: |
+            any::rcmdcheck
+            any::knitr
+            any::rmarkdown
+            any::testthat
+      - name: Vendor the Rust core into the R package
+        shell: bash
+        run: cd bindings/r/${{ matrix.pkg }} && N4FMT_R_VENDOR=1 ./configure
+      - name: R CMD check --as-cran
+        uses: r-lib/actions/check-r-package@f9a764fea8d5c63df6ef9a5c7795bf7deb5d7e05 # v2
+        env:
+          CARGO_NET_OFFLINE: "true"
+          NIRS4ALL_FORMATS_REPO: ${{ github.workspace }}
+        with:
+          working-directory: bindings/r/${{ matrix.pkg }}
+          args: 'c("--no-manual", "--as-cran")'
+          error-on: '"error"'
+      - name: Show the install log on failure
+        if: failure()
+        shell: bash
+        run: tail -n 80 bindings/r/${{ matrix.pkg }}/check/*.Rcheck/00install.out
+
   docs:
     name: Docs
     runs-on: ubuntu-latest
