@@ -48,22 +48,28 @@ impl Reader for FossNsasDaReader {
         }
         let source = SourceFile::from_bytes(path, bytes, "primary");
         bytes
-            .chunks_exact(STRIDE)
+            .as_chunks::<STRIDE>()
+            .0
+            .iter()
             .enumerate()
             .map(|(index, block)| {
                 if !supported_header(block) {
                     return Err(invalid(&format!("unsupported header at record {index}")));
                 }
                 let values: Vec<f64> = block[HEADER..SPECTRUM_END]
-                    .chunks_exact(4)
-                    .map(|v| f32::from_le_bytes(v.try_into().expect("four-byte chunk")) as f64)
+                    .as_chunks::<4>()
+                    .0
+                    .iter()
+                    .map(|v| f32::from_le_bytes(*v) as f64)
                     .collect();
                 if values.iter().any(|v| !v.is_finite()) {
                     return Err(invalid(&format!("non-finite spectrum at record {index}")));
                 }
                 let sensors: Vec<f64> = block[80..92]
-                    .chunks_exact(4)
-                    .map(|v| f32::from_le_bytes(v.try_into().expect("four-byte chunk")) as f64)
+                    .as_chunks::<4>()
+                    .0
+                    .iter()
+                    .map(|v| f32::from_le_bytes(*v) as f64)
                     .collect();
                 if sensors.iter().any(|v| !v.is_finite()) {
                     return Err(invalid(&format!("non-finite sensor value at record {index}")));
