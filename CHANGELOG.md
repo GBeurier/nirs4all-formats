@@ -7,19 +7,25 @@ still change before 1.0.
 
 ## [Unreleased]
 
-### Added
-
-- Decode the observed legacy Rapitec / NIRSystems 6500 NSAS `.DA` layout: 1050-point
-  absorbance records, acquisition metadata, transducer values and preserved opaque
-  fields. Includes CC0 fixtures and exact full-array comparison with paired SPC
-  exports; private originals remain local-only.
-
 ### Changed
 
 - The R packages `nirs4allformats` and `nirs4allformatslite` declare the dual license
   `CeCILL-2.1 | AGPL (>= 3)` (SPDX `CECILL-2.1 OR AGPL-3.0-or-later`) instead of
   `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
   and npm metadata already declared the dual license.
+
+## [0.2.18] - Unreleased
+
+### Added
+
+- Decode the observed legacy Rapitec / NIRSystems 6500 NSAS `.DA` layout: 1050-point
+  absorbance records, acquisition metadata, transducer values and preserved opaque
+  fields. Includes CC0 fixtures and exact full-array comparison with paired SPC
+  exports; private originals remain local-only.
+- Publish a macOS arm64 Python wheel (`macosx_11_0_arm64`, abi3 for CPython 3.10+)
+  from the release workflow, so Apple Silicon installs no longer compile the sdist.
+  The wheel bundles no external dynamic library: liblzma is compiled from the bundled
+  xz sources (`LZMA_API_STATIC`). macOS x86_64 keeps installing from the sdist.
 
 ## [0.2.16] - Unreleased
 

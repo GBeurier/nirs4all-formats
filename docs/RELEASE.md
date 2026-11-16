@@ -11,7 +11,7 @@ jobs:
 
 | Job | Output | Triggers |
 |---|---|---|
-| `python-wheels` | Python wheels via `cibuildwheel` for Linux manylinux2014 x86_64 and Windows AMD64 on CPython 3.10–3.13. | every push of a `v*` tag and every `workflow_dispatch`. |
+| `python-wheels` | Python wheels via `cibuildwheel` for Linux manylinux2014 x86_64, Windows AMD64 and macOS arm64 on CPython 3.10–3.13. | every push of a `v*` tag and every `workflow_dispatch`. |
 | `python-sdist` | Source distribution built by `maturin sdist`. | same. |
 | `c-abi-archive` | `nirs4all-formats-capi-<target>.{tar.gz,zip}` per OS containing `lib/libnirs4all_formats_capi.{a,so,dylib,dll}`, the generated `include/nirs4all_formats.h`, `LICENSING.md`, and both project license texts. | same. |
 | `publish-pypi` | Publishes wheels + sdist to PyPI via OIDC trusted publishing (no token). | only on a `v*` tag. |
@@ -92,7 +92,8 @@ wheel ships with the full feature set today:
 | Linux manylinux2014 x86_64 | `fmt-hdf5`, `fmt-matlab`, `fmt-parquet` | Full coverage. |
 | Windows AMD64 | full | Full coverage. |
 | Linux aarch64 | source build | No wheel is produced by the current x86_64 Linux runner. |
-| macOS x86_64 / arm64 | source build | Python installs from the sdist; C ABI archives are built separately for both architectures. |
+| macOS arm64 | full | Full coverage; `macosx_11_0_arm64`, with liblzma compiled from the bundled xz sources (`LZMA_API_STATIC`). |
+| macOS x86_64 | source build | Python installs from the sdist; the C ABI archive is still built for this architecture. |
 
 If a future feature requires a C dependency that fails on a specific
 platform, document the per-OS gating here and add an override under
