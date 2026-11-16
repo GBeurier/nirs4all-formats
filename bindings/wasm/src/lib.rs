@@ -15,9 +15,8 @@ use std::sync::Arc;
 
 use nirs4all_formats::{
     builtin_probes, open_bytes as open_bytes_native,
-    open_with_sidecars as open_with_sidecars_native,
-    reader_catalog as reader_catalog_native, sidecar_requirements as sidecar_requirements_native,
-    InMemorySidecars, SidecarResolver,
+    open_with_sidecars as open_with_sidecars_native, reader_catalog as reader_catalog_native,
+    sidecar_requirements as sidecar_requirements_native, InMemorySidecars, SidecarResolver,
 };
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
@@ -33,6 +32,26 @@ fn js_serializer() -> Serializer {
     Serializer::new()
         .serialize_maps_as_objects(true)
         .serialize_large_number_types_as_bigints(true)
+}
+
+/// Decode an explicitly declared non-spectral PNG/VCF profile through the Rust owner.
+#[wasm_bindgen(js_name = decodeMultimodalBytes)]
+pub fn decode_multimodal_bytes(
+    profile: &str,
+    bytes: &[u8],
+    max_decoded_bytes: u32,
+) -> Result<JsValue, JsError> {
+    nirs4all_formats::decode_multimodal_bytes(profile, bytes, max_decoded_bytes as usize)
+        .map_err(|error| JsError::new(&error))?
+        .serialize(&js_serializer())
+        .map_err(|error| JsError::new(&error.to_string()))
+}
+
+#[wasm_bindgen(js_name = multimodalReaderCatalog)]
+pub fn multimodal_reader_catalog() -> Result<JsValue, JsError> {
+    nirs4all_formats::multimodal_reader_catalog()
+        .serialize(&js_serializer())
+        .map_err(|error| JsError::new(&error.to_string()))
 }
 
 #[wasm_bindgen(start)]

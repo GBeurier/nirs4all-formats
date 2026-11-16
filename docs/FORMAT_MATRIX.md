@@ -1,5 +1,12 @@
 # Compact Format Matrix
 
+The separate non-spectral `multimodalReaderCatalog` candidate now describes
+`png8` (8-bit noninterlaced grayscale/RGB pixels) and `vcf_gt_dosage` (biallelic
+diploid GT dosage with preserved missingness). These do not masquerade as
+spectral readers in the matrix below. See [declared profiles](NON_SPECTRAL_PROFILES.md)
+for exact refusals and binding scope; source fixtures are authored, qualification
+is pending the common owner/WASM integration wave.
+
 Control columns:
 
 - `Variants`: subformats, versions, layouts or modes explicitly followed.

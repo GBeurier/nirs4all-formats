@@ -1,5 +1,10 @@
 # Implementation Dashboard
 
+2026-11-16 source candidate: separate non-spectral `png8` and `vcf_gt_dosage`
+decode registry, Rust/WASM entrypoints and synthetic CC0 fixtures. No spectral
+axis is invented. See [profile contract](NON_SPECTRAL_PROFILES.md). Builds,
+tests and release qualification remain unexecuted for this addition.
+
 Last updated: 2026-10-05.
 
 ## New local corpus support
