@@ -3,11 +3,16 @@
 //! The crate currently exposes the dispatch and probing contract. Full readers
 //! are added format-by-format behind this stable surface.
 
+mod multimodal;
 mod readers;
 mod registry;
 mod sidecars;
 mod walker;
 mod xlsx_cells;
+
+pub use multimodal::{
+    decode_multimodal_bytes, multimodal_reader_catalog, DecodedMultimodal, MULTIMODAL_OPERATION,
+};
 
 pub use nirs4all_formats_core::xlsx_cells::{
     DecodedCell, DecodedSheet, DecodedWorkbook, XlsxCellOrigin, XlsxCellValue, XlsxDateKind,
