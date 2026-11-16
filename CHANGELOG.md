@@ -21,6 +21,15 @@ still change before 1.0.
   `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
   and npm metadata already declared the dual license.
 
+## [0.2.18] - Unreleased
+
+### Added
+
+- Publish a macOS arm64 Python wheel (`macosx_11_0_arm64`, abi3 for CPython 3.10+)
+  from the release workflow, so Apple Silicon installs no longer compile the sdist.
+  The wheel bundles no external dynamic library: liblzma is compiled from the bundled
+  xz sources (`LZMA_API_STATIC`). macOS x86_64 keeps installing from the sdist.
+
 ## [0.2.16] - Unreleased
 
 ### Security
