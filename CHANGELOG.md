@@ -14,6 +14,21 @@ still change before 1.0.
   `file LICENSE` with the AGPL text only; both texts ship under `inst/`. Cargo, PyPI
   and npm metadata already declared the dual license.
 
+## [0.2.19] - Unreleased
+
+### Fixed
+
+- The R packages install again on Windows with Rust 1.100 and later: `Makevars.win`
+  links `-lsynchronization`, which the Rust standard library now requires from the
+  final linker (`undefined reference to WaitOnAddress` / `WakeByAddressSingle`).
+  The 0.2.17 and 0.2.18 releases carry no R source tarball for that reason.
+
+### Changed
+
+- CI runs the Windows `R CMD check --as-cran` for both R packages on every pull
+  request and on `main`, with the same vendored, offline steps as the R release
+  workflow, so a toolchain break is seen before a release tag.
+
 ## [0.2.18] - Unreleased
 
 ### Added

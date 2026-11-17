@@ -189,16 +189,21 @@ the default features and so vendors the full closure.
 
 R-universe builds binaries (Windows/macOS/Linux) straight from Git — no review,
 no submission. Users then
-`install.packages("nirs4allformats", repos = "https://gbeurier.r-universe.dev")`
-(or `"nirs4allformats.lite"` for the smaller no-Parquet variant).
+`install.packages("nirs4allformats", repos = "https://gbeurier.r-universe.dev")`.
+The smaller no-Parquet `nirs4allformats.lite` is installable from there only once
+it is registered (see below).
 
-- **Registry repo**: public `GBeurier/GBeurier.r-universe.dev` with one
-  `packages.json` entry per package (both the complete and the lite):
+- **Registry repo**: public `GBeurier/GBeurier.r-universe.dev`. Its
+  `packages.json` registers the complete package only, pinned to one commit
+  through the `branch` field:
   ```json
-  { "package": "nirs4allformats",      "url": "https://github.com/GBeurier/nirs4all-formats", "subdir": "bindings/r/nirs4allformats" },
-  { "package": "nirs4allformats.lite", "url": "https://github.com/GBeurier/nirs4all-formats", "subdir": "bindings/r/nirs4allformatslite" }
+  { "package": "nirs4allformats", "url": "https://github.com/GBeurier/nirs4all-formats", "branch": "<release commit SHA>", "subdir": "bindings/r/nirs4allformats" }
   ```
-  No `branch` field → it tracks `main`.
+  R-universe does not follow `main`: it keeps serving the pinned commit until
+  the pin moves. After each release, once `release-r.yml` is green on the tag,
+  set `branch` to the tagged commit in the registry repository. As of
+  2026-11-17 `nirs4allformats.lite` has no entry there, so it is not served by
+  R-universe; its source tarball is on the GitHub Release.
 - **GitHub App** (one manual browser step): install
   <https://github.com/apps/r-universe> on the `GBeurier` account.
 - **Verify**: watch <https://gbeurier.r-universe.dev> (it *shows* the
