@@ -1,6 +1,13 @@
 # Versioning
 
-Crate and package versions follow SemVer once the project leaves alpha.
+Crate and package versions are `X.Y.Z`. A **patch** (`Z`) carries fixes and
+purely additive, backward-compatible features (for example a new reader);
+existing outputs, wire formats, schemas and ABI symbols stay unchanged. A
+**minor** (`Y`) carries any compatibility break: changed/removed API signature,
+C ABI break or ABI version change (`N4FMT_ABI_VERSION`), wire/byte, normalized
+record schema, persisted golden, `.n4a` payload or shared fixture change,
+renamed ids, or changed decoded values of existing readers. `X` is the product
+version. This repository classifies each of its bumps.
 
 The C ABI has its own additive version, exposed at runtime via
 `n4fmt_abi_version()` and as the compile-time constant
@@ -15,10 +22,12 @@ goldens and cached outputs can be migrated intentionally.
 
 ## Cross-repository version constraints
 
-nirs4all packages from different repositories depend on each other at **minor**
-granularity, never more precisely: Rust `"0.2"` (`>=0.2.0, <0.3.0`; `"1.3"` for
-1.x), Python `>=0.2,<0.3` (`>=1.3,<2` for 1.x), npm `^0.2.0` (`^1.3.0`), R
-`pkg (>= 0.2.0), pkg (< 0.3.0)`. Exact, reproducible versions live only in
+nirs4all packages from different repositories accept every patch of one tested
+series, `>=X.Y[.Z],<X.(Y+1)`: Rust `"0.2"` (1.x: `">=1.4.1, <1.5"`, never
+`"1.4"`), Python `>=0.2,<0.3` (1.x: `>=1.4.1,<1.5`), npm `^0.2.0` (1.x:
+`~1.4.1`, never `^1.4.0`), R a lower bound plus a documented series. A patch
+floor is allowed when a fix or feature from that patch is required; moving to a
+new minor is an explicit, tested consumer decision. Exact, reproducible versions live only in
 lockfiles (`Cargo.lock`, uv/pip locks, `package-lock.json`, hash-locked wheel
 locks) and in the release order. The crates and bindings of this repository
 (`nirs4all-formats`, `nirs4all-formats-core`, `nirs4all-formats-capi`, the
@@ -28,14 +37,8 @@ constraints. The vendored `nirs4all-hdf5-reader`/`nirs4all-netcdf-reader`
 backports keep their exact `=0.9.3-nirs4all.1` pins because they are path
 dependencies shipped from this repository.
 
-In return, a **patch** release of `nirs4all-formats` is backward compatible and
-changes no wire format, byte contract, normalized record schema, persisted
-golden, `.n4a` payload semantics, C ABI (`N4FMT_ABI_VERSION`) or shared
-fixture; any such change needs at least a **minor** release (for 0.x, every
-minor is breaking). Consumers (IO, Datasets, Core, Web, Studio) therefore never
-release just to accept a Formats patch. A consumer needing a fix from a
-specific patch gets it from its lockfile and the release order, not from a
-patch floor. The full policy is `docs/contracts/release/VERSION_CONSTRAINTS.md`
+Consumers (IO, Datasets, Core, Web, Studio) therefore never release just to
+accept a Formats patch. The full policy is `docs/contracts/release/VERSION_CONSTRAINTS.md`
 in `nirs4all-ecosystem`.
 
 Enforcement in this repository: `scripts/bump_version.sh --check` and the
