@@ -55,6 +55,8 @@ test_that("NSAS CN references survive native in-memory decoding", {
   skip_if_not(nirs4allformats_native_available(), "requires the extendr native library")
   primary <- sample_path("samples/foss_nsas_da/references700.da")
   companion <- sample_path("samples/foss_nsas_da/references700.cn")
+  skip_if(!file.exists(primary), "NSAS fixture is unavailable outside the repository")
+  skip_if(!file.exists(companion), "NSAS CN fixture is unavailable outside the repository")
   records <- nirs4allformats_open_with_sidecars(
     "references700.da", read_bytes(primary),
     list("references700.cn" = read_bytes(companion))
