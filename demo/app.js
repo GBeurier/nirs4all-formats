@@ -15,7 +15,7 @@
      `window.__N4F_EMBED__`, so there is NO module import and NO fetch — both
      of which browsers block on file://.
    `WASM` ends up holding {version, features, probeBytes, openBytes,
-   openWithSidecars} either way. */
+   openWithSidecars, sidecarRequirements} either way. */
 let WASM = null;
 const EMBED = (typeof window !== "undefined") ? window.__N4F_EMBED__ : null;
 
@@ -475,23 +475,31 @@ const dirOf = (n) => {
   const i = s.lastIndexOf("/");
   return i >= 0 ? s.slice(0, i + 1) : "";
 };
-const withExtCase = (n, fn) => {
-  const s = String(n || "");
-  return s.replace(/\.([^.\\/]+)$/, (_, ext) => "." + fn(ext));
-};
 function sidecarKeyAliases(name, primaryName) {
   const raw = String(name || "");
   const primaryDir = dirOf(primaryName);
   const rel = primaryDir && raw.replace(/\\/g, "/").startsWith(primaryDir)
     ? raw.replace(/\\/g, "/").slice(primaryDir.length)
     : raw;
-  const base = fileBaseName(raw);
-  const out = new Set([raw, rel, base]);
-  for (const key of [raw, rel, base]) {
-    out.add(withExtCase(key, (ext) => ext.toLowerCase()));
-    out.add(withExtCase(key, (ext) => ext.toUpperCase()));
+  // Preserve real spelling. Fabricated extension-case aliases can look like
+  // conflicting physical companions to readers that reject ambiguity.
+  return [...new Set([raw, rel, fileBaseName(raw)])].filter(Boolean);
+}
+function declaredCompanions(primary, files) {
+  let requirements = [];
+  try { requirements = WASM.sidecarRequirements(primary.name, primary.bytes); } catch (_) {}
+  const names = new Set();
+  for (const requirement of requirements || []) {
+    for (const name of [requirement.path, ...(requirement.alternatives || [])]) {
+      // Declarations are relative to the primary directory. Do not replace a
+      // reference to another directory with a same-basename file beside it.
+      const relative = String(name || "").replace(/\\/g, "/").replace(/^\.\//, "");
+      if (relative && !dirOf(relative)) names.add(relative.toLowerCase());
+    }
   }
-  return [...out].filter(Boolean);
+  return files.filter((other) => other !== primary
+    && dirOf(other.name) === dirOf(primary.name)
+    && names.has(fileBaseName(other.name).toLowerCase()));
 }
 function looksLikeSidecarSet(exts) {
   const s = new Set(exts);
@@ -505,6 +513,17 @@ function groupFiles(files) {
   const used = new Set();
   const groups = [];
 
+  // Rust owns companion declarations, including optional files. Keep every
+  // matching real spelling so ambiguous companions reach the native reader.
+  for (const primary of files) {
+    if (used.has(primary)) continue;
+    const companions = declaredCompanions(primary, files).filter((file) => !used.has(file));
+    if (!companions.length) continue;
+    const group = [primary, ...companions];
+    group.forEach((file) => used.add(file));
+    groups.push(group);
+  }
+
   // ERDAS LAN / AVIRIS uses a same-stem wavelength sidecar
   // (`92AV3C.spc`) plus, for the classic fixture, a different-stem
   // ground-truth sidecar (`92AV3GT.GIS`).
@@ -514,7 +533,7 @@ function groupFiles(files) {
     const g = [f];
     used.add(f);
     for (const other of files) {
-      if (used.has(other)) continue;
+      if (used.has(other) || dirOf(other.name) !== dirOf(f.name)) continue;
       const ext = extOf(other.name);
       if ((ext === "spc" && stemOf(other.name) === stem) || ext === "gis") {
         g.push(other);
@@ -527,7 +546,7 @@ function groupFiles(files) {
   const byStem = new Map();
   for (const f of files) {
     if (used.has(f)) continue;
-    const k = stemOf(f.name);
+    const k = JSON.stringify([dirOf(f.name), stemOf(f.name)]);
     if (!byStem.has(k)) byStem.set(k, []);
     byStem.get(k).push(f);
   }
@@ -546,25 +565,27 @@ function decodeGroup(bufs) {
     for (const b of bufs) {
       let p = [];
       try { p = WASM.probeBytes(b.name, b.bytes); } catch (_) {}
-      const score = p.length ? (confRank[p[0].confidence] ?? 0) : -1;
+      // A declared primary outranks a companion that happens to probe as a
+      // readable standalone container (for example an HDF5 payload).
+      const score = (declaredCompanions(b, bufs).length ? 10 : 0)
+        + (p.length ? (confRank[p[0].confidence] ?? 0) : -1);
       if (score > best) { best = score; primary = b; probes = p; }
     }
   } else {
     try { probes = WASM.probeBytes(primary.name, primary.bytes); } catch (_) {}
   }
   let records;
-  try {
-    records = WASM.openBytes(primary.name, primary.bytes);
-  } catch (e) {
-    const needsSidecar = bufs.length > 1 || /sidecar/i.test(String(e?.message || e));
-    if (!needsSidecar) throw e;
-    if (bufs.length <= 1) throw e;
+  if (bufs.length > 1) {
     const side = {};
     for (const b of bufs) {
       if (b === primary) continue;
       for (const key of sidecarKeyAliases(b.name, primary.name)) side[key] = b.bytes;
     }
+    // Optional companions can supply targets even when the primary alone is
+    // readable. Pass them on the first attempt; never discard them on success.
     records = WASM.openWithSidecars(primary.name, primary.bytes, side);
+  } else {
+    records = WASM.openBytes(primary.name, primary.bytes);
   }
   if (!Array.isArray(records) || records.length === 0) throw new Error("The reader returned an empty result.");
   return { probes, records, primaryName: primary.name };

@@ -2,8 +2,10 @@
 
 This follow-up investigates evidence beyond the supplied Beer Analyzer files and
 manuals. It recovers additional binary structure from real DA/CN pairs and adds
-an independent DA reference comparison. These findings do not establish a
-CA/OPR/RAM decoder or broaden the production DA reader's acceptance contract.
+an independent DA reference comparison. The supported DA geometries, decoded
+metadata and optional CN references are now integrated in the Rust reader; see [runtime contract](foss-nsas-da.md). No CA/OPR/RAM
+decoder is established. The initial observations below distinguish corpus-backed
+structure from static importer hypotheses.
 
 ## Evidence and handling
 
@@ -61,9 +63,9 @@ extracted. Repacking every float32 payload and preserving all headers and paddin
 reproduced all 30 source files byte-for-byte. This is a structural recovery,
 without an independent vendor export for their complete spectral semantics.
 Instrument words include 0, 5000 and 6500, sometimes within a single file; math
-and acquisition words also vary. The registered reader remains limited to the
-validated Beer Analyzer variant. It must not simply accept these examples by
-removing the current signature checks.
+and acquisition words also vary. The registered reader now accepts these four observed geometries with bounded
+constituent counts and acquisition-code checks. Only the original Beer Analyzer
+signature is labelled absorbance; other signals retain unknown physical semantics.
 
 ## CN reference-value blocks
 
@@ -108,8 +110,8 @@ length of 10. For each subsequent 128-byte row, it reads float32 values from
 `row + 4*i`. Thus names have **10-byte slots**, not the superficially plausible
 12-byte slots obtained by dividing 384 by 32. Up to 32 float32 positions fit in
 each observed row; remaining header bytes are not interpreted. The examples do
-not validate multiple active constituents or a missing-value convention. No
-universal CN parser is claimed.
+not validate multiple active constituents or a missing-value convention. The integrated CN reader is scoped to this fixed layout; unknown encodings,
+missing-value conventions and other CN variants are not claimed.
 
 The little-endian DA word at offset 30 is
 1 throughout the 11 named/nonzero CN pairs and 0 throughout the 17 blank/zero

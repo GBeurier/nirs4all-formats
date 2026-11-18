@@ -51,7 +51,7 @@ that are compiled in by default but can be turned off (and are off on the
 | JASCO JWS | JASCO | `.jws` | Supported (scoped) | [jasco-jws](formats/jasco-jws.md) |
 | Ocean Optics / Ocean Insight | Ocean Optics | `.txt`, `.csv`, `.jaz`, `.JazIrrad`, `.Master.Transmission`, `.ProcSpec` | Supported (scoped) | [ocean-optics](formats/ocean-optics.md) |
 | Foss / WinISI | Foss | `.cal`, `.nir`, `.txt`, `.csv` | Supported (scoped) | [foss-winisi](formats/foss-winisi.md) |
-| FOSS NSAS / Rapitec | FOSS NIRSystems / Perstorp | `.DA` | Experimental (6500, 1050 points) | [foss-nsas-da](formats/foss-nsas-da.md) |
+| FOSS NSAS / Rapitec | FOSS NIRSystems / Perstorp | `.DA`, `.CN` | Experimental (four DA geometries, optional reference targets) | [foss-nsas-da](formats/foss-nsas-da.md) |
 | Metrohm Vision / Vision Air export | Metrohm | `.csv` | Supported (scoped) | [metrohm-vision](formats/metrohm-vision.md) |
 | VIAVI MicroNIR | VIAVI / JDSU | `.sam`, `.csv`, `.xlsx` | Supported (scoped) | [viavi-micronir](formats/viavi-micronir.md) |
 | Shimadzu UVProbe export | Shimadzu | `.txt` | Supported (scoped) | [shimadzu-uvprobe](formats/shimadzu-uvprobe.md) |

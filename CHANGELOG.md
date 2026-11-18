@@ -9,6 +9,12 @@ still change before 1.0.
 
 ### Added
 
+- Extend the experimental NSAS Rust reader to four observed DA geometries and optional
+  CN reference targets, preserving raw names/bytes, both source hashes and missing-reference
+  warnings. Add public CC0 fixtures, corruption tests and Python/R/WASM sidecar checks.
+- Expose constituent count and spectral geometry metadata. Preserve the validated
+  Beer Analyzer absorbance interpretation and label other profiles as unknown.
+
 - Document the Rapitec/NSAS calibration workflow from the supplied manuals, with
   page citations and explicit separation of logical file roles from unverified
   binary layouts. Extend private DA qualification to three files, 191 spectra

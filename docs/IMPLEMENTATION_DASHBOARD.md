@@ -76,7 +76,7 @@ These are the rows that should drive the next coding and sample-sourcing work.
 
 | Format | Coverage | Impact | Next action |
 |---|---|---|---|
-| Foss NIRSystems / WinISI natif | diffusable cible | mineur | Native `.cal`/`.nir` decoded and validated vs ISIscan `.txt` exports; DS-series benches DS2500/DS3F (`foss-ds-nir`) decoded through the same reader (synthetic CC0 goldens + local-only real fixtures); Observed NSAS/Rapitec 6500 `.DA` decoded separately; `.eqa` and other DA variants remain unverified. Three private DA files now cover 191 spectra; the manual-based CA/OPR/RAM workflow is documented, while calibration bytes remain unverified. See `formats/foss-nsas-da.md` and `formats/foss-nsas-workflow.md`. |
+| Foss NIRSystems / WinISI natif | diffusable cible | mineur | Native `.cal`/`.nir` decoded and validated vs ISIscan `.txt` exports; DS-series benches DS2500/DS3F (`foss-ds-nir`) decoded through the same reader (synthetic CC0 goldens + local-only real fixtures); NSAS DA/CN supports four observed geometries and optional reference targets, with bytes/sidecar parity and public CC0 fixtures. The corpus covers 191 Beer Analyzer spectra plus 382 vendor spectra / 180 active references; `.eqa` and unqualified variants remain unsupported. CA/OPR/RAM are research-only. See `formats/foss-nsas-da.md` and `formats/foss-nsas-workflow.md`. |
 | Perten DA / Inframatic | non viable | bloquant | Source native spectral export or wavelength-bearing CSV/XLSX. |
 | ASD calibration | non viable | bloquant | Source `.asd + .ILL/.REF/.RAW` calibration sets. |
 | PP Systems UniSpec DC | non viable | bloquant | Source real two-channel `.SPU` field acquisition. |

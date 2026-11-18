@@ -50,3 +50,21 @@ test_that("ERDAS LAN decodes from in-memory sidecars", {
   records <- nirs4allformats_open_with_sidecars("92AV3C.lan", bytes, sidecars)
   expect_equal(length(records), 145L * 145L)
 })
+
+test_that("NSAS CN references survive native in-memory decoding", {
+  skip_if_not(nirs4allformats_native_available(), "requires the extendr native library")
+  primary <- sample_path("samples/foss_nsas_da/references700.da")
+  companion <- sample_path("samples/foss_nsas_da/references700.cn")
+  records <- nirs4allformats_open_with_sidecars(
+    "references700.da", read_bytes(primary),
+    list("references700.cn" = read_bytes(companion))
+  )
+  expect_length(records, 3L)
+  expect_equal(records[[1]]$targets$water, 1.25)
+  expect_equal(records[[1]]$targets$oil, 0)
+  expect_equal(records[[2]]$targets$water, 0)
+  expect_equal(records[[2]]$targets$oil, 3.25)
+  expect_equal(records[[3]]$targets$water, 2.5)
+  expect_equal(records[[1]]$metadata$da_constituent_count, 2)
+  expect_equal(records[[1]]$provenance$sources[[2]]$role, "constituent_reference")
+})

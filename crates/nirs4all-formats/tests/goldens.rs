@@ -9,6 +9,18 @@ const CASES: &[(&str, &str)] = &[
         "foss_nsas_da_synthetic",
         "samples/foss_nsas_da/synthetic.da",
     ),
+    (
+        "foss_nsas_cn_synthetic",
+        "samples/foss_nsas_da/references700.da",
+    ),
+    (
+        "foss_nsas_1700_synthetic",
+        "samples/foss_nsas_da/variant1700.da",
+    ),
+    (
+        "foss_nsas_4200_synthetic",
+        "samples/foss_nsas_da/variant4200.da",
+    ),
     ("unscrambler_synthetic", "samples/unscrambler/synthetic.00D"),
     (
         "matlab_unscrambler_synthetic",

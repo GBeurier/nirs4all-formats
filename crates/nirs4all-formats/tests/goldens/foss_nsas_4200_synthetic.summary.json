@@ -1,0 +1,122 @@
+{
+  "record_count": 2,
+  "records": [
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "da_constituent_count",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_point_count",
+        "da_record_bytes",
+        "da_trailer_hex",
+        "da_wavelength_end",
+        "da_wavelength_start",
+        "da_wavelength_step",
+        "instrument_model_code",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2499.5,
+          "axis_len": 4200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum",
+          "role": "spectrum",
+          "shape": [
+            4200
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.512573,
+          "value_sum": 1076.403809,
+          "values_len": 4200
+        }
+      ],
+      "source_sha256": "da5a290df4ae768ee1d9bfdd548ccd9cf9b899f37c0493e18bb33dc7142d97ae",
+      "target_keys": [],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only observed spectral geometries are supported; unknown header fields and padding preserved as hex",
+        "foss_nsas_da_semantics: wavelength geometry follows the NSAS importer; signal semantics, sensor units and calibration-file byte layouts remain unverified",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
+      ]
+    },
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "da_constituent_count",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_point_count",
+        "da_record_bytes",
+        "da_trailer_hex",
+        "da_wavelength_end",
+        "da_wavelength_start",
+        "da_wavelength_step",
+        "instrument_model",
+        "instrument_model_code",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 400.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2499.5,
+          "axis_len": 4200,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum",
+          "role": "spectrum",
+          "shape": [
+            4200
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.125,
+          "value_last": 0.637573,
+          "value_sum": 1601.403809,
+          "values_len": 4200
+        }
+      ],
+      "source_sha256": "da5a290df4ae768ee1d9bfdd548ccd9cf9b899f37c0493e18bb33dc7142d97ae",
+      "target_keys": [],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only observed spectral geometries are supported; unknown header fields and padding preserved as hex",
+        "foss_nsas_da_semantics: wavelength geometry follows the NSAS importer; signal semantics, sensor units and calibration-file byte layouts remain unverified",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
+      ]
+    }
+  ]
+}

@@ -1,171 +1,170 @@
-# FOSS NSAS / Rapitec DA
+# FOSS NSAS / Rapitec DA and CN
 
-> **Status:** Experimental, observed layout only · **Vendor:** legacy Perstorp /
-> Rapitec Beer Analyzer, FOSS NIRSystems technology · **Extension:** `.DA`
+> **Status:** Experimental, observed layouts · **Vendor:** FOSS NIRSystems /
+> Perstorp / Rapitec · **Extensions:** `.DA` spectra, optional `.CN` references
 
-The `foss_nsas_da` Rust reader recovers the spectral records of the supplied
-NIRSystems 6500 DA variant. This is a different container from modern
-[WinISI / ISIscan `.cal` / `.nir`](foss-winisi.md). Detection uses a combination
-of binary header fields, with `Likely` confidence, independently of the filename.
-Other instruments, point counts and DA variants are not claimed as supported.
-Partial records are rejected. Because this layout has no known global record
-count, removal of one or more complete records cannot be detected without an
-external expected count or source hash.
+The `foss_nsas_da` Rust reader decodes legacy NSAS spectral records and optional
+same-basename constituent/reference files. It is separate from modern
+[WinISI / ISIscan `.cal` / `.nir`](foss-winisi.md). Detection combines known binary
+geometry, instrument words, sample identifiers and acquisition fields; it has
+`Likely` confidence and does not depend on the extension.
 
-## Recovered data
+## Supported geometries and signal semantics
 
-- One record per stored spectrum, in physical file order, without averaging,
-  deduplicating or preprocessing repeated sample identifiers.
-- 1050 little-endian IEEE float32 absorbances, promoted losslessly to float64;
-  wavelength axis 400, 402, …, 2498 nm, independently established by the paired
-  SPC. The header's 2500 is consistent with an exclusive or nominal upper
-  boundary; its precise field semantics remain unverified.
-- Sample ID, vendor record number, instrument model, scan count, local date/time
-  and three sensor values. The sensor units are unknown. Sensor labels and the
-  signal/axis interpretation are independently supported by the paired SPC export.
-- Entire 128-byte header and 24-byte trailer as hex, preserving unknown fields;
-  per-source SHA-256 and explicit reverse-engineering/timezone warnings.
-- No inferred chemical targets. Missing or invalid dates retain their six raw
-  words and produce a warning; no UTC timezone is invented.
+| Points | Header start / end | Stored axis, nm | Record bytes | Padding |
+|---:|---|---|---:|---:|
+| 700 | 1100 / 2500 | 1100–2498, step 2 | 2944 | 16 |
+| 1050 | 400 / 2500 | 400–2498, step 2 | 4352 | 24 |
+| 1700 | 800 / 1650 | 800–1649.5, step 0.5 | 7040 | 112 |
+| 4200 | 400 / 2500 | 400–2499.5, step 0.5 | 17024 | 96 |
 
-The reader supports filesystem and pure in-memory access, including builds with
-no optional features and the filesystem-free WASM target. Bindings use the same
-Rust registry and require no vendor-specific Python/R/WASM decoder.
+The original Beer Analyzer signature retains the `absorbance` signal and
+`Absorbance` type, established by the paired SPC export. Other accepted headers
+emit a `spectrum` signal with `Unknown` type, no inferred signal unit and an
+explicit semantics warning. Neither an unfamiliar instrument word nor a math
+code is converted into a guessed physical signal type. Known instrument words
+are 0, 5000 and 6500; zero is retained numerically without inventing a model name.
+Models and acquisition settings may vary between records. Geometry and the
+number of constituents must remain constant within a file.
 
-## Observed byte layout
+Other point counts, wavelength ranges and acquisition codes remain unsupported.
+Vision has a special axis rule for 3101 points, but no such sample was recovered;
+this reader deliberately refuses that unqualified geometry. Accepted sizes use
+`(end-start)/N`, with the end excluded. See the
+[binary research](foss-nsas-binary-research.md) for evidence and limits.
 
-There is no separate file header in the supplied DA. Its 326400 bytes form
-75 complete 4352-byte records. Offsets below are relative to each record;
-all numeric fields are little-endian.
+## DA record layout
 
-| Offset | Width/type | Observation / interpretation |
-|---|---|---|
-| `0x00` | u16 | 6500; instrument family supported by SPC `MODEL = NIRSYSTEMS 6500`. |
-| `0x02` | u16 | Vendor record number; repeats, skips and resets. Preserved, never used as a unique identifier. |
-| `0x04` | 10 ASCII bytes | Space-padded sample identifier; SPC `SUBFILE` confirms the first seven. |
-| `0x0e` | u16 | 1050 spectral points. |
-| `0x10` | u16 | 400, wavelength start. |
-| `0x12` | u16 | 2500, consistent with an exclusive or nominal upper boundary; exact semantics unverified. The paired SPC establishes the last stored wavelength as 2498 nm. |
-| `0x14`, `0x16` | two u16 | 1 and 2; semantics unverified. Other vendor DA examples retain 2 at `0x16` with 0.5 nm spacing, so it is not a general wavelength-step field. |
-| `0x18–0x1d` | 6 bytes | Zero throughout supplied corpus; preserved. |
-| `0x1e` | u16 | Constituent count consumed by Vision's DA/CN importer, established in subsequent static analysis; zero in all 191 supplied records. |
-| `0x20–0x33` | 20 bytes | Zero throughout supplied corpus; preserved. |
-| `0x34–0x3f` | six u16 | 1, 1026, 1, 1, 2, 0; semantics unknown. First five used conservatively in detection. |
-| `0x40–0x4b` | six u16 | Day, month, year, hour, minute, second; first seven confirmed by SPC log. |
-| `0x4c` | u16 | 32 scans, confirmed by SPC `SCANS` and subheaders. |
-| `0x4e` | u16 | 1996 in all supplied records; matches acquisition year, precise purpose unknown. |
-| `0x50–0x5b` | three f32 | SPC `TRANSDUCER1`, `TRANSDUCER2`, `TRANSDUCER3` values; units unknown. |
-| `0x5c` | f32 | 1.0 throughout; purpose unknown. |
-| `0x60–0x7f` | 32 bytes | Zero throughout; preserved. |
-| `0x80–0x10e7` | 1050 f32 | Spectral values, identical to corresponding SPC Y payloads. |
-| `0x10e8–0x10ff` | 24 bytes | Spaces throughout supplied corpus; preserved rather than treated as targets. |
-
-## Findings on the supplied pair
-
-The DA contains **75 spectra, 15 distinct identifiers and 78750 finite spectral
-values**. Repeated IDs mostly have five records; one has four and one has six.
-These are stored observations, not proof of a particular replicate policy.
-The pair `(sample_id, vendor_record_number)` is also not unique: one identifier
-has two distinct acquisitions with the same number. Physical order remains authoritative.
-Acquisition timestamps have no encoded timezone.
-Absorbance values range from approximately 0.36688733 to 1.65888441.
-
-The companion SPC is Galactic/GRAMS new little-endian (`0x4b`). It independently
-declares 1050 points, 400–2498 nm, X type 3 (nm), Y type 2 (absorbance), and stores
-75 physical subfiles before its log at byte 317912:
+There is no separate global header in the observed files. Each record consists
+of a 128-byte header, N little-endian IEEE float32 values and alignment padding:
 
 ```text
-512 + 75 × (32-byte subheader + 1050 × 4-byte Y array) = 317912
+record_bytes = ceil((128 + 4*N) / 128) * 128
 ```
 
-However, the SPC `fnsub` field at byte 24 declares only **7** subfiles, and its log
-describes only the first seven. Reading it conventionally therefore exposes seven
-spectra. This inconsistency belongs to the supplied export. The DA reader returns
-all 75 records without relying on the SPC. The generic SPC reader retains its
-normal declared-count behavior.
+Offsets are relative to the start of each record; numeric fields are little-endian.
 
-Every corresponding DA/SPC Y payload is **byte-identical**, with no fitted scale,
-offset, interpolation or tolerance. Full-array conformance compares the DA reader
-with the independent MIT `spc-spectra` loader using a temporary SPC copy in which
-only `fnsub` is repaired to the independently counted 75 physical blocks. The
-original files are never changed. This first comparison uses a paired export;
-a subsequent independent DA implementation comparison is described below.
-Conformance also reconstructs the entire DA from the canonical values plus the
-retained header/trailer bytes and verifies exact equality with the original.
+| Offset | Width/type | Interpretation |
+|---|---|---|
+| `0x00` | u16 | Instrument word; 0, 5000 or 6500 in the corpus. |
+| `0x02` | u16 | Vendor record number. Repeats, skips and resets; never a unique key. |
+| `0x04` | 10 bytes | ASCII sample ID, padded by spaces or terminal NULs. |
+| `0x0e` | u16 | Number of spectral points. |
+| `0x10`, `0x12` | two u16 | Wavelength start and upper boundary for the supported geometries. |
+| `0x14`, `0x16` | two u16 | Preserved acquisition/math words. The latter is not a general wavelength step. |
+| `0x18–0x1d` | 6 bytes | Opaque, preserved. |
+| `0x1e` | u16 | Number of constituents used by the CN importer; supported range 0–32. |
+| `0x20–0x33` | 20 bytes | Opaque, preserved. |
+| `0x34–0x3d` | five u16 | Acquisition words; observed combinations constrain detection, without invented enum labels. |
+| `0x3e–0x3f` | u16 | Opaque acquisition word, preserved without constraining detection. |
+| `0x40–0x4b` | six u16 | Local day, month, year, hour, minute, second. |
+| `0x4c` | u16 | Scan count. |
+| `0x4e` | u16 | Additional year-like word; precise purpose unknown. |
+| `0x50–0x5b` | three f32 | Raw transducer fields. Original Beer Analyzer labels are `TRANSDUCER1–3`; units unknown. |
+| `0x5c–0x7f` | 36 bytes | Opaque, preserved. |
+| `0x80` onward | N f32 | Stored spectral values, promoted losslessly to f64. |
+| after payload | alignment padding | Preserved byte-for-byte, without interpreting it as references. |
 
-An independent binary review (`docs/reviews/NSAS_DA_2026_11_16.md`) additionally
-validated the relationship between DA record numbers and SPC subheader indexes.
-It records the unresolved header constants and telemetry observations separately
-from established spectral semantics.
+Records stay in physical order, without averaging, deduplication or preprocessing.
+The reader preserves `da_header_hex`, `da_trailer_hex`, all six date/time words,
+raw instrument code, stored record number, scans, constituent count and geometry.
+Valid acquisition clocks become naive local strings; invalid clocks retain the
+raw words and a warning. No timezone is invented.
 
-## Additional corpus received on 2026-11-18
+Non-finite spectra are rejected. The original Beer Analyzer signature also
+rejects non-finite sensors. Some vendor records contain non-finite sensor
+fields: those metadata entries become null with a warning, while the full
+header retains their exact bits. No automatic Vision-specific sensor division
+or calibration correction is applied.
 
-Two more private DA files use the same observed 4352-byte record layout:
+## Optional CN references
 
-| File | Stored spectra | Distinct sample IDs in that file | Spectral values | Validation |
-|---|---:|---:|---:|---|
-| `0LC1B44.DA` | 75 | 15 | 78750 | Complete paired-SPC and independent aquap2 comparison; exact DA reconstruction. |
-| `0LC1B70.DA` | 60 | 12 | 63000 | Independent aquap2 comparison, path/bytes parity and exact DA reconstruction. |
-| `0LC1B83.DA` | 56 | 11 | 58800 | Independent aquap2 comparison, path/bytes parity and exact DA reconstruction. |
+Filesystem reads automatically locate a same-basename CN, with DOS-style case
+matching of the actual filename. In-memory and WASM callers supply the companion
+through the existing sidecar API. `sidecar_requirements()` declares its optional
+role and names, so callers do not need a separate vendor parser.
 
-The corpus now contains **191 stored spectra and 200550 spectral values**. No
-paired export was supplied for the two new files. A subsequent isolated
-comparison with the pinned GPL aquap2 DA reader matched **all 200550 values,
-all wavelength coordinates and all 191 local timestamps exactly**. No calibration
-or transducer-unit comparison is implied. The [binary research report](foss-nsas-binary-research.md)
-records the reference version, limitations and reproducible conformance test.
-All observed detection constants, wavelength ranges and scan counts remain the
-same; this broadens the corpus without qualifying another DA variant.
+```python
+from nirs4all_formats import open_records, open_with_sidecars
 
-## Relation to the original calibration workflow
-
-The received manuals now establish the logical role of `.DA`, `.CA`, `.OPR` and
-`RAPITEC.RAM`; see the [page-cited workflow analysis](foss-nsas-workflow.md).
-The runtime warning distinguishes that documented workflow from the still
-unverified calibration-file byte layouts.
-
-NSAS documents transducer inputs as possible regression terms, so the three
-stored values must be preserved even though their units and their use by the
-missing calibrations are unknown. NSAS also documents optional laboratory
-information associated with data files. No constituent targets have been
-decoded from these three examples; that must not be generalized to every DA.
-Public sources and actual vendor examples also establish a separate same-basename
-`.CN` file for laboratory references. No such Beer Analyzer companion was supplied.
-
-The same research recovered 30 other DA examples with 700, 1050, 1700 or 4200
-points. Their records align to 128-byte boundaries, explaining several different
-padding lengths. These remain research-only variants, outside this reader's
-current acceptance contract; details and CN observations are in the linked report.
-
-The archive supplies manuals and two additional DA files, but no `.CA`, `.OPR`
-or `RAPITEC.RAM` binary. There is therefore no new evidence assigning unknown DA
-header words to processing codes or reconstructing original coefficients. The
-workflow report identifies specific archive names, exports and partial files
-that could support the next stage without requiring a complete matching set.
-
-## Validation and licensing
-
-Public CC0 fixtures and their generator live in `samples/foss_nsas_da/`; no
-private measurements are copied into them. Focused tests cover sniffing without an
-extension, normalized records, complete arrays, path/bytes parity, metadata,
-unknown fields, repeated IDs/numbers, invalid dates, corruption, non-finite values
-and truncation. A separate ignored Rust test and conditional Python conformance
-case exercise the local-only original pair in `samples_local/foss_nsas_da/`.
-A second ignored Rust test reconstructs all bytes of all three DA files and
-checks 200550 values, sample counts and path/bytes parity.
-
-```bash
-cargo test -p nirs4all-formats --test foss_nsas_da
-cargo test -p nirs4all-formats --test foss_nsas_da -- --ignored
-python -m pytest -m conformance tests/conformance/test_foss_nsas_da.py
+records = open_records("references700.da")  # discovers references700.cn next to it
+records = open_with_sidecars("references700.da", da_bytes, {"references700.cn": cn_bytes})
 ```
 
-Original SHA-256 values:
+Pure `open_bytes` never reads the filesystem, even when given a real path. Missing
+CN files do not prevent spectral recovery. A positive constituent count without
+CN produces an explicit missing-reference warning and empty targets. A supplied
+but malformed/ambiguous CN is an error, rather than a silent spectra-only fallback.
+No CA, OPR or RAM file is required to decode these spectra and references.
 
-- DA: `6e2b5651aa163e37b6720ffd8301cf1f16dc9303cf3f07f5064552d6242ca235`
-- SPC: `d1efcab2d9e3228e83a9386b658030b46d4661dfc8b3acdebeb985015e31fc73`
+The observed CN layout is:
 
-Additional original DA SHA-256 values:
+| Region | Layout |
+|---|---|
+| Header | 384 bytes; active constituent names occupy 10-byte slots starting at zero. |
+| Data | One 128-byte row per DA record, containing 32 float32 slots. |
+| Active values | The first `DA.constituent_count` slots, joined by physical ordinal. |
 
-- `0LC1B70.DA`: `79310867fdc464cc54ddfb4d388f4d8c79a3df15634862c7e3006c04147b2339`
-- `0LC1B83.DA`: `269fc5daf406bcafa2cd7842e7db3aefb97da335389335ac7638148de12df6ea`
+Only active slots become canonical `targets`. **Zero is a valid value**; no
+missing-value sentinel or concentration unit is guessed. Non-finite active values
+are rejected. Inactive slots are opaque and may contain arbitrary bits. A zero
+constituent count never produces targets, even if a supplied CN contains nonzero
+bytes. Counts above 32, changing counts, partial rows and row-count mismatches
+are rejected.
+
+ASCII names become normalized target keys, such as `water` and `oil`. Blank or
+undecoded names receive indexed fallback keys; duplicate/normalization collisions
+receive deterministic suffixes without overwriting any value. `cn_constituents`
+records each original slot index, decoded name when available, target key and raw
+name bytes. No OEM codepage is inferred for non-ASCII names. `cn_header_hex` and
+`cn_record_hex` preserve the complete CN, including unused slots. Provenance
+includes both DA and CN paths and SHA-256 hashes.
+
+The real vendor examples validate zero or one active constituent. Multi-slot
+support follows the inspected importer and is tested with invented data,
+including 32 slots; it is not presented as a multi-target vendor reference
+comparison. No sample ID is stored in the observed CN rows, so equal row counts
+cannot prove that a reordered or unrelated companion belongs to a given DA.
+
+## Validation and corpus
+
+The first supplied DA contains **75 spectra, 15 distinct IDs and 78750 values**.
+Its paired Galactic SPC independently establishes the 400–2498 nm wavelength
+axis, absorbance interpretation, scans and first seven transducer/time mappings.
+All 75 corresponding Y payloads are byte-identical. The SPC incorrectly declares
+only 7 subfiles although 75 physical blocks precede its log at byte 317912:
+
+```text
+512 + 75 * (32 + 1050 * 4) = 317912
+```
+
+Only a temporary reference copy's declared count is repaired for conformance;
+original files are never modified. Neither the generic SPC reader's behavior
+nor the physical acquisition order is changed.
+
+| Private Beer Analyzer file | Records | Values |
+|---|---:|---:|
+| `0LC1B44.DA` | 75 | 78750 |
+| `0LC1B70.DA` | 60 | 63000 |
+| `0LC1B83.DA` | 56 | 58800 |
+
+All **191 spectra / 200550 values**, axes and local timestamps exactly match the
+independent pinned aquap2 DA implementation in an isolated GPL reference
+subprocess. Every DA reconstructs exactly. Their constituent count is zero;
+no matching Beer Analyzer CN or original calibration equation was supplied.
+
+An official Vision distribution supplied another **30 DA files / 382 spectra /
+317250 values** and **28 CN files / 372 rows**. All are readable and reconstruct
+exactly. Eleven CN files expose **180 active reference values**; the remaining
+17 have zero declared constituents. These proprietary artifacts remain local.
+
+Public CC0 fixtures cover the original DA/SPC pair, 700-point DA/CN with two
+invented targets, and 1700/4200-point records. Acceptance tests cover the registry,
+path/bytes/sidecar parity, metadata and hashes, exact reconstruction, corrupt
+headers, truncation, ambiguous companions, duplicate names and invalid values.
+Python, R and WASM bindings call the same Rust implementation.
+
+See [calibration workflow](foss-nsas-workflow.md) and
+[binary research](foss-nsas-binary-research.md). The CA block map remains an
+unvalidated research result; no CA/OPR/RAM decoder, fitted coefficients or prediction
+engine is implemented.

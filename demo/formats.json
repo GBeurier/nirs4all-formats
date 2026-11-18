@@ -7,7 +7,7 @@
   "adjacent": 9,
   "sourcing": 6,
   "outscope": 1,
-  "validated_variants": 156,
+  "validated_variants": 157,
   "partial_variants": 19
  },
  "formats": [
@@ -420,6 +420,18 @@
    "status": "targeted"
   },
   {
+   "name": "Rapitec / FOSS NSAS DA",
+   "vendor": "Perstorp / FOSS NIRSystems",
+   "ext": "`.DA`, `.CN`",
+   "variants": 2,
+   "ok": 2,
+   "partial": 0,
+   "planned": 0,
+   "blocked": 0,
+   "priority": "P2",
+   "status": "targeted"
+  },
+  {
    "name": "Avantes AvaSoft 8 binary",
    "vendor": "Advantages",
    "ext": "`.Raw8`, `.IRR8`, `.RWD8`, `.ABS8`, `.TRM8`, `.RFL8`, `.RIR8`, `.RMN8`, `.RMD8`",
@@ -501,18 +513,6 @@
    "planned": 0,
    "blocked": 1,
    "priority": "P3",
-   "status": "targeted"
-  },
-  {
-   "name": "Rapitec / FOSS NSAS DA",
-   "vendor": "Perstorp / FOSS NIRSystems",
-   "ext": "`.DA`",
-   "variants": 1,
-   "ok": 1,
-   "partial": 0,
-   "planned": 0,
-   "blocked": 0,
-   "priority": "P2",
    "status": "targeted"
   },
   {

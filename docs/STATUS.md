@@ -2,6 +2,13 @@
 
 Last updated: 2026-11-18.
 
+> 2026-11-18 — **NSAS DA/CN runtime integration.** Rust now decodes four observed
+> DA geometries and optional CN reference targets, with constituent/geometry
+> metadata, raw-byte preservation, two-source provenance and explicit warnings.
+> Public CC0 fixtures and Rust/Python/R/WASM/browser checks cover the new paths.
+> Calibration CA/OPR/RAM remains unsupported; this is a development change without
+> a version bump or release.
+
 > 2026-11-18 — **Further NSAS binary research.** Official Vision sample archives
 > yield 30 DA files and 28 CN companions, retained locally. All 382 vendor spectra
 > and 372 CN rows reconstruct exactly. Static importer analysis confirms 10-byte
@@ -380,6 +387,24 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-11-18 DA/CN runtime integration: workspace formatting and Clippy with warnings
+denied pass; 329 workspace tests pass (three private tests ignored by default),
+and all 16 focused DA/CN tests pass with `--include-ignored`. Native and wasm32
+no-default-features builds, Python/WASM binding Clippy, and a fresh Python native
+build pass. The Python/conformance/release suite passes 46 tests with four
+optional-dependency skips; all six SPC/aquap2 reference comparisons are included.
+The full R package installs locally with a fresh native core: all 45 R tests pass
+without warnings/skips, including CN targets and path/in-memory parity.
+Full-feature WASM smoke, sidecar and fixture-matrix checks pass (55 fixtures,
+46 readers, two expected refusals). Browser routing tests pass with real WASM
+and Chrome, including DA/CN target preservation and JSON export. Public CC0
+fixtures and three new goldens cover the added geometries/CN path. Independent
+review confirmed that the existing DA golden changes only seven metadata keys
+and one warning; spectral arrays, targets, type and primary hash are unchanged.
+Sphinx with warnings denied, Ruff, version sync and diff checks pass. Version
+remains 0.2.19; no release, tag or registry publication is performed. Vendor and
+contributor measurements remain local-only.
 
 2026-11-18 binary-research follow-up adds documentation and an optional aquap2
 conformance harness, without changing runtime or binding code. Both paired-SPC

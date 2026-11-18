@@ -64,8 +64,9 @@ PerkinElmer Spectrum, ENVI/AVIRIS hyperspectral cubes, HDF5/NetCDF/MATLAB,
 Allotrope, AnIML, Raman formats (Renishaw, Horiba, WiTec, TriVista) and more.
 
 Legacy [Rapitec / FOSS NSAS `.DA`](docs/formats/foss-nsas-da.md) support now
-recovers the observed NIRSystems 6500 spectra and acquisition metadata, with
-full-array validation against the paired SPC export.
+recovers four observed spectral geometries, optional CN reference targets and
+acquisition metadata. Full-array references validate the Beer Analyzer spectra;
+additional vendor examples qualify the new structural layouts.
 
 - **[Supported-format catalogue](docs/SUPPORTED_FORMATS.md)** — the public list
   with per-format pages, vendors, extensions and support status.

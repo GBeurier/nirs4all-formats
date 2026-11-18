@@ -5,56 +5,56 @@
       "file": "synthetic_nirs.csv",
       "label": "CSV / TSV",
       "format": "delimited-text",
-      "blurb": "50 synthetic NIR absorbance spectra, 1100–2500 nm",
+      "blurb": "50 synthetic NIR absorbance spectra, 1100\u20132500 nm",
       "accent": "teal"
     },
     {
       "file": "PE1800.DX",
       "label": "JCAMP-DX",
       "format": "jcamp-dx",
-      "blurb": "FT-IR transmittance, 4000–700 cm⁻¹",
+      "blurb": "FT-IR transmittance, 4000\u2013700 cm\u207b\u00b9",
       "accent": "cyan"
     },
     {
       "file": "fieldspec_vnir.asd",
       "label": "ASD FieldSpec",
       "format": "asd-fieldspec",
-      "blurb": "VNIR/SWIR FieldSpec scan, 350–2500 nm raw DN",
+      "blurb": "VNIR/SWIR FieldSpec scan, 350\u20132500 nm raw DN",
       "accent": "amber"
     },
     {
       "file": "nir.spc",
       "label": "Galactic SPC",
       "format": "galactic-spc",
-      "blurb": "20 Kubelka–Munk NIR spectra, 1100–2498 nm",
+      "blurb": "20 Kubelka\u2013Munk NIR spectra, 1100\u20132498 nm",
       "accent": "indigo"
     },
     {
       "file": "opus_ftir.0",
       "label": "Bruker OPUS",
       "format": "bruker-opus",
-      "blurb": "FT-IR block file — 6 channels (absorbance, single-beam, interferograms, phase)",
+      "blurb": "FT-IR block file \u2014 6 channels (absorbance, single-beam, interferograms, phase)",
       "accent": "teal"
     },
     {
       "file": "spectra.sp",
       "label": "PerkinElmer SP",
       "format": "perkin-elmer-sp",
-      "blurb": "FT-IR absorbance, 4000–700 cm⁻¹",
+      "blurb": "FT-IR absorbance, 4000\u2013700 cm\u207b\u00b9",
       "accent": "cyan"
     },
     {
       "file": "synthetic_nirs.h5",
       "label": "HDF5",
       "format": "hdf5-nirs-container",
-      "blurb": "50 samples × 2 channels — decoded by HDF5-in-WASM",
+      "blurb": "50 samples \u00d7 2 channels \u2014 decoded by HDF5-in-WASM",
       "accent": "green"
     },
     {
       "file": "synthetic_nirs_v5.mat",
       "label": "MATLAB",
       "format": "matlab-mat-v5",
-      "blurb": "MAT v5 dataset — decoded by pure-Rust MATLAB-in-WASM",
+      "blurb": "MAT v5 dataset \u2014 decoded by pure-Rust MATLAB-in-WASM",
       "accent": "indigo"
     },
     {
@@ -68,7 +68,17 @@
       "file": "synthetic_nsas.da",
       "label": "Rapitec / NSAS DA",
       "format": "foss-nsas-da",
-      "blurb": "3 synthetic NIR absorbance spectra, 400–2498 nm; CC0 fixture",
+      "blurb": "3 synthetic NIR absorbance spectra, 400\u20132498 nm; CC0 fixture",
+      "accent": "teal"
+    },
+    {
+      "file": "references700.da",
+      "sidecars": [
+        "references700.cn"
+      ],
+      "label": "NSAS DA + CN",
+      "format": "foss-nsas-da",
+      "blurb": "Three synthetic 700-point spectra and two invented reference targets",
       "accent": "teal"
     }
   ]

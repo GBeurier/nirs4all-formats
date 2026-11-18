@@ -1,0 +1,202 @@
+{
+  "record_count": 3,
+  "records": [
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "cn_constituents",
+        "cn_header_hex",
+        "cn_record_hex",
+        "da_constituent_count",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_point_count",
+        "da_record_bytes",
+        "da_trailer_hex",
+        "da_wavelength_end",
+        "da_wavelength_start",
+        "da_wavelength_step",
+        "instrument_model_code",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum",
+          "role": "spectrum",
+          "shape": [
+            700
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.0,
+          "value_last": 0.085327,
+          "value_sum": 29.864502,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e0f84c0ba212cb32f93bb4ade3ee7e745960d573d80e4a3282d73ecfcb453557",
+      "target_keys": [
+        "oil",
+        "water"
+      ],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only observed spectral geometries are supported; unknown header fields and padding preserved as hex",
+        "foss_nsas_da_semantics: wavelength geometry follows the NSAS importer; signal semantics, sensor units and calibration-file byte layouts remain unverified",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset",
+        "foss_nsas_cn_experimental: references joined by physical record order; target units and missing-value conventions are unknown; vendor corpus validates only zero or one active constituent"
+      ]
+    },
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "cn_constituents",
+        "cn_header_hex",
+        "cn_record_hex",
+        "da_constituent_count",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_point_count",
+        "da_record_bytes",
+        "da_trailer_hex",
+        "da_wavelength_end",
+        "da_wavelength_start",
+        "da_wavelength_step",
+        "instrument_model",
+        "instrument_model_code",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum",
+          "role": "spectrum",
+          "shape": [
+            700
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.125,
+          "value_last": 0.210327,
+          "value_sum": 117.364502,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e0f84c0ba212cb32f93bb4ade3ee7e745960d573d80e4a3282d73ecfcb453557",
+      "target_keys": [
+        "oil",
+        "water"
+      ],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only observed spectral geometries are supported; unknown header fields and padding preserved as hex",
+        "foss_nsas_da_semantics: wavelength geometry follows the NSAS importer; signal semantics, sensor units and calibration-file byte layouts remain unverified",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset",
+        "foss_nsas_cn_experimental: references joined by physical record order; target units and missing-value conventions are unknown; vendor corpus validates only zero or one active constituent"
+      ]
+    },
+    {
+      "format": "foss-nsas-da",
+      "metadata_keys": [
+        "acquired_local",
+        "cn_constituents",
+        "cn_header_hex",
+        "cn_record_hex",
+        "da_constituent_count",
+        "da_date_time_words",
+        "da_header_hex",
+        "da_point_count",
+        "da_record_bytes",
+        "da_trailer_hex",
+        "da_wavelength_end",
+        "da_wavelength_start",
+        "da_wavelength_step",
+        "instrument_model",
+        "instrument_model_code",
+        "record_index",
+        "sample_id",
+        "scan_count",
+        "sensor_names",
+        "sensor_values",
+        "vendor_record_number"
+      ],
+      "quality_flags": [],
+      "reader": "nirs4all_formats::readers::foss_nsas_da",
+      "record_signal_type": "unknown",
+      "signal_count": 1,
+      "signals": [
+        {
+          "axis_first": 1100.0,
+          "axis_kind": "wavelength",
+          "axis_last": 2498.0,
+          "axis_len": 700,
+          "axis_order": "ascending",
+          "axis_unit": "nm",
+          "coords": [],
+          "dims": [
+            "x"
+          ],
+          "name": "spectrum",
+          "role": "spectrum",
+          "shape": [
+            700
+          ],
+          "signal_type": "unknown",
+          "unit": null,
+          "value_first": 0.25,
+          "value_last": 0.335327,
+          "value_sum": 204.864502,
+          "values_len": 700
+        }
+      ],
+      "source_sha256": "e0f84c0ba212cb32f93bb4ade3ee7e745960d573d80e4a3282d73ecfcb453557",
+      "target_keys": [
+        "oil",
+        "water"
+      ],
+      "warnings": [
+        "foss_nsas_da_reverse_engineered: only observed spectral geometries are supported; unknown header fields and padding preserved as hex",
+        "foss_nsas_da_semantics: wavelength geometry follows the NSAS importer; signal semantics, sensor units and calibration-file byte layouts remain unverified",
+        "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset",
+        "foss_nsas_cn_experimental: references joined by physical record order; target units and missing-value conventions are unknown; vendor corpus validates only zero or one active constituent"
+      ]
+    }
+  ]
+}
