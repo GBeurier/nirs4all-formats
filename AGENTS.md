@@ -35,6 +35,7 @@ cargo test --workspace
 
 - Use Rust 2021/rustfmt; Python 3.10+, Ruff at configured 100 columns and strict mypy. Reader names are snake_case. Focused Rust tests/goldens belong under `crates/nirs4all-formats/tests/`; reference checks use `tests/conformance/`.
 - Keep area-first focused commits (python/core/WASM/cubes/docs); PRs state behavior, checks, issue and fixture/license impact.
+- Versioning: versions are `X.Y.Z`. `Z` = fixes and purely additive, backward-compatible features (existing outputs, wire formats, schemas and ABI symbols unchanged); `Y` = any compatibility break (changed/removed API signature, C ABI break or ABI version change, wire/byte/record-schema/golden/fixture change, renamed ids, changed decoded values); `X` = product version. This repository classifies its bumps. Cross-repository dependencies accept one tested series, `>=X.Y[.Z],<X.(Y+1)` (patch floor only when a fix or feature from that patch is required); for 1.x packages never npm `^1.x` or Cargo `"1.x"`: use `~1.4.1`, `">=1.4.1, <1.5"`, `>=1.4.1,<1.5`. Exact pins only in lockfiles and wheel locks; the crates/bindings of this repository stay in lockstep. See [versioning](docs/VERSIONING.md) and the [ecosystem version constraints](https://github.com/GBeurier/nirs4all-ecosystem/blob/main/docs/contracts/release/VERSION_CONSTRAINTS.md).
 - Release/build variants and commands are in operations and [release documentation](docs/RELEASE.md), not a frozen release claim.
 
 ## Working rules
