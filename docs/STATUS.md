@@ -2,6 +2,15 @@
 
 Last updated: 2026-11-18.
 
+> 2026-11-18 — **Further NSAS binary research.** Official Vision sample archives
+> yield 30 DA files and 28 CN companions, retained locally. All 382 vendor spectra
+> and 372 CN rows reconstruct exactly. Static importer analysis confirms 10-byte
+> CN names, the DA constituent-count word at offset 30 and record alignment; it
+> provides an unvalidated candidate CA MLR/PLS map. An isolated pinned aquap2
+> comparison exactly matches all 191 Beer Analyzer spectra, axes and timestamps.
+> No CA/OPR/RAM example, fitted Beer Analyzer equation or new runtime reader
+> support is claimed. See `docs/formats/foss-nsas-binary-research.md`.
+
 > 2026-11-18 — **Rapitec manuals and extended DA corpus.** Three private scans
 > establish the documented CA/OPR/RAM workflow, including transducer regression
 > inputs and optional reference data, without specifying calibration byte layouts.
@@ -371,6 +380,16 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-11-18 binary-research follow-up adds documentation and an optional aquap2
+conformance harness, without changing runtime or binding code. Both paired-SPC
+cases and all four aquap2 cases pass (synthetic plus three private DA files),
+using isolated R 4.1.2 and pinned, hash-checked reference source. All 200550 private
+values, axes and 191 local timestamps match exactly. Workspace formatting, Clippy
+with warnings denied and all 318 workspace tests pass (two private tests ignored
+by default). Ruff check/format and Sphinx with warnings denied pass.
+Missing-source skips remain explicit; no reference
+source or vendor data is fetched by the tests or committed.
 
 2026-11-18 follow-up qualification on the isolated `0.2.19` integration checkout: formatting,
 workspace Clippy with warnings denied, 318 workspace tests (two private-corpus

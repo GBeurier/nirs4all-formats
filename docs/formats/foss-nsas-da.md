@@ -46,8 +46,10 @@ all numeric fields are little-endian.
 | `0x0e` | u16 | 1050 spectral points. |
 | `0x10` | u16 | 400, wavelength start. |
 | `0x12` | u16 | 2500, consistent with an exclusive or nominal upper boundary; exact semantics unverified. The paired SPC establishes the last stored wavelength as 2498 nm. |
-| `0x14`, `0x16` | two u16 | 1 and 2. The latter is consistent with wavelength spacing; broader field semantics unverified. |
-| `0x18–0x33` | 28 bytes | Zero in all 75 records; preserved. |
+| `0x14`, `0x16` | two u16 | 1 and 2; semantics unverified. Other vendor DA examples retain 2 at `0x16` with 0.5 nm spacing, so it is not a general wavelength-step field. |
+| `0x18–0x1d` | 6 bytes | Zero throughout supplied corpus; preserved. |
+| `0x1e` | u16 | Constituent count consumed by Vision's DA/CN importer, established in subsequent static analysis; zero in all 191 supplied records. |
+| `0x20–0x33` | 20 bytes | Zero throughout supplied corpus; preserved. |
 | `0x34–0x3f` | six u16 | 1, 1026, 1, 1, 2, 0; semantics unknown. First five used conservatively in detection. |
 | `0x40–0x4b` | six u16 | Day, month, year, hour, minute, second; first seven confirmed by SPC log. |
 | `0x4c` | u16 | 32 scans, confirmed by SPC `SCANS` and subheaders. |
@@ -86,8 +88,8 @@ Every corresponding DA/SPC Y payload is **byte-identical**, with no fitted scale
 offset, interpolation or tolerance. Full-array conformance compares the DA reader
 with the independent MIT `spc-spectra` loader using a temporary SPC copy in which
 only `fnsub` is repaired to the independently counted 75 physical blocks. The
-original files are never changed. This is validation against a paired export,
-not an independent DA reference implementation.
+original files are never changed. This first comparison uses a paired export;
+a subsequent independent DA implementation comparison is described below.
 Conformance also reconstructs the entire DA from the canonical values plus the
 retained header/trailer bytes and verifies exact equality with the original.
 
@@ -102,13 +104,16 @@ Two more private DA files use the same observed 4352-byte record layout:
 
 | File | Stored spectra | Distinct sample IDs in that file | Spectral values | Validation |
 |---|---:|---:|---:|---|
-| `0LC1B44.DA` | 75 | 15 | 78750 | Complete paired-SPC comparison and exact DA reconstruction. |
-| `0LC1B70.DA` | 60 | 12 | 63000 | Structural checks, path/bytes parity and exact DA reconstruction. |
-| `0LC1B83.DA` | 56 | 11 | 58800 | Structural checks, path/bytes parity and exact DA reconstruction. |
+| `0LC1B44.DA` | 75 | 15 | 78750 | Complete paired-SPC and independent aquap2 comparison; exact DA reconstruction. |
+| `0LC1B70.DA` | 60 | 12 | 63000 | Independent aquap2 comparison, path/bytes parity and exact DA reconstruction. |
+| `0LC1B83.DA` | 56 | 11 | 58800 | Independent aquap2 comparison, path/bytes parity and exact DA reconstruction. |
 
 The corpus now contains **191 stored spectra and 200550 spectral values**. No
-paired export was supplied for the two new files, so their successful lossless
-recovery is not an independent spectral-reference or calibration comparison.
+paired export was supplied for the two new files. A subsequent isolated
+comparison with the pinned GPL aquap2 DA reader matched **all 200550 values,
+all wavelength coordinates and all 191 local timestamps exactly**. No calibration
+or transducer-unit comparison is implied. The [binary research report](foss-nsas-binary-research.md)
+records the reference version, limitations and reproducible conformance test.
 All observed detection constants, wavelength ranges and scan counts remain the
 same; this broadens the corpus without qualifying another DA variant.
 
@@ -124,6 +129,13 @@ stored values must be preserved even though their units and their use by the
 missing calibrations are unknown. NSAS also documents optional laboratory
 information associated with data files. No constituent targets have been
 decoded from these three examples; that must not be generalized to every DA.
+Public sources and actual vendor examples also establish a separate same-basename
+`.CN` file for laboratory references. No such Beer Analyzer companion was supplied.
+
+The same research recovered 30 other DA examples with 700, 1050, 1700 or 4200
+points. Their records align to 128-byte boundaries, explaining several different
+padding lengths. These remain research-only variants, outside this reader's
+current acceptance contract; details and CN observations are in the linked report.
 
 The archive supplies manuals and two additional DA files, but no `.CA`, `.OPR`
 or `RAPITEC.RAM` binary. There is therefore no new evidence assigning unknown DA

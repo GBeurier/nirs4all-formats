@@ -49,6 +49,7 @@ Reference readers wired in M2:
 | Bruker OPUS | `brukeropus` | MIT | Direct Python import. |
 | Galactic SPC | `spc-spectra` | MIT | Direct Python import. |
 | FOSS NSAS DA | `spc-spectra` on the paired export | MIT | Every spectrum and axis value, exact equality; public synthetic pair and conditional private pair. The private SPC's inconsistent declared count is repaired only in a temporary reference copy after physical block validation. |
+| FOSS NSAS DA | aquap2 `getNIRData_Vision_da`, pinned commit `57ee096` | GPL-3-or-later | Isolated R subprocess; exact full-array, axis and local-clock comparison for the synthetic fixture and three conditional private files. Requires separately supplied, hash-checked source via `NIRS4ALL_AQUAP2_NSAS_SOURCE`; no automatic download. |
 | JCAMP-DX | `jcamp` (`jcamp_readfile`) | MIT | Direct Python import. |
 | Spectral Evolution `.sed` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sed_dump.R`). |
 | SVC/GER `.sig` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sig_dump.R`). |
@@ -56,7 +57,7 @@ Reference readers wired in M2:
 | Generic HDF5 | `h5py` | BSD | Direct Python import. |
 | Unscrambler `.00D` / labelled MAT | SciPy `loadmat` on the paired export | BSD-3-Clause | Every signal/target value compared; public synthetic pair always runs, private corpus runs when present. |
 
-GPL-licensed readers (`spectrolab`, `opusreader2`) stay isolated through
+GPL-licensed readers (`spectrolab`, `opusreader2`, `aquap2`) stay isolated through
 subprocess boundaries and are never imported into the dual-licensed runtime library
 path. Missing reference readers (R + `spectrolab` not installed, etc.)
 make the matching tests skip rather than fail. The suite itself is strict: if

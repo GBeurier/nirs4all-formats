@@ -6,6 +6,12 @@ and the Beer Analyzer deployment file. It describes their logical contents and
 the original software procedures. It does not provide byte layouts for `.CA`,
 `.OPR` or `RAPITEC.RAM`, and no examples of those binaries were supplied.
 
+Subsequent [binary and public-source research](foss-nsas-binary-research.md)
+identified the `.CN` companion for laboratory reference values, recovered 28
+real DA/CN pairs from an official Vision installer and independently checked all
+191 Beer Analyzer spectra against aquap2. This adds binary evidence beyond the
+manuals while leaving the original Beer Analyzer calibration coefficients unknown.
+
 ## Sources and page references
 
 These are private user-supplied scans; the PDFs, page images and full OCR are not
@@ -29,12 +35,14 @@ numeric coefficients or inferring binary field codes.
 
 | Component | Documented role | What remains unverified |
 |---|---|---|
-| `.DA` | Stored spectra used by NSAS. The Analyzer creates or appends to `RAPITEC.DA` on the RAM card; copying and renaming that file is documented. NSAS can associate laboratory reference information with data files. | Where reference values or processing flags reside in additional DA variants; the three received files have no decoded constituent targets. |
+| `.DA` | Stored spectra used by NSAS. The Analyzer creates or appends to `RAPITEC.DA` on the RAM card; copying and renaming that file is documented. | Processing flags in additional variants; the three received files have no decoded constituent targets. |
+| `.CN` | Same-basename companion containing constituent/reference values. Established by public documentation and 28 real vendor DA/CN pairs, beyond the supplied scans. | Original Beer Analyzer reference values, units, missing-value conventions and general multi-constituent interpretation. No matching Beer Analyzer CN was supplied. |
 | `.CA` | A constituent calibration, containing an equation plus descriptive and acquisition/processing context. The Beer Analyzer manual explicitly names MLR and PLS models. | Byte offsets, field lengths, numeric representations, signatures and actual fitted coefficients. |
 | `.OPR` | An operations file associates products with constituent calibrations and the settings needed to use them. | Serialized product tables, references to CA files, correction fields and any checksums. |
 | `RAPITEC.RAM` | An instrument calibration assembled from an operations file and its associated constituent calibrations, suitable for the embedded processor. | Binary packing, processor representation, identifiers, checksums and deployed calibration contents. |
 
-The file-role definitions come from R PDF page 45 / printed page 39. The original
+The CA/OPR/RAM file-role definitions come from R PDF page 45 / printed page 39;
+the separate CN finding is sourced in the linked binary research. The original
 DA storage and append behavior is described in R PDF pages 39–40 / printed
 pages 33–34. R PDF page 52 / printed page 46 explains copying or directly
 reading `RAPITEC.DA` from a PCMCIA card and recommends a unique name when archiving
@@ -77,9 +85,11 @@ words to those controls. The decoder therefore leaves those words uninterpreted.
 
 The NSAS instructions allow laboratory information to accompany spectra or to
 be added through Edit Data (N2 PDF page 31 / printed page 3-2). This does **not**
-prove that references are present in the three supplied DA files, nor identify
-their byte positions. The absence of decoded targets in the current reader must
-not be generalized to all NSAS DA files.
+prove that references are present in the three supplied DA files. The additional
+public-source research identifies a same-basename `.CN` companion, and binary
+analysis recovered reference-value rows from actual vendor examples. Requesting
+the original CN files is therefore more useful than assuming that concentrations
+must be hidden inside the DA spectral records. No Beer Analyzer CN was supplied.
 
 Percent Predict applies a saved calibration to stored spectra; Routine Analysis
 performs prediction during live acquisition. Percent Predict applies processing
@@ -145,15 +155,17 @@ by the analyzer. It cannot yet be reproduced or decoded at the byte level.
 
 Even an incomplete archive can help. In descending order of immediate value:
 
-1. A single `.CA`, ideally a simple MLR example, together with its NSAS
+1. Any same-basename `.CN` files for the supplied DA measurements, or the original
+   DA directories and backup images retaining their companion files.
+2. A single `.CA`, ideally a simple MLR example, together with its NSAS
    Calibration Files display or report: constants, wavelengths, math/segment/gap
    settings and any transducer terms.
-2. Any `.OPR`, `RAPITEC.RAM`, **Calibration Files** diskette image, `\RAMFILE`
+3. Any `.OPR`, `RAPITEC.RAM`, **Calibration Files** diskette image, `\RAMFILE`
    directory, or original RAM-card/backup directory. A complete matching set is
    useful for end-to-end validation, but is not required to begin byte analysis.
-3. An Edit Data or Percent Predict export for a supplied DA file, with any
+4. An Edit Data or Percent Predict export for a supplied DA file, with any
    laboratory values that actually exist.
-4. The NSAS Edit Data, Calibration Files and mathematical-theory sections, plus
+5. The NSAS Edit Data, Calibration Files and mathematical-theory sections, plus
    any `.WAV` wavelength selection or model loadings/weights saved separately.
 
 No calibration binary reader, coefficient reconstruction, header-code mapping or
