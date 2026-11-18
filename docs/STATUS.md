@@ -1,6 +1,13 @@
 # Project Status
 
-Last updated: 2026-11-16.
+Last updated: 2026-11-18.
+
+> 2026-11-18 — **Rapitec manuals and extended DA corpus.** Three private scans
+> establish the documented CA/OPR/RAM workflow, including transducer regression
+> inputs and optional reference data, without specifying calibration byte layouts.
+> Two additional DA files add 116 spectra; all three files (191 spectra / 200550
+> values) reconstruct exactly. Page-cited analysis and an independent review are
+> integrated. PDFs, OCR, measurements and the reply draft remain local-only.
 
 > 2026-11-16 — **Legacy Rapitec / NSAS DA recovery.** The new `foss_nsas_da`
 > reader supports the observed NIRSystems 6500, 1050-point layout. All 75 private
@@ -364,6 +371,22 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-11-18 follow-up qualification on the isolated `0.2.19` integration checkout: formatting,
+workspace Clippy with warnings denied, 318 workspace tests (two private-corpus
+checks ignored by default), native and wasm32 no-default-features builds, and
+Python/WASM binding Clippy pass (exit 0). All five focused DA tests pass with
+`--include-ignored`, including complete reconstruction and path/bytes parity for
+all 191 records / 200550 values. A fresh isolated Python release build passes
+38 binding/reverse-lab/release tests with four optional skips; both exact paired
+SPC conformance cases pass. Sphinx with warnings denied, version sync and
+`git diff --check` pass. The only golden change is the reviewed calibration
+warning text in the three synthetic records; arrays and hashes are unchanged.
+
+The local R command cannot start (`Rscript` unavailable, exit 127), and the
+full-feature WASM bundle cannot build locally (`clang` unavailable to `zstd-sys`,
+exit 1); Node bundle tests therefore were not run locally. These limitations do
+not affect the successful pure-Rust no-fs build or the local corpus checks.
 
 Publication checkout on current `main` (`0.2.17`): 318 workspace tests pass
 (one private-corpus test ignored), workspace Clippy, formatting, version sync

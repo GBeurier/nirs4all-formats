@@ -69,6 +69,7 @@ formats/felix-f750
 formats/fgi-hdf5-xml
 formats/foss-winisi
 formats/foss-nsas-da
+formats/foss-nsas-workflow
 formats/galactic-spc
 formats/hamamatsu-img
 formats/hdf5

@@ -7,6 +7,13 @@ still change before 1.0.
 
 ## [Unreleased]
 
+### Added
+
+- Document the Rapitec/NSAS calibration workflow from the supplied manuals, with
+  page citations and explicit separation of logical file roles from unverified
+  binary layouts. Extend private DA qualification to three files, 191 spectra
+  and exact reconstruction of all 200550 spectral values and opaque bytes.
+
 ### Changed
 
 - The R packages `nirs4allformats` and `nirs4allformatslite` declare the dual license

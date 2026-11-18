@@ -87,7 +87,7 @@ impl Reader for FossNsasDaReader {
                 metadata.insert("da_trailer_hex".into(), json!(hex(&block[SPECTRUM_END..])));
                 let mut warnings = vec![
                     "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex".into(),
-                    "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown".into(),
+                    "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration-file byte layouts remain unverified".into(),
                 ];
                 let date: Vec<_> = (64..76).step_by(2).map(|p| word(block, p)).collect();
                 metadata.insert("da_date_time_words".into(), json!(date));

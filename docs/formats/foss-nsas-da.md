@@ -96,23 +96,40 @@ validated the relationship between DA record numbers and SPC subheader indexes.
 It records the unresolved header constants and telemetry observations separately
 from established spectral semantics.
 
+## Additional corpus received on 2026-11-18
+
+Two more private DA files use the same observed 4352-byte record layout:
+
+| File | Stored spectra | Distinct sample IDs in that file | Spectral values | Validation |
+|---|---:|---:|---:|---|
+| `0LC1B44.DA` | 75 | 15 | 78750 | Complete paired-SPC comparison and exact DA reconstruction. |
+| `0LC1B70.DA` | 60 | 12 | 63000 | Structural checks, path/bytes parity and exact DA reconstruction. |
+| `0LC1B83.DA` | 56 | 11 | 58800 | Structural checks, path/bytes parity and exact DA reconstruction. |
+
+The corpus now contains **191 stored spectra and 200550 spectral values**. No
+paired export was supplied for the two new files, so their successful lossless
+recovery is not an independent spectral-reference or calibration comparison.
+All observed detection constants, wavelength ranges and scan counts remain the
+same; this broadens the corpus without qualifying another DA variant.
+
 ## Relation to the original calibration workflow
 
-The supplied message describes `.DA` spectra, `.CA` constituent calibration files,
-`.OPR` operation files and generated `RAPITEC.RAM` deployment data. The two supplied
-files establish recovery of spectra and acquisition metadata. They do **not**
-establish the contents, equations or cross-file references of the missing files.
-No constituent names/reference concentrations, regression coefficients or validated
-operation settings have been identified in the decoded DA records.
+The received manuals now establish the logical role of `.DA`, `.CA`, `.OPR` and
+`RAPITEC.RAM`; see the [page-cited workflow analysis](foss-nsas-workflow.md).
+The runtime warning distinguishes that documented workflow from the still
+unverified calibration-file byte layouts.
 
-For the next step, request the original Rapitec documentation, a matching
-`.CA`/`.OPR`/`RAPITEC.RAM` set, NSAS/Rapitec version information and any reference
-concentration table keyed by sample ID. Useful confirmation includes what produced
-the SPC export, whether it is an unprocessed NSAS export, and what the transducers
-measure. Sample IDs, physical ordering, stored record numbers and local timestamps
-provide candidate anchors for comparison once those materials are available.
-Recovering the stored spectra does not establish that an original calibration
-can already be rebuilt or run on the analyzer.
+NSAS documents transducer inputs as possible regression terms, so the three
+stored values must be preserved even though their units and their use by the
+missing calibrations are unknown. NSAS also documents optional laboratory
+information associated with data files. No constituent targets have been
+decoded from these three examples; that must not be generalized to every DA.
+
+The archive supplies manuals and two additional DA files, but no `.CA`, `.OPR`
+or `RAPITEC.RAM` binary. There is therefore no new evidence assigning unknown DA
+header words to processing codes or reconstructing original coefficients. The
+workflow report identifies specific archive names, exports and partial files
+that could support the next stage without requiring a complete matching set.
 
 ## Validation and licensing
 
@@ -122,6 +139,8 @@ extension, normalized records, complete arrays, path/bytes parity, metadata,
 unknown fields, repeated IDs/numbers, invalid dates, corruption, non-finite values
 and truncation. A separate ignored Rust test and conditional Python conformance
 case exercise the local-only original pair in `samples_local/foss_nsas_da/`.
+A second ignored Rust test reconstructs all bytes of all three DA files and
+checks 200550 values, sample counts and path/bytes parity.
 
 ```bash
 cargo test -p nirs4all-formats --test foss_nsas_da
@@ -133,3 +152,8 @@ Original SHA-256 values:
 
 - DA: `6e2b5651aa163e37b6720ffd8301cf1f16dc9303cf3f07f5064552d6242ca235`
 - SPC: `d1efcab2d9e3228e83a9386b658030b46d4661dfc8b3acdebeb985015e31fc73`
+
+Additional original DA SHA-256 values:
+
+- `0LC1B70.DA`: `79310867fdc464cc54ddfb4d388f4d8c79a3df15634862c7e3006c04147b2339`
+- `0LC1B83.DA`: `269fc5daf406bcafa2cd7842e7db3aefb97da335389335ac7638148de12df6ea`

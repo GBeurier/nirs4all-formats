@@ -12,4 +12,9 @@ records, 1050 absorbance values on a 400–2498 nm axis with 2 nm spacing.
 The supplied `0LC1B44.DA` / `.SPC` pair is local-only in
 `samples_local/foss_nsas_da/` because no redistribution license was supplied.
 It is never bundled in the demo, source distribution or committed fixtures.
-See `docs/formats/foss-nsas-da.md` for the byte layout, evidence and limitations.
+Two more private DA files (`0LC1B70.DA`, `0LC1B83.DA`) extend the checked corpus
+to 191 spectra. The three supplied manuals and their local OCR stay in
+`samples_local/foss_nsas_da/documentation_20261118/`. No additional private
+measurements or copyrighted scans are added to these public fixtures.
+See `docs/formats/foss-nsas-da.md` for the byte layout, evidence and limitations,
+and `docs/formats/foss-nsas-workflow.md` for the page-cited workflow analysis.

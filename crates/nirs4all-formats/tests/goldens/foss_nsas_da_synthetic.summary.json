@@ -49,7 +49,7 @@
       "target_keys": [],
       "warnings": [
         "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
-        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration-file byte layouts remain unverified",
         "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
       ]
     },
@@ -101,7 +101,7 @@
       "target_keys": [],
       "warnings": [
         "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
-        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration-file byte layouts remain unverified",
         "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
       ]
     },
@@ -153,7 +153,7 @@
       "target_keys": [],
       "warnings": [
         "foss_nsas_da_reverse_engineered: only the observed 6500/1050-point layout is supported; unknown header fields and trailer preserved as hex",
-        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration workflow are unknown",
+        "foss_nsas_da_semantics: wavelength, absorbance, scan count and transducer mapping validated against the paired SPC export; sensor units and calibration-file byte layouts remain unverified",
         "foss_nsas_da_timezone_unknown: acquisition clock has no UTC offset"
       ]
     }

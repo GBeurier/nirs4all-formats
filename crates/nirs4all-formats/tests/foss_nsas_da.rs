@@ -142,3 +142,72 @@ fn local_pair_all_78750_values_match_the_spc_payload() {
     }
     assert_eq!(records[74].metadata["record_index"], 74);
 }
+
+#[test]
+#[ignore = "requires the three private DA files in samples_local/foss_nsas_da"]
+fn local_three_file_corpus_preserves_all_200550_values_and_original_bytes() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../samples_local/foss_nsas_da");
+    let mut total = 0;
+    for (name, count, sample_count, expected_sha) in [
+        (
+            "0LC1B44.DA",
+            75,
+            15,
+            "6e2b5651aa163e37b6720ffd8301cf1f16dc9303cf3f07f5064552d6242ca235",
+        ),
+        (
+            "0LC1B70.DA",
+            60,
+            12,
+            "79310867fdc464cc54ddfb4d388f4d8c79a3df15634862c7e3006c04147b2339",
+        ),
+        (
+            "0LC1B83.DA",
+            56,
+            11,
+            "269fc5daf406bcafa2cd7842e7db3aefb97da335389335ac7638148de12df6ea",
+        ),
+    ] {
+        let bytes = std::fs::read(root.join(name)).unwrap();
+        let records = open_bytes(name, &bytes).unwrap();
+        assert_eq!(records.len(), count);
+        let ids: std::collections::BTreeSet<_> = records
+            .iter()
+            .map(|r| r.metadata["sample_id"].as_str().unwrap())
+            .collect();
+        assert_eq!(ids.len(), sample_count);
+        let mut reconstructed = Vec::new();
+        for (index, record) in records.iter().enumerate() {
+            assert_eq!(record.metadata["record_index"], index);
+            assert_eq!(record.provenance.sources[0].sha256, expected_sha);
+            let signal = &record.signals["absorbance"];
+            assert_eq!(signal.values.len(), 1050);
+            assert_eq!(signal.axis.values.first(), Some(&400.0));
+            assert_eq!(signal.axis.values.last(), Some(&2498.0));
+            assert!(signal.values.iter().all(|v| v.is_finite()));
+            assert!(record.targets.is_empty());
+            // This proves preservation of uninterpreted fields too. It is a
+            // lossless structural check, not a reference-calibration comparison.
+            let decode_hex = |key: &str| {
+                let text = record.metadata[key].as_str().unwrap();
+                (0..text.len())
+                    .step_by(2)
+                    .map(|i| u8::from_str_radix(&text[i..i + 2], 16).unwrap())
+                    .collect::<Vec<_>>()
+            };
+            reconstructed.extend(decode_hex("da_header_hex"));
+            for value in &signal.values {
+                reconstructed.extend((*value as f32).to_le_bytes());
+            }
+            reconstructed.extend(decode_hex("da_trailer_hex"));
+            total += signal.values.len();
+        }
+        assert_eq!(reconstructed, bytes, "lossless reconstruction of {name}");
+        let disk = open_path(root.join(name)).unwrap();
+        for (memory, path) in records.iter().zip(&disk) {
+            assert_eq!(memory.signals, path.signals);
+            assert_eq!(memory.metadata, path.metadata);
+        }
+    }
+    assert_eq!(total, 200_550);
+}
