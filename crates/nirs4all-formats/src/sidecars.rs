@@ -88,22 +88,9 @@ impl InMemorySidecars {
 
 impl SidecarResolver for InMemorySidecars {
     fn read(&self, relative: &Path) -> Result<Vec<u8>> {
-        if let Some(bytes) = self.map.get(relative) {
-            return Ok(bytes.clone());
-        }
-        let mut matches = self
-            .map
-            .iter()
-            .filter(|(path, _)| path.as_os_str().eq_ignore_ascii_case(relative.as_os_str()));
-        let first = matches.next();
-        if matches.next().is_some() {
-            return Err(Error::UnsupportedSidecar {
-                path: relative.to_path_buf(),
-                reason: "ambiguous case-insensitive sidecar name".to_string(),
-            });
-        }
-        first
-            .map(|(_, bytes)| bytes.clone())
+        self.map
+            .get(relative)
+            .cloned()
             .ok_or_else(|| Error::UnsupportedSidecar {
                 path: relative.to_path_buf(),
                 reason: "key not present in the in-memory sidecar map".to_string(),
@@ -112,10 +99,6 @@ impl SidecarResolver for InMemorySidecars {
 
     fn contains(&self, relative: &Path) -> bool {
         self.map.contains_key(relative)
-            || self
-                .map
-                .keys()
-                .any(|path| path.as_os_str().eq_ignore_ascii_case(relative.as_os_str()))
     }
 
     fn list(&self) -> Vec<PathBuf> {
@@ -190,13 +173,11 @@ mod tests {
     }
 
     #[test]
-    fn memory_case_fallback_preserves_real_names_and_refuses_ambiguity() {
-        let mut resolver = InMemorySidecars::new().with("sample.H5", b"a".to_vec());
-        assert!(resolver.contains(Path::new("SAMPLE.h5")));
-        assert_eq!(resolver.read(Path::new("sample.h5")).unwrap(), b"a");
+    fn memory_lookup_is_exact() {
+        let resolver = InMemorySidecars::new().with("sample.H5", b"a".to_vec());
+        assert!(resolver.contains(Path::new("sample.H5")));
+        assert!(!resolver.contains(Path::new("sample.h5")));
+        assert!(resolver.read(Path::new("sample.h5")).is_err());
         assert_eq!(resolver.list(), vec![PathBuf::from("sample.H5")]);
-        resolver.insert("sample.h5", b"b".to_vec());
-        assert_eq!(resolver.read(Path::new("sample.h5")).unwrap(), b"b");
-        assert!(resolver.read(Path::new("SAMPLE.H5")).is_err());
     }
 }

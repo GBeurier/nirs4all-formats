@@ -184,17 +184,19 @@ fn load_cn(
     sidecars: &Arc<dyn SidecarResolver>,
     candidates: BTreeSet<PathBuf>,
 ) -> Result<Option<(PathBuf, Vec<u8>)>> {
-    if candidates.len() > 1 {
-        return Err(invalid("ambiguous CN companions with case-colliding names"));
+    let mut found: Option<(PathBuf, Vec<u8>)> = None;
+    for path in candidates {
+        let bytes = sidecars.read(&path)?;
+        match &found {
+            // Hosts may register one payload under several casings.
+            Some((_, first)) if *first != bytes => {
+                return Err(invalid("ambiguous CN companions with case-colliding names"));
+            }
+            Some(_) => {}
+            None => found = Some((name.with_file_name(path), bytes)),
+        }
     }
-    candidates
-        .into_iter()
-        .next()
-        .map(|path| {
-            let bytes = sidecars.read(&path)?;
-            Ok((name.with_file_name(path), bytes))
-        })
-        .transpose()
+    Ok(found)
 }
 
 struct Constituent {

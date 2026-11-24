@@ -7,6 +7,15 @@ still change before 1.0.
 
 ## [Unreleased]
 
+## [0.2.20] - 2026-11-24
+
+Released as a patch by maintainer decision: spectra, axes, identifiers and record
+order of files 0.2.19 already read are unchanged. The persisted
+`foss_nsas_da_synthetic` golden changes only by added metadata keys and two reworded
+warnings. NSAS DA files are now refused when a same-stem CN companion has a size that
+does not match the DA records, or when the constituent word varies between records or
+exceeds 32; 0.2.19 ignored both.
+
 ### Added
 
 - Extend the experimental NSAS Rust reader to four observed DA geometries and optional
@@ -19,6 +28,10 @@ still change before 1.0.
   page citations and explicit separation of logical file roles from unverified
   binary layouts. Extend private DA qualification to three files, 191 spectra
   and exact reconstruction of all 200550 spectral values and opaque bytes.
+
+- NSAS accepts one CN payload registered under several casings and refuses companions
+  whose bytes differ. In-memory sidecar lookup stays exact, as in 0.2.19; the demo maps a
+  case-differing companion to the declared name only when no exact spelling was supplied.
 
 ### Changed
 

@@ -1,13 +1,12 @@
 # Project Status
 
-Last updated: 2026-11-18.
+Last updated: 2026-11-24.
 
 > 2026-11-18 — **NSAS DA/CN runtime integration.** Rust now decodes four observed
 > DA geometries and optional CN reference targets, with constituent/geometry
 > metadata, raw-byte preservation, two-source provenance and explicit warnings.
 > Public CC0 fixtures and Rust/Python/R/WASM/browser checks cover the new paths.
-> Calibration CA/OPR/RAM remains unsupported; this is a development change without
-> a version bump or release.
+> Calibration CA/OPR/RAM remains unsupported. Shipped in `v0.2.20` (2026-11-24).
 
 > 2026-11-18 — **Further NSAS binary research.** Official Vision sample archives
 > yield 30 DA files and 28 CN companions, retained locally. All 382 vendor spectra
@@ -387,6 +386,12 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-11-24 `v0.2.20` release preparation: version sync, workspace formatting, Clippy with
+warnings denied and all 329 workspace tests pass locally (three private tests ignored by
+default), and all 16 NSAS tests pass with `--include-ignored`. A fresh Node WASM build
+passes the smoke, sidecar and fixture-matrix checks (55 fixtures, 46 readers) and the
+demo sidecar routing tests (browser case skipped). Python, R and C ABI checks run in CI.
 
 2026-11-18 DA/CN runtime integration: workspace formatting and Clippy with warnings
 denied pass; 329 workspace tests pass (three private tests ignored by default),

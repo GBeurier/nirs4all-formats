@@ -523,10 +523,19 @@ fn cn_rejects_malformed_active_data_but_preserves_inactive_nonfinite_words() {
         assert!(records[0].targets.is_empty());
         assert_eq!(reconstruct_cn(&records), bad);
     }
-    let ambiguous = Arc::new(
+    let aliased = Arc::new(
         InMemorySidecars::new()
             .with("references700.cn", cn.clone())
-            .with("references700.CN", cn),
+            .with("references700.CN", cn.clone()),
+    );
+    let records = open_with_sidecars("references700.da", &da, aliased).unwrap();
+    assert_eq!(records[0].targets["water"], 1.25);
+    let mut other = cn.clone();
+    other[384..388].copy_from_slice(&9.0f32.to_le_bytes());
+    let ambiguous = Arc::new(
+        InMemorySidecars::new()
+            .with("references700.cn", cn)
+            .with("references700.CN", other),
     );
     assert!(open_with_sidecars("references700.da", &da, ambiguous).is_err());
     let dir = tempfile::tempdir().unwrap();

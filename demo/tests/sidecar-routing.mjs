@@ -42,7 +42,7 @@ test("optional companions reach the decoder before a successful standalone read"
   wasm.openWithSidecars = (name, bytes, sidecars) => {
     calls.push("paired");
     assert.equal(name, "batch/sample.da");
-    assert.deepEqual(Object.keys(sidecars).sort(), ["batch/SAMPLE.cn", "SAMPLE.cn"].sort());
+    assert.deepEqual(Object.keys(sidecars).sort(), ["batch/SAMPLE.cn", "SAMPLE.cn", "sample.CN"].sort());
     assert.equal(sidecars["SAMPLE.cn"][0], 1);
     return [{ targets: { reference: 1 } }];
   };
@@ -92,6 +92,17 @@ test("aliases preserve spelling instead of fabricating competing extensions", ()
   assert.deepEqual(plain(api.sidecarKeyAliases("item.hdr", "item.img")), ["item.hdr"]);
 });
 
+test("exact declared spellings are never overridden by case-differing companions", () => {
+  const wasm = fakeWasm((name) => name.endsWith(".hdr")
+    ? [{ path: "s.img", alternatives: ["s.dat"], required: true }] : []);
+  wasm.openWithSidecars = (_name, _bytes, sidecars) => {
+    assert.deepEqual(Object.keys(sidecars).sort(), ["S.img", "s.dat"]);
+    return [{ targets: {} }];
+  };
+  const api = pipeline(wasm);
+  api.decodeGroup([buffer("s.hdr"), buffer("s.dat"), buffer("S.img")]);
+});
+
 test("a declared primary wins over a standalone-readable payload", () => {
   const wasm = fakeWasm((name) => name.endsWith(".xml") ? [{ path: "data.h5" }] : []);
   wasm.probeBytes = (name) => [{ confidence: name.endsWith(".h5") ? "definite" : "likely" }];
@@ -139,7 +150,9 @@ test("real WASM recovers optional CN targets and preserves ambiguity errors", { 
   assert.deepEqual(result.records.map((r) => [r.targets.water, r.targets.oil]), [[1.25, 0], [0, 3.25], [2.5, 1.5]]);
   assert.ok(result.records[0].provenance.sources.some((s) => s.role === "constituent_reference"));
   assert.deepEqual(api.decodeGroup([da]).records[0].targets, {});
-  const ambiguous = api.groupFiles([da, cn, { ...cn, name: "batch/references700.CN" }]);
+  const otherBytes = cn.bytes.slice();
+  otherBytes[384] ^= 1;
+  const ambiguous = api.groupFiles([da, cn, { ...cn, name: "batch/references700.CN", bytes: otherBytes }]);
   assert.equal(ambiguous[0].length, 3);
   assert.throws(() => api.decodeGroup(ambiguous[0]), /ambiguous/i);
   const malformed = { ...cn, bytes: cn.bytes.slice(0, 384) };

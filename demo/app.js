@@ -501,6 +501,21 @@ function declaredCompanions(primary, files) {
     && dirOf(other.name) === dirOf(primary.name)
     && names.has(fileBaseName(other.name).toLowerCase()));
 }
+// Sidecar lookup is exact. When no spelling a reader declares was supplied and
+// exactly one companion differs only by case, expose it under the declared name.
+function addDeclaredSpellings(side, primary) {
+  let requirements = [];
+  try { requirements = WASM.sidecarRequirements(primary.name, primary.bytes); } catch (_) {}
+  const supplied = Object.keys(side);
+  for (const requirement of requirements || []) {
+    const declared = [requirement.path, ...(requirement.alternatives || [])].map(String);
+    if (declared.some((name) => Object.hasOwn(side, name))) continue;
+    for (const name of declared) {
+      const matches = supplied.filter((key) => key.toLowerCase() === name.toLowerCase());
+      if (matches.length === 1) { side[name] = side[matches[0]]; break; }
+    }
+  }
+}
 function looksLikeSidecarSet(exts) {
   const s = new Set(exts);
   if (s.has("hdr")) return true;                                       // ENVI standard / ENVI SLI
@@ -581,6 +596,7 @@ function decodeGroup(bufs) {
       if (b === primary) continue;
       for (const key of sidecarKeyAliases(b.name, primary.name)) side[key] = b.bytes;
     }
+    addDeclaredSpellings(side, primary);
     // Optional companions can supply targets even when the primary alone is
     // readable. Pass them on the first attempt; never discard them on success.
     records = WASM.openWithSidecars(primary.name, primary.bytes, side);
