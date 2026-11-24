@@ -13,7 +13,9 @@ Records exactly as the Rust core emits them, as plain dicts:
 - `open_with_sidecars(name, payload, sidecars)`: decode bytes plus a
   `{name: bytes}` map of companion files;
 - `probe_path(path)`: ordered candidate readers without a full parse;
-- `walk_path(path, ...)`: recursive per-file outcomes.
+- `walk_path(path, ...)`: recursive per-file outcomes;
+- `export_targets()`, `write_records(records, target, **options)` and
+  `convert_path(path, target, out_dir, **options)`: [exports](../EXPORTS.md).
 
 ## Lossless object model
 

@@ -149,6 +149,84 @@ def walk_path(
     return [entry for entry in entries if isinstance(entry, dict)]
 
 
+def export_targets() -> dict[str, list[dict[str, Any]]]:
+    """Return the available export ``formats`` and ``software`` presets.
+
+    A preset names a format the software documents as importable; its
+    ``tested`` flag tells whether an import of our files was verified.
+    """
+
+    targets = _require_writer().export_targets()
+    if not isinstance(targets, dict):
+        raise RuntimeError("native export_targets returned a non-dict payload")
+    return targets
+
+
+def write_records(
+    records: Sequence[Mapping[str, Any]], target: str, **options: Any
+) -> dict[str, Any]:
+    """Write records to ``target``, an export format or a software preset.
+
+    Args:
+        records: Records as returned by :func:`open_records`.
+        target: Identifier listed by :func:`export_targets`.
+        **options: ``signal``, ``base_name``, ``extension``,
+            ``axis_tolerance``, ``multi``, ``delimiter`` and ``zip``.
+
+    Returns:
+        A dict with ``format``, ``files`` (``name``, ``media_type`` and
+        ``bytes``) and ``losses``, the information the target does not carry.
+
+    Raises:
+        ValueError: If the target is unknown or cannot hold the records.
+    """
+
+    output = _require_writer().write_records(list(records), target, options)
+    if not isinstance(output, dict):
+        raise RuntimeError("native write_records returned a non-dict payload")
+    return output
+
+
+def convert_path(
+    path: str | Path,
+    target: str,
+    out_dir: str | Path,
+    *,
+    overwrite: bool = False,
+    **options: Any,
+) -> dict[str, Any]:
+    """Read ``path`` and save its spectra to ``target`` files in ``out_dir``.
+
+    ``options`` are those of :func:`write_records`; ``base_name`` defaults to
+    the input stem. Nothing is written when a file exists and ``overwrite`` is
+    false. Returns ``format``, the saved ``files`` as paths, and ``losses``.
+    """
+
+    options.setdefault("base_name", Path(path).stem)
+    output = write_records(open_records(path), target, **options)
+    files = [(Path(out_dir) / file["name"], file["bytes"]) for file in output["files"]]
+    if not overwrite:
+        for destination, _ in files:
+            if destination.exists():
+                raise FileExistsError(str(destination))
+    for destination, payload in files:
+        destination.write_bytes(payload)
+    return {
+        "format": output["format"],
+        "files": [destination for destination, _ in files],
+        "losses": output["losses"],
+    }
+
+
+def _require_writer() -> Any:
+    if _native is None:
+        raise RuntimeError(
+            "exports require the native PyO3 extension. Reinstall the wheel "
+            "via `maturin develop` or `pip install nirs4all-formats`."
+        )
+    return _native
+
+
 def _run_rust_reader(path: str | Path, *, single_record: bool = False) -> str:
     args = ["read-json", str(path)]
     if single_record:

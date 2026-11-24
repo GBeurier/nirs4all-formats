@@ -1,6 +1,6 @@
 //! extendr-api bridge for `nirs4all-formats`.
 //!
-//! All three native functions return JSON strings so that the R side can
+//! Every native function returns JSON strings so that the R side can
 //! lean on `jsonlite::fromJSON` rather than translating SEXP trees by hand.
 
 use std::path::PathBuf;
@@ -9,8 +9,8 @@ use std::sync::Arc;
 use extendr_api::{prelude::*, Result as RResult};
 use nirs4all_formats::{
     open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
-    walk_path, CubeMask, CubeWindow, InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions,
-    WalkOutcome,
+    software_catalog, walk_path, write_records, writer_catalog, CubeMask, CubeWindow,
+    InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions, WalkOutcome, WriteOptions,
 };
 
 fn to_string<T: serde::Serialize>(value: &T) -> std::result::Result<String, Error> {
@@ -160,6 +160,37 @@ fn nirs4allformats_native_walk(
     to_string(&payload)
 }
 
+/// Return the export formats and software presets as JSON.
+/// @export
+#[extendr]
+fn nirs4allformats_native_export_targets() -> RResult<String> {
+    to_string(&serde_json::json!({
+        "formats": writer_catalog(),
+        "software": software_catalog(),
+    }))
+}
+
+/// Read a file, save it to another format and return a JSON report.
+/// @export
+#[extendr]
+fn nirs4allformats_native_convert(
+    path: &str,
+    target: &str,
+    out_dir: &str,
+    options: &str,
+    overwrite: bool,
+) -> RResult<String> {
+    let options: WriteOptions = unwrap_or_throw(serde_json::from_str(options));
+    let records = unwrap_or_throw(open_path_with_options(path, &ReadOptions::default()));
+    let output = unwrap_or_throw(write_records(&records, target, &options));
+    let files = unwrap_or_throw(output.save(out_dir, overwrite));
+    to_string(&serde_json::json!({
+        "format": output.format,
+        "files": files,
+        "losses": output.losses,
+    }))
+}
+
 fn window_from_integers(
     value: Nullable<Integers>,
     label: &str,
@@ -244,4 +275,6 @@ extendr_module! {
     fn nirs4allformats_native_read_bytes;
     fn nirs4allformats_native_read_with_sidecars;
     fn nirs4allformats_native_walk;
+    fn nirs4allformats_native_export_targets;
+    fn nirs4allformats_native_convert;
 }

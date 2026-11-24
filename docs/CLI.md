@@ -12,6 +12,8 @@ nirs4all-formats read-json --pixel 10,20 --pixel 11,21 path/to/cube.hdr
 nirs4all-formats read-json --pixels-file pixels.txt path/to/cube.hdr
 nirs4all-formats scan path/to/directory
 nirs4all-formats scan path/to/directory --max-depth 2 --include-unsupported --json
+nirs4all-formats targets
+nirs4all-formats convert path/to/file --to jcamp-dx --out exported/
 ```
 
 `probe` prints JSON candidate readers with format, reader, confidence and
@@ -35,9 +37,12 @@ entries and symlinks are skipped by default. The same surface is exposed
 natively to Python via `nirs4all_formats.walk_path(...)` and to R via
 `nirs4allformats_walk_path(...)`.
 
+`targets` prints the export formats and software presets as JSON. `convert`
+reads a file, writes it to an existing directory and prints a JSON report with
+the files and declared losses; see [Exports](EXPORTS.md).
+
 Planned commands:
 
 - `inspect`: summarize records without dumping arrays;
-- `convert`: write Arrow or Parquet;
 - `validate`: compare against golden output;
 - `bench`: run reader-level performance scenarios.

@@ -62,7 +62,15 @@ Multi-dimensional signals (cubes, maps, time series) also project to
 [Python binding](bindings/python.md) for the full surface; R offers
 `as.matrix`, `as.data.frame` and `nirs4allformats_as_tibble`.
 
-## 4. Sidecar formats (companion files)
+## 4. Export to other software
+
+```python
+nio.convert_path("spectrum.0", "omnic", "exported")   # or "galactic-spc", "xlsx", ...
+```
+
+Every export returns the losses it declares; see [Exports](EXPORTS.md).
+
+## 5. Sidecar formats (companion files)
 
 Some formats need companion files — ENVI `.img`/`.hdr`, AVIRIS `.lan`/`.spc`/`.GIS`,
 FGI XML+HDF5, MATLAB Indian Pines `_gt.mat`, ARM MFRSR NetCDF + QC YAML. When you
@@ -81,7 +89,7 @@ nio.open_with_sidecars("cube.img", img_bytes, sidecars)
 `open_bytes` refuses sidecar-bearing formats explicitly so callers know to route
 through `open_with_sidecars`.
 
-## 5. Image cubes — pick pixels, not the whole scene
+## 6. Image cubes — pick pixels, not the whole scene
 
 Cube readers (ENVI Standard, AVIRIS/ERDAS LAN) accept a rectangular ROI or an
 ordered sparse pixel mask, so you never have to materialise a full scene.
@@ -101,7 +109,7 @@ nio.open_records("cube.hdr", pixels=[(10, 20), (11, 21)])       # sparse
 N-dimensional record (`dims = ["row", "col", "x"]`); projecting it flattens
 `row`/`col` back into samples for modelling.
 
-## 6. In-memory bytes
+## 7. In-memory bytes
 
 Every single-file reader decodes straight from a byte slice — no filesystem,
 which is also how the WebAssembly build works.
@@ -116,7 +124,7 @@ await init();
 openBytes("spectrum.jdx", new Uint8Array(buffer));
 ```
 
-## 7. Scan a directory
+## 8. Scan a directory
 
 The walker recurses a folder, probes each file and labels it
 `parsed` / `error` / `unsupported`.

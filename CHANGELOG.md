@@ -7,6 +7,15 @@ still change before 1.0.
 
 ## [Unreleased]
 
+### Added
+
+- Export records to JCAMP-DX 4.24, Galactic SPC, CSV, Excel, two-column text, OPUS data
+  point tables and JSON, with presets for common spectroscopy and chemometrics software.
+  Writers refuse or declare everything a target cannot carry and never resample or convert
+  units. Available from Rust (`write_records`), the CLI (`convert`, `targets`), Python, R,
+  WASM and the demo. Imports into vendor software are documented but not tested yet.
+- Records with `null` values, as JSON represents missing points, deserialize as NaN.
+
 ## [0.2.20] - 2026-11-24
 
 Released as a patch by maintainer decision: spectra, axes, identifiers and record

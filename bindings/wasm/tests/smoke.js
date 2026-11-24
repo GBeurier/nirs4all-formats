@@ -132,4 +132,24 @@ console.log('features:', wasm.features());
   }
 }
 
-console.log('OK: WASM smoke tests passed (probe + open_bytes)');
+// Decoded records export through Rust and read back, including BigInt metadata and NaN.
+{
+  const csv = Buffer.from('sample_id,protein,1000,1002,1004\na,12.5,0.5,0.25,0.75\nb,11,0.5,,0.25\n');
+  const records = wasm.openBytes('set.csv', csv);
+  records[0].metadata.big = 9007199254740993n;
+  const targets = wasm.exportTargets();
+  assert.ok(targets.formats.some((f) => f.format === 'jcamp-dx'));
+  assert.ok(targets.software.some((s) => s.id === 'opus' && s.tested === false));
+  const output = wasm.writeRecords([records[0]], 'opus', { base_name: 'set' });
+  assert.equal(output.files[0].name, 'set.dx');
+  assert.ok(output.files[0].bytes instanceof Uint8Array);
+  assert.ok(output.losses.some((loss) => loss.code === 'targets_in_comments'));
+  const back = wasm.openBytes(output.files[0].name, output.files[0].bytes);
+  assert.deepEqual(Array.from(Object.values(back[0].signals)[0].values), [0.5, 0.25, 0.75]);
+  assert.throws(() => wasm.writeRecords(records, 'galactic-spc', undefined), /missing or non-finite/);
+  const zip = wasm.writeRecords(records, 'csv', { zip: true });
+  assert.equal(zip.files[0].name, 'spectra.zip');
+  assert.throws(() => wasm.writeRecords(records, 'csv', { unknown: 1 }), /invalid export options/);
+}
+
+console.log('OK: WASM smoke tests passed (probe + open_bytes + export)');

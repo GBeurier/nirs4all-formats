@@ -43,6 +43,7 @@ papers, benchmarks, and release dashboards for near-infrared spectroscopy.
 nirs4all-formats probe     samples/jcamp_dx/TESTSPEC.DX   # which reader, and why?
 nirs4all-formats read-json samples/jcamp_dx/TESTSPEC.DX   # decode to JSON records
 nirs4all-formats scan      samples/ --json                # walk a directory
+nirs4all-formats convert   samples/jcamp_dx/TESTSPEC.DX --to galactic-spc
 ```
 
 ```python
@@ -52,8 +53,8 @@ records = nio.open_recordset("spectrum.sed")     # lossless object model
 X, axis = records.to_numpy(signal="reflectance") # modelling-ready matrix
 ```
 
-See [Getting started](docs/getting_started.md) and the
-[usage guide](docs/usage.md) for more.
+See [Getting started](docs/getting_started.md), the
+[usage guide](docs/usage.md) and [exports to other software](docs/EXPORTS.md) for more.
 
 ## Supported formats
 

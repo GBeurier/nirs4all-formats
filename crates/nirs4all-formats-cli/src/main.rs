@@ -57,6 +57,45 @@ enum Command {
         #[arg(long = "bytes-file", value_name = "PATH")]
         bytes_file: Option<PathBuf>,
     },
+    /// List export formats and software presets as JSON.
+    Targets,
+    /// Read a file and write its spectra to another format.
+    ///
+    /// Prints a JSON report with the files and every declared loss.
+    Convert {
+        /// Input file.
+        path: PathBuf,
+        /// Export format or software preset (see `targets`).
+        #[arg(long = "to", value_name = "TARGET")]
+        to: String,
+        /// Existing output directory.
+        #[arg(long, default_value = ".")]
+        out: PathBuf,
+        /// Write one signal only (default: every signal).
+        #[arg(long)]
+        signal: Option<String>,
+        /// Stem of the produced file names (default: the input stem).
+        #[arg(long)]
+        base_name: Option<String>,
+        /// File extension override, without the dot.
+        #[arg(long)]
+        extension: Option<String>,
+        /// Largest axis deviation accepted when writing an evenly spaced axis.
+        #[arg(long, default_value_t = 0.0)]
+        axis_tolerance: f64,
+        /// Group spectra sharing an axis into multi-spectrum files.
+        #[arg(long)]
+        multi: bool,
+        /// Column separator of delimited targets: `,`, `;` or `tab`.
+        #[arg(long)]
+        delimiter: Option<String>,
+        /// Write one ZIP archive.
+        #[arg(long)]
+        zip: bool,
+        /// Replace existing files.
+        #[arg(long)]
+        overwrite: bool,
+    },
     /// Recursively scan a directory and report which files load successfully.
     Scan {
         /// Directory or file to walk.
@@ -132,6 +171,47 @@ fn main() -> anyhow::Result<()> {
             };
             println!("{}", serde_json::to_string_pretty(&records)?);
         }
+        Command::Targets => {
+            let catalog = json!({
+                "formats": nirs4all_formats::writer_catalog(),
+                "software": nirs4all_formats::software_catalog(),
+            });
+            println!("{}", serde_json::to_string_pretty(&catalog)?);
+        }
+        Command::Convert {
+            path,
+            to,
+            out,
+            signal,
+            base_name,
+            extension,
+            axis_tolerance,
+            multi,
+            delimiter,
+            zip,
+            overwrite,
+        } => {
+            let records = nirs4all_formats::open_path(&path)
+                .with_context(|| format!("failed to read {}", path.display()))?;
+            let stem = path.file_stem().map(|s| s.to_string_lossy().into_owned());
+            let options = nirs4all_formats::WriteOptions {
+                signal,
+                base_name: base_name.or(stem),
+                extension,
+                axis_tolerance,
+                multi,
+                delimiter: delimiter.as_deref().map(parse_delimiter).transpose()?,
+                zip,
+            };
+            let output = nirs4all_formats::write_records(&records, &to, &options)?;
+            let files = output.save(&out, overwrite)?;
+            let report = json!({
+                "format": output.format,
+                "files": files,
+                "losses": output.losses,
+            });
+            println!("{}", serde_json::to_string_pretty(&report)?);
+        }
         Command::Scan {
             path,
             max_depth,
@@ -157,6 +237,15 @@ fn main() -> anyhow::Result<()> {
         }
     }
     Ok(())
+}
+
+fn parse_delimiter(value: &str) -> anyhow::Result<char> {
+    match value {
+        "tab" | "\t" => Ok('\t'),
+        "," => Ok(','),
+        ";" => Ok(';'),
+        other => anyhow::bail!("--delimiter must be ',', ';' or 'tab', not '{other}'"),
+    }
 }
 
 fn emit_scan_text(entries: &[nirs4all_formats::WalkEntry]) {

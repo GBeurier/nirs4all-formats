@@ -16,7 +16,9 @@ use std::sync::Arc;
 use nirs4all_formats::{
     builtin_probes, open_bytes as open_bytes_native,
     open_with_sidecars as open_with_sidecars_native, reader_catalog as reader_catalog_native,
-    sidecar_requirements as sidecar_requirements_native, InMemorySidecars, SidecarResolver,
+    sidecar_requirements as sidecar_requirements_native, software_catalog,
+    write_records as write_records_native, writer_catalog, InMemorySidecars, SidecarResolver,
+    SpectralRecord, WriteLoss, WriteOptions,
 };
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
@@ -160,6 +162,80 @@ pub fn open_with_sidecars(
     records
         .serialize(&js_serializer())
         .map_err(|err| JsError::new(&err.to_string()))
+}
+
+/// Export formats and software presets compiled into this bundle.
+#[wasm_bindgen(js_name = exportTargets)]
+pub fn export_targets() -> Result<JsValue, JsError> {
+    serde_json::json!({
+        "formats": writer_catalog(),
+        "software": software_catalog(),
+    })
+    .serialize(&js_serializer())
+    .map_err(|err| JsError::new(&err.to_string()))
+}
+
+/// Write records to an export format or software preset.
+///
+/// `records` are the objects returned by `openBytes`; `options` is an object
+/// with any of `signal`, `base_name`, `extension`, `axis_tolerance`, `multi`,
+/// `delimiter` and `zip`. Returns `{ format, files: [{ name, media_type,
+/// bytes }], losses }`.
+#[wasm_bindgen(js_name = writeRecords)]
+pub fn write_records(records: JsValue, target: &str, options: JsValue) -> Result<JsValue, JsError> {
+    let records: Vec<SpectralRecord> = serde_wasm_bindgen::from_value(records)
+        .map_err(|err| JsError::new(&format!("invalid records: {err}")))?;
+    let options: WriteOptions = if options.is_undefined() || options.is_null() {
+        WriteOptions::default()
+    } else {
+        // Through a JSON value: struct decoding from JS skips unknown keys.
+        serde_wasm_bindgen::from_value::<serde_json::Value>(options)
+            .map_err(|err| JsError::new(&format!("invalid export options: {err}")))
+            .and_then(|value| {
+                serde_json::from_value(value)
+                    .map_err(|err| JsError::new(&format!("invalid export options: {err}")))
+            })?
+    };
+    let output = write_records_native(&records, target, &options)
+        .map_err(|err| JsError::new(&err.to_string()))?;
+    JsOutput {
+        format: output.format,
+        files: output
+            .files
+            .iter()
+            .map(|file| JsFile {
+                name: &file.name,
+                media_type: file.media_type,
+                bytes: JsBytes(&file.bytes),
+            })
+            .collect(),
+        losses: &output.losses,
+    }
+    .serialize(&js_serializer())
+    .map_err(|err| JsError::new(&err.to_string()))
+}
+
+#[derive(Serialize)]
+struct JsOutput<'a> {
+    format: &'a str,
+    files: Vec<JsFile<'a>>,
+    losses: &'a [WriteLoss],
+}
+
+#[derive(Serialize)]
+struct JsFile<'a> {
+    name: &'a str,
+    media_type: &'a str,
+    bytes: JsBytes<'a>,
+}
+
+/// Serialized as a `Uint8Array`.
+struct JsBytes<'a>(&'a [u8]);
+
+impl Serialize for JsBytes<'_> {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_bytes(self.0)
+    }
 }
 
 #[derive(Serialize)]

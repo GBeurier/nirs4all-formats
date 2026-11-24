@@ -87,6 +87,7 @@ pub struct SpectralArray {
     /// Coordinate of the spectral (`"x"`) dimension.
     pub axis: SpectralAxis,
     /// Flat, C-order signal buffer; `values.len() == product(shape)`.
+    #[serde(deserialize_with = "nan_from_null")]
     pub values: Vec<f64>,
     /// Per-dimension extent; `shape.len() == dims.len()`.
     pub shape: Vec<usize>,
@@ -254,6 +255,18 @@ impl SpectralArray {
             .position(|dim| dim == "x")
             .expect("validated: exactly one 'x' dimension")
     }
+}
+
+/// JSON has no NaN: missing values serialize as `null` and read back as NaN.
+fn nan_from_null<'de, D>(deserializer: D) -> std::result::Result<Vec<f64>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let values = Vec::<Option<f64>>::deserialize(deserializer)?;
+    Ok(values
+        .into_iter()
+        .map(|value| value.unwrap_or(f64::NAN))
+        .collect())
 }
 
 /// One physical input file or archive member.

@@ -761,6 +761,11 @@ function buildResult(ds, withReset) {
     <div class="results-actions">
       <button class="btn-export" id="exp-csv" title="Download the active signal as a CSV matrix (one row per spectrum)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> CSV</button>
       <button class="btn-export" id="exp-json" title="Download the full decoded records as JSON"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> JSON</button>
+      <span class="export-to">
+        <label class="sr-only" for="exp-target">Export for</label>
+        <select id="exp-target" title="Export the active signal for another software or format">${exportTargetOptions()}</select>
+        <button class="btn-export" id="exp-go" title="Export the active signal to the selected target">Export</button>
+      </span>
       ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
     </div>`;
   wrap.appendChild(head);
@@ -784,6 +789,11 @@ function buildResult(ds, withReset) {
    so the buttons always export the dataset currently on screen. */
 function wireExport(head) {
   $("#exp-json", head)?.addEventListener("click", exportJSON);
+  const go = $("#exp-go", head);
+  if (go) {
+    if (state.signalNames.length) go.addEventListener("click", exportTo);
+    else go.disabled = true;
+  }
   const csv = $("#exp-csv", head);
   if (!csv) return;
   if (state.signalNames.length) csv.addEventListener("click", exportCSV);
@@ -792,6 +802,51 @@ function wireExport(head) {
 
 // strip directory + extension from the source name for a sensible download name
 const exportBaseName = () => (state.fileName || "spectra").replace(/^.*[\\/]/, "").replace(/\.[^.]+$/, "") || "spectra";
+
+// Targets come from the Rust registry; the page holds no format list.
+function exportTargetOptions() {
+  const targets = WASM.exportTargets();
+  const options = (items, id) => items
+    .map((item) => `<option value="${esc(item[id])}">${esc(item.label)}</option>`).join("");
+  return `<optgroup label="Software">${options(targets.software, "id")}</optgroup>`
+    + `<optgroup label="Format">${options(targets.formats, "format")}</optgroup>`;
+}
+
+function exportNote(title, lines, role) {
+  $("#export-note")?.remove();
+  const note = el("div", "legacy-note"); note.id = "export-note"; note.setAttribute("role", role);
+  const head = el("strong"); head.textContent = title; note.appendChild(head);
+  if (lines.length) {
+    const list = el("ul");
+    for (const line of lines) { const li = el("li"); li.textContent = line; list.appendChild(li); }
+    note.appendChild(list);
+  }
+  $(".results-head")?.after(note);
+  setStatus([title, ...lines].join(" "));
+}
+
+const lossLine = (loss) =>
+  `${loss.message} (${loss.count}×${loss.max_error === undefined ? "" : `, largest error ${loss.max_error.toPrecision(3)}`}).`;
+
+// Writing happens in Rust; every loss it declares is shown next to the download.
+function exportTo() {
+  const target = $("#exp-target").value;
+  const records = state.records.filter((r) => r.signals && r.signals[state.active]);
+  try {
+    const options = { signal: state.active, base_name: exportBaseName() };
+    let output = WASM.writeRecords(records, target, options);
+    if (output.files.length > 1) output = WASM.writeRecords(records, target, { ...options, zip: true });
+    const file = output.files[0];
+    download(file.name, file.bytes, file.media_type);
+    const targets = WASM.exportTargets();
+    const profile = targets.software.find((p) => p.id === target);
+    const lines = output.losses.map(lossLine);
+    if (profile && !profile.tested) lines.push(`Import into ${profile.label} is documented but was not tested with our files. ${profile.notes}`.trim());
+    exportNote(`Exported ${file.name}.`, lines, "note");
+  } catch (e) {
+    exportNote(String(e?.message || e), [], "alert");
+  }
+}
 
 function download(filename, text, mime) {
   const url = URL.createObjectURL(new Blob([text], { type: mime }));
@@ -1091,6 +1146,7 @@ function selectSignal(name) {
   // then remount (the explorer keeps hover/band state that a shorter axis would strand).
   unmountAll();
   $("#csv-refusal")?.remove();
+  $("#export-note")?.remove();
   state.active = name;
   [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", t.textContent.trim() === name));
   const plan = planSignal(name);

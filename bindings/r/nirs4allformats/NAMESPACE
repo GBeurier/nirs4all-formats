@@ -1,6 +1,8 @@
 S3method(as.data.frame,nirs4allformats_dataset)
 S3method(as.matrix,nirs4allformats_dataset)
 export(nirs4allformats_as_tibble)
+export(nirs4allformats_convert)
+export(nirs4allformats_export_targets)
 export(nirs4allformats_native_available)
 export(nirs4allformats_open_bytes)
 export(nirs4allformats_open_with_sidecars)

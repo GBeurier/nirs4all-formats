@@ -22,6 +22,7 @@ This emits the JS glue, `.wasm` binary, and TypeScript typings under `pkg/`
 ```ts
 import init, {
   version, features, readerCatalog, probeBytes, openBytes, openWithSidecars,
+  exportTargets, writeRecords,
 } from "./pkg/nirs4all_formats_wasm.js";
 
 await init();
@@ -38,6 +39,9 @@ probeBytes(file.name, bytes);
 
 // Decode: SpectralRecord[] (same JSON shape as `nirs4all-formats read-json`)
 const records = openBytes(file.name, bytes);
+
+// Export: { format, files: [{ name, media_type, bytes }], losses }
+writeRecords(records, "omnic", { base_name: "set" });
 ```
 
 `openBytes` / `probeBytes` take the file **name** (several sniffers

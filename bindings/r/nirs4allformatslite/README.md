@@ -157,6 +157,8 @@ present, else from the source-file basename and 0-based row index.
 | `nirs4allformats_walk_path(path, ...)` | Recursive per-file scan outcomes. |
 | `nirs4allformats_open_bytes(name, bytes)` | Decode in-memory bytes (native only). |
 | `nirs4allformats_open_with_sidecars(name, bytes, sidecars)` | Decode bytes plus companion files (native only). |
+| `nirs4allformats_export_targets()` | Export formats and software presets (native only). |
+| `nirs4allformats_convert(path, target, out_dir, ...)` | Read a file and save it in another format (native only). |
 | `nirs4allformats_native_available()` | Whether the native backend is loaded. |
 | `nirs4allformats_version()` | Binding version string. |
 

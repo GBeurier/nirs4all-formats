@@ -43,6 +43,9 @@ bunch   = rs.to_sklearn(signal="reflectance", target="protein")
 **Raw access** (records exactly as the Rust core emits them, as dicts):
 `open_records`, `open_bytes`, `open_with_sidecars`, `probe_path`, `walk_path`.
 
+**Exports** (see [Exports](https://nirs4all-formats.readthedocs.io/en/latest/EXPORTS.html)):
+`export_targets`, `write_records`, `convert_path` (native extension only).
+
 **Object model:** `open_recordset(path) -> SpectralRecordSet` with dataclasses
 `SpectralRecord`, `SpectralArray`, `SpectralAxis`, `SourceFile`, `Provenance`.
 

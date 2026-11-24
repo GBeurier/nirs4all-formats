@@ -374,6 +374,107 @@ nirs4allformats_probe_path <- function(path) {
   jsonlite::fromJSON(payload, simplifyVector = FALSE)
 }
 
+#' List export formats and software presets
+#'
+#' @title List the available export targets
+#' @description
+#' Returns the formats [nirs4allformats_convert()] can write and the presets for
+#' third-party software. A preset names a format the software documents as
+#' importable; `tested` tells whether an import of our files was verified.
+#'
+#' @return A list with elements `formats` and `software`.
+#'
+#' @examples
+#' \dontrun{
+#' targets <- nirs4allformats_export_targets()
+#' vapply(targets$formats, `[[`, character(1), "format")
+#' }
+#'
+#' @seealso [nirs4allformats_convert()].
+#' @export
+nirs4allformats_export_targets <- function() {
+  nirs4allformats_require_native("export_targets")
+  payload <- nirs4allformats_native_call("nirs4allformats_native_export_targets")
+  jsonlite::fromJSON(payload, simplifyVector = FALSE)
+}
+
+#' Convert a file to another spectral format
+#'
+#' @title Read a file and save its spectra in another format
+#' @description
+#' Reads `path` through the Rust registry and writes its spectra to `target`, an
+#' export format or a software preset. Values are never resampled or converted
+#' to another unit: what the target cannot carry is refused or listed in
+#' `losses`. Requires the native extendr static library.
+#'
+#' @param path Character scalar. Input file.
+#' @param target Character scalar listed by [nirs4allformats_export_targets()].
+#' @param out_dir Character scalar. Existing output directory.
+#' @param signal Optional signal name; every signal is written by default.
+#' @param base_name Stem of the produced file names; defaults to the input stem.
+#' @param extension Optional file extension override, without the dot.
+#' @param axis_tolerance Largest absolute axis deviation, in axis units,
+#'   accepted when an almost evenly spaced axis is written as evenly spaced.
+#' @param multi Group spectra sharing an axis into multi-spectrum files.
+#' @param delimiter Optional column separator of delimited targets: `","`,
+#'   `";"` or a tab.
+#' @param zip Write one ZIP archive instead of separate files.
+#' @param overwrite Replace existing files. When `FALSE`, nothing is written if
+#'   any produced file already exists.
+#'
+#' @return A list with `format`, `files` (a character vector of paths) and
+#'   `losses` (a list of declared losses).
+#'
+#' @examples
+#' \dontrun{
+#' report <- nirs4allformats_convert("spectrum.0", "jcamp-dx", tempdir())
+#' report$files
+#' }
+#'
+#' @seealso [nirs4allformats_export_targets()].
+#' @export
+nirs4allformats_convert <- function(path, target, out_dir, signal = NULL,
+                                    base_name = NULL, extension = NULL,
+                                    axis_tolerance = 0, multi = FALSE,
+                                    delimiter = NULL, zip = FALSE,
+                                    overwrite = FALSE) {
+  nirs4allformats_require_native("convert")
+  if (is.null(base_name)) {
+    base_name <- tools::file_path_sans_ext(basename(path))
+  }
+  options <- list(
+    signal = signal,
+    base_name = base_name,
+    extension = extension,
+    axis_tolerance = axis_tolerance,
+    multi = isTRUE(multi),
+    delimiter = delimiter,
+    zip = isTRUE(zip)
+  )
+  options <- options[!vapply(options, is.null, logical(1))]
+  payload <- nirs4allformats_native_call(
+    "nirs4allformats_native_convert",
+    path.expand(as.character(path)),
+    as.character(target),
+    path.expand(as.character(out_dir)),
+    as.character(jsonlite::toJSON(options, auto_unbox = TRUE, digits = NA)),
+    isTRUE(overwrite)
+  )
+  report <- jsonlite::fromJSON(payload, simplifyVector = FALSE)
+  report$files <- vapply(report$files, as.character, character(1))
+  report
+}
+
+nirs4allformats_require_native <- function(operation) {
+  if (!nirs4allformats_native_available()) {
+    stop(
+      operation, " requires the native extendr static library. Reinstall the ",
+      "package via `R CMD INSTALL` with Cargo on PATH.",
+      call. = FALSE
+    )
+  }
+}
+
 #' Decode in-memory bytes into records (native only)
 #'
 #' @title Decode raw bytes through the native registry

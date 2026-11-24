@@ -8,6 +8,7 @@ mod readers;
 mod registry;
 mod sidecars;
 mod walker;
+mod writers;
 mod xlsx_cells;
 
 pub use multimodal::{
@@ -31,4 +32,8 @@ pub use registry::{
 };
 pub use sidecars::{FsSidecars, InMemorySidecars, NoSidecars};
 pub use walker::{walk_path, WalkEntry, WalkOptions, WalkOutcome, WalkStats};
+pub use writers::{
+    software_catalog, write_records, writer_catalog, SoftwareProfile, WriteError, WriteLoss,
+    WriteOptions, WriteOutput, WriterCatalogEntry, WrittenFile,
+};
 pub use xlsx_cells::decode_xlsx_cells;
