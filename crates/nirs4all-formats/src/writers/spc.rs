@@ -3,8 +3,8 @@
 use nirs4all_formats_core::{AxisKind, SignalType, SpectralRecord};
 
 use super::select::{
-    even_spacing, groups, report_even_spacing, report_record_losses, spectra, target_text,
-    Spectrum, TargetSupport,
+    even_spacing, groups, report_even_spacing, report_record_losses, spectra, target_text, Scale,
+    Spectrum, TargetSupport, Technique,
 };
 use super::{refused, Context, WriteError, WrittenFile};
 
@@ -71,13 +71,19 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
     let multi = spectra.len() > 1;
     let (x_code, x_label) = x_code(head);
     let (y_code, y_label) = y_code(head);
-    if y_label.is_some() && y_code == 0 {
+    if y_code == 0 {
         context.losses.add(
             "signal_type_not_stored",
             format!(
-                "signal type '{}' has no SPC code and is written as an axis label",
-                head.type_label()
+                "signal type {} has no SPC code and is written as an axis label",
+                head.described()
             ),
+        );
+    }
+    if multi {
+        context.losses.add(
+            "identifiers_in_log",
+            "spectrum identifiers are written in the file log, which some software ignores",
         );
     }
 
@@ -108,12 +114,16 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
     } else {
         latin(&head.id, context)
     };
+    if memo.len() > 129 {
+        context.losses.add(
+            "text_truncated",
+            "identifiers are shortened to the 129-character SPC memo",
+        );
+    }
     put_text(&mut out[88..218], &memo);
     if x_label.is_some() || y_label.is_some() {
-        let labels = [
-            x_label.unwrap_or_else(|| standard_x_label(x_code).to_string()),
-            y_label.unwrap_or_else(|| standard_y_label(y_code).to_string()),
-        ];
+        // An empty label leaves the meaning of the standard code unchanged.
+        let labels = [x_label.unwrap_or_default(), y_label.unwrap_or_default()];
         let text = labels
             .iter()
             .map(|label| latin(label, context))
@@ -159,10 +169,11 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
     let offset = i32::try_from(out.len()).map_err(|_| refused("SPC file exceeds 2 GiB"))?;
     out[248..252].copy_from_slice(&offset.to_le_bytes());
     let mut header = [0u8; LOG_HEADER];
-    let size = log.len() as i32;
+    // Both sizes cover the whole block, its header included; the memory image
+    // is rounded up to 4096 bytes by convention.
+    let size = (LOG_HEADER + log.len()) as i32;
     header[0..4].copy_from_slice(&size.to_le_bytes());
-    // Memory image size is rounded up to 4096 bytes by convention.
-    let memory = (size + LOG_HEADER as i32 + 4095) / 4096 * 4096;
+    let memory = (size + 4095) / 4096 * 4096;
     header[4..8].copy_from_slice(&memory.to_le_bytes());
     header[8..12].copy_from_slice(&(LOG_HEADER as i32).to_le_bytes());
     out.extend_from_slice(&header);
@@ -240,8 +251,11 @@ fn put_text(field: &mut [u8], text: &str) {
 }
 
 fn experiment(spectrum: &Spectrum<'_>) -> u8 {
-    match (&spectrum.axis.kind, spectrum.axis.unit.as_str()) {
-        (AxisKind::Wavelength, "nm") if spectrum.axis.values.iter().all(|x| *x >= 700.0) => 5,
+    let nir = spectrum.axis.unit == "nm" && spectrum.axis.values.iter().all(|x| *x >= 700.0);
+    match spectrum.technique() {
+        Technique::Raman => 10,
+        Technique::UvVis => 6,
+        Technique::Infrared if nir => 5,
         _ => 0,
     }
 }
@@ -250,7 +264,14 @@ fn experiment(spectrum: &Spectrum<'_>) -> u8 {
 fn x_code(spectrum: &Spectrum<'_>) -> (u8, Option<String>) {
     let unit = spectrum.axis.unit.trim();
     let code = match (&spectrum.axis.kind, unit.to_ascii_lowercase().as_str()) {
-        (AxisKind::Wavenumber, "cm-1" | "1/cm" | "cm^-1") => 1,
+        (AxisKind::Wavenumber, "cm-1" | "1/cm" | "cm^-1") => {
+            if spectrum.technique() == Technique::Raman {
+                13
+            } else {
+                1
+            }
+        }
+        (_, "m/z") => 9,
         (AxisKind::Wavelength, "um" | "µm") => 2,
         (AxisKind::Wavelength, "nm") => 3,
         (AxisKind::Time, "s") => 4,
@@ -280,46 +301,11 @@ fn y_code(spectrum: &Spectrum<'_>) -> (u8, Option<String>) {
         SignalType::RawCounts => 4,
         _ => 0,
     };
-    let label = spectrum.type_label();
-    if code == 0 {
-        (0, Some(label.to_string()))
-    } else if spectrum.percent() {
-        // Percent ordinates are never rescaled; the label says so.
-        (code, Some(format!("Percent {label}")))
-    } else {
-        (code, None)
-    }
-}
-
-fn standard_x_label(code: u8) -> &'static str {
-    match code {
-        1 => "Wavenumber (cm-1)",
-        2 => "Micrometers (um)",
-        3 => "Nanometers (nm)",
-        4 => "Seconds",
-        5 => "Minutes",
-        6 => "Hertz (Hz)",
-        7 => "Kilohertz (KHz)",
-        8 => "Megahertz (MHz)",
-        14 => "eV",
-        23 => "Milliseconds (mSec)",
-        24 => "Microseconds (uSec)",
-        25 => "Nanoseconds (nSec)",
-        26 => "Gigahertz (GHz)",
-        30 => "Hours",
-        _ => "Arbitrary",
-    }
-}
-
-fn standard_y_label(code: u8) -> &'static str {
-    match code {
-        1 => "Interferogram",
-        2 => "Absorbance",
-        3 => "Kubelka-Munk",
-        4 => "Counts",
-        128 => "Transmission",
-        129 => "Reflectance",
-        130 => "Single Beam",
-        _ => "Arbitrary Intensity",
+    match spectrum.scale() {
+        Scale::Plain if code != 0 => (code, None),
+        // Ordinates are never rescaled; the label tells they are percentages.
+        Scale::Percent if code != 0 => (code, Some(spectrum.described())),
+        // A code would announce the plain unit, so other units use a label only.
+        _ => (0, Some(spectrum.described())),
     }
 }

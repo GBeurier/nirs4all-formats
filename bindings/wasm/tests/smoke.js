@@ -148,7 +148,7 @@ console.log('features:', wasm.features());
   assert.deepEqual(Array.from(Object.values(back[0].signals)[0].values), [0.5, 0.25, 0.75]);
   assert.throws(() => wasm.writeRecords(records, 'galactic-spc', undefined), /missing or non-finite/);
   const zip = wasm.writeRecords(records, 'csv', { zip: true });
-  assert.equal(zip.files[0].name, 'spectra.zip');
+  assert.equal(zip.files[0].name, 'set.zip');
   assert.throws(() => wasm.writeRecords(records, 'csv', { unknown: 1 }), /invalid export options/);
 }
 

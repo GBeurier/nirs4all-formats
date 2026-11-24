@@ -197,12 +197,10 @@ def convert_path(
 ) -> dict[str, Any]:
     """Read ``path`` and save its spectra to ``target`` files in ``out_dir``.
 
-    ``options`` are those of :func:`write_records`; ``base_name`` defaults to
-    the input stem. Nothing is written when a file exists and ``overwrite`` is
+    ``options`` are those of :func:`write_records`. Nothing is written when a file exists and ``overwrite`` is
     false. Returns ``format``, the saved ``files`` as paths, and ``losses``.
     """
 
-    options.setdefault("base_name", Path(path).stem)
     output = write_records(open_records(path), target, **options)
     files = [(Path(out_dir) / file["name"], file["bytes"]) for file in output["files"]]
     if not overwrite:

@@ -19,7 +19,15 @@ what a target cannot carry is **refused** or listed as a **loss** in the result.
 Every signal is written unless `signal` selects one. N-dimensional signals are
 flattened into named spectra. Matrix targets write one file per signal and per
 distinct axis. Missing values become empty cells in matrix targets and are
-refused by the others.
+refused by the others. Interferograms are not written as JCAMP-DX, and signals
+wider than an Excel sheet are left out of workbooks; both are declared.
+
+Ordinates keep their stored scale. Percent values are labelled as percent;
+other scaled units (`mAU`, `counts/s`) are written as arbitrary units with a
+declared loss, never under the plain signal type. Spectra are named after the
+sample identifier of the record, a title that tells records apart, or the source
+file and position; generated names are declared. File names default to the
+source file stem.
 
 ## Software presets
 

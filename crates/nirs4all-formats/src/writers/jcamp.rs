@@ -3,10 +3,10 @@
 use nirs4all_formats_core::{AxisKind, SignalType, SpectralRecord};
 
 use super::select::{
-    even_spacing, report_even_spacing, report_record_losses, spectra, target_text, Spectrum,
-    TargetSupport,
+    even_spacing, report_even_spacing, report_record_losses, spectra, target_text, Scale, Spectrum,
+    TargetSupport, Technique,
 };
-use super::{number, Context, WriteError, WrittenFile};
+use super::{exponent_text, number, refused, Context, WriteError, WrittenFile};
 
 /// Largest integer ordinate; readers commonly use 32-bit signed integers.
 const MAX_ORDINATE: f64 = i32::MAX as f64;
@@ -16,7 +16,24 @@ pub(crate) fn write(
     records: &[SpectralRecord],
     context: &mut Context<'_>,
 ) -> Result<Vec<WrittenFile>, WriteError> {
-    let spectra = spectra(records, context)?;
+    let mut spectra = spectra(records, context)?;
+    // Interferograms need RA parameters (RUNITS, RESOLUTION...) records do not hold.
+    let total = spectra.len();
+    spectra.retain(|spectrum| spectrum.signal.signal_type != SignalType::Interferogram);
+    if spectra.is_empty() {
+        return Err(refused(
+            "JCAMP-DX interferograms need acquisition parameters these records do not hold",
+        ));
+    }
+    if spectra.len() < total {
+        context.losses.add(
+            "interferograms_omitted",
+            format!(
+                "{} interferogram(s) are not written: JCAMP-DX needs acquisition parameters the records do not hold",
+                total - spectra.len()
+            ),
+        );
+    }
     report_record_losses(records, context, TargetSupport::Comments);
     let single = spectra.len() == 1;
     spectra
@@ -34,55 +51,72 @@ fn spectrum_text(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> String {
     let axis = &spectrum.axis.values;
     let values = &spectrum.values;
     let even = even_spacing(axis, context.options.axis_tolerance);
-    let mut out = String::new();
-    let mut ldr = |label: &str, value: &str| {
-        out.push_str(&format!("##{label}={value}\r\n"));
-    };
+    let mut labels: Vec<(String, String)> = Vec::new();
+    let mut ldr = |label: &str, value: String| labels.push((label.to_string(), value));
     let title = ascii(&spectrum.id, context);
-    let title = if spectrum.signal_label.is_empty() {
-        title
-    } else {
-        format!("{title} [{}]", ascii(&spectrum.signal_label, context))
-    };
-    let provenance = &spectrum.record.provenance;
-    ldr("TITLE", &title);
-    ldr("JCAMP-DX", "4.24");
-    ldr("DATA TYPE", data_type(&spectrum.signal.signal_type));
+    ldr(
+        "TITLE",
+        if spectrum.signal_label.is_empty() {
+            title
+        } else {
+            format!("{title} [{}]", ascii(&spectrum.signal_label, context))
+        },
+    );
+    ldr("JCAMP-DX", "4.24".to_string());
+    ldr("DATA TYPE", data_type(spectrum, context).to_string());
     ldr(
         "ORIGIN",
-        &format!(
+        format!(
             "nirs4all-formats {} from {}",
             env!("CARGO_PKG_VERSION"),
-            ascii(&provenance.format, context)
+            ascii(&spectrum.record.provenance.format, context)
         ),
     );
-    ldr("OWNER", "UNKNOWN");
-    ldr("XUNITS", &x_units(spectrum, context));
-    ldr("YUNITS", &y_units(spectrum, context));
+    ldr("OWNER", "UNKNOWN".to_string());
+    ldr("XUNITS", x_units(spectrum, context));
+    ldr("YUNITS", y_units(spectrum, context));
 
     let (min_x, max_x) = bounds(axis);
     let (min_y, max_y) = bounds(values);
     let exponent = y_exponent(values);
-    let factor = format!("1E{exponent}");
-    ldr("XFACTOR", "1.0");
-    ldr("YFACTOR", if even.is_some() { &factor } else { "1.0" });
-    ldr("FIRSTX", &number(axis[0]));
-    ldr("LASTX", &number(axis[axis.len() - 1]));
+    let factor = format!("1E{}", exponent_text(exponent));
+    ldr("XFACTOR", "1.0".to_string());
+    ldr(
+        "YFACTOR",
+        if even.is_some() {
+            factor.clone()
+        } else {
+            "1.0".to_string()
+        },
+    );
+    ldr("FIRSTX", number(axis[0]));
+    ldr("LASTX", number(axis[axis.len() - 1]));
     if even.is_some() {
         let delta = (axis[axis.len() - 1] - axis[0]) / (axis.len() - 1) as f64;
-        ldr("DELTAX", &number(delta));
+        ldr("DELTAX", number(delta));
     }
-    ldr("MINX", &number(min_x));
-    ldr("MAXX", &number(max_x));
-    ldr("MINY", &number(min_y));
-    ldr("MAXY", &number(max_y));
-    ldr("NPOINTS", &axis.len().to_string());
-    ldr("FIRSTY", &number(values[0]));
+    ldr("MINX", number(min_x));
+    ldr("MAXX", number(max_x));
+    ldr("MINY", number(min_y));
+    ldr("MAXY", number(max_y));
+    ldr("NPOINTS", axis.len().to_string());
+    // FIRSTY checks the table, so it is the ordinate the table holds.
+    let first = if even.is_some() {
+        scaled(values[0], exponent) as f64 * decimal_factor(exponent)
+    } else {
+        values[0]
+    };
+    ldr("FIRSTY", number(first));
     for (key, value) in &spectrum.record.targets {
         if let Some(text) = target_text(value) {
-            let key: String = ascii(key, context).replace('=', " ");
-            ldr(&format!("$TARGET {key}"), &ascii(&text, context));
+            let key = fit(&ascii(key, context).replace('=', " "), 40, context);
+            ldr(&format!("$TARGET {key}"), ascii(&text, context));
         }
+    }
+    let mut out = String::new();
+    for (label, value) in &labels {
+        let value = fit(value, LINE_WIDTH - label.len() - 3, context);
+        out.push_str(&format!("##{label}={value}\r\n"));
     }
 
     match even {
@@ -105,7 +139,7 @@ fn spectrum_text(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> String {
         None => {
             out.push_str("##XYPOINTS=(XY..XY)\r\n");
             for (x, y) in axis.iter().zip(values.iter()) {
-                out.push_str(&format!("{}, {}\r\n", number(*x), number(*y)));
+                out.push_str(&format!("{},{}\r\n", number(*x), number(*y)));
             }
         }
     }
@@ -116,7 +150,7 @@ fn spectrum_text(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> String {
 /// Append XYDATA lines and return the largest ordinate error.
 fn push_xydata(out: &mut String, axis: &[f64], values: &[f64], exponent: i32) -> f64 {
     let step = (axis[axis.len() - 1] - axis[0]) / (axis.len() - 1) as f64;
-    let factor: f64 = format!("1E{exponent}").parse().expect("decimal factor");
+    let factor = decimal_factor(exponent);
     let mut error = 0.0f64;
     let mut line = String::new();
     for (index, value) in values.iter().enumerate() {
@@ -136,6 +170,24 @@ fn push_xydata(out: &mut String, axis: &[f64], values: &[f64], exponent: i32) ->
     out.push_str(&line);
     out.push_str("\r\n");
     error
+}
+
+/// The factor as readers parse it from its decimal text.
+fn decimal_factor(exponent: i32) -> f64 {
+    format!("1E{exponent}").parse().expect("decimal factor")
+}
+
+/// Shorten text to the space its line has left.
+fn fit(text: &str, width: usize, context: &mut Context<'_>) -> String {
+    if text.len() <= width {
+        return text.to_string();
+    }
+    context.losses.add(
+        "text_truncated",
+        "labels are shortened to the 80-character JCAMP-DX line",
+    );
+    // Labels are ASCII, so any byte position is a character boundary.
+    text[..width].trim_end().to_string()
 }
 
 /// `value / 10^exponent`, rounded, through exact powers of ten when possible.
@@ -171,10 +223,18 @@ fn bounds(values: &[f64]) -> (f64, f64) {
         })
 }
 
-fn data_type(signal_type: &SignalType) -> &'static str {
-    match signal_type {
-        SignalType::Interferogram => "INFRARED INTERFEROGRAM",
-        _ => "INFRARED SPECTRUM",
+fn data_type(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> &'static str {
+    match spectrum.technique() {
+        Technique::Infrared => "INFRARED SPECTRUM",
+        Technique::Raman => "RAMAN SPECTRUM",
+        Technique::UvVis => "UV/VIS SPECTRUM",
+        Technique::Unknown => {
+            context.losses.add(
+                "technique_not_known",
+                "the technique is not known; DATA TYPE is written as INFRARED SPECTRUM because the format requires one",
+            );
+            "INFRARED SPECTRUM"
+        }
     }
 }
 
@@ -203,22 +263,33 @@ fn y_units(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> String {
         SignalType::KubelkaMunk => Some("KUBELKA-MUNK"),
         _ => None,
     };
-    match standard {
-        // Percent ordinates are never rescaled; the label says so.
-        Some(label) if spectrum.percent() => {
+    let scale = spectrum.scale();
+    match (standard, &scale) {
+        (Some(label), Scale::Plain) => label.to_string(),
+        // Ordinates are never rescaled; the label tells they are percentages.
+        (Some(label), Scale::Percent) => {
             context.losses.add(
                 "signal_unit_non_standard",
                 "percent ordinates are labelled PERCENT, which some software ignores",
             );
             format!("PERCENT {label}")
         }
-        Some(label) => label.to_string(),
-        None => {
+        (Some(_), Scale::Other(unit)) => {
+            context.losses.add(
+                "signal_unit_not_stored",
+                format!(
+                    "{} in '{unit}' is written as ARBITRARY UNITS",
+                    spectrum.type_label()
+                ),
+            );
+            "ARBITRARY UNITS".to_string()
+        }
+        (None, _) => {
             context.losses.add(
                 "signal_type_not_stored",
                 format!(
-                    "signal type '{}' is outside the JCAMP-DX 4.24 vocabulary and is written as ARBITRARY UNITS",
-                    spectrum.type_label()
+                    "signal type {} is outside the JCAMP-DX 4.24 vocabulary and is written as ARBITRARY UNITS",
+                    spectrum.described()
                 ),
             );
             "ARBITRARY UNITS".to_string()

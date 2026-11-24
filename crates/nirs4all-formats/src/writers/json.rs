@@ -8,6 +8,31 @@ pub(crate) fn write(
     records: &[SpectralRecord],
     context: &mut Context<'_>,
 ) -> Result<Vec<WrittenFile>, WriteError> {
+    let selected: Vec<SpectralRecord>;
+    let records = match context.options.signal.as_deref() {
+        None => records,
+        Some(wanted) => {
+            selected = records
+                .iter()
+                .filter_map(|record| {
+                    let mut record = record.clone();
+                    let before = record.signals.len();
+                    record.signals.retain(|name, _| name == wanted);
+                    if record.signals.len() < before {
+                        context.losses.add(
+                            "signals_omitted",
+                            "signals other than the selected one are not written",
+                        );
+                    }
+                    (!record.signals.is_empty()).then_some(record)
+                })
+                .collect();
+            if selected.is_empty() {
+                return Err(refused(format!("no record has signal '{wanted}'")));
+            }
+            &selected
+        }
+    };
     for record in records {
         let finite = record
             .signals

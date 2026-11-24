@@ -11,6 +11,8 @@ use super::{number, refused, Context, WriteError, WrittenFile};
 
 const XLSX_MAX_COLUMNS: usize = 16_384;
 const XLSX_MAX_ROWS: usize = 1_048_576;
+/// 2^53 - 1: larger integers are not all representable as doubles.
+const MAX_EXACT_INTEGER: f64 = 9_007_199_254_740_991.0;
 
 pub(crate) fn write_csv(
     records: &[SpectralRecord],
@@ -29,7 +31,7 @@ pub(crate) fn write_csv(
             format!(
                 "the table does not store that the axis is in '{}' and the signal is {}",
                 group[0].axis.unit,
-                group[0].type_label()
+                group[0].described()
             ),
         );
         let mut out = String::new();
@@ -67,14 +69,21 @@ pub(crate) fn write_xlsx(
     let groups = groups(&spectra);
     let several = groups.len() > 1;
     let mut files = Vec::new();
+    let mut oversized = None;
     for (index, group) in groups.iter().enumerate() {
         let table = Table::new(group, context);
         if table.header.len() > XLSX_MAX_COLUMNS || table.rows.len() + 1 > XLSX_MAX_ROWS {
-            return Err(refused(format!(
-                "{} rows by {} columns exceed the Excel limits of {XLSX_MAX_ROWS} by {XLSX_MAX_COLUMNS}",
+            let message = format!(
+                "signal '{}': {} rows by {} columns exceed the Excel limits of {XLSX_MAX_ROWS} by {XLSX_MAX_COLUMNS}",
+                group[0].signal_name,
                 table.rows.len() + 1,
                 table.header.len()
-            )));
+            );
+            context
+                .losses
+                .add("signals_omitted", format!("not written: {message}"));
+            oversized = Some(message);
+            continue;
         }
         let mut sheet: Vec<Vec<Cell>> = Vec::with_capacity(table.rows.len() + 1);
         sheet.push(
@@ -95,7 +104,10 @@ pub(crate) fn write_xlsx(
             bytes,
         ));
     }
-    Ok(files)
+    match oversized {
+        Some(message) if files.is_empty() => Err(refused(message)),
+        _ => Ok(files),
+    }
 }
 
 fn grid_label(several: bool, index: usize) -> String {
@@ -121,7 +133,13 @@ impl Table {
             .into_iter()
             .collect();
         let mut header = vec!["sample_id".to_string()];
-        header.extend(keys.iter().map(|key| column_name(key)));
+        for key in &keys {
+            let mut name = column_name(key);
+            while header.contains(&name) {
+                name.push('_');
+            }
+            header.push(name);
+        }
         let spectral_start = header.len();
         header.extend(group[0].axis.values.iter().map(|value| number(*value)));
 
@@ -130,7 +148,7 @@ impl Table {
             .map(|spectrum| {
                 let mut row = vec![Cell::Text(spectrum.id.clone())];
                 for key in &keys {
-                    row.push(target_cell(spectrum.record.targets.get(*key), context));
+                    row.push(target_cell(spectrum.record.targets.get(*key)));
                 }
                 let mut missing = false;
                 row.extend(spectrum.values.iter().map(|value| {
@@ -168,23 +186,17 @@ fn column_name(key: &str) -> String {
     }
 }
 
-fn target_cell(value: Option<&Value>, context: &mut Context<'_>) -> Cell {
+fn target_cell(value: Option<&Value>) -> Cell {
     match value {
         None | Some(Value::Null) => Cell::Empty,
         Some(Value::Number(value)) => match value.as_f64() {
-            Some(float) => Cell::Number(float),
-            None => Cell::Text(value.to_string()),
-        },
-        Some(other) => match target_text(other) {
-            Some(text) => Cell::Text(text),
-            None => {
-                context.losses.add(
-                    "structured_targets_omitted",
-                    "target values that are lists or objects are not written",
-                );
-                Cell::Empty
+            // Integers a double cannot hold keep their digits as text.
+            Some(float) if value.is_f64() || float.abs() <= MAX_EXACT_INTEGER => {
+                Cell::Number(float)
             }
+            _ => Cell::Text(value.to_string()),
         },
+        Some(other) => target_text(other).map_or(Cell::Empty, Cell::Text),
     }
 }
 
@@ -215,7 +227,7 @@ fn info_sheet(group: &[&Spectrum<'_>]) -> Vec<Vec<Cell>> {
             format!("{:?}", head.axis.kind).to_ascii_lowercase(),
         ),
         ("signal", head.signal_name.to_string()),
-        ("signal_type", head.type_label().to_string()),
+        ("signal_type", head.described()),
         ("signal_unit", head.signal.unit.clone().unwrap_or_default()),
         ("source_format", provenance.format.clone()),
         (

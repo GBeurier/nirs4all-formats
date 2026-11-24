@@ -61,7 +61,7 @@ pub(crate) fn refused(message: impl Into<String>) -> WriteError {
 pub struct WriteOptions {
     /// Restrict the export to one signal name.
     pub signal: Option<String>,
-    /// Stem of the produced file names (default `spectra`).
+    /// Stem of the produced file names (default: the source file stem).
     pub base_name: Option<String>,
     /// File extension override, without the dot.
     pub extension: Option<String>,
@@ -256,6 +256,7 @@ pub fn write_records(
         options,
         extension,
         media_type: entry.media_type,
+        default_base: default_base(records),
         names: FileNames::default(),
         losses: Losses::default(),
     };
@@ -284,12 +285,18 @@ pub(crate) struct Context<'a> {
     pub extension: &'a str,
     pub media_type: &'static str,
     pub losses: Losses,
+    default_base: String,
     names: FileNames,
 }
 
 impl Context<'_> {
     pub fn base_name(&self) -> String {
-        file_stem(self.options.base_name.as_deref().unwrap_or("spectra"))
+        file_stem(
+            self.options
+                .base_name
+                .as_deref()
+                .unwrap_or(&self.default_base),
+        )
     }
 
     /// Build a uniquely named file from a list of name parts.
@@ -305,6 +312,27 @@ impl Context<'_> {
             bytes,
         }
     }
+}
+
+/// Stem of the source shared by all records, or `spectra`.
+fn default_base(records: &[SpectralRecord]) -> String {
+    let mut stems = records.iter().map(source_stem);
+    match stems.next().flatten() {
+        Some(first) if stems.all(|stem| stem.as_ref() == Some(&first)) => first,
+        _ => "spectra".to_string(),
+    }
+}
+
+/// Source file name without its extension. Numeric extensions number
+/// acquisitions (OPUS `a.0`, `a.1`) and stay in the stem.
+pub(crate) fn source_stem(record: &SpectralRecord) -> Option<String> {
+    let path = &record.provenance.sources.first()?.path;
+    let name = path.rsplit(['/', '\\']).next()?;
+    let stem = match name.rsplit_once('.') {
+        Some((stem, extension)) if !stem.is_empty() && extension.parse::<u64>().is_err() => stem,
+        _ => name,
+    };
+    (!stem.is_empty()).then(|| stem.to_string())
 }
 
 #[derive(Default)]
@@ -385,13 +413,22 @@ impl Losses {
 }
 
 /// Shortest decimal text that parses back to exactly the same number.
+///
+/// Exponents carry a sign and at least two digits, as JCAMP-DX AFFN requires.
 pub(crate) fn number(value: f64) -> String {
     let magnitude = value.abs();
-    if magnitude != 0.0 && !(1e-5..1e15).contains(&magnitude) {
-        format!("{value:E}")
-    } else {
-        format!("{value}")
+    if magnitude == 0.0 || (1e-5..1e15).contains(&magnitude) {
+        return format!("{value}");
     }
+    let text = format!("{value:E}");
+    let (mantissa, exponent) = text.split_once('E').expect("exponent form");
+    let exponent: i32 = exponent.parse().expect("integer exponent");
+    format!("{mantissa}E{}", exponent_text(exponent))
+}
+
+pub(crate) fn exponent_text(exponent: i32) -> String {
+    let sign = if exponent < 0 { '-' } else { '+' };
+    format!("{sign}{:02}", exponent.unsigned_abs())
 }
 
 fn archive(base_name: &str, files: &[WrittenFile]) -> Result<WrittenFile, WriteError> {
@@ -434,6 +471,8 @@ mod tests {
 
     #[test]
     fn numbers_round_trip() {
+        assert_eq!(number(2e16), "2E+16");
+        assert_eq!(number(-1.5e-7), "-1.5E-07");
         for value in [
             0.1,
             1.0 / 3.0,

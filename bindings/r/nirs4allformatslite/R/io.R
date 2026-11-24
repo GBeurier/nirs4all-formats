@@ -439,17 +439,14 @@ nirs4allformats_convert <- function(path, target, out_dir, signal = NULL,
                                     delimiter = NULL, zip = FALSE,
                                     overwrite = FALSE) {
   nirs4allformats_require_native("convert")
-  if (is.null(base_name)) {
-    base_name <- tools::file_path_sans_ext(basename(path))
-  }
   options <- list(
     signal = signal,
     base_name = base_name,
     extension = extension,
     axis_tolerance = axis_tolerance,
-    multi = isTRUE(multi),
+    multi = as.logical(multi),
     delimiter = delimiter,
-    zip = isTRUE(zip)
+    zip = as.logical(zip)
   )
   options <- options[!vapply(options, is.null, logical(1))]
   payload <- nirs4allformats_native_call(
@@ -458,7 +455,7 @@ nirs4allformats_convert <- function(path, target, out_dir, signal = NULL,
     as.character(target),
     path.expand(as.character(out_dir)),
     as.character(jsonlite::toJSON(options, auto_unbox = TRUE, digits = NA)),
-    isTRUE(overwrite)
+    as.logical(overwrite)
   )
   report <- jsonlite::fromJSON(payload, simplifyVector = FALSE)
   report$files <- vapply(report$files, as.character, character(1))

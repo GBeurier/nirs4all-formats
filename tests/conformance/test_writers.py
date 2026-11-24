@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-
 from conftest import SAMPLES_ROOT, require_nirs4all_formats, require_spc
 
 
@@ -40,7 +39,13 @@ def _spectra(path: Path) -> list[dict[str, Any]]:
             values = signal["values"]
             if signal["dims"] != ["x"] or any(v is None or not math.isfinite(v) for v in values):
                 pytest.skip(f"{path.name}: not a finite one-dimensional signal")
-            out.append({"x": signal["axis"]["values"], "y": values})
+            out.append(
+                {
+                    "x": signal["axis"]["values"],
+                    "y": values,
+                    "interferogram": signal["signal_type"] == "interferogram",
+                }
+            )
     return out
 
 
@@ -64,7 +69,9 @@ def _close(actual: Any, expected: list[float], error: float, label: str) -> None
 @pytest.mark.parametrize("path", _samples(), ids=lambda p: f"{p.parent.name}/{p.name}")
 def test_jcamp_matches_independent_reader(path: Path, tmp_path: Path) -> None:
     jcamp = pytest.importorskip("jcamp")
-    spectra = _spectra(path)
+    spectra = [spectrum for spectrum in _spectra(path) if not spectrum["interferogram"]]
+    if not spectra:
+        pytest.skip(f"{path.name}: interferograms only")
     files, axis_error, value_error = _write(path, "jcamp-dx")
     assert len(files) == len(spectra)
     for file, spectrum in zip(files, spectra, strict=True):
@@ -90,7 +97,7 @@ def test_spc_matches_independent_reader(path: Path, multi: bool, tmp_path: Path)
     assert len(read) == len(spectra)
     if multi:
         # Files group spectra by signal; compare them as a set keyed by content order.
-        key = lambda item: (len(item["y"]), [round(float(v), 6) for v in item["y"]])  # noqa: E731
+        key = lambda item: (len(item["y"]), [round(float(v), 6) for v in item["y"]])
         read.sort(key=key)
         spectra.sort(key=key)
     for actual, expected in zip(read, spectra, strict=True):
@@ -102,7 +109,9 @@ def test_spc_matches_independent_reader(path: Path, multi: bool, tmp_path: Path)
 def test_workbook_matches_independent_reader(path: Path) -> None:
     openpyxl = pytest.importorskip("openpyxl")
     spectra = _spectra(path)
-    if any(len(spectrum["x"]) > 16_000 for spectrum in spectra):
+    # Wider signals are left out and declared.
+    spectra = [spectrum for spectrum in spectra if len(spectrum["x"]) < 16_000]
+    if not spectra:
         with pytest.raises(ValueError, match="exceed the Excel limits"):
             _write(path, "xlsx")
         return
@@ -115,7 +124,7 @@ def test_workbook_matches_independent_reader(path: Path) -> None:
         start = sum(isinstance(cell, str) for cell in rows[0])
         for row in rows[1:]:
             read.append((list(rows[0][start:]), list(row[start : len(rows[0])])))
-    key = lambda item: (len(item[1]), [float(v) for v in item[1]])  # noqa: E731
+    key = lambda item: (len(item[1]), [float(v) for v in item[1]])
     wanted = sorted(((s["x"], s["y"]) for s in spectra), key=key)
     for (x, y), (wanted_x, wanted_y) in zip(sorted(read, key=key), wanted, strict=True):
         assert [float(v) for v in x] == wanted_x

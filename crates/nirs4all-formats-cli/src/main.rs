@@ -193,10 +193,9 @@ fn main() -> anyhow::Result<()> {
         } => {
             let records = nirs4all_formats::open_path(&path)
                 .with_context(|| format!("failed to read {}", path.display()))?;
-            let stem = path.file_stem().map(|s| s.to_string_lossy().into_owned());
             let options = nirs4all_formats::WriteOptions {
                 signal,
-                base_name: base_name.or(stem),
+                base_name,
                 extension,
                 axis_tolerance,
                 multi,

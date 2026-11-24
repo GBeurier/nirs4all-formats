@@ -831,11 +831,10 @@ const lossLine = (loss) =>
 // Writing happens in Rust; every loss it declares is shown next to the download.
 function exportTo() {
   const target = $("#exp-target").value;
-  const records = state.records.filter((r) => r.signals && r.signals[state.active]);
   try {
     const options = { signal: state.active, base_name: exportBaseName() };
-    let output = WASM.writeRecords(records, target, options);
-    if (output.files.length > 1) output = WASM.writeRecords(records, target, { ...options, zip: true });
+    let output = WASM.writeRecords(state.records, target, options);
+    if (output.files.length > 1) output = WASM.writeRecords(state.records, target, { ...options, zip: true });
     const file = output.files[0];
     download(file.name, file.bytes, file.media_type);
     const targets = WASM.exportTargets();

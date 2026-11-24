@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 import nirs4all_formats as formats
+import pytest
 from nirs4all_formats import _compat
 
 pytestmark = pytest.mark.skipif(_compat._native is None, reason="native extension not built")

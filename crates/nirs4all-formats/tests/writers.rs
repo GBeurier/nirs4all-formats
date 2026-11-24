@@ -106,12 +106,19 @@ fn per_spectrum_targets_read_back_every_sample() {
                 Ok(output) => output,
                 Err(error) => {
                     let f32_range = error.to_string().contains("32-bit float range");
-                    assert!(!is_finite(&records) || f32_range, "{label}: {error}");
+                    let interferograms = error.to_string().contains("interferograms need");
+                    assert!(
+                        !is_finite(&records) || f32_range || interferograms,
+                        "{label}: {error}"
+                    );
                     refusals.push(label);
                     continue;
                 }
             };
-            let expected = expected(&records);
+            let mut expected = expected(&records);
+            if target == "jcamp-dx" {
+                expected.retain(|(signal, _)| signal.signal_type != SignalType::Interferogram);
+            }
             assert_eq!(output.files.len(), expected.len(), "{label}");
             let axis_error = loss(&output, "axis_rounded_f32").unwrap_or(0.0);
             let value_error = loss(&output, "ordinate_rounded_f32")
@@ -129,7 +136,7 @@ fn per_spectrum_targets_read_back_every_sample() {
                     signal.signal_type,
                     SignalType::Absorbance | SignalType::Reflectance | SignalType::Transmittance
                 );
-                if standard {
+                if standard && signal.unit.is_none() {
                     assert_eq!(read.signal_type, signal.signal_type, "{label}");
                 }
                 if matches!(signal.axis.unit.as_str(), "nm" | "cm-1" | "um") {
@@ -287,7 +294,7 @@ fn even_axes_use_xydata_and_uneven_axes_keep_explicit_points() {
     assert!(
         text.contains("##XYDATA=(X++(Y..Y))\r\n1000 500000000 250000000 750000000 125000000\r\n")
     );
-    assert!(text.contains("##YFACTOR=1E-9\r\n"));
+    assert!(text.contains("##YFACTOR=1E-09\r\n"));
     assert!(text.contains("##XUNITS=NANOMETERS\r\n"));
     assert!(text.ends_with("##END=\r\n"));
     assert!(text.lines().all(|line| line.len() <= 80));
@@ -307,7 +314,7 @@ fn even_axes_use_xydata_and_uneven_axes_keep_explicit_points() {
     )
     .unwrap();
     assert!(String::from_utf8_lossy(&uneven.files[0].bytes)
-        .contains("##XYPOINTS=(XY..XY)\r\n1000, 0.1\r\n"));
+        .contains("##XYPOINTS=(XY..XY)\r\n1000,0.1\r\n"));
     assert!(loss(&uneven, "axis_regularized").is_none());
 
     let forced = write_records(
@@ -405,6 +412,207 @@ fn unrepresentable_values_are_refused() {
     let mut broken = nir("a");
     broken.signals.get_mut("signal").unwrap().axis.values.pop();
     assert!(write_records(&[broken], "csv", &WriteOptions::default()).is_err());
+}
+
+fn with_unit(unit: &str, kind: SignalType) -> SpectralRecord {
+    let mut record = nir("a");
+    record.signal_type = kind.clone();
+    let signal = record.signals.get_mut("signal").unwrap();
+    signal.signal_type = kind;
+    signal.unit = Some(unit.to_string());
+    record
+}
+
+#[test]
+fn scaled_units_are_never_written_as_plain_ones() {
+    for (unit, kind, yunits, code) in [
+        ("AU", SignalType::Absorbance, "ABSORBANCE", 2),
+        ("mAU", SignalType::Absorbance, "ARBITRARY UNITS", 0),
+        (
+            "Reflectance (percent)",
+            SignalType::Reflectance,
+            "PERCENT REFLECTANCE",
+            129,
+        ),
+        (
+            "%T",
+            SignalType::Transmittance,
+            "PERCENT TRANSMITTANCE",
+            128,
+        ),
+        ("Cnt/sec", SignalType::RawCounts, "ARBITRARY UNITS", 0),
+        ("counts", SignalType::RawCounts, "ARBITRARY UNITS", 4),
+    ] {
+        let records = [with_unit(unit, kind)];
+        let output = write_records(&records, "jcamp-dx", &WriteOptions::default()).unwrap();
+        let text = String::from_utf8(output.files[0].bytes.clone()).unwrap();
+        assert!(
+            text.contains(&format!("##YUNITS={yunits}\r\n")),
+            "{unit}: {text}"
+        );
+        let spc = write_records(&records, "galactic-spc", &WriteOptions::default()).unwrap();
+        assert_eq!(spc.files[0].bytes[29], code, "{unit}");
+        if !matches!(unit, "AU" | "counts") {
+            let back = open_bytes("x.spc", &spc.files[0].bytes).unwrap();
+            let label = back[0].metadata["galactic_spc"]["y_label"].to_string();
+            assert!(
+                label.contains("percent") || label.contains(unit),
+                "{unit}: {label}"
+            );
+            assert_eq!(
+                back[0].metadata["galactic_spc"]["x_label"],
+                "Nanometers (nm)"
+            );
+            assert!(
+                output
+                    .losses
+                    .iter()
+                    .any(|loss| loss.code.starts_with("signal_")),
+                "{unit}"
+            );
+        }
+    }
+}
+
+#[test]
+fn identifiers_come_from_the_record_or_are_declared() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../samples");
+    for (path, id) in [
+        ("bruker_opus/BF_lo_01_soil_cal.1", "BF_lo_01_soil_cal"),
+        ("jcamp_dx/ethanol_ir.jdx", "ETHANOL"),
+        ("foss_winisi/synthetic.cal", "S001"),
+    ] {
+        let records = open_path(root.join(path)).unwrap();
+        let output = write_records(&records, "csv", &WriteOptions::default()).unwrap();
+        let text = String::from_utf8(output.files[0].bytes.clone()).unwrap();
+        assert!(
+            text.lines().nth(1).unwrap().starts_with(&format!("{id},")),
+            "{path}"
+        );
+        assert!(loss(&output, "identifier_generated").is_none(), "{path}");
+    }
+    let mut anonymous = nir("x");
+    anonymous.metadata.clear();
+    let mut titled = anonymous.clone();
+    titled.metadata.insert("title".to_string(), json!("Map"));
+    let output = write_records(&[titled.clone(), titled], "csv", &WriteOptions::default()).unwrap();
+    let text = String::from_utf8(output.files[0].bytes.clone()).unwrap();
+    assert!(
+        text.contains("\r\na_1,") && text.contains("\r\na_2,"),
+        "{text}"
+    );
+    assert!(loss(&output, "identifier_generated").is_some());
+    let single = write_records(&[anonymous], "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert_eq!(single.files[0].name, "a.jdx");
+}
+
+#[test]
+fn numbered_sources_keep_distinct_file_names() {
+    let mut record = nir("x");
+    record.provenance.sources = vec![SourceFile::from_bytes("d/s.0", b"", "primary")];
+    let output = write_records(&[record], "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert_eq!(output.files[0].name, "s.0.jdx");
+}
+
+#[test]
+fn raman_is_not_labelled_infrared() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../samples");
+    let records = open_path(root.join("galactic_spc/RAMAN.SPC")).unwrap();
+    let jcamp = write_records(&records, "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert!(String::from_utf8_lossy(&jcamp.files[0].bytes).contains("##DATA TYPE=RAMAN SPECTRUM"));
+    let spc = write_records(&records, "galactic-spc", &WriteOptions::default()).unwrap();
+    assert_eq!(spc.files[0].bytes[28], 13);
+    let unknown = record("u", &[1.0, 2.0], "cm-1", &[1.0, 2.0], SignalType::RawCounts);
+    let output = write_records(&[unknown], "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert!(loss(&output, "technique_not_known").is_some());
+}
+
+#[test]
+fn interferograms_never_become_jcamp_spectra() {
+    let mut record = nir("a");
+    record.signals.get_mut("signal").unwrap().signal_type = SignalType::Interferogram;
+    let records = [record];
+    assert!(write_records(&records, "jcamp-dx", &WriteOptions::default()).is_err());
+    assert!(write_records(&records, "galactic-spc", &WriteOptions::default()).is_ok());
+}
+
+#[test]
+fn spc_log_size_covers_its_header() {
+    let output = write_records(&[nir("a")], "galactic-spc", &WriteOptions::default()).unwrap();
+    let bytes = &output.files[0].bytes;
+    let word = |at: usize| i32::from_le_bytes(bytes[at..at + 4].try_into().unwrap()) as usize;
+    let offset = word(248);
+    assert_eq!(offset + word(offset), bytes.len());
+}
+
+#[test]
+fn large_and_structured_targets_are_not_altered_silently() {
+    let mut record = nir("a");
+    record
+        .targets
+        .insert("barcode".to_string(), json!(9007199254740993u64));
+    record.targets.insert("list".to_string(), json!([1, 2]));
+    record.targets.insert("1450".to_string(), json!(1));
+    record.targets.insert("target_1450".to_string(), json!(2));
+    let records = [record];
+    let csv = write_records(&records, "csv", &WriteOptions::default()).unwrap();
+    let text = String::from_utf8(csv.files[0].bytes.clone()).unwrap();
+    assert!(text.contains("9007199254740993"), "{text}");
+    let header: Vec<&str> = text.lines().next().unwrap().split(',').collect();
+    assert_eq!(header.iter().collect::<BTreeSet<_>>().len(), header.len());
+    for target in ["csv", "jcamp-dx", "galactic-spc"] {
+        let output = write_records(&records, target, &WriteOptions::default()).unwrap();
+        assert!(
+            loss(&output, "structured_targets_omitted").is_some(),
+            "{target}"
+        );
+    }
+}
+
+#[test]
+fn every_sample_jcamp_line_follows_the_specification() {
+    for (path, records) in sample_records() {
+        let Ok(output) = write_records(&records, "jcamp-dx", &WriteOptions::default()) else {
+            continue;
+        };
+        for file in &output.files {
+            let text = std::str::from_utf8(&file.bytes).unwrap();
+            assert!(text.is_ascii());
+            for line in text.lines() {
+                assert!(line.len() <= 80, "{}: {line}", path.display());
+                let body = line.split_once('=').map_or(line, |(_, value)| value);
+                for token in body
+                    .split([' ', ','])
+                    .filter(|token| token.parse::<f64>().is_ok())
+                {
+                    if let Some((_, exponent)) = token.split_once('E') {
+                        let digits = exponent.strip_prefix(['+', '-']);
+                        assert!(
+                            digits.is_some_and(|digits| (2..=3).contains(&digits.len())),
+                            "{}: {line}",
+                            path.display()
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn json_honours_the_signal_selection() {
+    let mut record = nir("a");
+    let other = record.signals["signal"].clone();
+    record.signals.insert("other".to_string(), other);
+    let output = write_records(
+        &[record],
+        "records-json",
+        &options(json!({"signal": "other"})),
+    )
+    .unwrap();
+    let back: Vec<SpectralRecord> = serde_json::from_slice(&output.files[0].bytes).unwrap();
+    assert_eq!(back[0].signals.keys().collect::<Vec<_>>(), ["other"]);
+    assert!(loss(&output, "signals_omitted").is_some());
 }
 
 #[test]

@@ -3,10 +3,10 @@
 use std::borrow::Cow;
 use std::collections::BTreeMap;
 
-use nirs4all_formats_core::{SignalType, SpectralArray, SpectralAxis, SpectralRecord};
+use nirs4all_formats_core::{AxisKind, SignalType, SpectralArray, SpectralAxis, SpectralRecord};
 use serde_json::Value;
 
-use super::{refused, Context, WriteError};
+use super::{refused, source_stem, Context, WriteError};
 
 /// One spectrum to write.
 pub(crate) struct Spectrum<'a> {
@@ -21,11 +21,52 @@ pub(crate) struct Spectrum<'a> {
 }
 
 impl Spectrum<'_> {
-    pub fn percent(&self) -> bool {
-        self.signal
-            .unit
-            .as_deref()
-            .is_some_and(|unit| unit.contains('%') || unit.eq_ignore_ascii_case("percent"))
+    /// How stored ordinates relate to the plain unit of their signal type.
+    pub fn scale(&self) -> Scale<'_> {
+        let Some(unit) = self.signal.unit.as_deref().map(str::trim) else {
+            return Scale::Plain;
+        };
+        let lower = unit.to_ascii_lowercase();
+        if lower.contains('%') || lower.contains("percent") {
+            return Scale::Percent;
+        }
+        let known: &[&str] = match self.signal.signal_type {
+            SignalType::Absorbance => &[
+                "a",
+                "au",
+                "a.u.",
+                "abs",
+                "absorbance",
+                "absorbance units",
+                "od",
+                "log(1/r)",
+                "log 1/r",
+            ],
+            SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
+            SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
+            SignalType::KubelkaMunk => &["kubelka-munk", "k/s"],
+            SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
+            SignalType::Unknown => &["arbitrary units", "a.u."],
+            _ => &[],
+        };
+        if matches!(lower.as_str(), "" | "1") || known.contains(&lower.as_str()) {
+            Scale::Plain
+        } else {
+            Scale::Other(unit)
+        }
+    }
+
+    /// Signal description with its unit, for labels and messages.
+    pub fn described(&self) -> String {
+        match self.scale() {
+            Scale::Plain => self.type_label().to_string(),
+            Scale::Percent => format!("percent {}", self.type_label()),
+            Scale::Other(unit) => format!("{} ({unit})", self.type_label()),
+        }
+    }
+
+    pub fn technique(&self) -> Technique {
+        technique(self.record, self.axis, &self.signal.signal_type)
     }
 
     pub fn type_label(&self) -> &'static str {
@@ -41,6 +82,75 @@ impl Spectrum<'_> {
             ))),
             None => Ok(()),
         }
+    }
+}
+
+/// Relation between stored ordinates and the plain unit of the signal type.
+#[derive(Debug, PartialEq)]
+pub(crate) enum Scale<'a> {
+    Plain,
+    Percent,
+    Other(&'a str),
+}
+
+/// Measurement technique, as far as the record tells.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) enum Technique {
+    Infrared,
+    Raman,
+    UvVis,
+    Unknown,
+}
+
+fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) -> Technique {
+    let text = |group: &str, key: &str| {
+        record
+            .metadata
+            .get(group)
+            .and_then(|value| value.get(key))
+            .and_then(Value::as_str)
+            .unwrap_or_default()
+            .to_ascii_uppercase()
+    };
+    let declared = text("jcamp", "data_type");
+    if !declared.is_empty() {
+        return if declared.contains("RAMAN") {
+            Technique::Raman
+        } else if declared.contains("INFRARED") || declared.contains("NIR") {
+            Technique::Infrared
+        } else if declared.contains("UV") {
+            Technique::UvVis
+        } else {
+            Technique::Unknown
+        };
+    }
+    let raman_format = matches!(
+        record.provenance.format.as_str(),
+        "renishaw-wdf" | "raman-open-database" | "witec-wip"
+    );
+    if raman_format
+        || text("galactic_spc", "x_label").contains("RAMAN")
+        || text("galactic_spc", "experiment_type").contains("RAMAN SPECTRUM")
+    {
+        return Technique::Raman;
+    }
+    let optical = matches!(
+        kind,
+        SignalType::Absorbance
+            | SignalType::Reflectance
+            | SignalType::Transmittance
+            | SignalType::KubelkaMunk
+            | SignalType::SingleBeam
+    );
+    let max = axis
+        .values
+        .iter()
+        .fold(0.0f64, |acc, value| acc.max(*value));
+    match (&axis.kind, axis.unit.as_str()) {
+        (AxisKind::Wavelength, "nm") if max <= 800.0 => Technique::UvVis,
+        (AxisKind::Wavelength, "nm" | "um") => Technique::Infrared,
+        (AxisKind::Wavenumber, "cm-1") if optical => Technique::Infrared,
+        _ => Technique::Unknown,
     }
 }
 
@@ -69,9 +179,9 @@ pub(crate) fn spectra<'a>(
         }));
     }
 
+    let ids = record_ids(records, context);
     let mut out = Vec::new();
-    for (index, record) in records.iter().enumerate() {
-        let id = record_id(record, index);
+    for (record, id) in records.iter().zip(ids) {
         let mut written = 0;
         for (name, signal) in &record.signals {
             if !names.contains(&name.as_str()) {
@@ -102,7 +212,7 @@ pub(crate) fn spectra<'a>(
             }
             context.losses.add(
                 "dimensions_flattened",
-                "non-spectral dimensions are flattened; their coordinates remain only in spectrum names",
+                "non-spectral dimensions are flattened; names hold their indices and their coordinates are not written",
             );
             for (suffix, values) in flatten(signal) {
                 out.push(Spectrum {
@@ -181,15 +291,83 @@ fn coordinate_suffix(signal: &SpectralArray, x: usize, outer: usize, inner: usiz
         .join("_")
 }
 
-fn record_id(record: &SpectralRecord, index: usize) -> String {
-    for key in ["sample_id", "sample", "id", "sample_name", "name", "title"] {
-        match record.metadata.get(key) {
-            Some(Value::String(text)) if !text.trim().is_empty() => return text.trim().to_string(),
-            Some(Value::Number(value)) => return value.to_string(),
-            _ => {}
-        }
+/// One identifier per record.
+///
+/// Sample identifiers are used as they are, replicates included. Titles name a
+/// file or a project, so they are used only when they tell records apart.
+fn record_ids(records: &[SpectralRecord], context: &mut Context<'_>) -> Vec<String> {
+    let titles: Vec<Option<String>> = records.iter().map(title).collect();
+    let mut uses: BTreeMap<&str, usize> = BTreeMap::new();
+    for title in titles.iter().flatten() {
+        *uses.entry(title).or_default() += 1;
     }
-    format!("spectrum_{}", index + 1)
+    records
+        .iter()
+        .enumerate()
+        .map(|(index, record)| {
+            if let Some(id) = sample_id(record) {
+                return id;
+            }
+            if let Some(title) = titles[index]
+                .as_ref()
+                .filter(|title| uses[title.as_str()] == 1)
+            {
+                return title.clone();
+            }
+            context.losses.add(
+                "identifier_generated",
+                "records without a sample identifier are named after their source and position",
+            );
+            let stem = source_stem(record).unwrap_or_else(|| "spectrum".to_string());
+            if records.len() == 1 {
+                stem
+            } else {
+                format!("{stem}_{}", index + 1)
+            }
+        })
+        .collect()
+}
+
+fn sample_id(record: &SpectralRecord) -> Option<String> {
+    let direct = [
+        "sample_id",
+        "sample_name",
+        "sample",
+        "sample_number",
+        "sample_label",
+        "id",
+        "name",
+    ]
+    .iter()
+    .filter_map(|key| scalar(record.metadata.get(*key)?))
+    // The SPC reader numbers subfiles it finds no name for.
+    .find(|id| !id.starts_with("subfile_"));
+    direct.or_else(|| opus_sample_name(record))
+}
+
+/// OPUS keeps the sample name (SNM) in one of its parameter blocks.
+fn opus_sample_name(record: &SpectralRecord) -> Option<String> {
+    record
+        .metadata
+        .get("bruker_opus_params")?
+        .as_object()?
+        .values()
+        .find_map(|block| scalar(block.get("parameters")?.get("SNM")?))
+}
+
+fn title(record: &SpectralRecord) -> Option<String> {
+    ["spectrum_title", "title"]
+        .iter()
+        .find_map(|key| scalar(record.metadata.get(*key)?))
+        .or_else(|| scalar(record.metadata.get("jcamp")?.get("title")?))
+}
+
+fn scalar(value: &Value) -> Option<String> {
+    match value {
+        Value::String(text) => Some(text.trim().to_string()).filter(|text| !text.is_empty()),
+        Value::Number(number) => Some(number.to_string()),
+        _ => None,
+    }
 }
 
 /// Report what per-spectrum exchange formats never carry.
@@ -199,6 +377,16 @@ pub(crate) fn report_record_losses(
     targets: TargetSupport,
 ) {
     for record in records {
+        let structured = record
+            .targets
+            .values()
+            .any(|value| matches!(value, Value::Array(_) | Value::Object(_)));
+        if structured && !matches!(targets, TargetSupport::None) {
+            context.losses.add(
+                "structured_targets_omitted",
+                "target values that are lists or objects are not written",
+            );
+        }
         if !record.targets.is_empty() {
             match targets {
                 TargetSupport::Comments => context.losses.add(
@@ -215,7 +403,7 @@ pub(crate) fn report_record_losses(
         if !record.metadata.is_empty() {
             context.losses.add(
                 "metadata_omitted",
-                "metadata other than the sample identifier is not written",
+                "instrument, acquisition and sample metadata are not written",
             );
         }
         if !record.quality_flags.is_empty() {
