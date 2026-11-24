@@ -522,6 +522,23 @@ fn raman_is_not_labelled_infrared() {
     assert!(String::from_utf8_lossy(&jcamp.files[0].bytes).contains("##DATA TYPE=RAMAN SPECTRUM"));
     let spc = write_records(&records, "galactic-spc", &WriteOptions::default()).unwrap();
     assert_eq!(spc.files[0].bytes[28], 13);
+    assert_eq!(spc.files[0].bytes[2], 11);
+    let ftir = open_path(root.join("galactic_spc/resolutionPro.spc")).unwrap();
+    let output = write_records(&ftir, "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert!(
+        String::from_utf8_lossy(&output.files[0].bytes).contains("##DATA TYPE=INFRARED SPECTRUM")
+    );
+    let spc = write_records(&ftir, "galactic-spc", &WriteOptions::default()).unwrap();
+    assert_eq!((spc.files[0].bytes[2], spc.files[0].bytes[28]), (0, 1));
+    let counts = record(
+        "c",
+        &[500.0, 501.0],
+        "nm",
+        &[1.0, 2.0],
+        SignalType::RawCounts,
+    );
+    let output = write_records(&[counts], "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert!(loss(&output, "technique_not_known").is_some());
     let unknown = record("u", &[1.0, 2.0], "cm-1", &[1.0, 2.0], SignalType::RawCounts);
     let output = write_records(&[unknown], "jcamp-dx", &WriteOptions::default()).unwrap();
     assert!(loss(&output, "technique_not_known").is_some());

@@ -24,7 +24,14 @@ pub(crate) fn write(
                             "signals other than the selected one are not written",
                         );
                     }
-                    (!record.signals.is_empty()).then_some(record)
+                    if record.signals.is_empty() {
+                        context.losses.add(
+                            "records_omitted",
+                            "records without the selected signal are not written",
+                        );
+                        return None;
+                    }
+                    Some(record)
                 })
                 .collect();
             if selected.is_empty() {

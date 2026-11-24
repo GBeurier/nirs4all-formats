@@ -44,7 +44,7 @@ impl Spectrum<'_> {
             ],
             SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
             SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
-            SignalType::KubelkaMunk => &["kubelka-munk", "k/s"],
+            SignalType::KubelkaMunk => &["kubelka-munk", "kubelka_munk", "k/s"],
             SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
             SignalType::Unknown => &["arbitrary units", "a.u."],
             _ => &[],
@@ -128,10 +128,7 @@ fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) ->
         record.provenance.format.as_str(),
         "renishaw-wdf" | "raman-open-database" | "witec-wip"
     );
-    if raman_format
-        || text("galactic_spc", "x_label").contains("RAMAN")
-        || text("galactic_spc", "experiment_type").contains("RAMAN SPECTRUM")
-    {
+    if raman_format || text("galactic_spc", "x_label").contains("RAMAN") {
         return Technique::Raman;
     }
     let optical = matches!(
@@ -147,8 +144,8 @@ fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) ->
         .iter()
         .fold(0.0f64, |acc, value| acc.max(*value));
     match (&axis.kind, axis.unit.as_str()) {
-        (AxisKind::Wavelength, "nm") if max <= 800.0 => Technique::UvVis,
-        (AxisKind::Wavelength, "nm" | "um") => Technique::Infrared,
+        (AxisKind::Wavelength, "nm") if optical && max <= 800.0 => Technique::UvVis,
+        (AxisKind::Wavelength, "nm" | "um") if optical => Technique::Infrared,
         (AxisKind::Wavenumber, "cm-1") if optical => Technique::Infrared,
         _ => Technique::Unknown,
     }

@@ -253,8 +253,7 @@ fn put_text(field: &mut [u8], text: &str) {
 fn experiment(spectrum: &Spectrum<'_>) -> u8 {
     let nir = spectrum.axis.unit == "nm" && spectrum.axis.values.iter().all(|x| *x >= 700.0);
     match spectrum.technique() {
-        Technique::Raman => 10,
-        Technique::UvVis => 6,
+        Technique::Raman => 11,
         Technique::Infrared if nir => 5,
         _ => 0,
     }
