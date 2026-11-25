@@ -14,6 +14,9 @@ what a target cannot carry is **refused** or listed as a **loss** in the result.
 | `xlsx` | `.xlsx` | Same matrix in sheet `spectra`; axis, signal and source in sheet `info`. |
 | `xy-text` | `.txt` | Two columns, one spectrum per file, no header. |
 | `bruker-dpt` | `.dpt` | OPUS data point table; wavenumber (cm-1) axes only. |
+| `foss-winisi-nir` | `.nir` | FOSS WinISI / ISIscan spectra: absorbance along nm, 32-bit floats, up to seven evenly spaced segments. |
+| `foss-winisi-cal` | `.cal` | Same with up to 32 constituents (numeric targets). |
+| `foss-nsas-da` | `.da` | FOSS NSAS spectra on one of the four known axes; constituents go to a `.cn` file of the same name. |
 | `records-json` | `.json` | Complete normalized records. |
 
 Every signal is written unless `signal` selects one. N-dimensional signals are
@@ -47,12 +50,36 @@ instrument.
 | `unscrambler` | `xlsx` | `jcamp-dx`, `galactic-spc`, `csv` | The Unscrambler X 10.3 manual |
 | `simca` | `xlsx` | `csv`, `jcamp-dx`, `galactic-spc` | Sartorius application note |
 | `solo` | `xlsx` | `csv`, `galactic-spc`, `jcamp-dx` | PLS_Toolbox 7.5 documentation |
-| `pirouette` | `galactic-spc` | `jcamp-dx` | Pirouette 5.0 manual, chapter 14 |
+| `pirouette` | `galactic-spc` | `jcamp-dx`, `foss-nsas-da` | Pirouette 5.0 manual, chapter 14 |
 | `spectragryph` | `galactic-spc` | `jcamp-dx`, `xy-text` | Spectragryph feature list |
-| `winisi` | `jcamp-dx` (`.dx`) | | user forum only |
+| `winisi` | `foss-winisi-nir` | `foss-winisi-cal`, `jcamp-dx` | native format, see below |
+| `winisi-cal` | `foss-winisi-cal` | `foss-winisi-nir`, `jcamp-dx` | native format, see below |
+| `vision` | `foss-winisi-nir` | `foss-winisi-cal`, `foss-nsas-da`, `jcamp-dx`, `galactic-spc`, `csv` | Vision 4.1 manual, section 3.11 |
 
-WinISI users report that it expects 700 or 1050 points per spectrum. Native
-FOSS `.nir`/`.cal` and NSAS `.DA`/`.CN` files are not written yet.
+### FOSS files
+
+FOSS publishes no specification. The layouts come from existing files and were
+cross-checked with `wai.spectralio` (MIT) and the Vision importer; see
+[WinISI](formats/foss-winisi.md) and [NSAS](formats/foss-nsas-da.md).
+
+- Only absorbance (log 1/R) along nm is written. Other signals, units and axes
+  are refused; unknown signal types are accepted with a declared assumption.
+- Spectra of other instruments are written as WinISI writes them: model
+  `Unknown`, instrument type 11. FOSS instruments keep model, type and serial.
+- Sample numbers hold 12 characters (NSAS: 10) and constituent names 15
+  (NSAS: 10). Longer ones are shortened and kept distinct. The WinISI sample ID
+  field keeps up to 49 characters.
+- WinISI uses 0 for missing constituents, so missing values become 0 and true
+  zeros read as missing; both are declared. Constituents are declared on an
+  "as received" basis.
+- NSAS has no known missing value: a constituent some spectra lack is left out.
+- Known WinISI files hold 700 or 1050 points per spectrum; other sizes are
+  written with a warning and may not open. NSAS axes are limited to 700 points
+  (1100-2498 nm by 2), 1050 (400-2498 by 2), 1700 (800-1649.5 by 0.5) and 4200
+  (400-2499.5 by 0.5).
+- Unknown dates are written as 1980-01-01 (WinISI) or left empty (NSAS).
+- NSAS amplifier and acquisition words are those of a reference file, except
+  for NSAS sources, whose bytes are kept.
 
 ## Interfaces
 
@@ -89,4 +116,5 @@ never replaced unless `overwrite` is set.
 
 `crates/nirs4all-formats/tests/writers.rs` writes every decodable public sample
 and reads it back. `tests/conformance/test_writers.py` compares exported files
-with independent readers (`jcamp`, `spc_spectra`, `openpyxl`).
+with independent readers (`jcamp`, `spc_spectra`, `openpyxl`, `wai.spectralio`).
+NSAS sources are rewritten byte for byte.

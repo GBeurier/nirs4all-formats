@@ -6,7 +6,7 @@ use super::select::{
     even_spacing, groups, report_even_spacing, report_record_losses, spectra, target_text, Scale,
     Spectrum, TargetSupport, Technique,
 };
-use super::{refused, Context, WriteError, WrittenFile};
+use super::{ascii_text, push_f32, refused, Context, WriteError, WrittenFile};
 
 const HEADER: usize = 512;
 const SUBHEADER: usize = 32;
@@ -112,7 +112,7 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
     let memo = if multi {
         format!("{} spectra", spectra.len())
     } else {
-        latin(&head.id, context)
+        ascii_text(&head.id, context)
     };
     if memo.len() > 129 {
         context.losses.add(
@@ -126,7 +126,7 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
         let labels = [x_label.unwrap_or_default(), y_label.unwrap_or_default()];
         let text = labels
             .iter()
-            .map(|label| latin(label, context))
+            .map(|label| ascii_text(label, context))
             .collect::<Vec<_>>()
             .join("\0");
         if text.len() > 29 {
@@ -181,37 +181,15 @@ fn file_bytes(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Ve
     Ok(out)
 }
 
-fn push_f32(
-    out: &mut Vec<u8>,
-    values: &[f64],
-    context: &mut Context<'_>,
-    code: &'static str,
-    message: &str,
-) -> Result<(), WriteError> {
-    let mut error = 0.0f64;
-    for value in values {
-        let stored = *value as f32;
-        if !stored.is_finite() {
-            return Err(refused(format!("{value} exceeds the 32-bit float range")));
-        }
-        error = error.max((f64::from(stored) - value).abs());
-        out.extend_from_slice(&stored.to_le_bytes());
-    }
-    if error > 0.0 {
-        context.losses.add_error(code, message, Some(error));
-    }
-    Ok(())
-}
-
 /// Log text: sample names and targets, one `KEY = value` line each.
 fn log_text(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> String {
     let mut out = format!(
         "SOURCE FORMAT = {}\r\nWRITER = nirs4all-formats {}\r\n",
-        latin(&spectra[0].record.provenance.format, context),
+        ascii_text(&spectra[0].record.provenance.format, context),
         env!("CARGO_PKG_VERSION")
     );
     for (index, spectrum) in spectra.iter().enumerate() {
-        let id = latin(&spectrum.id, context).replace('"', "'");
+        let id = ascii_text(&spectrum.id, context).replace('"', "'");
         out.push_str(&format!(
             "SUBFILE{} = {}, \"{id}\"\r\n",
             index + 1,
@@ -219,29 +197,14 @@ fn log_text(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> String {
         ));
         for (key, value) in &spectrum.record.targets {
             if let Some(text) = target_text(value) {
-                let key = latin(key, context).replace('=', " ");
-                let text = latin(&text, context);
+                let key = ascii_text(key, context).replace('=', " ");
+                let text = ascii_text(&text, context);
                 out.push_str(&format!("TARGET{} {key} = {text}\r\n", index + 1));
             }
         }
     }
     out.push('\0');
     out
-}
-
-/// Plain single-line ASCII text; SPC fields have no declared encoding.
-fn latin(text: &str, context: &mut Context<'_>) -> String {
-    let clean: String = text
-        .chars()
-        .map(|ch| if (' '..='~').contains(&ch) { ch } else { '_' })
-        .collect();
-    if clean != text {
-        context.losses.add(
-            "text_sanitized",
-            "characters a label cannot hold are replaced by '_'",
-        );
-    }
-    clean
 }
 
 fn put_text(field: &mut [u8], text: &str) {

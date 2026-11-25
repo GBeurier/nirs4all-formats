@@ -51,6 +51,7 @@ Reference readers wired in M2:
 | FOSS NSAS DA | `spc-spectra` on the paired export | MIT | Every spectrum and axis value, exact equality; public synthetic pair and conditional private pair. The private SPC's inconsistent declared count is repaired only in a temporary reference copy after physical block validation. |
 | FOSS NSAS DA | aquap2 `getNIRData_Vision_da`, pinned commit `57ee096` | GPL-3-or-later | Isolated R subprocess; exact full-array, axis and local-clock comparison for the synthetic fixture and three conditional private files. Requires separately supplied, hash-checked source via `NIRS4ALL_AQUAP2_NSAS_SOURCE`; no automatic download. |
 | JCAMP-DX | `jcamp` (`jcamp_readfile`) | MIT | Direct Python import. |
+| FOSS WinISI exports | `wai.spectralio` | MIT | Direct Python import; files written by `foss-winisi-nir` / `foss-winisi-cal`. |
 | Spectral Evolution `.sed` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sed_dump.R`). |
 | SVC/GER `.sig` | `spectrolab` | GPL-3 | `Rscript` subprocess (`tests/conformance/refreaders/sig_dump.R`). |
 | Allotrope ASM | canonical ASM JSON schema | n/a | `json.load` plus a walker over the standard `*… data cube` containers. ASM is itself the canonical encoding; no separate runtime reader exists. |

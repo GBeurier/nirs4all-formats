@@ -14,7 +14,17 @@ still change before 1.0.
   Writers refuse or declare everything a target cannot carry and never resample or convert
   units. Available from Rust (`write_records`), the CLI (`convert`, `targets`), Python, R,
   WASM and the demo. Imports into vendor software are documented but not tested yet.
+- Export spectra to FOSS WinISI `.nir` / `.cal` and NSAS `.da` / `.cn` files, with presets
+  for WinISI and Metrohm Vision. The layouts are reverse-engineered and not yet tested in
+  vendor software.
+- Read WinISI files of other instruments (model `Unknown`), recognized by a consistent header.
 - Records with `null` values, as JSON represents missing points, deserialize as NaN.
+
+### Fixed
+
+- WinISI `.nir` / `.cal` reader: skip deleted samples instead of returning them and losing as
+  many live ones, read the product code as the 16-bit field it is, and take the record size
+  from the file length when the trailing index proves it.
 
 ## [0.2.20] - 2026-11-24
 

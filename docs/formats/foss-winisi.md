@@ -20,7 +20,11 @@ its binary header carries the version word followed by an ASCII `ISIscan` /
 BUCHI NIRCal — WinISI never fires on a BUCHI file and BUCHI never fires on a
 WinISI file, so each keeps its own `.nir` payloads.
 
-Three probes are exposed, all at `Definite` confidence:
+WinISI writes neither marker for spectra of other instruments (model `Unknown`).
+Those files are claimed with `Likely` confidence when the whole header is
+consistent: file date, equal spacing mode, segment table and point count.
+
+Three more specific probes are exposed at `Definite` confidence:
 
 - **`foss-winisi-cal`** — calibration `.cal` files (file-type word `2`) carrying
   per-sample spectra **and** constituent reference values.
@@ -42,6 +46,40 @@ Each sample becomes one `SpectralRecord`:
   `file_kind`, `version_word`, `record_index`.
 - **Provenance** — source file + SHA-256, reader name and version, plus the
   `foss_winisi_reverse_engineered_blocks` warning.
+
+### Header and sample layout
+
+Little-endian. The meaning of most fields was confirmed by `wai.spectralio` (MIT,
+University of Waikato), by the ISIscan text exports and by static reading of the
+Vision importer.
+
+| Offset | Type | Field |
+|---|---|---|
+| `0x00` | u16 | 1 = spectra, 2 = spectra and constituents |
+| `0x02`, `0x04` | u16 | live and deleted samples |
+| `0x06`, `0x08` | u16 | points, constituents |
+| `0x0a`, `0x0c` | u16, u32 | DOS date and Unix time of the file |
+| `0x12` | 71 chars | file ID |
+| `0x59` | 9 chars | master serial number |
+| `0x62` | u16 | moisture basis: 0 dry matter, 1 as received (confirmed by text exports) |
+| `0x64` | nine u16 | math treatment; Vision refuses non-zero values |
+| `0x80` | u16 | instrument type: 9 = 6500, 11 = 5000 and "Unknown", 29 = DS |
+| `0x82`, `0x97` | 21, 9 chars | model, serial number |
+| `0xa0`, `0xa2` | u16, u16[20] | segments, points per segment |
+| `0xca` | u16 | spacing mode, 1 = equal |
+| `0xcc`, `0xe8`, `0x104` | f32[7] | segment starts, steps, ends |
+| `0x180` | 32 x 16 chars | constituent names |
+| `0x380` | blocks | samples |
+
+Each sample block holds a 256-byte header, the spectrum, zero padding to a multiple
+of 128 bytes and 32 f32 constituents, where 0 means missing. The sample header holds
+the sample number (13 chars), sequence (u16 at 13), deleted flag (u8 at 15), DOS date
+(u16 at 16), product code (u16 at 18), client (9 chars at 20), three sample IDs
+(50, 50 and 51 chars at 29), operator (32 chars at 180) and Unix time (u32 at 214).
+After the last block, one 16-byte entry per block repeats sample number, sequence
+and deleted flag. Deleted samples are not read.
+
+The reader still reports constituents of 0 as they are stored.
 
 ## Instruments & software
 

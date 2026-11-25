@@ -129,3 +129,50 @@ def test_workbook_matches_independent_reader(path: Path) -> None:
     for (x, y), (wanted_x, wanted_y) in zip(sorted(read, key=key), wanted, strict=True):
         assert [float(v) for v in x] == wanted_x
         assert [float(v) for v in y] == wanted_y
+
+
+def _foss_samples() -> list[Path]:
+    """Samples the fixed FOSS layouts can represent, found by writing them."""
+
+    names = ["csv_tsv", "excel", "foss_nsas_da", "foss_winisi", "spectral_table"]
+    files = [p for name in names for p in sorted((SAMPLES_ROOT / name).glob("*")) if p.is_file()]
+    return [p for p in files if p.suffix != ".md"]
+
+
+@pytest.mark.parametrize("target", ["foss-winisi-nir", "foss-winisi-cal"])
+@pytest.mark.parametrize("path", _foss_samples(), ids=lambda p: f"{p.parent.name}/{p.name}")
+def test_winisi_matches_independent_reader(path: Path, target: str) -> None:
+    serialisers = pytest.importorskip("wai.spectralio.foss.serialisers")
+    nir = pytest.importorskip("wai.spectralio.nir")
+    spectra = _spectra(path)
+    try:
+        files, axis_error, value_error = _write(path, target)
+    except ValueError as error:
+        pytest.skip(f"{path.name}: {error}")
+    assert len(files) == 1
+    stream = io.BytesIO(files[0]["bytes"])
+    read = serialisers.FossFileSerialiser().deserialise(stream)
+    assert stream.read() == b""
+    assert read.general_header.type == (2 if target.endswith("cal") else 1)
+    assert read.general_header.deleted == 0
+    axis = nir.Reader().get_wavenumbers(read.instrument_header)
+    assert len(read.samples) == len(spectra)
+    records = require_nirs4all_formats().open_records(path)[:3]
+    names = [name for name in read.instrument_header.constituents if name]
+    assert len(names) == read.general_header.num_consts
+    for index, (sample, spectrum) in enumerate(zip(read.samples, spectra, strict=True)):
+        header, data, constituents, info = sample
+        _close(axis, spectrum["x"], axis_error, f"{path.name}:axis")
+        _close(data.amplitudes, spectrum["y"], value_error, f"{path.name}:values")
+        assert header.sequence == info.sequence == index + 1
+        assert header.sample_no == info.sample_id != ""
+        assert not header.deleted
+        # The reference reader stops at the first zero, the missing value.
+        targets = {
+            name: value
+            for name, value in records[index]["targets"].items()
+            if isinstance(value, (int, float)) and not isinstance(value, bool)
+        }
+        for name, value in zip(names, constituents.constituents, strict=False):
+            if name in targets:
+                assert value == pytest.approx(targets[name], rel=1e-6)

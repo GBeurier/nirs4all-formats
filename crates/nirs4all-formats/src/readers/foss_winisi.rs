@@ -11,13 +11,16 @@ use crate::Reader;
 
 // --- File header (fixed little-endian fields) ---
 const VERSION_OFF: usize = 0x00; // u16: 2 = .cal (with constituents), 1 = .nir (spectra only)
-const SAMPLE_COUNT_OFF: usize = 0x02; // u16
+const SAMPLE_COUNT_OFF: usize = 0x02; // u16, deleted samples excluded
+const DELETED_COUNT_OFF: usize = 0x04; // u16
 const POINT_COUNT_OFF: usize = 0x06; // u16
 const CONSTITUENT_COUNT_OFF: usize = 0x08; // u16
+const FILE_DATE_OFF: usize = 0x0A; // u16 DOS date
 const MASTER_NO_OFF: usize = 0x59; // ASCII master/serial number
 const MODEL_OFF: usize = 0x82; // ASCII instrument model
 const SEGMENT_COUNT_OFF: usize = 0xA0; // u16
 const SEGMENT_POINTS_OFF: usize = 0xA2; // u16 per segment, stride 2
+const SPACING_MODE_OFF: usize = 0xCA; // u16: 1 = equally spaced segments
 const SEGMENT_START_OFF: usize = 0xCC; // f32 per segment, stride 4
 const SEGMENT_STEP_OFF: usize = 0xE8; // f32 per segment, stride 4
 const SEGMENT_END_OFF: usize = 0x104; // f32 per segment, stride 4
@@ -27,11 +30,14 @@ const CONSTITUENT_NAME_LEN: usize = 16;
 // --- Per-sample record layout (fixed stride from 0x380) ---
 const DATA_START: usize = 0x380; // first sample block (constant for .cal and .nir)
 const RECORD_HEADER_LEN: usize = 0x100; // metadata header, then the spectrum
-const SAMPLE_NUMBER_LEN: usize = 18; // NUL-padded sample-number field before product code
-const PRODUCT_CODE_OFF: usize = SAMPLE_NUMBER_LEN; // i32 within the metadata header
+const SAMPLE_NUMBER_LEN: usize = 13; // NUL-padded sample number, then a u16 sequence
+const DELETED_FLAG_OFF: usize = 15; // u8, non-zero for a deleted sample
+const PRODUCT_CODE_OFF: usize = 18; // u16 within the metadata header
 const TIMESTAMP_OFF: usize = 214; // u32 unix timestamp within the metadata header
 const SPECTRUM_GAP: usize = 24; // compact-layout zero bytes between spectrum and values
 const CONSTITUENT_REGION_LEN: usize = 128; // 32 f32 slots reserved per record
+const INDEX_ENTRY_LEN: usize = 16; // one entry per sample block after the last block
+const SPACING_EQUAL: u16 = 1;
 const MAX_SEGMENTS: usize = 7; // segment arrays are 7 slots wide before they overlap
 const MAX_CONSTITUENTS: usize = 32; // constituent value region capacity
 
@@ -63,19 +69,33 @@ impl Reader for FossWinisiReader {
         // FOSS DS-series benches omit that string but pin themselves with a
         // "NIRS DS..." instrument model at MODEL_OFF instead.
         let window = &head[..head.len().min(256)];
+        // WinISI writes neither for spectra of other instruments ("Unknown"
+        // model), so those need a fully consistent header.
         let ds_series = is_ds_series(head);
-        if !ds_series && !contains(window, SIG_ISISCAN) && !contains(window, SIG_NIRSYSTEMS) {
+        let signed = contains(window, SIG_ISISCAN) || contains(window, SIG_NIRSYSTEMS);
+        let (confidence, reason) = if ds_series {
+            (
+                Confidence::Definite,
+                "FOSS DS-series native header (NIRS DS model)",
+            )
+        } else if signed {
+            (
+                Confidence::Definite,
+                "FOSS NIRSystems / ISIscan / WinISI native header",
+            )
+        } else if consistent_header(head) {
+            (
+                Confidence::Likely,
+                "WinISI native header without instrument identity, consistent segment table",
+            )
+        } else {
             return None;
-        }
+        };
         Some(FormatProbe::new(
             resolve_format_key(ds_series, version),
             self.name(),
-            Confidence::Definite,
-            if ds_series {
-                "FOSS DS-series native header (NIRS DS model)"
-            } else {
-                "FOSS NIRSystems / ISIscan / WinISI native header"
-            },
+            confidence,
+            reason,
         ))
     }
 
@@ -96,7 +116,10 @@ impl Reader for FossWinisiReader {
 struct Header {
     version: u16,
     format_key: &'static str,
+    /// Live samples, as the header counts them.
     sample_count: usize,
+    /// Sample blocks stored in the file, deleted ones included.
+    block_count: usize,
     point_count: usize,
     constituent_count: usize,
     axis: Vec<f64>,
@@ -114,13 +137,23 @@ fn parse_foss_winisi(
     let stride = detect_record_stride(bytes, &header)?;
 
     let mut records = Vec::with_capacity(header.sample_count);
-    for index in 0..header.sample_count {
+    for index in 0..header.block_count {
         let base = DATA_START
             .checked_add(stride.checked_mul(index).ok_or_else(overflow)?)
             .ok_or_else(overflow)?;
+        if header.block_count > header.sample_count && bytes[base + DELETED_FLAG_OFF] != 0 {
+            continue;
+        }
         records.push(parse_record(
             bytes, &header, base, stride, index, &source, reader,
         )?);
+    }
+    if records.len() != header.sample_count {
+        return Err(Error::InvalidRecord(format!(
+            "FOSS WinISI header counts {} live samples, sample blocks hold {}",
+            header.sample_count,
+            records.len()
+        )));
     }
     Ok(records)
 }
@@ -138,6 +171,7 @@ fn parse_header(bytes: &[u8]) -> Result<Header> {
             "FOSS WinISI file declares zero samples".to_string(),
         ));
     }
+    let block_count = sample_count + read_u16(bytes, DELETED_COUNT_OFF)? as usize;
     let point_count = read_u16(bytes, POINT_COUNT_OFF)? as usize;
     if point_count == 0 {
         return Err(Error::InvalidRecord(
@@ -166,6 +200,7 @@ fn parse_header(bytes: &[u8]) -> Result<Header> {
         version,
         format_key,
         sample_count,
+        block_count,
         point_count,
         constituent_count,
         axis,
@@ -250,7 +285,7 @@ fn parse_record(
     let targets = parse_targets(bytes, header, constituent_off)?;
 
     let sample_number = ascii_field(bytes, base, SAMPLE_NUMBER_LEN);
-    let product_code = read_i32(bytes, base + PRODUCT_CODE_OFF).ok();
+    let product_code = read_u16(bytes, base + PRODUCT_CODE_OFF).ok();
     let timestamp = read_u32(bytes, base + TIMESTAMP_OFF).ok();
 
     let mut metadata = BTreeMap::new();
@@ -340,14 +375,18 @@ fn align_up(value: usize, alignment: usize) -> usize {
 fn detect_record_stride(bytes: &[u8], header: &Header) -> Result<usize> {
     let compact = record_stride(header.point_count);
     let aligned = aligned_record_stride(header.point_count);
+    let indexed = (aligned + INDEX_ENTRY_LEN).checked_mul(header.block_count);
+    if indexed.and_then(|len| len.checked_add(DATA_START)) == Some(bytes.len()) {
+        return Ok(aligned);
+    }
     let minimum_payload = RECORD_HEADER_LEN
         .checked_add(header.point_count.checked_mul(4).ok_or_else(overflow)?)
         .ok_or_else(overflow)?;
 
     let mut candidates = vec![compact, aligned];
     if let Some(data_len) = bytes.len().checked_sub(DATA_START) {
-        if data_len % header.sample_count == 0 {
-            candidates.push(data_len / header.sample_count);
+        if data_len % header.block_count == 0 {
+            candidates.push(data_len / header.block_count);
         }
     }
     candidates.sort_unstable();
@@ -358,10 +397,10 @@ fn detect_record_stride(bytes: &[u8], header: &Header) -> Result<usize> {
         let minimum_stride = minimum_payload
             .checked_add(CONSTITUENT_REGION_LEN)
             .ok_or_else(overflow)?;
-        if stride < minimum_stride || !stride_fits(bytes.len(), header.sample_count, stride)? {
+        if stride < minimum_stride || !stride_fits(bytes.len(), header.block_count, stride)? {
             continue;
         }
-        let score = stride_score(bytes, header.sample_count, stride);
+        let score = stride_score(bytes, header.block_count, stride);
         match best {
             None => best = Some((score, stride)),
             Some((best_score, best_stride))
@@ -378,7 +417,7 @@ fn detect_record_stride(bytes: &[u8], header: &Header) -> Result<usize> {
             return Ok(stride);
         }
     }
-    if stride_fits(bytes.len(), header.sample_count, compact)? {
+    if stride_fits(bytes.len(), header.block_count, compact)? {
         return Ok(compact);
     }
     Err(Error::InvalidRecord(
@@ -443,6 +482,36 @@ fn ascii_field_is_plausible(bytes: &[u8], offset: usize, max_len: usize) -> bool
         && field
             .iter()
             .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_' | b'.'))
+}
+
+/// Structural recognition of files whose header names no known instrument.
+fn consistent_header(head: &[u8]) -> bool {
+    let word = |offset| read_u16(head, offset).unwrap_or(0);
+    if word(SPACING_MODE_OFF) != SPACING_EQUAL {
+        return false;
+    }
+    let Ok(header) = parse_header(head) else {
+        return false;
+    };
+    let date = read_u16(head, FILE_DATE_OFF).unwrap_or(0);
+    let (day, month) = (date & 31, (date >> 5) & 15);
+    let mut first = 0;
+    (1..=31).contains(&day)
+        && (1..=12).contains(&month)
+        && (0..word(SEGMENT_COUNT_OFF) as usize).all(|segment| {
+            let points = word(SEGMENT_POINTS_OFF + segment * 2) as usize;
+            let segment_axis = &header.axis[first..first + points];
+            first += points;
+            let field = |offset| f64::from(read_f32(head, offset + segment * 4).unwrap_or(0.0));
+            let step = field(SEGMENT_STEP_OFF);
+            let end = field(SEGMENT_END_OFF);
+            segment_axis
+                .first()
+                .zip(segment_axis.last())
+                .is_some_and(|(start, last)| {
+                    *start > 0.0 && step > 0.0 && (last - end).abs() <= step / 2.0
+                })
+        })
 }
 
 /// FOSS DS-series benches (DS2500, DS3 F, ...) write the same container as the
@@ -599,6 +668,51 @@ mod tests {
         let header = parse_header(&bytes).expect("header");
 
         assert_eq!(detect_record_stride(&bytes, &header).unwrap(), 608);
+    }
+
+    #[test]
+    fn unknown_instruments_need_a_consistent_header() {
+        let stride = aligned_record_stride(700);
+        let mut bytes = stride_fixture(700, 2, stride);
+        bytes[MODEL_OFF..MODEL_OFF + 8].copy_from_slice(b"Unknown\0");
+        write_u16(&mut bytes, FILE_DATE_OFF, 0x3c7a);
+        let reader = FossWinisiReader;
+        assert!(reader.sniff(&bytes, Path::new("x.nir")).is_none());
+        write_u16(&mut bytes, SPACING_MODE_OFF, SPACING_EQUAL);
+        let probe = reader.sniff(&bytes, Path::new("x.nir")).expect("probe");
+        assert_eq!(probe.format, "foss-winisi-nir");
+        assert_eq!(probe.confidence, Confidence::Likely);
+        for (offset, value) in [
+            (FILE_DATE_OFF, 0),
+            (SEGMENT_POINTS_OFF, 699),
+            (VERSION_OFF, 3),
+            (CONSTITUENT_COUNT_OFF, 2),
+        ] {
+            let mut broken = bytes.clone();
+            write_u16(&mut broken, offset, value);
+            assert!(reader.sniff(&broken, Path::new("x.nir")).is_none());
+        }
+        let mut broken = bytes.clone();
+        write_f32(&mut broken, SEGMENT_END_OFF, 2400.0);
+        assert!(reader.sniff(&broken, Path::new("x.nir")).is_none());
+    }
+
+    #[test]
+    fn deleted_samples_are_skipped() {
+        let stride = aligned_record_stride(700);
+        let mut bytes = stride_fixture(700, 3, stride);
+        write_u16(&mut bytes, SAMPLE_COUNT_OFF, 2);
+        write_u16(&mut bytes, DELETED_COUNT_OFF, 1);
+        bytes[DATA_START + stride + DELETED_FLAG_OFF] = 1;
+        let read = |bytes: &[u8]| FossWinisiReader.read_bytes(Path::new("x.nir"), bytes);
+        let numbers: Vec<Value> = read(&bytes)
+            .expect("records")
+            .iter()
+            .map(|record| record.metadata["sample_number"].clone())
+            .collect();
+        assert_eq!(numbers, [json!("SYN0000-00"), json!("SYN0002-00")]);
+        bytes[DATA_START + stride + DELETED_FLAG_OFF] = 0;
+        assert!(read(&bytes).is_err());
     }
 
     #[test]

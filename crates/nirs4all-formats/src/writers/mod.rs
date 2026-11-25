@@ -6,11 +6,14 @@
 
 mod jcamp;
 mod json;
+mod native;
+mod nsas;
 mod select;
 mod software;
 mod spc;
 mod table;
 mod text;
+mod winisi;
 mod xlsx;
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -201,6 +204,30 @@ const WRITERS: &[WriterCatalogEntry] = &[
         notes: "One spectrum per file, comma separated; wavenumber axes only.",
     },
     WriterCatalogEntry {
+        format: "foss-winisi-nir",
+        label: "FOSS WinISI spectra (.nir)",
+        extension: "nir",
+        media_type: "application/octet-stream",
+        multi_spectrum: true,
+        notes: "Absorbance along nm, evenly spaced segments, 32-bit floats; sample numbers of 12 characters. Reverse-engineered layout.",
+    },
+    WriterCatalogEntry {
+        format: "foss-winisi-cal",
+        label: "FOSS WinISI spectra and constituents (.cal)",
+        extension: "cal",
+        media_type: "application/octet-stream",
+        multi_spectrum: true,
+        notes: "As foss-winisi-nir with up to 32 constituents; missing values are written as 0. Reverse-engineered layout.",
+    },
+    WriterCatalogEntry {
+        format: "foss-nsas-da",
+        label: "FOSS NSAS spectra (.da) and constituents (.cn)",
+        extension: "da",
+        media_type: "application/octet-stream",
+        multi_spectrum: true,
+        notes: "Absorbance on the four known NSAS axes, 32-bit floats; complete constituents go to a .cn file of the same name. Reverse-engineered layout.",
+    },
+    WriterCatalogEntry {
         format: "records-json",
         label: "nirs4all records (JSON)",
         extension: "json",
@@ -267,6 +294,9 @@ pub fn write_records(
         "xlsx" => table::write_xlsx(records, &mut context)?,
         "xy-text" => text::write_xy(records, &mut context)?,
         "bruker-dpt" => text::write_dpt(records, &mut context)?,
+        "foss-winisi-nir" => winisi::write(records, false, &mut context)?,
+        "foss-winisi-cal" => winisi::write(records, true, &mut context)?,
+        "foss-nsas-da" => nsas::write(records, &mut context)?,
         "records-json" => json::write(records, &mut context)?,
         other => return Err(WriteError::UnknownTarget(other.to_string())),
     };
@@ -429,6 +459,44 @@ pub(crate) fn number(value: f64) -> String {
 pub(crate) fn exponent_text(exponent: i32) -> String {
     let sign = if exponent < 0 { '-' } else { '+' };
     format!("{sign}{:02}", exponent.unsigned_abs())
+}
+
+/// Append little-endian 32-bit floats and declare the rounding.
+pub(crate) fn push_f32(
+    out: &mut Vec<u8>,
+    values: &[f64],
+    context: &mut Context<'_>,
+    code: &'static str,
+    message: &str,
+) -> Result<(), WriteError> {
+    let mut error = 0.0f64;
+    for value in values {
+        let stored = *value as f32;
+        if !stored.is_finite() {
+            return Err(refused(format!("{value} exceeds the 32-bit float range")));
+        }
+        error = error.max((f64::from(stored) - value).abs());
+        out.extend_from_slice(&stored.to_le_bytes());
+    }
+    if error > 0.0 {
+        context.losses.add_error(code, message, Some(error));
+    }
+    Ok(())
+}
+
+/// Plain single-line ASCII text; legacy binary fields have no declared encoding.
+pub(crate) fn ascii_text(text: &str, context: &mut Context<'_>) -> String {
+    let clean: String = text
+        .chars()
+        .map(|ch| if (' '..='~').contains(&ch) { ch } else { '_' })
+        .collect();
+    if clean != text {
+        context.losses.add(
+            "text_sanitized",
+            "characters a label cannot hold are replaced by '_'",
+        );
+    }
+    clean
 }
 
 fn archive(base_name: &str, files: &[WrittenFile]) -> Result<WrittenFile, WriteError> {

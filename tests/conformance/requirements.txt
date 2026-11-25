@@ -29,6 +29,9 @@ scipy>=1.10
 # Exported workbooks (MIT).
 openpyxl>=3.1
 
+# FOSS WinISI .nir/.cal exports (MIT).
+wai-spectralio>=0.0.6
+
 # pytest runner (already in the dev environment but pinned here for
 # reproducibility when running the conformance suite standalone).
 pytest>=8.0

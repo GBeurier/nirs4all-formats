@@ -764,6 +764,8 @@ function buildResult(ds, withReset) {
       <span class="export-to">
         <label class="sr-only" for="exp-target">Export for</label>
         <select id="exp-target" title="Export the active signal for another software or format">${exportTargetOptions()}</select>
+        <label class="sr-only" for="exp-tolerance">Axis tolerance</label>
+        <input id="exp-tolerance" type="number" min="0" step="any" placeholder="axis tol." title="Largest axis deviation, in axis units, accepted when the target needs an evenly spaced axis (default 0); the deviation is reported">
         <button class="btn-export" id="exp-go" title="Export the active signal to the selected target">Export</button>
       </span>
       ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
@@ -832,7 +834,7 @@ const lossLine = (loss) =>
 function exportTo() {
   const target = $("#exp-target").value;
   try {
-    const options = { signal: state.active, base_name: exportBaseName() };
+    const options = { signal: state.active, base_name: exportBaseName(), axis_tolerance: Number($("#exp-tolerance").value) || 0 };
     let output = WASM.writeRecords(state.records, target, options);
     if (output.files.length > 1) output = WASM.writeRecords(state.records, target, { ...options, zip: true });
     const file = output.files[0];
@@ -840,7 +842,7 @@ function exportTo() {
     const targets = WASM.exportTargets();
     const profile = targets.software.find((p) => p.id === target);
     const lines = output.losses.map(lossLine);
-    if (profile && !profile.tested) lines.push(`Import into ${profile.label} is documented but was not tested with our files. ${profile.notes}`.trim());
+    if (profile && !profile.tested) lines.push(`Not tested in ${profile.label} yet. Basis: ${profile.evidence}. ${profile.notes}`.trim());
     exportNote(`Exported ${file.name}.`, lines, "note");
   } catch (e) {
     exportNote(String(e?.message || e), [], "alert");

@@ -695,7 +695,9 @@ fn presets_and_archives_resolve_to_known_writers() {
         assert!(!writer_catalog()
             .iter()
             .any(|entry| entry.format == profile.id));
-        let output = write_records(&[nir("a")], profile.id, &WriteOptions::default()).unwrap();
+        let mut record = nir("a");
+        record.targets.insert("protein".to_string(), json!(12.5));
+        let output = write_records(&[record], profile.id, &WriteOptions::default()).unwrap();
         assert!(output.files[0]
             .name
             .ends_with(&format!(".{}", profile.extension)));
@@ -715,4 +717,293 @@ fn presets_and_archives_resolve_to_known_writers() {
     )
     .unwrap();
     assert_eq!(zipped.files, again.files);
+}
+
+fn samples_file(name: &str) -> PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../samples")
+        .join(name)
+}
+
+fn nir_grid(id: &str, start: f64, points: usize) -> SpectralRecord {
+    let axis: Vec<f64> = (0..points).map(|i| start + 2.0 * i as f64).collect();
+    let values: Vec<f64> = (0..points).map(|i| 0.25 + i as f64 / 4096.0).collect();
+    record(id, &axis, "nm", &values, SignalType::Absorbance)
+}
+
+#[test]
+fn foss_targets_read_back_every_representable_sample() {
+    let mut checked = BTreeMap::<&str, usize>::new();
+    for (path, records) in sample_records() {
+        for target in ["foss-winisi-nir", "foss-nsas-da"] {
+            let label = format!("{target} {}", path.display());
+            let Ok(output) = write_records(&records, target, &WriteOptions::default()) else {
+                continue;
+            };
+            let axis_error = loss(&output, "axis_rounded_f32").unwrap_or(0.0);
+            let value_error = loss(&output, "ordinate_rounded_f32").unwrap_or(0.0);
+            let expected = expected(&records);
+            let mut read = Vec::new();
+            for file in output
+                .files
+                .iter()
+                .filter(|file| !file.name.ends_with(".cn"))
+            {
+                read.extend(
+                    open_bytes(&file.name, &file.bytes)
+                        .unwrap_or_else(|error| panic!("{label}: {error}")),
+                );
+            }
+            assert_eq!(read.len(), expected.len(), "{label}");
+            if records.iter().all(|record| record.signals.len() == 1) && output.files.len() <= 2 {
+                for (record, (signal, values)) in read.iter().zip(&expected) {
+                    let back = record.signals.values().next().unwrap();
+                    close(&signal.axis.values, &back.axis.values, axis_error, &label);
+                    close(values, &back.values, value_error, &label);
+                }
+            }
+            *checked.entry(target).or_default() += read.len();
+        }
+    }
+    eprintln!("checked {checked:?}");
+    assert!(checked.len() == 2 && checked.values().all(|count| *count > 5));
+}
+
+#[test]
+fn winisi_files_follow_the_native_layout() {
+    let mut records = vec![
+        nir_grid("sample-with-a-long-name", 400.0, 1050),
+        nir_grid("short", 400.0, 1050),
+        nir_grid("sample-with-a-long-name", 400.0, 1050),
+        nir_grid("sample-with-another-name", 400.0, 1050),
+    ];
+    records[0].targets = BTreeMap::from([
+        ("protein".to_string(), json!(12.5)),
+        ("a_very_long_constituent_name".to_string(), json!(3)),
+        ("a_very_long_constituent_other".to_string(), json!(0)),
+        ("variety".to_string(), json!("x")),
+    ]);
+    let output = write_records(&records, "winisi-cal", &WriteOptions::default()).unwrap();
+    let file = &output.files[0];
+    let bytes = &file.bytes;
+    let word = |at: usize| u16::from_le_bytes([bytes[at], bytes[at + 1]]);
+    // 896-byte header, 128-byte aligned blocks, then one 16-byte entry each.
+    assert_eq!(bytes.len(), 0x380 + 4 * (4608 + 16));
+    assert_eq!(
+        (word(0), word(2), word(4), word(6), word(8)),
+        (2, 4, 0, 1050, 3)
+    );
+    // Conventions of WinISI files for spectra of other instruments.
+    assert_eq!(
+        (word(0x80), word(0xA0), word(0xA2), word(0xCA)),
+        (11, 1, 1050, 1)
+    );
+    assert_eq!(&bytes[0x82..0x8A], b"Unknown\0");
+    let index = &bytes[0x380 + 4 * 4608..];
+    let numbers: Vec<&[u8]> = index.chunks(16).map(|entry| &entry[..12]).collect();
+    assert_eq!(numbers[0], b"sample-with-");
+    assert_eq!(numbers[0], numbers[2]);
+    assert_eq!(numbers[3], b"sample-wit~2");
+    assert_eq!(index[13], 1);
+    for code in [
+        "identifiers_shortened",
+        "target_names_shortened",
+        "targets_omitted",
+        "missing_targets_as_zero",
+        "zero_targets_read_as_missing",
+        "moisture_basis_assumed",
+        "date_not_known",
+    ] {
+        assert!(loss(&output, code).is_some(), "{code}");
+    }
+    assert_eq!(
+        &bytes[0x380 + 29..0x380 + 29 + 23],
+        b"sample-with-a-long-name"
+    );
+
+    let back = open_bytes(&file.name, bytes).unwrap();
+    assert_eq!(back.len(), 4);
+    assert_eq!(back[0].provenance.format, "foss-winisi-cal");
+    assert_eq!(back[1].metadata["sample_number"], "short");
+    assert_eq!(back[0].targets["protein"], 12.5);
+    assert_eq!(back[0].targets.len(), 3);
+    let read = &back[3].signals["absorbance"];
+    assert_eq!(read.values, records[3].signals["signal"].values);
+    assert_eq!(read.axis.values, records[3].signals["signal"].axis.values);
+
+    let nir = write_records(&records, "winisi", &WriteOptions::default()).unwrap();
+    assert!(loss(&nir, "targets_omitted").is_some());
+    assert_eq!(nir.files[0].bytes[0], 1);
+    assert!(write_records(&records[1..], "winisi-cal", &WriteOptions::default()).is_err());
+}
+
+#[test]
+fn winisi_single_records_of_any_length_read_back() {
+    for points in [5, 64, 100, 125, 128, 700, 1557] {
+        let mut record = nir_grid("a b", 900.0, points);
+        record.targets.insert("protein".to_string(), json!(12.5));
+        let output = write_records(
+            std::slice::from_ref(&record),
+            "winisi-cal",
+            &WriteOptions::default(),
+        )
+        .unwrap();
+        let back = open_bytes("x.cal", &output.files[0].bytes).unwrap();
+        assert_eq!(back.len(), 1);
+        assert_eq!(back[0].targets["protein"], 12.5, "{points} points");
+        assert_eq!(
+            back[0].signals["absorbance"].values,
+            record.signals["signal"].values
+        );
+        assert_eq!(back[0].metadata["sample_number"], "a b");
+    }
+}
+
+#[test]
+fn winisi_axes_become_segments_or_are_refused() {
+    let axis: Vec<f64> = (0..10)
+        .map(|i| 400.0 + 2.0 * i as f64)
+        .chain((0..10).map(|i| 800.0 + 0.5 * i as f64))
+        .collect();
+    let values: Vec<f64> = (0..20).map(|i| i as f64).collect();
+    let segmented = record("s", &axis, "nm", &values, SignalType::Absorbance);
+    let output = write_records(&[segmented], "winisi", &WriteOptions::default()).unwrap();
+    assert_eq!(output.files[0].bytes[0xA0], 2);
+    assert!(loss(&output, "point_count_not_observed").is_some());
+    let back = open_bytes("x.nir", &output.files[0].bytes).unwrap();
+    assert_eq!(back[0].signals["absorbance"].axis.values, axis);
+
+    let jitter = record(
+        "j",
+        &(0..40)
+            .map(|i| 900.0 + 6.2 * i as f64 + if i % 2 == 0 { 0.1 } else { 0.0 })
+            .collect::<Vec<_>>(),
+        "nm",
+        &[0.5; 40],
+        SignalType::Absorbance,
+    );
+    assert!(write_records(
+        std::slice::from_ref(&jitter),
+        "winisi",
+        &WriteOptions::default()
+    )
+    .is_err());
+    let forced = write_records(
+        &[jitter],
+        "winisi",
+        &options(json!({"axis_tolerance": 0.2})),
+    )
+    .unwrap();
+    assert!(loss(&forced, "axis_regularized").unwrap() <= 0.2);
+
+    let descending = record(
+        "d",
+        &[2500.0, 2498.0, 2496.0],
+        "nm",
+        &[1.0, 2.0, 3.0],
+        SignalType::Absorbance,
+    );
+    assert!(write_records(&[descending], "winisi", &WriteOptions::default()).is_err());
+}
+
+#[test]
+fn foss_targets_hold_absorbance_along_nanometres_only() {
+    for target in ["foss-winisi-nir", "foss-nsas-da"] {
+        let mut reflectance = nir_grid("r", 1100.0, 700);
+        reflectance.signals.get_mut("signal").unwrap().signal_type = SignalType::Reflectance;
+        assert!(write_records(&[reflectance], target, &WriteOptions::default()).is_err());
+        let mut percent = nir_grid("p", 1100.0, 700);
+        percent.signals.get_mut("signal").unwrap().unit = Some("mAU".to_string());
+        assert!(write_records(&[percent], target, &WriteOptions::default()).is_err());
+        let wavenumbers = record(
+            "w",
+            &[1.0, 2.0],
+            "cm-1",
+            &[1.0, 2.0],
+            SignalType::Absorbance,
+        );
+        assert!(write_records(&[wavenumbers], target, &WriteOptions::default()).is_err());
+        let mut unknown = nir_grid("u", 1100.0, 700);
+        unknown.signals.get_mut("signal").unwrap().signal_type = SignalType::Unknown;
+        let output = write_records(&[unknown], target, &WriteOptions::default()).unwrap();
+        assert!(loss(&output, "signal_type_assumed").is_some());
+    }
+    let grid = write_records(
+        &[nir_grid("g", 1000.0, 700)],
+        "foss-nsas-da",
+        &WriteOptions::default(),
+    );
+    assert!(matches!(grid, Err(WriteError::Refused(_))));
+}
+
+#[test]
+fn nsas_files_pair_spectra_and_constituents() {
+    let mut records = vec![
+        nir_grid("identifier-one", 1100.0, 700),
+        nir_grid("identifier-two", 1100.0, 700),
+    ];
+    records[0]
+        .metadata
+        .insert("acquired_local".to_string(), json!("1997-09-18T06:30:49"));
+    for (index, record) in records.iter_mut().enumerate() {
+        record
+            .targets
+            .insert("oil".to_string(), json!(index as f64));
+    }
+    records[1].targets.insert("water".to_string(), json!(5.0));
+    let output = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
+    let names: Vec<&str> = output.files.iter().map(|file| file.name.as_str()).collect();
+    assert_eq!(names, ["a.da", "a.cn"]);
+    assert_eq!(output.files[0].bytes.len(), 2 * 2944);
+    assert_eq!(output.files[1].bytes.len(), 384 + 2 * 128);
+    for code in [
+        "identifiers_shortened",
+        "incomplete_targets_omitted",
+        "acquisition_words_defaulted",
+        "date_not_known",
+    ] {
+        assert!(loss(&output, code).is_some(), "{code}");
+    }
+    let directory = tempfile::tempdir().unwrap();
+    let paths = output.save(directory.path(), false).unwrap();
+    let back = open_path(&paths[0]).unwrap();
+    assert_eq!(back[0].metadata["sample_id"], "identifier");
+    assert_eq!(back[1].metadata["sample_id"], "identifi~2");
+    assert_eq!(back[0].metadata["acquired_local"], "1997-09-18T06:30:49");
+    assert!(!back[1].metadata.contains_key("acquired_local"));
+    assert_eq!(
+        back[1].targets,
+        BTreeMap::from([("oil".to_string(), json!(1.0))])
+    );
+    let read = &back[1].signals["spectrum"];
+    assert_eq!(read.values, records[1].signals["signal"].values);
+    assert_eq!(read.axis.values, records[1].signals["signal"].axis.values);
+    assert!(write_records(
+        &records,
+        "foss-nsas-da",
+        &options(json!({"extension": "CN"}))
+    )
+    .is_err());
+}
+
+#[test]
+fn nsas_sources_are_rewritten_byte_for_byte() {
+    for name in [
+        "synthetic.da",
+        "references700.da",
+        "variant1700.da",
+        "variant4200.da",
+    ] {
+        let path = samples_file("foss_nsas_da").join(name);
+        let records = open_path(&path).unwrap();
+        let output = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
+        assert!(
+            output.files[0].bytes == std::fs::read(&path).unwrap(),
+            "{name}"
+        );
+        if name == "references700.da" {
+            let cn = std::fs::read(path.with_extension("cn")).unwrap();
+            assert!(output.files[1].bytes == cn, "{name} companion");
+        }
+    }
 }
