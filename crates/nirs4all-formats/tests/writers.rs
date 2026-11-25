@@ -1024,6 +1024,7 @@ fn edited_nsas_records_never_keep_source_identity_or_references() {
     records[2].targets.remove("oil");
     let output = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
     assert!(loss(&output, "incomplete_targets_omitted").is_some());
+    assert!(loss(&output, "date_not_known").is_some());
     let cn = &output.files[1].bytes;
     assert!(!cn
         .windows(3)

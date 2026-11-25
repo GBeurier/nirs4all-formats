@@ -277,7 +277,7 @@ fn da_bytes(
         let source = source_bytes(spectrum, "da_header_hex", HEADER)
             .filter(|header| header_matches(header, geometry));
         let mut header = match &source {
-            Some(header) => updated_header(header, spectrum, &labels[index]),
+            Some(header) => updated_header(header, spectrum, &labels[index], context),
             None => new_header(spectrum, geometry, &labels[index], index, context)?,
         };
         put_u16(&mut header, 30, constituents as u16);
@@ -305,7 +305,12 @@ fn header_matches(header: &[u8], geometry: &Geometry) -> bool {
 }
 
 /// Source header with the identifier and clock the record now has.
-fn updated_header(header: &[u8], spectrum: &Spectrum<'_>, label: &str) -> Vec<u8> {
+fn updated_header(
+    header: &[u8],
+    spectrum: &Spectrum<'_>,
+    label: &str,
+    context: &mut Context<'_>,
+) -> Vec<u8> {
     let mut header = header.to_vec();
     let stored = String::from_utf8_lossy(&header[4..4 + LABEL]);
     if stored.trim_matches(['\0', ' ']) != spectrum.id.trim() {
@@ -317,6 +322,9 @@ fn updated_header(header: &[u8], spectrum: &Spectrum<'_>, label: &str) -> Vec<u8
     let clock = Clock::of(spectrum);
     if clock != Clock::from_words(words) {
         put_clock(&mut header, clock.as_ref());
+        if clock.is_none() {
+            report_no_date(context);
+        }
     }
     header
 }
@@ -332,6 +340,13 @@ fn put_clock(header: &mut [u8], clock: Option<&Clock>) {
         put_u16(header, 64 + 2 * word, value);
     }
     put_u16(header, 78, words[2]);
+}
+
+fn report_no_date(context: &mut Context<'_>) {
+    context.losses.add(
+        "date_not_known",
+        "spectra whose record holds no acquisition date have an empty date",
+    );
 }
 
 fn new_header(
@@ -362,10 +377,7 @@ fn new_header(
     let clock = Clock::of(spectrum);
     put_clock(&mut header, clock.as_ref());
     if clock.is_none() {
-        context.losses.add(
-            "date_not_known",
-            "spectra whose record holds no acquisition date have an empty date",
-        );
+        report_no_date(context);
     }
     let scans = metadata
         .get("scan_count")
