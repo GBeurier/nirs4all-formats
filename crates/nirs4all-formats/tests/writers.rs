@@ -1007,3 +1007,84 @@ fn nsas_sources_are_rewritten_byte_for_byte() {
         }
     }
 }
+
+#[test]
+fn edited_nsas_records_never_keep_source_identity_or_references() {
+    let path = samples_file("foss_nsas_da/references700.da");
+    let mut records = open_path(&path).unwrap();
+    for (index, record) in records.iter_mut().enumerate() {
+        record
+            .metadata
+            .insert("sample_id".to_string(), json!(format!("NEW{index}")));
+        record
+            .metadata
+            .insert("acquired_local".to_string(), json!("2020-05-06T07:08:09"));
+    }
+    records[1].metadata.remove("acquired_local");
+    records[2].targets.remove("oil");
+    let output = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
+    assert!(loss(&output, "incomplete_targets_omitted").is_some());
+    let cn = &output.files[1].bytes;
+    assert!(!cn
+        .windows(3)
+        .any(|window| window.eq_ignore_ascii_case(b"oil")));
+    let directory = tempfile::tempdir().unwrap();
+    let paths = output.save(directory.path(), false).unwrap();
+    let back = open_path(&paths[0]).unwrap();
+    assert_eq!(back[2].metadata["sample_id"], "NEW2");
+    assert_eq!(back[2].metadata["acquired_local"], "2020-05-06T07:08:09");
+    assert!(!back[1].metadata.contains_key("acquired_local"));
+    assert_eq!(back[2].targets.len(), 1);
+    assert_eq!(back[2].targets["water"], records[2].targets["water"]);
+}
+
+#[test]
+fn winisi_zeros_stay_missing_in_nsas_files() {
+    let mut records = vec![nir_grid("a", 1100.0, 700), nir_grid("b", 1100.0, 700)];
+    for (record, protein) in records.iter_mut().zip([12.5, 0.0]) {
+        record.targets.insert("protein".to_string(), json!(protein));
+        record.targets.insert("fat".to_string(), json!(1.5));
+    }
+    let cal = write_records(&records, "winisi-cal", &WriteOptions::default()).unwrap();
+    let source = open_bytes("x.cal", &cal.files[0].bytes).unwrap();
+    let output = write_records(&source, "foss-nsas-da", &WriteOptions::default()).unwrap();
+    assert!(loss(&output, "incomplete_targets_omitted").is_some());
+    assert_eq!(&output.files[1].bytes[..4], b"fat ");
+    assert!(output.files[1].bytes[10..384].iter().all(|byte| *byte == 0));
+}
+
+#[test]
+fn similar_constituent_names_keep_their_values() {
+    let mut record = nir_grid("a", 1100.0, 700);
+    for (index, name) in ["Prot %", "prot", "PROT", "x y", "x_y"].iter().enumerate() {
+        record.targets.insert(name.to_string(), json!(index + 1));
+    }
+    let output = write_records(&[record], "winisi-cal", &WriteOptions::default()).unwrap();
+    let back = open_bytes("x.cal", &output.files[0].bytes).unwrap();
+    let mut values: Vec<f64> = back[0]
+        .targets
+        .values()
+        .map(|value| value.as_f64().unwrap())
+        .collect();
+    values.sort_by(f64::total_cmp);
+    assert_eq!(values, [1.0, 2.0, 3.0, 4.0, 5.0]);
+}
+
+#[test]
+fn odd_host_records_are_refused_without_panicking() {
+    for axis in [&[1.0, 2.0, 3.0, 1e39][..], &[1e-46][..]] {
+        let values = vec![0.5; axis.len()];
+        let odd = record("a", axis, "nm", &values, SignalType::Absorbance);
+        assert!(write_records(&[odd], "winisi", &WriteOptions::default()).is_err());
+    }
+    let mut records = open_path(samples_file("foss_nsas_da/references700.da")).unwrap();
+    for record in &mut records {
+        let columns = record.metadata["cn_constituents"].as_array().unwrap();
+        let duplicated = json!([columns[0], columns[0]]);
+        record
+            .metadata
+            .insert("cn_constituents".to_string(), duplicated);
+    }
+    let output = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
+    assert_eq!(output.files.len(), 2);
+}

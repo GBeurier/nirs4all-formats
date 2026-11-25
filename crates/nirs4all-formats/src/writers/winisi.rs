@@ -83,10 +83,10 @@ fn file_bytes(
         .map(|clock| clock.as_ref().and_then(Clock::dos_date).unwrap_or(NO_DATE))
         .collect();
     let times: Vec<u32> = group.iter().map(|spectrum| unix_time(spectrum)).collect();
-    if dates.contains(&NO_DATE) {
+    for _ in dates.iter().filter(|date| **date == NO_DATE) {
         context.losses.add(
             "date_not_known",
-            "spectra without an acquisition date are dated 1980-01-01",
+            "spectra whose record holds no acquisition date are dated 1980-01-01",
         );
     }
 
@@ -107,7 +107,7 @@ fn file_bytes(
         put_u16(&mut out, 0x62, 1);
         context.losses.add(
             "moisture_basis_assumed",
-            "constituents are declared on an 'as received' basis",
+            "constituents are declared on an 'as received' basis, whatever their basis in the source",
         );
     }
     put_u16(&mut out, 0x80, instrument.code);
@@ -159,7 +159,7 @@ fn file_bytes(
             match target_f32(spectrum, name, context)? {
                 Some(0.0) => context.losses.add(
                     "zero_targets_read_as_missing",
-                    "the format uses 0 for missing constituents, so reference values of 0 read as missing",
+                    "the format uses 0 for missing constituents, so software may read reference values of 0 as missing",
                 ),
                 Some(target) => *value = target,
                 None => context.losses.add(
@@ -210,7 +210,13 @@ impl Instrument {
         let foss = group
             .iter()
             .all(|spectrum| spectrum.record.provenance.format.starts_with("foss-"));
-        let model = common("instrument_model").filter(|model| foss && model.len() <= 20);
+        let model = common("instrument_model")
+            .filter(|model| foss && model.len() <= 20)
+            .map(|model| match model {
+                "NIRSYSTEMS 6500" => "NIRSystems 6500",
+                "NIRSYSTEMS 5000" => "NIRSystems 5000",
+                other => other,
+            });
         let code = match model {
             Some("NIRSystems 6500") => 9,
             Some("NIRSystems 5000") => 11,
@@ -343,10 +349,12 @@ fn segments(axis: &[f64], native: bool, tolerance: f64) -> Result<Vec<Segment>, 
             break;
         }
         // Longest run keeping the first gap, then checked as a segment.
-        let gap = rest[1] - rest[0];
         let run = 1 + rest
             .windows(2)
-            .take_while(|pair| (pair[1] - pair[0] - gap).abs() <= 2.0 * tolerance)
+            .take_while(|pair| {
+                let gap = rest[1] - rest[0];
+                (pair[1] - pair[0] - gap).abs() <= 2.0 * tolerance
+            })
             .count();
         let segment = Segment::of(&rest[..run]);
         if out.len() + 1 == SEGMENTS || !segment.matches(&rest[..run], tolerance) {

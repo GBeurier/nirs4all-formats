@@ -69,6 +69,7 @@ pub(super) fn short_labels(
         .map(|(_, text)| text.clone())
         .collect();
     let mut short = BTreeMap::new();
+    let mut next: BTreeMap<String, usize> = BTreeMap::new();
     let mut shortened = false;
     for label in labels {
         let text = &clean[label];
@@ -81,12 +82,12 @@ pub(super) fn short_labels(
         }
         shortened |= text.len() > width;
         let mut name = text.chars().take(width).collect::<String>();
-        let mut index = 2;
+        let index = next.entry(name.clone()).or_insert(2);
         while !used.insert(name.clone()) {
             let suffix = format!("~{index}");
             name = text.chars().take(width - suffix.len()).collect();
             name.push_str(&suffix);
-            index += 1;
+            *index += 1;
         }
         short.insert(*label, name);
     }
@@ -124,6 +125,8 @@ pub(super) fn numeric_targets<'a>(
 }
 
 /// Target as a 32-bit float, `None` when the record has no number for it.
+///
+/// WinISI files store missing constituents as 0, which the reader returns.
 pub(super) fn target_f32(
     spectrum: &Spectrum<'_>,
     name: &str,
@@ -133,6 +136,10 @@ pub(super) fn target_f32(
         return Ok(None);
     };
     let value = number.as_f64().unwrap_or(f64::NAN);
+    let format = spectrum.record.provenance.format.as_str();
+    if value == 0.0 && matches!(format, "foss-winisi-cal" | "foss-ds-cal") {
+        return Ok(None);
+    }
     let stored = value as f32;
     if !stored.is_finite() {
         return Err(refused(format!(
@@ -151,6 +158,7 @@ pub(super) fn target_f32(
 }
 
 /// Acquisition clock as stored in the record, without time-zone conversion.
+#[derive(Debug, PartialEq)]
 pub(super) struct Clock {
     pub year: u16,
     pub month: u16,
@@ -170,25 +178,62 @@ impl Clock {
 
     /// `YYYY-MM-DD HH:MM:SS`, with a space or a `T`.
     fn parse(text: &str) -> Option<Self> {
-        let field = |range: std::ops::Range<usize>| text.get(range)?.parse::<u16>().ok();
+        let field = |range: std::ops::Range<usize>| {
+            let digits = text.get(range)?;
+            digits
+                .bytes()
+                .all(|byte| byte.is_ascii_digit())
+                .then(|| digits.parse::<u16>().ok())?
+        };
         let bytes = text.as_bytes();
         if bytes.len() < 19 || bytes[4] != b'-' || bytes[7] != b'-' || bytes[13] != b':' {
             return None;
         }
-        let clock = Self {
-            year: field(0..4)?,
-            month: field(5..7)?,
-            day: field(8..10)?,
-            hour: field(11..13)?,
-            minute: field(14..16)?,
-            second: field(17..19)?,
+        Self::from_words([
+            field(8..10)?,
+            field(5..7)?,
+            field(0..4)?,
+            field(11..13)?,
+            field(14..16)?,
+            field(17..19)?,
+        ])
+    }
+
+    /// Day, month, year, hour, minute and second of a valid calendar date.
+    pub fn from_words(words: [u16; 6]) -> Option<Self> {
+        let [day, month, year, hour, minute, second] = words;
+        let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        let days = match month {
+            2 if leap => 29,
+            2 => 28,
+            4 | 6 | 9 | 11 => 30,
+            1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+            _ => 0,
         };
-        ((1..=12).contains(&clock.month)
-            && (1..=31).contains(&clock.day)
-            && clock.hour < 24
-            && clock.minute < 60
-            && clock.second < 60)
-            .then_some(clock)
+        ((1..=9999).contains(&year)
+            && (1..=days).contains(&day)
+            && hour < 24
+            && minute < 60
+            && second < 60)
+            .then_some(Self {
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second,
+            })
+    }
+
+    pub fn words(&self) -> [u16; 6] {
+        [
+            self.day,
+            self.month,
+            self.year,
+            self.hour,
+            self.minute,
+            self.second,
+        ]
     }
 
     /// Packed DOS date, for the years it can hold.
@@ -220,6 +265,8 @@ mod tests {
             assert_eq!((clock.hour, clock.minute, clock.second), (13, 45, 54));
         }
         assert!(Clock::parse("2024-13-27 13:45:54").is_none());
+        assert!(Clock::parse("2024-02-31 13:45:54").is_none());
+        assert!(Clock::parse("+024-02-01 13:45:54").is_none());
         assert!(Clock::parse("27/03/2024 13:45:54").is_none());
     }
 }

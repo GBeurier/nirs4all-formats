@@ -351,10 +351,15 @@ fn parse_targets(
         } else {
             Value::Null
         };
-        targets.insert(
-            safe_signal_name(name, &format!("constituent_{}", index + 1)),
-            entry,
-        );
+        // Names that differ only by case or punctuation keep their values.
+        let base = safe_signal_name(name, &format!("constituent_{}", index + 1));
+        let mut key = base.clone();
+        let mut suffix = 2;
+        while targets.contains_key(&key) {
+            key = format!("{base}_{suffix}");
+            suffix += 1;
+        }
+        targets.insert(key, entry);
     }
     Ok(targets)
 }

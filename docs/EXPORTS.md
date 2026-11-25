@@ -70,7 +70,8 @@ cross-checked with `wai.spectralio` (MIT) and the Vision importer; see
   (NSAS: 10). Longer ones are shortened and kept distinct. The WinISI sample ID
   field keeps up to 49 characters.
 - WinISI uses 0 for missing constituents, so missing values become 0 and true
-  zeros read as missing; both are declared. Constituents are declared on an
+  zeros may read as missing; both are declared. Zeros of WinISI sources count as
+  missing in FOSS exports. Constituents are declared on an
   "as received" basis.
 - NSAS has no known missing value: a constituent some spectra lack is left out.
 - Known WinISI files hold 700 or 1050 points per spectrum; other sizes are
@@ -78,8 +79,9 @@ cross-checked with `wai.spectralio` (MIT) and the Vision importer; see
   (1100-2498 nm by 2), 1050 (400-2498 by 2), 1700 (800-1649.5 by 0.5) and 4200
   (400-2499.5 by 0.5).
 - Unknown dates are written as 1980-01-01 (WinISI) or left empty (NSAS).
-- NSAS amplifier and acquisition words are those of a reference file, except
-  for NSAS sources, whose bytes are kept.
+- NSAS amplifier and acquisition words are those of an observed file of the same
+  geometry, except for NSAS sources, whose bytes are kept apart from edited
+  identifiers, dates and constituents.
 
 ## Interfaces
 

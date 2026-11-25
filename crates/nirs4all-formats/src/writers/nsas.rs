@@ -2,6 +2,8 @@
 //!
 //! Layout observed in NSAS and Vision files; see docs/formats/foss-nsas-da.md.
 
+use std::collections::BTreeSet;
+
 use nirs4all_formats_core::SpectralRecord;
 use serde_json::Value;
 
@@ -11,6 +13,7 @@ use super::native::{
 use super::select::{groups, report_record_losses, spectra, Spectrum, TargetSupport};
 use super::{push_f32, refused, Context, WriteError, WrittenFile};
 
+const FORMAT: &str = "foss-nsas-da";
 const HEADER: usize = 128;
 const CN_HEADER: usize = 384;
 const CN_ROW: usize = 128;
@@ -26,28 +29,35 @@ struct Geometry {
 }
 
 /// Words 20 (spacing), 22, 52 (amplifier) to 60 have partly unknown meaning;
-/// they are those of reference files shipped with Vision.
-const REFLECTANCE_2NM: &[(usize, u16)] = &[
-    (20, 1),
-    (22, 2),
-    (52, 1),
-    (54, 1025),
-    (56, 1),
-    (58, 1),
-    (60, 2),
-];
+/// they are those of an observed file of the same geometry.
 const GEOMETRIES: &[Geometry] = &[
     Geometry {
         points: 700,
         start: 1100,
         end: 2500,
-        words: REFLECTANCE_2NM,
+        words: &[
+            (20, 1),
+            (22, 2),
+            (52, 1),
+            (54, 1025),
+            (56, 1),
+            (58, 1),
+            (60, 2),
+        ],
     },
     Geometry {
         points: 1050,
         start: 400,
         end: 2500,
-        words: REFLECTANCE_2NM,
+        words: &[
+            (20, 1),
+            (22, 2),
+            (52, 1),
+            (54, 1026),
+            (56, 1),
+            (58, 1),
+            (60, 2),
+        ],
     },
     Geometry {
         points: 1700,
@@ -168,8 +178,9 @@ fn columns(group: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Vec<Col
     let mut names = numeric_targets(group, context);
     // NSAS sources keep the order and the raw labels of their own companion.
     let labels = source_labels(group[0]).filter(|labels| {
+        let keys: BTreeSet<&str> = labels.iter().map(|(key, _)| key.as_str()).collect();
         labels.len() == names.len()
-            && labels.iter().all(|(key, _)| names.contains(&key.as_str()))
+            && keys.into_iter().eq(names.iter().copied())
             && group
                 .iter()
                 .all(|spectrum| source_labels(spectrum).as_ref() == Some(labels))
@@ -230,8 +241,11 @@ fn columns(group: &[&Spectrum<'_>], context: &mut Context<'_>) -> Result<Vec<Col
 
 /// Target keys and raw label bytes of an NSAS source.
 fn source_labels(spectrum: &Spectrum<'_>) -> Option<Vec<(String, Vec<u8>)>> {
-    spectrum
-        .record
+    let record = spectrum.record;
+    if record.provenance.format != FORMAT {
+        return None;
+    }
+    record
         .metadata
         .get("cn_constituents")?
         .as_array()?
@@ -263,7 +277,7 @@ fn da_bytes(
         let source = source_bytes(spectrum, "da_header_hex", HEADER)
             .filter(|header| header_matches(header, geometry));
         let mut header = match &source {
-            Some(header) => header.clone(),
+            Some(header) => updated_header(header, spectrum, &labels[index]),
             None => new_header(spectrum, geometry, &labels[index], index, context)?,
         };
         put_u16(&mut header, 30, constituents as u16);
@@ -290,6 +304,36 @@ fn header_matches(header: &[u8], geometry: &Geometry) -> bool {
         && word(18) == geometry.end
 }
 
+/// Source header with the identifier and clock the record now has.
+fn updated_header(header: &[u8], spectrum: &Spectrum<'_>, label: &str) -> Vec<u8> {
+    let mut header = header.to_vec();
+    let stored = String::from_utf8_lossy(&header[4..4 + LABEL]);
+    if stored.trim_matches(['\0', ' ']) != spectrum.id.trim() {
+        put_label(&mut header, label);
+    }
+    let words = std::array::from_fn(|word| {
+        u16::from_le_bytes([header[64 + 2 * word], header[65 + 2 * word]])
+    });
+    let clock = Clock::of(spectrum);
+    if clock != Clock::from_words(words) {
+        put_clock(&mut header, clock.as_ref());
+    }
+    header
+}
+
+fn put_label(header: &mut [u8], label: &str) {
+    header[4..4 + LABEL].fill(b' ');
+    header[4..4 + label.len()].copy_from_slice(label.as_bytes());
+}
+
+fn put_clock(header: &mut [u8], clock: Option<&Clock>) {
+    let words = clock.map_or([0; 6], Clock::words);
+    for (word, value) in words.into_iter().enumerate() {
+        put_u16(header, 64 + 2 * word, value);
+    }
+    put_u16(header, 78, words[2]);
+}
+
 fn new_header(
     spectrum: &Spectrum<'_>,
     geometry: &Geometry,
@@ -308,33 +352,20 @@ fn new_header(
     };
     put_u16(&mut header, 0, model);
     put_u16(&mut header, 2, number);
-    header[4..4 + LABEL].fill(b' ');
-    header[4..4 + label.len()].copy_from_slice(label.as_bytes());
+    put_label(&mut header, label);
     put_u16(&mut header, 14, geometry.points as u16);
     put_u16(&mut header, 16, geometry.start);
     put_u16(&mut header, 18, geometry.end);
     for (offset, word) in geometry.words {
         put_u16(&mut header, *offset, *word);
     }
-    match Clock::of(spectrum) {
-        Some(clock) => {
-            let words = [
-                clock.day,
-                clock.month,
-                clock.year,
-                clock.hour,
-                clock.minute,
-                clock.second,
-            ];
-            for (word, value) in words.into_iter().enumerate() {
-                put_u16(&mut header, 64 + 2 * word, value);
-            }
-            put_u16(&mut header, 78, clock.year);
-        }
-        None => context.losses.add(
+    let clock = Clock::of(spectrum);
+    put_clock(&mut header, clock.as_ref());
+    if clock.is_none() {
+        context.losses.add(
             "date_not_known",
-            "spectra without an acquisition date hold an empty date",
-        ),
+            "spectra whose record holds no acquisition date have an empty date",
+        );
     }
     let scans = metadata
         .get("scan_count")
@@ -351,11 +382,14 @@ fn new_header(
 }
 
 fn cn_bytes(group: &[&Spectrum<'_>], columns: &[Column]) -> Vec<u8> {
+    // Omitted columns must not survive in the source header and rows.
+    let complete = source_labels(group[0]).is_some_and(|labels| labels.len() == columns.len());
     let header = source_bytes(group[0], "cn_header_hex", CN_HEADER).filter(|header| {
-        columns
-            .iter()
-            .enumerate()
-            .all(|(index, column)| header[index * LABEL..][..LABEL] == column.label)
+        complete
+            && columns
+                .iter()
+                .enumerate()
+                .all(|(index, column)| header[index * LABEL..][..LABEL] == column.label)
     });
     let reuse = header.is_some();
     let mut out = header.unwrap_or_else(|| {
@@ -382,7 +416,7 @@ fn cn_bytes(group: &[&Spectrum<'_>], columns: &[Column]) -> Vec<u8> {
 /// Raw bytes the NSAS reader kept, for NSAS sources only.
 fn source_bytes(spectrum: &Spectrum<'_>, key: &str, length: usize) -> Option<Vec<u8>> {
     let record = spectrum.record;
-    if record.provenance.format != "foss-nsas-da" {
+    if record.provenance.format != FORMAT {
         return None;
     }
     let bytes = unhex(record.metadata.get(key)?.as_str()?)?;

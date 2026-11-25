@@ -24,7 +24,8 @@ still change before 1.0.
 
 - WinISI `.nir` / `.cal` reader: skip deleted samples instead of returning them and losing as
   many live ones, read the product code as the 16-bit field it is, and take the record size
-  from the file length when the trailing index proves it.
+  from the file length when the trailing index proves it. Constituents whose names differ
+  only by case or punctuation no longer overwrite each other.
 
 ## [0.2.20] - 2026-11-24
 
