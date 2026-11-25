@@ -162,3 +162,19 @@ def test_to_torch_when_available() -> None:
     assert len(dataset) == 1
     item = dataset[0]
     assert item[0].dtype == torch.float32
+
+
+def test_missing_numeric_targets_become_nan() -> None:
+    payload = [_record_2d() for _ in range(3)]
+    for record, value in zip(payload, [1.5, None, 2.0]):
+        record["signals"]["intensity"].update(
+            {"values": [0.0, 1.0, 2.0], "shape": [3], "dims": ["x"], "coords": {}}
+        )
+        record["targets"] = {"protein": value, "fat": None, "class": value and "a"}
+    records = SpectralRecordSet.from_dicts(payload)
+
+    protein = records.to_sklearn(target="protein").target
+    assert protein.dtype == float
+    np.testing.assert_array_equal(protein, [1.5, np.nan, 2.0])
+    assert np.isnan(records.to_sklearn(target="fat").target).all()
+    assert records.to_sklearn(target="class").target.tolist() == ["a", None, "a"]

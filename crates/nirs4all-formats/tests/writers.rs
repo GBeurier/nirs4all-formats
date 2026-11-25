@@ -1055,6 +1055,42 @@ fn winisi_zeros_stay_missing_in_nsas_files() {
 }
 
 #[test]
+fn winisi_zeros_read_as_missing_and_keep_their_constituent() {
+    let mut records = vec![nir_grid("a", 1100.0, 700), nir_grid("b", 1100.0, 700)];
+    for (record, protein) in records.iter_mut().zip([12.5, 0.0]) {
+        record.targets.insert("protein".to_string(), json!(protein));
+        record.targets.insert("fat".to_string(), json!(-0.0));
+    }
+    let cal = write_records(&records, "winisi-cal", &WriteOptions::default()).unwrap();
+    let read = open_bytes("x.cal", &cal.files[0].bytes).unwrap();
+    let values = |key: &str| [0, 1].map(|index: usize| read[index].targets[key].clone());
+    assert_eq!(values("protein"), [json!(12.5), json!(null)]);
+    assert_eq!(values("fat"), [json!(null), json!(null)]);
+    let zero = "foss_winisi_zero_constituents_read_as_missing";
+    assert!(read
+        .iter()
+        .all(|record| record.provenance.warnings.iter().any(|text| text == zero)));
+
+    let again = write_records(&read, "winisi-cal", &WriteOptions::default()).unwrap();
+    assert!(loss(&again, "missing_targets_as_zero").is_some());
+    assert!(loss(&again, "zero_targets_read_as_missing").is_none());
+    let names = 0x180..0x1A0;
+    assert_eq!(
+        again.files[0].bytes[names.clone()],
+        cal.files[0].bytes[names]
+    );
+    let csv = write_records(&read, "csv", &WriteOptions::default()).unwrap();
+    let csv = String::from_utf8(csv.files[0].bytes.clone()).unwrap();
+    let rows: Vec<&str> = csv.lines().collect();
+    assert!(rows[1].starts_with("a,,12.5,"), "{}", &rows[1][..20]);
+    assert!(rows[2].starts_with("b,,,"), "{}", &rows[2][..20]);
+
+    // Values of 0 from other sources are references and stay so.
+    let nsas = write_records(&records, "foss-nsas-da", &WriteOptions::default()).unwrap();
+    assert!(loss(&nsas, "incomplete_targets_omitted").is_none());
+}
+
+#[test]
 fn similar_constituent_names_keep_their_values() {
     let mut record = nir_grid("a", 1100.0, 700);
     for (index, name) in ["Prot %", "prot", "PROT", "x y", "x_y"].iter().enumerate() {

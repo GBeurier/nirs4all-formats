@@ -412,7 +412,7 @@ class SpectralRecordSet:
         y = None
         if target_name is not None:
             record_index = [int(m[f"{_RESERVED}record_index"]) for m in meta]
-            y = np.asarray([targets[target_name][i] for i in record_index])
+            y = _target_array([targets[target_name][i] for i in record_index])
         return Bunch(
             data=x,
             target=y,
@@ -491,7 +491,9 @@ class SpectralRecordSet:
         target_name = target or (next(iter(targets)) if len(targets) == 1 else None)
         if target_name is not None and reference_meta is not None:
             record_index = [int(m[f"{_RESERVED}record_index"]) for m in reference_meta]
-            dataset.add_targets(np.asarray([targets[target_name][i] for i in record_index]))
+            dataset.add_targets(
+                _target_array([targets[target_name][i] for i in record_index])
+            )
 
         if reference_meta is not None:
             import pandas as pd
@@ -502,6 +504,18 @@ class SpectralRecordSet:
                 frame[f"target_{key}"] = [values[i] for i in record_index]
             dataset.add_metadata(frame)
         return dataset
+
+
+def _target_array(values: list[Any]) -> np.ndarray:
+    """Target values as an array, with NaN for missing numbers."""
+
+    numeric = all(
+        value is None or (isinstance(value, (int, float)) and not isinstance(value, bool))
+        for value in values
+    )
+    if numeric and None in values:
+        return np.asarray(values, dtype=float)
+    return np.asarray(values)
 
 
 def open_recordset(path: str | Path, *, single_record: bool = False) -> SpectralRecordSet:

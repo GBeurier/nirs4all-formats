@@ -51,6 +51,9 @@ const SIG_NIRSYSTEMS: &[u8] = b"NIRSystems";
 // the instrument model prefix at `MODEL_OFF` (e.g. "NIRS DS2500", "NIRS DS3 F").
 const SIG_DS_MODEL: &[u8] = b"NIRS DS";
 
+/// Record warning when constituents of 0 were read as missing.
+pub(crate) const ZERO_CONSTITUENTS_WARNING: &str = "foss_winisi_zero_constituents_read_as_missing";
+
 pub struct FossWinisiReader;
 
 impl Reader for FossWinisiReader {
@@ -282,7 +285,11 @@ fn parse_record(
         .checked_add(stride)
         .and_then(|end| end.checked_sub(CONSTITUENT_REGION_LEN))
         .ok_or_else(overflow)?;
-    let targets = parse_targets(bytes, header, constituent_off)?;
+    let (targets, zeros) = parse_targets(bytes, header, constituent_off)?;
+    let mut warnings = vec!["foss_winisi_reverse_engineered_blocks".to_string()];
+    if zeros {
+        warnings.push(ZERO_CONSTITUENTS_WARNING.to_string());
+    }
 
     let sample_number = ascii_field(bytes, base, SAMPLE_NUMBER_LEN);
     let product_code = read_u16(bytes, base + PRODUCT_CODE_OFF).ok();
@@ -334,19 +341,25 @@ fn parse_record(
         },
         targets,
         metadata,
-        vec!["foss_winisi_reverse_engineered_blocks".to_string()],
+        warnings,
     )
 }
 
+/// Constituents by key, and whether some were stored as 0.
+///
+/// WinISI stores missing constituents as 0: the statistics of ISIscan text
+/// exports count no zero. Missing constituents keep their key with a null.
 fn parse_targets(
     bytes: &[u8],
     header: &Header,
     constituent_off: usize,
-) -> Result<BTreeMap<String, Value>> {
+) -> Result<(BTreeMap<String, Value>, bool)> {
     let mut targets = BTreeMap::new();
+    let mut zeros = false;
     for (index, name) in header.constituent_names.iter().enumerate() {
         let value = read_f32(bytes, constituent_off + index * 4)? as f64;
-        let entry = if value.is_finite() {
+        zeros |= value == 0.0;
+        let entry = if value.is_finite() && value != 0.0 {
             json!(value)
         } else {
             Value::Null
@@ -361,7 +374,7 @@ fn parse_targets(
         }
         targets.insert(key, entry);
     }
-    Ok(targets)
+    Ok((targets, zeros))
 }
 
 fn record_stride(point_count: usize) -> usize {

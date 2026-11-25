@@ -97,36 +97,41 @@ pub(super) fn short_labels(
     )
 }
 
-/// Numeric target columns of a group, sorted by name.
+/// Numeric target columns of a group, sorted by name. Columns known by name
+/// only, whose values are all missing, are kept.
 pub(super) fn numeric_targets<'a>(
     group: &[&Spectrum<'a>],
     context: &mut Context<'_>,
 ) -> Vec<&'a str> {
-    let mut names = BTreeSet::new();
-    let mut text = false;
+    let mut numbers = BTreeSet::new();
+    let mut missing = BTreeSet::new();
+    let mut text = BTreeSet::new();
     for spectrum in group {
         for (name, value) in &spectrum.record.targets {
             match value {
                 Value::Number(_) => {
-                    names.insert(name.as_str());
+                    numbers.insert(name.as_str());
                 }
-                Value::Null => {}
-                _ => text = true,
+                Value::Null => {
+                    missing.insert(name.as_str());
+                }
+                _ => {
+                    text.insert(name.as_str());
+                }
             }
         }
     }
-    if text {
+    if !text.is_empty() {
         context.losses.add(
             "targets_omitted",
             "target values that are not numbers are not written",
         );
     }
-    names.into_iter().collect()
+    missing.retain(|name| !text.contains(name));
+    numbers.union(&missing).copied().collect()
 }
 
 /// Target as a 32-bit float, `None` when the record has no number for it.
-///
-/// WinISI files store missing constituents as 0, which the reader returns.
 pub(super) fn target_f32(
     spectrum: &Spectrum<'_>,
     name: &str,
@@ -136,10 +141,6 @@ pub(super) fn target_f32(
         return Ok(None);
     };
     let value = number.as_f64().unwrap_or(f64::NAN);
-    let format = spectrum.record.provenance.format.as_str();
-    if value == 0.0 && matches!(format, "foss-winisi-cal" | "foss-ds-cal") {
-        return Ok(None);
-    }
     let stored = value as f32;
     if !stored.is_finite() {
         return Err(refused(format!(

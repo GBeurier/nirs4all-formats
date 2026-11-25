@@ -159,7 +159,7 @@ fn file_bytes(
             match target_f32(spectrum, name, context)? {
                 Some(0.0) => context.losses.add(
                     "zero_targets_read_as_missing",
-                    "the format uses 0 for missing constituents, so software may read reference values of 0 as missing",
+                    "the format uses 0 for missing constituents, so reference values of 0 read as missing",
                 ),
                 Some(target) => *value = target,
                 None => context.losses.add(

@@ -1077,7 +1077,7 @@ function renderMetaPanel(metadata, targets) {
     const tg = el("div"); tg.style.marginBottom = "14px";
     tg.innerHTML = `<div class="k-label" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:600;margin-bottom:7px">Reference targets</div>`;
     const grid = el("div", "targets-grid");
-    for (const [k, v] of Object.entries(targets)) grid.appendChild(el("span", "target", `${esc(k)} <b>${esc(typeof v === "object" ? JSON.stringify(v) : v)}</b>`));
+    for (const [k, v] of Object.entries(targets)) grid.appendChild(el("span", "target", `${esc(k)} <b>${esc(v == null ? "missing" : typeof v === "object" ? JSON.stringify(v) : v)}</b>`));
     tg.appendChild(grid); body.appendChild(tg);
   }
 

@@ -6,6 +6,7 @@ use nirs4all_formats_core::{
 };
 use serde_json::{json, Value};
 
+use crate::readers::foss_winisi::ZERO_CONSTITUENTS_WARNING;
 use crate::readers::util::{
     detect_delimiter, normalize_key, parse_number, read_bytes, single_signal_record,
     split_delimited, text_lossy_from_bytes, SingleSignalSpec,
@@ -143,6 +144,7 @@ fn read_matrix_records(
     layout: MatrixLayout,
 ) -> Result<Vec<nirs4all_formats_core::SpectralRecord>> {
     let lines: Vec<&str> = text.lines().collect();
+    let constituents_start = winisi_constituents_start(&lines, &layout);
     let mut records = Vec::new();
     for (row_index, raw) in lines.iter().skip(layout.data_start).enumerate() {
         let line = raw.trim();
@@ -166,6 +168,7 @@ fn read_matrix_records(
         }
 
         let mut targets = BTreeMap::<String, Value>::new();
+        let mut zeros = false;
         let mut metadata = metadata_from_layout(&layout.metadata_pairs);
         metadata.insert("row_index".to_string(), json!(row_index));
 
@@ -181,6 +184,11 @@ fn read_matrix_records(
             if is_sample_id_header(header) || (header.is_empty() && column == 0) {
                 metadata.insert("sample_id".to_string(), json!(value));
             } else if let Some(number) = parse_number(&value) {
+                if number == 0.0 && constituents_start.is_some_and(|start| column >= start) {
+                    zeros = true;
+                    targets.insert(key, Value::Null);
+                    continue;
+                }
                 targets.insert(key, json!(number));
             } else {
                 metadata.insert(key, json!(value));
@@ -203,7 +211,10 @@ fn read_matrix_records(
             },
             targets,
             metadata,
-            Vec::new(),
+            zeros
+                .then(|| ZERO_CONSTITUENTS_WARNING.to_string())
+                .into_iter()
+                .collect(),
         )?);
     }
 
@@ -213,6 +224,25 @@ fn read_matrix_records(
         ));
     }
     Ok(records)
+}
+
+/// First constituent column of a WinISI or ISIscan text export, where 0 means
+/// missing as in the exported file.
+fn winisi_constituents_start(lines: &[&str], layout: &MatrixLayout) -> Option<usize> {
+    const LEADING: [&str; 6] = [
+        "Position",
+        "Sample Number",
+        "Product Code",
+        "DF",
+        "Date",
+        "Time",
+    ];
+    let preamble = &lines[..layout.data_start];
+    let export = preamble
+        .iter()
+        .any(|line| line.contains("Spectra and Constituent Data File"));
+    let headers = layout.headers.iter().map(|header| header.trim_matches('"'));
+    (export && headers.take(LEADING.len()).eq(LEADING)).then_some(LEADING.len())
 }
 
 fn next_numeric_line(lines: &[&str], start: usize) -> Option<Vec<f64>> {

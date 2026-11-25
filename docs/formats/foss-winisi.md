@@ -79,7 +79,14 @@ the sample number (13 chars), sequence (u16 at 13), deleted flag (u8 at 15), DOS
 After the last block, one 16-byte entry per block repeats sample number, sequence
 and deleted flag. Deleted samples are not read.
 
-The reader still reports constituents of 0 as they are stored.
+### Missing constituents
+
+A constituent of 0 is read as missing: the target keeps its key with a `null` value
+and the record carries the `foss_winisi_zero_constituents_read_as_missing` warning.
+The format has no other missing value, so a true 0 cannot be told apart. ISIscan
+does the same: the value counts, minima and means of its text exports ignore zeros
+for all 18 constituents of the three private `.cal` / `.txt` pairs. ISIscan text
+exports (`Spectra and Constituent Data File`) are read with the same rule.
 
 ## Instruments & software
 

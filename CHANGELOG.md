@@ -20,6 +20,15 @@ still change before 1.0.
 - Read WinISI files of other instruments (model `Unknown`), recognized by a consistent header.
 - Records with `null` values, as JSON represents missing points, deserialize as NaN.
 
+### Changed
+
+- **Decoded values change; the next release starts the 0.3 series.** WinISI `.cal` and
+  ISIscan text exports store missing constituents as 0. They are now read as `null` with a
+  `foss_winisi_zero_constituents_read_as_missing` warning instead of as reference values of
+  0. Spectra and non-zero constituents are unchanged. A true 0 cannot be told apart.
+- Python: `to_sklearn` and `to_spectrodataset` return missing numeric targets as NaN in a
+  float array instead of `None` in an object array.
+
 ### Fixed
 
 - WinISI `.nir` / `.cal` reader: skip deleted samples instead of returning them and losing as
