@@ -65,6 +65,11 @@ still change before 1.0.
   0. Spectra and non-zero constituents are unchanged. A true 0 cannot be told apart.
 - Python: `to_sklearn` and `to_spectrodataset` return missing numeric targets as NaN in a
   float array instead of `None` in an object array.
+- JSON readers (Siware API, Allotrope ASM) parse numbers with correct rounding, so every
+  build returns the value written in the file; some values change by one unit in the last
+  place. Goldens are unchanged.
+- Saving an export creates the output directory when it is missing (Rust, CLI, Python, R,
+  C ABI, Java, C#).
 
 ### Fixed
 

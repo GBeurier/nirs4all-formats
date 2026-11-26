@@ -138,6 +138,10 @@ impl WriteOutput {
             .iter()
             .map(|file| directory.as_ref().join(&file.name))
             .collect();
+        std::fs::create_dir_all(directory.as_ref()).map_err(|error| WriteError::Io {
+            path: directory.as_ref().to_path_buf(),
+            message: error.to_string(),
+        })?;
         if !overwrite {
             if let Some(path) = paths.iter().find(|path| path.exists()) {
                 return Err(WriteError::Io {

@@ -216,7 +216,7 @@ n4fmt_status_t n4fmt_write_records(const char *records_json,
                                    char **out_error)
 ;
 
-// Read a file and save its export into an existing directory.
+// Read a file and save its export into a directory, created when missing.
 //
 // `options_json` takes the options of [`n4fmt_write_records`] plus
 // `overwrite` (bool, default false: nothing is written when any produced

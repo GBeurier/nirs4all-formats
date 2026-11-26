@@ -39,7 +39,7 @@ docker run --rm ghcr.io/gbeurier/nirs4all-formats targets
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats scan /data --json
 ```
 
-The output directory must exist, and existing files are kept unless
+The output directory is created when missing, and existing files are kept unless
 `--overwrite` is passed (see [Exports](EXPORTS.md)).
 
 ## Publishing

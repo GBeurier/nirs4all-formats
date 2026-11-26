@@ -409,7 +409,7 @@ end
 """
     convert_path(input, target, output_dir; overwrite=false, kwargs...) -> (format, files, losses, conversions)
 
-Read `input` and save its export into the existing directory `output_dir`. Existing
+Read `input` and save its export into `output_dir` (created when missing). Existing
 files are kept, and nothing is written, unless `overwrite=true`. Other keywords are
 those of [`write_records`].
 """

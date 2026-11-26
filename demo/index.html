@@ -978,7 +978,7 @@ docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats probe /data
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats read-json /data/barley.csv &gt; barley.json
 docker run --rm ghcr.io/gbeurier/nirs4all-formats targets               # formats, software presets, requirements
 
-# Write into the current folder as yourself; the output folder must exist
+# Write into the current folder as yourself
 mkdir -p exported
 docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/data" ghcr.io/gbeurier/nirs4all-formats \
   convert /data/barley.csv --to winisi --out /data/exported

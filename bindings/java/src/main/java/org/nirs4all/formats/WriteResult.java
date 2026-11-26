@@ -30,6 +30,7 @@ public record WriteResult(String format, List<File> files, List<Loss> losses, Li
     public record File(String name, String mediaType, byte[] bytes) {
         /** Save into {@code directory}, refusing to replace an existing file. */
         public Path save(Path directory) throws IOException {
+            Files.createDirectories(directory);
             return Files.write(directory.resolve(name), bytes, StandardOpenOption.CREATE_NEW);
         }
     }

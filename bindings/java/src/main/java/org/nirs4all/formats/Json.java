@@ -1,6 +1,8 @@
 package org.nirs4all.formats;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.StreamReadConstraints;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -10,7 +12,11 @@ import java.util.List;
 
 /** Shared JSON helpers: the C ABI exchanges UTF-8 JSON. */
 final class Json {
-    static final ObjectMapper MAPPER = new ObjectMapper();
+    // Exported files travel base64-encoded: lift Jackson's 20 M character string cap.
+    static final ObjectMapper MAPPER = new ObjectMapper(JsonFactory.builder()
+            .streamReadConstraints(StreamReadConstraints.builder()
+                    .maxStringLength(Integer.MAX_VALUE).build())
+            .build());
 
     private Json() {}
 

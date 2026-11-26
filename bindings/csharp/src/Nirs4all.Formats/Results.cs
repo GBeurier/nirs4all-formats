@@ -32,6 +32,7 @@ public sealed record WrittenFile(string Name, string MediaType, byte[] Bytes)
     /// <summary>Save into <paramref name="directory"/>, refusing to replace an existing file.</summary>
     public string Save(string directory)
     {
+        Directory.CreateDirectory(directory);
         string path = Path.Combine(directory, Name);
         using var stream = new FileStream(path, FileMode.CreateNew, FileAccess.Write);
         stream.Write(Bytes);

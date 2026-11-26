@@ -999,7 +999,10 @@ fn nsas_files_pair_spectra_and_constituents() {
         assert!(loss(&output, code).is_some(), "{code}");
     }
     let directory = tempfile::tempdir().unwrap();
-    let paths = output.save(directory.path(), false).unwrap();
+    // Saving creates the output directory when it is missing.
+    let paths = output
+        .save(directory.path().join("exported/nsas"), false)
+        .unwrap();
     let back = open_path(&paths[0]).unwrap();
     assert_eq!(back[0].metadata["sample_id"], "identifier");
     assert_eq!(back[1].metadata["sample_id"], "identifi~2");
