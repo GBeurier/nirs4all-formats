@@ -11,7 +11,7 @@
 
     <PackageId>Nirs4all.Formats</PackageId>
     <!-- Lockstep with the Cargo workspace version (scripts/bump_version.sh). -->
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Authors>Gregory Beurier</Authors>
     <Company>CIRAD</Company>
     <Description>Read NIRS and spectroscopy vendor files and export them to exchange formats, through the nirs4all-formats Rust registry.</Description>

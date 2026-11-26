@@ -5,6 +5,15 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [0.3.1] - 2026-11-26
+
+### Fixed
+
+- Java: the Maven Central bundle no longer carries local-repository files
+  (`maven-metadata-local.xml`, `_remote.repositories`), which the Central Portal refused;
+  central-publishing-maven-plugin 0.12.0. 0.3.1 is the first release on Maven Central.
+  No code change.
+
 ## [0.3.0] - 2026-11-26
 
 First release of the 0.3 series: decoded values change (WinISI and ISIscan constituents of

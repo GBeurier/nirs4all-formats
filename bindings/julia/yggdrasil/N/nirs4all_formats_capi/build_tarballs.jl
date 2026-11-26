@@ -14,11 +14,15 @@ version = v"0.3.0"
 sources = [
     # Commit of the v0.3.0 tag of https://github.com/GBeurier/nirs4all-formats.
     GitSource("https://github.com/GBeurier/nirs4all-formats.git",
-              "0000000000000000000000000000000000000000"),
+              "bc5c97f26f64b12ec96d77f6d96b79c23122b2d5"),
 ]
 
 script = raw"""
 cd ${WORKSPACE}/srcdir/nirs4all-formats
+# Rust's musl targets link the C runtime statically, which rules out a cdylib.
+if [[ "${target}" == *-musl* ]]; then
+    export RUSTFLAGS="-C target-feature=-crt-static"
+fi
 cargo build --release --locked -p nirs4all-formats-capi
 if [[ "${target}" == *-mingw* ]]; then
     install -Dvm 755 "target/${rust_target}/release/nirs4all_formats_capi.${dlext}" "${libdir}/nirs4all_formats_capi.${dlext}"
@@ -29,22 +33,14 @@ install -Dvm 644 crates/nirs4all-formats-capi/include/nirs4all_formats.h "${incl
 install_license LICENSE LICENSING.md LICENSES/CeCILL-2.1.txt LICENSES/AGPL-3.0-or-later.txt
 """
 
-# The platforms the Java and .NET packages ship; extend after checking the
-# Yggdrasil CI (musl, FreeBSD, 32-bit and RISC-V are not tested upstream).
-platforms = [
-    Platform("x86_64", "linux"; libc="glibc"),
-    Platform("aarch64", "linux"; libc="glibc"),
-    Platform("x86_64", "macos"),
-    Platform("aarch64", "macos"),
-    Platform("x86_64", "windows"),
-]
+platforms = supported_platforms()
 
 products = [
     LibraryProduct(["libnirs4all_formats_capi", "nirs4all_formats_capi"], :libnirs4all_formats_capi),
+    FileProduct("include/nirs4all_formats.h", :nirs4all_formats_h),
 ]
 
 dependencies = Dependency[]
 
-# The crates declare rust-version 1.88.
 build_tarballs(ARGS, name, version, sources, script, platforms, products, dependencies;
-               compilers=[:c, :rust], julia_compat="1.6", preferred_rust_version=v"1.88")
+               compilers=[:c, :rust], julia_compat="1.6")

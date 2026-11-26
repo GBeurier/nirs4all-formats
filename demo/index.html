@@ -697,10 +697,10 @@
         <a class="channel" role="listitem" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener"><span class="ch-name">R-universe</span><code class="ch-pkg">nirs4allformats</code><span class="ch-cmd">install.packages(&quot;nirs4allformats&quot;, repos = &quot;https://gbeurier.r-universe.dev&quot;)</span></a>
         <a class="channel" role="listitem" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">crates.io</span><code class="ch-pkg">nirs4all-formats</code><span class="ch-cmd">cargo add nirs4all-formats</span></a>
         <a class="channel" role="listitem" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener"><span class="ch-name">npm</span><code class="ch-pkg">@nirs4all/formats-wasm</code><span class="ch-cmd">npm install @nirs4all/formats-wasm</span></a>
-        <div class="channel soon" role="listitem"><span class="ch-name">Maven Central</span><code class="ch-pkg">org.nirs4all:nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
-        <div class="channel soon" role="listitem"><span class="ch-name">NuGet</span><code class="ch-pkg">Nirs4all.Formats</code><span class="ch-cmd">Coming with the next release</span></div>
-        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">NIRS4ALLFormats</code><span class="ch-cmd">Coming with the next release</span></div>
-        <div class="channel soon" role="listitem"><span class="ch-name">Docker</span><code class="ch-pkg">ghcr.io/gbeurier/nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
+        <a class="channel" role="listitem" href="https://central.sonatype.com/artifact/org.nirs4all/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">Maven Central</span><code class="ch-pkg">org.nirs4all:nirs4all-formats</code><span class="ch-cmd">implementation(&quot;org.nirs4all:nirs4all-formats:0.3.1&quot;)</span></a>
+        <a class="channel" role="listitem" href="https://www.nuget.org/packages/Nirs4all.Formats" target="_blank" rel="noopener"><span class="ch-name">NuGet</span><code class="ch-pkg">Nirs4all.Formats</code><span class="ch-cmd">dotnet add package Nirs4all.Formats</span></a>
+        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">NIRS4ALLFormats</code><span class="ch-cmd">Pending registration in the Julia General registry</span></div>
+        <a class="channel" role="listitem" href="https://github.com/users/GBeurier/packages/container/package/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">Docker</span><code class="ch-pkg">ghcr.io/gbeurier/nirs4all-formats</code><span class="ch-cmd">docker pull ghcr.io/gbeurier/nirs4all-formats</span></a>
       </div>
       <div class="code-frame">
         <div class="code-tabs" role="tablist" aria-label="Language">
@@ -984,7 +984,7 @@ docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/data" ghcr.io/gbeurier/nirs
   convert /data/barley.csv --to winisi --out /data/exported
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats plan /data/sample.ProcSpec --to winisi</code></pre></div>
         </div>
-        <p class="code-note">Every snippet runs against nirs4all-formats 0.3.0, which adds export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) to the readers.</p>
+        <p class="code-note">Every snippet runs against nirs4all-formats 0.3.1; 0.3.0 added export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) to the readers.</p>
       </div>
     </div>
   </section>
