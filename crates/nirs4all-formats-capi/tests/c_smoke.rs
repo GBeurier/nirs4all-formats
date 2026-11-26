@@ -24,6 +24,15 @@ fn c_program_links_and_runs() {
     } else {
         "libnirs4all_formats_capi.so"
     };
+    if !lib_dir.join(library).exists() {
+        // `cargo test` does not always emit the cdylib: build it in the same profile.
+        let mut build = Command::new(env!("CARGO"));
+        build.args(["build", "-p", "nirs4all-formats-capi"]);
+        if lib_dir.file_name().is_some_and(|name| name == "release") {
+            build.arg("--release");
+        }
+        assert!(build.status().expect("run cargo build").success());
+    }
     assert!(
         lib_dir.join(library).exists(),
         "{library} not found in {}",
