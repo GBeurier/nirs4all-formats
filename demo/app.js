@@ -1392,14 +1392,17 @@ function renderMetaPanel(records) {
       const category = METADATA_CATEGORIES.find(([, pattern]) => pattern.test(key.toLowerCase()));
       groups.get(category?.[0] || "Other metadata").push(field);
     }
-    groups.set("Reference targets", Object.entries(targets || {}));
     body.replaceChildren();
-    for (const [label, entries] of groups) {
-      if (entries.length) {
-        const group = metadataDetails(label, entries.length, () => renderMetadataFields(entries));
-        group.classList.add("metadata-group");
-        body.appendChild(group);
+    for (const [label, entries] of [["Reference targets", Object.entries(targets || {})], ...groups]) {
+      if (!entries.length) continue;
+      const group = el("section", "metadata-group");
+      if (entries.length > 4 || entries.some(([, value]) => value && typeof value === "object" && !Array.isArray(value))) {
+        group.classList.add("wide");
       }
+      const heading = el("h4");
+      heading.textContent = label;
+      group.append(heading, metadataPreview(entries, true));
+      body.appendChild(group);
     }
     if (!body.childElementCount) body.appendChild(el("p", "empty-note", "No metadata or reference targets for this record."));
   };
@@ -1439,12 +1442,18 @@ function renderMetaPanel(records) {
   return panel;
 }
 
-function metadataDetails(label, count, render) {
+function metadataDetails(label, count, render, preview) {
   const details = el("details");
   const summary = el("summary");
   const name = el("span");
   name.textContent = label;
-  summary.append(name, el("span", "metadata-count", fmtInt(count)));
+  summary.appendChild(name);
+  if (count != null) summary.appendChild(el("span", "metadata-count", fmtInt(count)));
+  if (preview !== undefined) {
+    const excerpt = el("code", "metadata-excerpt");
+    excerpt.textContent = preview + "…";
+    summary.appendChild(excerpt);
+  }
   details.appendChild(summary);
   const populate = () => {
     if (!details.open) return;
@@ -1455,7 +1464,19 @@ function metadataDetails(label, count, render) {
   return details;
 }
 
-function renderMetadataFields(entries) {
+function metadataPreview(entries, showObjects = false) {
+  const visible = 8;
+  const fields = renderMetadataFields(entries.slice(0, visible), showObjects);
+  if (entries.length > visible) {
+    const more = metadataDetails("More fields", entries.length - visible,
+      () => renderMetadataFields(entries.slice(visible)));
+    more.classList.add("metadata-more");
+    fields.appendChild(more);
+  }
+  return fields;
+}
+
+function renderMetadataFields(entries, showObjects = false) {
   const fields = el("div", "metadata-fields");
   if (entries.length > 100) {
     const size = Math.max(100, Math.ceil(entries.length / 20));
@@ -1471,16 +1492,33 @@ function renderMetadataFields(entries) {
     if (value !== null && typeof value === "object") {
       const children = Object.entries(value);
       if (children.length) {
-        fields.appendChild(metadataDetails(key, children.length, () => renderMetadataFields(children)));
+        if (showObjects && !Array.isArray(value)) {
+          const group = el("div", "metadata-nested");
+          const heading = el("h5");
+          heading.textContent = key;
+          group.append(heading, metadataPreview(children));
+          fields.appendChild(group);
+        } else {
+          fields.appendChild(metadataDetails(key, children.length, () => renderMetadataFields(children)));
+        }
         continue;
       }
     }
-    const row = el("div", "metadata-field");
+    if (typeof value === "string" && (value.length > 64 || value.includes("\n"))) {
+      const preview = value.split("\n", 1)[0].slice(0, 36);
+      fields.appendChild(metadataDetails(key, null, () => {
+        const full = el("code", "metadata-full");
+        full.textContent = value;
+        return full;
+      }, preview));
+      continue;
+    }
+    const cell = el("div", "metadata-field");
     const name = el("span"), display = el("code");
     name.textContent = key;
     display.textContent = value == null ? "null" : Array.isArray(value) ? "[]" : typeof value === "object" ? "{}" : String(value);
-    row.append(name, display);
-    fields.appendChild(row);
+    cell.append(name, display);
+    fields.appendChild(cell);
   }
   return fields;
 }
@@ -1756,11 +1794,13 @@ function convertPanel() {
   const number = (id, label, placeholder) => `<div class="field"><label for="${id}">${label}</label><input id="${id}" type="number" step="any" placeholder="${placeholder}"></div>`;
   panel.innerHTML = `<div class="convert-row">
     <h4 id="conv-title">Convert</h4>
-    ${conv.names.length > 1 ? select("conv-signal", "Convert from", signals) : ""}
-    ${select("conv-type", "Convert to", '<option value="">Original type</option>' + types)}
-    ${select("conv-unit", "Axis unit", '<option value="">Original unit</option>' + units)}
-    ${select("conv-grid", "Grid", '<option value="">Measured</option><option value="even">Even</option>')}
     <button type="button" class="conv-help" aria-label="Conversion settings and limits" aria-haspopup="dialog">?</button>
+    <div class="convert-controls">
+      ${conv.names.length > 1 ? select("conv-signal", "From", signals) : ""}
+      ${select("conv-type", "Signal type", '<option value="">Original</option>' + types)}
+      ${select("conv-unit", "Axis unit", '<option value="">Original</option>' + units)}
+      ${select("conv-grid", "Grid", '<option value="">Measured</option><option value="even">Even</option>')}
+    </div>
     </div><div id="conv-plan" aria-live="polite"></div>
     <dialog class="exp-dialog" id="conv-dialog" aria-labelledby="conv-settings-title">
       <div class="dlg-head"><h3 id="conv-settings-title">Conversion settings and limits</h3></div>

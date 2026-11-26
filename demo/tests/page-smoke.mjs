@@ -28,7 +28,7 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }]) {
+for (const viewport of [{ width: 1280, height: 900 }, { width: 320, height: 844 }]) {
   const page = await browser.newPage({ viewport });
   page.on("console", (msg) => {
     if (msg.type() === "error" && !EXTERNAL.test(msg.location().url || "")) errors.push(msg.text());
@@ -92,12 +92,21 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       propsEnd: rect(".file-properties").bottom, plot: rect(".plot-panel").top,
       plotEnd: rect(".plot-panel").bottom, metadata: rect(".metadata-panel").top,
       metadataEnd: rect(".metadata-panel").bottom, library: rect("#library-title").top,
-      controlTops: [...document.querySelectorAll(".convert-row select")].map((s) => s.getBoundingClientRect().top),
+      controls: [...document.querySelectorAll(".convert-row select")].map((s) => {
+        const { left, right, top, width } = s.getBoundingClientRect();
+        const label = s.closest("label");
+        return { top, width, fits: left >= label.getBoundingClientRect().left - 1
+          && right <= label.getBoundingClientRect().right + 1 && label.scrollWidth <= label.clientWidth + 1 };
+      }),
     };
   });
   assert(layout.header <= layout.props && layout.propsEnd <= layout.plot, "file, properties and spectra order");
   assert(layout.plotEnd <= layout.metadata && layout.metadataEnd <= layout.library, "spectra, metadata and code examples order");
-  assert(Math.max(...layout.controlTops) - Math.min(...layout.controlTops) < 1, "conversion controls wrap");
+  assert(layout.controls.every((control) => control.fits && control.width >= 85), "conversion controls overflow or are too narrow");
+  const controlRows = new Set(layout.controls.map((control) => Math.round(control.top)));
+  assert(controlRows.size === (viewport.width >= 1000 ? 1 : 2), "conversion controls use the wrong number of rows");
+  const vendor = page.locator(".metadata-nested").filter({ has: page.getByRole("heading", { name: "vendor", exact: true }) });
+  assert(await vendor.locator(".metadata-field code").first().isVisible(), "decoded vendor metadata has no visible preview");
   assert(await page.getByRole("button", { name: "Clear", exact: true }).count() === 1, "Clear action missing");
   assert(await page.locator("#conv-run, #conv-target, #sel-clear").count() === 0, "obsolete actions");
   assert(await page.locator(".ugroup-chart summary:visible").count() === 0, "band table shown");
@@ -130,23 +139,29 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
       const provenance = { format: "fixture" };
       const records = [
         { signals: {}, provenance, metadata: { sample_id: "S1", instrument_model: "Spectrometer", scan_count: 3,
-          vendor: { log: "a".repeat(240) + "<end>", channels: Array.from({ length: 103 }, (_, i) => i) } }, targets: { protein: 12.1 } },
+          vendor: { log: "a".repeat(240) + "<end>", channels: Array.from({ length: 103 }, (_, i) => i),
+            ...Object.fromEntries(Array.from({ length: 8 }, (_, i) => [`setting_${i}`, `value_${i}`])) } }, targets: { protein: 12.1, moisture: 3.4 } },
         { signals: {}, provenance, metadata: { sample_id: "S2" }, targets: { protein: 16.2 } },
       ];
       renderDatasets([{ ok: true, name: "metadata-fixture", records, probes: [], size: 0, fileCount: 1 }]);
     });
     const metadata = page.getByRole("region", { name: "Metadata" });
-    const summaries = metadata.locator(".metadata-group > summary");
-    assert((await summaries.allTextContents()).join("|") === "Sample1|Instrument1|Acquisition1|File and format1|Reference targets1", "metadata categories");
-    await summaries.filter({ hasText: "File and format" }).click();
-    await metadata.locator("summary").filter({ hasText: "vendor" }).click();
-    assert(await metadata.getByText("a".repeat(240) + "<end>", { exact: true }).isVisible(), "long metadata was cut");
+    const headings = metadata.locator(".metadata-group > h4");
+    assert((await headings.allTextContents()).join("|") === "Reference targets|Sample|Instrument|Acquisition|File and format", "metadata categories");
+    assert(await metadata.getByText("S1", { exact: true }).isVisible() && await metadata.getByText("value_0", { exact: true }).isVisible(),
+      "sample and nested vendor fields must be visible on load");
+    const targetCells = await metadata.locator(".metadata-field").filter({ hasText: /protein|moisture/ })
+      .evaluateAll((cells) => cells.map((cell) => ({ x: cell.offsetLeft, y: cell.offsetTop })));
+    assert(targetCells.length === 2 && targetCells[0].x !== targetCells[1].x && targetCells[0].y === targetCells[1].y,
+      "two reference targets should fit on the same row");
+    await metadata.locator("summary").filter({ hasText: /^log/ }).click();
+    await metadata.getByText("a".repeat(240) + "<end>", { exact: true }).waitFor();
+    await metadata.locator("summary").filter({ hasText: "More fields" }).click();
+    await metadata.getByText("value_7", { exact: true }).waitFor();
     await metadata.locator("summary").filter({ hasText: "channels" }).click();
     await metadata.locator("summary").filter({ hasText: "Entries 101–103" }).click();
-    assert(await metadata.locator(".metadata-field code").filter({ hasText: /^102$/ }).isVisible(), "last nested item missing");
+    await metadata.locator(".metadata-field code").filter({ hasText: /^102$/ }).waitFor();
     await metadata.getByRole("button", { name: "Next metadata record" }).click();
-    await summaries.filter({ hasText: "Sample" }).click();
-    await summaries.filter({ hasText: "Reference targets" }).click();
     assert(await metadata.getByText("S2", { exact: true }).isVisible() && await metadata.getByText("16.2", { exact: true }).isVisible(), "second record metadata or targets missing");
   }
   await page.close();
