@@ -2118,7 +2118,7 @@ async function executePlan(plan) {
     record.signals[out.name] = {
       axis: { values: axis, unit: out.axis_unit, kind: outKind(sig), order: ordered ? "ascending" : sig.axis.order },
       values, shape: [values.length], dims: ["x"], signal_type: out.signal_type, unit: out.unit ?? null,
-      role: "converted", source: `nirs4all-methods ${version}`,
+      role: "converted", source: `from ${source}`,
     };
     record.metadata = record.metadata || {};
     const prior = Array.isArray(record.metadata.conversions) ? record.metadata.conversions.filter((c) => c.signal !== out.name) : [];
