@@ -83,8 +83,12 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   // A decoded file shows its properties, then the chart with the Convert panel beside it.
   await page.setInputFiles("#file", path.join(demo, "..", "samples", "ocean_optics", "whiteref.ProcSpec"));
   await page.waitForSelector("#convert-panel #conv-plan .conv-status", { timeout: 20000 });
+  // The chart is sticky on desktop: measure at the top, after an instant scroll
+  // (the page uses smooth scrolling) and a frame.
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await page.waitForFunction(() => window.scrollY === 0);
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve())));
   const layout = await page.evaluate(() => {
-    window.scrollTo(0, 0); // the chart is sticky on desktop: measure before it sticks
     const top = (sel) => document.querySelector(sel).getBoundingClientRect();
     return { props: top("#signals-panel").top, plot: top(".plot-panel").top, plotLeft: top(".plot-panel").left, side: top("#convert-panel").top, sideLeft: top("#convert-panel").left };
   });
