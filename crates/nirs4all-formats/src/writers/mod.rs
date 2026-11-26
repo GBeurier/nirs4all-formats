@@ -2,12 +2,16 @@
 //!
 //! Every reader feeds every writer through [`SpectralRecord`]. Writers never
 //! resample, convert units or transform ordinates: what a target cannot carry
-//! is refused or reported as a [`WriteLoss`].
+//! is refused or reported as a [`WriteLoss`]. [`plan_conversion`] tells a host
+//! which conversions (computed by nirs4all-methods) make records writable.
 
+mod conversions;
 mod jcamp;
 mod json;
 mod native;
 mod nsas;
+mod plan;
+mod requirements;
 mod select;
 mod software;
 mod spc;
@@ -24,6 +28,14 @@ use std::path::{Path, PathBuf};
 use nirs4all_formats_core::SpectralRecord;
 use serde::{Deserialize, Serialize};
 
+pub use conversions::{AppliedConversion, CONVERSIONS_KEY};
+pub use plan::{
+    plan_conversion, ConversionPlan, PlanChoice, PlanOptions, PlanQuestion, PlanRefusal,
+    PlanStatus, PlanStep, PlannedSignal, SignalCandidate,
+};
+pub use requirements::{
+    target_requirements, writer_requirements, EvenAxis, Grid, OtherGrids, TargetRequirements,
+};
 pub use software::{software_catalog, SoftwareProfile};
 
 /// Error raised when records cannot be written to a target.
@@ -108,6 +120,8 @@ pub struct WriteOutput {
     pub format: &'static str,
     pub files: Vec<WrittenFile>,
     pub losses: Vec<WriteLoss>,
+    /// Conversions the exported signals went through, from record metadata.
+    pub conversions: Vec<AppliedConversion>,
 }
 
 impl WriteOutput {
@@ -124,6 +138,10 @@ impl WriteOutput {
             .iter()
             .map(|file| directory.as_ref().join(&file.name))
             .collect();
+        std::fs::create_dir_all(directory.as_ref()).map_err(|error| WriteError::Io {
+            path: directory.as_ref().to_path_buf(),
+            message: error.to_string(),
+        })?;
         if !overwrite {
             if let Some(path) = paths.iter().find(|path| path.exists()) {
                 return Err(WriteError::Io {
@@ -242,6 +260,16 @@ pub fn writer_catalog() -> &'static [WriterCatalogEntry] {
     WRITERS
 }
 
+/// Export listing shared by every binding: `formats`, `software` and the
+/// `requirements` of each format.
+pub fn export_targets() -> serde_json::Value {
+    serde_json::json!({
+        "formats": writer_catalog(),
+        "software": software_catalog(),
+        "requirements": writer_requirements(),
+    })
+}
+
 /// Write records to `target`, a writer format or a software profile identifier.
 pub fn write_records(
     records: &[SpectralRecord],
@@ -287,6 +315,7 @@ pub fn write_records(
         names: FileNames::default(),
         losses: Losses::default(),
     };
+    let applied = conversions::exported(records, options.signal.as_deref())?;
     let mut files = match entry.format {
         "jcamp-dx" => jcamp::write(records, &mut context)?,
         "galactic-spc" => spc::write(records, &mut context)?,
@@ -303,10 +332,19 @@ pub fn write_records(
     if options.zip {
         files = vec![archive(&context.base_name(), &files)?];
     }
+    let written = requirements::target_requirements(entry.format)
+        .is_some_and(|requirements| requirements.records_conversions);
+    if !applied.is_empty() && !written {
+        context.losses.add(
+            "conversions_not_written",
+            "the conversions applied before export are not recorded in this format",
+        );
+    }
     Ok(WriteOutput {
         format: entry.format,
         files,
         losses: context.losses.finish(),
+        conversions: applied,
     })
 }
 

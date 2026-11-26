@@ -8,6 +8,8 @@
 #   - bindings/python/python/nirs4all_formats/_version.py (PEP 440)
 #   - bindings/r/nirs4allformats/DESCRIPTION      (R version spelling)
 #   - bindings/r/nirs4allformatslite/DESCRIPTION  (R version spelling)
+#   - bindings/java/pom.xml, bindings/csharp/src/Nirs4all.Formats/Nirs4all.Formats.csproj,
+#     bindings/julia/NIRS4ALLFormats/Project.toml  (Cargo SemVer)
 #
 # Local equivalent:  scripts/bump_version.sh --check
 #

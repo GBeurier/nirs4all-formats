@@ -1,0 +1,40 @@
+{
+  "name": "@nirs4all/methods",
+  "version": "1.5.2",
+  "description": "WebAssembly build of libn4m (nirs4all-methods) — portable PLS/NIRS engine and native method bindings.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./n4m.wasm": "./dist/n4m.wasm"
+  },
+  "files": [
+    "dist/",
+    "LICENSE-CeCILL-2.1"
+  ],
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p .",
+    "stage:wasm": "node -e \"const fs=require('fs'),p='../../build/'+(process.env.N4M_WASM_PRESET||'emscripten')+'/bindings/js/';fs.mkdirSync('dist',{recursive:true});for(const f of ['n4m.js','n4m.wasm']){if(!fs.existsSync(p+f))throw new Error('missing WASM artifact '+p+f+' — run: cmake --preset emscripten && cmake --build --preset emscripten --target n4m_wasm');fs.copyFileSync(p+f,'dist/'+f)}fs.copyFileSync('../../THIRD_PARTY_LICENSES.md','dist/THIRD_PARTY_LICENSES.md');fs.cpSync('../../LICENSES','dist/LICENSES',{recursive:true});console.log('staged n4m.js + n4m.wasm + THIRD_PARTY_LICENSES.md into dist/')\"",
+    "prepack": "npm run build && npm run stage:wasm",
+    "test": "node --experimental-vm-modules test/run_smoke.mjs && node --experimental-vm-modules test/run_api.mjs && node --experimental-vm-modules test/run_generic_method.mjs && node --experimental-vm-modules test/run_pop_aom.mjs && node --experimental-vm-modules test/run_new_pack.mjs && node --experimental-vm-modules test/run_serialization_inspect.mjs && node --experimental-vm-modules test/run_method_result_model.mjs && node --experimental-vm-modules test/run_native_preprocessing_pipeline.mjs && node --experimental-vm-modules test/run_native_splitter.mjs && node --experimental-vm-modules test/run_native_augmentation.mjs && node --experimental-vm-modules test/run_estimator_roles.mjs && node --experimental-vm-modules test/run_estimator_roles_negative.mjs && node --experimental-vm-modules test/run_role_pipeline.mjs && node --experimental-vm-modules test/run_spectral_encoding.mjs && node --experimental-vm-modules test/run_optimization.mjs && node --experimental-vm-modules test/run_preflight_diagnostics.mjs && node test/run_preflight_pca_weak_scores.mjs && node --experimental-vm-modules test/run_pls_scale_equivariance.mjs && node --experimental-vm-modules test/run_pls_small_covariance.mjs && node --experimental-vm-modules test/run_pls_null_consumers.mjs && node --experimental-vm-modules test/run_pls_scale_consumers.mjs && node test/run_intrinsic_diagnostics.mjs && npm run test:shared-scoring && node test/run_snv_parameter_contract.mjs && node test/run_raw_i32_status.mjs && node --experimental-vm-modules test/ranking_mock.mjs && node test/run_ranking.mjs && node test/run_component_analysis.mjs && node test/run_multimodal_teaching.mjs && node test/run_explain.mjs && node test/run_importance.mjs && node test/run_aom_fit_result.mjs",
+    "test:shared-scoring": "node test/run_shared_scoring.mjs"
+  },
+  "license": "CECILL-2.1 OR AGPL-3.0-or-later",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GBeurier/nirs4all-methods.git",
+    "directory": "bindings/js"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

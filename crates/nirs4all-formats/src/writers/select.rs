@@ -23,37 +23,7 @@ pub(crate) struct Spectrum<'a> {
 impl Spectrum<'_> {
     /// How stored ordinates relate to the plain unit of their signal type.
     pub fn scale(&self) -> Scale<'_> {
-        let Some(unit) = self.signal.unit.as_deref().map(str::trim) else {
-            return Scale::Plain;
-        };
-        let lower = unit.to_ascii_lowercase();
-        if lower.contains('%') || lower.contains("percent") {
-            return Scale::Percent;
-        }
-        let known: &[&str] = match self.signal.signal_type {
-            SignalType::Absorbance => &[
-                "a",
-                "au",
-                "a.u.",
-                "abs",
-                "absorbance",
-                "absorbance units",
-                "od",
-                "log(1/r)",
-                "log 1/r",
-            ],
-            SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
-            SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
-            SignalType::KubelkaMunk => &["kubelka-munk", "kubelka_munk", "k/s"],
-            SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
-            SignalType::Unknown => &["arbitrary units", "a.u."],
-            _ => &[],
-        };
-        if matches!(lower.as_str(), "" | "1") || known.contains(&lower.as_str()) {
-            Scale::Plain
-        } else {
-            Scale::Other(unit)
-        }
+        scale_of(self.signal)
     }
 
     /// Signal description with its unit, for labels and messages.
@@ -64,7 +34,44 @@ impl Spectrum<'_> {
             Scale::Other(unit) => format!("{} ({unit})", self.type_label()),
         }
     }
+}
 
+/// How stored ordinates relate to the plain unit of their signal type.
+pub(crate) fn scale_of(signal: &SpectralArray) -> Scale<'_> {
+    let Some(unit) = signal.unit.as_deref().map(str::trim) else {
+        return Scale::Plain;
+    };
+    let lower = unit.to_ascii_lowercase();
+    if lower.contains('%') || lower.contains("percent") {
+        return Scale::Percent;
+    }
+    let known: &[&str] = match signal.signal_type {
+        SignalType::Absorbance => &[
+            "a",
+            "au",
+            "a.u.",
+            "abs",
+            "absorbance",
+            "absorbance units",
+            "od",
+            "log(1/r)",
+            "log 1/r",
+        ],
+        SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
+        SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
+        SignalType::KubelkaMunk => &["kubelka-munk", "kubelka_munk", "k/s"],
+        SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
+        SignalType::Unknown => &["arbitrary units", "a.u."],
+        _ => &[],
+    };
+    if matches!(lower.as_str(), "" | "1") || known.contains(&lower.as_str()) {
+        Scale::Plain
+    } else {
+        Scale::Other(unit)
+    }
+}
+
+impl Spectrum<'_> {
     pub fn technique(&self) -> Technique {
         technique(self.record, self.axis, &self.signal.signal_type)
     }
@@ -102,7 +109,25 @@ pub(crate) enum Technique {
     Unknown,
 }
 
-fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) -> Technique {
+/// Raman readers, or laser / excitation / Raman metadata.
+fn raman_evidence(record: &SpectralRecord) -> bool {
+    let format = record.provenance.format.to_ascii_lowercase();
+    ["raman", "horiba", "renishaw", "trivista", "witec"]
+        .iter()
+        .any(|name| format.contains(name))
+        || record.metadata.keys().any(|key| {
+            let key = key.to_ascii_lowercase();
+            key.contains("laser") || key.contains("excitation") || key.contains("raman")
+        })
+}
+
+/// Measurement technique, shared by the writers' labels and the conversion
+/// planner (a Raman cm-1 axis is a shift, not a wavenumber).
+pub(crate) fn technique(
+    record: &SpectralRecord,
+    axis: &SpectralAxis,
+    kind: &SignalType,
+) -> Technique {
     let text = |group: &str, key: &str| {
         record
             .metadata
@@ -124,11 +149,19 @@ fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) ->
             Technique::Unknown
         };
     }
-    let raman_format = matches!(
-        record.provenance.format.as_str(),
-        "renishaw-wdf" | "raman-open-database" | "witec-wip"
-    );
-    if raman_format || text("galactic_spc", "x_label").contains("RAMAN") {
+    // OpenSpecy libraries mix FTIR and Raman spectra and say which per record.
+    match record
+        .metadata
+        .get("modality")
+        .and_then(Value::as_str)
+        .map(str::to_ascii_lowercase)
+        .as_deref()
+    {
+        Some("raman") => return Technique::Raman,
+        Some("ftir" | "ir" | "nir" | "infrared") => return Technique::Infrared,
+        _ => {}
+    }
+    if raman_evidence(record) || text("galactic_spc", "x_label").contains("RAMAN") {
         return Technique::Raman;
     }
     let optical = matches!(

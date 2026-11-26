@@ -82,7 +82,11 @@ additional vendor examples qualify the new structural layouts.
 | Python | `nirs4all-formats` (import `nirs4all_formats`) | numpy / pandas / polars / sklearn / torch / xarray / `SpectroDataset` projections. [Docs](docs/bindings/python.md) |
 | R | `nirs4allformats` | matrix, `data.frame`, tibble; native extendr or CLI fallback. [Docs](docs/bindings/r.md) |
 | WebAssembly / JS | `@nirs4all/formats-wasm` | in-browser sniffing + decoding (`fmt-hdf5` on). [Docs](docs/bindings/wasm.md) |
-| C ABI | `nirs4all-formats-capi` | additive C ABI + generated header, the base for further bindings. [Docs](docs/bindings/capi.md) |
+| C ABI | `nirs4all-formats-capi` | JSON read / probe / export / convert entry points + generated header, the base of the bindings below. [Docs](docs/bindings/capi.md) |
+| Java | `org.nirs4all:nirs4all-formats` | JNA over the C ABI; typed records, signal matrix, export and convert. [Docs](docs/bindings/java.md) |
+| C# / .NET | `Nirs4all.Formats` | .NET 8 P/Invoke over the C ABI; same surface. [Docs](docs/bindings/csharp.md) |
+| Julia | `NIRS4ALLFormats` | `ccall` over the C ABI; `read_records`, `signal_matrix`, `write_records`. [Docs](docs/bindings/julia.md) |
+| Docker | `ghcr.io/gbeurier/nirs4all-formats` | the command-line tool, non-root, `linux/amd64` + `linux/arm64`. [Docs](docs/DOCKER.md) |
 
 ## Installation
 
@@ -110,10 +114,11 @@ Full per-language instructions, feature flags and build-from-source steps are in
 crates/
   nirs4all-formats-core/   # data model, errors, sniffing contracts
   nirs4all-formats/        # reader registry + 40+ native readers + directory walker
-  nirs4all-formats-capi/   # additive C ABI (cbindgen-generated header)
+  nirs4all-formats-capi/   # C ABI (JSON in/out, cbindgen-generated header)
   nirs4all-formats-cli/    # probe / read-json / scan
 bindings/
-  python/  r/  wasm/  # thin language bindings (no parser logic)
+  python/  r/  wasm/  java/  csharp/  julia/  # thin language bindings (no parser logic)
+docker/               # command-line image
 tools/reverse-lab/    # clean-room reverse-engineering helpers
 samples/              # redistributable fixture corpus + per-format provenance
 docs/                 # this documentation (Sphinx / MyST)

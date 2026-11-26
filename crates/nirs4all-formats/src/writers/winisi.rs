@@ -369,6 +369,11 @@ fn segments(axis: &[f64], native: bool, tolerance: f64) -> Result<Vec<Segment>, 
     Ok(out)
 }
 
+/// Whether a measured axis is written without resampling.
+pub(crate) fn writable_axis(axis: &[f64], tolerance: f64) -> bool {
+    segments(axis, false, tolerance).is_ok()
+}
+
 /// Largest distance to an evenly spaced axis with the same limits, rounded up.
 fn whole_deviation(axis: &[f64]) -> f64 {
     let segment = Segment::of(axis);

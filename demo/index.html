@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>nirs4all-formats · in-browser spectroscopy file reader (WASM demo)</title>
-  <meta name="description" content="Drag a spectroscopy file onto the page and read it instantly. ~58 NIRS/spectroscopy format families parsed entirely in your browser via WebAssembly — nothing is uploaded." />
+  <title>nirs4all-formats · read, convert and export spectroscopy files</title>
+  <meta name="description" content="nirs4all-formats reads ~60 NIRS and spectroscopy format families into one data model and exports them for market software, from Python, R, Rust, JavaScript or the command line. Read, convert and export files in your browser: nothing is uploaded." />
   <meta name="theme-color" content="#0d9488" />
   <link rel="canonical" href="https://formats.nirs4all.org/" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="https://formats.nirs4all.org/sitemap.xml" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://formats.nirs4all.org/" />
-  <meta property="og:title" content="nirs4all-formats — read spectrometer files in your browser" />
-  <meta property="og:description" content="Drag a vendor spectroscopy file. It is decoded locally by the Rust reader registry compiled to WebAssembly. No upload, no server." />
+  <meta property="og:title" content="nirs4all-formats — read, convert and export spectrometer files" />
+  <meta property="og:description" content="A chemometrics library for spectroscopy files: read the vendor file zoo, convert spectra for market software and export them, in your browser or from Python, R, Rust, JavaScript and the command line." />
   <meta property="og:image" content="https://formats.nirs4all.org/assets/brand/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -26,7 +26,7 @@
     "url": "https://formats.nirs4all.org/",
     "applicationCategory": "ScienceApplication",
     "operatingSystem": "Web",
-    "description": "Browser-based NIRS and spectroscopy file reader powered by Rust and WebAssembly.",
+    "description": "NIRS and spectroscopy file library: readers and writers in Rust with Python, R, WebAssembly and command-line bindings, and a browser tool to read, convert and export files.",
     "softwareHelp": "https://github.com/GBeurier/nirs4all-formats",
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
   }
@@ -195,6 +195,31 @@
     .legacy-note ul { margin:4px 0 0; padding-left:18px; }
     .btn-export:disabled { opacity:.45; cursor:not-allowed; }
     .btn-export:disabled:hover { border-color:var(--border); color:var(--text-2); background:#fff; }
+
+    /* convert for market software */
+    .convert-panel { margin-bottom:20px; }
+    .conv-controls { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px 14px; margin-bottom:14px; }
+    .conv-controls label { display:flex; flex-direction:column; gap:4px; font-size:.72rem; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.06em; }
+    .conv-controls select, .conv-controls input { padding:7px 9px; border-radius:9px; font:600 .8rem var(--font); border:1px solid var(--border); background:#fff; color:var(--text-2); text-transform:none; letter-spacing:0; min-width:0; }
+    .conv-controls .hidden { display:none; }
+    .conv-status { font-weight:600; font-size:.86rem; margin:4px 0 10px; }
+    .conv-status.s-ready { color:var(--teal-d); } .conv-status.s-refused { color:#b91c1c; } .conv-status.s-needs_answers { color:var(--amber); }
+    .conv-steps { margin:0 0 12px; padding-left:20px; font-size:.84rem; color:var(--text-2); }
+    .conv-steps li { margin-bottom:8px; }
+    .conv-steps .mono-sub { word-break:break-word; }
+    .conv-steps ul, .conv-notes { margin:3px 0 0; padding-left:16px; font-size:.78rem; color:var(--text-3); }
+    .conv-q { margin:8px 0; padding:10px 12px; border-left:3px solid var(--amber); background:var(--bg-alt); font-size:.84rem; }
+    .conv-q .choices { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+    .conv-q .why, .conv-q .suggest { font-size:.76rem; color:var(--text-3); margin-top:4px; }
+    .conv-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0; }
+    .conv-compare { display:inline-flex; gap:4px; margin-left:auto; }
+    .conv-compare .btn-export[aria-pressed="true"] { background:var(--text); color:#fff; border-color:var(--text); }
+    .conv-summary { font-size:.82rem; color:var(--text-2); margin:8px 0; padding:10px 12px; border-left:3px solid var(--teal); background:var(--bg-alt); }
+    .conv-summary ul { margin:4px 0 0; padding-left:18px; }
+    .conv-limits { font-size:.78rem; color:var(--text-3); margin-top:12px; }
+    .conv-limits summary { cursor:pointer; font-weight:600; color:var(--text-2); }
+    .conv-compare-head { font-size:.8rem; font-weight:600; color:var(--text-2); margin:14px 20px 4px; }
+    .convert-panel .legacy-note { margin:6px 0 8px; }
 
     /* detection bar */
     .detect { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfdfd); box-shadow:var(--shadow); }
@@ -462,6 +487,80 @@
       .f-ext { max-width:none; }
       .cov { min-width:0; }
     }
+
+    /* ── page sections: convert workflow and library ───────────────────── */
+    .page-sec { padding:72px 0; position:relative; }
+    .page-sec.alt { background:var(--paper); border-top:1px solid var(--border-warm); border-bottom:1px solid var(--border-warm); }
+    .flow { list-style:none; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin:0 0 26px; counter-reset:none; }
+    .flow-step { background:#fff; border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:16px 16px 14px; box-shadow:var(--shadow); }
+    .flow-step h3 { font-family:var(--display); font-size:1rem; font-weight:600; margin:6px 0 4px; }
+    .flow-step p { font-size:.82rem; color:var(--text-2); line-height:1.55; }
+    .flow-n { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:8px; background:rgba(13,148,136,.12); color:var(--teal-d); font:700 .8rem var(--mono); }
+    .convert-cols { display:grid; grid-template-columns:3fr 2fr; gap:18px; }
+    .convert-cols .panel-head h3 { margin-right:auto; }
+    .soft-list { list-style:none; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:6px 14px; margin-bottom:10px; }
+    .soft-list li { font-size:.84rem; color:var(--text); display:flex; align-items:baseline; gap:8px; }
+    .soft-list code { font-family:var(--mono); font-size:.7rem; color:var(--text-3); }
+    .limit-list { margin:0; padding-left:18px; font-size:.82rem; color:var(--text-2); line-height:1.55; }
+    .limit-list li { margin-bottom:6px; }
+    .flow-cta { text-align:center; margin-top:26px; }
+    .flow-cta .btn-pick { text-decoration:none; color:#fff; }
+    @media (max-width:980px){ .flow { grid-template-columns:repeat(2,minmax(0,1fr)); } .convert-cols { grid-template-columns:1fr; } }
+    @media (max-width:520px){ .flow { grid-template-columns:1fr; } .page-sec { padding:52px 0; } }
+
+    .channels { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:0 0 24px; }
+    .channel { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius-sm);
+      background:#fff; text-decoration:none; color:var(--text); box-shadow:var(--shadow); transition:border-color .2s, transform .2s; min-width:0; }
+    a.channel:hover { border-color:var(--teal); transform:translateY(-1px); }
+    .channel .ch-name { font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--teal-d); }
+    .channel .ch-pkg { font-family:var(--mono); font-size:.8rem; color:var(--text); overflow-wrap:anywhere; }
+    .channel .ch-cmd { font-family:var(--mono); font-size:.7rem; color:var(--text-3); overflow-wrap:anywhere; }
+    .channel.soon { background:var(--bg-alt); box-shadow:none; border-style:dashed; }
+    .channel.soon .ch-name { color:var(--text-3); }
+    .channel.soon .ch-cmd { font-family:var(--font); font-style:italic; }
+    @media (max-width:900px){ .channels { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+    .code-frame { background:var(--bg-code); border-radius:var(--radius); box-shadow:var(--shadow-lg); overflow:hidden; }
+    .code-tabs { display:flex; flex-wrap:wrap; gap:4px; padding:10px 10px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .code-tab { padding:8px 14px; border:1px solid transparent; border-bottom:none; border-radius:9px 9px 0 0; background:transparent;
+      color:rgba(255,255,255,.6); font:600 .8rem var(--font); cursor:pointer; transition:color .15s, background .15s; }
+    .code-tab:hover { color:#fff; background:rgba(255,255,255,.05); }
+    .code-tab[aria-selected="true"] { color:#fff; background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.1); box-shadow:inset 0 2px 0 var(--teal-l); }
+    .code-tab[data-soon="true"] { color:rgba(255,255,255,.4); }
+    .code-tab[data-soon="true"][aria-selected="true"] { color:rgba(255,255,255,.8); }
+    .code-tab:focus-visible, .code-panel:focus-visible { outline:2px solid var(--teal-l); outline-offset:-2px; }
+    .code-panel { padding:14px 18px 18px; }
+    .code-meta { display:flex; gap:8px; margin-bottom:8px; }
+    .code-meta .pill { font:600 .7rem var(--mono); color:var(--teal-l); border:1px solid rgba(45,212,191,.35); border-radius:100px; padding:2px 10px; text-decoration:none; }
+    .code-block { position:relative; overflow-x:auto; }
+    .code-block pre { margin:0; color:rgba(255,255,255,.86); font:400 .8rem/1.75 var(--mono); white-space:pre; padding-right:64px; }
+    .code-block .c { color:rgba(255,255,255,.38); }
+    .code-block .s { color:#86efac; }
+    .copy-btn { position:absolute; top:0; right:0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:6px;
+      padding:4px 11px; font:500 .72rem var(--font); color:rgba(255,255,255,.6); cursor:pointer; }
+    .copy-btn:hover, .copy-btn:focus-visible { background:rgba(255,255,255,.12); color:#fff; }
+    .code-todo { color:rgba(255,255,255,.75); font-size:.86rem; padding:18px; border:1px dashed rgba(255,255,255,.22); border-radius:var(--radius-sm); }
+    .code-todo strong { color:#fde68a; }
+    .code-note { color:rgba(255,255,255,.55); font-size:.76rem; padding:0 18px 16px; }
+    .code-note code { font-family:var(--mono); color:rgba(255,255,255,.75); }
+
+    @media (max-width:440px){ .nav-inner .badge { display:none; } }
+
+    /* sortable catalogue headers */
+    .fmt-table thead th[aria-sort] { padding:0; }
+    .fmt-sort { all:unset; box-sizing:border-box; display:flex; align-items:center; gap:6px; width:100%; padding:11px 16px; cursor:pointer;
+      font:inherit; letter-spacing:inherit; text-transform:inherit; color:inherit; }
+    .fmt-sort:hover { color:#fff; }
+    .fmt-sort:focus-visible { outline:2px solid var(--teal-l); outline-offset:-2px; }
+    .fmt-sort .arr { font-size:.75rem; opacity:.45; }
+    th[aria-sort="ascending"] .fmt-sort, th[aria-sort="descending"] .fmt-sort { color:#fff; }
+    th[aria-sort="ascending"] .arr, th[aria-sort="descending"] .arr { opacity:1; color:var(--teal-l); }
+    @media (max-width:760px){
+      .fmt-table thead { display:block; }
+      .fmt-table thead tr { display:flex; flex-wrap:wrap; }
+      .fmt-table thead th { display:block; position:static; }
+      .fmt-table thead th.no-sort { display:none; }
+    }
   </style>
 </head>
 <body>
@@ -477,10 +576,13 @@
     <div class="container nav-inner">
       <a class="nav-logo" href="./">
         <img class="nav-logo-img" src="assets/brand/horizontal.svg" alt="nirs4all-formats" height="30" />
-        <small>· wasm reader</small>
+        <small>· spectroscopy file library</small>
       </a>
       <div class="badge"><span class="live-dot"></span> 100% in-browser</div>
       <div class="nav-links">
+        <a class="hide-sm" href="#hero">Read</a>
+        <a class="hide-sm" href="#convert">Convert</a>
+        <a class="hide-sm" href="#library">Library</a>
         <a class="hide-sm" href="#formats">Formats</a>
         <a class="hide-sm" href="https://nirs4all.org">nirs4all.org</a>
         <a class="nav-gh" href="https://github.com/GBeurier/nirs4all-formats" target="_blank" rel="noopener">
@@ -495,12 +597,13 @@
     <div class="container">
       <div class="hero-grid">
         <div>
-          <span class="eyebrow">WebAssembly · zero upload</span>
-          <h1>Read any spectrometer file, <em>right in your browser.</em></h1>
+          <span class="eyebrow">Rust · Python · R · WebAssembly · CLI</span>
+          <h1>Read any spectrometer file, <em>convert it for your software.</em></h1>
           <p class="lead">
-            Drag a vendor spectroscopy file onto the page. The <b>nirs4all-formats</b> Rust reader
-            registry — compiled to WebAssembly — sniffs the format, decodes the spectra, and lays
-            out the metadata, provenance and axes. Nothing leaves your machine.
+            <b>nirs4all-formats</b> is a chemometrics library that reads the spectroscopy file zoo
+            into one clean data model and writes it back for market software. This page is the
+            library itself, compiled to WebAssembly: drop a file to read its spectra, metadata and
+            provenance, convert it, and export it. Nothing leaves your machine.
           </p>
           <div class="hero-meta">
             <span class="chip-stat"><b>~58</b> format families</span>
@@ -547,6 +650,346 @@
     <div id="status" class="sr-only" role="status" aria-live="polite"></div>
     <section id="results" class="container"></section>
 
+  <!-- ── convert for market software: how the page converts and exports ── -->
+  <section id="convert" class="page-sec alt">
+    <div class="container">
+      <div class="fmt-head">
+        <span class="eyebrow">Convert · export</span>
+        <h2 class="fmt-title">From any file to <em>your software</em></h2>
+        <p class="fmt-sub">Read a file above, pick the software or format you need, and the page shows what the target requires, plans the conversion, computes it with nirs4all-methods, lets you compare the result with the original and writes the file, listing everything the target cannot carry.</p>
+      </div>
+      <ol class="flow">
+        <li class="flow-step"><span class="flow-n">1</span><h3>Read</h3><p>Drop a file or load a sample. Every signal keeps its own axis, units, metadata and provenance.</p></li>
+        <li class="flow-step"><span class="flow-n">2</span><h3>Plan</h3><p>nirs4all-formats states what the target needs and the steps to get there, asks what the file does not say and refuses, with a fix, what cannot be converted.</p></li>
+        <li class="flow-step"><span class="flow-n">3</span><h3>Convert</h3><p>nirs4all-methods computes each step in your browser: reflectance from references, absorbance, wavelength axes, known grids.</p></li>
+        <li class="flow-step"><span class="flow-n">4</span><h3>Check</h3><p>The converted spectra appear next to the originals, before and after, with clamped points, missing values and grids reported.</p></li>
+        <li class="flow-step"><span class="flow-n">5</span><h3>Export</h3><p>The writer lists its losses and records the conversions in the file when the format holds text.</p></li>
+      </ol>
+      <div class="convert-cols">
+        <div class="panel">
+          <div class="panel-head"><h3>Software and formats</h3><span class="ph-meta" id="soft-count"></span></div>
+          <div class="panel-body">
+            <ul class="soft-list" id="soft-list"><li class="mono-sub">Loading the export catalogue…</li></ul>
+            <p class="mono-sub">A preset names a format the software documents as importable. Files are not tested in vendor software yet.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Limits</h3></div>
+          <div class="panel-body">
+            <ul class="limit-list" id="limit-list"></ul>
+          </div>
+        </div>
+      </div>
+      <p class="flow-cta"><a class="btn-pick" href="#hero">Read a file to convert it</a></p>
+    </div>
+  </section>
+
+  <!-- ── library: install and use in code (snippets checked against the bindings) ── -->
+  <section id="library" class="page-sec">
+    <div class="container">
+      <div class="fmt-head">
+        <span class="eyebrow">Library · ten ways in</span>
+        <h2 class="fmt-title">The same reader <em>in your code</em></h2>
+        <p class="fmt-sub">nirs4all-formats is a standalone chemometrics library: one Rust registry of readers and writers with the same records in every language. Install it, read a file, reach the spectra matrix, the axis, the reference values and the metadata, then export or plan a conversion.</p>
+      </div>
+      <div class="channels" role="list">
+        <a class="channel" role="listitem" href="https://pypi.org/project/nirs4all-formats/" target="_blank" rel="noopener"><span class="ch-name">PyPI</span><code class="ch-pkg">nirs4all-formats</code><span class="ch-cmd">pip install nirs4all-formats</span></a>
+        <a class="channel" role="listitem" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener"><span class="ch-name">R-universe</span><code class="ch-pkg">nirs4allformats</code><span class="ch-cmd">install.packages(&quot;nirs4allformats&quot;, repos = &quot;https://gbeurier.r-universe.dev&quot;)</span></a>
+        <a class="channel" role="listitem" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">crates.io</span><code class="ch-pkg">nirs4all-formats</code><span class="ch-cmd">cargo add nirs4all-formats</span></a>
+        <a class="channel" role="listitem" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener"><span class="ch-name">npm</span><code class="ch-pkg">@nirs4all/formats-wasm</code><span class="ch-cmd">npm install @nirs4all/formats-wasm</span></a>
+        <div class="channel soon" role="listitem"><span class="ch-name">Maven Central</span><code class="ch-pkg">org.nirs4all:nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
+        <div class="channel soon" role="listitem"><span class="ch-name">NuGet</span><code class="ch-pkg">Nirs4all.Formats</code><span class="ch-cmd">Coming with the next release</span></div>
+        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">NIRS4ALLFormats</code><span class="ch-cmd">Coming with the next release</span></div>
+        <div class="channel soon" role="listitem"><span class="ch-name">Docker</span><code class="ch-pkg">ghcr.io/gbeurier/nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
+      </div>
+      <div class="code-frame">
+        <div class="code-tabs" role="tablist" aria-label="Language">
+          <button class="code-tab" role="tab" id="tab-python" aria-controls="panel-python" aria-selected="true" tabindex="0">Python</button>
+          <button class="code-tab" role="tab" id="tab-r" aria-controls="panel-r" aria-selected="false" tabindex="-1">R</button>
+          <button class="code-tab" role="tab" id="tab-rust" aria-controls="panel-rust" aria-selected="false" tabindex="-1">Rust</button>
+          <button class="code-tab" role="tab" id="tab-js" aria-controls="panel-js" aria-selected="false" tabindex="-1">JavaScript / WASM</button>
+          <button class="code-tab" role="tab" id="tab-cli" aria-controls="panel-cli" aria-selected="false" tabindex="-1">CLI</button>
+          <button class="code-tab" role="tab" id="tab-c" aria-controls="panel-c" aria-selected="false" tabindex="-1" data-soon="true">C</button>
+          <button class="code-tab" role="tab" id="tab-java" aria-controls="panel-java" aria-selected="false" tabindex="-1" data-soon="true">Java</button>
+          <button class="code-tab" role="tab" id="tab-csharp" aria-controls="panel-csharp" aria-selected="false" tabindex="-1" data-soon="true">C#</button>
+          <button class="code-tab" role="tab" id="tab-julia" aria-controls="panel-julia" aria-selected="false" tabindex="-1" data-soon="true">Julia</button>
+          <button class="code-tab" role="tab" id="tab-docker" aria-controls="panel-docker" aria-selected="false" tabindex="-1" data-soon="true">Docker</button>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-python" aria-labelledby="tab-python" tabindex="0">
+          <div class="code-meta"><a class="pill" href="https://pypi.org/project/nirs4all-formats/" target="_blank" rel="noopener">PyPI</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="python"><code># pip install nirs4all-formats
+import nirs4all_formats as nf
+
+# Read: the format is recognised from the file content
+records = nf.open_records("barley.csv")   # lossless records
+data = nf.open_recordset("barley.csv")    # typed view of the same records
+
+# Access the data
+X, axis = data.to_numpy()                 # spectra matrix (n x p), axis values
+record = data.records[0]
+signal = record.signals["signal"]
+signal.signal_type, signal.axis.unit      # 'absorbance', 'nm'
+record.targets, record.metadata["sample_id"]
+record.provenance.format                  # 'delimited-text'
+
+# Export for a software or a format; what it cannot carry is listed
+out = nf.write_records(records, "winisi") # FOSS WinISI .nir
+out["files"][0]["name"], out["losses"]
+nf.convert_path("barley.csv", "jcamp-dx", "exported/")
+nf.export_targets()["software"]           # OPUS, OMNIC, WinISI, Unscrambler...
+
+# Plan a conversion: steps, questions and refusals;
+# nirs4all-methods computes the values
+plan = nf.plan_conversion(nf.open_records("sample.ProcSpec"), "winisi")
+plan["status"], [step["method_id"] for step in plan["steps"]]</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-r" aria-labelledby="tab-r" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener">R-universe</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="r"><code>install.packages("nirs4allformats",
+  repos = c("https://gbeurier.r-universe.dev", "https://cloud.r-project.org"))
+library(nirs4allformats)
+
+# Read: the format is recognised from the file content
+ds &lt;- nirs4allformats_open_dataset("barley.csv")
+records &lt;- nirs4allformats_open_records("barley.csv")  # lossless records
+
+# Access the data
+X &lt;- as.matrix(ds)                     # spectra matrix (n x p)
+ds$wavelengths; ds$axis_unit           # axis
+ds$targets                             # reference values
+ds$metadata[[1]]$sample_id
+
+# Export for a software or a format; what it cannot carry is listed
+targets &lt;- nirs4allformats_export_targets()
+vapply(targets$software, `[[`, "", "id")   # opus, omnic, winisi, ...
+report &lt;- nirs4allformats_convert("barley.csv", "winisi", "exported")
+report$files; report$losses</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-rust" aria-labelledby="tab-rust" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener">crates.io</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="rust"><code>// cargo add nirs4all-formats
+use nirs4all_formats::{open_path, plan_conversion, write_records, PlanOptions, WriteOptions};
+
+fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
+    // Read: the format is recognised from the file content
+    let records = open_path("barley.csv")?;
+
+    // Access the data: one record per spectrum, each signal owns its axis
+    let signal = &amp;records[0].signals["signal"];
+    println!("{:?} in {}", signal.signal_type, signal.axis.unit);
+    let matrix: Vec&lt;&amp;[f64]&gt; = records
+        .iter()
+        .map(|record| record.signals["signal"].values.as_slice())
+        .collect();
+    println!("{:?} {:?}", records[0].targets, records[0].metadata.get("sample_id"));
+
+    // Export for a software or a format; what it cannot carry is listed
+    let output = write_records(&amp;records, "winisi", &amp;WriteOptions::default())?;
+    output.save("exported", false)?;
+    for loss in &amp;output.losses {
+        println!("{}: {}", loss.code, loss.message);
+    }
+
+    // Plan a conversion: nirs4all-methods computes each step
+    let raw = open_path("sample.ProcSpec")?;
+    let plan = plan_conversion(&amp;raw, Some("winisi"), &amp;PlanOptions::default())?;
+    println!("{:?}: {} steps, {} spectra", plan.status, plan.steps.len(), matrix.len());
+    Ok(())
+}</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-js" aria-labelledby="tab-js" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener">npm</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="js"><code>// npm install @nirs4all/formats-wasm
+const fs = require("node:fs");
+const formats = require("@nirs4all/formats-wasm");
+
+// Read: name + bytes, so it also works on uploads and fetch() results
+const records = formats.openBytes("barley.csv", fs.readFileSync("barley.csv"));
+
+// Access the data
+const { axis, values, signal_type } = records[0].signals.signal;
+axis.values; axis.unit;                  // [400, 402, ...], "nm"
+records[0].targets;                      // { Moisture: 10.4, Protein: 11.2, ... }
+records[0].metadata.sample_id;
+
+// Export for a software or a format; what it cannot carry is listed
+const out = formats.writeRecords(records, "winisi", { base_name: "barley" });
+fs.writeFileSync(out.files[0].name, out.files[0].bytes);
+out.losses;
+
+// Plan a conversion; @nirs4all/methods computes the steps
+const raw = formats.openBytes("sample.ProcSpec", fs.readFileSync("sample.ProcSpec"));
+const plan = formats.planConversion(raw, "winisi", {});
+plan.status; plan.steps.map((step) =&gt; step.method_id);</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-cli" aria-labelledby="tab-cli" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats-cli" target="_blank" rel="noopener">crates.io</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="cli"><code># cargo install nirs4all-formats-cli
+nirs4all-formats probe barley.csv                    # candidate readers
+nirs4all-formats read-json barley.csv &gt; barley.json  # spectra, axis, targets, metadata
+nirs4all-formats scan data/                          # what every file in a folder decodes to
+
+nirs4all-formats targets                             # formats, software presets, requirements
+nirs4all-formats convert barley.csv --to winisi --out exported/
+nirs4all-formats plan sample.ProcSpec --to winisi    # conversion steps, questions, refusals</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-c" aria-labelledby="tab-c" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/capi.md" target="_blank" rel="noopener">C ABI docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="c"><code>// C ABI archive (include/, lib/) from GitHub Releases, or cargo build -p nirs4all-formats-capi
+// cc example.c -Iinclude -Llib -Wl,-rpath,"$PWD/lib" -lnirs4all_formats_capi &amp;&amp; ./a.out
+#include &lt;stdio.h&gt;
+#include "nirs4all_formats.h"
+
+// Print a result (or the error) and free it
+static void show(n4fmt_status_t status, char *json, char *error) {
+    printf("%.160s\n", status == N4FMT_STATUS_OK ? json : error);
+    n4fmt_string_free(json);
+    n4fmt_string_free(error);
+}
+
+int main(void) {
+    char *records = NULL, *json = NULL, *error = NULL;
+
+    // Read: the format is recognised from the file content
+    n4fmt_status_t status = n4fmt_open_path("barley.csv", NULL, &amp;records, &amp;error);
+    if (status != N4FMT_STATUS_OK) {
+        show(status, NULL, error);
+        return 1;
+    }
+
+    // Access the data: a JSON array of records, one per spectrum, for any JSON parser:
+    // [{"signals": {"signal": {"axis": {"values": [...], "unit": "nm"}, "values": [...]}},
+    //   "targets": {"Protein": 9.383, ...}, "metadata": {"sample_id": "1", ...}, "provenance": ...}]
+    printf("%.160s\n", records);
+
+    // Export for a software or a format: base64 files, and what the target cannot carry
+    status = n4fmt_write_records(records, "winisi", "{\"base_name\": \"barley\"}", &amp;json, &amp;error);
+    show(status, json, error);
+    status = n4fmt_convert_path("barley.csv", "jcamp-dx", "exported", NULL, &amp;json, &amp;error);
+    show(status, json, error);
+    status = n4fmt_export_targets(&amp;json, &amp;error);   // formats, software presets, requirements
+    show(status, json, error);
+    n4fmt_string_free(records);
+
+    // Plan a conversion: steps, questions and refusals;
+    // nirs4all-methods computes the values
+    n4fmt_open_path("sample.ProcSpec", NULL, &amp;records, &amp;error);
+    status = n4fmt_plan_conversion(records, "winisi", NULL, &amp;json, &amp;error);
+    show(status, json, error);
+    n4fmt_string_free(records);
+    return 0;
+}</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-java" aria-labelledby="tab-java" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/java.md" target="_blank" rel="noopener">Java docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="java"><code>// Maven Central: org.nirs4all:nirs4all-formats (the jar bundles the native library)
+import java.nio.file.Path;
+import java.util.List;
+import org.nirs4all.formats.*;
+
+public class Example {
+    public static void main(String[] args) {
+        // Read: the format is recognised from the file content
+        List&lt;SpectralRecord&gt; records = Nirs4allFormats.open(Path.of("barley.csv"));
+
+        // Access the data
+        SignalMatrix data = SignalMatrix.stack(records, "signal");
+        double[][] x = data.values();                    // spectra matrix (n x p)
+        double[] axis = data.axis().values();            // data.axis().unit(): "nm"
+        SpectralRecord record = records.get(0);
+        Signal signal = record.signal("signal");         // signal.signalType(): "absorbance"
+        double protein = record.numericTarget("Protein");
+        String sample = record.metadata().get("sample_id").asText();
+        String format = record.provenance().format();    // "delimited-text"
+
+        // Export for a software or a format; what it cannot carry is listed
+        WriteResult out = Nirs4allFormats.write(records, "winisi");   // FOSS WinISI .nir
+        System.out.println(out.files().get(0).name() + " " + out.losses());
+        Nirs4allFormats.convert(Path.of("barley.csv"), "jcamp-dx", Path.of("exported"));
+        Nirs4allFormats.exportTargets().software();      // OPUS, OMNIC, WinISI, Unscrambler...
+
+        // Plan a conversion: steps, questions and refusals;
+        // nirs4all-methods computes the values
+        ConversionPlan plan = Nirs4allFormats.planConversion(Nirs4allFormats.open(Path.of("sample.ProcSpec")), "winisi");
+        System.out.println(plan.status() + " " + plan.steps().stream().map(ConversionPlan.Step::methodId).toList());
+    }
+}</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-csharp" aria-labelledby="tab-csharp" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/csharp.md" target="_blank" rel="noopener">C# docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="csharp"><code>// dotnet add package Nirs4all.Formats   (the package carries the native library)
+using Nirs4all.Formats;
+
+// Read: the format is recognised from the file content
+var records = Nirs4allFormats.Open("barley.csv");
+
+// Access the data
+var data = SignalMatrix.Stack(records, "signal");
+double[,] x = data.Values;                         // spectra matrix (n x p)
+double[] axis = data.Axis.Values;                  // data.Axis.Unit: "nm"
+var record = records[0];
+var signal = record.Signals["signal"];             // signal.SignalType: "absorbance"
+double protein = record.NumericTarget("Protein");
+var sample = record.Metadata["sample_id"];
+var format = record.Provenance.Format;             // "delimited-text"
+
+// Export for a software or a format; what it cannot carry is listed
+var output = Nirs4allFormats.Write(records, "winisi");   // FOSS WinISI .nir
+Console.WriteLine($"{output.Files[0].Name}: {output.Losses.Count} losses");
+Nirs4allFormats.Convert("barley.csv", "jcamp-dx", "exported");
+var software = Nirs4allFormats.ExportTargets().Software;  // OPUS, OMNIC, WinISI, Unscrambler...
+
+// Plan a conversion: steps, questions and refusals;
+// nirs4all-methods computes the values
+var plan = Nirs4allFormats.PlanConversion(Nirs4allFormats.Open("sample.ProcSpec"), "winisi");
+Console.WriteLine($"{plan.Status}: {string.Join(", ", plan.Steps.Select(step =&gt; step.MethodId))}");</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-julia" aria-labelledby="tab-julia" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/julia.md" target="_blank" rel="noopener">Julia docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="julia"><code># ] add NIRS4ALLFormats   (native library: nirs4all_formats_capi_jll or NIRS4ALL_FORMATS_LIBRARY)
+using NIRS4ALLFormats
+
+# Read: the format is recognised from the file content
+records = read_records("barley.csv")
+
+# Access the data
+data = signal_matrix(records, "signal")
+data.values, data.axis.values, data.axis.unit   # spectra matrix (n x p), axis, "nm"
+record = records[1]
+signal = record.signals["signal"]               # signal.signal_type: "absorbance"
+record.targets["Protein"], record.metadata["sample_id"]
+record.provenance.format                        # "delimited-text"
+
+# Export for a software or a format; what it cannot carry is listed
+out = write_records(records, "winisi")          # FOSS WinISI .nir
+println(out.files[1].name, ": ", length(out.losses), " losses")
+convert_path("barley.csv", "jcamp-dx", "exported")
+[software.id for software in export_targets().software]   # opus, omnic, winisi...
+
+# Plan a conversion: steps, questions and refusals;
+# nirs4all-methods computes the values
+plan = plan_conversion(read_records("sample.ProcSpec"), "winisi")
+println(plan.status, ": ", [step.method_id for step in plan.steps])</code></pre></div>
+        </div>
+        <div class="code-panel" role="tabpanel" id="panel-docker" aria-labelledby="tab-docker" tabindex="0" hidden>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/DOCKER.md" target="_blank" rel="noopener">Docker docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="cli"><code># docker pull ghcr.io/gbeurier/nirs4all-formats   (linux/amd64, linux/arm64)
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats probe /data/barley.csv
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats read-json /data/barley.csv &gt; barley.json
+docker run --rm ghcr.io/gbeurier/nirs4all-formats targets               # formats, software presets, requirements
+
+# Write into the current folder as yourself
+mkdir -p exported
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/data" ghcr.io/gbeurier/nirs4all-formats \
+  convert /data/barley.csv --to winisi --out /data/exported
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats plan /data/sample.ProcSpec --to winisi</code></pre></div>
+        </div>
+        <p class="code-note">Readers ship in 0.2.20. Export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) arrive with the next release. Each snippet runs against this repository's bindings.</p>
+      </div>
+    </div>
+  </section>
+
+
     <section id="formats">
       <div class="container">
         <div class="fmt-head">
@@ -564,7 +1007,12 @@
         </div>
         <div class="fmt-tablewrap">
           <table class="fmt-table">
-            <thead><tr><th>Format</th><th>Extensions</th><th>Coverage</th><th>Status</th></tr></thead>
+            <thead><tr>
+              <th scope="col" aria-sort="none"><button class="fmt-sort" type="button" data-sort="name">Format <span class="arr" aria-hidden="true">↕</span></button></th>
+              <th scope="col" class="no-sort">Extensions</th>
+              <th scope="col" aria-sort="none"><button class="fmt-sort" type="button" data-sort="coverage">Coverage <span class="arr" aria-hidden="true">↕</span></button></th>
+              <th scope="col" aria-sort="none"><button class="fmt-sort" type="button" data-sort="status">Status <span class="arr" aria-hidden="true">↕</span></button></th>
+            </tr></thead>
             <tbody id="fmt-body"></tbody>
           </table>
         </div>

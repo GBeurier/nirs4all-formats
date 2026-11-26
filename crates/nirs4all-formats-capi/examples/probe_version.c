@@ -12,7 +12,7 @@
  *
  * Expected output:
  *
- *   nirs4all-formats C ABI version: 0.1.0
+ *   nirs4all-formats C ABI version: 0.2.0
  *   core_is_available: 1
  */
 

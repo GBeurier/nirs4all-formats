@@ -38,7 +38,7 @@ natively to Python via `nirs4all_formats.walk_path(...)` and to R via
 `nirs4allformats_walk_path(...)`.
 
 `targets` prints the export formats and software presets as JSON. `convert`
-reads a file, writes it to an existing directory and prints a JSON report with
+reads a file, writes it to a directory (created when missing) and prints a JSON report with
 the files and declared losses; see [Exports](EXPORTS.md).
 
 Planned commands:

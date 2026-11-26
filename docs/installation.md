@@ -114,3 +114,18 @@ cargo build -p nirs4all-formats-capi --release
 `build.rs` regenerates `crates/nirs4all-formats-capi/include/nirs4all_formats.h` via
 cbindgen. Tagged releases also ship per-OS archives bundling the static/shared
 library, the header and the license. See the [C ABI page](bindings/capi.md).
+
+## Java, C# and Julia
+
+These bindings load the C ABI library. Build it, point
+`NIRS4ALL_FORMATS_LIBRARY` at it and follow the binding page:
+[Java](bindings/java.md) (Maven, JNA), [C#](bindings/csharp.md) (.NET 8) and
+[Julia](bindings/julia.md). Published packages bundle the library.
+
+## Docker
+
+```bash
+docker build -f docker/Dockerfile -t nirs4all-formats .
+```
+
+See [Docker](DOCKER.md) for usage and the published image.

@@ -1,0 +1,10 @@
+# Build context for docker/Dockerfile: only the Rust workspace and licenses.
+*
+!Cargo.toml
+!Cargo.lock
+!crates/
+!vendor/
+!LICENSE
+!LICENSING.md
+!LICENSES/
+**/target/

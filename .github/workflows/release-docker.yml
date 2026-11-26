@@ -1,0 +1,92 @@
+# Build the command-line image for linux/amd64 and linux/arm64 and push it to
+# the GitHub Container Registry as ghcr.io/gbeurier/nirs4all-formats.
+#
+# - push tag vX.Y.Z    -> tags <version> and latest (pre-release tags: <version> only)
+# - workflow_dispatch  -> build only, or push with publish=true
+#
+# Uses the workflow GITHUB_TOKEN with packages: write; no other secret. A first
+# push creates a private package; make it public once in the package settings.
+# See docs/DOCKER.md.
+name: release-docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Push the image to GHCR (true) or build only (false)'
+        type: boolean
+        default: false
+  push:
+    tags: ['v[0-9]*.[0-9]*.[0-9]*']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  IMAGE: ghcr.io/gbeurier/nirs4all-formats
+
+jobs:
+  image:
+    name: Build and push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Tags
+        id: meta
+        env:
+          EVENT: ${{ github.event_name }}
+          PUBLISH_INPUT: ${{ inputs.publish }}
+        run: |
+          set -euo pipefail
+          version=$(sed -nE '/^\[workspace\.package\]/,/^\[/{s/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p}' Cargo.toml | head -n1)
+          push=false
+          if [ "$EVENT" = "push" ]; then
+            if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+              echo "::error::tag $GITHUB_REF_NAME does not match the workspace version $version"
+              exit 1
+            fi
+            push=true
+          elif [ "$PUBLISH_INPUT" = "true" ]; then
+            push=true
+          fi
+          tags="$IMAGE:$version"
+          if [[ "$version" != *-* ]]; then
+            tags="$tags,$IMAGE:latest"
+          fi
+          {
+            echo "version=$version"
+            echo "push=$push"
+            echo "tags=$tags"
+          } >> "$GITHUB_OUTPUT"
+          echo "version=$version push=$push tags=$tags"
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: Log in to GHCR
+        if: steps.meta.outputs.push == 'true'
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build (and push)
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ steps.meta.outputs.push == 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          build-args: VERSION=${{ steps.meta.outputs.version }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+      - name: Push skipped
+        if: steps.meta.outputs.push != 'true'
+        run: echo "::notice::Image built for linux/amd64 and linux/arm64 but not pushed."

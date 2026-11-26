@@ -33,7 +33,10 @@ pub use registry::{
 pub use sidecars::{FsSidecars, InMemorySidecars, NoSidecars};
 pub use walker::{walk_path, WalkEntry, WalkOptions, WalkOutcome, WalkStats};
 pub use writers::{
-    software_catalog, write_records, writer_catalog, SoftwareProfile, WriteError, WriteLoss,
-    WriteOptions, WriteOutput, WriterCatalogEntry, WrittenFile,
+    export_targets, plan_conversion, software_catalog, target_requirements, write_records,
+    writer_catalog, writer_requirements, AppliedConversion, ConversionPlan, EvenAxis, Grid,
+    OtherGrids, PlanChoice, PlanOptions, PlanQuestion, PlanRefusal, PlanStatus, PlanStep,
+    PlannedSignal, SignalCandidate, SoftwareProfile, TargetRequirements, WriteError, WriteLoss,
+    WriteOptions, WriteOutput, WriterCatalogEntry, WrittenFile, CONVERSIONS_KEY,
 };
 pub use xlsx_cells::decode_xlsx_cells;
