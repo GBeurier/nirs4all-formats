@@ -53,3 +53,7 @@ docs/dev/IMPL_PLAN_2026_05_22.md
 
 # Licensed assets materialized by maturin develop, regenerated from vendor/.
 /bindings/python/python/nirs4all_formats/_vendor/
+# .NET and Julia build/resolution outputs of the bindings.
+/bindings/csharp/**/bin/
+/bindings/csharp/**/obj/
+/bindings/julia/**/Manifest.toml

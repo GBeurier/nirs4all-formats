@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
+    <RootNamespace>Nirs4all.Formats</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <PackageId>Nirs4all.Formats</PackageId>
+    <!-- Lockstep with the Cargo workspace version (scripts/bump_version.sh). -->
+    <Version>0.2.20</Version>
+    <Authors>Gregory Beurier</Authors>
+    <Company>CIRAD</Company>
+    <Description>Read NIRS and spectroscopy vendor files and export them to exchange formats, through the nirs4all-formats Rust registry.</Description>
+    <PackageTags>spectroscopy;nirs;chemometrics;jcamp-dx;spc</PackageTags>
+    <PackageLicenseExpression>CECILL-2.1 OR AGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/GBeurier/nirs4all-formats</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/GBeurier/nirs4all-formats</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <!--
+    Native libraries for the package: pass -p:NativeAssetsDir=DIR where DIR holds
+    <rid>/native/<library> (linux-x64, linux-arm64, osx-x64, osx-arm64, win-x64).
+    They are packed under runtimes/, where .NET resolves them per platform.
+  -->
+  <ItemGroup Condition="'$(NativeAssetsDir)' != ''">
+    <None Include="$(NativeAssetsDir)/**/*" Pack="true" PackagePath="runtimes/" />
+  </ItemGroup>
+
+</Project>
