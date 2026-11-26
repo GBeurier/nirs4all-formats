@@ -101,7 +101,7 @@ still no backend and nothing is uploaded.
 | `vendor/methods.version` | The exact `@nirs4all/methods` version the demo uses; the only place to change it. |
 | `vendor/methods/` | That version's npm `dist/` (JS modules, `n4m.wasm`, licences), written by `vendor-methods.sh`. |
 | `vendor-methods.sh` | Vendors the pinned version with `npm pack`, or a local build's `dist/` for testing (never committed). |
-| `vendor/ui/` | The nirs4all-ui browser entry (`nirs4all-ui-browser.iife.js`, `browser.css`) with its licence texts. Built with `npm run build` from nirs4all-ui commit `2769489` (branch `feat/spectra-compare-20261126`: 0.3.1 plus `SpectraCompareChart` / `mountSpectraCompare`, not yet released); replace it with the released package's `dist/browser/` files once published. |
+| `vendor/ui/` | The nirs4all-ui browser entry (`nirs4all-ui-browser.iife.js`, `browser.css`) with its licence texts. Copied from the published npm package `nirs4all-ui@0.3.2` (`dist/browser/`), which provides `SpectraCompareChart` / `mountSpectraCompare`. |
 | `tests/` | Playwright smokes: `shared-ui-smoke`, `page-smoke`, `convert-smoke`, `export-smoke` (top Export and chart download), plus `sidecar-routing`. |
 | `pkg/` | `wasm-pack --target web` output for the served version (git-ignored; built by `build.sh` / CI). |
 | `pkg-nomod/` | `wasm-pack --target no-modules` output — input to the standalone build (git-ignored). |
