@@ -85,6 +85,22 @@ try {
     if (shots) await page.screenshot({ path: path.join(shots, `${path.basename(sample)}.png`), fullPage: true });
     await page.close();
   }
+  const page = await open("ocean_optics/whiteref.ProcSpec");
+  await page.selectOption("#conv-signal", "reflectance");
+  assert(await page.locator('#conv-type option[value="transmittance"]').evaluate((option) => option.disabled), "reflectance offered conversion to transmittance");
+  assert(await page.locator('#conv-type option[value="absorbance"]').evaluate((option) => !option.disabled), "absorbance should be offered");
+  await page.selectOption("#conv-type", "absorbance");
+  await page.waitForFunction(() => conv.result?.source === "reflectance");
+  await page.selectOption("#conv-signal", "white_reference");
+  for (const id of ["#conv-type", "#conv-unit", "#conv-grid"]) {
+    assert(await page.locator(id).isDisabled(), `${id} offers conversion for a reference`);
+  }
+  assert(await page.evaluate(() => state.active === "white_reference" && !conv.result && !document.querySelector("#conv-plan").textContent),
+    "switching to a reference should show the original spectrum without a refusal");
+  await page.selectOption("#conv-signal", "reflectance");
+  assert(await page.locator('#conv-type option[value="absorbance"]').evaluate((option) => !option.disabled), "changing back did not restore allowed options");
+  await page.close();
+
   // Reference and splice steps still come from Methods when selected in the toolbar.
   for (const [sample, source, step] of [
     ["ocean_optics/whiteref.ProcSpec", "sample", "reflectance_from_references"],

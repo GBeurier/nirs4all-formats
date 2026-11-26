@@ -1770,9 +1770,15 @@ const DETECTED = {
   7: ["absorbance", null], 8: ["absorbance", null],
 };
 
+const CONVERSION_SELECTS = {
+  "#conv-type": "signal_type",
+  "#conv-unit": "axis_unit",
+  "#conv-grid": "grid",
+};
+
 let conv = newConversion();
 function newConversion(records = [], names = []) {
-  return { records, names, answers: {}, result: null, revision: 0 };
+  return { records, names, answers: {}, result: null, revision: 0, plans: new Map() };
 }
 
 function mountConvert() {
@@ -1812,6 +1818,7 @@ function convertPanel() {
         </div>
         <div class="field conv-splices hidden"><label for="conv-splices">Detector splice wavelengths (nm)</label><input id="conv-splices" placeholder="1001, 1801"></div>
         ${number("conv-tolerance", "Axis tolerance for export", "0")}
+        ${EMBED ? "<p>Conversion is available on the hosted page.</p>" : ""}
         <h4>Limits</h4><ul class="limits-list">${CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
         <div id="conv-result"></div>
       </div><form method="dialog" class="dlg-actions"><button class="btn-export">Close</button></form>
@@ -1827,20 +1834,23 @@ function convertPanel() {
   panel.addEventListener("change", (event) => {
     if (event.target === signal) {
       conv.answers = {};
-      $("#conv-splices", panel).value = "";
+      conv.plans.clear();
+      for (const id of [...Object.keys(CONVERSION_SELECTS), "#conv-step", "#conv-min", "#conv-max", "#conv-splices"]) {
+        $(id, panel).value = "";
+      }
     }
-    replan();
+    replan(event.target);
   });
   return panel;
 }
 
-function convOptions() {
-  const value = (id) => ($(id)?.value || "").trim();
+function convOptions(overrides = {}) {
+  const value = (id) => (overrides[id] ?? $(id)?.value ?? "").trim();
   const options = { ...conv.answers };
   options.signal = value("#conv-signal") || conv.names[0];
-  if (value("#conv-type")) options.signal_type = value("#conv-type");
-  if (value("#conv-unit")) options.axis_unit = value("#conv-unit");
-  if (value("#conv-grid")) options.grid = value("#conv-grid");
+  for (const [id, key] of Object.entries(CONVERSION_SELECTS)) {
+    if (value(id)) options[key] = value(id);
+  }
   if (options.grid === "even") {
     for (const [id, key] of [["#conv-step", "grid_step"], ["#conv-min", "grid_min"], ["#conv-max", "grid_max"]]) {
       if (value(id)) options[key] = Number(value(id));
@@ -1857,7 +1867,34 @@ function convOptions() {
   return options;
 }
 
-async function replan() {
+function planToolbar(options) {
+  if (!options.signal_type && !options.axis_unit && !options.grid) return null;
+  const key = JSON.stringify(options);
+  if (!conv.plans.has(key)) {
+    if (conv.plans.size >= 32) conv.plans.clear();
+    conv.plans.set(key, WASM.planConversion(conv.records, null, options));
+  }
+  return conv.plans.get(key);
+}
+
+function updateConversionChoices(source) {
+  // Multidimensional signals cannot be converted. Avoid sending cube values to WASM for every choice.
+  const available = !EMBED && !conv.records.some((record) => record.signals?.[source]?.dims?.length > 1);
+  for (const id of Object.keys(CONVERSION_SELECTS)) {
+    const select = $(id);
+    for (const option of select.options) {
+      if (!option.value) continue;
+      try {
+        option.disabled = !available || planToolbar(convOptions({ [id]: option.value }))?.status === "refused";
+      } catch (_) {
+        option.disabled = true;
+      }
+    }
+    select.disabled = !select.value && [...select.options].slice(1).every((option) => option.disabled);
+  }
+}
+
+async function replan(changed) {
   const workspace = conv;
   const revision = ++workspace.revision;
   const host = $("#conv-plan");
@@ -1871,15 +1908,22 @@ async function replan() {
   };
   host.replaceChildren();
   $("#conv-result").replaceChildren();
-  $(".conv-even").classList.toggle("hidden", $("#conv-grid").value !== "even");
   try {
-    const options = convOptions();
-    if (!options.signal_type && !options.axis_unit && !options.grid) {
+    let options = convOptions();
+    let plan = planToolbar(options);
+    // Clearing a setting must always be possible, including when the other settings depend on it.
+    if (plan?.status === "refused" && changed && Object.hasOwn(CONVERSION_SELECTS, `#${changed.id}`) && !changed.value) {
+      for (const id of Object.keys(CONVERSION_SELECTS)) $(id).value = "";
+      options = convOptions();
+      plan = null;
+    }
+    updateConversionChoices(source);
+    $(".conv-even").classList.toggle("hidden", options.grid !== "even");
+    if (!plan) {
       $(".conv-splices").classList.add("hidden");
       display(workspace.records, null);
       return;
     }
-    const plan = WASM.planConversion(workspace.records, null, options);
     $(".conv-splices").classList.toggle("hidden", !plan.steps.some((s) => s.step === "reflectance_from_references") && !options.splices);
     if (plan.status !== "ready") {
       display(workspace.records, null);

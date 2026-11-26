@@ -128,10 +128,10 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 320, height: 844 
   const overflowFile = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   assert(overflowFile <= 1, `${viewport.width}px with a file: horizontal overflow of ${overflowFile}px`);
   if (offline) {
-    await page.selectOption("#conv-type", "absorbance");
-    await page.waitForSelector("#conv-plan .conv-note[role=alert]");
-    const text = await page.textContent("#conv-plan");
-    assert(/single-file build does not include nirs4all-methods/.test(text), text);
+    for (const id of ["#conv-type", "#conv-unit", "#conv-grid"]) {
+      assert(await page.locator(id).isDisabled(), `${id} offers conversion offline`);
+    }
+    assert(await page.locator("#conv-signal").isEnabled(), "signal browsing disabled offline");
   }
   if (viewport.width >= 1000) {
     // Exercise per-record metadata, nested fields, long text and entries beyond the old display limit.
