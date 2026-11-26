@@ -109,6 +109,20 @@ pub(crate) enum Technique {
     Unknown,
 }
 
+/// Raman readers, or laser / excitation / Raman metadata.
+fn raman_evidence(record: &SpectralRecord) -> bool {
+    let format = record.provenance.format.to_ascii_lowercase();
+    ["raman", "horiba", "renishaw", "trivista", "witec"]
+        .iter()
+        .any(|name| format.contains(name))
+        || record.metadata.keys().any(|key| {
+            let key = key.to_ascii_lowercase();
+            key.contains("laser") || key.contains("excitation") || key.contains("raman")
+        })
+}
+
+/// Measurement technique, shared by the writers' labels and the conversion
+/// planner (a Raman cm-1 axis is a shift, not a wavenumber).
 pub(crate) fn technique(
     record: &SpectralRecord,
     axis: &SpectralAxis,
@@ -135,11 +149,19 @@ pub(crate) fn technique(
             Technique::Unknown
         };
     }
-    let raman_format = matches!(
-        record.provenance.format.as_str(),
-        "renishaw-wdf" | "raman-open-database" | "witec-wip"
-    );
-    if raman_format || text("galactic_spc", "x_label").contains("RAMAN") {
+    // OpenSpecy libraries mix FTIR and Raman spectra and say which per record.
+    match record
+        .metadata
+        .get("modality")
+        .and_then(Value::as_str)
+        .map(str::to_ascii_lowercase)
+        .as_deref()
+    {
+        Some("raman") => return Technique::Raman,
+        Some("ftir" | "ir" | "nir" | "infrared") => return Technique::Infrared,
+        _ => {}
+    }
+    if raman_evidence(record) || text("galactic_spc", "x_label").contains("RAMAN") {
         return Technique::Raman;
     }
     let optical = matches!(

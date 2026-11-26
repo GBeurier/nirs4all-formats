@@ -1402,9 +1402,9 @@ impl<'a> Planner<'a> {
         }
         if let Some(unit) = wanted_unit.filter(|unit| (source_unit == "cm-1") != (*unit == "cm-1"))
         {
-            let raman = self
-                .holders(name)
-                .any(|(record, signal)| raman_indicated(record, signal));
+            let raman = self.holders(name).any(|(record, signal)| {
+                technique(record, &signal.axis, &signal.signal_type) == Technique::Raman
+            });
             let optical = matches!(
                 state.signal_type,
                 SignalType::Absorbance
@@ -1831,27 +1831,6 @@ fn is_peak_table(record: &SpectralRecord) -> bool {
             .and_then(|jcamp| jcamp.get("data_type"))
             .and_then(Value::as_str)
             .is_some_and(|kind| kind.to_ascii_uppercase().contains("PEAK"))
-}
-
-/// Raman instruments: the technique, the reader, or laser/excitation
-/// metadata tell. A Raman cm-1 axis is a shift, not a wavenumber.
-fn raman_indicated(record: &SpectralRecord, signal: &SpectralArray) -> bool {
-    let format = record.provenance.format.to_ascii_lowercase();
-    technique(record, &signal.axis, &signal.signal_type) == Technique::Raman
-        || [
-            "raman",
-            "horiba",
-            "renishaw",
-            "trivista",
-            "witec",
-            "openspecy",
-        ]
-        .iter()
-        .any(|name| format.contains(name))
-        || record.metadata.keys().any(|key| {
-            let key = key.to_ascii_lowercase();
-            key.contains("laser") || key.contains("excitation") || key.contains("raman")
-        })
 }
 
 /// Lower-case words of a signal's name and role.
