@@ -7,7 +7,8 @@
 nirs4allformats_export_targets()
 }
 \value{
-A list with elements \code{formats} and \code{software}.
+A list with elements \code{formats}, \code{software} and \code{requirements} (the
+signal types, axis units, grids and limits each format accepts).
 }
 \description{
 Returns the formats \code{\link[=nirs4allformats_convert]{nirs4allformats_convert()}} can write and the presets for

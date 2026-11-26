@@ -22,7 +22,14 @@ Live: **https://formats.nirs4all.org/**
 - **Export** — download the decoded result locally: **CSV** (the active signal as
   a spectra matrix — one row per record, axis values as columns) or **JSON** (the
   full `SpectralRecord[]` with signals, axes, metadata, targets and provenance).
-- **Convert for market software** — `Convert…` asks the Rust planner
+- **Library** — install channels and one tabbed example per language (Python,
+  R, Rust, JavaScript/WASM, CLI; C, Java, C#, Julia and Docker are marked as
+  coming with the next release) showing how to read a file, reach the spectra
+  matrix, axis, targets and metadata, and export or plan a conversion. The
+  examples run against this repository's bindings.
+- **Format catalogue** — sortable by name, coverage and status from the column
+  headers.
+- **Convert for market software** — the panel under every decoded file asks the Rust planner
   (`planConversion`) what a software or format needs, shows the steps, questions
   and refusals, runs the steps with nirs4all-methods (`vendor/methods/`, loaded
   only when a conversion runs), adds the result as a derived signal shown

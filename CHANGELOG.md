@@ -32,10 +32,13 @@ still change before 1.0.
 - Writers report conversions listed under the record metadata key `conversions` (output
   `conversions`), write them into JCAMP-DX (`##$CONVERSION n` labels) and SPC log text, and
   declare `conversions_not_written` for the other formats.
-- Demo: a "Convert…" panel plans a conversion for a software or format (or for viewing only),
-  runs it with the vendored `@nirs4all/methods` WASM (exact version pinned in `demo/vendor/methods.version`, 1.5.2) loaded on demand, adds the result
-  as a derived signal shown before, after or next to the original with a validation summary,
-  and exports it with its losses and conversions.
+- Demo site: presents the library (install channels and a tabbed example per language) and
+  is the tool itself. Every decoded file gets a conversion panel that plans a conversion for a
+  software or format (or for viewing only), runs it with the vendored `@nirs4all/methods` WASM
+  (exact version pinned in `demo/vendor/methods.version`, 1.5.2) loaded on demand, adds the
+  result as a derived signal shown before, after or next to the original with a validation
+  summary, and exports it with its losses and conversions. The format catalogue sorts by name,
+  coverage and status.
 - Read WinISI files of other instruments (model `Unknown`), recognized by a consistent header.
 - Records with `null` values, as JSON represents missing points, deserialize as NaN.
 

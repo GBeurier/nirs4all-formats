@@ -128,11 +128,13 @@ let wasmReady = null;
   initDropWave();
   loadSamples();
   renderFormats();
+  initCodeTabs();
 
   wasmReady = initWasm();
   wasmReady.then(() => {
     try { $("#stat-version").textContent = WASM.version(); } catch (_) {}
     try { const f = WASM.features(); $("#stat-hdf5").style.display = f && f.hdf5 ? "" : "none"; } catch (_) {}
+    renderConvertCatalog();
     maybeAutoLoad();
   }).catch((e) => {
     results.classList.add("show");
@@ -360,6 +362,33 @@ const FMT_META = {
 const FMT_ORDER = ["supported", "targeted", "partial", "adjacent", "sourcing", "outscope"];
 let FORMATS = null;
 const fmtFilter = { q: "", status: new Set() };
+// Column sort: null keeps the matrix order; dir 1 ascending, -1 descending.
+const fmtSort = { key: null, dir: 1 };
+const fmtCoverage = (f) => {
+  const total = f.variants || (f.ok + f.partial + f.planned + f.blocked) || 1;
+  return f.ok / total;
+};
+const FMT_SORTS = {
+  name: (a, b) => a.name.localeCompare(b.name, "en", { sensitivity: "base" }),
+  coverage: (a, b) => fmtCoverage(a) - fmtCoverage(b) || a.ok - b.ok,
+  status: (a, b) => FMT_ORDER.indexOf(a.status) - FMT_ORDER.indexOf(b.status),
+};
+const SORT_LABEL = { name: "format name", coverage: "coverage", status: "status" };
+
+function wireFormatSort() {
+  document.querySelectorAll(".fmt-sort").forEach((button) => button.addEventListener("click", () => {
+    const key = button.dataset.sort;
+    fmtSort.dir = fmtSort.key === key ? -fmtSort.dir : 1;
+    fmtSort.key = key;
+    document.querySelectorAll(".fmt-table th[aria-sort]").forEach((th) => {
+      const own = th.querySelector(".fmt-sort").dataset.sort === key;
+      th.setAttribute("aria-sort", own ? (fmtSort.dir === 1 ? "ascending" : "descending") : "none");
+      th.querySelector(".arr").textContent = own ? (fmtSort.dir === 1 ? "↑" : "↓") : "↕";
+    });
+    drawFormatRows();
+    setStatus(`Formats sorted by ${SORT_LABEL[key]}, ${fmtSort.dir === 1 ? "ascending" : "descending"}.`);
+  }));
+}
 
 async function renderFormats() {
   const section = $("#formats");
@@ -388,6 +417,7 @@ async function renderFormats() {
     drawFormatRows();
   }));
   $("#fmt-search").addEventListener("input", (e) => { fmtFilter.q = e.target.value.toLowerCase().trim(); drawFormatRows(); });
+  wireFormatSort();
   drawFormatRows();
 }
 
@@ -400,6 +430,11 @@ function drawFormatRows() {
     if (!q) return true;
     return `${f.name} ${f.vendor} ${f.ext} ${FMT_META[f.status].label}`.toLowerCase().includes(q);
   });
+  if (fmtSort.key) {
+    const compare = FMT_SORTS[fmtSort.key];
+    // Stable: equal rows keep the matrix order.
+    rows.sort((a, b) => fmtSort.dir * compare(a, b) || FORMATS.indexOf(a) - FORMATS.indexOf(b));
+  }
   body.innerHTML = rows.length
     ? rows.map(formatRow).join("")
     : `<tr><td colspan="4" class="fmt-empty">No format matches “${esc(q)}”.</td></tr>`;
@@ -427,6 +462,62 @@ function formatRow(f) {
       <span class="cov-num"><b>${f.ok}</b>/${total}</span></div></td>
     <td><span class="st ${m.cls}" title="${esc(m.desc)}"><span class="d"></span>${esc(m.label)}</span></td>
   </tr>`;
+}
+
+/* ── library code tabs ───────────────────────────────────────────────── */
+function initCodeTabs() {
+  const tabs = [...document.querySelectorAll(".code-tab")];
+  const select = (tab, focus) => {
+    for (const other of tabs) {
+      const on = other === tab;
+      other.setAttribute("aria-selected", String(on));
+      other.tabIndex = on ? 0 : -1;
+      document.getElementById(other.getAttribute("aria-controls")).hidden = !on;
+    }
+    if (focus) tab.focus();
+  };
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => select(tab, false));
+    tab.addEventListener("keydown", (event) => {
+      const next = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      select(tabs[(next + tabs.length) % tabs.length], true);
+    });
+  });
+  document.querySelectorAll(".code-block pre[data-lang]").forEach(highlightCode);
+  document.querySelectorAll(".code-block .copy-btn").forEach((button) => {
+    button.addEventListener("click", () => copy(button.parentElement.querySelector("code").textContent, button));
+  });
+}
+
+function highlightCode(pre) {
+  const marker = ["rust", "js", "c", "java", "csharp"].includes(pre.dataset.lang) ? "//" : "#";
+  const code = pre.querySelector("code");
+  code.innerHTML = code.textContent.split("\n").map((line) => {
+    let out = "", quoted = false;
+    for (let i = 0; i < line.length; i++) {
+      if (!quoted && line.startsWith(marker, i)) return `${out}<span class="c">${esc(line.slice(i))}</span>`;
+      if (line[i] === '"') { out += quoted ? '"</span>' : '<span class="s">"'; quoted = !quoted; continue; }
+      out += esc(line[i]);
+    }
+    return quoted ? `${out}</span>` : out;
+  }).join("\n");
+}
+
+// The conversion section lists the software presets of the loaded writers.
+function renderConvertCatalog() {
+  const limits = $("#limit-list");
+  if (limits) limits.innerHTML = CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("");
+  const list = $("#soft-list");
+  if (!list) return;
+  try {
+    const targets = WASM.exportTargets();
+    list.innerHTML = targets.software.map((p) => `<li>${esc(p.label)} <code>${esc(p.format)}</code></li>`).join("");
+    $("#soft-count").textContent = `${targets.software.length} software · ${targets.formats.length} formats`;
+  } catch (e) {
+    list.innerHTML = `<li class="mono-sub">${esc(String(e?.message || e))}</li>`;
+  }
 }
 
 /* ── decode pipeline ─────────────────────────────────────────────────── */
@@ -768,17 +859,17 @@ function buildResult(ds, withReset) {
         <input id="exp-tolerance" type="number" min="0" step="any" placeholder="axis tol." title="Largest axis deviation, in axis units, accepted when the target needs an evenly spaced axis (default 0); the deviation is reported">
         <button class="btn-export" id="exp-go" title="Export the active signal to the selected target">Export</button>
       </span>
-      <button class="btn-export" id="conv-open" aria-expanded="false" title="Convert the spectra so that a software or format can read them (absorbance, nm, known grids), and check them on the plot first">Convert…</button>
+      <button class="btn-export" id="conv-open" title="Go to the conversion panel: convert the spectra for a software or format and check them on the plot first">Convert</button>
       ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
     </div>`;
   wrap.appendChild(head);
   wireExport(head);
   conv = newConversion();
-  const convertHost = el("div"); convertHost.id = "convert-host"; wrap.appendChild(convertHost);
-  $("#conv-open", head).addEventListener("click", toggleConvert);
+  $("#conv-open", head).addEventListener("click", openConvert);
   wrap.appendChild(renderDetect(probes, prov));
   const kpiRow = el("div", "kpis"); kpiRow.id = "kpis"; wrap.appendChild(kpiRow);
   wrap.appendChild(renderPlotPanel());
+  const convertHost = el("div"); convertHost.id = "convert-host"; wrap.appendChild(convertHost);
 
   const grid = el("div", "grid-2");
   grid.appendChild(renderSignalsPanel());
@@ -918,6 +1009,7 @@ function exportCSV() {
 function activateResult() {
   buildTabs();
   selectSignal(state.active);
+  mountConvert();
 }
 
 function resetView() {
@@ -1468,19 +1560,19 @@ function newConversion() {
   return { plan: null, answers: {}, result: null };
 }
 
-function toggleConvert() {
-  const host = $("#convert-host"), button = $("#conv-open");
-  if (!host) return;
-  if (host.firstChild) {
-    host.replaceChildren();
-    button?.setAttribute("aria-expanded", "false");
-    return;
-  }
-  button?.setAttribute("aria-expanded", "true");
+// Every decoded file gets the panel under its plot.
+function mountConvert() {
+  const host = $("#convert-host");
+  if (!host || host.firstChild || !state.signalNames.length) return;
   host.appendChild(convertPanel());
-  const exportTarget = $("#exp-target")?.value;
-  if (exportTarget) $("#conv-target").value = exportTarget;
   replan();
+}
+
+function openConvert() {
+  mountConvert();
+  const panel = $("#convert-panel");
+  if (!panel) return;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
   $("#conv-target")?.focus({ preventScroll: true });
 }
 
@@ -1779,6 +1871,7 @@ async function runConversion() {
     buildTabs();
     selectSignal(out.name);
     renderResult();
+    $(".plot-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (e) {
     result.replaceChildren(convNote(String(e?.message || e), "Nothing was added to the page. Change the plan and convert again.", "alert"));
   } finally {
