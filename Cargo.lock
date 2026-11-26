@@ -970,7 +970,7 @@ dependencies = [
 
 [[package]]
 name = "nirs4all-formats"
-version = "0.2.20"
+version = "0.3.0"
 dependencies = [
  "arrow-array",
  "arrow-schema",
@@ -998,7 +998,7 @@ dependencies = [
 
 [[package]]
 name = "nirs4all-formats-capi"
-version = "0.2.20"
+version = "0.3.0"
 dependencies = [
  "base64",
  "cbindgen",
@@ -1009,7 +1009,7 @@ dependencies = [
 
 [[package]]
 name = "nirs4all-formats-cli"
-version = "0.2.20"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1019,7 +1019,7 @@ dependencies = [
 
 [[package]]
 name = "nirs4all-formats-core"
-version = "0.2.20"
+version = "0.3.0"
 dependencies = [
  "serde",
  "serde_json",

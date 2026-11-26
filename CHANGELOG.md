@@ -5,7 +5,11 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
-## [Unreleased]
+## [0.3.0] - 2026-11-26
+
+First release of the 0.3 series: decoded values change (WinISI and ISIscan constituents of
+0 read as missing; JSON readers parse numbers with correct rounding). It adds writers,
+conversion plans, a C ABI and Java, C#, Julia and Docker distributions.
 
 ### Added
 

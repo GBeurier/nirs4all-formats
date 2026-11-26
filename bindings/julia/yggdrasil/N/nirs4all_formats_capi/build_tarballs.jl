@@ -9,10 +9,10 @@
 using BinaryBuilder, Pkg
 
 name = "nirs4all_formats_capi"
-version = v"0.2.20"
+version = v"0.3.0"
 
 sources = [
-    # Commit of the v0.2.20 tag of https://github.com/GBeurier/nirs4all-formats.
+    # Commit of the v0.3.0 tag of https://github.com/GBeurier/nirs4all-formats.
     GitSource("https://github.com/GBeurier/nirs4all-formats.git",
               "0000000000000000000000000000000000000000"),
 ]

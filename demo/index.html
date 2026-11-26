@@ -984,7 +984,7 @@ docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/data" ghcr.io/gbeurier/nirs
   convert /data/barley.csv --to winisi --out /data/exported
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats plan /data/sample.ProcSpec --to winisi</code></pre></div>
         </div>
-        <p class="code-note">Readers ship in 0.2.20. Export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) arrive with the next release. Each snippet runs against this repository's bindings.</p>
+        <p class="code-note">Every snippet runs against nirs4all-formats 0.3.0, which adds export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) to the readers.</p>
       </div>
     </div>
   </section>

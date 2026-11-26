@@ -7,7 +7,7 @@
   <groupId>org.nirs4all</groupId>
   <artifactId>nirs4all-formats</artifactId>
   <!-- Lockstep with the Cargo workspace version (scripts/bump_version.sh). -->
-  <version>0.2.20</version>
+  <version>0.3.0</version>
   <packaging>jar</packaging>
 
   <name>nirs4all-formats</name>

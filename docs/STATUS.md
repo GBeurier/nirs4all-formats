@@ -397,6 +397,11 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
 
 ## Last Green Gate
 
+Release v0.3.0 (2026-11-26) is cut from main `7e81498` (PR #57), whose CI passed on every
+job: Rust workspace, C ABI, Java, C#, Julia, Docker image, R binding and R CMD check
+(Windows), Python wheel (macOS arm64) and docs. The local gate below was run on the same
+content before the final CI fixes (c_smoke profile lookup, release gates).
+
 2026-11-26 integrated conversion and bindings branch: `cargo fmt --all --check`,
 workspace Clippy with warnings denied and `cargo test --workspace` in a fresh target
 directory pass (400 passed, three private tests ignored), including the C ABI tests and
