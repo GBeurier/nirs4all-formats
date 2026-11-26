@@ -5,9 +5,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
 use nirs4all_formats::{
-    decode_xlsx_cells, open_bytes, open_path, software_catalog, write_records, writer_catalog,
-    AxisKind, Provenance, SignalType, SourceFile, SpectralArray, SpectralAxis, SpectralRecord,
-    WriteError, WriteOptions, WriteOutput, XlsxCellValue, XlsxDecodeLimits,
+    decode_xlsx_cells, export_targets, open_bytes, open_path, software_catalog, write_records,
+    writer_catalog, AxisKind, Provenance, SignalType, SourceFile, SpectralArray, SpectralAxis,
+    SpectralRecord, WriteError, WriteOptions, WriteOutput, WriterMaturity, XlsxCellValue,
+    XlsxDecodeLimits,
 };
 use serde_json::json;
 
@@ -713,6 +714,43 @@ fn hostile_names_stay_inside_labels_and_files() {
         XlsxDecodeLimits::unlimited(),
     )
     .unwrap();
+}
+
+#[test]
+fn writers_declare_their_maturity() {
+    let of = |format: &str| {
+        writer_catalog()
+            .iter()
+            .find(|entry| entry.format == format)
+            .unwrap()
+            .maturity
+    };
+    for format in ["csv", "xlsx", "jcamp-dx", "galactic-spc", "records-json"] {
+        assert_eq!(of(format), WriterMaturity::Standard, "{format}");
+    }
+    // Reverse-engineered layouts: no published specification.
+    for format in ["foss-winisi-nir", "foss-winisi-cal", "foss-nsas-da"] {
+        assert_eq!(of(format), WriterMaturity::Experimental, "{format}");
+        let notes = writer_catalog()
+            .iter()
+            .find(|entry| entry.format == format)
+            .unwrap()
+            .notes;
+        assert!(notes.contains("Reverse-engineered"), "{format}");
+    }
+    for format in ["xy-text", "bruker-dpt"] {
+        assert_eq!(of(format), WriterMaturity::Other, "{format}");
+    }
+    // Every binding reads the same listing: the field is serialized in snake_case.
+    let listed = export_targets();
+    for entry in listed["formats"].as_array().unwrap() {
+        let maturity = entry["maturity"].as_str().unwrap();
+        assert!(
+            ["standard", "experimental", "other"].contains(&maturity),
+            "{entry}"
+        );
+    }
+    assert_eq!(listed["formats"][0]["maturity"], json!("standard"));
 }
 
 #[test]

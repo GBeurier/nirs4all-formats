@@ -160,6 +160,18 @@ impl WriteOutput {
     }
 }
 
+/// How a writer's layout is known, so hosts can rank targets.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WriterMaturity {
+    /// Written from a published specification or an open, widely read layout.
+    Standard,
+    /// Reverse-engineered from existing files: no published specification.
+    Experimental,
+    /// Simple or vendor-specific text layouts with a narrow audience.
+    Other,
+}
+
 /// Static description of a writer.
 #[derive(Clone, Debug, Serialize)]
 pub struct WriterCatalogEntry {
@@ -169,6 +181,7 @@ pub struct WriterCatalogEntry {
     pub media_type: &'static str,
     /// Whether one file can hold several spectra.
     pub multi_spectrum: bool,
+    pub maturity: WriterMaturity,
     pub notes: &'static str,
 }
 
@@ -179,6 +192,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "jdx",
         media_type: "chemical/x-jcamp-dx",
         multi_spectrum: false,
+        maturity: WriterMaturity::Standard,
         notes: "One spectrum per file. Evenly spaced axes use XYDATA with integer ordinates, others XYPOINTS.",
     },
     WriterCatalogEntry {
@@ -187,6 +201,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "spc",
         media_type: "application/octet-stream",
         multi_spectrum: true,
+        maturity: WriterMaturity::Standard,
         notes: "Little-endian 0x4B, 32-bit float ordinates; explicit abscissae are 32-bit floats.",
     },
     WriterCatalogEntry {
@@ -195,6 +210,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "csv",
         media_type: "text/csv",
         multi_spectrum: true,
+        maturity: WriterMaturity::Standard,
         notes: "One row per spectrum: identifier, targets, then one column per axis value.",
     },
     WriterCatalogEntry {
@@ -203,6 +219,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "xlsx",
         media_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         multi_spectrum: true,
+        maturity: WriterMaturity::Standard,
         notes: "Sheet 'spectra' holds the matrix; sheet 'info' holds axis, signal and source descriptions.",
     },
     WriterCatalogEntry {
@@ -211,6 +228,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "txt",
         media_type: "text/plain",
         multi_spectrum: false,
+        maturity: WriterMaturity::Other,
         notes: "One spectrum per file, abscissa and ordinate separated by a tab, no header.",
     },
     WriterCatalogEntry {
@@ -219,6 +237,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "dpt",
         media_type: "text/plain",
         multi_spectrum: false,
+        maturity: WriterMaturity::Other,
         notes: "One spectrum per file, comma separated; wavenumber axes only.",
     },
     WriterCatalogEntry {
@@ -227,6 +246,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "nir",
         media_type: "application/octet-stream",
         multi_spectrum: true,
+        maturity: WriterMaturity::Experimental,
         notes: "Absorbance along nm, evenly spaced segments, 32-bit floats; sample numbers of 12 characters. Reverse-engineered layout.",
     },
     WriterCatalogEntry {
@@ -235,6 +255,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "cal",
         media_type: "application/octet-stream",
         multi_spectrum: true,
+        maturity: WriterMaturity::Experimental,
         notes: "As foss-winisi-nir with up to 32 constituents; missing values are written as 0. Reverse-engineered layout.",
     },
     WriterCatalogEntry {
@@ -243,6 +264,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "da",
         media_type: "application/octet-stream",
         multi_spectrum: true,
+        maturity: WriterMaturity::Experimental,
         notes: "Absorbance on the four known NSAS axes, 32-bit floats; complete constituents go to a .cn file of the same name. Reverse-engineered layout.",
     },
     WriterCatalogEntry {
@@ -251,6 +273,7 @@ const WRITERS: &[WriterCatalogEntry] = &[
         extension: "json",
         media_type: "application/json",
         multi_spectrum: true,
+        maturity: WriterMaturity::Standard,
         notes: "Complete normalized records; non-finite numbers become null.",
     },
 ];

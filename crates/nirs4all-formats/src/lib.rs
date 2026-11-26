@@ -37,6 +37,6 @@ pub use writers::{
     writer_catalog, writer_requirements, AppliedConversion, ConversionPlan, EvenAxis, Grid,
     OtherGrids, PlanChoice, PlanOptions, PlanQuestion, PlanRefusal, PlanStatus, PlanStep,
     PlannedSignal, SignalCandidate, SoftwareProfile, TargetRequirements, WriteError, WriteLoss,
-    WriteOptions, WriteOutput, WriterCatalogEntry, WrittenFile, CONVERSIONS_KEY,
+    WriteOptions, WriteOutput, WriterCatalogEntry, WriterMaturity, WrittenFile, CONVERSIONS_KEY,
 };
 pub use xlsx_cells::decode_xlsx_cells;

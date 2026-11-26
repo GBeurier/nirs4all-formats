@@ -8,18 +8,25 @@ before the export.
 
 ## Formats
 
-| Target | Extension | Content |
-|---|---|---|
-| `jcamp-dx` | `.jdx` | JCAMP-DX 4.24, one uncompressed spectrum per file. Evenly spaced axes use `XYDATA` with 32-bit integer ordinates and a power-of-ten `YFACTOR`; other axes use `XYPOINTS` with full decimals. |
-| `galactic-spc` | `.spc` | GRAMS SPC `0x4B`, little-endian, 32-bit float ordinates. Evenly spaced axes keep 64-bit limits; explicit axes are 32-bit floats. `multi` groups spectra sharing an axis. |
-| `csv` | `.csv` | One row per spectrum: identifier, targets, one column per axis value. |
-| `xlsx` | `.xlsx` | Same matrix in sheet `spectra`; axis, signal and source in sheet `info`. |
-| `xy-text` | `.txt` | Two columns, one spectrum per file, no header. |
-| `bruker-dpt` | `.dpt` | OPUS data point table; wavenumber (cm-1) axes only. |
-| `foss-winisi-nir` | `.nir` | FOSS WinISI / ISIscan spectra: absorbance along nm, 32-bit floats, up to seven evenly spaced segments. |
-| `foss-winisi-cal` | `.cal` | Same with up to 32 constituents (numeric targets). |
-| `foss-nsas-da` | `.da` | FOSS NSAS spectra on one of the four known axes; constituents go to a `.cn` file of the same name. |
-| `records-json` | `.json` | Complete normalized records. |
+| Target | Extension | Maturity | Content |
+|---|---|---|---|
+| `jcamp-dx` | `.jdx` | standard | JCAMP-DX 4.24, one uncompressed spectrum per file. Evenly spaced axes use `XYDATA` with 32-bit integer ordinates and a power-of-ten `YFACTOR`; other axes use `XYPOINTS` with full decimals. |
+| `galactic-spc` | `.spc` | standard | GRAMS SPC `0x4B`, little-endian, 32-bit float ordinates. Evenly spaced axes keep 64-bit limits; explicit axes are 32-bit floats. `multi` groups spectra sharing an axis. |
+| `csv` | `.csv` | standard | One row per spectrum: identifier, targets, one column per axis value. |
+| `xlsx` | `.xlsx` | standard | Same matrix in sheet `spectra`; axis, signal and source in sheet `info`. |
+| `xy-text` | `.txt` | other | Two columns, one spectrum per file, no header. |
+| `bruker-dpt` | `.dpt` | other | OPUS data point table; wavenumber (cm-1) axes only. |
+| `foss-winisi-nir` | `.nir` | experimental | FOSS WinISI / ISIscan spectra: absorbance along nm, 32-bit floats, up to seven evenly spaced segments. |
+| `foss-winisi-cal` | `.cal` | experimental | Same with up to 32 constituents (numeric targets). |
+| `foss-nsas-da` | `.da` | experimental | FOSS NSAS spectra on one of the four known axes; constituents go to a `.cn` file of the same name. |
+| `records-json` | `.json` | standard | Complete normalized records. |
+
+`maturity` in the export listing (`export_targets()["formats"]`) tells hosts how
+each layout is known: `standard` writers follow a published specification or an
+open, widely read layout; `experimental` writers were reverse-engineered from
+existing files (no published specification); `other` covers simple or
+vendor-specific text layouts. Software presets take the maturity of their
+format.
 
 Every signal is written unless `signal` selects one. N-dimensional signals are
 flattened into named spectra. Matrix targets write one file per signal and per
@@ -141,7 +148,7 @@ anything:
 | `notes` | Limits that apply, including untested vendor imports |
 
 | Step | Method | When |
-|---|---|---|
+|---|---|---|---|
 | `reflectance_from_references` | `preprocessing.signal_conversion.reflectance_from_references` | Raw counts, single beam or radiance with white (and dark) references of the same record and axis; R = (S - D) / (W - D) |
 | `splice_correction` | `preprocessing.signal_conversion.splice_correction` | After references, when overlapping detectors or the `splices` option tell where detectors meet |
 | `declare_signal_type` | none | An unknown signal type answered through `assume_signal_type` |
