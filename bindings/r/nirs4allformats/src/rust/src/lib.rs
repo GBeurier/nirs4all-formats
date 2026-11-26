@@ -8,8 +8,8 @@ use std::sync::Arc;
 
 use extendr_api::{prelude::*, Result as RResult};
 use nirs4all_formats::{
-    open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
-    software_catalog, walk_path, write_records, writer_catalog, CubeMask, CubeWindow,
+    export_targets, open_bytes_with_options, open_path_with_options,
+    open_with_sidecars_and_options, probe_path, walk_path, write_records, CubeMask, CubeWindow,
     InMemorySidecars, ReadOptions, SidecarResolver, WalkOptions, WalkOutcome, WriteOptions,
 };
 
@@ -164,10 +164,7 @@ fn nirs4allformats_native_walk(
 /// @export
 #[extendr]
 fn nirs4allformats_native_export_targets() -> RResult<String> {
-    to_string(&serde_json::json!({
-        "formats": writer_catalog(),
-        "software": software_catalog(),
-    }))
+    to_string(&export_targets())
 }
 
 /// Read a file, save it to another format and return a JSON report.
@@ -188,6 +185,7 @@ fn nirs4allformats_native_convert(
         "format": output.format,
         "files": files,
         "losses": output.losses,
+        "conversions": output.conversions,
     }))
 }
 

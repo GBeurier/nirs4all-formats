@@ -14,11 +14,11 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use nirs4all_formats::{
-    builtin_probes, open_bytes as open_bytes_native,
-    open_with_sidecars as open_with_sidecars_native, reader_catalog as reader_catalog_native,
-    sidecar_requirements as sidecar_requirements_native, software_catalog,
-    write_records as write_records_native, writer_catalog, InMemorySidecars, SidecarResolver,
-    SpectralRecord, WriteLoss, WriteOptions,
+    builtin_probes, export_targets as export_targets_native, open_bytes as open_bytes_native,
+    open_with_sidecars as open_with_sidecars_native, plan_conversion as plan_conversion_native,
+    reader_catalog as reader_catalog_native, sidecar_requirements as sidecar_requirements_native,
+    write_records as write_records_native, AppliedConversion, InMemorySidecars, PlanOptions,
+    SidecarResolver, SpectralRecord, WriteLoss, WriteOptions,
 };
 use serde::Serialize;
 use serde_wasm_bindgen::Serializer;
@@ -34,6 +34,12 @@ fn js_serializer() -> Serializer {
     Serializer::new()
         .serialize_maps_as_objects(true)
         .serialize_large_number_types_as_bigints(true)
+}
+
+/// Serializer for export listings, plans and write reports: their JSON
+/// integers (grid sizes, step parameters) are small and stay JS numbers.
+fn export_serializer() -> Serializer {
+    Serializer::new().serialize_maps_as_objects(true)
 }
 
 /// Decode an explicitly declared non-spectral PNG/VCF profile through the Rust owner.
@@ -164,15 +170,49 @@ pub fn open_with_sidecars(
         .map_err(|err| JsError::new(&err.to_string()))
 }
 
-/// Export formats and software presets compiled into this bundle.
+/// Export formats, software presets and the requirements of each format.
 #[wasm_bindgen(js_name = exportTargets)]
 pub fn export_targets() -> Result<JsValue, JsError> {
-    serde_json::json!({
-        "formats": writer_catalog(),
-        "software": software_catalog(),
-    })
-    .serialize(&js_serializer())
-    .map_err(|err| JsError::new(&err.to_string()))
+    export_targets_native()
+        .serialize(&export_serializer())
+        .map_err(|err| JsError::new(&err.to_string()))
+}
+
+/// Plan the conversions that make `records` writable for `target`.
+///
+/// `target` is a writer format or software preset, or `null`/`undefined` to
+/// plan the options alone (for example `{ signal_type: "absorbance" }`).
+/// Returns the plan: abstract steps naming the nirs4all-methods method that
+/// computes each, questions to answer through the options, and refusals.
+#[wasm_bindgen(js_name = planConversion)]
+pub fn plan_conversion(
+    records: JsValue,
+    target: Option<String>,
+    options: JsValue,
+) -> Result<JsValue, JsError> {
+    let records: Vec<SpectralRecord> = serde_wasm_bindgen::from_value(records)
+        .map_err(|err| JsError::new(&format!("invalid records: {err}")))?;
+    let options: PlanOptions = json_options(options, "plan options")?;
+    let plan = plan_conversion_native(&records, target.as_deref(), &options)
+        .map_err(|err| JsError::new(&err.to_string()))?;
+    plan.serialize(&export_serializer())
+        .map_err(|err| JsError::new(&err.to_string()))
+}
+
+/// Options object decoded through JSON, so unknown keys are refused.
+fn json_options<T: serde::de::DeserializeOwned + Default>(
+    options: JsValue,
+    what: &str,
+) -> Result<T, JsError> {
+    if options.is_undefined() || options.is_null() {
+        return Ok(T::default());
+    }
+    serde_wasm_bindgen::from_value::<serde_json::Value>(options)
+        .map_err(|err| JsError::new(&format!("invalid {what}: {err}")))
+        .and_then(|value| {
+            serde_json::from_value(value)
+                .map_err(|err| JsError::new(&format!("invalid {what}: {err}")))
+        })
 }
 
 /// Write records to an export format or software preset.
@@ -180,22 +220,13 @@ pub fn export_targets() -> Result<JsValue, JsError> {
 /// `records` are the objects returned by `openBytes`; `options` is an object
 /// with any of `signal`, `base_name`, `extension`, `axis_tolerance`, `multi`,
 /// `delimiter` and `zip`. Returns `{ format, files: [{ name, media_type,
-/// bytes }], losses }`.
+/// bytes }], losses, conversions }`.
 #[wasm_bindgen(js_name = writeRecords)]
 pub fn write_records(records: JsValue, target: &str, options: JsValue) -> Result<JsValue, JsError> {
     let records: Vec<SpectralRecord> = serde_wasm_bindgen::from_value(records)
         .map_err(|err| JsError::new(&format!("invalid records: {err}")))?;
-    let options: WriteOptions = if options.is_undefined() || options.is_null() {
-        WriteOptions::default()
-    } else {
-        // Through a JSON value: struct decoding from JS skips unknown keys.
-        serde_wasm_bindgen::from_value::<serde_json::Value>(options)
-            .map_err(|err| JsError::new(&format!("invalid export options: {err}")))
-            .and_then(|value| {
-                serde_json::from_value(value)
-                    .map_err(|err| JsError::new(&format!("invalid export options: {err}")))
-            })?
-    };
+    // Through a JSON value: struct decoding from JS skips unknown keys.
+    let options: WriteOptions = json_options(options, "export options")?;
     let output = write_records_native(&records, target, &options)
         .map_err(|err| JsError::new(&err.to_string()))?;
     JsOutput {
@@ -210,8 +241,9 @@ pub fn write_records(records: JsValue, target: &str, options: JsValue) -> Result
             })
             .collect(),
         losses: &output.losses,
+        conversions: &output.conversions,
     }
-    .serialize(&js_serializer())
+    .serialize(&export_serializer())
     .map_err(|err| JsError::new(&err.to_string()))
 }
 
@@ -220,6 +252,7 @@ struct JsOutput<'a> {
     format: &'a str,
     files: Vec<JsFile<'a>>,
     losses: &'a [WriteLoss],
+    conversions: &'a [AppliedConversion],
 }
 
 #[derive(Serialize)]

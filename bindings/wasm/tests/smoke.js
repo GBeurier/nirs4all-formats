@@ -150,6 +150,42 @@ console.log('features:', wasm.features());
   const zip = wasm.writeRecords(records, 'csv', { zip: true });
   assert.equal(zip.files[0].name, 'set.zip');
   assert.throws(() => wasm.writeRecords(records, 'csv', { unknown: 1 }), /invalid export options/);
+  assert.deepEqual(output.conversions, []);
 }
 
-console.log('OK: WASM smoke tests passed (probe + open_bytes + export)');
+// Conversion plans: Formats names the steps, nirs4all-methods computes them.
+{
+  const targets = wasm.exportTargets();
+  const winisi = targets.requirements.find((r) => r.format === 'foss-winisi-nir');
+  assert.deepEqual(winisi.signal_types, ['absorbance']);
+  assert.deepEqual(winisi.grids.map((g) => g.points), [700, 1050]);
+  const records = wasm.openBytes('whiteref.ProcSpec', readSample('samples/ocean_optics/whiteref.ProcSpec'));
+  const plan = wasm.planConversion(records, 'winisi', {});
+  assert.equal(plan.status, 'ready');
+  assert.equal(plan.source_signal, 'reflectance');
+  assert.deepEqual(plan.steps.map((s) => s.method_id), [
+    'preprocessing.signal_conversion.to_absorbance',
+    'preprocessing.resampling.resampler',
+  ]);
+  const raw = wasm.planConversion(records, 'winisi', { signal: 'sample' });
+  assert.equal(raw.steps[0].inputs.white_reference, 'white_reference');
+  const view = wasm.planConversion(records, null, { signal_type: 'absorbance' });
+  assert.equal(view.output.name, 'absorbance (from reflectance)');
+  assert.throws(() => wasm.planConversion(records, 'winisi', { grid_step: -1 }), /grid_step/);
+  assert.throws(() => wasm.planConversion(records, 'winisi', { unknown: 1 }), /invalid plan options/);
+
+  // A converted signal carries its steps to the writers.
+  const record = structuredClone(records[0]);
+  record.signals = { converted: { ...record.signals.reflectance, signal_type: 'absorbance', unit: null } };
+  record.metadata.conversions = [{
+    signal: 'converted', step: 'signal_conversion',
+    method_id: 'preprocessing.signal_conversion.to_absorbance', methods_version: '1.5.1',
+    params: { is_percent: true },
+  }];
+  const output = wasm.writeRecords([record], 'jcamp-dx', {});
+  assert.equal(output.conversions.length, 1);
+  const text = new TextDecoder().decode(output.files[0].bytes);
+  assert.match(text, /##\$CONVERSION 1 METHOD=preprocessing\.signal_conversion\.to_absorbance/);
+}
+
+console.log('OK: WASM smoke tests passed (probe + open_bytes + export + plans)');
