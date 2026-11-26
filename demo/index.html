@@ -699,7 +699,7 @@
         <a class="channel" role="listitem" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener"><span class="ch-name">npm</span><code class="ch-pkg">@nirs4all/formats-wasm</code><span class="ch-cmd">npm install @nirs4all/formats-wasm</span></a>
         <div class="channel soon" role="listitem"><span class="ch-name">Maven Central</span><code class="ch-pkg">org.nirs4all:nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
         <div class="channel soon" role="listitem"><span class="ch-name">NuGet</span><code class="ch-pkg">Nirs4all.Formats</code><span class="ch-cmd">Coming with the next release</span></div>
-        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">name to be announced</code><span class="ch-cmd">Coming with the next release</span></div>
+        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">NIRS4ALLFormats</code><span class="ch-cmd">Coming with the next release</span></div>
         <div class="channel soon" role="listitem"><span class="ch-name">Docker</span><code class="ch-pkg">ghcr.io/gbeurier/nirs4all-formats</code><span class="ch-cmd">Coming with the next release</span></div>
       </div>
       <div class="code-frame">
@@ -834,24 +834,155 @@ nirs4all-formats convert barley.csv --to winisi --out exported/
 nirs4all-formats plan sample.ProcSpec --to winisi    # conversion steps, questions, refusals</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-c" aria-labelledby="tab-c" tabindex="0" hidden>
-          <!-- TODO(c): replace this placeholder with the C snippet once the C ABI is published. -->
-          <div class="code-todo"><strong>C: coming with the next release.</strong> The C ABI is being built; its install and read/export example will appear here. Until then, use the Python, R, Rust, JavaScript or command-line interface.</div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/capi.md" target="_blank" rel="noopener">C ABI docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="c"><code>// C ABI archive (include/, lib/) from GitHub Releases, or cargo build -p nirs4all-formats-capi
+// cc example.c -Iinclude -Llib -Wl,-rpath,"$PWD/lib" -lnirs4all_formats_capi &amp;&amp; ./a.out
+#include &lt;stdio.h&gt;
+#include "nirs4all_formats.h"
+
+// Print a result (or the error) and free it
+static void show(n4fmt_status_t status, char *json, char *error) {
+    printf("%.160s\n", status == N4FMT_STATUS_OK ? json : error);
+    n4fmt_string_free(json);
+    n4fmt_string_free(error);
+}
+
+int main(void) {
+    char *records = NULL, *json = NULL, *error = NULL;
+
+    // Read: the format is recognised from the file content
+    n4fmt_status_t status = n4fmt_open_path("barley.csv", NULL, &amp;records, &amp;error);
+    if (status != N4FMT_STATUS_OK) {
+        show(status, NULL, error);
+        return 1;
+    }
+
+    // Access the data: a JSON array of records, one per spectrum, for any JSON parser:
+    // [{"signals": {"signal": {"axis": {"values": [...], "unit": "nm"}, "values": [...]}},
+    //   "targets": {"Protein": 9.383, ...}, "metadata": {"sample_id": "1", ...}, "provenance": ...}]
+    printf("%.160s\n", records);
+
+    // Export for a software or a format: base64 files, and what the target cannot carry
+    status = n4fmt_write_records(records, "winisi", "{\"base_name\": \"barley\"}", &amp;json, &amp;error);
+    show(status, json, error);
+    status = n4fmt_convert_path("barley.csv", "jcamp-dx", "exported", NULL, &amp;json, &amp;error);
+    show(status, json, error);
+    status = n4fmt_export_targets(&amp;json, &amp;error);   // formats, software presets, requirements
+    show(status, json, error);
+    n4fmt_string_free(records);
+
+    // Plan a conversion: steps, questions and refusals;
+    // nirs4all-methods computes the values
+    n4fmt_open_path("sample.ProcSpec", NULL, &amp;records, &amp;error);
+    status = n4fmt_plan_conversion(records, "winisi", NULL, &amp;json, &amp;error);
+    show(status, json, error);
+    n4fmt_string_free(records);
+    return 0;
+}</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-java" aria-labelledby="tab-java" tabindex="0" hidden>
-          <!-- TODO(java): replace this placeholder with the Java snippet once the Java binding is published. -->
-          <div class="code-todo"><strong>Java: coming with the next release.</strong> The Java binding is being built; its install and read/export example will appear here. Until then, use the Python, R, Rust, JavaScript or command-line interface.</div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/java.md" target="_blank" rel="noopener">Java docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="java"><code>// Maven Central: org.nirs4all:nirs4all-formats (the jar bundles the native library)
+import java.nio.file.Path;
+import java.util.List;
+import org.nirs4all.formats.*;
+
+public class Example {
+    public static void main(String[] args) {
+        // Read: the format is recognised from the file content
+        List&lt;SpectralRecord&gt; records = Nirs4allFormats.open(Path.of("barley.csv"));
+
+        // Access the data
+        SignalMatrix data = SignalMatrix.stack(records, "signal");
+        double[][] x = data.values();                    // spectra matrix (n x p)
+        double[] axis = data.axis().values();            // data.axis().unit(): "nm"
+        SpectralRecord record = records.get(0);
+        Signal signal = record.signal("signal");         // signal.signalType(): "absorbance"
+        double protein = record.numericTarget("Protein");
+        String sample = record.metadata().get("sample_id").asText();
+        String format = record.provenance().format();    // "delimited-text"
+
+        // Export for a software or a format; what it cannot carry is listed
+        WriteResult out = Nirs4allFormats.write(records, "winisi");   // FOSS WinISI .nir
+        System.out.println(out.files().get(0).name() + " " + out.losses());
+        Nirs4allFormats.convert(Path.of("barley.csv"), "jcamp-dx", Path.of("exported"));
+        Nirs4allFormats.exportTargets().software();      // OPUS, OMNIC, WinISI, Unscrambler...
+
+        // Plan a conversion: steps, questions and refusals;
+        // nirs4all-methods computes the values
+        ConversionPlan plan = Nirs4allFormats.planConversion(Nirs4allFormats.open(Path.of("sample.ProcSpec")), "winisi");
+        System.out.println(plan.status() + " " + plan.steps().stream().map(ConversionPlan.Step::methodId).toList());
+    }
+}</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-csharp" aria-labelledby="tab-csharp" tabindex="0" hidden>
-          <!-- TODO(csharp): replace this placeholder with the C# snippet once the .NET binding is published. -->
-          <div class="code-todo"><strong>C#: coming with the next release.</strong> The .NET binding is being built; its install and read/export example will appear here. Until then, use the Python, R, Rust, JavaScript or command-line interface.</div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/csharp.md" target="_blank" rel="noopener">C# docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="csharp"><code>// dotnet add package Nirs4all.Formats   (the package carries the native library)
+using Nirs4all.Formats;
+
+// Read: the format is recognised from the file content
+var records = Nirs4allFormats.Open("barley.csv");
+
+// Access the data
+var data = SignalMatrix.Stack(records, "signal");
+double[,] x = data.Values;                         // spectra matrix (n x p)
+double[] axis = data.Axis.Values;                  // data.Axis.Unit: "nm"
+var record = records[0];
+var signal = record.Signals["signal"];             // signal.SignalType: "absorbance"
+double protein = record.NumericTarget("Protein");
+var sample = record.Metadata["sample_id"];
+var format = record.Provenance.Format;             // "delimited-text"
+
+// Export for a software or a format; what it cannot carry is listed
+var output = Nirs4allFormats.Write(records, "winisi");   // FOSS WinISI .nir
+Console.WriteLine($"{output.Files[0].Name}: {output.Losses.Count} losses");
+Nirs4allFormats.Convert("barley.csv", "jcamp-dx", "exported");
+var software = Nirs4allFormats.ExportTargets().Software;  // OPUS, OMNIC, WinISI, Unscrambler...
+
+// Plan a conversion: steps, questions and refusals;
+// nirs4all-methods computes the values
+var plan = Nirs4allFormats.PlanConversion(Nirs4allFormats.Open("sample.ProcSpec"), "winisi");
+Console.WriteLine($"{plan.Status}: {string.Join(", ", plan.Steps.Select(step =&gt; step.MethodId))}");</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-julia" aria-labelledby="tab-julia" tabindex="0" hidden>
-          <!-- TODO(julia): replace this placeholder with the Julia snippet once the Julia package is published. -->
-          <div class="code-todo"><strong>Julia: coming with the next release.</strong> The Julia package is being built; its install and read/export example will appear here. Until then, use the Python, R, Rust, JavaScript or command-line interface.</div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/julia.md" target="_blank" rel="noopener">Julia docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="julia"><code># ] add NIRS4ALLFormats   (native library: nirs4all_formats_capi_jll or NIRS4ALL_FORMATS_LIBRARY)
+using NIRS4ALLFormats
+
+# Read: the format is recognised from the file content
+records = read_records("barley.csv")
+
+# Access the data
+data = signal_matrix(records, "signal")
+data.values, data.axis.values, data.axis.unit   # spectra matrix (n x p), axis, "nm"
+record = records[1]
+signal = record.signals["signal"]               # signal.signal_type: "absorbance"
+record.targets["Protein"], record.metadata["sample_id"]
+record.provenance.format                        # "delimited-text"
+
+# Export for a software or a format; what it cannot carry is listed
+out = write_records(records, "winisi")          # FOSS WinISI .nir
+println(out.files[1].name, ": ", length(out.losses), " losses")
+convert_path("barley.csv", "jcamp-dx", "exported")
+[software.id for software in export_targets().software]   # opus, omnic, winisi...
+
+# Plan a conversion: steps, questions and refusals;
+# nirs4all-methods computes the values
+plan = plan_conversion(read_records("sample.ProcSpec"), "winisi")
+println(plan.status, ": ", [step.method_id for step in plan.steps])</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-docker" aria-labelledby="tab-docker" tabindex="0" hidden>
-          <!-- TODO(docker): replace this placeholder with the Docker snippet once the Docker image is published. -->
-          <div class="code-todo"><strong>Docker: coming with the next release.</strong> The Docker image is being built; its install and read/export example will appear here. Until then, use the Python, R, Rust, JavaScript or command-line interface.</div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/DOCKER.md" target="_blank" rel="noopener">Docker docs</a></div>
+          <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="cli"><code># docker pull ghcr.io/gbeurier/nirs4all-formats   (linux/amd64, linux/arm64)
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats probe /data/barley.csv
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats read-json /data/barley.csv &gt; barley.json
+docker run --rm ghcr.io/gbeurier/nirs4all-formats targets               # formats, software presets, requirements
+
+# Write into the current folder as yourself; the output folder must exist
+mkdir -p exported
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/data" ghcr.io/gbeurier/nirs4all-formats \
+  convert /data/barley.csv --to winisi --out /data/exported
+docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats plan /data/sample.ProcSpec --to winisi</code></pre></div>
         </div>
         <p class="code-note">Readers ship in 0.2.20. Export, format requirements and conversion plans (<code>write_records</code>, <code>plan_conversion</code>, <code>targets</code>, <code>convert</code>, <code>plan</code>) arrive with the next release. Each snippet runs against this repository's bindings.</p>
       </div>

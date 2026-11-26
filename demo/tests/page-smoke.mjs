@@ -47,7 +47,10 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   assert(await page.$eval("#panel-python", (p) => p.hidden), "Python panel still shown");
   await page.keyboard.press("End");
   assert(await page.$eval("#panel-docker", (p) => !p.hidden), "End");
-  assert(await page.$eval("#panel-docker", (p) => /coming with the next release/i.test(p.textContent)), "placeholder");
+  assert(await page.$eval("#panel-docker", (p) => /docker run --rm/.test(p.textContent)), "Docker snippet");
+  // Every language tab shows a highlighted snippet with a copy button.
+  const blocks = await page.$$eval(".code-panel", (ps) => ps.map((p) => p.querySelector(".code-block pre code .c") !== null));
+  assert(blocks.length === 10 && blocks.every(Boolean), `code blocks: ${blocks}`);
   await page.keyboard.press("Home");
   assert(await page.$eval("#tab-python", (t) => t.getAttribute("aria-selected")) === "true", "Home");
 
