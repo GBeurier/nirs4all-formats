@@ -19,6 +19,19 @@ still change before 1.0.
   vendor software.
 - Read WinISI files of other instruments (model `Unknown`), recognized by a consistent header.
 - Records with `null` values, as JSON represents missing points, deserialize as NaN.
+- C ABI 0.2.0: library version, reader catalog, probe and open (path or bytes, with
+  read options), export targets, in-memory write (base64 files and declared losses)
+  and path-to-path convert, all exchanging the record JSON. Calls return a status
+  code and an error message; panics are caught. The 0.1.0 symbols are unchanged;
+  the ABI version change makes the next release a minor, as already planned.
+- Java (`org.nirs4all:nirs4all-formats`, JNA), C# (`Nirs4all.Formats`, .NET 8) and
+  Julia (`NIRS4ALLFormats`) bindings over the C ABI: typed records, a signal matrix
+  for identical axes, export targets, write and convert. A BinaryBuilder recipe for
+  `nirs4all_formats_capi_jll` is ready for Yggdrasil.
+- A non-root Docker image of the command-line tool for `linux/amd64` and `linux/arm64`.
+- CI tests for the C ABI, Java, C#, Julia and the Docker image. Tag workflows publish
+  to Maven Central, NuGet.org and GHCR when their credentials are configured, and
+  TagBot tags Julia registrations; nothing is published without them.
 
 ### Changed
 

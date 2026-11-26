@@ -1,7 +1,7 @@
 # nirs4all-formats
 
 Rust-first, low-level readers for **NIRS and spectroscopy file formats**, with
-matching Python / R / WebAssembly / C bindings and conformance checks against
+matching Python / R / WebAssembly / C / Java / C# / Julia bindings and conformance checks against
 reference loaders.
 
 nirs4all-formats auto-detects each file by content, decodes it through a single Rust
@@ -32,6 +32,7 @@ NON_SPECTRAL_PROFILES
 OUTPUTS
 EXPORTS
 CLI
+DOCKER
 CONFORMANCE
 INTEGRATION_NIRS4ALL
 RELEASE
@@ -48,6 +49,9 @@ bindings/python
 bindings/r
 bindings/wasm
 bindings/capi
+bindings/java
+bindings/csharp
+bindings/julia
 ```
 
 ```{toctree}
