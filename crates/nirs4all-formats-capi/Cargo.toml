@@ -15,7 +15,9 @@ crate-type = ["cdylib", "staticlib", "rlib"]
 base64 = "0.23"
 nirs4all-formats.workspace = true
 serde.workspace = true
-serde_json.workspace = true
+# Records cross this ABI as JSON text: parse their floats with correct
+# rounding so exported values equal the decoded ones bit for bit.
+serde_json = { workspace = true, features = ["float_roundtrip"] }
 
 [build-dependencies]
 cbindgen = "0.29"

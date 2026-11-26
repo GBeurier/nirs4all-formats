@@ -675,6 +675,17 @@ mod tests {
     }
 
     #[test]
+    fn records_json_round_trips_values_bit_for_bit() {
+        let records =
+            nirs4all_formats::open_path(sample("samples/csv_tsv/synthetic_nirs.csv")).unwrap();
+        let back = parse_records(&serde_json::to_string(&records).unwrap()).ok().unwrap();
+        for (a, b) in records.iter().zip(&back) {
+            let (a, b) = (&a.signals["signal"].values, &b.signals["signal"].values);
+            assert!(a.iter().zip(b).all(|(x, y)| x.to_bits() == y.to_bits()));
+        }
+    }
+
+    #[test]
     fn catches_panics() {
         let mut out = ptr::null_mut();
         let mut err = ptr::null_mut();

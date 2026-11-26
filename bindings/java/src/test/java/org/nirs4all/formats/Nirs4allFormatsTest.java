@@ -98,10 +98,10 @@ class Nirs4allFormatsTest {
         assertEquals(records.size(), back.size());
         SignalMatrix a = SignalMatrix.stack(records);
         SignalMatrix b = SignalMatrix.stack(back);
-        assertArrayEquals(a.axis().values(), b.axis().values(), 1e-9);
+        assertArrayEquals(a.axis().values(), b.axis().values());
         for (int i = 0; i < a.rows(); i++) {
-            assertArrayEquals(a.values()[i], b.values()[i], 1e-12);
-            assertEquals(records.get(i).numericTarget("protein"), back.get(i).numericTarget("protein"), 1e-12);
+            assertArrayEquals(a.values()[i], b.values()[i]);
+            assertEquals(records.get(i).numericTarget("protein"), back.get(i).numericTarget("protein"));
         }
     }
 
