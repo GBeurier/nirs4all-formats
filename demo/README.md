@@ -22,6 +22,13 @@ Live: **https://formats.nirs4all.org/**
 - **Export** — download the decoded result locally: **CSV** (the active signal as
   a spectra matrix — one row per record, axis values as columns) or **JSON** (the
   full `SpectralRecord[]` with signals, axes, metadata, targets and provenance).
+- **Convert for market software** — `Convert…` asks the Rust planner
+  (`planConversion`) what a software or format needs, shows the steps, questions
+  and refusals, runs the steps with nirs4all-methods (`vendor/methods/`, loaded
+  only when a conversion runs), adds the result as a derived signal shown
+  before, after or next to the original with a validation summary, and exports
+  it with its losses and conversions. The single-file build does not include
+  nirs4all-methods, so conversions need the served page.
 
 ## Run It Without A Server
 
@@ -64,6 +71,9 @@ still no backend and nothing is uploaded.
 | `index.html` | Markup + the nirs4all.org design system (inline CSS). |
 | `app.js` | UI engine: drag-drop, WASM calls, the canvas spectral plot, rendering. Dual-mode (served ↔ embedded). **No parsing** — that lives only in Rust. |
 | `samples/` | Redistributable conformance fixtures + `manifest.json` (the "try a sample" chips). |
+| `vendor/methods.version` | The exact `@nirs4all/methods` version the demo uses; the only place to change it. |
+| `vendor/methods/` | That version's npm `dist/` (JS modules, `n4m.wasm`, licences), written by `vendor-methods.sh`. |
+| `vendor-methods.sh` | Vendors the pinned version with `npm pack`, or a local build's `dist/` for testing (never committed). |
 | `pkg/` | `wasm-pack --target web` output for the served version (git-ignored; built by `build.sh` / CI). |
 | `pkg-nomod/` | `wasm-pack --target no-modules` output — input to the standalone build (git-ignored). |
 | `build_standalone.py` | Base64-embeds the no-modules wasm + samples into the single-file HTML. |

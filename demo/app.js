@@ -768,10 +768,14 @@ function buildResult(ds, withReset) {
         <input id="exp-tolerance" type="number" min="0" step="any" placeholder="axis tol." title="Largest axis deviation, in axis units, accepted when the target needs an evenly spaced axis (default 0); the deviation is reported">
         <button class="btn-export" id="exp-go" title="Export the active signal to the selected target">Export</button>
       </span>
+      <button class="btn-export" id="conv-open" aria-expanded="false" title="Convert the spectra so that a software or format can read them (absorbance, nm, known grids), and check them on the plot first">Convert…</button>
       ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
     </div>`;
   wrap.appendChild(head);
   wireExport(head);
+  conv = newConversion();
+  const convertHost = el("div"); convertHost.id = "convert-host"; wrap.appendChild(convertHost);
+  $("#conv-open", head).addEventListener("click", toggleConvert);
   wrap.appendChild(renderDetect(probes, prov));
   const kpiRow = el("div", "kpis"); kpiRow.id = "kpis"; wrap.appendChild(kpiRow);
   wrap.appendChild(renderPlotPanel());
@@ -990,7 +994,7 @@ function renderPlotPanel() {
 
 /* signals table */
 function renderSignalsPanel() {
-  const p = el("div", "panel");
+  const p = el("div", "panel"); p.id = "signals-panel";
   p.innerHTML = `<div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 20h16"/><path d="M7 14l3-4 3 3 4-6"/></svg></span><h3>Signal channels</h3><span class="ph-meta">${state.signalNames.length} channel${state.signalNames.length > 1 ? "s" : ""}${state.records.length > 1 ? " · described from record 1" : ""}</span></div>`;
   const body = el("div", "panel-body");
   const r0 = state.records[0];
@@ -1411,6 +1415,460 @@ function selectRecord(id) {
   // same geometry: update selection only, never remount
   for (const ex of state.explorers) ex.handle.update(ex.props(id !== null && ex.ids.has(id) ? [id] : []));
   const out = $("#sel-text"); if (out) out.textContent = selectionText();
+}
+
+/* ── convert for market software ──────────────────────────────────────────
+   nirs4all-formats (this page's WASM) decides WHAT a target needs and plans
+   the steps (planConversion). Every value is computed by nirs4all-methods
+   (its own WASM, vendored in ./vendor/methods/ and loaded only when a
+   conversion is requested). This file only moves arrays between the two:
+   it selects points, builds the grid axis the planner names and counts
+   what the validation summary reports. It never computes a spectrum. */
+const METHODS_URL = "./vendor/methods/index.js";
+let METHODS = null;
+async function loadMethods() {
+  if (EMBED) {
+    throw new Error("Conversions need the hosted page (https://formats.nirs4all.org/) or a local server: the single-file build does not include nirs4all-methods.");
+  }
+  if (!METHODS) {
+    const mod = await import(METHODS_URL);
+    await mod.loadModule();
+    METHODS = mod;
+  }
+  return METHODS;
+}
+
+const CONVERT_LIMITS = [
+  "Absorbance computed as log10(1/R) is apparent absorbance; it is not corrected for scattering.",
+  "Whether reflectance is stored in percent or as a fraction must be known: a wrong answer shifts absorbance by 2.",
+  "Values are never extrapolated: grids always lie inside the measured range.",
+  "Interpolation smooths, and down-sampling high-resolution spectra (FTIR) can alias narrow bands.",
+  "nm and cm-1 are converted as vacuum wavelengths (nm = 10^7 / cm-1), without air correction.",
+  "Raw counts need white (and dark) references measured with the sample; vendor-computed reflectance is preferred when the file holds it.",
+  "Files written for vendor software have not been tested in that software yet.",
+];
+const STEP_LABEL = {
+  reflectance_from_references: "Reflectance from references",
+  declare_signal_type: "Declared signal type",
+  signal_conversion: "Signal conversion",
+  select_points: "Point selection",
+  splice_correction: "Detector splice correction",
+  axis_unit_conversion: "Axis conversion",
+  resample: "Resampling",
+};
+// n4m_signal_type_t codes of utilities.signal_type_detector.
+const DETECTED = {
+  1: ["absorbance", null], 2: ["reflectance", "fraction"], 3: ["reflectance", "percent"],
+  4: ["transmittance", "fraction"], 5: ["transmittance", "percent"], 6: ["kubelka_munk", null],
+  7: ["absorbance", null], 8: ["absorbance", null],
+};
+
+let conv = newConversion();
+function newConversion() {
+  return { plan: null, answers: {}, result: null };
+}
+
+function toggleConvert() {
+  const host = $("#convert-host"), button = $("#conv-open");
+  if (!host) return;
+  if (host.firstChild) {
+    host.replaceChildren();
+    button?.setAttribute("aria-expanded", "false");
+    return;
+  }
+  button?.setAttribute("aria-expanded", "true");
+  host.appendChild(convertPanel());
+  const exportTarget = $("#exp-target")?.value;
+  if (exportTarget) $("#conv-target").value = exportTarget;
+  replan();
+  $("#conv-target")?.focus({ preventScroll: true });
+}
+
+function convertPanel() {
+  const panel = el("section", "panel convert-panel");
+  panel.id = "convert-panel";
+  panel.setAttribute("aria-label", "Convert for market software");
+  const types = ["absorbance", "reflectance", "transmittance", "kubelka_munk"]
+    .map((t) => `<option value="${t}">${esc(sigLabel(t))}</option>`).join("");
+  panel.innerHTML = `
+    <div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></span>
+      <h3>Convert for market software</h3><span class="ph-meta">plan: nirs4all-formats · values: nirs4all-methods</span></div>
+    <div class="panel-body">
+      <div class="conv-controls">
+        <label>Target<select id="conv-target"><option value="">No export target (view only)</option>${exportTargetOptions()}</select></label>
+        <label>Source signal<select id="conv-signal"><option value="">Automatic</option></select></label>
+        <label>Output signal<select id="conv-type"><option value="">As the target needs</option>${types}</select></label>
+        <label>Axis unit<select id="conv-unit"><option value="">As the target needs</option><option value="nm">nm</option><option value="um">µm</option><option value="cm-1">cm⁻¹</option></select></label>
+        <label>Grid<select id="conv-grid"><option value="">Automatic</option></select></label>
+        <label class="conv-even hidden">Grid step<input id="conv-step" type="number" min="0" step="any" placeholder="default"></label>
+        <label class="conv-even hidden">Grid from<input id="conv-min" type="number" step="any" placeholder="measured start"></label>
+        <label class="conv-even hidden">Grid to<input id="conv-max" type="number" step="any" placeholder="measured end"></label>
+        <label>Interpolation<select id="conv-interp"><option value="linear">Linear</option><option value="nearest">Nearest</option><option value="cubic">Cubic</option></select></label>
+        <label class="conv-splices hidden">Detector splices<input id="conv-splices" type="text" placeholder="first nm of each next detector, e.g. 1001, 1801"></label>
+      </div>
+      <div id="conv-plan" aria-live="polite"></div>
+      <div class="conv-actions">
+        <button class="btn-export" id="conv-run" disabled>Convert with nirs4all-methods</button>
+        <button class="btn-export" id="conv-export" disabled title="Write the converted signal with the selected target">Export converted</button>
+        <span class="conv-compare" id="conv-compare" role="group" aria-label="Compare before and after"></span>
+      </div>
+      <div id="conv-result"></div>
+      <details class="conv-limits"><summary>Limits of these conversions</summary><ul>${CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("")}</ul></details>
+    </div>`;
+  for (const id of ["#conv-target", "#conv-signal", "#conv-type", "#conv-unit", "#conv-grid", "#conv-interp", "#conv-step", "#conv-min", "#conv-max", "#conv-splices"]) {
+    $(id, panel).addEventListener("change", () => {
+      if (id === "#conv-target" || id === "#conv-signal") conv.answers = {};
+      replan();
+    });
+  }
+  $("#conv-run", panel).addEventListener("click", runConversion);
+  $("#conv-export", panel).addEventListener("click", exportConverted);
+  return panel;
+}
+
+function convOptions() {
+  const value = (id) => ($(id)?.value || "").trim();
+  const options = { ...conv.answers };
+  if (value("#conv-signal")) options.signal = value("#conv-signal");
+  if (value("#conv-type")) options.signal_type = value("#conv-type");
+  if (value("#conv-unit")) options.axis_unit = value("#conv-unit");
+  if (value("#conv-grid")) options.grid = value("#conv-grid");
+  if (options.grid === "even") {
+    for (const [id, key] of [["#conv-step", "grid_step"], ["#conv-min", "grid_min"], ["#conv-max", "grid_max"]]) {
+      if (value(id)) options[key] = Number(value(id));
+    }
+  }
+  if (value("#conv-interp") !== "linear") options.interpolation = value("#conv-interp");
+  if (value("#conv-splices")) {
+    const splices = value("#conv-splices").split(/[\s,;]+/).filter(Boolean).map(Number);
+    if (splices.some((x) => !Number.isFinite(x))) throw new Error("Detector splices must be numbers separated by commas, for example 1001, 1801.");
+    options.splices = splices;
+  }
+  const tolerance = Number($("#exp-tolerance")?.value);
+  if (tolerance > 0) options.axis_tolerance = tolerance;
+  return options;
+}
+
+function convTarget() {
+  return $("#conv-target")?.value || null;
+}
+
+function targetFormat(target) {
+  if (!target) return null;
+  const targets = WASM.exportTargets();
+  const profile = targets.software.find((p) => p.id === target);
+  return profile ? profile.format : target;
+}
+
+function replan() {
+  const host = $("#conv-plan"); if (!host) return;
+  $("#conv-run").disabled = true;
+  try {
+    conv.plan = WASM.planConversion(state.records, convTarget(), convOptions());
+  } catch (e) {
+    conv.plan = null;
+    host.replaceChildren(convNote(String(e?.message || e), "Change the option and the plan is made again.", "alert"));
+    return;
+  }
+  refreshPlanControls(conv.plan);
+  renderPlan(conv.plan);
+}
+
+// Selects offered by the plan: usable source signals and the target's grids.
+function refreshPlanControls(plan) {
+  const signal = $("#conv-signal"), chosen = signal.value;
+  signal.innerHTML = `<option value="">Automatic${plan.source_signal && !chosen ? ` (${esc(plan.source_signal)})` : ""}</option>`
+    + plan.candidates.map((c) => `<option value="${esc(c.name)}"${c.usable ? "" : " disabled"}>${esc(c.name)} · ${esc(sigLabel(c.signal_type))}${c.usable ? "" : " (not convertible)"}</option>`).join("");
+  signal.value = chosen;
+
+  const grid = $("#conv-grid"), gridChosen = grid.value;
+  const format = targetFormat(convTarget());
+  const requirements = format ? WASM.exportTargets().requirements.find((r) => r.format === format) : null;
+  const range = plan.measured_range;
+  const unitOk = (g) => !range || (g.first >= range[0] && g.last <= range[1]);
+  grid.innerHTML = `<option value="">Automatic</option><option value="measured">Keep the measured axis</option>`
+    + (requirements ? requirements.grids : []).map((g) => `<option value="${esc(g.id)}"${unitOk(g) ? "" : " disabled"}>${esc(g.label)}${unitOk(g) ? "" : " (outside the measured range)"}</option>`).join("")
+    + `<option value="even">Even grid inside the measured range</option>`;
+  grid.value = [...grid.options].some((o) => o.value === gridChosen && !o.disabled) ? gridChosen : "";
+  document.querySelectorAll(".conv-even").forEach((n) => n.classList.toggle("hidden", grid.value !== "even"));
+  const references = plan.steps.some((s) => s.step === "reflectance_from_references") || $("#conv-splices").value;
+  document.querySelectorAll(".conv-splices").forEach((n) => n.classList.toggle("hidden", !references));
+}
+
+function convNote(title, detail, role) {
+  const note = el("div", "legacy-note"); note.setAttribute("role", role);
+  const head = el("strong"); head.textContent = title; note.appendChild(head);
+  if (detail) { const p = el("div"); p.textContent = detail; note.appendChild(p); }
+  return note;
+}
+
+const STATUS_TEXT = {
+  ready: (p) => `Ready: ${p.steps.length} step${p.steps.length > 1 ? "s" : ""} on '${p.source_signal}' of ${p.records} record${p.records > 1 ? "s" : ""}. Review them, then convert.`,
+  unchanged: (p) => (p.target
+    ? `No conversion needed: '${p.source_signal}' is written to ${p.target} as it is. Use Export above.`
+    : `Nothing to convert: choose an output signal, an axis unit or a grid.`),
+  needs_answers: () => "Information is missing: the file does not say what the answer below needs.",
+  refused: () => "This cannot be converted for this target. Why, and how to fix it:",
+};
+
+function renderPlan(plan) {
+  const host = $("#conv-plan");
+  host.replaceChildren();
+  const status = el("p", `conv-status s-${plan.status}`);
+  status.textContent = STATUS_TEXT[plan.status](plan);
+  host.appendChild(status);
+  if (plan.steps.length) {
+    const list = el("ol", "conv-steps");
+    for (const step of plan.steps) {
+      const li = el("li");
+      li.innerHTML = `<b>${esc(STEP_LABEL[step.step] || step.step)}.</b> ${esc(step.description)}`
+        + `<div class="mono-sub">${esc(step.method_id || "selection, no computation")}${Object.keys(step.params).length ? " · " + esc(JSON.stringify(step.params)) : ""}</div>`
+        + (step.notes && step.notes.length ? `<ul>${step.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : "");
+      list.appendChild(li);
+    }
+    host.appendChild(list);
+  }
+  for (const question of plan.questions) host.appendChild(questionNode(question, plan));
+  for (const refusal of plan.refusals) host.appendChild(convNote(refusal.reason + ".", "Fix: " + refusal.fix, "alert"));
+  if (plan.notes.length) {
+    const notes = el("ul", "conv-notes");
+    for (const note of plan.notes) { const li = el("li"); li.textContent = note; notes.appendChild(li); }
+    host.appendChild(notes);
+  }
+  $("#conv-run").disabled = plan.status !== "ready";
+}
+
+function questionNode(question, plan) {
+  const node = el("div", "conv-q"); node.setAttribute("role", "group");
+  const prompt = el("div"); prompt.textContent = question.prompt; node.appendChild(prompt);
+  const choices = el("div", "choices");
+  for (const choice of question.choices) {
+    const b = el("button", "btn-export"); b.type = "button"; b.textContent = choice.label;
+    b.addEventListener("click", () => { conv.answers[question.id] = choice.value; replan(); });
+    choices.appendChild(b);
+  }
+  const suggest = el("button", "btn-export"); suggest.type = "button"; suggest.textContent = "Suggest with nirs4all-methods";
+  const out = el("div", "suggest"); out.setAttribute("role", "status");
+  suggest.addEventListener("click", () => suggestAnswer(question, plan, out));
+  if (question.id !== "absorbance_origin") choices.appendChild(suggest);
+  node.appendChild(choices);
+  const why = el("div", "why"); why.textContent = question.why; node.appendChild(why);
+  node.appendChild(out);
+  return node;
+}
+
+// utilities.signal_type_detector only suggests; the answer stays the user's.
+async function suggestAnswer(question, plan, out) {
+  out.textContent = "Loading nirs4all-methods…";
+  try {
+    const M = await loadMethods();
+    const record = state.records.find((r) => r.signals && r.signals[plan.source_signal]);
+    const sig = record.signals[plan.source_signal];
+    const X = { data: Float64Array.from(sig.values), rows: 1, cols: sig.values.length };
+    const axis = Array.from(sig.axis.values);
+    const ascending = axis.every((x, i) => i === 0 || x > axis[i - 1]);
+    const found = new M.SignalTypeDetector({}).run(X, undefined, ascending ? { axis } : {});
+    const [type, scale] = DETECTED[found.signal_type] || [null, null];
+    const confidence = Number(found.confidence).toFixed(2);
+    if (!type) out.textContent = `nirs4all-methods cannot tell (confidence ${confidence}). Answer from what you know about the file.`;
+    else out.textContent = `nirs4all-methods suggests ${sigLabel(type)}${scale ? ` in ${scale}` : ""} (confidence ${confidence}). It is a suggestion from the values only: answer from what you know about the file.`;
+  } catch (e) {
+    out.textContent = String(e?.message || e);
+  }
+}
+
+function sliceKept(values, keep) {
+  const out = [];
+  for (const [start, end] of keep) for (let i = start; i < end; i++) out.push(values[i]);
+  return out;
+}
+
+function countIf(values, test) {
+  let n = 0;
+  for (const v of values) if (test(v)) n++;
+  return n;
+}
+
+// One plan step on one record. Methods computes; this moves arrays.
+function runStep(step, record, axis, values, classes, summary) {
+  const matrix = (v) => ({ data: Float64Array.from(v), rows: 1, cols: v.length });
+  const inputs = step.inputs || {};
+  if (step.step === "declare_signal_type") return { axis, values };
+  if (step.step === "select_points") {
+    const kept = sliceKept(values, inputs.keep);
+    summary.dropped += values.length - kept.length;
+    return { axis: sliceKept(axis, inputs.keep), values: kept };
+  }
+  const params = { ...step.params };
+  if (step.step === "reflectance_from_references") {
+    params.white_reference = Array.from(record.signals[inputs.white_reference].values);
+    params.dark_reference = inputs.dark_reference ? Array.from(record.signals[inputs.dark_reference].values) : [];
+  }
+  const estimator = new classes[step.method_id](params);
+  try {
+    estimator.fit(matrix(values), undefined, inputs.axis ? { axis } : {});
+    const out = Array.from(estimator.transform(matrix(values)).data);
+    // Validation counts: comparisons of the input with the domain Methods clamps.
+    if (step.method_id.endsWith(".to_absorbance") || step.method_id.endsWith(".kubelka_munk")) {
+      const scale = step.params.is_percent ? 100 : 1, eps = 1e-10 * scale;
+      const high = step.method_id.endsWith(".kubelka_munk") ? scale - eps : Infinity;
+      summary.clamped += countIf(values, (v) => Number.isFinite(v) && (v <= eps || v >= high));
+    }
+    let nextAxis = axis;
+    if (step.step === "axis_unit_conversion") {
+      nextAxis = Array.from(estimator.fitResult().axis.data);
+      summary.axis = `${step.params.source_unit} → ${step.params.target_unit}, put in increasing order`;
+    } else if (step.step === "resample") {
+      const grid = conv.plan.grid;
+      nextAxis = Array.from({ length: grid.points }, (_, i) => grid.first + grid.step * i);
+      summary.resampled = `${grid.label}, inside the measured ${fmtNum(Math.min(...axis), 6)}–${fmtNum(Math.max(...axis), 6)} ${prettyUnit(grid.unit)}`;
+    }
+    const before = countIf(values, (v) => !Number.isFinite(v));
+    summary.nan += Math.max(0, countIf(out, (v) => !Number.isFinite(v)) - before);
+    return { axis: nextAxis, values: out };
+  } finally {
+    estimator.dispose();
+  }
+}
+
+async function runConversion() {
+  const plan = conv.plan;
+  if (!plan || plan.status !== "ready") return;
+  const run = $("#conv-run"), result = $("#conv-result");
+  run.disabled = true; run.textContent = "Converting…";
+  result.replaceChildren();
+  try {
+    const M = await loadMethods();
+    const version = M.version().split("+")[0];
+    const classes = {};
+    for (const step of plan.steps) {
+      if (!step.method_id) continue;
+      try { classes[step.method_id] = M.methodClass(step.method_id); }
+      catch (_) {
+        throw new Error(`${STEP_LABEL[step.step] || step.step} needs ${step.method_id}, which the @nirs4all/methods ${version} loaded here does not provide yet. It comes with a later Methods release; until then choose another source signal or target.`);
+      }
+    }
+    const out = plan.output, source = plan.source_signal;
+    const summary = { records: 0, points: 0, clamped: 0, nan: 0, dropped: 0, axis: null, resampled: null };
+    const axisChanged = plan.steps.some((s) => s.step === "axis_unit_conversion" || s.step === "resample");
+    // Compute every record first: the page state changes only when all succeed.
+    const computed = [];
+    state.records.forEach((record, i) => {
+      const sig = record.signals && record.signals[source];
+      if (!sig) return;
+      let axis = Array.from(sig.axis.values), values = Array.from(sig.values);
+      for (const step of plan.steps) ({ axis, values } = runStep(step, record, axis, values, classes, summary));
+      computed.push({ i, sig, axis, values });
+    });
+    for (const { i, sig, axis, values } of computed) {
+      const record = state.records[i];
+      const kind = out.axis_unit === sig.axis.unit ? sig.axis.kind : out.axis_unit === "cm-1" ? "wavenumber" : "wavelength";
+      const ordered = axisChanged || plan.steps.some((s) => s.step === "select_points");
+      record.signals[out.name] = {
+        axis: { values: axis, unit: out.axis_unit, kind, order: ordered ? "ascending" : sig.axis.order },
+        values, shape: [values.length], dims: ["x"], signal_type: out.signal_type, unit: out.unit ?? null,
+        role: "converted", source: `nirs4all-methods ${version}`,
+      };
+      record.metadata = record.metadata || {};
+      const prior = Array.isArray(record.metadata.conversions) ? record.metadata.conversions.filter((c) => c.signal !== out.name) : [];
+      record.metadata.conversions = [...prior, ...plan.steps.map((step) => conversionEntry(step, out.name, version))];
+      summary.records++; summary.points = values.length;
+    }
+    if (!state.signalNames.includes(out.name)) state.signalNames.push(out.name);
+    conv.result = { source, name: out.name, target: plan.target, version, summary, steps: plan.steps };
+    $("#signals-panel")?.replaceWith(renderSignalsPanel());
+    buildTabs();
+    selectSignal(out.name);
+    renderResult();
+  } catch (e) {
+    result.replaceChildren(convNote(String(e?.message || e), "Nothing was added to the page. Change the plan and convert again.", "alert"));
+  } finally {
+    run.textContent = "Convert with nirs4all-methods";
+    run.disabled = !conv.plan || conv.plan.status !== "ready";
+  }
+}
+
+// Conversion history the Formats writers report and embed (record metadata "conversions").
+function conversionEntry(step, signal, version) {
+  const entry = { signal, step: step.step, params: { ...step.params, ...(step.inputs || {}) } };
+  if (step.method_id) { entry.method_id = step.method_id; entry.methods_version = version; }
+  if (step.notes && step.notes.length) entry.notes = step.notes;
+  return entry;
+}
+
+function renderResult() {
+  const r = conv.result, s = r.summary;
+  const box = el("div", "conv-summary"); box.setAttribute("role", "status");
+  const lines = [
+    `${s.records} record${s.records > 1 ? "s" : ""} converted to '${r.name}' (${s.points} points), added next to '${r.source}' in the plot and the signal list.`,
+    `Points clamped before a logarithm or Kubelka-Munk: ${s.clamped}.`,
+    `Missing values produced: ${s.nan}${s.nan ? " (for example white − dark ≤ 0); formats without missing values refuse them, so narrow the grid range" : ""}.`,
+  ];
+  if (s.dropped) lines.push(`Overlapping detector points dropped: ${s.dropped}.`);
+  lines.push(s.axis ? `Axis converted: ${s.axis}.` : "Axis unit unchanged.");
+  lines.push(s.resampled ? `Interpolated onto ${s.resampled}; nothing extrapolated.` : "Not resampled.");
+  lines.push(`Computed by nirs4all-methods ${r.version}: ${[...new Set(r.steps.map((st) => st.method_id).filter(Boolean))].join(", ") || "no computation"}.`);
+  box.innerHTML = `<strong>Converted — check the spectra before exporting.</strong><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
+  $("#conv-result").replaceChildren(box);
+  const exp = $("#conv-export");
+  exp.disabled = !r.target;
+  exp.title = r.target ? `Write '${r.name}' as ${r.target}` : "Choose a target and convert again to export";
+  const compare = $("#conv-compare"); compare.replaceChildren();
+  for (const [label, mode] of [["Before", "before"], ["After", "after"], ["Both", "both"]]) {
+    const b = el("button", "btn-export"); b.type = "button"; b.textContent = label;
+    b.setAttribute("aria-pressed", String(mode === "after"));
+    b.addEventListener("click", () => {
+      compare.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      if (mode === "before") selectSignal(r.source);
+      else if (mode === "after") selectSignal(r.name);
+      else drawCompare(r.source, r.name);
+    });
+    compare.appendChild(b);
+  }
+}
+
+// Original and converted spectra one above the other, each on its own axis.
+function drawCompare(source, converted) {
+  unmountAll();
+  state.active = converted;
+  [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", t.textContent.trim() === converted));
+  const host = $("#plot-groups"); if (!host) return;
+  host.replaceChildren();
+  state.ids = new Map();
+  for (const [label, name] of [["Before", source], ["After", converted]]) {
+    const plan = planSignal(name);
+    const head = el("h4", "conv-compare-head"); head.textContent = `${label}: ${name}`; host.appendChild(head);
+    const total = plan.groups.length + plan.legacy.length;
+    plan.groups.forEach((g, k) => appendSharedGroup(host, g, k, total, name));
+    plan.legacy.forEach((g, k) => appendLegacyGroup(host, g, plan.groups.length + k, total, name));
+  }
+  host.appendChild(selectionLine());
+  renderKpis(planSignal(converted));
+}
+
+function exportConverted() {
+  const r = conv.result;
+  if (!r || !r.target) return;
+  $("#conv-export-note")?.remove();
+  let note;
+  try {
+    const options = { signal: r.name, base_name: exportBaseName(), axis_tolerance: Number($("#exp-tolerance")?.value) || 0 };
+    let output = WASM.writeRecords(state.records, r.target, options);
+    if (output.files.length > 1) output = WASM.writeRecords(state.records, r.target, { ...options, zip: true });
+    const file = output.files[0];
+    download(file.name, file.bytes, file.media_type);
+    const lines = output.conversions.map((c) => `Converted: ${STEP_LABEL[c.step] || c.step}${c.method_id ? ` by ${c.method_id} (nirs4all-methods ${c.methods_version})` : " (selection, no computation)"}.`);
+    lines.push(...output.losses.map(lossLine));
+    const profile = WASM.exportTargets().software.find((p) => p.id === r.target);
+    if (profile && !profile.tested) lines.push(`Not tested in ${profile.label} yet. Basis: ${profile.evidence}. ${profile.notes}`.trim());
+    note = el("div", "legacy-note"); note.setAttribute("role", "note");
+    note.innerHTML = `<strong>${esc(`Exported ${file.name} with '${r.name}'.`)}</strong><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
+  } catch (e) {
+    note = convNote(String(e?.message || e), "The converted spectra stay on the page; change the plan (for example a narrower grid) and convert again.", "alert");
+  }
+  note.id = "conv-export-note";
+  $("#conv-result").appendChild(note);
+  setStatus(note.textContent);
 }
 
 /* ── canvas spectral plot (original renderer) ─────────────────────────── */
