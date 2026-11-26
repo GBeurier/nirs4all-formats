@@ -845,13 +845,13 @@ function buildResult(ds, withReset) {
   const grid = el("section", "file-properties");
   grid.setAttribute("aria-label", "File properties");
   const provenance = renderProvenancePanel(prov, records[0].quality_flags || []);
-  const details = el("details", "file-details");
-  details.appendChild(el("summary", null, "File details"));
-  if (probes.length) details.appendChild(renderDetect(probes, prov));
-  details.appendChild(renderMetaPanel(records[0].metadata, records[0].targets));
-  $(".panel-body", provenance).appendChild(details);
+  if (probes.length) {
+    const details = el("details", "file-details");
+    details.append(el("summary", null, "Format detection"), renderDetect(probes, prov));
+    $(".panel-body", provenance).appendChild(details);
+  }
   grid.append(renderSignalsPanel(), provenance);
-  wrap.append(grid, renderPlotPanel());
+  wrap.append(grid, renderPlotPanel(), renderMetaPanel(records));
   return wrap;
 }
 
@@ -1368,61 +1368,121 @@ function renderProvenancePanel(prov, qflags) {
   return p;
 }
 
-/* metadata + targets */
-function renderMetaPanel(metadata, targets) {
-  const p = el("div", "panel");
-  const hasTargets = targets && Object.keys(targets).length;
-  p.innerHTML = `<div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></span><h3>Metadata${hasTargets ? " &amp; targets" : ""}</h3></div>`;
-  const body = el("div", "panel-body");
+/* Metadata and targets belong to individual decoded records. */
+const METADATA_CATEGORIES = [
+  ["Sample", /^(sample(?:_|$)|replicate(?:s|_|$)|record_index$|row_index$)/],
+  ["Instrument", /^(instrument(?:_|$)|spectrometer(?:_|$)|device(?:_|$)|serial_number$)/],
+  ["Acquisition", /^(acquisition(?:_|$)|acquired(?:_|$)|integration_time(?:_|$)|scan(?:s|_|$)|timestamp(?:_|$)|measurement(?:_|$))/],
+  ["File and format", /^(file(?:_|$)|source(?:_|$)|vendor(?:_|$)|archive(?:_|$))/],
+];
 
-  if (hasTargets) {
-    const tg = el("div"); tg.style.marginBottom = "14px";
-    tg.innerHTML = `<div class="k-label" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:600;margin-bottom:7px">Reference targets</div>`;
-    const grid = el("div", "targets-grid");
-    for (const [k, v] of Object.entries(targets)) grid.appendChild(el("span", "target", `${esc(k)} <b>${esc(v == null ? "missing" : typeof v === "object" ? JSON.stringify(v) : v)}</b>`));
-    tg.appendChild(grid); body.appendChild(tg);
-  }
+function renderMetaPanel(records) {
+  const panel = el("section", "panel metadata-panel");
+  panel.setAttribute("aria-labelledby", "metadata-title");
+  const head = el("div", "panel-head", '<h3 id="metadata-title">Metadata</h3>');
+  const body = el("div", "metadata-groups");
+  panel.append(head, body);
 
-  if (metadata && Object.keys(metadata).length) {
-    const tree = el("div", "json-tree");
-    tree.appendChild(jsonNode(metadata, true));
-    body.appendChild(tree);
-  } else if (!hasTargets) {
-    body.appendChild(el("p", "empty-note", "No instrument metadata reported for this file."));
+  let index = 0;
+  const renderRecord = () => {
+    const { metadata, targets } = records[index];
+    const groups = new Map([...METADATA_CATEGORIES.map(([label]) => [label, []]), ["Other metadata", []]]);
+    for (const field of Object.entries(metadata || {})) {
+      const [key] = field;
+      const category = METADATA_CATEGORIES.find(([, pattern]) => pattern.test(key.toLowerCase()));
+      groups.get(category?.[0] || "Other metadata").push(field);
+    }
+    groups.set("Reference targets", Object.entries(targets || {}));
+    body.replaceChildren();
+    for (const [label, entries] of groups) {
+      if (entries.length) {
+        const group = metadataDetails(label, entries.length, () => renderMetadataFields(entries));
+        group.classList.add("metadata-group");
+        body.appendChild(group);
+      }
+    }
+    if (!body.childElementCount) body.appendChild(el("p", "empty-note", "No metadata or reference targets for this record."));
+  };
+
+  if (records.length > 1) {
+    const picker = el("div", "metadata-record");
+    const label = el("label", null, "Record");
+    const input = el("input");
+    input.id = "metadata-record";
+    input.type = "number"; input.min = 1; input.max = records.length; input.step = 1;
+    label.htmlFor = input.id;
+    const count = el("span", null, `of ${fmtInt(records.length)}`);
+    input.setAttribute("aria-label", `Metadata record (1–${records.length})`);
+    const previous = el("button", null, "‹"), next = el("button", null, "›");
+    previous.type = next.type = "button";
+    previous.setAttribute("aria-label", "Previous metadata record");
+    next.setAttribute("aria-label", "Next metadata record");
+    const showRecord = (selected) => {
+      index = selected;
+      input.value = index + 1;
+      previous.disabled = index === 0;
+      next.disabled = index === records.length - 1;
+      renderRecord();
+    };
+    input.addEventListener("change", () => {
+      if (input.validity.valid && Number.isInteger(input.valueAsNumber)) showRecord(input.valueAsNumber - 1);
+      else input.value = index + 1;
+    });
+    previous.addEventListener("click", () => showRecord(index - 1));
+    next.addEventListener("click", () => showRecord(index + 1));
+    picker.append(label, previous, input, next, count);
+    head.appendChild(picker);
+    showRecord(0);
+  } else {
+    renderRecord();
   }
-  p.appendChild(body);
-  return p;
+  return panel;
 }
 
-/* collapsible JSON tree */
-function jsonNode(value, openTop = false) {
-  // serde-wasm-bindgen serializes Rust `None` as `undefined`; treat it like null.
-  if (value === null || value === undefined) return el("span", "jnull", "null");
-  const t = typeof value;
-  if (t === "bigint") return el("span", "jn", esc(String(value)));
-  if (t === "number") return el("span", "jn", esc(Number.isFinite(value) ? value : String(value)));
-  if (t === "boolean") return el("span", "jb", String(value));
-  if (t === "string") return el("span", "js", `"${esc(value.length > 200 ? value.slice(0, 200) + "…" : value)}"`);
-  const isArr = Array.isArray(value);
-  const entries = isArr ? value.map((v, i) => [i, v]) : Object.entries(value);
-  if (entries.length === 0) return el("span", "muted", isArr ? "[ ]" : "{ }");
+function metadataDetails(label, count, render) {
+  const details = el("details");
+  const summary = el("summary");
+  const name = el("span");
+  name.textContent = label;
+  summary.append(name, el("span", "metadata-count", fmtInt(count)));
+  details.appendChild(summary);
+  const populate = () => {
+    if (!details.open) return;
+    details.appendChild(render());
+    details.removeEventListener("toggle", populate);
+  };
+  details.addEventListener("toggle", populate);
+  return details;
+}
 
-  const det = el("details"); if (openTop) det.open = true;
-  const sum = el("summary");
-  sum.innerHTML = `<span class="muted">${isArr ? `[${entries.length}]` : `{${entries.length}}`}</span>`;
-  det.appendChild(sum);
-
-  const shown = entries.slice(0, 80);
-  for (const [k, v] of shown) {
-    const isLeaf = v === null || typeof v !== "object" || (Array.isArray(v) ? v.length === 0 : Object.keys(v).length === 0);
-    const line = el("div", isLeaf ? "leaf" : null);
-    const key = el("span", "jk", esc(k) + ": ");
-    line.appendChild(key);
-    line.appendChild(jsonNode(v));
-    det.appendChild(line);
+function renderMetadataFields(entries) {
+  const fields = el("div", "metadata-fields");
+  if (entries.length > 100) {
+    const size = Math.max(100, Math.ceil(entries.length / 20));
+    for (let start = 0; start < entries.length; start += size) {
+      const end = Math.min(start + size, entries.length);
+      fields.appendChild(metadataDetails(`Entries ${fmtInt(start + 1)}–${fmtInt(end)}`, end - start,
+        () => renderMetadataFields(entries.slice(start, end))));
+    }
+    return fields;
   }
-  if (entries.length > shown.length) det.appendChild(el("div", "leaf muted", `… ${entries.length - shown.length} more`));
-  return det;
+
+  for (const [key, value] of entries) {
+    if (value !== null && typeof value === "object") {
+      const children = Object.entries(value);
+      if (children.length) {
+        fields.appendChild(metadataDetails(key, children.length, () => renderMetadataFields(children)));
+        continue;
+      }
+    }
+    const row = el("div", "metadata-field");
+    const name = el("span"), display = el("code");
+    name.textContent = key;
+    display.textContent = value == null ? "null" : Array.isArray(value) ? "[]" : typeof value === "object" ? "{}" : String(value);
+    row.append(name, display);
+    fields.appendChild(row);
+  }
+  return fields;
 }
 
 /* ── signal selection ────────────────────────────────────────────────── */

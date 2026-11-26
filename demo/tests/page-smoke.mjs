@@ -39,8 +39,11 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   const order = await page.evaluate(() => [...document.querySelectorAll("main > section")].map((n) => n.id));
   assert(order.join() === "results,library,formats", `page order: ${order}`);
   assert(await page.$("#convert") === null && await page.$(".channels") === null, "the Convert section or the channel grid is still there");
-  // The library frame holds only the tabs and the code; each tab names its install channel.
-  assert(await page.$$eval("#library .fmt-head, #library h2", (ns) => ns.length) === 0, "library heading prose is still there");
+  const codeTitle = page.getByRole("heading", { name: "Code examples" });
+  assert(await codeTitle.isVisible(), "code examples heading missing");
+  assert(await codeTitle.evaluate((h) => getComputedStyle(h).borderTopWidth !== "0px"), "code examples divider missing");
+  await page.getByRole("link", { name: "Catalog", exact: true }).click();
+  assert(new URL(page.url()).hash === "#formats", "Catalog link does not reach the format list");
   const installs = await page.$$eval(".code-panel .code-install", (ns) => ns.length);
   assert(installs === 10, `install lines: ${installs}`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -87,10 +90,13 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     return {
       header: rect(".results-head").bottom, props: rect(".file-properties").top,
       propsEnd: rect(".file-properties").bottom, plot: rect(".plot-panel").top,
+      plotEnd: rect(".plot-panel").bottom, metadata: rect(".metadata-panel").top,
+      metadataEnd: rect(".metadata-panel").bottom, library: rect("#library-title").top,
       controlTops: [...document.querySelectorAll(".convert-row select")].map((s) => s.getBoundingClientRect().top),
     };
   });
   assert(layout.header <= layout.props && layout.propsEnd <= layout.plot, "file, properties and spectra order");
+  assert(layout.plotEnd <= layout.metadata && layout.metadataEnd <= layout.library, "spectra, metadata and code examples order");
   assert(Math.max(...layout.controlTops) - Math.min(...layout.controlTops) < 1, "conversion controls wrap");
   assert(await page.getByRole("button", { name: "Clear", exact: true }).count() === 1, "Clear action missing");
   assert(await page.locator("#conv-run, #conv-target, #sel-clear").count() === 0, "obsolete actions");
@@ -117,6 +123,31 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
     await page.waitForSelector("#conv-plan .conv-note[role=alert]");
     const text = await page.textContent("#conv-plan");
     assert(/single-file build does not include nirs4all-methods/.test(text), text);
+  }
+  if (viewport.width >= 1000) {
+    // Exercise per-record metadata, nested fields, long text and entries beyond the old display limit.
+    await page.evaluate(() => {
+      const provenance = { format: "fixture" };
+      const records = [
+        { signals: {}, provenance, metadata: { sample_id: "S1", instrument_model: "Spectrometer", scan_count: 3,
+          vendor: { log: "a".repeat(240) + "<end>", channels: Array.from({ length: 103 }, (_, i) => i) } }, targets: { protein: 12.1 } },
+        { signals: {}, provenance, metadata: { sample_id: "S2" }, targets: { protein: 16.2 } },
+      ];
+      renderDatasets([{ ok: true, name: "metadata-fixture", records, probes: [], size: 0, fileCount: 1 }]);
+    });
+    const metadata = page.getByRole("region", { name: "Metadata" });
+    const summaries = metadata.locator(".metadata-group > summary");
+    assert((await summaries.allTextContents()).join("|") === "Sample1|Instrument1|Acquisition1|File and format1|Reference targets1", "metadata categories");
+    await summaries.filter({ hasText: "File and format" }).click();
+    await metadata.locator("summary").filter({ hasText: "vendor" }).click();
+    assert(await metadata.getByText("a".repeat(240) + "<end>", { exact: true }).isVisible(), "long metadata was cut");
+    await metadata.locator("summary").filter({ hasText: "channels" }).click();
+    await metadata.locator("summary").filter({ hasText: "Entries 101–103" }).click();
+    assert(await metadata.locator(".metadata-field code").filter({ hasText: /^102$/ }).isVisible(), "last nested item missing");
+    await metadata.getByRole("button", { name: "Next metadata record" }).click();
+    await summaries.filter({ hasText: "Sample" }).click();
+    await summaries.filter({ hasText: "Reference targets" }).click();
+    assert(await metadata.getByText("S2", { exact: true }).isVisible() && await metadata.getByText("16.2", { exact: true }).isVisible(), "second record metadata or targets missing");
   }
   await page.close();
 }
