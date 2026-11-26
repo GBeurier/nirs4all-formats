@@ -253,6 +253,26 @@ update_with_sed \
     "^version[[:space:]]*=[[:space:]]*\"([0-9A-Za-z.-]+)\"" \
     "s/^(version[[:space:]]*=[[:space:]]*\")[0-9A-Za-z.-]+(\")/\1${CARGO_VERSION}\2/"
 
+# Java (Maven), .NET (NuGet) and Julia accept the Cargo SemVer spelling verbatim.
+# bindings/java/pom.xml: the project <version> is the only one indented by two spaces.
+update_with_sed \
+    "bindings/java/pom.xml" \
+    "${CARGO_VERSION}" \
+    "^  <version>([0-9A-Za-z.-]+)</version>" \
+    "s|^(  <version>)[0-9A-Za-z.-]+(</version>)|\1${CARGO_VERSION}\2|"
+
+update_with_sed \
+    "bindings/csharp/src/Nirs4all.Formats/Nirs4all.Formats.csproj" \
+    "${CARGO_VERSION}" \
+    "<Version>([0-9A-Za-z.-]+)</Version>" \
+    "s|(<Version>)[0-9A-Za-z.-]+(</Version>)|\1${CARGO_VERSION}\2|"
+
+update_with_sed \
+    "bindings/julia/NIRS4ALLFormats/Project.toml" \
+    "${CARGO_VERSION}" \
+    "^version[[:space:]]*=[[:space:]]*\"([0-9A-Za-z.-]+)\"" \
+    "s/^(version[[:space:]]*=[[:space:]]*\")[0-9A-Za-z.-]+(\")/\1${CARGO_VERSION}\2/"
+
 # --- PEP 440 targets -------------------------------------------------------
 
 # Python project metadata (bindings/python/pyproject.toml: version = "X.Y.ZaN")

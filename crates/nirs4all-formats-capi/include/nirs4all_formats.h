@@ -18,12 +18,49 @@
 
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+// Status code returned by the fallible entry points.
+typedef int32_t n4fmt_status_t;
+
+// The call succeeded and `*out_json` holds the result.
+#define N4FMT_STATUS_OK 0
+
+// A required pointer is null, a string is not UTF-8, or the options or
+// records JSON is invalid.
+#define N4FMT_STATUS_INVALID_ARGUMENT 1
+
+// A file could not be read or saved.
+#define N4FMT_STATUS_IO 2
+
+// No reader recognizes the input.
+#define N4FMT_STATUS_UNSUPPORTED_FORMAT 3
+
+// The format needs a companion file that is not available on this path.
+#define N4FMT_STATUS_UNSUPPORTED_SIDECAR 4
+
+// The input was recognized but its content cannot be decoded.
+#define N4FMT_STATUS_INVALID_DATA 5
+
+// The target is neither an export format nor a software preset.
+#define N4FMT_STATUS_UNKNOWN_TARGET 6
+
+// The records or options cannot be represented in the target.
+#define N4FMT_STATUS_EXPORT_REFUSED 7
+
+// A panic was caught inside the library; this is a bug.
+#define N4FMT_STATUS_INTERNAL 99
 
 // Return the C ABI version string.
 
 char *n4fmt_abi_version(void)
+;
+
+// Return the `nirs4all-formats` library version string.
+
+char *n4fmt_library_version(void)
 ;
 
 // Free strings returned by this ABI.
@@ -40,6 +77,136 @@ void n4fmt_string_free(char *ptr)
 // Placeholder hook used by bindings to detect that the native core is loaded.
 
 bool n4fmt_core_is_available(void)
+;
+
+// List the readers compiled into this library as `[{"reader": "..."}]`.
+//
+// # Safety
+//
+// `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_reader_catalog(char **out_json,
+                                    char **out_error)
+;
+
+// Probe a file and return every candidate reader, most confident first, as
+// `[{"format", "reader", "confidence", "reason"}]`.
+//
+// # Safety
+//
+// `path` must be null or a NUL-terminated string; `out_json` must be a valid
+// pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_probe_path(const char *path,
+                                char **out_json,
+                                char **out_error)
+;
+
+// Probe an in-memory file. `name` is the file name, used by extension-aware
+// sniffers; only the first 8192 bytes are inspected.
+//
+// # Safety
+//
+// `name` must be null or a NUL-terminated string; `bytes` must point to `len`
+// readable bytes (it may be null when `len` is 0); `out_json` must be a valid
+// pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_probe_bytes(const char *name,
+                                 const uint8_t *bytes,
+                                 size_t len,
+                                 char **out_json,
+                                 char **out_error)
+;
+
+// Read a file and return its records as a JSON array.
+//
+// `options_json` may be null or a JSON object with any of `single_record`
+// (bool), `rows` and `cols` (`[start, end]` half-open windows, `end` may be
+// null) or `pixels` (`[[row, col], ...]`); windows and pixels are exclusive.
+// Companion files of sidecar formats are resolved next to `path`.
+//
+// # Safety
+//
+// `path` and `options_json` must be null or NUL-terminated strings;
+// `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_open_path(const char *path,
+                               const char *options_json,
+                               char **out_json,
+                               char **out_error)
+;
+
+// Read an in-memory file and return its records as a JSON array.
+//
+// `name` is the file name, used for sniffing and provenance. Options are
+// those of [`n4fmt_open_path`]. Formats that need a companion file fail with
+// [`N4FMT_STATUS_UNSUPPORTED_SIDECAR`]; read them with [`n4fmt_open_path`].
+//
+// # Safety
+//
+// `name` and `options_json` must be null or NUL-terminated strings; `bytes`
+// must point to `len` readable bytes (it may be null when `len` is 0);
+// `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_open_bytes(const char *name,
+                                const uint8_t *bytes,
+                                size_t len,
+                                const char *options_json,
+                                char **out_json,
+                                char **out_error)
+;
+
+// Return the export formats and software presets as
+// `{"formats": [...], "software": [...]}`.
+//
+// # Safety
+//
+// `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_export_targets(char **out_json,
+                                    char **out_error)
+;
+
+// Write records to an export format or software preset, in memory.
+//
+// `records_json` is a JSON array of records as returned by the open
+// functions. `options_json` may be null or a JSON object with any of
+// `signal`, `base_name`, `extension`, `axis_tolerance`, `multi`, `delimiter`
+// and `zip`. The result is `{"format", "files": [{"name", "media_type",
+// "size", "bytes_base64"}], "losses": [{"code", "message", "count",
+// "max_error"?}]}`; nothing is written to disk.
+//
+// # Safety
+//
+// `records_json`, `target` and `options_json` must be null or NUL-terminated
+// strings; `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_write_records(const char *records_json,
+                                   const char *target,
+                                   const char *options_json,
+                                   char **out_json,
+                                   char **out_error)
+;
+
+// Read a file and save its export into an existing directory.
+//
+// `options_json` takes the options of [`n4fmt_write_records`] plus
+// `overwrite` (bool, default false: nothing is written when any produced
+// file already exists). The result is `{"format", "files": [paths],
+// "losses": [...]}`, as printed by `nirs4all-formats convert`.
+//
+// # Safety
+//
+// `input_path`, `target`, `output_dir` and `options_json` must be null or
+// NUL-terminated strings; `out_json` must be a valid pointer; `out_error` may
+// be null.
+
+n4fmt_status_t n4fmt_convert_path(const char *input_path,
+                                  const char *target,
+                                  const char *output_dir,
+                                  const char *options_json,
+                                  char **out_json,
+                                  char **out_error)
 ;
 
 #endif  /* NIRS4ALL_FORMATS_H */

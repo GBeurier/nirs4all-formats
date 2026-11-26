@@ -17,6 +17,16 @@ jobs:
 | `publish-pypi` | Publishes wheels + sdist to PyPI via OIDC trusted publishing (no token). | only on a `v*` tag. |
 | `github-release` | Attaches the wheels, sdist and C ABI archives to the GitHub Release. | only on a `v*` tag. |
 
+The other language channels have their own workflows, triggered by the same
+`v<version>` tags. Each publishes only when its credentials are configured and
+otherwise skips with a notice:
+
+| Workflow | Channel | Credentials |
+|---|---|---|
+| `release-bindings.yml` | Java jar to Maven Central (Sonatype Central Portal), NuGet package to NuGet.org; both bundle the C ABI library for Linux x86-64/aarch64, macOS x86-64/arm64 and Windows x86-64. | `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `MAVEN_GPG_PRIVATE_KEY`, `MAVEN_GPG_PASSPHRASE`; variable `NUGET_USER` (trusted publishing) or secret `NUGET_API_KEY`. See [Java](bindings/java.md) and [C#](bindings/csharp.md). |
+| `release-docker.yml` | `ghcr.io/gbeurier/nirs4all-formats:<version>` and `:latest`, `linux/amd64` + `linux/arm64`. | `GITHUB_TOKEN` only. See [Docker](DOCKER.md). |
+| `TagBot.yml` | Tags `NIRS4ALLFormats-v<version>` after a JuliaRegistrator registration; the JLL comes from Yggdrasil. | None. See [Julia](bindings/julia.md). |
+
 `workflow_dispatch` runs the three build jobs but skips both publish jobs, so
 it can be used as a dry-run before tagging. R source packages are built and
 attached separately by `release-r.yml`.
@@ -101,13 +111,17 @@ platform, document the per-OS gating here and add an override under
 
 ## C ABI versioning
 
-`N4FMT_ABI_VERSION` (currently `0.1.0`, defined in
+`N4FMT_ABI_VERSION` (currently `0.2.0`, defined in
 `crates/nirs4all-formats-capi/src/lib.rs`) bumps independently from the Rust
 semver:
 
-- patch bump for additive symbols that keep the ABI backward-compatible;
-- minor bump for ABI-affecting changes (struct layout, removed symbols);
-- major bump only for incompatible re-shapes.
+- patch bump for fixes that keep every symbol and JSON shape;
+- minor bump for added symbols, every existing one unchanged (0.1.0 to 0.2.0
+  added the read, export and convert entry points);
+- major bump for changed or removed symbols and incompatible re-shapes.
+
+Any ABI version change makes the next crate release a minor (see
+[Versioning](VERSIONING.md)).
 
 Update `docs/VERSIONING.md` whenever the ABI moves.
 

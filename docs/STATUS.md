@@ -1,6 +1,15 @@
 # Project Status
 
-Last updated: 2026-11-24.
+Last updated: 2026-11-26.
+
+> 2026-11-26 — **C ABI 0.2.0, Java / C# / Julia bindings and Docker image.** The C ABI
+> exposes probe, open, export targets, write and convert over the record JSON, with
+> status codes and caught panics. JNA (Java), P/Invoke (.NET 8) and `ccall` (Julia)
+> bindings read typed records, stack signals with identical axes, write and convert;
+> each is tested on public samples with JCAMP-DX and CSV round trips. A non-root
+> command-line image builds for amd64 and arm64. Tag workflows publish to Maven
+> Central, NuGet.org and GHCR only when credentials exist; Julia registration and
+> the Yggdrasil JLL remain maintainer steps. Nothing has been published.
 
 > 2026-11-18 — **NSAS DA/CN runtime integration.** Rust now decodes four observed
 > DA geometries and optional CN reference targets, with constituent/geometry
@@ -386,6 +395,19 @@ for `target web` / `target nodejs`. Compiles `nirs4all-formats` with `fmt-hdf5`,
   NetCDF MFRSR formats under WASM from a pure in-memory payload+sidecars map.
 
 ## Last Green Gate
+
+2026-11-26 bindings branch: `cargo fmt --all --check`, workspace Clippy with warnings
+denied and `cargo test --workspace` pass (378 passed, three private tests ignored),
+including ten C ABI tests and the C smoke program compiled with `-Werror`. In
+containers, against the host-built release library: Java 10/10 (Maven, Temurin 21),
+C# 10/10 (.NET 8 SDK), Julia 36/36 (1.11). The Maven release profile builds the
+jar, sources and javadoc unsigned with the library bundled under `linux-x86-64/`;
+`dotnet pack` places it under `runtimes/linux-x64/native/` and a consumer app loads
+it. The Docker image builds for amd64 and cross-compiled arm64 and converts
+`samples/galactic_spc/nir.spc`. actionlint passes on the new and changed workflows;
+Sphinx with warnings denied and `scripts/bump_version.sh --check` pass. Not run
+locally: Python/R/WASM gates (their code is unchanged), the Windows/macOS native
+builds and the Yggdrasil recipe build.
 
 2026-11-24 `v0.2.20` release preparation: version sync, workspace formatting, Clippy with
 warnings denied and all 329 workspace tests pass locally (three private tests ignored by
