@@ -678,7 +678,8 @@ mod tests {
     fn records_json_round_trips_values_bit_for_bit() {
         let records =
             nirs4all_formats::open_path(sample("samples/csv_tsv/synthetic_nirs.csv")).unwrap();
-        let back = parse_records(&serde_json::to_string(&records).unwrap()).ok().unwrap();
+        let back = parse_records(&serde_json::to_string(&records).unwrap())
+            .unwrap_or_else(|failure| panic!("{}", failure.message));
         for (a, b) in records.iter().zip(&back) {
             let (a, b) = (&a.signals["signal"].values, &b.signals["signal"].values);
             assert!(a.iter().zip(b).all(|(x, y)| x.to_bits() == y.to_bits()));
