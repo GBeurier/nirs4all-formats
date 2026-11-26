@@ -1,4 +1,4 @@
-// Browser check of the Convert side panel of the served Formats demo.
+// Browser check of automatic conversions in the served Formats demo.
 //
 //   N4F_PAGE_URL       served page, for example http://localhost:8000/ (required:
 //                      nirs4all-methods is an ES module and needs http).
@@ -6,10 +6,6 @@
 //   PLAYWRIGHT_MODULE  optional absolute path / specifier of the Playwright module.
 //   N4F_SHOTS          optional directory for screenshots.
 //
-// Loads public samples, plans a conversion for WinISI and JCAMP-DX in the side
-// panel, runs it with the vendored @nirs4all/methods, checks the derived signal
-// is plotted (alone and overlaid on the original) and exports it from the top
-// Export menu without console errors.
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
@@ -37,123 +33,73 @@ async function open(sample) {
   await page.goto(pageUrl, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => document.querySelector("#stat-version")?.textContent.trim() !== "·", null, { timeout: 20000 });
   await page.setInputFiles("#file", path.join(repo, "samples", sample));
-  await page.waitForSelector("#convert-panel #conv-plan .conv-status", { timeout: 20000 });
+  await page.waitForSelector("#convert-panel", { timeout: 20000 });
   return page;
 }
 
-async function status(page) {
-  return page.$eval("#conv-plan .conv-status", (n) => n.className.replace("conv-status s-", "").trim());
-}
-
-async function convert(page, target, answers = []) {
-  await page.selectOption("#conv-target", target);
-  for (const label of answers) {
-    await page.click(`#conv-plan .conv-q button:has-text("${label}")`);
-  }
-  assert((await status(page)) === "ready", `${target}: plan is ${await status(page)}: ${await page.textContent("#conv-plan")}`);
-  const output = await page.evaluate(() => conv.plan.output.name);
-  await page.click("#conv-run");
-  await page.waitForSelector("#conv-result .conv-summary, #conv-result .conv-note", { timeout: 60000 });
-  const failed = await page.$("#conv-result .conv-note[role=alert]");
-  assert(!failed, `${target}: ${failed && (await failed.textContent())}`);
-  // The derived signal is a tab, listed in the signal table and drawn.
-  const active = await page.$eval(".sig-tab.active", (n) => n.textContent.trim());
-  assert(active === output, `${target}: active tab ${active}, expected ${output}`);
-  const listed = await page.$$eval("#signals-panel .s-name", (ns) => ns.map((n) => n.textContent.trim()));
-  assert(listed.includes(output), `${target}: ${output} not in the signal table`);
-  const drawn = await page.$$eval("#plot-groups .ugroup", (ns) => ns.length);
-  assert(drawn > 0, `${target}: converted signal not plotted`);
-  // Both: one overlaid chart (or, for records on several axes, one above the other).
-  await page.click('#view-switch button[data-view="both"]');
-  const overlay = await page.$$eval("#plot-groups section[data-route=compare] figure.n4q-compare", (ns) => ns.length);
-  const stacked = await page.$$eval("#plot-groups .conv-compare-head", (ns) => ns.length);
-  assert(overlay === 1 || stacked === 2, `${target}: before/after view missing`);
-  assert(await page.getAttribute('#view-switch button[data-view="both"]', "aria-pressed") === "true", `${target}: Both not pressed`);
-  // Export from the top menu writes the converted signal.
-  const download = page.waitForEvent("download", { timeout: 20000 });
-  await page.click("#export-btn");
-  await page.click(`#export-menu [data-target="${target}"]`);
-  const file = await download;
-  const note = await page.textContent("#export-report");
-  assert(note.startsWith("Exported"), `${target}: ${note}`);
-  assert(note.includes(`from '${output}'`), `${target}: export did not use the converted signal: ${note}`);
-  assert(/Conversions of|Converted first/.test(note), `${target}: conversions not reported: ${note}`);
-  const summary = await page.textContent("#conv-result .conv-summary");
-  return { output, file: file.suggestedFilename(), summary, note, overlay: overlay === 1 };
-}
-
-// [sample, target, output signal type or "", grid or "", answers]
 const cases = [
-  ["ocean_optics/whiteref.ProcSpec", "winisi", "", "", []],
-  ["ocean_optics/whiteref.ProcSpec", "jcamp-dx", "absorbance", "", []],
-  ["svc_ger/ACPL_D2_P1_B_1_001.sig", "winisi", "", "", []],
-  ["svc_ger/ACPL_D2_P1_B_1_001.sig", "jcamp-dx", "absorbance", "", []],
-  ["foss_winisi/foss_xds_barleyground_sensAIfood.csv", "winisi", "", "winisi-700", []],
-  ["foss_winisi/foss_xds_barleyground_sensAIfood.csv", "jcamp-dx", "reflectance", "", []],
-  ["bruker_opus/test_spectra.0", "jcamp-dx", "absorbance", "", ["Fraction (0-1)"]],
+  ["ocean_optics/whiteref.ProcSpec", "reflectance", "absorbance"],
+  ["svc_ger/ACPL_D2_P1_B_1_001.sig", "reflectance", "absorbance"],
+  ["foss_winisi/foss_xds_barleyground_sensAIfood.csv", "signal", "reflectance"],
+  ["bruker_opus/test_spectra.0", "reflectance", "absorbance", "Fraction (0-1)"],
 ];
-const results = [];
-for (const [sample, target, type, grid, answers] of cases) {
-  const page = await open(sample);
-  await page.selectOption("#conv-target", target);
-  if (type) await page.selectOption("#conv-type", type);
-  if (grid) await page.selectOption("#conv-grid", grid);
-  const result = await convert(page, target, answers);
-  results.push({ sample, target, output: result.output, file: result.file, overlay: result.overlay });
-  if (shots) await page.screenshot({ path: path.join(shots, `${path.basename(sample)}-${target}.png`), fullPage: true });
-  await page.close();
-}
 
-// Steps computed by the methods added in Methods 1.5.2: cm-1 axes, references and
-// detector splices. With an older Methods the page says so and adds nothing.
-// [sample, source signal or "", answers, step that needs the new method]
-const newer = [
-  ["bruker_opus/brukeropus_file.0", "", [], "axis_unit_conversion"],
-  ["bruker_opus/test_spectra.0", "", ["Fraction (0-1)"], "axis_unit_conversion"],
-  // white - dark is 0 below ~200 nm: those points are missing, so the grid starts at 400 nm.
-  ["ocean_optics/whiteref.ProcSpec", "sample", [], "reflectance_from_references", 400],
-  ["svc_ger/ACPL_D2_P1_B_1_001.sig", "target", [], "splice_correction"],
-];
-for (const [sample, signal, answers, needed, gridFrom] of newer) {
-  const page = await open(sample);
-  await page.selectOption("#conv-target", "winisi");
-  if (signal) await page.selectOption("#conv-signal", signal);
-  if (gridFrom) {
-    await page.selectOption("#conv-grid", "even");
-    await page.fill("#conv-min", String(gridFrom));
-    await page.dispatchEvent("#conv-min", "change");
+try {
+  for (const [sample, source, type, answer] of cases) {
+    const page = await open(sample);
+    const single = await page.evaluate(() => conv.names.length === 1);
+    assert(await page.locator("#conv-signal").count() === Number(!single), "unexpected source selector");
+    if (!single) await page.selectOption("#conv-signal", source);
+    await page.selectOption("#conv-type", type);
+    if (answer) await page.getByRole("button", { name: answer, exact: true }).click();
+    await page.waitForFunction(() => conv.result && state.active === conv.result.name);
+    const verify = (unit) => page.evaluate(({ source, type, unit }) => {
+      const result = conv.result;
+      const original = conv.records[0].signals[source];
+      const signal = state.records[0].signals[result.name];
+      return signal.signal_type === type && signal.axis.unit === (unit || original.axis.unit)
+        && result.source === source && state.signalNames.length === conv.names.length + 1
+        && !Object.hasOwn(conv.records[0].signals, result.name);
+    }, { source, type, unit });
+    assert(await verify(null), `${sample}: initial conversion`);
+    // Rapid changes replace the conversion. The last unit wins and originals stay intact.
+    await page.evaluate(() => {
+      for (const unit of ["um", "nm", "um"]) {
+        const select = document.querySelector("#conv-unit");
+        select.value = unit;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    });
+    await page.waitForFunction(() => conv.result?.outUnit === "um" && !document.querySelector("#export-btn").disabled);
+    assert(await verify("um"), `${sample}: unit changes accumulated signals`);
+    await page.click('#view-switch button[data-view="both"]');
+    await page.waitForSelector('[data-route="compare"]');
+    await page.selectOption("#conv-type", "");
+    await page.selectOption("#conv-unit", "");
+    assert(await page.evaluate(() => !conv.result && state.records === conv.records && state.active === (document.querySelector("#conv-signal")?.value || conv.names[0])), "original not restored");
+    if (!single) {
+      const alternate = await page.locator("#conv-signal option").first().getAttribute("value");
+      await page.selectOption("#conv-signal", alternate);
+      assert(await page.evaluate((name) => state.active === name, alternate), "source change did not update chart");
+    }
+    if (shots) await page.screenshot({ path: path.join(shots, `${path.basename(sample)}.png`), fullPage: true });
+    await page.close();
   }
-  for (const label of answers) await page.click(`#conv-plan .conv-q button:has-text("${label}")`);
-  assert((await status(page)) === "ready", `${sample}: plan for WinISI is not ready`);
-  const steps = await page.evaluate(() => conv.plan.steps);
-  const step = steps.find((s) => s.step === needed);
-  assert(step, `${sample}: no ${needed} step in ${steps.map((s) => s.step)}`);
-  await page.click("#conv-run");
-  await page.waitForSelector("#conv-result .conv-summary, #conv-result .conv-note", { timeout: 60000 });
-  const text = await page.textContent("#conv-result");
-  const available = await page.evaluate(async (id) => {
-    const M = await import("./vendor/methods/index.js");
-    try { M.methodClass(id); return true; } catch (_) { return false; }
-  }, step.method_id);
-  let exported = null;
-  if (available) {
-    assert(/added as/.test(text), `${sample}: ${text}`);
-    const download = page.waitForEvent("download", { timeout: 20000 }).catch(() => null);
-    await page.click("#export-btn");
-    await page.click('#export-menu [data-target="winisi"]');
-    await page.waitForSelector("#export-report");
-    const note = await page.textContent("#export-report");
-    assert(note.startsWith("Exported"), `${sample}: ${note}`);
-    exported = (await download)?.suggestedFilename();
-  } else {
-    assert(/does not provide yet/.test(text), `${sample}: ${text}`);
+  // Reference and splice steps still come from Methods when selected in the toolbar.
+  for (const [sample, source, step] of [
+    ["ocean_optics/whiteref.ProcSpec", "sample", "reflectance_from_references"],
+    ["svc_ger/ACPL_D2_P1_B_1_001.sig", "target", "reflectance_from_references"],
+  ]) {
+    const page = await open(sample);
+    await page.selectOption("#conv-signal", source);
+    await page.selectOption("#conv-type", "reflectance");
+    await page.waitForFunction(() => conv.result || document.querySelector("#conv-plan [role=alert]"));
+    const result = await page.evaluate(() => ({ steps: conv.result?.steps.map((s) => s.step), message: document.querySelector("#conv-plan").innerText }));
+    assert(result.steps?.includes(step) || result.message.includes("does not provide yet"), JSON.stringify(result));
+    await page.close();
   }
-  results.push({ sample, target: "winisi", needed: step.method_id, available, exported, summary: text.slice(0, 400) });
-  if (shots) await page.screenshot({ path: path.join(shots, `${path.basename(sample)}-${signal || "auto"}-winisi.png`), fullPage: true });
-  await page.close();
+  assert(errors.length === 0, errors.join("\n"));
+  console.log("OK: automatic conversion smoke passed");
+} finally {
+  await browser.close();
 }
-
-await browser.close();
-for (const r of results) console.log(JSON.stringify(r));
-assert(errors.length === 0, `console errors:\n${errors.join("\n")}`);
-console.log(`OK: convert smoke passed (${pageUrl})`);

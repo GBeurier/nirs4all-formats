@@ -85,6 +85,9 @@ function installFixture(page, { datasets }) {
     for (const r of records) Object.assign(r, completeRecord(r));
     const ds = () => ({ ok: true, name: "fixture.csv", size: 1, probes: [], records, fileCount: 1 });
     renderDatasets(Array.from({ length: count }, ds));
+    const select = document.querySelector("#conv-signal");
+    select.value = "absorbance";
+    select.dispatchEvent(new Event("change", { bubbles: true }));
     return records.length;
   }, datasets);
 }
@@ -100,7 +103,7 @@ const counts = (page) => page.evaluate(() => ({
 async function waitMounted(page, shared) {
   await page.waitForFunction(
     (n) => document.querySelectorAll("#plot-groups figure.n4q-explorer").length === n
-      && document.querySelectorAll("#plot-groups article[data-dataset-id]").length === n,
+      && document.querySelectorAll("#plot-groups article[data-dataset-id]").length === 0,
     shared,
     { timeout: 10000 },
   );
@@ -108,7 +111,7 @@ async function waitMounted(page, shared) {
 
 // Remember the dedicated host divs so a later teardown can prove nothing is left in them.
 const rememberHosts = (page) => page.evaluate(() => {
-  window.__hosts = [...document.querySelectorAll("#plot-groups .ugroup-card, #plot-groups .ugroup-chart")];
+  window.__hosts = [...document.querySelectorAll("#plot-groups .ugroup-chart")];
   window.__svg0 = document.querySelector("#plot-groups figure.n4q-explorer svg");
   return window.__hosts.length;
 });
@@ -136,53 +139,17 @@ async function fixtureFlow() {
   // The two other 1-D routes stay on the original canvas; the 2-D record is listed.
   const c = await counts(page);
   assert(c.shared === 2 && c.legacy === 2, `expected 2 shared + 2 legacy groups, got ${JSON.stringify(c)}`);
-  assert(c.cards === 2 && c.charts === 2 && c.handles === 4, `card/chart mounts do not match groups: ${JSON.stringify(c)}`);
-  const kpis = await page.textContent("#kpis");
-  assert(kpis.includes("Chart groups") && kpis.includes("2 shared · 2 legacy"), "page KPIs do not report the groups");
-  const ranges = await page.locator("#plot-groups section[data-route=shared] .kpi", { hasText: "Axis range" }).allTextContents();
-  assert(ranges.length === 2 && ranges[0].includes("1000–1030") && ranges[1].includes("1000–1035"), `per-group axis ranges wrong: ${ranges}`);
+  assert(c.cards === 0 && c.charts === 2 && c.handles === 2, `unexpected mounts: ${JSON.stringify(c)}`);
   const descs = await page.locator("#plot-groups figure.n4q-explorer svg desc").allTextContents();
   assert(descs.length === 2 && descs[0] !== descs[1], "the two axis groups render identical chart summaries");
-
-  // Card: view only, record/channel wording, no sample or split claims. Read the DOM
-  // text (textContent), not innerText: the stat labels are shown uppercase by CSS
-  // (text-transform), so innerText would read RECORDS / CHANNELS.
-  const cards = page.locator("#plot-groups article[data-dataset-id]");
-  const statsOf = (card) => card.locator(".n4ui-b-stat").evaluateAll((items) => items.map((item) => ({
-    label: item.querySelector(".n4ui-b-stat-label")?.textContent,
-    value: item.querySelector(".n4ui-b-stat-value")?.textContent,
-  })));
-  // Group 1: records 1-2 on a 4-point axis; group 2: record 3 alone on its own 4-point axis.
-  assert(JSON.stringify(await statsOf(cards.nth(0))) === JSON.stringify([{ label: "Records", value: "2" }, { label: "Channels", value: "4" }]),
-    `group 1 card stats are wrong: ${JSON.stringify(await statsOf(cards.nth(0)))}`);
-  assert(JSON.stringify(await statsOf(cards.nth(1))) === JSON.stringify([{ label: "Records", value: "1" }, { label: "Channels", value: "4" }]),
-    `group 2 card stats are wrong: ${JSON.stringify(await statsOf(cards.nth(1)))}`);
-  const cardText = await cards.first().textContent();
-  assert(!/samples/i.test(cardText) && !/split/i.test(cardText), "card makes a sample or split claim");
 
   // Gap marker: the single NaN cell is flagged in group 1 and nowhere in group 2.
   const gaps = await page.locator("#plot-groups section[data-route=shared]").evaluateAll(
     (sections) => sections.map((s) => s.querySelectorAll("path.n4q-explorer-missing").length));
   assert(gaps[0] === 1 && gaps[1] === 0, `gap marker counts wrong: ${gaps}`);
 
-  // Exactly one data table per shared chart (text alternative, charts-graphs skill).
-  const tables = await page.locator("#plot-groups section[data-route=shared]").evaluateAll(
-    (sections) => sections.map((s) => s.querySelectorAll("table").length));
-  assert(tables.every((n) => n === 1), `each shared chart needs exactly one data table: ${tables}`);
-
-  // Axes and values reach the chart exactly as decoded: same length, ===, NaN kept in place.
-  const exact = await page.evaluate(() => {
-    const plan = planSignal(state.active);
-    return plan.groups.every((g, k) => {
-      const p = state.explorers[k].props([]);
-      return p.axis.length === g.axis.values.length && p.axis.every((v, i) => v === g.axis.values[i])
-        && g.members.every(({ sig }, m) => {
-          const vals = p.series[m].values;
-          return vals.length === sig.values.length && vals.every((v, i) => Object.is(v, sig.values[i]));
-        });
-    });
-  });
-  assert(exact, "axis or series values were altered on the way to the shared chart");
+  assert(await page.locator("#plot-groups .n4q-datatable:visible").count() === 0, "band table shown");
+  assert(descs[0].includes("1000") && descs[0].includes("1030") && descs[1].includes("1035"), "axis ranges missing from chart summaries");
 
   // Legacy routing is explicit: nothing silently dropped or reversed.
   const legacy = await page.locator("#plot-groups section[data-route=legacy]").evaluateAll((sections) => sections.map((s) => ({
@@ -194,40 +161,18 @@ async function fixtureFlow() {
   const multi = await page.textContent("#plot-groups > p.legacy-note");
   assert(multi.includes("multidimensional") && multi.includes("Records: 7"), "multidimensional record is not listed");
 
-  // Selection: new host state, update only (same chart node, no remount).
-  await page.evaluate(() => { window.__svg0 = document.querySelector("#plot-groups figure.n4q-explorer svg"); });
-  await page.locator("#plot-groups figure.n4q-explorer svg").first().focus();
-  await page.keyboard.press("ArrowDown");
-  await page.waitForFunction(() => document.querySelector("#sel-text")?.textContent.startsWith("Selected: record 1 · signal absorbance · axis group 1"));
-  assert((await page.textContent("#sel-text")).includes("s1"), "selection line lost the sample label");
-  assert(await page.evaluate(() => window.__svg0 === document.querySelector("#plot-groups figure.n4q-explorer svg") && window.__svg0.isConnected),
-    "selection remounted the chart instead of updating it");
-  const focusPaths = await page.locator("#plot-groups section[data-route=shared]").evaluateAll(
-    (sections) => sections.map((s) => s.querySelectorAll("path.n4q-explorer-focus").length));
-  assert(focusPaths[0] === 1 && focusPaths[1] === 0, `selection emphasis is wrong: ${focusPaths}`);
-  await page.keyboard.press("Escape");
-  await page.waitForFunction(() => document.querySelector("#sel-text")?.textContent.startsWith("No record selected"));
-  await page.keyboard.press("ArrowDown");
-  await page.waitForFunction(() => document.querySelector("#sel-text")?.textContent.startsWith("Selected:"));
-  await page.click("#sel-clear");
-  assert((await page.textContent("#sel-text")).startsWith("No record selected"), "clear selection did not clear");
-
-  // Signal change: every island of the old signal is unmounted and its host emptied; new ones mount.
-  await page.locator("#plot-groups figure.n4q-explorer svg").first().focus();
-  await page.keyboard.press("ArrowDown");
-  await page.waitForFunction(() => document.querySelector("#sel-text")?.textContent.startsWith("Selected:"));
+  assert(await page.locator("#sel-text, #sel-clear").count() === 0, "selection controls shown");
   await rememberHosts(page);
-  await page.locator(".sig-tab", { hasText: "second" }).click();
+  await page.selectOption("#conv-signal", "second");
   await waitMounted(page, 1);
   assert(await hostsReleased(page), "signal change left React roots or nodes in the old hosts");
   assert(await page.evaluate(() => !window.__svg0.isConnected), "signal change reused the old chart instead of remounting");
   const after = await counts(page);
-  assert(after.shared === 1 && after.legacy === 0 && after.cards === 1 && after.charts === 1 && after.handles === 2,
+  assert(after.shared === 1 && after.legacy === 0 && after.cards === 0 && after.charts === 1 && after.handles === 1,
     `signal change left orphan islands: ${JSON.stringify(after)}`);
-  assert((await page.textContent("#sel-text")).startsWith("No record selected"), "selection survived a signal change");
 
   // Reset unmounts everything before clearing the container.
-  await page.locator(".sig-tab", { hasText: "absorbance" }).click();
+  await page.selectOption("#conv-signal", "absorbance");
   await waitMounted(page, 2);
   await rememberHosts(page);
   await page.click("#reset");
@@ -247,10 +192,11 @@ async function dedicatedTeardownFlow() {
   await waitMounted(page, 2);
   await rememberHosts(page);
   await page.locator(".ds-tab").nth(1).click();
+  await page.selectOption("#conv-signal", "absorbance");
   await waitMounted(page, 2);
   assert(await hostsReleased(page), "dataset tab switch left React roots or nodes in the old hosts");
   const c = await counts(page);
-  assert(c.handles === 4 && c.charts === 2 && c.cards === 2, `dataset tab switch leaked islands: ${JSON.stringify(c)}`);
+  assert(c.handles === 2 && c.charts === 2 && c.cards === 0, `dataset tab switch leaked islands: ${JSON.stringify(c)}`);
   // A new decode over an existing result also tears down first.
   await rememberHosts(page);
   await installFixture(page, { datasets: 1 });
@@ -259,15 +205,16 @@ async function dedicatedTeardownFlow() {
   await page.close();
 }
 
-// "Download view" writes exactly the drawn signal through the Formats writers. Records on
+// "Export spectra" writes exactly the drawn signal through the Formats writers. Records on
 // different axes cannot share one CSV header: the writer splits them into files, delivered
 // as one ZIP. Records on one exact axis give one CSV, whatever the chart can orient.
 async function viewExportFlow() {
   const page = await newPage();
   const viewDownload = async (format) => {
     const [file] = await Promise.all([page.waitForEvent("download"), (async () => {
-      await page.click("#view-dl-btn");
-      await page.click(`#view-dl-menu [data-target="${format}"]`);
+      await page.click("#spectra-export");
+      await page.selectOption("#spectra-format", format);
+      await page.click("#export-dialog .btn-primary");
     })()]);
     return file;
   };
@@ -276,8 +223,8 @@ async function viewExportFlow() {
   await installFixture(page, { datasets: 1 });
   await waitMounted(page, 2);
   const none = page.waitForEvent("download", { timeout: 1500 }).then(() => true, () => false);
-  await page.click("#view-dl-btn");
-  await page.click('#view-dl-menu [data-target="csv"]');
+  await page.click("#spectra-export");
+  await page.click("#export-dialog .btn-primary");
   assert(!(await none), "CSV was downloaded for records the writer refuses");
   const refusal = await page.textContent("#export-report");
   assert(/inconsistent axis/.test(refusal) && (await page.getAttribute("#export-report", "role")) === "alert", `refusal missing: ${refusal}`);
@@ -285,7 +232,7 @@ async function viewExportFlow() {
   const records = JSON.parse(await readFile(await json.path(), "utf8"));
   assert(Array.isArray(records) && records.length === 7, "the JSON view no longer holds every drawn record");
   assert(records.every((r) => Object.keys(r.signals).join() === "absorbance"), "the JSON view holds signals that are not drawn");
-  assert((await page.textContent("#export-report")).startsWith("Downloaded the chart view"), "no report for the chart download");
+  assert((await page.textContent("#export-report")).startsWith("Exported spectra"), "no report for the chart download");
 
   // Valid records on three different axes: one CSV per axis, delivered as one ZIP.
   await page.evaluate(() => {

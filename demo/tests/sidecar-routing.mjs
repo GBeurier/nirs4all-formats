@@ -200,7 +200,8 @@ test("browser file input retains CN references in displayed records and JSON exp
     await page.waitForFunction(() => state.records?.length === 3 && state.records[0].targets?.water === 1.25);
     const targets = await page.evaluate(() => state.records.map((r) => [r.targets.water, r.targets.oil]));
     assert.deepEqual(targets, [[1.25, 0], [0, 3.25], [2.5, 1.5]]);
-    const [download] = await Promise.all([page.waitForEvent("download"), page.click("#exp-json")]);
+    await page.click("#export-btn");
+    const [download] = await Promise.all([page.waitForEvent("download"), page.click('#export-menu [data-target="records-json"]')]);
     const records = JSON.parse(readFileSync(await download.path(), "utf8"));
     assert.deepEqual(records.map((r) => [r.targets.water, r.targets.oil]), targets);
   } finally {

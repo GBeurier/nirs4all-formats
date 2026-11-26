@@ -80,48 +80,42 @@ for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 
   assert(statuses[0] === "Supported" && statuses.at(-1) !== "Supported", statuses.join());
   assert((await names()).length === original.length, "rows lost by sorting");
 
-  // A decoded file shows its properties, then the chart with the Convert panel beside it.
   await page.setInputFiles("#file", path.join(demo, "..", "samples", "ocean_optics", "whiteref.ProcSpec"));
-  await page.waitForSelector("#convert-panel #conv-plan .conv-status", { timeout: 20000 });
-  // The chart is sticky on desktop: measure at the top, after an instant scroll
-  // (the page uses smooth scrolling) and a frame.
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
-  await page.waitForFunction(() => window.scrollY === 0);
-  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => resolve())));
+  await page.waitForSelector("#convert-panel");
   const layout = await page.evaluate(() => {
-    const top = (sel) => document.querySelector(sel).getBoundingClientRect();
-    return { props: top("#signals-panel").top, plot: top(".plot-panel").top, plotLeft: top(".plot-panel").left, side: top("#convert-panel").top, sideLeft: top("#convert-panel").left };
+    const rect = (sel) => document.querySelector(sel).getBoundingClientRect();
+    return {
+      header: rect(".results-head").bottom, props: rect(".file-properties").top,
+      propsEnd: rect(".file-properties").bottom, plot: rect(".plot-panel").top,
+      controlTops: [...document.querySelectorAll(".convert-row select")].map((s) => s.getBoundingClientRect().top),
+    };
   });
-  assert(layout.props < layout.plot, "properties are not above the chart");
-  if (viewport.width >= 1100) assert(layout.sideLeft > layout.plotLeft && Math.abs(layout.side - layout.plot) < 2, `side panel is not beside the chart: ${JSON.stringify(layout)}`);
-  else assert(layout.side > layout.plot, "on a phone the side panel stacks under the chart");
-  // Every control has a visible label and help text; selects are readable.
-  const controls = await page.$$eval("#convert-panel select, #convert-panel input", (ns) => ns.map((n) => ({
-    id: n.id, label: document.querySelector(`label[for="${n.id}"]`)?.textContent.trim() || "", font: parseFloat(getComputedStyle(n).fontSize),
-  })));
-  assert(controls.length >= 8 && controls.every((c) => c.label && c.font >= 13), `controls: ${JSON.stringify(controls)}`);
-  assert(await page.textContent("#conv-run") === "Convert", "the button is not labelled Convert");
-  const visible = await page.evaluate(() => document.body.innerText);
-  assert(!/with nirs4all-methods|plan: nirs4all-formats/.test(visible), "implementation wording is visible");
+  assert(layout.header <= layout.props && layout.propsEnd <= layout.plot, "file, properties and spectra order");
+  assert(Math.max(...layout.controlTops) - Math.min(...layout.controlTops) < 1, "conversion controls wrap");
+  assert(await page.getByRole("button", { name: "Clear", exact: true }).count() === 1, "Clear action missing");
+  assert(await page.locator("#conv-run, #conv-target, #sel-clear").count() === 0, "obsolete actions");
+  assert(await page.locator(".ugroup-chart summary:visible").count() === 0, "band table shown");
+  await page.getByRole("button", { name: "Conversion settings and limits" }).click();
+  assert(await page.getByRole("dialog").getByText("Limits", { exact: true }).isVisible(), "limits missing");
+  await page.keyboard.press("Escape");
   // Top Export menu: three maturity groups, keyboard reachable, Esc closes.
   await page.focus("#export-btn");
   await page.keyboard.press("Enter");
   const heads = await page.$$eval("#export-menu .menu-head", (ns) => ns.map((n) => n.firstChild.textContent.trim()));
-  assert(heads.join("|") === "Standard formats|Experimental|Other formats", heads.join("|"));
+  assert(heads.join("|") === "File formats|Experimental|Other formats", heads.join("|"));
   assert(await page.evaluate(() => document.activeElement?.getAttribute("role")) === "menuitem", "focus did not enter the menu");
   await page.keyboard.press("Escape");
   assert(await page.$eval("#export-menu", (n) => n.hidden) && await page.evaluate(() => document.activeElement?.id) === "export-btn", "Esc did not close the menu");
   // Side gutter: no card touches the viewport edges (body clips overflow-x, so measure boxes).
-  const edge = await page.$$eval("#results .panel, #results .detect, #results .kpi, #results .results-head", (ns) => ns
-    .filter((n) => { const r = n.getBoundingClientRect(); return r.left < 15 || r.right > window.innerWidth - 15; }).length);
+  const edge = await page.$$eval("#results .panel, #results .detect, #results .results-head", (ns) => ns
+    .filter((n) => n.checkVisibility()).filter((n) => { const r = n.getBoundingClientRect(); return r.left < 15 || r.right > window.innerWidth - 15; }).length);
   assert(edge === 0, `${viewport.width}px: ${edge} workspace boxes reach the viewport edge`);
   const overflowFile = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   assert(overflowFile <= 1, `${viewport.width}px with a file: horizontal overflow of ${overflowFile}px`);
   if (offline) {
-    await page.selectOption("#conv-target", "winisi");
-    await page.click("#conv-run");
-    await page.waitForSelector("#conv-result .conv-note[role=alert]");
-    const text = await page.textContent("#conv-result");
+    await page.selectOption("#conv-type", "absorbance");
+    await page.waitForSelector("#conv-plan .conv-note[role=alert]");
+    const text = await page.textContent("#conv-plan");
     assert(/single-file build does not include nirs4all-methods/.test(text), text);
   }
   await page.close();
