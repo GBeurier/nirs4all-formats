@@ -48,6 +48,20 @@ int main(int argc, char **argv) {
     check(status == N4FMT_STATUS_OK && strstr(json, "\"bytes_base64\"") != NULL,
           "write_records returns base64 files");
     n4fmt_string_free(json);
+
+    status = n4fmt_plan_conversion(records, "winisi", NULL, &json, &error);
+    check(status == N4FMT_STATUS_OK && strstr(json, "\"status\"") != NULL,
+          "plan_conversion returns a plan");
+    n4fmt_string_free(json);
+
+    status = n4fmt_plan_conversion(records, NULL, "{\"signal_type\": \"absorbance\"}", &json, &error);
+    check(status == N4FMT_STATUS_OK, "plan_conversion accepts a null target");
+    n4fmt_string_free(json);
+
+    status = n4fmt_plan_conversion(records, "no-such-target", NULL, &json, &error);
+    check(status == N4FMT_STATUS_UNKNOWN_TARGET && json == NULL && error != NULL,
+          "plan_conversion reports an unknown target");
+    n4fmt_string_free(error);
     n4fmt_string_free(records);
 
     status = n4fmt_convert_path(argv[1], "jcamp-dx", argv[2],
@@ -57,8 +71,9 @@ int main(int argc, char **argv) {
     n4fmt_string_free(json);
 
     status = n4fmt_export_targets(&json, &error);
-    check(status == N4FMT_STATUS_OK && strstr(json, "\"software\"") != NULL,
-          "export targets list software presets");
+    check(status == N4FMT_STATUS_OK && strstr(json, "\"software\"") != NULL &&
+              strstr(json, "\"requirements\"") != NULL,
+          "export targets list software presets and requirements");
     n4fmt_string_free(json);
 
     status = n4fmt_open_path("/nonexistent/spectrum.dx", NULL, &json, &error);

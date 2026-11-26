@@ -14,16 +14,17 @@ use std::path::{Path, PathBuf};
 
 use base64::Engine;
 use nirs4all_formats::{
-    builtin_probes, open_bytes_with_options, open_path_with_options, probe_path, reader_catalog,
-    software_catalog, write_records, writer_catalog, CubeMask, CubeWindow, Error, FormatProbe,
-    ReadOptions, SpectralRecord, WriteError, WriteOptions, WriteOutput,
+    builtin_probes, export_targets, open_bytes_with_options, open_path_with_options,
+    plan_conversion, probe_path, reader_catalog, write_records, AppliedConversion, CubeMask,
+    CubeWindow, Error, FormatProbe, PlanOptions, ReadOptions, SpectralRecord, WriteError,
+    WriteOptions, WriteOutput,
 };
 use serde::{Deserialize, Serialize};
 
 /// ABI version of the C surface, independent from the crate semver.
 ///
-/// `0.2.0` adds the JSON read/export entry points to the `0.1.0` scaffold;
-/// every `0.1.0` symbol is unchanged.
+/// `0.2.0` adds the JSON read, export, convert and conversion-planning entry
+/// points to the `0.1.0` scaffold; every `0.1.0` symbol is unchanged.
 pub const N4FMT_ABI_VERSION: &str = "0.2.0";
 
 /// Status code returned by the fallible entry points.
@@ -192,8 +193,9 @@ pub unsafe extern "C" fn n4fmt_open_bytes(
     })
 }
 
-/// Return the export formats and software presets as
-/// `{"formats": [...], "software": [...]}`.
+/// Return the export formats, software presets and per-format requirements
+/// as `{"formats": [...], "software": [...], "requirements": [...]}`, the
+/// listing every binding returns.
 ///
 /// # Safety
 ///
@@ -203,11 +205,42 @@ pub unsafe extern "C" fn n4fmt_export_targets(
     out_json: *mut *mut c_char,
     out_error: *mut *mut c_char,
 ) -> n4fmt_status_t {
+    run(out_json, out_error, || to_json(&export_targets()))
+}
+
+/// Plan the conversions that make records writable for a target.
+///
+/// `records_json` is a JSON array of records; `target` is an export format,
+/// a software preset, or null to plan the options alone (for example
+/// `{"signal_type": "absorbance"}`). `options_json` may be null or a JSON
+/// object of plan options (`signal`, `signal_type`, `axis_unit`, `grid`,
+/// `grid_step`, `grid_min`, `grid_max`, `interpolation`, `source_scale`,
+/// `assume_signal_type`, `absorbance_origin`, `axis_tolerance`, `splices`).
+/// The result is the plan: `status` (`ready`, `needs_answers`, `refused` or
+/// `unchanged`), the `steps` naming the nirs4all-methods method that computes
+/// each, the `questions` to answer through the options and the `refusals`.
+/// The plan computes no values.
+///
+/// # Safety
+///
+/// `records_json`, `target` and `options_json` must be null or NUL-terminated
+/// strings; `out_json` must be a valid pointer; `out_error` may be null.
+#[no_mangle]
+pub unsafe extern "C" fn n4fmt_plan_conversion(
+    records_json: *const c_char,
+    target: *const c_char,
+    options_json: *const c_char,
+    out_json: *mut *mut c_char,
+    out_error: *mut *mut c_char,
+) -> n4fmt_status_t {
     run(out_json, out_error, || {
-        to_json(&serde_json::json!({
-            "formats": writer_catalog(),
-            "software": software_catalog(),
-        }))
+        let records = parse_records(required_str(records_json, "records_json")?)?;
+        let target = optional_str(target, "target")?;
+        let options: PlanOptions = serde_json::from_value(serde_json::Value::Object(parse_object(
+            optional_str(options_json, "options_json")?,
+        )?))
+        .map_err(|error| invalid(format!("options_json: {error}")))?;
+        to_json(&plan_conversion(&records, target, &options).map_err(Failure::from)?)
     })
 }
 
@@ -218,7 +251,9 @@ pub unsafe extern "C" fn n4fmt_export_targets(
 /// `signal`, `base_name`, `extension`, `axis_tolerance`, `multi`, `delimiter`
 /// and `zip`. The result is `{"format", "files": [{"name", "media_type",
 /// "size", "bytes_base64"}], "losses": [{"code", "message", "count",
-/// "max_error"?}]}`; nothing is written to disk.
+/// "max_error"?}], "conversions": [...]}`, where `conversions` lists the
+/// conversion steps recorded in the records' metadata; nothing is written to
+/// disk.
 ///
 /// # Safety
 ///
@@ -245,7 +280,7 @@ pub unsafe extern "C" fn n4fmt_write_records(
 ///
 /// `options_json` takes the options of [`n4fmt_write_records`] plus
 /// `overwrite` (bool, default false: nothing is written when any produced
-/// file already exists). The result is `{"format", "files": [paths],
+/// file already exists). The result is `{"format", "files": [paths], "conversions",
 /// "losses": [...]}`, as printed by `nirs4all-formats convert`.
 ///
 /// # Safety
@@ -281,6 +316,7 @@ pub unsafe extern "C" fn n4fmt_convert_path(
             format: output.format,
             files,
             losses: &output.losses,
+            conversions: &output.conversions,
         })
     })
 }
@@ -493,6 +529,7 @@ struct MemoryOutput<'a> {
     format: &'a str,
     files: Vec<MemoryFile<'a>>,
     losses: &'a [nirs4all_formats::WriteLoss],
+    conversions: &'a [AppliedConversion],
 }
 
 #[derive(Serialize)]
@@ -518,6 +555,7 @@ impl<'a> From<&'a WriteOutput> for MemoryOutput<'a> {
                 })
                 .collect(),
             losses: &output.losses,
+            conversions: &output.conversions,
         }
     }
 }
@@ -527,6 +565,7 @@ struct SavedOutput<'a> {
     format: &'a str,
     files: Vec<PathBuf>,
     losses: &'a [nirs4all_formats::WriteLoss],
+    conversions: &'a [AppliedConversion],
 }
 
 #[cfg(test)]
@@ -684,6 +723,66 @@ mod tests {
             let (a, b) = (&a.signals["signal"].values, &b.signals["signal"].values);
             assert!(a.iter().zip(b).all(|(x, y)| x.to_bits() == y.to_bits()));
         }
+    }
+
+    fn plan(file: &str, target: Option<&str>, options: &str) -> (n4fmt_status_t, String) {
+        let path = cstring(sample(file).to_str().unwrap());
+        let (status, records) =
+            call(|o, e| unsafe { n4fmt_open_path(path.as_ptr(), ptr::null(), o, e) });
+        assert_eq!(status, N4FMT_STATUS_OK, "{records}");
+        let records = cstring(&records);
+        let target = target.map(cstring);
+        let options = cstring(options);
+        call(|o, e| unsafe {
+            n4fmt_plan_conversion(
+                records.as_ptr(),
+                target.as_ref().map_or(ptr::null(), |t| t.as_ptr()),
+                options.as_ptr(),
+                o,
+                e,
+            )
+        })
+    }
+
+    #[test]
+    fn plans_conversions() {
+        let (status, json) = plan(
+            "samples/ocean_optics/whiteref.ProcSpec",
+            Some("winisi"),
+            "{}",
+        );
+        assert_eq!(status, N4FMT_STATUS_OK, "{json}");
+        let ready: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(ready["status"], "ready");
+        assert!(ready["steps"][0]["method_id"].is_string(), "{json}");
+
+        let (_, json) = plan("samples/jcamp_dx/SPECFILE.DX", Some("winisi"), "");
+        let asks: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(asks["status"], "needs_answers");
+        assert_eq!(asks["questions"][0]["id"], "source_scale");
+
+        let (_, json) = plan(
+            "samples/raman_horiba/jobinyvon_test_spec_3s_cm-1.xml",
+            None,
+            r#"{"axis_unit": "nm"}"#,
+        );
+        let refused: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(refused["status"], "refused");
+        assert_eq!(refused["refusals"][0]["code"], "raman_shift");
+
+        let (status, _) = plan("samples/jcamp_dx/SPECFILE.DX", Some("no-such-target"), "{}");
+        assert_eq!(status, N4FMT_STATUS_UNKNOWN_TARGET);
+        let (status, message) = plan("samples/jcamp_dx/SPECFILE.DX", None, r#"{"grid": 3}"#);
+        assert_eq!(status, N4FMT_STATUS_INVALID_ARGUMENT, "{message}");
+    }
+
+    #[test]
+    fn export_targets_include_requirements() {
+        let (status, json) = call(|o, e| unsafe { n4fmt_export_targets(o, e) });
+        assert_eq!(status, N4FMT_STATUS_OK);
+        let targets: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert_eq!(targets, nirs4all_formats::export_targets());
+        assert!(!targets["requirements"].as_array().unwrap().is_empty());
     }
 
     #[test]

@@ -156,8 +156,9 @@ n4fmt_status_t n4fmt_open_bytes(const char *name,
                                 char **out_error)
 ;
 
-// Return the export formats and software presets as
-// `{"formats": [...], "software": [...]}`.
+// Return the export formats, software presets and per-format requirements
+// as `{"formats": [...], "software": [...], "requirements": [...]}`, the
+// listing every binding returns.
 //
 // # Safety
 //
@@ -167,6 +168,31 @@ n4fmt_status_t n4fmt_export_targets(char **out_json,
                                     char **out_error)
 ;
 
+// Plan the conversions that make records writable for a target.
+//
+// `records_json` is a JSON array of records; `target` is an export format,
+// a software preset, or null to plan the options alone (for example
+// `{"signal_type": "absorbance"}`). `options_json` may be null or a JSON
+// object of plan options (`signal`, `signal_type`, `axis_unit`, `grid`,
+// `grid_step`, `grid_min`, `grid_max`, `interpolation`, `source_scale`,
+// `assume_signal_type`, `absorbance_origin`, `axis_tolerance`, `splices`).
+// The result is the plan: `status` (`ready`, `needs_answers`, `refused` or
+// `unchanged`), the `steps` naming the nirs4all-methods method that computes
+// each, the `questions` to answer through the options and the `refusals`.
+// The plan computes no values.
+//
+// # Safety
+//
+// `records_json`, `target` and `options_json` must be null or NUL-terminated
+// strings; `out_json` must be a valid pointer; `out_error` may be null.
+
+n4fmt_status_t n4fmt_plan_conversion(const char *records_json,
+                                     const char *target,
+                                     const char *options_json,
+                                     char **out_json,
+                                     char **out_error)
+;
+
 // Write records to an export format or software preset, in memory.
 //
 // `records_json` is a JSON array of records as returned by the open
@@ -174,7 +200,9 @@ n4fmt_status_t n4fmt_export_targets(char **out_json,
 // `signal`, `base_name`, `extension`, `axis_tolerance`, `multi`, `delimiter`
 // and `zip`. The result is `{"format", "files": [{"name", "media_type",
 // "size", "bytes_base64"}], "losses": [{"code", "message", "count",
-// "max_error"?}]}`; nothing is written to disk.
+// "max_error"?}], "conversions": [...]}`, where `conversions` lists the
+// conversion steps recorded in the records' metadata; nothing is written to
+// disk.
 //
 // # Safety
 //
@@ -192,7 +220,7 @@ n4fmt_status_t n4fmt_write_records(const char *records_json,
 //
 // `options_json` takes the options of [`n4fmt_write_records`] plus
 // `overwrite` (bool, default false: nothing is written when any produced
-// file already exists). The result is `{"format", "files": [paths],
+// file already exists). The result is `{"format", "files": [paths], "conversions",
 // "losses": [...]}`, as printed by `nirs4all-formats convert`.
 //
 // # Safety
