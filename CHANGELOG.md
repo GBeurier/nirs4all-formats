@@ -17,6 +17,25 @@ still change before 1.0.
 - Export spectra to FOSS WinISI `.nir` / `.cal` and NSAS `.da` / `.cn` files, with presets
   for WinISI and Metrohm Vision. The layouts are reverse-engineered and not yet tested in
   vendor software.
+- Export requirements: `export_targets()` (CLI `targets`, Python, R, WASM) also lists, per
+  format, the signal types, axis units, evenly spaced axis rule, segment and point limits,
+  missing-value support and known grids (WinISI 700/1050 points, the four NSAS axes).
+- Conversion plans: `plan_conversion(records, target, options)` (CLI `plan`, Python
+  `plan_conversion`, WASM `planConversion`) returns the steps that make a signal writable
+  for a target: reflectance from white/dark references, detector splice correction, signal
+  type and percent/fraction conversion, point selection for overlapping detectors, axis
+  unit conversion and resampling onto a named or even grid inside the measured range.
+  Each numerical step names the nirs4all-methods method that computes it; Formats computes
+  no values. Missing information becomes questions; raw counts without references,
+  derivatives, preprocessed signals, interferograms, Raman shifts to nm and ratios of raw
+  counts with different integration times are refused with a fix.
+- Writers report conversions listed under the record metadata key `conversions` (output
+  `conversions`), write them into JCAMP-DX (`##$CONVERSION n` labels) and SPC log text, and
+  declare `conversions_not_written` for the other formats.
+- Demo: a "Convert…" panel plans a conversion for a software or format (or for viewing only),
+  runs it with the vendored `@nirs4all/methods` WASM (exact version pinned in `demo/vendor/methods.version`, 1.5.2) loaded on demand, adds the result
+  as a derived signal shown before, after or next to the original with a validation summary,
+  and exports it with its losses and conversions.
 - Read WinISI files of other instruments (model `Unknown`), recognized by a consistent header.
 - Records with `null` values, as JSON represents missing points, deserialize as NaN.
 
