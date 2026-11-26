@@ -159,3 +159,106 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r docs/requirements.txt
           sphinx-build -b html docs docs/_build/html
+
+  # C ABI: build the shared library once, check the committed header matches the
+  # cbindgen output and run the C smoke program (tests/c_smoke.rs). The Java,
+  # .NET and Julia jobs test against this library.
+  c-abi:
+    name: C ABI
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test the C ABI and the C smoke program
+        run: cargo test -p nirs4all-formats-capi
+      - name: Build the release library
+        run: cargo build --release --locked -p nirs4all-formats-capi
+      - name: Committed header matches cbindgen
+        run: git diff --exit-code -- crates/nirs4all-formats-capi/include/nirs4all_formats.h
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: capi-linux-x86-64
+          path: target/release/libnirs4all_formats_capi.so
+          if-no-files-found: error
+
+  java:
+    name: Java binding
+    needs: c-abi
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: capi-linux-x86-64
+          path: native
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Test
+        working-directory: bindings/java
+        env:
+          NIRS4ALL_FORMATS_LIBRARY: ${{ github.workspace }}/native/libnirs4all_formats_capi.so
+        run: mvn -B test
+
+  csharp:
+    name: C# binding
+    needs: c-abi
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: capi-linux-x86-64
+          path: native
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "8.0.x"
+      - name: Test
+        env:
+          NIRS4ALL_FORMATS_LIBRARY: ${{ github.workspace }}/native/libnirs4all_formats_capi.so
+        run: dotnet test bindings/csharp/tests/Nirs4all.Formats.Tests --nologo
+
+  julia:
+    name: Julia binding
+    needs: c-abi
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          name: capi-linux-x86-64
+          path: native
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: "1.11"
+      - uses: julia-actions/cache@v2
+      - name: Test
+        env:
+          NIRS4ALL_FORMATS_LIBRARY: ${{ github.workspace }}/native/libnirs4all_formats_capi.so
+        run: julia --project=bindings/julia/NIRS4ALLFormats -e 'using Pkg; Pkg.instantiate(); Pkg.test()'
+
+  docker:
+    name: Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: docker/setup-buildx-action@v3
+      - name: Build (linux/amd64, not pushed)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: linux/amd64
+          load: true
+          push: false
+          tags: nirs4all-formats:ci
+      - name: Convert a sample as the image user
+        run: |
+          set -euo pipefail
+          mkdir -p out && chmod 777 out
+          docker run --rm -v "$PWD/samples/galactic_spc:/data/in:ro" -v "$PWD/out:/data/out" \
+            nirs4all-formats:ci convert /data/in/nir.spc --to jcamp-dx --out /data/out
+          ls -l out
+          test -s out/nir_1.jdx

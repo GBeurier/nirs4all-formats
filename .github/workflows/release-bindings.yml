@@ -1,0 +1,231 @@
+# Build the C ABI library for five platforms, then package and publish the Java
+# (Maven Central) and .NET (NuGet.org) bindings that bundle it.
+#
+# Triggers
+# --------
+# - push tag vX.Y.Z    -> build + test + package; publish on a non-pre-release tag
+# - workflow_dispatch  -> build + test + package; publish only with publish=true
+#
+# Each publish step runs only when its credentials are configured and otherwise
+# prints a notice and succeeds, so a missing channel never fails the release:
+# - Maven Central: secrets MAVEN_CENTRAL_USERNAME / MAVEN_CENTRAL_PASSWORD (a
+#   Central Portal user token) and MAVEN_GPG_PRIVATE_KEY / MAVEN_GPG_PASSPHRASE.
+# - NuGet.org: trusted publishing (OIDC) when the repository variable NUGET_USER
+#   names the nuget.org account owning the policy, else the NUGET_API_KEY secret.
+# See docs/bindings/java.md and docs/bindings/csharp.md.
+name: release-bindings
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish to Maven Central and NuGet.org (true) or build only (false)'
+        type: boolean
+        default: false
+  push:
+    tags: ['v[0-9]*.[0-9]*.[0-9]*']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  native:
+    name: Native library (${{ matrix.jna }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux builds run on Ubuntu 22.04 so the library needs glibc 2.35 at most.
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu, jna: linux-x86-64, rid: linux-x64, lib: libnirs4all_formats_capi.so }
+          - { os: ubuntu-22.04-arm, target: aarch64-unknown-linux-gnu, jna: linux-aarch64, rid: linux-arm64, lib: libnirs4all_formats_capi.so }
+          - { os: macos-15, target: x86_64-apple-darwin, jna: darwin-x86-64, rid: osx-x64, lib: libnirs4all_formats_capi.dylib }
+          - { os: macos-15, target: aarch64-apple-darwin, jna: darwin-aarch64, rid: osx-arm64, lib: libnirs4all_formats_capi.dylib }
+          - { os: windows-2022, target: x86_64-pc-windows-msvc, jna: win32-x86-64, rid: win-x64, lib: nirs4all_formats_capi.dll }
+    runs-on: ${{ matrix.os }}
+    env:
+      CARGO_PROFILE_RELEASE_STRIP: symbols
+      MACOSX_DEPLOYMENT_TARGET: "11.0"
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: Build
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo build --release --locked --target ${{ matrix.target }} -p nirs4all-formats-capi
+          lib="target/${{ matrix.target }}/release/${{ matrix.lib }}"
+          # JNA resource layout for the jar, runtimes/<rid>/native for NuGet.
+          mkdir -p "staging/jna/${{ matrix.jna }}" "staging/nuget/${{ matrix.rid }}/native"
+          cp "$lib" "staging/jna/${{ matrix.jna }}/"
+          cp "$lib" "staging/nuget/${{ matrix.rid }}/native/"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: native-${{ matrix.jna }}
+          path: staging/
+          if-no-files-found: error
+
+  gate:
+    name: Decide publication
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.gate.outputs.publish }}
+      version: ${{ steps.gate.outputs.version }}
+      maven: ${{ steps.gate.outputs.maven }}
+      nuget: ${{ steps.gate.outputs.nuget }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - id: gate
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          NUGET_USER: ${{ vars.NUGET_USER }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+          EVENT: ${{ github.event_name }}
+          PUBLISH_INPUT: ${{ inputs.publish }}
+        run: |
+          set -euo pipefail
+          version=$(sed -nE '/^\[workspace\.package\]/,/^\[/{s/^version[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p}' Cargo.toml | head -n1)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          publish=false
+          if [ "$EVENT" = "push" ] && [[ "$GITHUB_REF_NAME" == v* ]] && [[ "$GITHUB_REF_NAME" != *-* ]]; then
+            if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+              echo "::error::tag $GITHUB_REF_NAME does not match the workspace version $version"
+              exit 1
+            fi
+            publish=true
+          elif [ "$EVENT" = "workflow_dispatch" ] && [ "$PUBLISH_INPUT" = "true" ]; then
+            publish=true
+          fi
+          echo "publish=$publish" >> "$GITHUB_OUTPUT"
+          if [ -n "$MAVEN_CENTRAL_USERNAME" ] && [ -n "$MAVEN_CENTRAL_PASSWORD" ] && [ -n "$MAVEN_GPG_PRIVATE_KEY" ]; then
+            echo "maven=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "maven=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Maven Central credentials are not configured; the jar is built but not published."
+          fi
+          if [ -n "$NUGET_USER" ]; then
+            echo "nuget=oidc" >> "$GITHUB_OUTPUT"
+          elif [ -n "$NUGET_API_KEY" ]; then
+            echo "nuget=key" >> "$GITHUB_OUTPUT"
+          else
+            echo "nuget=none" >> "$GITHUB_OUTPUT"
+            echo "::notice::Neither NUGET_USER nor NUGET_API_KEY is configured; the package is built but not published."
+          fi
+          echo "version=$version publish=$publish"
+
+  maven:
+    name: Java (Maven Central)
+    needs: [native, gate]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          pattern: native-*
+          path: native
+          merge-multiple: true
+      - name: Bundle the native libraries
+        run: |
+          set -euo pipefail
+          cp -r native/jna/. bindings/java/src/main/resources/
+          find bindings/java/src/main/resources -type f | sort
+          test "$(find bindings/java/src/main/resources -type f | wc -l)" -eq 5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          server-id: central
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Check the version
+        working-directory: bindings/java
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          pom=$(mvn -B -q help:evaluate -Dexpression=project.version -DforceStdout)
+          [ "$pom" = "$VERSION" ] || { echo "::error::pom.xml version $pom != $VERSION"; exit 1; }
+      # Tests load the library bundled in the jar resources (no explicit path).
+      - name: Test and package (sources, javadoc; unsigned)
+        working-directory: bindings/java
+        run: mvn -B -P release -Dgpg.skip verify
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: maven-jars
+          path: bindings/java/target/*.jar
+          if-no-files-found: error
+      - name: Publish to Maven Central
+        if: needs.gate.outputs.publish == 'true' && needs.gate.outputs.maven == 'true'
+        working-directory: bindings/java
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: mvn -B -P release -DskipTests deploy
+      - name: Publication skipped
+        if: needs.gate.outputs.publish != 'true' || needs.gate.outputs.maven != 'true'
+        run: echo "::notice::Maven Central publication skipped (publish=${{ needs.gate.outputs.publish }}, credentials=${{ needs.gate.outputs.maven }})."
+
+  nuget:
+    name: .NET (NuGet.org)
+    needs: [native, gate]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write   # NuGet trusted publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.2
+        with:
+          pattern: native-*
+          path: native
+          merge-multiple: true
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "8.0.x"
+      - name: Test against the Linux x64 library
+        env:
+          NIRS4ALL_FORMATS_LIBRARY: ${{ github.workspace }}/native/nuget/linux-x64/native/libnirs4all_formats_capi.so
+        run: dotnet test bindings/csharp/tests/Nirs4all.Formats.Tests --nologo
+      - name: Pack
+        env:
+          VERSION: ${{ needs.gate.outputs.version }}
+        run: |
+          set -euo pipefail
+          dotnet pack bindings/csharp/src/Nirs4all.Formats -c Release --nologo -o nupkg \
+            -p:NativeAssetsDir="$GITHUB_WORKSPACE/native/nuget"
+          ls -l nupkg
+          test -f "nupkg/Nirs4all.Formats.$VERSION.nupkg"
+          test "$(unzip -Z1 "nupkg/Nirs4all.Formats.$VERSION.nupkg" | grep -c '^runtimes/.*/native/')" -eq 5
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: nupkg
+          path: nupkg/*.nupkg
+          if-no-files-found: error
+      - name: NuGet trusted publishing login
+        id: nuget-login
+        if: needs.gate.outputs.publish == 'true' && needs.gate.outputs.nuget == 'oidc'
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Publish to NuGet.org
+        if: needs.gate.outputs.publish == 'true' && needs.gate.outputs.nuget != 'none'
+        env:
+          NUGET_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY || secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "nupkg/*.nupkg" --api-key "$NUGET_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Publication skipped
+        if: needs.gate.outputs.publish != 'true' || needs.gate.outputs.nuget == 'none'
+        run: echo "::notice::NuGet.org publication skipped (publish=${{ needs.gate.outputs.publish }}, credentials=${{ needs.gate.outputs.nuget }})."
