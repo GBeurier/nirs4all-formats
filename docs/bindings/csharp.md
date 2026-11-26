@@ -72,6 +72,27 @@ Writers never resample or convert units; what a target cannot carry is
 refused or listed in `Losses` (see [Exports](../EXPORTS.md)). Failures throw
 `FormatsException`, whose `Status` is the [C ABI status](capi.md#errors).
 
+## Plan a conversion
+
+```csharp
+var records = Nirs4allFormats.Open("SPECFILE.DX");
+var plan = Nirs4allFormats.PlanConversion(records, "winisi");
+// plan.Status == "needs_answers", plan.Questions[0].Id == "source_scale"
+plan = Nirs4allFormats.PlanConversion(records, "winisi", new PlanOptions { SourceScale = "percent" });
+foreach (var step in plan.Steps)
+{
+    Console.WriteLine($"{step.MethodId} {step.Params.ToJsonString()}");
+}
+var requirements = Nirs4allFormats.ExportTargets().Requirements["foss-winisi-nir"];
+```
+
+The plan computes no values: each step names the nirs4all-methods catalog
+method that computes it, with its parameters. Run those methods with
+nirs4all-methods and write the converted records, or export records that are
+already converted. A `needs_answers` plan lists questions; answer each through
+the `PlanOptions` property of the same name. `refused` plans explain why in
+`Refusals`.
+
 ## Publishing
 
 `.github/workflows/release-bindings.yml` builds the native library for the five

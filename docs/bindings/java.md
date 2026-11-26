@@ -80,6 +80,28 @@ Writers never resample or convert units; what a target cannot carry is
 refused or listed in `losses` (see [Exports](../EXPORTS.md)). Failures throw
 `FormatsException`, whose `status()` is the [C ABI status](capi.md#errors).
 
+## Plan a conversion
+
+```java
+List<SpectralRecord> records = Nirs4allFormats.open(Path.of("SPECFILE.DX"));
+ConversionPlan plan = Nirs4allFormats.planConversion(records, "winisi");
+plan.status();                                     // "needs_answers"
+plan.questions().get(0).id();                      // "source_scale"
+plan = Nirs4allFormats.planConversion(records, "winisi", new PlanOptions().sourceScale("percent"));
+for (ConversionPlan.Step step : plan.steps()) {
+    System.out.println(step.methodId() + " " + step.params());
+}
+ExportTargets targets = Nirs4allFormats.exportTargets();
+targets.requirements().get("foss-winisi-nir");     // what the format accepts, as JSON
+```
+
+The plan computes no values: each step names the nirs4all-methods catalog
+method that computes it, with its parameters. Run those methods with
+nirs4all-methods (for example its C ABI or Python package) and write the
+converted records, or export records that are already converted. A
+`needs_answers` plan lists questions; answer each through the `PlanOptions`
+setter of the same name. `refused` plans explain why in `refusals()`.
+
 ## Publishing
 
 `.github/workflows/release-bindings.yml` builds the native library for the five

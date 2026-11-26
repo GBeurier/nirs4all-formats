@@ -70,6 +70,25 @@ refused or listed in `losses` (see [Exports](../EXPORTS.md)). Failures throw
 `FormatsError`, whose `status` is a symbol such as `:io` or `:unknown_target`
 (see [C ABI errors](capi.md#errors)).
 
+## Plan a conversion
+
+```julia
+records = read_records("SPECFILE.DX")
+plan = plan_conversion(records, "winisi")
+plan.status, plan.questions[1].id              # ("needs_answers", "source_scale")
+plan = plan_conversion(records, "winisi"; source_scale="percent")
+for step in plan.steps
+    println(step.method_id, " ", step.params)
+end
+requirements()["foss-winisi-nir"]              # what the format accepts
+```
+
+The plan computes no values: each step names the nirs4all-methods catalog
+method that computes it, with its parameters. Run those methods with
+nirs4all-methods and write the converted records, or export records that are
+already converted. A `needs_answers` plan lists questions; answer each with the
+keyword of the same `id`. `refused` plans explain why in `refusals`.
+
 ## Publishing
 
 Registration is done by the maintainer; nothing in CI registers a package.

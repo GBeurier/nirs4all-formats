@@ -122,6 +122,35 @@ class Nirs4allFormatsTest {
         ExportTargets targets = Nirs4allFormats.exportTargets();
         assertTrue(targets.formats().stream().anyMatch(f -> f.format().equals("jcamp-dx")));
         assertTrue(targets.software().stream().anyMatch(s -> s.id().equals("opus") && !s.tested()));
+        assertEquals(targets.formats().size(), targets.requirements().size());
+        assertTrue(targets.requirements().get("foss-winisi-nir").has("signal_types"));
+    }
+
+    @Test
+    void plansConversions() {
+        ConversionPlan ready = Nirs4allFormats.planConversion(
+                Nirs4allFormats.open(SAMPLES.resolve("ocean_optics/whiteref.ProcSpec")), "winisi");
+        assertEquals("ready", ready.status());
+        assertEquals("foss-winisi-nir", ready.format());
+        assertFalse(ready.steps().isEmpty());
+        assertEquals("preprocessing.signal_conversion.to_absorbance", ready.steps().get(0).methodId());
+
+        List<SpectralRecord> specfile = Nirs4allFormats.open(SAMPLES.resolve("jcamp_dx/SPECFILE.DX"));
+        ConversionPlan asks = Nirs4allFormats.planConversion(specfile, "winisi");
+        assertEquals("needs_answers", asks.status());
+        assertEquals("source_scale", asks.questions().get(0).id());
+        assertFalse(asks.questions().get(0).choices().isEmpty());
+
+        ConversionPlan refused = Nirs4allFormats.planConversion(
+                Nirs4allFormats.open(SAMPLES.resolve("raman_horiba/jobinyvon_test_spec_3s_cm-1.xml")),
+                null,
+                new PlanOptions().axisUnit("nm"));
+        assertEquals("refused", refused.status());
+        assertEquals("raman_shift", refused.refusals().get(0).code());
+
+        FormatsException unknown =
+                assertThrows(FormatsException.class, () -> Nirs4allFormats.planConversion(specfile, "no-such-target"));
+        assertEquals(FormatsException.Status.UNKNOWN_TARGET, unknown.status());
     }
 
     @Test

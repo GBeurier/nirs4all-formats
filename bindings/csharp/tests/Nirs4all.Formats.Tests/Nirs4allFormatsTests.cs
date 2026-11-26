@@ -143,6 +143,34 @@ public sealed class Nirs4allFormatsTests : IDisposable
         var targets = Nirs4allFormats.ExportTargets();
         Assert.Contains(targets.Formats, f => f.Format == "jcamp-dx");
         Assert.Contains(targets.Software, s => s.Id == "opus" && !s.Tested);
+        Assert.Equal(targets.Formats.Count, targets.Requirements.Count);
+        Assert.True(targets.Requirements["foss-winisi-nir"].ContainsKey("signal_types"));
+    }
+
+    [Fact]
+    public void PlansConversions()
+    {
+        var ready = Nirs4allFormats.PlanConversion(
+            Nirs4allFormats.Open(Path.Combine(Samples, "ocean_optics", "whiteref.ProcSpec")), "winisi");
+        Assert.Equal("ready", ready.Status);
+        Assert.Equal("foss-winisi-nir", ready.Format);
+        Assert.Equal("preprocessing.signal_conversion.to_absorbance", ready.Steps[0].MethodId);
+
+        var specfile = Nirs4allFormats.Open(Path.Combine(Samples, "jcamp_dx", "SPECFILE.DX"));
+        var asks = Nirs4allFormats.PlanConversion(specfile, "winisi");
+        Assert.Equal("needs_answers", asks.Status);
+        Assert.Equal("source_scale", asks.Questions[0].Id);
+        Assert.NotEmpty(asks.Questions[0].Choices);
+
+        var refused = Nirs4allFormats.PlanConversion(
+            Nirs4allFormats.Open(Path.Combine(Samples, "raman_horiba", "jobinyvon_test_spec_3s_cm-1.xml")),
+            null,
+            new PlanOptions { AxisUnit = "nm" });
+        Assert.Equal("refused", refused.Status);
+        Assert.Equal("raman_shift", refused.Refusals[0].Code);
+
+        var unknown = Assert.Throws<FormatsException>(() => Nirs4allFormats.PlanConversion(specfile, "no-such-target"));
+        Assert.Equal(FormatsStatus.UnknownTarget, unknown.Status);
     }
 
     [Fact]

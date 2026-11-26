@@ -43,8 +43,16 @@ public sealed record WrittenFile(string Name, string MediaType, byte[] Bytes)
 /// <param name="Format">Writer that produced the files.</param>
 /// <param name="Files">Produced files.</param>
 /// <param name="Losses">Declared losses.</param>
-public sealed record WriteResult(string Format, IReadOnlyList<WrittenFile> Files, IReadOnlyList<WriteLoss> Losses)
+/// <param name="Conversions">Conversion steps recorded in the records' metadata, as JSON.</param>
+public sealed record WriteResult(
+    string Format,
+    IReadOnlyList<WrittenFile> Files,
+    IReadOnlyList<WriteLoss> Losses,
+    IReadOnlyList<JsonNode> Conversions)
 {
+    internal static IReadOnlyList<JsonNode> Nodes(JsonNode? array) =>
+        (array?.AsArray() ?? new JsonArray()).Select(n => n!.DeepClone()).ToList();
+
     internal static WriteResult FromJson(JsonNode node) => new(
         JsonHelpers.Text(node, "format") ?? "",
         node["files"]!.AsArray()
@@ -53,7 +61,8 @@ public sealed record WriteResult(string Format, IReadOnlyList<WrittenFile> Files
                 JsonHelpers.Text(f!, "media_type") ?? "",
                 Convert.FromBase64String(JsonHelpers.Text(f!, "bytes_base64") ?? "")))
             .ToList(),
-        WriteLoss.ListFromJson(node["losses"]));
+        WriteLoss.ListFromJson(node["losses"]),
+        Nodes(node["conversions"]));
 
     /// <summary>Save every file into <paramref name="directory"/>, refusing to replace existing files.</summary>
     public IReadOnlyList<string> Save(string directory)
@@ -74,12 +83,18 @@ public sealed record WriteResult(string Format, IReadOnlyList<WrittenFile> Files
 /// <param name="Format">Writer that produced the files.</param>
 /// <param name="Files">Saved paths.</param>
 /// <param name="Losses">Declared losses.</param>
-public sealed record ConvertResult(string Format, IReadOnlyList<string> Files, IReadOnlyList<WriteLoss> Losses)
+/// <param name="Conversions">Conversion steps recorded in the records' metadata, as JSON.</param>
+public sealed record ConvertResult(
+    string Format,
+    IReadOnlyList<string> Files,
+    IReadOnlyList<WriteLoss> Losses,
+    IReadOnlyList<JsonNode> Conversions)
 {
     internal static ConvertResult FromJson(JsonNode node) => new(
         JsonHelpers.Text(node, "format") ?? "",
         JsonHelpers.Strings(node["files"]),
-        WriteLoss.ListFromJson(node["losses"]));
+        WriteLoss.ListFromJson(node["losses"]),
+        WriteResult.Nodes(node["conversions"]));
 }
 
 /// <summary>An export format.</summary>
@@ -113,7 +128,11 @@ public sealed record SoftwarePreset(
 /// <summary>Export formats and software presets accepted as write targets.</summary>
 /// <param name="Formats">Export formats.</param>
 /// <param name="Software">Software presets.</param>
-public sealed record ExportTargets(IReadOnlyList<ExportFormat> Formats, IReadOnlyList<SoftwarePreset> Software)
+/// <param name="Requirements">What each format accepts (signal types, axis units, grids, missing values, ...), as JSON keyed by format id.</param>
+public sealed record ExportTargets(
+    IReadOnlyList<ExportFormat> Formats,
+    IReadOnlyList<SoftwarePreset> Software,
+    IReadOnlyDictionary<string, JsonObject> Requirements)
 {
     internal static ExportTargets FromJson(JsonNode node) => new(
         node["formats"]!.AsArray()
@@ -135,5 +154,7 @@ public sealed record ExportTargets(IReadOnlyList<ExportFormat> Formats, IReadOnl
                 JsonHelpers.Text(s, "evidence") ?? "",
                 s["tested"]?.GetValue<bool>() ?? false,
                 JsonHelpers.Text(s, "notes") ?? ""))
-            .ToList());
+            .ToList(),
+        (node["requirements"]?.AsArray() ?? new JsonArray())
+            .ToDictionary(r => JsonHelpers.Text(r!, "format") ?? "", r => r!.DeepClone().AsObject()));
 }

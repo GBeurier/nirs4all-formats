@@ -57,17 +57,35 @@ public static class Nirs4allFormats
             Native.n4fmt_open_bytes(name, bytes, (nuint)bytes.Length, optionsJson, out json, out error)));
     }
 
-    /// <summary>Export formats and software presets.</summary>
+    /// <summary>Export formats, software presets and the requirements of each format.</summary>
     public static ExportTargets ExportTargets() =>
         global::Nirs4all.Formats.ExportTargets.FromJson(Parse(Native.Call(Native.n4fmt_export_targets)));
 
     /// <summary>Write records to an export format or software preset, in memory.</summary>
     public static WriteResult Write(IEnumerable<SpectralRecord> records, string target, WriteOptions? options = null)
     {
-        string recordsJson = "[" + string.Join(",", records.Select(r => r.ToJsonString())) + "]";
+        string recordsJson = RecordsJson(records);
         string optionsJson = (options ?? new WriteOptions()).ToJson(withOverwrite: false);
         return WriteResult.FromJson(Parse(Native.Call((out IntPtr json, out IntPtr error) =>
             Native.n4fmt_write_records(recordsJson, target, optionsJson, out json, out error))));
+    }
+
+    /// <summary>
+    /// Plan the conversions that make <paramref name="records"/> writable for <paramref name="target"/>
+    /// (an export format or software preset), or for the options alone when it is null.
+    /// </summary>
+    /// <remarks>
+    /// The plan computes no values: each numerical step names the nirs4all-methods method that
+    /// computes it. Run those methods yourself, or export records that are already converted.
+    /// Unknown targets and invalid options throw; what the records cannot become is in
+    /// <see cref="ConversionPlan.Refusals"/>.
+    /// </remarks>
+    public static ConversionPlan PlanConversion(IEnumerable<SpectralRecord> records, string? target, PlanOptions? options = null)
+    {
+        string recordsJson = RecordsJson(records);
+        string optionsJson = (options ?? new PlanOptions()).ToJson();
+        return ConversionPlan.FromJson(Parse(Native.Call((out IntPtr json, out IntPtr error) =>
+            Native.n4fmt_plan_conversion(recordsJson, target, optionsJson, out json, out error))).AsObject());
     }
 
     /// <summary>
@@ -81,6 +99,9 @@ public static class Nirs4allFormats
         return ConvertResult.FromJson(Parse(Native.Call((out IntPtr json, out IntPtr error) =>
             Native.n4fmt_convert_path(inputPath, target, outputDirectory, optionsJson, out json, out error))));
     }
+
+    private static string RecordsJson(IEnumerable<SpectralRecord> records) =>
+        "[" + string.Join(",", records.Select(r => r.ToJsonString())) + "]";
 
     private static JsonNode Parse(string json) =>
         JsonNode.Parse(json) ?? throw new InvalidOperationException("the native library returned null");

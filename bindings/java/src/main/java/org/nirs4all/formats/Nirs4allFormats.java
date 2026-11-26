@@ -80,7 +80,7 @@ public final class Nirs4allFormats {
                 capi.n4fmt_open_bytes(name, bytes, new NativeLibrary.SizeT(bytes.length), json, out, err)));
     }
 
-    /** Export formats and software presets. */
+    /** Export formats, software presets and the requirements of each format. */
     public static ExportTargets exportTargets() {
         return ExportTargets.fromJson(Json.parse(NativeLibrary.call(NativeLibrary.Capi::n4fmt_export_targets)));
     }
@@ -92,14 +92,31 @@ public final class Nirs4allFormats {
 
     /** Write records to an export format or software preset with options, in memory. */
     public static WriteResult write(List<SpectralRecord> records, String target, WriteOptions options) {
-        ArrayNode array = Json.MAPPER.createArrayNode();
-        for (SpectralRecord record : records) {
-            array.add(record.rawJson());
-        }
-        String recordsJson = Json.write(array);
+        String recordsJson = recordsJson(records);
         String optionsJson = options.toJson(false);
         return WriteResult.fromJson(Json.parse(NativeLibrary.call((capi, out, err) ->
                 capi.n4fmt_write_records(recordsJson, target, optionsJson, out, err))));
+    }
+
+    /**
+     * Plan the conversions that make {@code records} writable for {@code target} (an export
+     * format or software preset), or for the options alone when {@code target} is {@code null}.
+     *
+     * <p>The plan computes no values: each numerical step names the nirs4all-methods method that
+     * computes it. Run those methods yourself, or export records that are already converted.
+     * Unknown targets and invalid options throw; what the records cannot become is in {@link
+     * ConversionPlan#refusals()}.
+     */
+    public static ConversionPlan planConversion(List<SpectralRecord> records, String target, PlanOptions options) {
+        String recordsJson = recordsJson(records);
+        String optionsJson = options.toJson();
+        return new ConversionPlan((ObjectNode) Json.parse(NativeLibrary.call((capi, out, err) ->
+                capi.n4fmt_plan_conversion(recordsJson, target, optionsJson, out, err))));
+    }
+
+    /** Plan with default options; see {@link #planConversion(List, String, PlanOptions)}. */
+    public static ConversionPlan planConversion(List<SpectralRecord> records, String target) {
+        return planConversion(records, target, new PlanOptions());
     }
 
     /** Read {@code input} and save its export into the existing directory {@code outputDir}. */
@@ -117,6 +134,14 @@ public final class Nirs4allFormats {
         String optionsJson = options.toJson(true);
         return ConvertResult.fromJson(Json.parse(NativeLibrary.call((capi, out, err) ->
                 capi.n4fmt_convert_path(in, target, dir, optionsJson, out, err))));
+    }
+
+    private static String recordsJson(List<SpectralRecord> records) {
+        ArrayNode array = Json.MAPPER.createArrayNode();
+        for (SpectralRecord record : records) {
+            array.add(record.rawJson());
+        }
+        return Json.write(array);
     }
 
     private static List<SpectralRecord> records(String json) {

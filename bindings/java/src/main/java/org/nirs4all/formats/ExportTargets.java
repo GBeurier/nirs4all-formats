@@ -3,15 +3,19 @@ package org.nirs4all.formats;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Export formats and software presets accepted as write targets.
  *
  * @param formats export formats
  * @param software software presets, each naming a format the software documents as importable
+ * @param requirements what each format accepts (signal types, axis units, grids, missing values,
+ *     ...), as JSON keyed by format id
  */
-public record ExportTargets(List<Format> formats, List<Software> software) {
+public record ExportTargets(List<Format> formats, List<Software> software, Map<String, JsonNode> requirements) {
 
     /**
      * An export format.
@@ -67,6 +71,11 @@ public record ExportTargets(List<Format> formats, List<Software> software) {
                 Json.text(s, "evidence"),
                 s.path("tested").asBoolean(),
                 Json.text(s, "notes"))));
-        return new ExportTargets(Collections.unmodifiableList(formats), Collections.unmodifiableList(software));
+        Map<String, JsonNode> requirements = new LinkedHashMap<>();
+        node.path("requirements").forEach(r -> requirements.put(Json.text(r, "format"), r));
+        return new ExportTargets(
+                Collections.unmodifiableList(formats),
+                Collections.unmodifiableList(software),
+                Collections.unmodifiableMap(requirements));
     }
 }

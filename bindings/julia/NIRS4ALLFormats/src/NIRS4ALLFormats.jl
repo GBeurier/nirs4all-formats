@@ -17,7 +17,7 @@ using Libdl
 export SpectralAxis, Signal, SourceFile, Provenance, SpectralRecord, FormatProbe,
     WrittenFile, FormatsError,
     library_version, abi_version, readers, probe, read_records, signal_matrix,
-    export_targets, write_records, convert_path
+    export_targets, requirements, plan_conversion, write_records, convert_path
 
 const LIBRARY_ENV = "NIRS4ALL_FORMATS_LIBRARY"
 const JLL_NAME = "nirs4all_formats_capi_jll"
@@ -327,10 +327,49 @@ end
 """
     export_targets()
 
-Export formats (`formats`) and software presets (`software`) accepted as write targets.
+Export formats (`formats`), software presets (`software`) and what each format
+accepts (`requirements`), as accepted write targets.
 """
 export_targets() = _call((o, e) -> ccall(_sym(:n4fmt_export_targets), Int32,
     (Ptr{Ptr{UInt8}}, Ptr{Ptr{UInt8}}), o, e))
+
+"""
+    requirements() -> Dict{String,Any}
+
+What each export format accepts (signal types, axis units, grids, missing
+values, ...), keyed by format id.
+"""
+requirements() = Dict{String,Any}(String(r.format) => _plain(r) for r in export_targets().requirements)
+
+const _PLAN_OPTIONS = (:signal, :signal_type, :axis_unit, :grid, :grid_step, :grid_min, :grid_max,
+    :interpolation, :source_scale, :assume_signal_type, :absorbance_origin, :axis_tolerance, :splices)
+
+"""
+    plan_conversion(records, target=nothing; signal, signal_type, axis_unit, grid, grid_step,
+                    grid_min, grid_max, interpolation, source_scale, assume_signal_type,
+                    absorbance_origin, axis_tolerance, splices)
+
+Plan the conversions that make `records` writable for `target` (an export format
+or software preset), or for the options alone when `target` is `nothing`. Returns
+the plan as JSON: `status` (`"ready"`, `"needs_answers"`, `"refused"` or
+`"unchanged"`), `steps`, `questions` (answer them with the keyword of the same
+`id` and plan again) and `refusals`.
+
+The plan computes no values: each numerical step names the nirs4all-methods
+method (`method_id`) that computes it. Run those methods yourself, or export
+records that are already converted.
+"""
+function plan_conversion(records::AbstractVector{SpectralRecord}, target::Union{Nothing,AbstractString}=nothing;
+                         kwargs...)
+    for key in keys(kwargs)
+        key in _PLAN_OPTIONS || throw(ArgumentError("unknown plan option $key"))
+    end
+    payload = JSON3.write([record.json for record in records])
+    options = JSON3.write(Dict{String,Any}(String(k) => v for (k, v) in pairs(kwargs) if v !== nothing))
+    target_ptr = target === nothing ? C_NULL : target
+    return _call((o, e) -> ccall(_sym(:n4fmt_plan_conversion), Int32,
+        (Cstring, Cstring, Cstring, Ptr{Ptr{UInt8}}, Ptr{Ptr{UInt8}}), payload, target_ptr, options, o, e))
+end
 
 function _write_options(; signal=nothing, base_name=nothing, extension=nothing, axis_tolerance=nothing,
                         multi::Bool=false, delimiter=nothing, zip::Bool=false, overwrite=nothing)
@@ -346,11 +385,11 @@ function _write_options(; signal=nothing, base_name=nothing, extension=nothing, 
     return JSON3.write(options)
 end
 
-_losses(array) = [Dict{String,Any}(String(k) => v for (k, v) in pairs(loss)) for loss in array]
+_dicts(array) = [Dict{String,Any}(String(k) => v for (k, v) in pairs(loss)) for loss in array]
 
 """
     write_records(records, target; signal, base_name, extension, axis_tolerance, multi, delimiter, zip)
-        -> (format, files::Vector{WrittenFile}, losses)
+        -> (format, files::Vector{WrittenFile}, losses, conversions)
 
 Write records to an export format or software preset (see [`export_targets`]), in
 memory. Nothing is resampled or converted; what the target cannot carry is refused
@@ -363,11 +402,12 @@ function write_records(records::AbstractVector{SpectralRecord}, target::Abstract
         (Cstring, Cstring, Cstring, Ptr{Ptr{UInt8}}, Ptr{Ptr{UInt8}}), payload, target, options, o, e))
     files = WrittenFile[WrittenFile(String(f.name), String(f.media_type), base64decode(String(f.bytes_base64)))
                         for f in result.files]
-    return (format=String(result.format), files=files, losses=_losses(result.losses))
+    return (format=String(result.format), files=files, losses=_dicts(result.losses),
+        conversions=_dicts(result.conversions))
 end
 
 """
-    convert_path(input, target, output_dir; overwrite=false, kwargs...) -> (format, files, losses)
+    convert_path(input, target, output_dir; overwrite=false, kwargs...) -> (format, files, losses, conversions)
 
 Read `input` and save its export into the existing directory `output_dir`. Existing
 files are kept, and nothing is written, unless `overwrite=true`. Other keywords are
@@ -379,7 +419,8 @@ function convert_path(input::AbstractString, target::AbstractString, output_dir:
     result = _call((o, e) -> ccall(_sym(:n4fmt_convert_path), Int32,
         (Cstring, Cstring, Cstring, Cstring, Ptr{Ptr{UInt8}}, Ptr{Ptr{UInt8}}),
         input, target, output_dir, options, o, e))
-    return (format=String(result.format), files=String.(collect(result.files)), losses=_losses(result.losses))
+    return (format=String(result.format), files=String.(collect(result.files)), losses=_dicts(result.losses),
+        conversions=_dicts(result.conversions))
 end
 
 end # module

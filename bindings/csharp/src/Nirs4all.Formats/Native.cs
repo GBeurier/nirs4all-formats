@@ -124,6 +124,14 @@ internal static class Native
         out IntPtr outError);
 
     [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
+    internal static extern int n4fmt_plan_conversion(
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string recordsJson,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? target,
+        [MarshalAs(UnmanagedType.LPUTF8Str)] string? optionsJson,
+        out IntPtr outJson,
+        out IntPtr outError);
+
+    [DllImport(Library, CallingConvention = CallingConvention.Cdecl)]
     internal static extern int n4fmt_convert_path(
         [MarshalAs(UnmanagedType.LPUTF8Str)] string inputPath,
         [MarshalAs(UnmanagedType.LPUTF8Str)] string target,

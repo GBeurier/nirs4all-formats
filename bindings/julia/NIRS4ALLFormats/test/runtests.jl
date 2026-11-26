@@ -86,6 +86,34 @@ const SPC = joinpath(SAMPLES, "galactic_spc", "nir.spc")
         targets = export_targets()
         @test any(f -> f.format == "jcamp-dx", targets.formats)
         @test any(s -> s.id == "opus" && !s.tested, targets.software)
+        reqs = requirements()
+        @test length(reqs) == length(targets.formats)
+        @test haskey(reqs["foss-winisi-nir"], "signal_types")
+    end
+
+    @testset "plan conversions" begin
+        ready = plan_conversion(read_records(joinpath(SAMPLES, "ocean_optics", "whiteref.ProcSpec")), "winisi")
+        @test ready.status == "ready"
+        @test ready.format == "foss-winisi-nir"
+        @test ready.steps[1].method_id == "preprocessing.signal_conversion.to_absorbance"
+
+        specfile = read_records(joinpath(SAMPLES, "jcamp_dx", "SPECFILE.DX"))
+        asks = plan_conversion(specfile, "winisi")
+        @test asks.status == "needs_answers"
+        @test asks.questions[1].id == "source_scale"
+
+        refused = plan_conversion(read_records(joinpath(SAMPLES, "raman_horiba", "jobinyvon_test_spec_3s_cm-1.xml"));
+            axis_unit="nm")
+        @test refused.status == "refused"
+        @test refused.refusals[1].code == "raman_shift"
+
+        err = try
+            plan_conversion(specfile, "no-such-target")
+        catch e
+            e
+        end
+        @test err isa FormatsError && err.status == :unknown_target
+        @test_throws ArgumentError plan_conversion(specfile; not_an_option=1)
     end
 
     @testset "errors" begin

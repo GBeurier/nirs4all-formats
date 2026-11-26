@@ -70,6 +70,13 @@ final class NativeLibrary {
                 PointerByReference outJson,
                 PointerByReference outError);
 
+        int n4fmt_plan_conversion(
+                String recordsJson,
+                String target,
+                String optionsJson,
+                PointerByReference outJson,
+                PointerByReference outError);
+
         int n4fmt_convert_path(
                 String inputPath,
                 String target,

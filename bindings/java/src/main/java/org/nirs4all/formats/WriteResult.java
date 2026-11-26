@@ -16,8 +16,9 @@ import java.util.List;
  * @param format writer that produced the files
  * @param files produced files
  * @param losses declared losses
+ * @param conversions conversion steps recorded in the records' metadata, as JSON
  */
-public record WriteResult(String format, List<File> files, List<Loss> losses) {
+public record WriteResult(String format, List<File> files, List<Loss> losses, List<JsonNode> conversions) {
 
     /**
      * One produced file.
@@ -66,7 +67,18 @@ public record WriteResult(String format, List<File> files, List<Loss> losses) {
                 Json.text(file, "media_type"),
                 decoder.decode(Json.text(file, "bytes_base64")))));
         return new WriteResult(
-                Json.text(node, "format"), Collections.unmodifiableList(files), Loss.listFromJson(node.get("losses")));
+                Json.text(node, "format"),
+                Collections.unmodifiableList(files),
+                Loss.listFromJson(node.get("losses")),
+                nodes(node.get("conversions")));
+    }
+
+    static List<JsonNode> nodes(JsonNode array) {
+        List<JsonNode> out = new ArrayList<>();
+        if (array != null) {
+            array.forEach(out::add);
+        }
+        return Collections.unmodifiableList(out);
     }
 
     /** Save every file into {@code directory}, refusing to replace existing files. */
