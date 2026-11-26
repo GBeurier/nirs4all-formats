@@ -6,12 +6,16 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-/// `target/<profile>`, where cargo places the cdylib next to `deps/`.
+/// `target/<profile>`, where cargo places the cdylib. The test executable lives
+/// below it (`deps/` or, with newer cargo build directories, `build/<pkg>/<hash>/`).
 fn profile_dir() -> PathBuf {
     let exe = std::env::current_exe().expect("test executable path");
-    exe.parent()
-        .and_then(Path::parent)
-        .expect("test executable lives in target/<profile>/deps")
+    exe.ancestors()
+        .find(|dir| {
+            dir.file_name()
+                .is_some_and(|name| name == "debug" || name == "release")
+        })
+        .expect("test executable lives below target/debug or target/release")
         .to_path_buf()
 }
 
