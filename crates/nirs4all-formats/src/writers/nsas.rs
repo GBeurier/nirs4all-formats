@@ -10,6 +10,7 @@ use serde_json::Value;
 use super::native::{
     grid_label, numeric_targets, require_absorbance_nm, short_labels, target_f32, Clock,
 };
+use super::requirements::Grid;
 use super::select::{groups, report_record_losses, spectra, Spectrum, TargetSupport};
 use super::{push_f32, refused, Context, WriteError, WrittenFile};
 
@@ -97,6 +98,33 @@ impl Geometry {
     fn padding(&self) -> usize {
         (HEADER + 4 * self.points).div_ceil(128) * 128 - HEADER - 4 * self.points
     }
+}
+
+/// Whether a measured axis is one of the known NSAS axes.
+pub(crate) fn writable_axis(axis: &[f64], tolerance: f64) -> bool {
+    let tolerance = tolerance.max(1e-9);
+    GEOMETRIES
+        .iter()
+        .any(|geometry| axis.len() == geometry.points && geometry.deviation(axis) <= tolerance)
+}
+
+/// The known NSAS axes, as export requirements describe them.
+pub(crate) fn grids() -> Vec<Grid> {
+    GEOMETRIES
+        .iter()
+        .map(|geometry| {
+            let (first, last) = (geometry.at(0), geometry.at(geometry.points - 1));
+            Grid {
+                id: format!("nsas-{}", geometry.points),
+                label: format!("{} points, {first}-{last} nm", geometry.points),
+                unit: "nm",
+                first,
+                step: geometry.at(1) - first,
+                last,
+                points: geometry.points,
+            }
+        })
+        .collect()
 }
 
 pub(crate) fn write(

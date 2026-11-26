@@ -45,8 +45,9 @@ accepted when an almost evenly spaced axis is written as evenly spaced.}
 any produced file already exists.}
 }
 \value{
-A list with \code{format}, \code{files} (a character vector of paths) and
-\code{losses} (a list of declared losses).
+A list with \code{format}, \code{files} (a character vector of paths),
+\code{losses} (a list of declared losses) and \code{conversions} (the steps listed
+under the record metadata key \code{conversions}).
 }
 \description{
 Reads \code{path} through the Rust registry and writes its spectra to \code{target}, an

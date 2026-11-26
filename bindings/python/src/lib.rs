@@ -12,10 +12,10 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use nirs4all_formats::{
-    open_bytes_with_options, open_path_with_options, open_with_sidecars_and_options, probe_path,
-    software_catalog, walk_path, write_records, writer_catalog, CubeMask, CubeWindow,
-    InMemorySidecars, ReadOptions, SidecarResolver, SpectralRecord, WalkOptions, WalkOutcome,
-    WriteOptions,
+    export_targets, open_bytes_with_options, open_path_with_options,
+    open_with_sidecars_and_options, plan_conversion, probe_path, walk_path, write_records,
+    CubeMask, CubeWindow, InMemorySidecars, PlanOptions, ReadOptions, SidecarResolver,
+    SpectralRecord, WalkOptions, WalkOutcome, WriteOptions,
 };
 use pyo3::exceptions::{PyIOError, PyValueError};
 use pyo3::prelude::*;
@@ -252,18 +252,38 @@ fn py_write_records(
     result.set_item("files", files)?;
     let losses = to_json(&output.losses)?;
     result.set_item("losses", pythonize(py, &losses).map_err(map_err)?)?;
+    let conversions = to_json(&output.conversions)?;
+    result.set_item("conversions", pythonize(py, &conversions).map_err(map_err)?)?;
     Ok(result.into_any().unbind())
+}
+
+/// Plan the conversions that make record dicts writable for a target.
+#[pyfunction]
+#[pyo3(
+    name = "plan_conversion",
+    signature = (records, target, options),
+    text_signature = "(records, target, options)"
+)]
+fn py_plan_conversion(
+    py: Python<'_>,
+    records: &Bound<'_, PyAny>,
+    target: Option<&str>,
+    options: &Bound<'_, PyDict>,
+) -> PyResult<Py<PyAny>> {
+    let invalid = |err: pythonize::PythonizeError| PyValueError::new_err(err.to_string());
+    let records: Vec<SpectralRecord> = depythonize(records).map_err(invalid)?;
+    let options: PlanOptions = depythonize(options.as_any()).map_err(invalid)?;
+    let plan = plan_conversion(&records, target, &options)
+        .map_err(|err| PyValueError::new_err(err.to_string()))?;
+    let value = to_json(&plan)?;
+    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
 }
 
 /// Return the export formats and software presets.
 #[pyfunction]
 #[pyo3(name = "export_targets", text_signature = "()")]
 fn py_export_targets(py: Python<'_>) -> PyResult<Py<PyAny>> {
-    let value = serde_json::json!({
-        "formats": writer_catalog(),
-        "software": software_catalog(),
-    });
-    Ok(pythonize(py, &value).map_err(map_err)?.unbind())
+    Ok(pythonize(py, &export_targets()).map_err(map_err)?.unbind())
 }
 
 #[pymodule]
@@ -275,6 +295,7 @@ fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(py_walk_path, m)?)?;
     m.add_function(wrap_pyfunction!(py_write_records, m)?)?;
     m.add_function(wrap_pyfunction!(py_export_targets, m)?)?;
+    m.add_function(wrap_pyfunction!(py_plan_conversion, m)?)?;
     m.add("__version__", env!("CARGO_PKG_VERSION"))?;
 
     // Constants surfacing the underlying library facilities.

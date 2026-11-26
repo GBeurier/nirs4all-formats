@@ -13,6 +13,8 @@ Two layers:
 
 :func:`write_records` and :func:`convert_path` export records to exchange
 formats read by third-party software; see :func:`export_targets`.
+:func:`plan_conversion` lists the conversions (computed by nirs4all-methods)
+that make records writable for a target.
 """
 
 from ._compat import (
@@ -21,6 +23,7 @@ from ._compat import (
     open_bytes,
     open_records,
     open_with_sidecars,
+    plan_conversion,
     probe_path,
     walk_path,
     write_records,
@@ -50,6 +53,7 @@ __all__ = [
     "open_records",
     "open_recordset",
     "open_with_sidecars",
+    "plan_conversion",
     "probe_path",
     "walk_path",
     "write_records",

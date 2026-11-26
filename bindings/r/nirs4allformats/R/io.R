@@ -382,7 +382,8 @@ nirs4allformats_probe_path <- function(path) {
 #' third-party software. A preset names a format the software documents as
 #' importable; `tested` tells whether an import of our files was verified.
 #'
-#' @return A list with elements `formats` and `software`.
+#' @return A list with elements `formats`, `software` and `requirements` (the
+#'   signal types, axis units, grids and limits each format accepts).
 #'
 #' @examples
 #' \dontrun{
@@ -422,8 +423,9 @@ nirs4allformats_export_targets <- function() {
 #' @param overwrite Replace existing files. When `FALSE`, nothing is written if
 #'   any produced file already exists.
 #'
-#' @return A list with `format`, `files` (a character vector of paths) and
-#'   `losses` (a list of declared losses).
+#' @return A list with `format`, `files` (a character vector of paths),
+#'   `losses` (a list of declared losses) and `conversions` (the steps listed
+#'   under the record metadata key `conversions`).
 #'
 #' @examples
 #' \dontrun{

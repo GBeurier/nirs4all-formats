@@ -150,10 +150,12 @@ def walk_path(
 
 
 def export_targets() -> dict[str, list[dict[str, Any]]]:
-    """Return the available export ``formats`` and ``software`` presets.
+    """Return the export ``formats``, ``software`` presets and ``requirements``.
 
     A preset names a format the software documents as importable; its
-    ``tested`` flag tells whether an import of our files was verified.
+    ``tested`` flag tells whether an import of our files was verified. Each
+    requirement entry lists the signal types, axis units, grids and limits a
+    format accepts.
     """
 
     targets = _require_writer().export_targets()
@@ -175,7 +177,9 @@ def write_records(
 
     Returns:
         A dict with ``format``, ``files`` (``name``, ``media_type`` and
-        ``bytes``) and ``losses``, the information the target does not carry.
+        ``bytes``), ``losses``, the information the target does not carry,
+        and ``conversions``, the steps listed under the record metadata key
+        ``conversions`` for the exported signals.
 
     Raises:
         ValueError: If the target is unknown or cannot hold the records.
@@ -185,6 +189,40 @@ def write_records(
     if not isinstance(output, dict):
         raise RuntimeError("native write_records returned a non-dict payload")
     return output
+
+
+def plan_conversion(
+    records: Sequence[Mapping[str, Any]], target: str | None = None, **options: Any
+) -> dict[str, Any]:
+    """Plan the conversions that make ``records`` writable for ``target``.
+
+    Nothing is computed: each step names the nirs4all-methods method that
+    computes it. Questions are answered by planning again with the option
+    named by their ``id``.
+
+    Args:
+        records: Records as returned by :func:`open_records`.
+        target: Identifier listed by :func:`export_targets`, or ``None`` to
+            plan the options alone.
+        **options: ``signal``, ``signal_type``, ``axis_unit``, ``grid``,
+            ``grid_step``, ``grid_min``, ``grid_max``, ``interpolation``,
+            ``source_scale``, ``assume_signal_type``, ``absorbance_origin``,
+            ``axis_tolerance`` and ``splices`` (the first axis value of each
+            following detector, for the splice correction of a ratio to
+            references).
+
+    Returns:
+        The plan: ``status``, ``steps``, ``questions``, ``refusals``,
+        ``candidates``, ``output`` and ``notes``.
+
+    Raises:
+        ValueError: If the target is unknown or an option is invalid.
+    """
+
+    plan = _require_writer().plan_conversion(list(records), target, options)
+    if not isinstance(plan, dict):
+        raise RuntimeError("native plan_conversion returned a non-dict payload")
+    return plan
 
 
 def convert_path(

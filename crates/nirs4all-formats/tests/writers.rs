@@ -545,6 +545,40 @@ fn raman_is_not_labelled_infrared() {
 }
 
 #[test]
+fn raman_readers_and_laser_metadata_label_raman_spectra() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../samples");
+    // Horiba raw counts on a Raman shift axis, with laser_nm metadata.
+    let records = open_path(root.join("raman_horiba/jobinyvon_test_spec_3s_cm-1.xml")).unwrap();
+    let jcamp = write_records(&records, "jcamp-dx", &WriteOptions::default()).unwrap();
+    assert!(String::from_utf8_lossy(&jcamp.files[0].bytes).contains("##DATA TYPE=RAMAN SPECTRUM"));
+    assert!(loss(&jcamp, "technique_not_known").is_none());
+    let spc = write_records(&records, "galactic-spc", &WriteOptions::default()).unwrap();
+    assert_eq!((spc.files[0].bytes[2], spc.files[0].bytes[28]), (11, 13));
+    // Laser metadata alone tells a Raman measurement.
+    let mut counts = record(
+        "c",
+        &[200.0, 201.0],
+        "cm-1",
+        &[1.0, 2.0],
+        SignalType::RawCounts,
+    );
+    counts
+        .metadata
+        .insert("laser_wavelength_nm".to_string(), json!(785.0));
+    let spc = write_records(&[counts], "galactic-spc", &WriteOptions::default()).unwrap();
+    assert_eq!((spc.files[0].bytes[2], spc.files[0].bytes[28]), (11, 13));
+    // OpenSpecy libraries state the modality of each spectrum.
+    let library = open_path(root.join("openspecy/synthetic_minilib.rds")).unwrap();
+    let output = write_records(&library, "jcamp-dx", &WriteOptions::default()).unwrap();
+    let types: Vec<bool> = output
+        .files
+        .iter()
+        .map(|file| String::from_utf8_lossy(&file.bytes).contains("##DATA TYPE=RAMAN SPECTRUM"))
+        .collect();
+    assert_eq!(types, vec![false, false, true]);
+}
+
+#[test]
 fn interferograms_never_become_jcamp_spectra() {
     let mut record = nir("a");
     record.signals.get_mut("signal").unwrap().signal_type = SignalType::Interferogram;

@@ -6,7 +6,7 @@ use super::select::{
     even_spacing, groups, report_even_spacing, report_record_losses, spectra, target_text, Scale,
     Spectrum, TargetSupport, Technique,
 };
-use super::{ascii_text, push_f32, refused, Context, WriteError, WrittenFile};
+use super::{ascii_text, conversions, push_f32, refused, Context, WriteError, WrittenFile};
 
 const HEADER: usize = 512;
 const SUBHEADER: usize = 32;
@@ -201,6 +201,23 @@ fn log_text(spectra: &[&Spectrum<'_>], context: &mut Context<'_>) -> String {
                 let text = ascii_text(&text, context);
                 out.push_str(&format!("TARGET{} {key} = {text}\r\n", index + 1));
             }
+        }
+    }
+    let mut applied = Vec::new();
+    for spectrum in spectra {
+        for conversion in conversions::applied(spectrum.record, spectrum.signal_name) {
+            if !applied.contains(&conversion) {
+                applied.push(conversion);
+            }
+        }
+    }
+    for (index, conversion) in applied.iter().enumerate() {
+        let summary = ascii_text(&conversion.summary(), context);
+        out.push_str(&format!("CONVERSION{} = {summary}\r\n", index + 1));
+        for (name, value) in conversion.param_lines() {
+            let name = ascii_text(&name, context).replace('=', " ");
+            let value = ascii_text(&value, context);
+            out.push_str(&format!("CONVERSION{} {name} = {value}\r\n", index + 1));
         }
     }
     out.push('\0');

@@ -6,7 +6,7 @@ use super::select::{
     even_spacing, report_even_spacing, report_record_losses, spectra, target_text, Scale, Spectrum,
     TargetSupport, Technique,
 };
-use super::{exponent_text, number, refused, Context, WriteError, WrittenFile};
+use super::{conversions, exponent_text, number, refused, Context, WriteError, WrittenFile};
 
 /// Largest integer ordinate; readers commonly use 32-bit signed integers.
 const MAX_ORDINATE: f64 = i32::MAX as f64;
@@ -111,6 +111,27 @@ fn spectrum_text(spectrum: &Spectrum<'_>, context: &mut Context<'_>) -> String {
         if let Some(text) = target_text(value) {
             let key = fit(&ascii(key, context).replace('=', " "), 40, context);
             ldr(&format!("$TARGET {key}"), ascii(&text, context));
+        }
+    }
+    let applied = conversions::applied(spectrum.record, spectrum.signal_name);
+    for (index, conversion) in applied.iter().enumerate() {
+        let label = format!("$CONVERSION {}", index + 1);
+        ldr(&label, ascii(&conversion.step, context));
+        if let Some(method) = &conversion.method_id {
+            ldr(&format!("{label} METHOD"), ascii(method, context));
+        }
+        if let Some(version) = &conversion.methods_version {
+            ldr(
+                &format!("{label} NIRS4ALL-METHODS"),
+                ascii(version, context),
+            );
+        }
+        for (name, value) in conversion.param_lines() {
+            let name = fit(&ascii(&name, context).replace('=', " "), 30, context);
+            ldr(
+                &format!("{label} {}", name.to_ascii_uppercase()),
+                ascii(&value, context),
+            );
         }
     }
     let mut out = String::new();
