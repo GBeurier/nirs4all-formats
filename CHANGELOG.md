@@ -5,6 +5,19 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project
 uses an `0.1.0-alpha.*` line whose public surface is stable in shape but may
 still change before 1.0.
 
+## [Unreleased]
+
+### Added
+
+- The export listing gives every writer a `maturity`: `standard` (published or open
+  layouts: CSV, Excel, JCAMP-DX, Galactic SPC, JSON records), `experimental`
+  (reverse-engineered FOSS WinISI and NSAS layouts) or `other` (two-column text, OPUS
+  data point table). Additive field; existing entries are unchanged.
+- Demo: the decoded-file workspace puts the conversion controls in a side panel next to
+  the spectra, a top-level Export menu grouped by writer maturity that applies the
+  conversions a target needs, an export of the spectra as shown, and one overlaid
+  before/after chart with a second y-axis when the units differ.
+
 ## [0.3.1] - 2026-11-26
 
 ### Fixed

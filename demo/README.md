@@ -19,23 +19,43 @@ Live: **https://formats.nirs4all.org/**
 - **Provenance** — reader name/version, schema version, source SHA-256, and the
   reader warnings exactly as the Rust core emits them.
 - **Metadata & targets** — the decoded instrument metadata as a collapsible tree.
-- **Export** — download the decoded result locally: **CSV** (the active signal as
-  a spectra matrix — one row per record, axis values as columns) or **JSON** (the
-  full `SpectralRecord[]` with signals, axes, metadata, targets and provenance).
-- **Library** — install channels and one tabbed example per language (Python,
-  R, Rust, JavaScript/WASM, CLI; C, Java, C#, Julia and Docker are marked as
-  coming with the next release) showing how to read a file, reach the spectra
-  matrix, axis, targets and metadata, and export or plan a conversion. The
-  examples run against this repository's bindings.
+- **File workspace** — the header names the file and holds the **Export** menu;
+  the properties (format, signals, axes, records, provenance, metadata, targets)
+  come first, then the spectra with the **Convert** panel beside them (stacked
+  under the chart on narrow screens).
+- **Convert** — every control has a label and a short help text. The Rust planner
+  (`planConversion`) states what will happen in plain language, asks what the file
+  does not say (for example percent or fraction) as inline choices, and refuses,
+  with a fix, what cannot be converted. **Convert** runs the steps with
+  nirs4all-methods (`vendor/methods/`, loaded only when a conversion runs) and adds
+  the result as a derived signal. Method ids and parameters stay in a collapsed
+  *Technical details* block; the limits in a collapsed *Limits* block.
+- **Original / Converted / Both** — after a conversion the chart shows the original,
+  the result, or both overlaid on one chart (`mountSpectraCompare` from nirs4all-ui):
+  one shared x-axis and a second y-axis when the units differ. When the axis unit
+  changed (cm⁻¹ → nm), the original is drawn on the converted axis computed by the
+  same Methods `AxisUnitConversion` step; the page does no unit arithmetic.
+- **Export** — the menu groups the targets by the `maturity` the Formats writer
+  catalogue declares: *Standard formats* (CSV, Excel, JCAMP-DX, Galactic SPC, JSON
+  records, and a ZIP of every signal as CSV), *Experimental* (the reverse-engineered
+  FOSS WinISI and NSAS layouts) and *Other formats* (two-column text, OPUS DPT).
+  Software presets sit in the group of their format. Choosing a target plans it:
+  needed conversions run first (questions in a small dialog) and stay on the page,
+  then the Rust writer produces the file and the page lists the conversions and
+  the losses. A signal converted in the side panel is the one exported.
+- **Download view** — writes exactly the spectra drawn in the chart (one signal, or
+  original and converted in the overlay, the original on the converted axis when
+  the unit changed) as CSV or JSON records, through the same Rust writers.
+- **Library** — one tabbed example per language (Python, R, Rust,
+  JavaScript/WASM, CLI, C, Java, C#, Julia and Docker), each with its registry and
+  install command, showing how to read a file, reach the spectra matrix, axis,
+  targets and metadata, and export or plan a conversion. The examples run against
+  this repository's bindings.
 - **Format catalogue** — sortable by name, coverage and status from the column
   headers.
-- **Convert for market software** — the panel under every decoded file asks the Rust planner
-  (`planConversion`) what a software or format needs, shows the steps, questions
-  and refusals, runs the steps with nirs4all-methods (`vendor/methods/`, loaded
-  only when a conversion runs), adds the result as a derived signal shown
-  before, after or next to the original with a validation summary, and exports
-  it with its losses and conversions. The single-file build does not include
-  nirs4all-methods, so conversions need the served page.
+
+The single-file build does not include nirs4all-methods, so conversions (and
+exports that need one) need the served page.
 
 ## Run It Without A Server
 
@@ -81,6 +101,8 @@ still no backend and nothing is uploaded.
 | `vendor/methods.version` | The exact `@nirs4all/methods` version the demo uses; the only place to change it. |
 | `vendor/methods/` | That version's npm `dist/` (JS modules, `n4m.wasm`, licences), written by `vendor-methods.sh`. |
 | `vendor-methods.sh` | Vendors the pinned version with `npm pack`, or a local build's `dist/` for testing (never committed). |
+| `vendor/ui/` | The nirs4all-ui browser entry (`nirs4all-ui-browser.iife.js`, `browser.css`) with its licence texts. Copied from the published npm package `nirs4all-ui@0.3.2` (`dist/browser/`), which provides `SpectraCompareChart` / `mountSpectraCompare`. |
+| `tests/` | Playwright smokes: `shared-ui-smoke`, `page-smoke`, `convert-smoke`, `export-smoke` (top Export and chart download), plus `sidecar-routing`. |
 | `pkg/` | `wasm-pack --target web` output for the served version (git-ignored; built by `build.sh` / CI). |
 | `pkg-nomod/` | `wasm-pack --target no-modules` output — input to the standalone build (git-ignored). |
 | `build_standalone.py` | Base64-embeds the no-modules wasm + samples into the single-file HTML. |

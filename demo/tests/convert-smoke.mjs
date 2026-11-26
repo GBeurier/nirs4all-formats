@@ -1,4 +1,4 @@
-// Browser check of the "Convert…" flow of the served Formats demo.
+// Browser check of the Convert side panel of the served Formats demo.
 //
 //   N4F_PAGE_URL       served page, for example http://localhost:8000/ (required:
 //                      nirs4all-methods is an ES module and needs http).
@@ -6,9 +6,10 @@
 //   PLAYWRIGHT_MODULE  optional absolute path / specifier of the Playwright module.
 //   N4F_SHOTS          optional directory for screenshots.
 //
-// Loads public samples, plans a conversion for WinISI and JCAMP-DX, runs it with
-// the vendored @nirs4all/methods, checks the derived signal is plotted and
-// exports it without console errors.
+// Loads public samples, plans a conversion for WinISI and JCAMP-DX in the side
+// panel, runs it with the vendored @nirs4all/methods, checks the derived signal
+// is plotted (alone and overlaid on the original) and exports it from the top
+// Export menu without console errors.
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
@@ -36,9 +37,7 @@ async function open(sample) {
   await page.goto(pageUrl, { waitUntil: "domcontentloaded" });
   await page.waitForFunction(() => document.querySelector("#stat-version")?.textContent.trim() !== "·", null, { timeout: 20000 });
   await page.setInputFiles("#file", path.join(repo, "samples", sample));
-  await page.waitForSelector("#conv-open", { timeout: 20000 });
-  await page.click("#conv-open");
-  await page.waitForSelector("#conv-plan .conv-status");
+  await page.waitForSelector("#convert-panel #conv-plan .conv-status", { timeout: 20000 });
   return page;
 }
 
@@ -54,8 +53,8 @@ async function convert(page, target, answers = []) {
   assert((await status(page)) === "ready", `${target}: plan is ${await status(page)}: ${await page.textContent("#conv-plan")}`);
   const output = await page.evaluate(() => conv.plan.output.name);
   await page.click("#conv-run");
-  await page.waitForSelector("#conv-result .conv-summary, #conv-result .legacy-note", { timeout: 60000 });
-  const failed = await page.$("#conv-result .legacy-note[role=alert]");
+  await page.waitForSelector("#conv-result .conv-summary, #conv-result .conv-note", { timeout: 60000 });
+  const failed = await page.$("#conv-result .conv-note[role=alert]");
   assert(!failed, `${target}: ${failed && (await failed.textContent())}`);
   // The derived signal is a tab, listed in the signal table and drawn.
   const active = await page.$eval(".sig-tab.active", (n) => n.textContent.trim());
@@ -64,17 +63,23 @@ async function convert(page, target, answers = []) {
   assert(listed.includes(output), `${target}: ${output} not in the signal table`);
   const drawn = await page.$$eval("#plot-groups .ugroup", (ns) => ns.length);
   assert(drawn > 0, `${target}: converted signal not plotted`);
-  await page.click('#conv-compare button:has-text("Both")');
-  const heads = await page.$$eval("#plot-groups .conv-compare-head", (ns) => ns.map((n) => n.textContent));
-  assert(heads.length === 2, `${target}: before/after view missing`);
+  // Both: one overlaid chart (or, for records on several axes, one above the other).
+  await page.click('#view-switch button[data-view="both"]');
+  const overlay = await page.$$eval("#plot-groups section[data-route=compare] figure.n4q-compare", (ns) => ns.length);
+  const stacked = await page.$$eval("#plot-groups .conv-compare-head", (ns) => ns.length);
+  assert(overlay === 1 || stacked === 2, `${target}: before/after view missing`);
+  assert(await page.getAttribute('#view-switch button[data-view="both"]', "aria-pressed") === "true", `${target}: Both not pressed`);
+  // Export from the top menu writes the converted signal.
   const download = page.waitForEvent("download", { timeout: 20000 });
-  await page.click("#conv-export");
+  await page.click("#export-btn");
+  await page.click(`#export-menu [data-target="${target}"]`);
   const file = await download;
-  const note = await page.textContent("#conv-export-note");
+  const note = await page.textContent("#export-report");
   assert(note.startsWith("Exported"), `${target}: ${note}`);
-  assert(/Converted:/.test(note), `${target}: conversions not reported`);
+  assert(note.includes(`from '${output}'`), `${target}: export did not use the converted signal: ${note}`);
+  assert(/Conversions of|Converted first/.test(note), `${target}: conversions not reported: ${note}`);
   const summary = await page.textContent("#conv-result .conv-summary");
-  return { output, file: file.suggestedFilename(), summary, note };
+  return { output, file: file.suggestedFilename(), summary, note, overlay: overlay === 1 };
 }
 
 // [sample, target, output signal type or "", grid or "", answers]
@@ -94,7 +99,7 @@ for (const [sample, target, type, grid, answers] of cases) {
   if (type) await page.selectOption("#conv-type", type);
   if (grid) await page.selectOption("#conv-grid", grid);
   const result = await convert(page, target, answers);
-  results.push({ sample, target, output: result.output, file: result.file });
+  results.push({ sample, target, output: result.output, file: result.file, overlay: result.overlay });
   if (shots) await page.screenshot({ path: path.join(shots, `${path.basename(sample)}-${target}.png`), fullPage: true });
   await page.close();
 }
@@ -124,7 +129,7 @@ for (const [sample, signal, answers, needed, gridFrom] of newer) {
   const step = steps.find((s) => s.step === needed);
   assert(step, `${sample}: no ${needed} step in ${steps.map((s) => s.step)}`);
   await page.click("#conv-run");
-  await page.waitForSelector("#conv-result .conv-summary, #conv-result .legacy-note", { timeout: 60000 });
+  await page.waitForSelector("#conv-result .conv-summary, #conv-result .conv-note", { timeout: 60000 });
   const text = await page.textContent("#conv-result");
   const available = await page.evaluate(async (id) => {
     const M = await import("./vendor/methods/index.js");
@@ -132,11 +137,12 @@ for (const [sample, signal, answers, needed, gridFrom] of newer) {
   }, step.method_id);
   let exported = null;
   if (available) {
-    assert(/converted to/.test(text), `${sample}: ${text}`);
+    assert(/added as/.test(text), `${sample}: ${text}`);
     const download = page.waitForEvent("download", { timeout: 20000 }).catch(() => null);
-    await page.click("#conv-export");
-    await page.waitForSelector("#conv-export-note");
-    const note = await page.textContent("#conv-export-note");
+    await page.click("#export-btn");
+    await page.click('#export-menu [data-target="winisi"]');
+    await page.waitForSelector("#export-report");
+    const note = await page.textContent("#export-report");
     assert(note.startsWith("Exported"), `${sample}: ${note}`);
     exported = (await download)?.suggestedFilename();
   } else {

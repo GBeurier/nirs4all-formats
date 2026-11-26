@@ -174,7 +174,8 @@
     .s-chip.acc-green{color:#047857;border-color:rgba(16,185,129,.28)} .s-chip.acc-green .dot{background:var(--green)} .s-chip.acc-green:hover{background:rgba(16,185,129,.07);border-color:var(--green)}
 
     /* ── Results ─────────────────────────────────────── */
-    #results { display:none; padding:24px 0 96px; }
+    #results { display:none; padding:24px 24px 96px; }
+    @media (max-width:520px){ .container { padding:0 16px; } #results { padding:20px 16px 72px; } }
     #results.show { display:block; animation:rise .5s cubic-bezier(.16,1,.3,1); }
     @keyframes rise { from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
     .results-head { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:18px; }
@@ -189,37 +190,118 @@
     .btn-export { display:inline-flex; align-items:center; gap:6px; padding:8px 13px; border-radius:9px; font-weight:600; font-size:.8rem; cursor:pointer; border:1px solid var(--border); background:#fff; color:var(--text-2); transition:all .2s; font-family:var(--font); }
     .btn-export:hover { border-color:var(--teal); color:var(--teal-d); background:rgba(13,148,136,.04); }
     .btn-export svg { width:14px; height:14px; }
-    .export-to { display:inline-flex; align-items:center; gap:6px; }
-    .export-to input { width:84px; padding:8px 10px; border-radius:9px; font:600 .8rem var(--font); border:1px solid var(--border); background:#fff; color:var(--text-2); }
-    .export-to select { padding:8px 10px; border-radius:9px; font:600 .8rem var(--font); border:1px solid var(--border); background:#fff; color:var(--text-2); max-width:210px; }
     .legacy-note ul { margin:4px 0 0; padding-left:18px; }
     .btn-export:disabled { opacity:.45; cursor:not-allowed; }
     .btn-export:disabled:hover { border-color:var(--border); color:var(--text-2); background:#fff; }
+    .btn-export:focus-visible, .btn-reset:focus-visible, .btn-primary:focus-visible, .menu-item:focus-visible, .seg button:focus-visible, .choice:focus-visible { outline:2px solid var(--teal); outline-offset:2px; }
 
-    /* convert for market software */
-    .convert-panel { margin-bottom:20px; }
-    .conv-controls { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px 14px; margin-bottom:14px; }
-    .conv-controls label { display:flex; flex-direction:column; gap:4px; font-size:.72rem; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.06em; }
-    .conv-controls select, .conv-controls input { padding:7px 9px; border-radius:9px; font:600 .8rem var(--font); border:1px solid var(--border); background:#fff; color:var(--text-2); text-transform:none; letter-spacing:0; min-width:0; }
-    .conv-controls .hidden { display:none; }
-    .conv-status { font-weight:600; font-size:.86rem; margin:4px 0 10px; }
-    .conv-status.s-ready { color:var(--teal-d); } .conv-status.s-refused { color:#b91c1c; } .conv-status.s-needs_answers { color:var(--amber); }
-    .conv-steps { margin:0 0 12px; padding-left:20px; font-size:.84rem; color:var(--text-2); }
-    .conv-steps li { margin-bottom:8px; }
-    .conv-steps .mono-sub { word-break:break-word; }
-    .conv-steps ul, .conv-notes { margin:3px 0 0; padding-left:16px; font-size:.78rem; color:var(--text-3); }
-    .conv-q { margin:8px 0; padding:10px 12px; border-left:3px solid var(--amber); background:var(--bg-alt); font-size:.84rem; }
-    .conv-q .choices { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
-    .conv-q .why, .conv-q .suggest { font-size:.76rem; color:var(--text-3); margin-top:4px; }
+    /* primary action (Export, Convert) */
+    .btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:7px; padding:9px 16px; border-radius:9px; font:600 .86rem var(--font); cursor:pointer; border:1px solid var(--teal-d); background:var(--teal); color:#fff; transition:background .2s, box-shadow .2s; }
+    .btn-primary:hover { background:var(--teal-d); box-shadow:0 4px 14px rgba(13,148,136,.3); }
+    .btn-primary:disabled { background:#cbd5e1; border-color:#cbd5e1; color:#fff; cursor:not-allowed; box-shadow:none; }
+    .btn-primary svg { width:15px; height:15px; }
+    .btn-primary .caret { width:12px; height:12px; }
+
+    /* menus (top Export, download view) */
+    .menu-wrap { position:relative; }
+    .menu-pop { position:absolute; right:0; top:calc(100% + 6px); z-index:50; width:min(560px, calc(100vw - 32px)); max-height:min(70vh, 620px); overflow:auto;
+      background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-lg); padding:8px; }
+    .menu-pop[hidden] { display:none; }
+    .menu-pop.small { width:260px; }
+    .menu-group { padding:4px 0; }
+    .menu-group + .menu-group { border-top:1px solid var(--border); margin-top:4px; padding-top:8px; }
+    .menu-head { display:flex; align-items:baseline; gap:8px; padding:4px 10px 6px; font:700 .68rem var(--font); text-transform:uppercase; letter-spacing:.1em; color:var(--text-3); }
+    .menu-head.exp { color:var(--amber); }
+    .menu-head small { text-transform:none; letter-spacing:0; font-weight:500; font-size:.74rem; color:var(--text-3); }
+    .menu-sub { padding:6px 10px 2px; font:600 .72rem var(--font); color:var(--text-3); }
+    .menu-items { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:2px 6px; }
+    .menu-pop.small .menu-items { grid-template-columns:1fr; }
+    .menu-item { display:flex; flex-direction:column; align-items:flex-start; gap:1px; width:100%; text-align:left; padding:7px 10px; border:none; border-radius:8px; background:none; cursor:pointer; font-family:var(--font); color:var(--text); }
+    .menu-item:hover, .menu-item:focus-visible { background:rgba(13,148,136,.08); }
+    .menu-item .mi-label { font-size:.86rem; font-weight:600; line-height:1.3; }
+    .menu-item .mi-sub { font:500 .72rem var(--mono); color:var(--text-3); line-height:1.35; }
+    @media (max-width:560px){ .menu-items { grid-template-columns:1fr; } .menu-pop { position:fixed; left:16px; right:16px; top:76px; width:auto; } }
+
+    /* export report under the header */
+    .report { display:flex; gap:12px; align-items:flex-start; margin:0 0 18px; padding:12px 14px; border-radius:var(--radius-sm); border:1px solid rgba(13,148,136,.25); background:rgba(236,253,250,.6); font-size:.84rem; color:var(--text-2); }
+    .report.alert { border-color:rgba(225,29,72,.25); background:rgba(255,241,242,.7); }
+    .report strong { color:var(--text); }
+    .report ul { margin:4px 0 0; padding-left:18px; }
+    .report .r-body { flex:1; min-width:0; }
+    .report .r-close { flex-shrink:0; border:none; background:none; cursor:pointer; color:var(--text-3); font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:6px; }
+    .report .r-close:hover { color:var(--text); background:rgba(15,23,42,.06); }
+
+    /* export dialog (planner questions and refusals) */
+    dialog.exp-dialog { border:none; border-radius:var(--radius); padding:0; width:min(520px, calc(100vw - 32px)); box-shadow:var(--shadow-lg); color:var(--text); }
+    dialog.exp-dialog::backdrop { background:rgba(8,13,26,.45); }
+    .dlg-head { padding:16px 20px 10px; border-bottom:1px solid var(--border); }
+    .dlg-head h3 { font-family:var(--display); font-size:1.05rem; font-weight:600; }
+    .dlg-head p { font-size:.84rem; color:var(--text-2); margin-top:2px; }
+    .dlg-body { padding:14px 20px; font-size:.86rem; }
+    .dlg-actions { display:flex; justify-content:flex-end; gap:8px; padding:12px 20px 16px; border-top:1px solid var(--border); }
+
+    /* file workspace: chart with a lateral conversion panel */
+    .work { display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:20px; align-items:start; margin-bottom:20px; }
+    .work > * { min-width:0; }
+    /* the chart stays in view while the (taller) side panel scrolls */
+    @media (min-width:1021px){ .work > .plot-panel { position:sticky; top:76px; } }
+    @media (max-width:1020px){ .work { grid-template-columns:1fr; } }
+    .props-title { font-family:var(--display); font-size:.98rem; font-weight:600; margin:0 0 10px; }
+    .plot-panel .panel-head { flex-wrap:wrap; }
+    .seg { display:inline-flex; border:1px solid var(--border); border-radius:9px; overflow:hidden; }
+    .seg button { padding:6px 12px; border:none; background:#fff; color:var(--text-2); font:600 .8rem var(--font); cursor:pointer; }
+    .seg button + button { border-left:1px solid var(--border); }
+    .seg button[aria-pressed="true"] { background:var(--text); color:#fff; }
+    .seg-label { font-size:.76rem; color:var(--text-3); font-weight:600; }
+    .view-tools { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+    /* lateral Convert panel */
+    .side .panel-body { padding:16px 18px 18px; }
+    .side-intro { font-size:.84rem; color:var(--text-2); line-height:1.55; margin-bottom:14px; }
+    .field { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+    .field > label, .field > .f-label { font-size:.84rem; font-weight:600; color:var(--text); }
+    .field select, .field input { width:100%; min-width:0; padding:9px 10px; border-radius:9px; font:500 .86rem var(--font); border:1px solid #cbd5e1; background:#fff; color:var(--text); }
+    .field select:focus-visible, .field input:focus-visible { outline:2px solid var(--teal); outline-offset:1px; border-color:var(--teal); }
+    .field-help { font-size:.76rem; line-height:1.45; color:var(--text-3); }
+    .field-row { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+    .field-row .field { margin-bottom:6px; }
+    .field-group { margin:-4px 0 14px; }
+    .hidden { display:none !important; }
+    .side-more { margin:0 0 14px; border:1px solid var(--border); border-radius:10px; padding:8px 12px; }
+    .side-more > summary { cursor:pointer; font-size:.84rem; font-weight:600; color:var(--text-2); }
+    .side-more[open] > summary { margin-bottom:10px; }
+    .side-plan { border-top:1px solid var(--border); padding-top:14px; margin-top:4px; }
+    .side-plan h4 { font-family:var(--display); font-size:.92rem; font-weight:600; margin-bottom:6px; }
+    .conv-status { font-weight:600; font-size:.84rem; margin:0 0 8px; line-height:1.5; }
+    .conv-status.s-ready { color:var(--teal-d); } .conv-status.s-refused { color:#b91c1c; } .conv-status.s-needs_answers { color:#b45309; } .conv-status.s-unchanged { color:var(--text-2); }
+    .conv-steps { margin:0 0 10px; padding-left:20px; font-size:.83rem; color:var(--text-2); line-height:1.5; }
+    .conv-steps li { margin-bottom:6px; }
+    .conv-steps ul, .conv-notes { margin:3px 0 0; padding-left:16px; font-size:.77rem; color:var(--text-3); }
+    .conv-q { margin:8px 0 12px; padding:10px 12px; border:1px solid rgba(217,119,6,.3); border-left:3px solid var(--amber); border-radius:8px; background:#fffbeb; font-size:.84rem; }
+    .conv-q legend { float:left; width:100%; font-weight:600; color:var(--text); padding:0; margin-bottom:2px; }
+    .conv-q legend + * { clear:both; }
+    .conv-q .choices { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .choice { padding:7px 12px; border-radius:8px; border:1px solid #cbd5e1; background:#fff; color:var(--text); font:600 .82rem var(--font); cursor:pointer; }
+    .choice:hover { border-color:var(--teal); }
+    .choice[aria-pressed="true"] { background:var(--teal); border-color:var(--teal); color:#fff; }
+    .choice.ghost { border-style:dashed; color:var(--text-2); font-weight:500; }
+    .conv-q .why, .conv-q .suggest { font-size:.76rem; color:var(--text-3); margin-top:6px; }
+    .conv-refusal { margin:8px 0; padding:10px 12px; border-left:3px solid var(--rose); background:#fff1f2; border-radius:8px; font-size:.82rem; color:var(--text-2); }
+    .conv-refusal strong { color:#9f1239; }
+    .tech { margin:6px 0 10px; font-size:.76rem; color:var(--text-3); }
+    .tech summary { cursor:pointer; font-weight:600; }
+    .tech code { font-family:var(--mono); font-size:.72rem; word-break:break-word; }
+    .tech ul { margin:4px 0 0; padding-left:16px; }
     .conv-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0; }
-    .conv-compare { display:inline-flex; gap:4px; margin-left:auto; }
-    .conv-compare .btn-export[aria-pressed="true"] { background:var(--text); color:#fff; border-color:var(--text); }
-    .conv-summary { font-size:.82rem; color:var(--text-2); margin:8px 0; padding:10px 12px; border-left:3px solid var(--teal); background:var(--bg-alt); }
+    .conv-actions .btn-primary { flex:1; }
+    .conv-summary { font-size:.82rem; color:var(--text-2); margin:10px 0; padding:10px 12px; border-left:3px solid var(--teal); background:var(--bg-alt); border-radius:8px; }
     .conv-summary ul { margin:4px 0 0; padding-left:18px; }
     .conv-limits { font-size:.78rem; color:var(--text-3); margin-top:12px; }
-    .conv-limits summary { cursor:pointer; font-weight:600; color:var(--text-2); }
+    .conv-limits summary { cursor:pointer; font-weight:600; color:var(--text-2); font-size:.84rem; }
+    .conv-limits ul { margin:6px 0 0; padding-left:18px; line-height:1.5; }
+    .conv-note { margin:8px 0; padding:9px 12px; border-left:3px solid var(--amber); background:var(--bg-alt); border-radius:8px; font-size:.8rem; color:var(--text-2); }
     .conv-compare-head { font-size:.8rem; font-weight:600; color:var(--text-2); margin:14px 20px 4px; }
-    .convert-panel .legacy-note { margin:6px 0 8px; }
+    .compare-host { padding:10px 20px 6px; }
 
     /* detection bar */
     .detect { display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:16px 20px; border-radius:var(--radius); margin-bottom:20px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfdfd); box-shadow:var(--shadow); }
@@ -250,6 +332,9 @@
     .kpi .k-unit { font-size:.74rem; color:var(--text-3); font-family:var(--mono); margin-top:2px; }
 
     .grid-2 { display:grid; grid-template-columns:1.55fr 1fr; gap:20px; align-items:start; }
+    .grid-2.props { margin-bottom:20px; }
+    .grid-2 > * { min-width:0; }
+    #signals-panel .panel-body { overflow-x:auto; }
     @media (max-width:940px){ .grid-2{ grid-template-columns:1fr; } }
 
     .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
@@ -488,37 +573,9 @@
       .cov { min-width:0; }
     }
 
-    /* ── page sections: convert workflow and library ───────────────────── */
+    /* ── library frame ───────────────────────────────────────────────── */
     .page-sec { padding:72px 0; position:relative; }
-    .page-sec.alt { background:var(--paper); border-top:1px solid var(--border-warm); border-bottom:1px solid var(--border-warm); }
-    .flow { list-style:none; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin:0 0 26px; counter-reset:none; }
-    .flow-step { background:#fff; border:1px solid var(--border-warm); border-radius:var(--radius-sm); padding:16px 16px 14px; box-shadow:var(--shadow); }
-    .flow-step h3 { font-family:var(--display); font-size:1rem; font-weight:600; margin:6px 0 4px; }
-    .flow-step p { font-size:.82rem; color:var(--text-2); line-height:1.55; }
-    .flow-n { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:8px; background:rgba(13,148,136,.12); color:var(--teal-d); font:700 .8rem var(--mono); }
-    .convert-cols { display:grid; grid-template-columns:3fr 2fr; gap:18px; }
-    .convert-cols .panel-head h3 { margin-right:auto; }
-    .soft-list { list-style:none; display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:6px 14px; margin-bottom:10px; }
-    .soft-list li { font-size:.84rem; color:var(--text); display:flex; align-items:baseline; gap:8px; }
-    .soft-list code { font-family:var(--mono); font-size:.7rem; color:var(--text-3); }
-    .limit-list { margin:0; padding-left:18px; font-size:.82rem; color:var(--text-2); line-height:1.55; }
-    .limit-list li { margin-bottom:6px; }
-    .flow-cta { text-align:center; margin-top:26px; }
-    .flow-cta .btn-pick { text-decoration:none; color:#fff; }
-    @media (max-width:980px){ .flow { grid-template-columns:repeat(2,minmax(0,1fr)); } .convert-cols { grid-template-columns:1fr; } }
-    @media (max-width:520px){ .flow { grid-template-columns:1fr; } .page-sec { padding:52px 0; } }
-
-    .channels { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:0 0 24px; }
-    .channel { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius-sm);
-      background:#fff; text-decoration:none; color:var(--text); box-shadow:var(--shadow); transition:border-color .2s, transform .2s; min-width:0; }
-    a.channel:hover { border-color:var(--teal); transform:translateY(-1px); }
-    .channel .ch-name { font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--teal-d); }
-    .channel .ch-pkg { font-family:var(--mono); font-size:.8rem; color:var(--text); overflow-wrap:anywhere; }
-    .channel .ch-cmd { font-family:var(--mono); font-size:.7rem; color:var(--text-3); overflow-wrap:anywhere; }
-    .channel.soon { background:var(--bg-alt); box-shadow:none; border-style:dashed; }
-    .channel.soon .ch-name { color:var(--text-3); }
-    .channel.soon .ch-cmd { font-family:var(--font); font-style:italic; }
-    @media (max-width:900px){ .channels { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:520px){ .page-sec { padding:44px 0; } }
 
     .code-frame { background:var(--bg-code); border-radius:var(--radius); box-shadow:var(--shadow-lg); overflow:hidden; }
     .code-tabs { display:flex; flex-wrap:wrap; gap:4px; padding:10px 10px 0; border-bottom:1px solid rgba(255,255,255,.08); }
@@ -530,15 +587,21 @@
     .code-tab[data-soon="true"][aria-selected="true"] { color:rgba(255,255,255,.8); }
     .code-tab:focus-visible, .code-panel:focus-visible { outline:2px solid var(--teal-l); outline-offset:-2px; }
     .code-panel { padding:14px 18px 18px; }
-    .code-meta { display:flex; gap:8px; margin-bottom:8px; }
+    .code-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:12px; }
     .code-meta .pill { font:600 .7rem var(--mono); color:var(--teal-l); border:1px solid rgba(45,212,191,.35); border-radius:100px; padding:2px 10px; text-decoration:none; }
+    .code-install { display:flex; align-items:center; gap:10px; flex:1 1 100%; min-width:0; padding:8px 10px; border:1px solid rgba(255,255,255,.1); border-radius:9px; background:rgba(255,255,255,.04); }
+    .code-install .ci-label { font:700 .64rem var(--font); text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.5); flex-shrink:0; }
+    .code-install code { font:500 .8rem var(--mono); color:#e2e8f0; overflow-x:auto; white-space:nowrap; min-width:0; flex:1; }
+    .code-install .ci-text { font-size:.8rem; color:rgba(255,255,255,.7); font-style:italic; }
+    .ci-copy { margin-left:auto; flex-shrink:0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:6px; padding:3px 10px; font:500 .72rem var(--font); color:rgba(255,255,255,.7); cursor:pointer; }
+    .ci-copy:hover, .ci-copy:focus-visible { background:rgba(255,255,255,.12); color:#fff; }
     .code-block { position:relative; overflow-x:auto; }
     .code-block pre { margin:0; color:rgba(255,255,255,.86); font:400 .8rem/1.75 var(--mono); white-space:pre; padding-right:64px; }
     .code-block .c { color:rgba(255,255,255,.38); }
     .code-block .s { color:#86efac; }
-    .copy-btn { position:absolute; top:0; right:0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:6px;
+    .code-block .copy-btn { position:absolute; top:0; right:0; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:6px;
       padding:4px 11px; font:500 .72rem var(--font); color:rgba(255,255,255,.6); cursor:pointer; }
-    .copy-btn:hover, .copy-btn:focus-visible { background:rgba(255,255,255,.12); color:#fff; }
+    .code-block .copy-btn:hover, .code-block .copy-btn:focus-visible { background:rgba(255,255,255,.12); color:#fff; }
     .code-todo { color:rgba(255,255,255,.75); font-size:.86rem; padding:18px; border:1px dashed rgba(255,255,255,.22); border-radius:var(--radius-sm); }
     .code-todo strong { color:#fde68a; }
     .code-note { color:rgba(255,255,255,.55); font-size:.76rem; padding:0 18px 16px; }
@@ -581,7 +644,6 @@
       <div class="badge"><span class="live-dot"></span> 100% in-browser</div>
       <div class="nav-links">
         <a class="hide-sm" href="#hero">Read</a>
-        <a class="hide-sm" href="#convert">Convert</a>
         <a class="hide-sm" href="#library">Library</a>
         <a class="hide-sm" href="#formats">Formats</a>
         <a class="hide-sm" href="https://nirs4all.org">nirs4all.org</a>
@@ -650,59 +712,10 @@
     <div id="status" class="sr-only" role="status" aria-live="polite"></div>
     <section id="results" class="container"></section>
 
-  <!-- ── convert for market software: how the page converts and exports ── -->
-  <section id="convert" class="page-sec alt">
-    <div class="container">
-      <div class="fmt-head">
-        <span class="eyebrow">Convert · export</span>
-        <h2 class="fmt-title">From any file to <em>your software</em></h2>
-        <p class="fmt-sub">Read a file above, pick the software or format you need, and the page shows what the target requires, plans the conversion, computes it with nirs4all-methods, lets you compare the result with the original and writes the file, listing everything the target cannot carry.</p>
-      </div>
-      <ol class="flow">
-        <li class="flow-step"><span class="flow-n">1</span><h3>Read</h3><p>Drop a file or load a sample. Every signal keeps its own axis, units, metadata and provenance.</p></li>
-        <li class="flow-step"><span class="flow-n">2</span><h3>Plan</h3><p>nirs4all-formats states what the target needs and the steps to get there, asks what the file does not say and refuses, with a fix, what cannot be converted.</p></li>
-        <li class="flow-step"><span class="flow-n">3</span><h3>Convert</h3><p>nirs4all-methods computes each step in your browser: reflectance from references, absorbance, wavelength axes, known grids.</p></li>
-        <li class="flow-step"><span class="flow-n">4</span><h3>Check</h3><p>The converted spectra appear next to the originals, before and after, with clamped points, missing values and grids reported.</p></li>
-        <li class="flow-step"><span class="flow-n">5</span><h3>Export</h3><p>The writer lists its losses and records the conversions in the file when the format holds text.</p></li>
-      </ol>
-      <div class="convert-cols">
-        <div class="panel">
-          <div class="panel-head"><h3>Software and formats</h3><span class="ph-meta" id="soft-count"></span></div>
-          <div class="panel-body">
-            <ul class="soft-list" id="soft-list"><li class="mono-sub">Loading the export catalogue…</li></ul>
-            <p class="mono-sub">A preset names a format the software documents as importable. Files are not tested in vendor software yet.</p>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><h3>Limits</h3></div>
-          <div class="panel-body">
-            <ul class="limit-list" id="limit-list"></ul>
-          </div>
-        </div>
-      </div>
-      <p class="flow-cta"><a class="btn-pick" href="#hero">Read a file to convert it</a></p>
-    </div>
-  </section>
-
   <!-- ── library: install and use in code (snippets checked against the bindings) ── -->
   <section id="library" class="page-sec">
     <div class="container">
-      <div class="fmt-head">
-        <span class="eyebrow">Library · ten ways in</span>
-        <h2 class="fmt-title">The same reader <em>in your code</em></h2>
-        <p class="fmt-sub">nirs4all-formats is a standalone chemometrics library: one Rust registry of readers and writers with the same records in every language. Install it, read a file, reach the spectra matrix, the axis, the reference values and the metadata, then export or plan a conversion.</p>
-      </div>
-      <div class="channels" role="list">
-        <a class="channel" role="listitem" href="https://pypi.org/project/nirs4all-formats/" target="_blank" rel="noopener"><span class="ch-name">PyPI</span><code class="ch-pkg">nirs4all-formats</code><span class="ch-cmd">pip install nirs4all-formats</span></a>
-        <a class="channel" role="listitem" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener"><span class="ch-name">R-universe</span><code class="ch-pkg">nirs4allformats</code><span class="ch-cmd">install.packages(&quot;nirs4allformats&quot;, repos = &quot;https://gbeurier.r-universe.dev&quot;)</span></a>
-        <a class="channel" role="listitem" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">crates.io</span><code class="ch-pkg">nirs4all-formats</code><span class="ch-cmd">cargo add nirs4all-formats</span></a>
-        <a class="channel" role="listitem" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener"><span class="ch-name">npm</span><code class="ch-pkg">@nirs4all/formats-wasm</code><span class="ch-cmd">npm install @nirs4all/formats-wasm</span></a>
-        <a class="channel" role="listitem" href="https://central.sonatype.com/artifact/org.nirs4all/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">Maven Central</span><code class="ch-pkg">org.nirs4all:nirs4all-formats</code><span class="ch-cmd">implementation(&quot;org.nirs4all:nirs4all-formats:0.3.1&quot;)</span></a>
-        <a class="channel" role="listitem" href="https://www.nuget.org/packages/Nirs4all.Formats" target="_blank" rel="noopener"><span class="ch-name">NuGet</span><code class="ch-pkg">Nirs4all.Formats</code><span class="ch-cmd">dotnet add package Nirs4all.Formats</span></a>
-        <div class="channel soon" role="listitem"><span class="ch-name">Julia General</span><code class="ch-pkg">NIRS4ALLFormats</code><span class="ch-cmd">Pending registration in the Julia General registry</span></div>
-        <a class="channel" role="listitem" href="https://github.com/users/GBeurier/packages/container/package/nirs4all-formats" target="_blank" rel="noopener"><span class="ch-name">Docker</span><code class="ch-pkg">ghcr.io/gbeurier/nirs4all-formats</code><span class="ch-cmd">docker pull ghcr.io/gbeurier/nirs4all-formats</span></a>
-      </div>
-      <div class="code-frame">
+      <div class="code-frame" aria-label="nirs4all-formats in your code: install and read a file in ten languages">
         <div class="code-tabs" role="tablist" aria-label="Language">
           <button class="code-tab" role="tab" id="tab-python" aria-controls="panel-python" aria-selected="true" tabindex="0">Python</button>
           <button class="code-tab" role="tab" id="tab-r" aria-controls="panel-r" aria-selected="false" tabindex="-1">R</button>
@@ -716,7 +729,7 @@
           <button class="code-tab" role="tab" id="tab-docker" aria-controls="panel-docker" aria-selected="false" tabindex="-1" data-soon="true">Docker</button>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-python" aria-labelledby="tab-python" tabindex="0">
-          <div class="code-meta"><a class="pill" href="https://pypi.org/project/nirs4all-formats/" target="_blank" rel="noopener">PyPI</a></div>
+          <div class="code-meta"><a class="pill" href="https://pypi.org/project/nirs4all-formats/" target="_blank" rel="noopener">PyPI · nirs4all-formats</a><div class="code-install"><span class="ci-label">Install</span><code>pip install nirs4all-formats</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="python"><code># pip install nirs4all-formats
 import nirs4all_formats as nf
 
@@ -744,7 +757,7 @@ plan = nf.plan_conversion(nf.open_records("sample.ProcSpec"), "winisi")
 plan["status"], [step["method_id"] for step in plan["steps"]]</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-r" aria-labelledby="tab-r" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener">R-universe</a></div>
+          <div class="code-meta"><a class="pill" href="https://gbeurier.r-universe.dev/nirs4allformats" target="_blank" rel="noopener">R-universe · nirs4allformats</a><div class="code-install"><span class="ci-label">Install</span><code>install.packages(&quot;nirs4allformats&quot;, repos = &quot;https://gbeurier.r-universe.dev&quot;)</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="r"><code>install.packages("nirs4allformats",
   repos = c("https://gbeurier.r-universe.dev", "https://cloud.r-project.org"))
 library(nirs4allformats)
@@ -766,7 +779,7 @@ report &lt;- nirs4allformats_convert("barley.csv", "winisi", "exported")
 report$files; report$losses</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-rust" aria-labelledby="tab-rust" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener">crates.io</a></div>
+          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats" target="_blank" rel="noopener">crates.io · nirs4all-formats</a><div class="code-install"><span class="ci-label">Install</span><code>cargo add nirs4all-formats</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="rust"><code>// cargo add nirs4all-formats
 use nirs4all_formats::{open_path, plan_conversion, write_records, PlanOptions, WriteOptions};
 
@@ -798,7 +811,7 @@ fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
 }</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-js" aria-labelledby="tab-js" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener">npm</a></div>
+          <div class="code-meta"><a class="pill" href="https://www.npmjs.com/package/@nirs4all/formats-wasm" target="_blank" rel="noopener">npm · @nirs4all/formats-wasm</a><div class="code-install"><span class="ci-label">Install</span><code>npm install @nirs4all/formats-wasm</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="js"><code>// npm install @nirs4all/formats-wasm
 const fs = require("node:fs");
 const formats = require("@nirs4all/formats-wasm");
@@ -823,7 +836,7 @@ const plan = formats.planConversion(raw, "winisi", {});
 plan.status; plan.steps.map((step) =&gt; step.method_id);</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-cli" aria-labelledby="tab-cli" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats-cli" target="_blank" rel="noopener">crates.io</a></div>
+          <div class="code-meta"><a class="pill" href="https://crates.io/crates/nirs4all-formats-cli" target="_blank" rel="noopener">crates.io · nirs4all-formats-cli</a><div class="code-install"><span class="ci-label">Install</span><code>cargo install nirs4all-formats-cli</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="cli"><code># cargo install nirs4all-formats-cli
 nirs4all-formats probe barley.csv                    # candidate readers
 nirs4all-formats read-json barley.csv &gt; barley.json  # spectra, axis, targets, metadata
@@ -834,7 +847,7 @@ nirs4all-formats convert barley.csv --to winisi --out exported/
 nirs4all-formats plan sample.ProcSpec --to winisi    # conversion steps, questions, refusals</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-c" aria-labelledby="tab-c" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/capi.md" target="_blank" rel="noopener">C ABI docs</a></div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/releases" target="_blank" rel="noopener">GitHub Releases · C ABI archive</a><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/capi.md" target="_blank" rel="noopener">C ABI docs</a><div class="code-install soon"><span class="ci-label">Install</span><span class="ci-text">Download include/ and lib/ from GitHub Releases, or cargo build -p nirs4all-formats-capi</span></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="c"><code>// C ABI archive (include/, lib/) from GitHub Releases, or cargo build -p nirs4all-formats-capi
 // cc example.c -Iinclude -Llib -Wl,-rpath,"$PWD/lib" -lnirs4all_formats_capi &amp;&amp; ./a.out
 #include &lt;stdio.h&gt;
@@ -881,7 +894,7 @@ int main(void) {
 }</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-java" aria-labelledby="tab-java" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/java.md" target="_blank" rel="noopener">Java docs</a></div>
+          <div class="code-meta"><a class="pill" href="https://central.sonatype.com/artifact/org.nirs4all/nirs4all-formats" target="_blank" rel="noopener">Maven Central · org.nirs4all:nirs4all-formats</a><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/java.md" target="_blank" rel="noopener">Java docs</a><div class="code-install"><span class="ci-label">Install</span><code>implementation(&quot;org.nirs4all:nirs4all-formats:0.3.1&quot;)</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="java"><code>// Maven Central: org.nirs4all:nirs4all-formats (the jar bundles the native library)
 import java.nio.file.Path;
 import java.util.List;
@@ -916,7 +929,7 @@ public class Example {
 }</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-csharp" aria-labelledby="tab-csharp" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/csharp.md" target="_blank" rel="noopener">C# docs</a></div>
+          <div class="code-meta"><a class="pill" href="https://www.nuget.org/packages/Nirs4all.Formats" target="_blank" rel="noopener">NuGet · Nirs4all.Formats</a><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/csharp.md" target="_blank" rel="noopener">C# docs</a><div class="code-install"><span class="ci-label">Install</span><code>dotnet add package Nirs4all.Formats</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="csharp"><code>// dotnet add package Nirs4all.Formats   (the package carries the native library)
 using Nirs4all.Formats;
 
@@ -945,7 +958,7 @@ var plan = Nirs4allFormats.PlanConversion(Nirs4allFormats.Open("sample.ProcSpec"
 Console.WriteLine($"{plan.Status}: {string.Join(", ", plan.Steps.Select(step =&gt; step.MethodId))}");</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-julia" aria-labelledby="tab-julia" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/julia.md" target="_blank" rel="noopener">Julia docs</a></div>
+          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/bindings/julia.md" target="_blank" rel="noopener">Julia docs</a><div class="code-install soon"><span class="ci-label">Install</span><span class="ci-text">NIRS4ALLFormats: pending registration in the Julia General registry</span></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="julia"><code># ] add NIRS4ALLFormats   (native library: nirs4all_formats_capi_jll or NIRS4ALL_FORMATS_LIBRARY)
 using NIRS4ALLFormats
 
@@ -972,7 +985,7 @@ plan = plan_conversion(read_records("sample.ProcSpec"), "winisi")
 println(plan.status, ": ", [step.method_id for step in plan.steps])</code></pre></div>
         </div>
         <div class="code-panel" role="tabpanel" id="panel-docker" aria-labelledby="tab-docker" tabindex="0" hidden>
-          <div class="code-meta"><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/DOCKER.md" target="_blank" rel="noopener">Docker docs</a></div>
+          <div class="code-meta"><a class="pill" href="https://github.com/users/GBeurier/packages/container/package/nirs4all-formats" target="_blank" rel="noopener">GHCR · ghcr.io/gbeurier/nirs4all-formats</a><a class="pill" href="https://github.com/GBeurier/nirs4all-formats/blob/main/docs/DOCKER.md" target="_blank" rel="noopener">Docker docs</a><div class="code-install"><span class="ci-label">Install</span><code>docker pull ghcr.io/gbeurier/nirs4all-formats</code><button class="ci-copy" type="button" aria-label="Copy the install command">Copy</button></div></div>
           <div class="code-block"><button class="copy-btn" type="button">Copy</button><pre data-lang="cli"><code># docker pull ghcr.io/gbeurier/nirs4all-formats   (linux/amd64, linux/arm64)
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats probe /data/barley.csv
 docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats read-json /data/barley.csv &gt; barley.json
@@ -1057,6 +1070,8 @@ docker run --rm -v "$PWD:/data:ro" ghcr.io/gbeurier/nirs4all-formats plan /data/
       </div>
     </div>
   </footer>
+
+  <dialog id="export-dialog" class="exp-dialog" aria-labelledby="dlg-title"></dialog>
 
   <script src="./vendor/ui/nirs4all-ui-browser.iife.js" defer></script>
   <script src="./app.js" defer></script>

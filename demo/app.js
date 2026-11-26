@@ -129,12 +129,12 @@ let wasmReady = null;
   loadSamples();
   renderFormats();
   initCodeTabs();
+  wireMenusGlobally();
 
   wasmReady = initWasm();
   wasmReady.then(() => {
     try { $("#stat-version").textContent = WASM.version(); } catch (_) {}
     try { const f = WASM.features(); $("#stat-hdf5").style.display = f && f.hdf5 ? "" : "none"; } catch (_) {}
-    renderConvertCatalog();
     maybeAutoLoad();
   }).catch((e) => {
     results.classList.add("show");
@@ -489,6 +489,9 @@ function initCodeTabs() {
   document.querySelectorAll(".code-block .copy-btn").forEach((button) => {
     button.addEventListener("click", () => copy(button.parentElement.querySelector("code").textContent, button));
   });
+  document.querySelectorAll(".code-install .ci-copy").forEach((button) => {
+    button.addEventListener("click", () => copy(button.parentElement.querySelector("code").textContent, button));
+  });
 }
 
 function highlightCode(pre) {
@@ -503,21 +506,6 @@ function highlightCode(pre) {
     }
     return quoted ? `${out}</span>` : out;
   }).join("\n");
-}
-
-// The conversion section lists the software presets of the loaded writers.
-function renderConvertCatalog() {
-  const limits = $("#limit-list");
-  if (limits) limits.innerHTML = CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("");
-  const list = $("#soft-list");
-  if (!list) return;
-  try {
-    const targets = WASM.exportTargets();
-    list.innerHTML = targets.software.map((p) => `<li>${esc(p.label)} <code>${esc(p.format)}</code></li>`).join("");
-    $("#soft-count").textContent = `${targets.software.length} software · ${targets.formats.length} formats`;
-  } catch (e) {
-    list.innerHTML = `<li class="mono-sub">${esc(String(e?.message || e))}</li>`;
-  }
 }
 
 /* ── decode pipeline ─────────────────────────────────────────────────── */
@@ -740,7 +728,7 @@ function statusError(title, detail, hint) {
 // the subset that takes selection updates; `legacy` the canvas renderers; `ids`
 // maps each unique DISPLAY id (record + signal) back to its record. The ids are
 // labels only: they are never parsed and are not scientific observation ids.
-const state = { records: null, fileName: "", signalNames: [], active: null, mounts: [], explorers: [], legacy: [], ids: new Map(), selected: null };
+const state = { records: null, fileName: "", signalNames: [], active: null, view: "signal", mounts: [], explorers: [], legacy: [], ids: new Map(), selected: null };
 
 /* ── shared nirs4all-ui browser entry ────────────────────────────────────
    Per-group record summary (DatasetPreviewCard, view only) and the valid 1-D
@@ -834,11 +822,16 @@ const datasetSummary = (ds) => {
 
 // build a full result panel for one dataset; sets `state` to it (only one is
 // ever mounted at a time, so the plot/kpi singleton ids stay unique).
+// Layout: header with the Export menu, the decoded properties, then the spectra
+// with the lateral Convert panel.
+const ICON_DOWNLOAD = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`;
+const ICON_CARET = `<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>`;
+
 function buildResult(ds, withReset) {
   const { records, name: fileName, probes, size, fileCount } = ds;
   const names = [];
   for (const r of records) for (const k of Object.keys(r.signals || {})) if (!names.includes(k)) names.push(k);
-  state.records = records; state.fileName = fileName; state.signalNames = names; state.active = names[0] || null;
+  state.records = records; state.fileName = fileName; state.signalNames = names; state.active = names[0] || null; state.view = "signal";
   const prov = records[0].provenance || {};
 
   const wrap = el("div");
@@ -850,160 +843,329 @@ function buildResult(ds, withReset) {
       <div class="file-sub">${fmtBytes(size)}${fileCount > 1 ? ` · ${fileCount} files (with sidecars)` : ""} · decoded locally</div></div>
     </div>
     <div class="results-actions">
-      <button class="btn-export" id="exp-csv" title="Download the active signal as a CSV matrix (one row per spectrum)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> CSV</button>
-      <button class="btn-export" id="exp-json" title="Download the full decoded records as JSON"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> JSON</button>
-      <span class="export-to">
-        <label class="sr-only" for="exp-target">Export for</label>
-        <select id="exp-target" title="Export the active signal for another software or format">${exportTargetOptions()}</select>
-        <label class="sr-only" for="exp-tolerance">Axis tolerance</label>
-        <input id="exp-tolerance" type="number" min="0" step="any" placeholder="axis tol." title="Largest axis deviation, in axis units, accepted when the target needs an evenly spaced axis (default 0); the deviation is reported">
-        <button class="btn-export" id="exp-go" title="Export the active signal to the selected target">Export</button>
-      </span>
-      <button class="btn-export" id="conv-open" title="Go to the conversion panel: convert the spectra for a software or format and check them on the plot first">Convert</button>
+      <div class="menu-wrap">
+        <button class="btn-primary" id="export-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu">${ICON_DOWNLOAD} Export ${ICON_CARET}</button>
+        <div class="menu-pop" id="export-menu" role="menu" aria-labelledby="export-btn" hidden></div>
+      </div>
       ${withReset ? `<button class="btn-reset" id="reset"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> New file</button>` : ""}
     </div>`;
   wrap.appendChild(head);
-  wireExport(head);
   conv = newConversion();
-  $("#conv-open", head).addEventListener("click", openConvert);
+  wireExportMenu(head);
+
+  // Properties, visible on opening.
   wrap.appendChild(renderDetect(probes, prov));
   const kpiRow = el("div", "kpis"); kpiRow.id = "kpis"; wrap.appendChild(kpiRow);
-  wrap.appendChild(renderPlotPanel());
-  const convertHost = el("div"); convertHost.id = "convert-host"; wrap.appendChild(convertHost);
-
-  const grid = el("div", "grid-2");
+  const grid = el("div", "grid-2 props");
   grid.appendChild(renderSignalsPanel());
   const right = el("div"); right.style.display = "grid"; right.style.gap = "20px";
   right.appendChild(renderProvenancePanel(prov, records[0].quality_flags || []));
   right.appendChild(renderMetaPanel(records[0].metadata, records[0].targets));
   grid.appendChild(right);
   wrap.appendChild(grid);
+
+  // Spectra with the lateral Convert panel (stacked under the chart on narrow screens).
+  const work = el("div", "work");
+  work.appendChild(renderPlotPanel());
+  const side = el("div"); side.id = "convert-host"; work.appendChild(side);
+  wrap.appendChild(work);
   return wrap;
 }
 
-/* ── export (CSV / JSON) ─────────────────────────────────────────────────
-   Reads the singleton `state` (only one dataset panel is mounted at a time),
-   so the buttons always export the dataset currently on screen. */
-function wireExport(head) {
-  $("#exp-json", head)?.addEventListener("click", exportJSON);
-  const go = $("#exp-go", head);
-  if (go) {
-    if (state.signalNames.length) go.addEventListener("click", exportTo);
-    else go.disabled = true;
-  }
-  const csv = $("#exp-csv", head);
-  if (!csv) return;
-  if (state.signalNames.length) csv.addEventListener("click", exportCSV);
-  else { csv.disabled = true; csv.title = "No spectral channels to export — try the JSON export"; }
+/* ── menus: one open at a time, keyboard and outside-click aware ───────── */
+function openMenu(button, pop) {
+  closeMenus();
+  pop.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+  pop.querySelector("[role=menuitem]")?.focus();
+}
+function closeMenus(returnFocus) {
+  document.querySelectorAll(".menu-pop:not([hidden])").forEach((pop) => {
+    pop.hidden = true;
+    const button = document.querySelector(`[aria-controls="${pop.id}"]`);
+    button?.setAttribute("aria-expanded", "false");
+    if (returnFocus) button?.focus();
+  });
+}
+function wireMenusGlobally() {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".menu-wrap")) closeMenus(false);
+  });
+}
+// Disclosure button + role=menu list: Enter/Space/↓ open, ↑/↓/Home/End move, Esc/Tab close.
+function wireMenu(button, pop, onPick) {
+  const items = () => [...pop.querySelectorAll("[role=menuitem]")];
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (pop.hidden) openMenu(button, pop); else closeMenus(true);
+  });
+  button.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown" && pop.hidden) { e.preventDefault(); openMenu(button, pop); }
+  });
+  pop.addEventListener("keydown", (e) => {
+    const list = items(), at = list.indexOf(document.activeElement);
+    const move = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: list.length - 1 }[e.key];
+    if (move !== undefined) { e.preventDefault(); list[(move + list.length) % list.length].focus(); }
+    else if (e.key === "Escape") { e.preventDefault(); closeMenus(true); }
+    else if (e.key === "Tab") closeMenus(false);
+  });
+  pop.addEventListener("click", (e) => {
+    const item = e.target.closest("[role=menuitem]");
+    if (!item) return;
+    closeMenus(true);
+    onPick(item.dataset.target);
+  });
+}
+
+/* ── top Export: targets grouped by the writers' maturity (Formats owns it) ── */
+const ZIP_TARGET = "__zip";
+// Display order of the standard formats; anything else keeps the catalogue order.
+const STANDARD_ORDER = ["csv", "xlsx", "jcamp-dx", "galactic-spc", "records-json"];
+const MATURITY_GROUPS = [
+  { id: "standard", title: "Standard formats", note: "" },
+  { id: "experimental", title: "Experimental", note: "reverse-engineered layouts, no published specification" },
+  { id: "other", title: "Other formats", note: "" },
+];
+
+function exportCatalog() {
+  const targets = WASM.exportTargets();
+  const maturity = new Map(targets.formats.map((f) => [f.format, f.maturity || "other"]));
+  const rank = (f) => { const i = STANDARD_ORDER.indexOf(f.format); return i < 0 ? STANDARD_ORDER.length : i; };
+  const groups = Object.fromEntries(MATURITY_GROUPS.map((g) => [g.id, { formats: [], software: [] }]));
+  for (const f of [...targets.formats].sort((a, b) => rank(a) - rank(b))) (groups[maturity.get(f.format)] || groups.other).formats.push(f);
+  for (const p of targets.software) (groups[maturity.get(p.format)] || groups.other).software.push(p);
+  return { targets, groups, maturity };
+}
+
+function targetName(id) {
+  if (id === ZIP_TARGET) return "ZIP archive";
+  const { software, formats } = WASM.exportTargets();
+  const profile = software.find((p) => p.id === id);
+  if (profile) return profile.label;
+  return formats.find((f) => f.format === id)?.label || id;
+}
+
+function exportMenuHtml() {
+  const { targets, groups } = exportCatalog();
+  const formatLabel = new Map(targets.formats.map((f) => [f.format, f.label]));
+  const item = (target, label, sub) =>
+    `<button class="menu-item" type="button" role="menuitem" data-target="${esc(target)}"><span class="mi-label">${esc(label)}</span><span class="mi-sub">${esc(sub)}</span></button>`;
+  return MATURITY_GROUPS.map((g) => {
+    const { formats, software } = groups[g.id];
+    if (!formats.length && !software.length) return "";
+    const headId = `menu-h-${g.id}`;
+    let html = `<div class="menu-group" role="group" aria-labelledby="${headId}"><div class="menu-head${g.id === "experimental" ? " exp" : ""}" id="${headId}">${esc(g.title)}${g.note ? ` <small>${esc(g.note)}</small>` : ""}</div><div class="menu-items">`;
+    html += formats.map((f) => item(f.format, f.label, `.${f.extension}`)).join("");
+    if (g.id === "standard") html += item(ZIP_TARGET, "ZIP archive", "every signal as CSV · .zip");
+    html += "</div>";
+    if (software.length) {
+      html += `<div class="menu-sub">For software</div><div class="menu-items">`
+        + software.map((p) => item(p.id, `For ${p.label}`, `.${p.extension} · ${formatLabel.get(p.format) || p.format}`)).join("")
+        + "</div>";
+    }
+    return html + "</div>";
+  }).join("");
+}
+
+function wireExportMenu(head) {
+  const button = $("#export-btn", head), pop = $("#export-menu", head);
+  if (!state.signalNames.length) { button.disabled = true; button.title = "No spectral signal to export"; return; }
+  pop.innerHTML = exportMenuHtml();
+  wireMenu(button, pop, (target) => exportTarget(target));
 }
 
 // strip directory + extension from the source name for a sensible download name
 const exportBaseName = () => (state.fileName || "spectra").replace(/^.*[\\/]/, "").replace(/\.[^.]+$/, "") || "spectra";
 
-// Targets come from the Rust registry; the page holds no format list.
-function exportTargetOptions() {
-  const targets = WASM.exportTargets();
-  const options = (items, id) => items
-    .map((item) => `<option value="${esc(item[id])}">${esc(item.label)}</option>`).join("");
-  return `<optgroup label="Software">${options(targets.software, "id")}</optgroup>`
-    + `<optgroup label="Format">${options(targets.formats, "format")}</optgroup>`;
-}
-
-function exportNote(title, lines, role) {
-  $("#export-note")?.remove();
-  const note = el("div", "legacy-note"); note.id = "export-note"; note.setAttribute("role", role);
-  const head = el("strong"); head.textContent = title; note.appendChild(head);
-  if (lines.length) {
-    const list = el("ul");
-    for (const line of lines) { const li = el("li"); li.textContent = line; list.appendChild(li); }
-    note.appendChild(list);
-  }
-  $(".results-head")?.after(note);
-  setStatus([title, ...lines].join(" "));
+function axisTolerance() {
+  const value = Number($("#conv-tolerance")?.value);
+  return value > 0 ? value : 0;
 }
 
 const lossLine = (loss) =>
   `${loss.message} (${loss.count}×${loss.max_error === undefined ? "" : `, largest error ${loss.max_error.toPrecision(3)}`}).`;
 
-// Writing happens in Rust; every loss it declares is shown next to the download.
-function exportTo() {
-  const target = $("#exp-target").value;
-  try {
-    const options = { signal: state.active, base_name: exportBaseName(), axis_tolerance: Number($("#exp-tolerance").value) || 0 };
-    let output = WASM.writeRecords(state.records, target, options);
-    if (output.files.length > 1) output = WASM.writeRecords(state.records, target, { ...options, zip: true });
-    const file = output.files[0];
-    download(file.name, file.bytes, file.media_type);
-    const targets = WASM.exportTargets();
-    const profile = targets.software.find((p) => p.id === target);
-    const lines = output.losses.map(lossLine);
-    if (profile && !profile.tested) lines.push(`Not tested in ${profile.label} yet. Basis: ${profile.evidence}. ${profile.notes}`.trim());
-    exportNote(`Exported ${file.name}.`, lines, "note");
-  } catch (e) {
-    exportNote(String(e?.message || e), [], "alert");
-  }
+function untestedLine(target) {
+  const profile = WASM.exportTargets().software.find((p) => p.id === target);
+  return profile && !profile.tested ? `Not tested in ${profile.label} yet. Basis: ${profile.evidence}. ${profile.notes}`.trim() : null;
 }
 
-function download(filename, text, mime) {
-  const url = URL.createObjectURL(new Blob([text], { type: mime }));
+// One report under the header for every export: what was converted, what the target lost.
+function showReport(title, lines, alert = false) {
+  $("#export-report")?.remove();
+  const box = el("div", `report${alert ? " alert" : ""}`); box.id = "export-report";
+  box.setAttribute("role", alert ? "alert" : "status");
+  const body = el("div", "r-body");
+  const strong = el("strong"); strong.textContent = title; body.appendChild(strong);
+  if (lines.length) {
+    const list = el("ul");
+    for (const line of lines) { const li = el("li"); li.textContent = line; list.appendChild(li); }
+    body.appendChild(list);
+  }
+  const close = el("button", "r-close", "×"); close.type = "button"; close.setAttribute("aria-label", "Dismiss");
+  close.addEventListener("click", () => box.remove());
+  box.append(body, close);
+  $(".results-head")?.after(box);
+  setStatus([title, ...lines].join(" "));
+}
+
+function download(filename, bytes, mime) {
+  const url = URL.createObjectURL(new Blob([bytes], { type: mime }));
   const a = el("a"); a.href = url; a.download = filename;
   document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 0);
 }
 
-// JSON.stringify rejects bigints (Renishaw/TriVista 64-bit metadata) → stringify them.
-const exportJSON = () =>
-  download(`${exportBaseName()}.json`, JSON.stringify(state.records, (_, v) => (typeof v === "bigint" ? v.toString() : v), 2), "application/json");
-
-const csvCell = (v) => {
-  if (v === null || v === undefined) return "";
-  const s = String(v);
-  return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-};
-
-// Records can share one CSV header only when their axes match exactly (same
-// comparator as the shared chart groups: kind, unit, order, length, every value ===)
-// and each record's values line up with that axis. Chart orientation is irrelevant here.
-function csvAxisProblem(recs, sig) {
-  const first = recs[0].signals[sig];
-  for (let i = 0; i < recs.length; i++) {
-    const s = recs[i].signals[sig];
-    if (!first.axis || !first.axis.values) {
-      if (s.axis && s.axis.values) return `record ${i + 1} has an axis but record 1 has none.`;
-      continue;
-    }
-    if (!s.axis || !s.axis.values) return `record ${i + 1} of signal "${sig}" has no axis.`;
-    if (!sameAxis(first.axis, s.axis)) return `record ${i + 1} of signal "${sig}" has a different axis than record 1.`;
-    if (!s.values || s.values.length !== first.axis.values.length) return `record ${i + 1} of signal "${sig}" has ${s.values ? s.values.length : 0} values for ${first.axis.values.length} axis points.`;
-  }
-  return null;
+// Writing happens in Rust; several files are always delivered as one ZIP.
+function writeAndDownload(records, target, options) {
+  let output = WASM.writeRecords(records, target, options);
+  if (output.files.length > 1) output = WASM.writeRecords(records, target, { ...options, zip: true });
+  const file = output.files[0];
+  download(file.name, file.bytes, file.media_type);
+  return { output, file };
 }
 
-// the active signal as a wide matrix: one row per record, axis values as the
-// header columns (the canonical NIRS spectra.csv layout). Other signals/metadata
-// stay in the lossless JSON export.
-function exportCSV() {
-  const sig = state.active;
-  const recs = state.records.filter((r) => r.signals && r.signals[sig]);
-  $("#csv-refusal")?.remove();
-  if (!recs.length) return;
-  const problem = csvAxisProblem(recs, sig);
-  if (problem) {
-    // One header row cannot describe rows on different axes: refuse, never write a
-    // header that is wrong for some rows. The JSON export keeps every record's own axis.
-    const msg = `CSV export refused: ${problem} A single CSV header cannot describe records on different axes. Use the JSON export, which keeps each record's own axis.`;
-    const note = el("p", "legacy-note"); note.id = "csv-refusal"; note.setAttribute("role", "alert"); note.textContent = msg;
-    $(".results-head")?.after(note);
-    setStatus(msg);
-    return;
+// Plan for an export target: the converted signal when there is one, else the
+// signal on screen, else the planner's own choice.
+function planExport(target, answers) {
+  const base = { ...answers, axis_tolerance: axisTolerance() };
+  const preferred = conv.result ? conv.result.name : state.active;
+  let plan = null;
+  if (preferred) {
+    try { plan = WASM.planConversion(state.records, target, { ...base, signal: preferred }); } catch (_) { plan = null; }
   }
-  const axis = recs[0].signals[sig].axis;
-  const header = ["sample", ...(axis ? axis.values : []).map(csvCell)];
-  const lines = [header.join(",")];
-  recs.forEach((r, i) => {
-    lines.push([`record_${i}`, ...(r.signals[sig].values || []).map(csvCell)].join(","));
+  if (!plan || (!conv.result && plan.status === "refused")) {
+    const auto = WASM.planConversion(state.records, target, base);
+    if (!plan || auto.status !== "refused") plan = auto;
+  }
+  return plan;
+}
+
+// Export to a format or a software preset. The planner says what the target needs;
+// questions are asked in a dialog, needed conversions run first (and stay on the page),
+// then the Rust writer produces the file and lists what it could not carry.
+async function exportTarget(id) {
+  const name = targetName(id);
+  const options = { base_name: exportBaseName(), axis_tolerance: axisTolerance() };
+  try {
+    if (id === ZIP_TARGET) {
+      const { file, output } = writeAndDownload(state.records, "csv", { ...options, zip: true });
+      showReport(`Exported ${file.name}: every signal as CSV.`, output.losses.map(lossLine));
+      return;
+    }
+    const lines = [];
+    if (id !== "records-json") {
+      let answers = {};
+      let plan = planExport(id, answers);
+      while (plan.status === "needs_answers") {
+        answers = await askQuestions(name, plan, answers);
+        if (!answers) { setStatus(`Export for ${name} cancelled.`); return; }
+        plan = planExport(id, answers);
+      }
+      if (plan.status === "refused") { showRefusal(name, plan); return; }
+      if (plan.status === "ready") {
+        setStatus(`Converting for ${name}…`);
+        await executePlan(plan);
+        lines.push(`Converted first: ${plan.steps.map((step) => step.description).join(" ")}`);
+        lines.push(`The converted spectra ('${plan.output.name}') are now on the page.`);
+      }
+      options.signal = plan.status === "ready" ? plan.output.name : plan.source_signal;
+    }
+    const { output, file } = writeAndDownload(state.records, id, options);
+    if (output.conversions.length && !lines.length) {
+      lines.push(`Conversions of '${options.signal}', recorded with the export: ${[...new Set(output.conversions.map((c) => STEP_LABEL[c.step] || c.step))].join(", ").toLowerCase()}.`);
+    }
+    lines.push(...output.losses.map(lossLine));
+    const untested = untestedLine(id);
+    if (untested) lines.push(untested);
+    showReport(`Exported ${file.name} for ${name}${options.signal ? ` from '${options.signal}'` : ""}.`, lines);
+  } catch (e) {
+    showReport(String(e?.message || e), ["Nothing was downloaded."], true);
+  }
+}
+
+function dialogShell(title, lead) {
+  const dlg = $("#export-dialog");
+  dlg.innerHTML = `<div class="dlg-head"><h3 id="dlg-title">${esc(title)}</h3>${lead ? `<p>${esc(lead)}</p>` : ""}</div><div class="dlg-body"></div><div class="dlg-actions"></div>`;
+  return { dlg, body: $(".dlg-body", dlg), actions: $(".dlg-actions", dlg) };
+}
+
+// The planner's questions, answered in a small dialog; resolves to the answers or null.
+function askQuestions(name, plan, answers) {
+  return new Promise((resolve) => {
+    const { dlg, body, actions } = dialogShell(`Export for ${name}`, "The file does not say this. Answer, and the conversion runs before the download.");
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      if (dlg.open) dlg.close();
+      resolve(value);
+    };
+    for (const question of plan.questions) {
+      body.appendChild(questionNode(question, plan, answers[question.id], (value) => finish({ ...answers, [question.id]: value })));
+    }
+    const cancel = el("button", "btn-export", "Cancel"); cancel.type = "button";
+    cancel.addEventListener("click", () => finish(null));
+    actions.appendChild(cancel);
+    dlg.addEventListener("close", () => finish(null), { once: true });
+    dlg.showModal();
+    body.querySelector(".choice")?.focus();
   });
-  download(`${exportBaseName()}__${String(sig).replace(/[^\w.-]+/g, "_")}.csv`, lines.join("\n"), "text/csv");
+}
+
+function showRefusal(name, plan) {
+  const { dlg, body, actions } = dialogShell(`${name} cannot be written from this file`, "Why, and how to fix it:");
+  for (const refusal of plan.refusals) body.appendChild(refusalNode(refusal));
+  const close = el("button", "btn-primary", "Close"); close.type = "button";
+  close.addEventListener("click", () => dlg.close());
+  actions.appendChild(close);
+  dlg.showModal();
+  close.focus();
+  showReport(`Not exported for ${name}.`, plan.refusals.map((r) => `${r.reason}. Fix: ${r.fix}`), true);
+}
+
+/* ── chart export: exactly the spectra on screen ──────────────────────── */
+const unitSlug = (u) => String(u || "").replace(/[^\w]+/g, "") || "axis";
+
+// Records restricted to the visible signals. In the overlay, an original shown on the
+// converted axis is written on that axis (computed by Methods), as its own signal.
+function visibleRecords() {
+  const r = conv.result;
+  const both = state.view === "both" && r;
+  const names = both ? [r.source, r.name] : [state.active];
+  let derived = null;
+  if (both && r.beforeView) {
+    derived = `${r.source}_${unitSlug(r.outUnit)}`;
+    while (state.signalNames.includes(derived)) derived += "_view";
+  }
+  const records = [];
+  state.records.forEach((rec, i) => {
+    const signals = {};
+    for (const n of names) if (rec.signals && rec.signals[n]) signals[n] = rec.signals[n];
+    if (!Object.keys(signals).length) return;
+    let metadata = rec.metadata;
+    const view = derived && signals[r.source] ? r.beforeView.get(i) : null;
+    if (view) {
+      const src = signals[r.source];
+      delete signals[r.source];
+      signals[derived] = { ...src, axis: { values: view.axis, unit: r.outUnit, kind: view.kind, order: "ascending" }, values: view.values, shape: [view.values.length] };
+      const prior = Array.isArray(rec.metadata?.conversions) ? rec.metadata.conversions.filter((c) => c.signal !== derived) : [];
+      metadata = { ...(rec.metadata || {}), conversions: [...prior, conversionEntry(r.axisStep, derived, r.version)] };
+    }
+    records.push({ ...rec, signals, metadata });
+  });
+  return { records, names: derived ? [derived, r.name] : names };
+}
+
+function exportView(format) {
+  try {
+    const { records, names } = visibleRecords();
+    if (!records.length) throw new Error("Nothing is drawn to download.");
+    const { output, file } = writeAndDownload(records, format, { base_name: `${exportBaseName()}__view` });
+    showReport(`Downloaded the chart view as ${file.name}: ${names.map((n) => `'${n}'`).join(" and ")}, ${records.length} record${records.length === 1 ? "" : "s"}.`, output.losses.map(lossLine));
+  } catch (e) {
+    showReport(String(e?.message || e), ["Nothing was downloaded."], true);
+  }
 }
 
 function activateResult() {
@@ -1071,17 +1233,55 @@ function renderKpis(plan) {
   for (const k of kpis) host.appendChild(kpiNode(k));
 }
 
-/* plot panel: a dedicated container; its children are built and torn down by drawSignal */
+/* plot panel: a dedicated container; its children are built and torn down by drawSignal.
+   The head holds the signal tabs, the original / converted / both switch (after a
+   conversion) and the download of what is drawn. */
 function renderPlotPanel() {
   const p = el("div", "panel plot-panel");
   p.innerHTML = `
     <div class="panel-head">
       <span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M4 15c3-1 4-9 7-9s3 7 5 7 2-4 4-5"/></svg></span>
       <h3>Spectra</h3>
-      <div class="plot-tools"><div class="sig-tabs" id="sig-tabs"></div></div>
+      <div class="plot-tools"><div class="sig-tabs" id="sig-tabs" aria-label="Signal"></div></div>
+      <div class="view-tools">
+        <div class="seg hidden" id="view-switch" role="group" aria-label="Show the original spectra, the converted spectra or both">
+          <button type="button" data-view="before" aria-pressed="false">Original</button><button type="button" data-view="after" aria-pressed="false">Converted</button><button type="button" data-view="both" aria-pressed="false">Both</button>
+        </div>
+        <div class="menu-wrap">
+          <button class="btn-export" id="view-dl-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="view-dl-menu" title="Download the spectra drawn in this chart, as shown">${ICON_DOWNLOAD} Download view</button>
+          <div class="menu-pop small" id="view-dl-menu" role="menu" aria-labelledby="view-dl-btn" hidden>
+            <div class="menu-head">The spectra as shown</div>
+            <div class="menu-items">
+              <button class="menu-item" type="button" role="menuitem" data-target="csv"><span class="mi-label">CSV</span><span class="mi-sub">one row per spectrum · .csv</span></button>
+              <button class="menu-item" type="button" role="menuitem" data-target="records-json"><span class="mi-label">JSON records</span><span class="mi-sub">signals, axes, metadata · .json</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div id="plot-groups"></div>`;
+  p.querySelectorAll("#view-switch button").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
+  const dl = $("#view-dl-btn", p);
+  if (state.signalNames.length) wireMenu(dl, $("#view-dl-menu", p), (format) => exportView(format));
+  else dl.disabled = true;
   return p;
+}
+
+function setView(mode) {
+  const r = conv.result;
+  if (!r) return;
+  if (mode === "before") selectSignal(r.source);
+  else if (mode === "after") selectSignal(r.name);
+  else drawCompare();
+}
+
+function syncViewSwitch() {
+  const r = conv.result, host = $("#view-switch");
+  if (!host) return;
+  host.classList.toggle("hidden", !r);
+  if (!r) return;
+  const mode = state.view === "both" ? "both" : state.active === r.source ? "before" : state.active === r.name ? "after" : null;
+  host.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === mode)));
 }
 
 /* signals table */
@@ -1242,13 +1442,13 @@ function selectSignal(name) {
   // New signal → new axis geometry: release every island before touching the DOM,
   // then remount (the explorer keeps hover/band state that a shorter axis would strand).
   unmountAll();
-  $("#csv-refusal")?.remove();
-  $("#export-note")?.remove();
   state.active = name;
+  state.view = "signal";
   [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", t.textContent.trim() === name));
   const plan = planSignal(name);
   renderKpis(plan);
   drawSignal(name, plan);
+  syncViewSwitch();
 }
 
 /* ── axis grouping ────────────────────────────────────────────────────────
@@ -1509,13 +1709,13 @@ function selectRecord(id) {
   const out = $("#sel-text"); if (out) out.textContent = selectionText();
 }
 
-/* ── convert for market software ──────────────────────────────────────────
+/* ── Convert (lateral panel) ───────────────────────────────────────────────
    nirs4all-formats (this page's WASM) decides WHAT a target needs and plans
    the steps (planConversion). Every value is computed by nirs4all-methods
    (its own WASM, vendored in ./vendor/methods/ and loaded only when a
-   conversion is requested). This file only moves arrays between the two:
-   it selects points, builds the grid axis the planner names and counts
-   what the validation summary reports. It never computes a spectrum. */
+   conversion runs). This file only moves arrays between the two: it selects
+   points, builds the grid axis the planner names and counts what the
+   validation summary reports. It never computes a spectrum. */
 const METHODS_URL = "./vendor/methods/index.js";
 let METHODS = null;
 async function loadMethods() {
@@ -1560,7 +1760,7 @@ function newConversion() {
   return { plan: null, answers: {}, result: null };
 }
 
-// Every decoded file gets the panel under its plot.
+// Every decoded file gets the panel next to its chart.
 function mountConvert() {
   const host = $("#convert-host");
   if (!host || host.firstChild || !state.signalNames.length) return;
@@ -1568,53 +1768,84 @@ function mountConvert() {
   replan();
 }
 
-function openConvert() {
-  mountConvert();
-  const panel = $("#convert-panel");
-  if (!panel) return;
-  panel.scrollIntoView({ behavior: "smooth", block: "start" });
-  $("#conv-target")?.focus({ preventScroll: true });
+// Target options grouped by the writers' maturity, as in the Export menu.
+function targetOptions() {
+  const { groups } = exportCatalog();
+  const opt = (value, label) => `<option value="${esc(value)}">${esc(label)}</option>`;
+  const parts = [];
+  const std = groups.standard;
+  if (std.software.length) parts.push(`<optgroup label="Software">${std.software.map((p) => opt(p.id, p.label)).join("")}</optgroup>`);
+  if (std.formats.length) parts.push(`<optgroup label="File formats">${std.formats.map((f) => opt(f.format, f.label)).join("")}</optgroup>`);
+  const exp = groups.experimental;
+  if (exp.software.length || exp.formats.length) {
+    parts.push(`<optgroup label="Experimental (reverse-engineered)">${exp.software.map((p) => opt(p.id, p.label)).join("")}${exp.formats.map((f) => opt(f.format, f.label)).join("")}</optgroup>`);
+  }
+  const other = groups.other;
+  if (other.software.length || other.formats.length) {
+    parts.push(`<optgroup label="Other formats">${other.software.map((p) => opt(p.id, p.label)).join("")}${other.formats.map((f) => opt(f.format, f.label)).join("")}</optgroup>`);
+  }
+  return parts.join("");
+}
+
+function field(id, label, control, help) {
+  return `<div class="field"><label for="${id}">${esc(label)}</label>${control}<p class="field-help" id="${id}-help">${help}</p></div>`;
 }
 
 function convertPanel() {
-  const panel = el("section", "panel convert-panel");
+  const panel = el("aside", "panel side");
   panel.id = "convert-panel";
-  panel.setAttribute("aria-label", "Convert for market software");
+  panel.setAttribute("aria-labelledby", "conv-title");
   const types = ["absorbance", "reflectance", "transmittance", "kubelka_munk"]
     .map((t) => `<option value="${t}">${esc(sigLabel(t))}</option>`).join("");
+  const select = (id, options) => `<select id="${id}" aria-describedby="${id}-help">${options}</select>`;
+  const number = (id, placeholder) => `<input id="${id}" type="number" step="any" inputmode="decimal" placeholder="${esc(placeholder)}" aria-describedby="conv-even-help">`;
   panel.innerHTML = `
     <div class="panel-head"><span class="ph-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></span>
-      <h3>Convert for market software</h3><span class="ph-meta">plan: nirs4all-formats · values: nirs4all-methods</span></div>
+      <h3 id="conv-title">Convert</h3></div>
     <div class="panel-body">
-      <div class="conv-controls">
-        <label>Target<select id="conv-target"><option value="">No export target (view only)</option>${exportTargetOptions()}</select></label>
-        <label>Source signal<select id="conv-signal"><option value="">Automatic</option></select></label>
-        <label>Output signal<select id="conv-type"><option value="">As the target needs</option>${types}</select></label>
-        <label>Axis unit<select id="conv-unit"><option value="">As the target needs</option><option value="nm">nm</option><option value="um">µm</option><option value="cm-1">cm⁻¹</option></select></label>
-        <label>Grid<select id="conv-grid"><option value="">Automatic</option></select></label>
-        <label class="conv-even hidden">Grid step<input id="conv-step" type="number" min="0" step="any" placeholder="default"></label>
-        <label class="conv-even hidden">Grid from<input id="conv-min" type="number" step="any" placeholder="measured start"></label>
-        <label class="conv-even hidden">Grid to<input id="conv-max" type="number" step="any" placeholder="measured end"></label>
-        <label>Interpolation<select id="conv-interp"><option value="linear">Linear</option><option value="nearest">Nearest</option><option value="cubic">Cubic</option></select></label>
-        <label class="conv-splices hidden">Detector splices<input id="conv-splices" type="text" placeholder="first nm of each next detector, e.g. 1001, 1801"></label>
+      <p class="side-intro">Change the signal type, the axis unit or the spectral grid. The result is added as a new signal, drawn with the original, and the Export menu uses it.</p>
+      ${field("conv-target", "Prepare for", select("conv-target", `<option value="">No specific software or format</option>${targetOptions()}`),
+        "Optional. Pick a software or a format to apply what it needs, or choose the changes yourself below.")}
+      ${field("conv-signal", "Convert from", select("conv-signal", `<option value="">Automatic</option>`), "The signal of the file to start from.")}
+      ${field("conv-type", "Convert to", select("conv-type", `<option value="">Automatic</option>${types}`),
+        "Signal type of the result, for example absorbance (log 1/R) from reflectance. Automatic keeps the type, or uses what the target needs.")}
+      ${field("conv-unit", "Axis unit", select("conv-unit", `<option value="">Automatic</option><option value="nm">Wavelength, nm</option><option value="um">Wavelength, µm</option><option value="cm-1">Wavenumber, cm⁻¹</option>`),
+        "Automatic keeps the unit, or uses what the target needs. Units are converted point by point; nothing is interpolated.")}
+      ${field("conv-grid", "Spectral grid", select("conv-grid", `<option value="">Automatic</option>`),
+        "Keep the measured points, use a grid the target knows, or resample on an even grid.")}
+      <div class="field-group conv-even hidden" role="group" aria-labelledby="conv-even-label">
+        <div class="f-label" id="conv-even-label" style="font-size:.84rem;font-weight:600;margin-bottom:5px">Even grid</div>
+        <div class="field-row">
+          <div class="field"><label for="conv-step">Step</label>${number("conv-step", "default")}</div>
+          <div class="field"><label for="conv-min">From</label>${number("conv-min", "start")}</div>
+          <div class="field"><label for="conv-max">To</label>${number("conv-max", "end")}</div>
+        </div>
+        <p class="field-help" id="conv-even-help">In the output axis unit. Empty fields use the default step and the measured range; values are never extrapolated.</p>
       </div>
-      <div id="conv-plan" aria-live="polite"></div>
-      <div class="conv-actions">
-        <button class="btn-export" id="conv-run" disabled>Convert with nirs4all-methods</button>
-        <button class="btn-export" id="conv-export" disabled title="Write the converted signal with the selected target">Export converted</button>
-        <span class="conv-compare" id="conv-compare" role="group" aria-label="Compare before and after"></span>
-      </div>
-      <div id="conv-result"></div>
-      <details class="conv-limits"><summary>Limits of these conversions</summary><ul>${CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("")}</ul></details>
+      <details class="side-more">
+        <summary>More options</summary>
+        ${field("conv-interp", "Interpolation", select("conv-interp", `<option value="linear">Linear</option><option value="nearest">Nearest point</option><option value="cubic">Cubic</option>`),
+          "Used only when the spectra are resampled on another grid.")}
+        <div class="conv-splices hidden">${field("conv-splices", "Detector splices", `<input id="conv-splices" type="text" placeholder="for example 1001, 1801" aria-describedby="conv-splices-help">`,
+          "First wavelength (nm) of each following detector, to correct the steps between detectors when reflectance is computed from references.")}</div>
+        ${field("conv-tolerance", "Axis tolerance", `<input id="conv-tolerance" type="number" min="0" step="any" placeholder="0" aria-describedby="conv-tolerance-help">`,
+          "Largest axis deviation, in axis units, accepted as evenly spaced when a format needs an even axis. The deviation is reported. Also used by Export.")}
+      </details>
+      <section class="side-plan" aria-labelledby="plan-title">
+        <h4 id="plan-title">What will happen</h4>
+        <div id="conv-plan" aria-live="polite"></div>
+        <div class="conv-actions"><button class="btn-primary" id="conv-run" type="button" disabled>Convert</button></div>
+        <div id="conv-result"></div>
+      </section>
+      <details class="conv-limits"><summary>Limits</summary><ul>${CONVERT_LIMITS.map((l) => `<li>${esc(l)}</li>`).join("")}</ul></details>
     </div>`;
-  for (const id of ["#conv-target", "#conv-signal", "#conv-type", "#conv-unit", "#conv-grid", "#conv-interp", "#conv-step", "#conv-min", "#conv-max", "#conv-splices"]) {
+  for (const id of ["#conv-target", "#conv-signal", "#conv-type", "#conv-unit", "#conv-grid", "#conv-interp", "#conv-step", "#conv-min", "#conv-max", "#conv-splices", "#conv-tolerance"]) {
     $(id, panel).addEventListener("change", () => {
       if (id === "#conv-target" || id === "#conv-signal") conv.answers = {};
       replan();
     });
   }
   $("#conv-run", panel).addEventListener("click", runConversion);
-  $("#conv-export", panel).addEventListener("click", exportConverted);
   return panel;
 }
 
@@ -1636,7 +1867,7 @@ function convOptions() {
     if (splices.some((x) => !Number.isFinite(x))) throw new Error("Detector splices must be numbers separated by commas, for example 1001, 1801.");
     options.splices = splices;
   }
-  const tolerance = Number($("#exp-tolerance")?.value);
+  const tolerance = axisTolerance();
   if (tolerance > 0) options.axis_tolerance = tolerance;
   return options;
 }
@@ -1647,8 +1878,7 @@ function convTarget() {
 
 function targetFormat(target) {
   if (!target) return null;
-  const targets = WASM.exportTargets();
-  const profile = targets.software.find((p) => p.id === target);
+  const profile = WASM.exportTargets().software.find((p) => p.id === target);
   return profile ? profile.format : target;
 }
 
@@ -1670,7 +1900,7 @@ function replan() {
 function refreshPlanControls(plan) {
   const signal = $("#conv-signal"), chosen = signal.value;
   signal.innerHTML = `<option value="">Automatic${plan.source_signal && !chosen ? ` (${esc(plan.source_signal)})` : ""}</option>`
-    + plan.candidates.map((c) => `<option value="${esc(c.name)}"${c.usable ? "" : " disabled"}>${esc(c.name)} · ${esc(sigLabel(c.signal_type))}${c.usable ? "" : " (not convertible)"}</option>`).join("");
+    + plan.candidates.map((c) => `<option value="${esc(c.name)}"${c.usable ? "" : " disabled"}>${esc(c.name)} · ${esc(sigLabel(c.signal_type))}${c.usable ? "" : " (cannot be converted)"}</option>`).join("");
   signal.value = chosen;
 
   const grid = $("#conv-grid"), gridChosen = grid.value;
@@ -1678,7 +1908,7 @@ function refreshPlanControls(plan) {
   const requirements = format ? WASM.exportTargets().requirements.find((r) => r.format === format) : null;
   const range = plan.measured_range;
   const unitOk = (g) => !range || (g.first >= range[0] && g.last <= range[1]);
-  grid.innerHTML = `<option value="">Automatic</option><option value="measured">Keep the measured axis</option>`
+  grid.innerHTML = `<option value="">Automatic</option><option value="measured">Keep the measured points</option>`
     + (requirements ? requirements.grids : []).map((g) => `<option value="${esc(g.id)}"${unitOk(g) ? "" : " disabled"}>${esc(g.label)}${unitOk(g) ? "" : " (outside the measured range)"}</option>`).join("")
     + `<option value="even">Even grid inside the measured range</option>`;
   grid.value = [...grid.options].some((o) => o.value === gridChosen && !o.disabled) ? gridChosen : "";
@@ -1688,19 +1918,28 @@ function refreshPlanControls(plan) {
 }
 
 function convNote(title, detail, role) {
-  const note = el("div", "legacy-note"); note.setAttribute("role", role);
+  const note = el("div", "conv-note"); note.setAttribute("role", role);
   const head = el("strong"); head.textContent = title; note.appendChild(head);
   if (detail) { const p = el("div"); p.textContent = detail; note.appendChild(p); }
   return note;
 }
 
+function refusalNode(refusal) {
+  const node = el("div", "conv-refusal");
+  const why = el("strong"); why.textContent = `${refusal.reason}.`;
+  const fix = el("div"); fix.textContent = `How to fix it: ${refusal.fix}`;
+  node.append(why, fix);
+  return node;
+}
+
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const STATUS_TEXT = {
-  ready: (p) => `Ready: ${p.steps.length} step${p.steps.length > 1 ? "s" : ""} on '${p.source_signal}' of ${p.records} record${p.records > 1 ? "s" : ""}. Review them, then convert.`,
+  ready: (p) => `${plural(p.steps.length, "step turns", "steps turn")} '${p.source_signal}' into '${p.output.name}' for ${plural(p.records, "spectrum", "spectra")}:`,
   unchanged: (p) => (p.target
-    ? `No conversion needed: '${p.source_signal}' is written to ${p.target} as it is. Use Export above.`
-    : `Nothing to convert: choose an output signal, an axis unit or a grid.`),
-  needs_answers: () => "Information is missing: the file does not say what the answer below needs.",
-  refused: () => "This cannot be converted for this target. Why, and how to fix it:",
+    ? `Nothing to convert: '${p.source_signal}' can be written for ${targetName(p.target)} as it is. Use Export at the top.`
+    : "Nothing to convert yet: choose a signal type, an axis unit or a grid above."),
+  needs_answers: () => "The file does not say everything the conversion needs. Answer below:",
+  refused: () => "This cannot be converted:",
 };
 
 function renderPlan(plan) {
@@ -1714,35 +1953,50 @@ function renderPlan(plan) {
     for (const step of plan.steps) {
       const li = el("li");
       li.innerHTML = `<b>${esc(STEP_LABEL[step.step] || step.step)}.</b> ${esc(step.description)}`
-        + `<div class="mono-sub">${esc(step.method_id || "selection, no computation")}${Object.keys(step.params).length ? " · " + esc(JSON.stringify(step.params)) : ""}</div>`
         + (step.notes && step.notes.length ? `<ul>${step.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : "");
       list.appendChild(li);
     }
     host.appendChild(list);
   }
-  for (const question of plan.questions) host.appendChild(questionNode(question, plan));
-  for (const refusal of plan.refusals) host.appendChild(convNote(refusal.reason + ".", "Fix: " + refusal.fix, "alert"));
+  for (const question of plan.questions) {
+    host.appendChild(questionNode(question, plan, conv.answers[question.id], (value) => { conv.answers[question.id] = value; replan(); }));
+  }
+  for (const refusal of plan.refusals) host.appendChild(refusalNode(refusal));
   if (plan.notes.length) {
     const notes = el("ul", "conv-notes");
     for (const note of plan.notes) { const li = el("li"); li.textContent = note; notes.appendChild(li); }
     host.appendChild(notes);
   }
+  if (plan.steps.some((s) => s.method_id)) host.appendChild(techDetails(plan.steps));
   $("#conv-run").disabled = plan.status !== "ready";
 }
 
-function questionNode(question, plan) {
-  const node = el("div", "conv-q"); node.setAttribute("role", "group");
-  const prompt = el("div"); prompt.textContent = question.prompt; node.appendChild(prompt);
+// Method ids and parameters stay available, collapsed.
+function techDetails(steps, version) {
+  const box = el("details", "tech");
+  box.innerHTML = `<summary>Technical details</summary><ul>${steps.map((step) =>
+    `<li><code>${esc(step.method_id || "selection, no computation")}</code>${Object.keys(step.params || {}).length ? ` <code>${esc(JSON.stringify(step.params))}</code>` : ""}</li>`).join("")}</ul>`
+    + (version ? `<p>Computed in the browser by nirs4all-methods ${esc(version)}; planned by nirs4all-formats.</p>` : `<p>Planned by nirs4all-formats; the values are computed in the browser by nirs4all-methods.</p>`);
+  return box;
+}
+
+// A planner question with its choices as buttons; `onChoose(value)` records the answer.
+function questionNode(question, plan, answered, onChoose) {
+  const node = el("fieldset", "conv-q");
+  const legend = el("legend"); legend.textContent = question.prompt; node.appendChild(legend);
   const choices = el("div", "choices");
   for (const choice of question.choices) {
-    const b = el("button", "btn-export"); b.type = "button"; b.textContent = choice.label;
-    b.addEventListener("click", () => { conv.answers[question.id] = choice.value; replan(); });
+    const b = el("button", "choice"); b.type = "button"; b.textContent = choice.label;
+    b.setAttribute("aria-pressed", String(answered === choice.value));
+    b.addEventListener("click", () => onChoose(choice.value));
     choices.appendChild(b);
   }
-  const suggest = el("button", "btn-export"); suggest.type = "button"; suggest.textContent = "Suggest with nirs4all-methods";
   const out = el("div", "suggest"); out.setAttribute("role", "status");
-  suggest.addEventListener("click", () => suggestAnswer(question, plan, out));
-  if (question.id !== "absorbance_origin") choices.appendChild(suggest);
+  if (question.id !== "absorbance_origin") {
+    const suggest = el("button", "choice ghost"); suggest.type = "button"; suggest.textContent = "Suggest from the values";
+    suggest.addEventListener("click", () => suggestAnswer(question, plan, out));
+    choices.appendChild(suggest);
+  }
   node.appendChild(choices);
   const why = el("div", "why"); why.textContent = question.why; node.appendChild(why);
   node.appendChild(out);
@@ -1751,7 +2005,7 @@ function questionNode(question, plan) {
 
 // utilities.signal_type_detector only suggests; the answer stays the user's.
 async function suggestAnswer(question, plan, out) {
-  out.textContent = "Loading nirs4all-methods…";
+  out.textContent = "Looking at the values…";
   try {
     const M = await loadMethods();
     const record = state.records.find((r) => r.signals && r.signals[plan.source_signal]);
@@ -1762,8 +2016,8 @@ async function suggestAnswer(question, plan, out) {
     const found = new M.SignalTypeDetector({}).run(X, undefined, ascending ? { axis } : {});
     const [type, scale] = DETECTED[found.signal_type] || [null, null];
     const confidence = Number(found.confidence).toFixed(2);
-    if (!type) out.textContent = `nirs4all-methods cannot tell (confidence ${confidence}). Answer from what you know about the file.`;
-    else out.textContent = `nirs4all-methods suggests ${sigLabel(type)}${scale ? ` in ${scale}` : ""} (confidence ${confidence}). It is a suggestion from the values only: answer from what you know about the file.`;
+    if (!type) out.textContent = `The values do not tell (confidence ${confidence}). Answer from what you know about the file.`;
+    else out.textContent = `The values look like ${sigLabel(type)}${scale ? ` in ${scale}` : ""} (confidence ${confidence}). This is only a suggestion: answer from what you know about the file.`;
   } catch (e) {
     out.textContent = String(e?.message || e);
   }
@@ -1780,6 +2034,8 @@ function countIf(values, test) {
   for (const v of values) if (test(v)) n++;
   return n;
 }
+
+const newSummary = () => ({ records: 0, points: 0, clamped: 0, nan: 0, dropped: 0, axis: null, resampled: null });
 
 // One plan step on one record. Methods computes; this moves arrays.
 function runStep(step, grid, record, axis, values, classes, summary) {
@@ -1822,6 +2078,65 @@ function runStep(step, grid, record, axis, values, classes, summary) {
   }
 }
 
+// Run a ready plan on every record and add the result as a derived signal. Used by
+// the Convert panel and by Export when a target needs conversions. When the axis unit
+// changes, the original values are also put on the converted axis (by the same Methods
+// AxisUnitConversion step) so the overlay can draw both on one x-axis.
+async function executePlan(plan) {
+  const M = await loadMethods();
+  const version = M.version().split("+")[0];
+  const classes = {};
+  for (const step of plan.steps) {
+    if (!step.method_id) continue;
+    try { classes[step.method_id] = M.methodClass(step.method_id); }
+    catch (_) {
+      throw new Error(`${STEP_LABEL[step.step] || step.step} needs ${step.method_id}, which the nirs4all-methods ${version} loaded here does not provide yet. It comes with a later Methods release; until then choose another source signal or target.`);
+    }
+  }
+  const out = plan.output, source = plan.source_signal;
+  const summary = newSummary();
+  const axisChanged = plan.steps.some((s) => s.step === "axis_unit_conversion" || s.step === "resample");
+  const axisStep = plan.steps.find((s) => s.step === "axis_unit_conversion") || null;
+  const outKind = (sig) => (out.axis_unit === sig.axis.unit ? sig.axis.kind : out.axis_unit === "cm-1" ? "wavenumber" : "wavelength");
+  // Compute every record first: the page state changes only when all succeed.
+  const computed = [];
+  state.records.forEach((record, i) => {
+    const sig = record.signals && record.signals[source];
+    if (!sig) return;
+    let axis = Array.from(sig.axis.values), values = Array.from(sig.values);
+    for (const step of plan.steps) ({ axis, values } = runStep(step, plan.grid, record, axis, values, classes, summary));
+    let view = null;
+    if (axisStep) {
+      try { view = runStep(axisStep, null, record, Array.from(sig.axis.values), Array.from(sig.values), classes, newSummary()); }
+      catch (_) { view = null; }
+    }
+    computed.push({ i, sig, axis, values, view });
+  });
+  for (const { i, sig, axis, values } of computed) {
+    const record = state.records[i];
+    const ordered = axisChanged || plan.steps.some((s) => s.step === "select_points");
+    record.signals[out.name] = {
+      axis: { values: axis, unit: out.axis_unit, kind: outKind(sig), order: ordered ? "ascending" : sig.axis.order },
+      values, shape: [values.length], dims: ["x"], signal_type: out.signal_type, unit: out.unit ?? null,
+      role: "converted", source: `from ${source}`,
+    };
+    record.metadata = record.metadata || {};
+    const prior = Array.isArray(record.metadata.conversions) ? record.metadata.conversions.filter((c) => c.signal !== out.name) : [];
+    record.metadata.conversions = [...prior, ...plan.steps.map((step) => conversionEntry(step, out.name, version))];
+    summary.records++; summary.points = values.length;
+  }
+  const beforeView = axisStep && computed.length && computed.every((c) => c.view)
+    ? new Map(computed.map((c) => [c.i, { axis: c.view.axis, values: c.view.values, kind: outKind(c.sig) }]))
+    : null;
+  if (!state.signalNames.includes(out.name)) state.signalNames.push(out.name);
+  conv.result = { source, name: out.name, target: plan.target, version, summary, steps: plan.steps, outUnit: out.axis_unit, axisStep, beforeView };
+  $("#signals-panel")?.replaceWith(renderSignalsPanel());
+  buildTabs();
+  selectSignal(out.name);
+  renderResult();
+  return conv.result;
+}
+
 async function runConversion() {
   const plan = conv.plan;
   if (!plan || plan.status !== "ready") return;
@@ -1829,53 +2144,12 @@ async function runConversion() {
   run.disabled = true; run.textContent = "Converting…";
   result.replaceChildren();
   try {
-    const M = await loadMethods();
-    const version = M.version().split("+")[0];
-    const classes = {};
-    for (const step of plan.steps) {
-      if (!step.method_id) continue;
-      try { classes[step.method_id] = M.methodClass(step.method_id); }
-      catch (_) {
-        throw new Error(`${STEP_LABEL[step.step] || step.step} needs ${step.method_id}, which the @nirs4all/methods ${version} loaded here does not provide yet. It comes with a later Methods release; until then choose another source signal or target.`);
-      }
-    }
-    const out = plan.output, source = plan.source_signal;
-    const summary = { records: 0, points: 0, clamped: 0, nan: 0, dropped: 0, axis: null, resampled: null };
-    const axisChanged = plan.steps.some((s) => s.step === "axis_unit_conversion" || s.step === "resample");
-    // Compute every record first: the page state changes only when all succeed.
-    const computed = [];
-    state.records.forEach((record, i) => {
-      const sig = record.signals && record.signals[source];
-      if (!sig) return;
-      let axis = Array.from(sig.axis.values), values = Array.from(sig.values);
-      for (const step of plan.steps) ({ axis, values } = runStep(step, plan.grid, record, axis, values, classes, summary));
-      computed.push({ i, sig, axis, values });
-    });
-    for (const { i, sig, axis, values } of computed) {
-      const record = state.records[i];
-      const kind = out.axis_unit === sig.axis.unit ? sig.axis.kind : out.axis_unit === "cm-1" ? "wavenumber" : "wavelength";
-      const ordered = axisChanged || plan.steps.some((s) => s.step === "select_points");
-      record.signals[out.name] = {
-        axis: { values: axis, unit: out.axis_unit, kind, order: ordered ? "ascending" : sig.axis.order },
-        values, shape: [values.length], dims: ["x"], signal_type: out.signal_type, unit: out.unit ?? null,
-        role: "converted", source: `nirs4all-methods ${version}`,
-      };
-      record.metadata = record.metadata || {};
-      const prior = Array.isArray(record.metadata.conversions) ? record.metadata.conversions.filter((c) => c.signal !== out.name) : [];
-      record.metadata.conversions = [...prior, ...plan.steps.map((step) => conversionEntry(step, out.name, version))];
-      summary.records++; summary.points = values.length;
-    }
-    if (!state.signalNames.includes(out.name)) state.signalNames.push(out.name);
-    conv.result = { source, name: out.name, target: plan.target, version, summary, steps: plan.steps };
-    $("#signals-panel")?.replaceWith(renderSignalsPanel());
-    buildTabs();
-    selectSignal(out.name);
-    renderResult();
-    $(".plot-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    await executePlan(plan);
+    $(".plot-panel")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   } catch (e) {
     result.replaceChildren(convNote(String(e?.message || e), "Nothing was added to the page. Change the plan and convert again.", "alert"));
   } finally {
-    run.textContent = "Convert with nirs4all-methods";
+    run.textContent = "Convert";
     run.disabled = !conv.plan || conv.plan.status !== "ready";
   }
 }
@@ -1890,77 +2164,92 @@ function conversionEntry(step, signal, version) {
 
 function renderResult() {
   const r = conv.result, s = r.summary;
+  const host = $("#conv-result");
+  if (!host) return;
   const box = el("div", "conv-summary"); box.setAttribute("role", "status");
   const lines = [
-    `${s.records} record${s.records > 1 ? "s" : ""} converted to '${r.name}' (${s.points} points), added next to '${r.source}' in the plot and the signal list.`,
+    `${plural(s.records, "spectrum", "spectra")} of ${s.points} points added as '${r.name}', next to '${r.source}'.`,
     `Points clamped before a logarithm or Kubelka-Munk: ${s.clamped}.`,
     `Missing values produced: ${s.nan}${s.nan ? " (for example white − dark ≤ 0); formats without missing values refuse them, so narrow the grid range" : ""}.`,
   ];
   if (s.dropped) lines.push(`Overlapping detector points dropped: ${s.dropped}.`);
   lines.push(s.axis ? `Axis converted: ${s.axis}.` : "Axis unit unchanged.");
   lines.push(s.resampled ? `Interpolated onto ${s.resampled}; nothing extrapolated.` : "Not resampled.");
-  lines.push(`Computed by nirs4all-methods ${r.version}: ${[...new Set(r.steps.map((st) => st.method_id).filter(Boolean))].join(", ") || "no computation"}.`);
-  box.innerHTML = `<strong>Converted — check the spectra before exporting.</strong><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
-  $("#conv-result").replaceChildren(box);
-  const exp = $("#conv-export");
-  exp.disabled = !r.target;
-  exp.title = r.target ? `Write '${r.name}' as ${r.target}` : "Choose a target and convert again to export";
-  const compare = $("#conv-compare"); compare.replaceChildren();
-  for (const [label, mode] of [["Before", "before"], ["After", "after"], ["Both", "both"]]) {
-    const b = el("button", "btn-export"); b.type = "button"; b.textContent = label;
-    b.setAttribute("aria-pressed", String(mode === "after"));
-    b.addEventListener("click", () => {
-      compare.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-      if (mode === "before") selectSignal(r.source);
-      else if (mode === "after") selectSignal(r.name);
-      else drawCompare(r.source, r.name);
-    });
-    compare.appendChild(b);
-  }
+  box.innerHTML = `<strong>Converted. Check the spectra (Original, Converted, Both) before exporting.</strong><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
+  box.appendChild(techDetails(r.steps, r.version));
+  host.replaceChildren(box);
+  syncViewSwitch();
 }
 
-// Original and converted spectra one above the other, each on its own axis.
-function drawCompare(source, converted) {
+// Original and converted spectra overlaid on one chart: shared x-axis, a right
+// y-axis when the units differ. The original is drawn on the converted axis
+// computed by Methods when the unit changed; otherwise on its own axis values.
+function compareProps(r) {
+  const before = [], after = [];
+  state.records.forEach((rec, i) => {
+    const src = rec.signals && rec.signals[r.source], out = rec.signals && rec.signals[r.name];
+    if (!src || !out) return;
+    const view = r.beforeView ? r.beforeView.get(i) : null;
+    before.push({ i, sig: src, axis: view ? view.axis : Array.from(src.axis.values), values: view ? view.values : Array.from(src.values) });
+    after.push({ i, sig: out, axis: Array.from(out.axis.values), values: Array.from(out.values) });
+  });
+  if (!before.length) return null;
+  const shared = (list) => list.every((m) => m.values.length === m.axis.length
+    && m.axis.length === list[0].axis.length && m.axis.every((v, k) => v === list[0].axis[k]));
+  if (!shared(before) || !shared(after)) return null;
+  const outAxis = after[0].sig.axis;
+  if ((r.beforeView ? r.outUnit : before[0].sig.axis.unit) !== outAxis.unit) return null;
+  const yLabel = (sig) => `${sigLabel(sig.signal_type || "unknown")}${sig.unit ? ` (${sig.unit})` : ""}`;
+  const colorAt = seriesColors(after.length, sigColor(after[0].sig.signal_type, 0));
+  const series = (list, name, color) => list.map((m, k) => {
+    const s = { id: displayId(m.i, name), values: m.values.map((v) => (v === undefined ? null : v)), color: color(k) };
+    const label = sampleLabel(state.records[m.i]);
+    if (label !== undefined) s.label = label;
+    return s;
+  });
+  return {
+    title: `${fileBaseName(state.fileName)} · '${r.source}' and '${r.name}' overlaid`,
+    axisUnit: `${kindLabel(outAxis)} (${prettyUnit(outAxis.unit)})`,
+    xDescending: REVERSED_KIND.has(outAxis.kind),
+    before: { id: "before", label: `Original: ${r.source}`, yLabel: yLabel(before[0].sig), axis: before[0].axis, series: series(before, r.source, () => (before.length === 1 ? "#64748b" : "#94a3b8")), dashed: true },
+    after: { id: "after", label: `Converted: ${r.name}`, yLabel: yLabel(after[0].sig), axis: after[0].axis, series: series(after, r.name, colorAt) },
+    locale: "en",
+  };
+}
+
+function drawCompare() {
+  const r = conv.result;
+  if (!r) return;
   unmountAll();
-  state.active = converted;
-  [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", t.textContent.trim() === converted));
+  state.active = r.name;
+  state.view = "both";
+  [...document.querySelectorAll(".sig-tab")].forEach((t) => t.classList.toggle("active", false));
   const host = $("#plot-groups"); if (!host) return;
   host.replaceChildren();
   state.ids = new Map();
-  for (const [label, name] of [["Before", source], ["After", converted]]) {
-    const plan = planSignal(name);
-    const head = el("h4", "conv-compare-head"); head.textContent = `${label}: ${name}`; host.appendChild(head);
-    const total = plan.groups.length + plan.legacy.length;
-    plan.groups.forEach((g, k) => appendSharedGroup(host, g, k, total, name));
-    plan.legacy.forEach((g, k) => appendLegacyGroup(host, g, plan.groups.length + k, total, name));
+  const props = compareProps(r);
+  const node = el("section", "ugroup"); node.dataset.route = "compare";
+  node.appendChild(el("div", "ugroup-head", `<h4>Original and converted, overlaid</h4><span class="ugroup-meta">${esc(r.source)} → ${esc(r.name)}</span>`));
+  host.appendChild(node);
+  if (props) {
+    const chartHost = el("div", "compare-host"); node.appendChild(chartHost);
+    mountShared("mountSpectraCompare", chartHost, props);
+  } else {
+    // Records on several axes cannot share one overlay: show them one above the other.
+    const note = el("p", "legacy-note"); note.setAttribute("role", "note");
+    note.textContent = "The records do not share one axis, so the original and converted spectra are shown one above the other.";
+    node.appendChild(note);
+    for (const [label, name] of [["Original", r.source], ["Converted", r.name]]) {
+      const plan = planSignal(name);
+      const head = el("h4", "conv-compare-head"); head.textContent = `${label}: ${name}`; host.appendChild(head);
+      const total = plan.groups.length + plan.legacy.length;
+      plan.groups.forEach((g, k) => appendSharedGroup(host, g, k, total, name));
+      plan.legacy.forEach((g, k) => appendLegacyGroup(host, g, plan.groups.length + k, total, name));
+    }
+    host.appendChild(selectionLine());
   }
-  host.appendChild(selectionLine());
-  renderKpis(planSignal(converted));
-}
-
-function exportConverted() {
-  const r = conv.result;
-  if (!r || !r.target) return;
-  $("#conv-export-note")?.remove();
-  let note;
-  try {
-    const options = { signal: r.name, base_name: exportBaseName(), axis_tolerance: Number($("#exp-tolerance")?.value) || 0 };
-    let output = WASM.writeRecords(state.records, r.target, options);
-    if (output.files.length > 1) output = WASM.writeRecords(state.records, r.target, { ...options, zip: true });
-    const file = output.files[0];
-    download(file.name, file.bytes, file.media_type);
-    const lines = output.conversions.map((c) => `Converted: ${STEP_LABEL[c.step] || c.step}${c.method_id ? ` by ${c.method_id} (nirs4all-methods ${c.methods_version})` : " (selection, no computation)"}.`);
-    lines.push(...output.losses.map(lossLine));
-    const profile = WASM.exportTargets().software.find((p) => p.id === r.target);
-    if (profile && !profile.tested) lines.push(`Not tested in ${profile.label} yet. Basis: ${profile.evidence}. ${profile.notes}`.trim());
-    note = el("div", "legacy-note"); note.setAttribute("role", "note");
-    note.innerHTML = `<strong>${esc(`Exported ${file.name} with '${r.name}'.`)}</strong><ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>`;
-  } catch (e) {
-    note = convNote(String(e?.message || e), "The converted spectra stay on the page; change the plan (for example a narrower grid) and convert again.", "alert");
-  }
-  note.id = "conv-export-note";
-  $("#conv-result").appendChild(note);
-  setStatus(note.textContent);
+  renderKpis(planSignal(r.name));
+  syncViewSwitch();
 }
 
 /* ── canvas spectral plot (original renderer) ─────────────────────────── */
