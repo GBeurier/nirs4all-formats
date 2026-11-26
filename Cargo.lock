@@ -1000,8 +1000,10 @@ dependencies = [
 name = "nirs4all-formats-capi"
 version = "0.2.20"
 dependencies = [
+ "base64",
  "cbindgen",
  "nirs4all-formats",
+ "serde",
  "serde_json",
 ]
 
