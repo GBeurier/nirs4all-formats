@@ -61,6 +61,10 @@ function assert(condition, message) {
 // Display records: tiny, explicit, and only for DOM behaviour.
 function installFixture(page, { datasets }) {
   return page.evaluate((count) => {
+    window.completeRecord = (r) => ({
+      signal_type: "absorbance", targets: {}, metadata: {}, quality_flags: [], ...r,
+      provenance: { format: "fixture", reader: "fixture", reader_version: "0", sources: [], parsed_at_utc: null, record_schema_version: "1", warnings: [] },
+    });
     const sig = (axisValues, values, o = {}) => ({
       values,
       axis: { kind: o.kind ?? "wavelength", unit: o.unit ?? "nm", order: o.order ?? "ascending", values: axisValues },
@@ -77,6 +81,8 @@ function installFixture(page, { datasets }) {
       { signals: { absorbance: sig([1000, 1010, 1020, 1030], [1, 2, 3]) } },                        // length mismatch
       { signals: { absorbance: sig([1000, 1010], [1, 2, 3, 4], { dims: ["x", "y"], shape: [2, 2] }) } }, // multidimensional
     ];
+    // Record-level fields every decoded record carries (the writers read them).
+    for (const r of records) Object.assign(r, completeRecord(r));
     const ds = () => ({ ok: true, name: "fixture.csv", size: 1, probes: [], records, fileCount: 1 });
     renderDatasets(Array.from({ length: count }, ds));
     return records.length;
@@ -111,7 +117,7 @@ const hostsReleased = (page) => page.evaluate(() => window.__hosts.every((h) => 
 try {
   await fixtureFlow();
   await dedicatedTeardownFlow();
-  await csvExportFlow();
+  await viewExportFlow();
   await spectralTableContractFlow();
   await realDecodeFlow();
   await bundleFlow();
@@ -253,37 +259,61 @@ async function dedicatedTeardownFlow() {
   await page.close();
 }
 
-// CSV needs one header for every row: records on different axes are refused (no file),
-// records on one exact axis export unchanged, whatever the chart can orient.
-async function csvExportFlow() {
+// "Download view" writes exactly the drawn signal through the Formats writers. Records on
+// different axes cannot share one CSV header: the writer splits them into files, delivered
+// as one ZIP. Records on one exact axis give one CSV, whatever the chart can orient.
+async function viewExportFlow() {
   const page = await newPage();
-  // Heterogeneous axes (the shared fixture): refusal, no download, JSON still lossless.
+  const viewDownload = async (format) => {
+    const [file] = await Promise.all([page.waitForEvent("download"), (async () => {
+      await page.click("#view-dl-btn");
+      await page.click(`#view-dl-menu [data-target="${format}"]`);
+    })()]);
+    return file;
+  };
+  // The shared fixture holds records the writer refuses (axis/value length mismatch):
+  // nothing is downloaded and the refusal is shown; JSON still keeps every drawn record.
   await installFixture(page, { datasets: 1 });
   await waitMounted(page, 2);
-  const downloaded = page.waitForEvent("download", { timeout: 1500 }).then(() => true, () => false);
-  await page.click("#exp-csv");
-  assert(!(await downloaded), "CSV was downloaded for records on different axes");
-  const refusal = await page.textContent("#csv-refusal");
-  assert(refusal.includes("CSV export refused") && refusal.includes("record 3") && refusal.includes("JSON export"), `CSV refusal is missing or unclear: ${refusal}`);
-  assert((await page.textContent("#status")).includes("CSV export refused"), "CSV refusal was not announced in the status line");
-  const [json] = await Promise.all([page.waitForEvent("download"), page.click("#exp-json")]);
+  const none = page.waitForEvent("download", { timeout: 1500 }).then(() => true, () => false);
+  await page.click("#view-dl-btn");
+  await page.click('#view-dl-menu [data-target="csv"]');
+  assert(!(await none), "CSV was downloaded for records the writer refuses");
+  const refusal = await page.textContent("#export-report");
+  assert(/inconsistent axis/.test(refusal) && (await page.getAttribute("#export-report", "role")) === "alert", `refusal missing: ${refusal}`);
+  const json = await viewDownload("records-json");
   const records = JSON.parse(await readFile(await json.path(), "utf8"));
-  assert(Array.isArray(records) && records.length === 7, "JSON export no longer holds every record");
-  await page.locator(".sig-tab", { hasText: "second" }).click();
-  assert(await page.locator("#csv-refusal").count() === 0, "a stale CSV refusal survived a signal change");
+  assert(Array.isArray(records) && records.length === 7, "the JSON view no longer holds every drawn record");
+  assert(records.every((r) => Object.keys(r.signals).join() === "absorbance"), "the JSON view holds signals that are not drawn");
+  assert((await page.textContent("#export-report")).startsWith("Downloaded the chart view"), "no report for the chart download");
 
-  // One exact axis, even a wavenumber one the shared chart does not orient: CSV unchanged.
+  // Valid records on three different axes: one CSV per axis, delivered as one ZIP.
+  await page.evaluate(() => {
+    const sig = (values, axisValues, unit = "nm") => ({ values, axis: { kind: unit === "nm" ? "wavelength" : "wavenumber", unit, order: "ascending", values: axisValues },
+      dims: ["x"], shape: [values.length], signal_type: "absorbance", role: "signal", source: "file" });
+    renderDatasets([{ ok: true, name: "three_axes.csv", size: 1, probes: [], fileCount: 1, records: [
+      { signals: { absorbance: sig([1, 2, 3], [1000, 1010, 1020]) } },
+      { signals: { absorbance: sig([1, 2, 3], [1000, 1010, 1035]) } },
+      { signals: { absorbance: sig([1, 2, 3], [4000, 4010, 4020], "cm-1") } },
+    ].map(completeRecord) }]);
+  });
+  await waitMounted(page, 2);
+  const zip = await viewDownload("csv");
+  assert(zip.suggestedFilename().endsWith(".zip"), `records on several axes should give a ZIP, got ${zip.suggestedFilename()}`);
+
+  // One exact axis, even a wavenumber one the shared chart does not orient: one CSV.
   await page.evaluate(() => {
     const axis = { kind: "wavenumber", unit: "cm-1", order: "ascending", values: [4000, 4010, 4020] };
     const sig = (values) => ({ values, axis, dims: ["x"], shape: [3], signal_type: "absorbance", role: "signal", source: "file" });
     renderDatasets([{ ok: true, name: "same_axis.csv", size: 1, probes: [], fileCount: 1,
-      records: [{ signals: { absorbance: sig([1, 2, 3]) } }, { signals: { absorbance: sig([4, NaN, 6]) } }] }]);
+      records: [{ signals: { absorbance: sig([1, 2, 3]) } }, { signals: { absorbance: sig([4, NaN, 6]) } }].map(completeRecord) }]);
   });
   await page.waitForSelector("#plot-groups section[data-route=legacy]");
-  const [csv] = await Promise.all([page.waitForEvent("download"), page.click("#exp-csv")]);
-  const text = await readFile(await csv.path(), "utf8");
-  assert(text === "sample,4000,4010,4020\nrecord_0,1,2,3\nrecord_1,4,NaN,6", `homogeneous CSV changed: ${JSON.stringify(text)}`);
-  assert(await page.locator("#csv-refusal").count() === 0, "a refusal is shown for a valid homogeneous export");
+  const csv = await viewDownload("csv");
+  assert(csv.suggestedFilename().endsWith(".csv"), csv.suggestedFilename());
+  const lines = (await readFile(await csv.path(), "utf8")).trim().split(/\r?\n/);
+  assert(lines.length === 3 && /4000.*4010.*4020/.test(lines[0]), `homogeneous CSV header changed: ${JSON.stringify(lines)}`);
+  assert(/,1,2,3$/.test(lines[1]) && /,4,,6$/.test(lines[2]), `homogeneous CSV rows changed: ${JSON.stringify(lines)}`);
   await page.close();
 }
 
@@ -380,8 +410,11 @@ async function realDecodeFlow() {
     if (settled.shared) await waitMounted(page, settled.shared);
     const c = await counts(page);
     assert(c.shared === settled.shared && c.legacy === settled.legacy, `${sample}: DOM groups differ from the plan: ${JSON.stringify(c)}`);
-    // Existing exports are untouched: the JSON export still holds every decoded record.
-    const [download] = await Promise.all([page.waitForEvent("download"), page.click("#exp-json")]);
+    // The top Export menu: JSON records still hold every decoded record.
+    const [download] = await Promise.all([page.waitForEvent("download"), (async () => {
+      await page.click("#export-btn");
+      await page.click('#export-menu [data-target="records-json"]');
+    })()]);
     const exported = JSON.parse(await readFile(await download.path(), "utf8"));
     assert(Array.isArray(exported) && exported.length === await page.evaluate(() => state.records.length), `${sample}: JSON export changed`);
     await page.close();
