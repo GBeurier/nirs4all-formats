@@ -57,8 +57,24 @@ enum Command {
         #[arg(long = "bytes-file", value_name = "PATH")]
         bytes_file: Option<PathBuf>,
     },
-    /// List export formats and software presets as JSON.
+    /// List export formats, software presets and format requirements as JSON.
     Targets,
+    /// Plan the conversions that make a file writable for a target.
+    ///
+    /// Prints the plan as JSON: steps (each naming the nirs4all-methods
+    /// method that computes it), questions and refusals. Nothing is computed.
+    Plan {
+        /// Input file.
+        path: PathBuf,
+        /// Export format or software preset (default: plan the options alone).
+        #[arg(long = "to", value_name = "TARGET")]
+        to: Option<String>,
+        /// Plan options as a JSON object (signal, signal_type, axis_unit,
+        /// grid, grid_step, grid_min, grid_max, interpolation, source_scale,
+        /// assume_signal_type, absorbance_origin, axis_tolerance).
+        #[arg(long, default_value = "{}")]
+        options: String,
+    },
     /// Read a file and write its spectra to another format.
     ///
     /// Prints a JSON report with the files and every declared loss.
@@ -172,11 +188,16 @@ fn main() -> anyhow::Result<()> {
             println!("{}", serde_json::to_string_pretty(&records)?);
         }
         Command::Targets => {
-            let catalog = json!({
-                "formats": nirs4all_formats::writer_catalog(),
-                "software": nirs4all_formats::software_catalog(),
-            });
+            let catalog = nirs4all_formats::export_targets();
             println!("{}", serde_json::to_string_pretty(&catalog)?);
+        }
+        Command::Plan { path, to, options } => {
+            let options: nirs4all_formats::PlanOptions =
+                serde_json::from_str(&options).context("invalid plan options")?;
+            let records = nirs4all_formats::open_path(&path)
+                .with_context(|| format!("failed to read {}", path.display()))?;
+            let plan = nirs4all_formats::plan_conversion(&records, to.as_deref(), &options)?;
+            println!("{}", serde_json::to_string_pretty(&plan)?);
         }
         Command::Convert {
             path,
@@ -208,6 +229,7 @@ fn main() -> anyhow::Result<()> {
                 "format": output.format,
                 "files": files,
                 "losses": output.losses,
+                "conversions": output.conversions,
             });
             println!("{}", serde_json::to_string_pretty(&report)?);
         }

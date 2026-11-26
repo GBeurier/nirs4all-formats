@@ -23,37 +23,7 @@ pub(crate) struct Spectrum<'a> {
 impl Spectrum<'_> {
     /// How stored ordinates relate to the plain unit of their signal type.
     pub fn scale(&self) -> Scale<'_> {
-        let Some(unit) = self.signal.unit.as_deref().map(str::trim) else {
-            return Scale::Plain;
-        };
-        let lower = unit.to_ascii_lowercase();
-        if lower.contains('%') || lower.contains("percent") {
-            return Scale::Percent;
-        }
-        let known: &[&str] = match self.signal.signal_type {
-            SignalType::Absorbance => &[
-                "a",
-                "au",
-                "a.u.",
-                "abs",
-                "absorbance",
-                "absorbance units",
-                "od",
-                "log(1/r)",
-                "log 1/r",
-            ],
-            SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
-            SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
-            SignalType::KubelkaMunk => &["kubelka-munk", "kubelka_munk", "k/s"],
-            SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
-            SignalType::Unknown => &["arbitrary units", "a.u."],
-            _ => &[],
-        };
-        if matches!(lower.as_str(), "" | "1") || known.contains(&lower.as_str()) {
-            Scale::Plain
-        } else {
-            Scale::Other(unit)
-        }
+        scale_of(self.signal)
     }
 
     /// Signal description with its unit, for labels and messages.
@@ -64,7 +34,44 @@ impl Spectrum<'_> {
             Scale::Other(unit) => format!("{} ({unit})", self.type_label()),
         }
     }
+}
 
+/// How stored ordinates relate to the plain unit of their signal type.
+pub(crate) fn scale_of(signal: &SpectralArray) -> Scale<'_> {
+    let Some(unit) = signal.unit.as_deref().map(str::trim) else {
+        return Scale::Plain;
+    };
+    let lower = unit.to_ascii_lowercase();
+    if lower.contains('%') || lower.contains("percent") {
+        return Scale::Percent;
+    }
+    let known: &[&str] = match signal.signal_type {
+        SignalType::Absorbance => &[
+            "a",
+            "au",
+            "a.u.",
+            "abs",
+            "absorbance",
+            "absorbance units",
+            "od",
+            "log(1/r)",
+            "log 1/r",
+        ],
+        SignalType::Reflectance => &["reflectance", "fraction", "ratio"],
+        SignalType::Transmittance => &["transmittance", "fraction", "ratio"],
+        SignalType::KubelkaMunk => &["kubelka-munk", "kubelka_munk", "k/s"],
+        SignalType::RawCounts => &["count", "counts", "cnt", "cts", "ccd cts", "dn"],
+        SignalType::Unknown => &["arbitrary units", "a.u."],
+        _ => &[],
+    };
+    if matches!(lower.as_str(), "" | "1") || known.contains(&lower.as_str()) {
+        Scale::Plain
+    } else {
+        Scale::Other(unit)
+    }
+}
+
+impl Spectrum<'_> {
     pub fn technique(&self) -> Technique {
         technique(self.record, self.axis, &self.signal.signal_type)
     }
@@ -102,7 +109,11 @@ pub(crate) enum Technique {
     Unknown,
 }
 
-fn technique(record: &SpectralRecord, axis: &SpectralAxis, kind: &SignalType) -> Technique {
+pub(crate) fn technique(
+    record: &SpectralRecord,
+    axis: &SpectralAxis,
+    kind: &SignalType,
+) -> Technique {
     let text = |group: &str, key: &str| {
         record
             .metadata
