@@ -657,3 +657,192 @@ fn writers_report_and_embed_applied_conversions() {
         .insert(CONVERSIONS_KEY.to_string(), json!("resampled"));
     assert!(write_records(&[malformed], "csv", &WriteOptions::default()).is_err());
 }
+
+#[test]
+fn a_unit_naming_the_signal_type_does_not_tell_the_scale() {
+    // JCAMP-DX YUNITS=TRANSMITTANCE with values from 1 to 99.99.
+    for name in ["jcamp_dx/SPECFILE.DX", "jcamp_dx/BRUKER1.JCM"] {
+        let records = sample(name);
+        assert_eq!(
+            records[0].signals["signal"].unit.as_deref(),
+            Some("TRANSMITTANCE")
+        );
+        let asked = plan(&records, Some("foss-winisi-nir"), json!({}));
+        assert_eq!(asked.status, PlanStatus::NeedsAnswers, "{name}");
+        assert_eq!(asked.questions[0].id, "source_scale");
+        assert!(asked.questions[0].prompt.contains("values run from"));
+        let answered = plan(
+            &records,
+            Some("foss-winisi-nir"),
+            json!({ "source_scale": "percent" }),
+        );
+        let step = &answered.steps[0];
+        assert_eq!(step.params["is_percent"], json!(true), "{name}");
+    }
+    // An explicit fraction unit is a scale.
+    let records = sample("spectral_evolution/serbinsh_cvars_grape_leaf.sed");
+    let plan = plan(&records, Some("winisi"), json!({}));
+    assert_eq!(plan.status, PlanStatus::Ready);
+    assert_eq!(plan.steps[0].params["is_percent"], json!(false));
+}
+
+#[test]
+fn raman_shifts_and_unestablished_techniques_keep_their_axis() {
+    let records = sample("raman_horiba/jobinyvon_test_spec_3s_cm-1.xml");
+    let refused = plan(&records, Some("csv"), json!({ "axis_unit": "nm" }));
+    assert_eq!(refused.status, PlanStatus::Refused);
+    assert_eq!(refused.refusals[0].code, "raman_shift");
+    let refused = plan(&records, Some("foss-winisi-nir"), json!({}));
+    assert_eq!(refused.status, PlanStatus::Refused);
+
+    // Raw counts on a cm-1 axis are not established as absorption spectra.
+    let counts = record(
+        vec![(
+            "signal",
+            signal(
+                &nm(4000.0, 2.0, 8),
+                "cm-1",
+                &[5.0; 8],
+                SignalType::RawCounts,
+                "signal",
+            ),
+        )],
+        "test",
+    );
+    let refused = plan(&[counts], None, json!({ "axis_unit": "nm" }));
+    assert_eq!(refused.refusals[0].code, "technique_not_established");
+    // nm and um are the same quantity.
+    let counts = record(
+        vec![(
+            "signal",
+            signal(
+                &nm(1000.0, 2.0, 8),
+                "nm",
+                &[5.0; 8],
+                SignalType::RawCounts,
+                "signal",
+            ),
+        )],
+        "test",
+    );
+    assert_eq!(
+        plan(&[counts], None, json!({ "axis_unit": "um" })).status,
+        PlanStatus::Ready
+    );
+}
+
+#[test]
+fn peak_tables_are_never_resampled() {
+    let records = sample("jcamp_dx/synthetic_peak_assignments.jdx");
+    for (target, options) in [
+        (Some("foss-winisi-nir"), json!({})),
+        (Some("foss-nsas-da"), json!({})),
+        (Some("csv"), json!({ "grid": "even" })),
+        (None, json!({ "grid": "even", "axis_unit": "nm" })),
+    ] {
+        let refused = plan(&records, target, options);
+        assert_eq!(refused.status, PlanStatus::Refused, "{target:?}");
+        assert_eq!(refused.refusals[0].code, "peak_table", "{target:?}");
+    }
+    assert_eq!(
+        plan(&records, Some("jcamp-dx"), json!({})).status,
+        PlanStatus::Unchanged
+    );
+}
+
+#[test]
+fn decreasing_single_beams_are_ordered_not_cut() {
+    let records = sample("bruker_opus/icr_087266_B2.0");
+    let plan = plan(
+        &records,
+        Some("foss-winisi-nir"),
+        json!({ "signal": "sample_spectrum" }),
+    );
+    assert_eq!(plan.status, PlanStatus::Ready, "{:?}", plan.refusals);
+    assert!(plan.steps.iter().all(|step| step.step != "select_points"));
+    assert_eq!(
+        plan.steps[0].inputs["white_reference"],
+        json!("reference_spectrum")
+    );
+    // The file does not say reflection or transmission: the assumption is stated.
+    assert!(plan.steps[0]
+        .notes
+        .iter()
+        .any(|note| note.contains("reflection or transmission")));
+    assert!(plan.steps[0]
+        .notes
+        .iter()
+        .any(|note| note.contains("'absorbance'")));
+    let with_splices = self::plan(
+        &records,
+        None,
+        json!({ "signal": "sample_spectrum", "signal_type": "transmittance", "splices": [4000.0] }),
+    );
+    let order: Vec<&str> = with_splices.steps.iter().map(|step| step.step).collect();
+    assert_eq!(
+        order,
+        vec![
+            "reflectance_from_references",
+            "axis_unit_conversion",
+            "splice_correction"
+        ]
+    );
+    assert_eq!(with_splices.steps[0].signal_type, SignalType::Transmittance);
+}
+
+#[test]
+fn transmission_ratios_are_transmittance() {
+    let records = sample("avantes/avantes_trans.TRM");
+    let plan = plan(
+        &records,
+        None,
+        json!({ "signal": "sample", "signal_type": "absorbance" }),
+    );
+    assert_eq!(plan.steps[0].signal_type, SignalType::Transmittance);
+    assert!(plan.steps[0].description.starts_with("Transmittance"));
+    assert!(plan.steps[1].description.contains("log10(1/T)"));
+}
+
+#[test]
+fn units_survive_the_steps_that_keep_them() {
+    let records = sample("ocean_optics/whiteref.ProcSpec");
+    let resampled = plan(&records, None, json!({ "grid": "even", "grid_step": 1.0 }));
+    assert_eq!(resampled.output.unwrap().unit.as_deref(), Some("%"));
+    let mut counts = record(
+        vec![(
+            "signal",
+            signal(
+                &nm(1000.0, 2.0, 8),
+                "nm",
+                &[5.0; 8],
+                SignalType::RawCounts,
+                "signal",
+            ),
+        )],
+        "test",
+    );
+    counts.signals.get_mut("signal").unwrap().unit = Some("counts/s".to_string());
+    let output = plan(&[counts], None, json!({ "grid": "even", "grid_step": 4.0 }))
+        .output
+        .unwrap();
+    assert_eq!(output.unit.as_deref(), Some("counts/s"));
+}
+
+#[test]
+fn aliasing_is_announced_only_for_coarser_grids() {
+    let records = sample("foss_winisi/foss_xds_barleyground_sensAIfood.csv");
+    let cropped = plan(&records, Some("winisi"), json!({ "grid": "winisi-700" }));
+    assert!(!cropped.steps[0]
+        .notes
+        .iter()
+        .any(|note| note.contains("alias")));
+    let coarser = plan(
+        &records,
+        Some("winisi"),
+        json!({ "grid": "even", "grid_step": 4.0 }),
+    );
+    assert!(coarser.steps[0]
+        .notes
+        .iter()
+        .any(|note| note.contains("alias")));
+}

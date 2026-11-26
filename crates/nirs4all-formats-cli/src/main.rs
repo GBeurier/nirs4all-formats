@@ -71,7 +71,9 @@ enum Command {
         to: Option<String>,
         /// Plan options as a JSON object (signal, signal_type, axis_unit,
         /// grid, grid_step, grid_min, grid_max, interpolation, source_scale,
-        /// assume_signal_type, absorbance_origin, axis_tolerance).
+        /// assume_signal_type, absorbance_origin, axis_tolerance, and splices:
+        /// the first axis value of each following detector, for the splice
+        /// correction of a ratio to references).
         #[arg(long, default_value = "{}")]
         options: String,
     },

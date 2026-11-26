@@ -198,6 +198,7 @@ pub fn plan_conversion(
         records,
         options,
         requirements: requirements.as_ref(),
+        peak_table: false,
         plan: ConversionPlan {
             target: target.map(str::to_string),
             format,
@@ -364,6 +365,8 @@ struct Planner<'a> {
     options: &'a PlanOptions,
     requirements: Option<&'a TargetRequirements>,
     plan: ConversionPlan,
+    /// The source holds peak positions (sticks), not a sampled spectrum.
+    peak_table: bool,
 }
 
 /// The signal as the steps leave it.
@@ -371,6 +374,9 @@ struct State {
     signal_type: SignalType,
     /// `None` while percent or fraction is not known.
     percent: Option<bool>,
+    /// Unit of the values, kept by the steps that do not change it.
+    signal_unit: Option<String>,
+    /// Axis unit.
     unit: &'static str,
     /// Measured axis values while they are unchanged (selection and sorting
     /// keep them); `None` once converted or resampled.
@@ -400,6 +406,7 @@ impl<'a> Planner<'a> {
             .filter(|record| record.signals.contains_key(&name))
             .count();
         let signal = self.first(&name);
+        self.peak_table = self.holders(&name).any(|(record, _)| is_peak_table(record));
         let wanted = self.wanted_type(signal, &source);
         let Some(mut state) = self.signal_steps(&name, signal, &source, wanted) else {
             return;
@@ -412,7 +419,10 @@ impl<'a> Planner<'a> {
             self.plan.output = Some(PlannedSignal {
                 name: self.output_name(&name, signal, &state),
                 signal_type: state.signal_type.clone(),
-                unit: (state.percent == Some(true)).then(|| "%".to_string()),
+                unit: state
+                    .signal_unit
+                    .clone()
+                    .or_else(|| (state.percent == Some(true)).then(|| "%".to_string())),
                 axis_unit: state.unit.to_string(),
             });
         }
@@ -804,6 +814,7 @@ impl<'a> Planner<'a> {
         let mut state = State {
             signal_type: signal.signal_type.clone(),
             percent: None,
+            signal_unit: signal.unit.clone().filter(|unit| !unit.trim().is_empty()),
             unit,
             axis: Some(signal.axis.values.clone()),
             range,
@@ -811,15 +822,12 @@ impl<'a> Planner<'a> {
         };
         match scale_of(signal) {
             Scale::Percent => state.percent = Some(true),
+            // Units such as "TRANSMITTANCE" name the signal, not its scale.
             Scale::Plain
-                if signal
-                    .unit
-                    .as_deref()
-                    .is_some_and(|unit| !unit.trim().is_empty())
-                    || !matches!(
-                        signal.signal_type,
-                        SignalType::Reflectance | SignalType::Transmittance
-                    ) =>
+                if !matches!(
+                    signal.signal_type,
+                    SignalType::Reflectance | SignalType::Transmittance
+                ) || signal.unit.as_deref().is_some_and(fraction_unit) =>
             {
                 state.percent = Some(false)
             }
@@ -844,25 +852,34 @@ impl<'a> Planner<'a> {
 
         match source {
             Source::References { white, dark } => {
-                state.signal_type = SignalType::Reflectance;
+                let (ratio, assumed) = self.ratio_kind(name);
+                let transmission = ratio == SignalType::Transmittance;
+                let letter = if transmission { "T" } else { "R" };
+                state.signal_type = ratio;
                 state.percent = Some(false);
-                let mut notes = vec![
-                    "The white reference is taken as 100 % reflectance at every point; panel calibration factors are not applied.",
-                ];
+                state.signal_unit = None;
+                let mut notes = vec![if transmission {
+                    "The reference is taken as 100 % transmission at every point."
+                } else {
+                    "The white reference is taken as 100 % reflectance at every point; panel calibration factors are not applied."
+                }];
+                if assumed {
+                    notes.push("The file does not say whether it was measured in reflection or transmission: the ratio is taken as reflectance. Choose transmittance as the output signal if it was measured in transmission.");
+                }
                 notes.push(if dark.is_some() {
                     "Points where white - dark <= 0 become missing values."
                 } else if signal.signal_type == SignalType::RawCounts {
-                    "No dark reference: R = sample / white, so the detector dark signal is not removed."
+                    "No dark reference: the ratio sample / reference keeps the detector dark signal."
                 } else {
                     "Points where the reference is <= 0 become missing values."
                 });
                 let (formula, inputs) = match dark {
                     Some(dark) => (
-                        format!("R = ({name} - {dark}) / ({white} - {dark})"),
+                        format!("{letter} = ({name} - {dark}) / ({white} - {dark})"),
                         json!({ "sample": name, "white_reference": white, "dark_reference": dark }),
                     ),
                     None => (
-                        format!("R = {name} / {white}"),
+                        format!("{letter} = {name} / {white}"),
                         json!({ "sample": name, "white_reference": white }),
                     ),
                 };
@@ -883,7 +900,7 @@ impl<'a> Planner<'a> {
                     }
                 }
                 let vendor_note = self.vendor_signal(name).map(|vendor| {
-                    format!("The file also holds '{vendor}', computed by the instrument software; prefer it unless you need to recompute reflectance.")
+                    format!("The file also holds '{vendor}', computed by the instrument software; prefer it unless you need to recompute the ratio.")
                 });
                 if let Some(note) = &vendor_note {
                     notes.push(note);
@@ -894,7 +911,14 @@ impl<'a> Planner<'a> {
                     json!({ "as_percent": false }),
                     inputs,
                     &state,
-                    format!("Reflectance from the references measured with the sample: {formula}."),
+                    format!(
+                        "{} from the references measured with the sample: {formula}.",
+                        if transmission {
+                            "Transmittance"
+                        } else {
+                            "Reflectance"
+                        }
+                    ),
                     &notes,
                 );
                 self.splice_correction(name, &mut state)?;
@@ -960,7 +984,8 @@ impl<'a> Planner<'a> {
         equal
     }
 
-    /// A vendor-computed reflectance or transmittance next to `name`.
+    /// A vendor-computed reflectance, transmittance or absorbance next to
+    /// `name`.
     fn vendor_signal(&self, name: &str) -> Option<String> {
         let (record, _) = self.holders(name).next()?;
         record
@@ -970,10 +995,49 @@ impl<'a> Planner<'a> {
                 other.as_str() != name
                     && matches!(
                         signal.signal_type,
-                        SignalType::Reflectance | SignalType::Transmittance
+                        SignalType::Reflectance
+                            | SignalType::Transmittance
+                            | SignalType::Absorbance
                     )
             })
             .map(|(other, _)| other.clone())
+    }
+
+    /// Whether a ratio to references is a transmittance or a reflectance,
+    /// and whether that is assumed. The output signal type, the measurement
+    /// mode in the metadata and the vendor-computed signals tell.
+    fn ratio_kind(&self, name: &str) -> (SignalType, bool) {
+        let wanted = self.options.signal_type.clone();
+        if let Some(kind @ (SignalType::Transmittance | SignalType::Reflectance)) = wanted {
+            return (kind, false);
+        }
+        for (record, _) in self.holders(name) {
+            let mode = record
+                .metadata
+                .get("measurement_mode")
+                .or_else(|| {
+                    record
+                        .metadata
+                        .values()
+                        .find_map(|value| value.get("measurement_mode"))
+                })
+                .and_then(Value::as_str)
+                .unwrap_or_default()
+                .to_ascii_lowercase();
+            if mode.contains("transm") {
+                return (SignalType::Transmittance, false);
+            }
+            if mode.contains("reflect") {
+                return (SignalType::Reflectance, false);
+            }
+            let vendor = record.signals.values().map(|signal| &signal.signal_type);
+            for kind in std::iter::once(&record.signal_type).chain(vendor) {
+                if matches!(kind, SignalType::Transmittance | SignalType::Reflectance) {
+                    return (kind.clone(), false);
+                }
+            }
+        }
+        (SignalType::Reflectance, true)
     }
 
     /// Detector joins of reflectance computed from references, corrected
@@ -984,12 +1048,19 @@ impl<'a> Planner<'a> {
             return Some(());
         };
         let ordered = axis.windows(2).all(|pair| pair[1] > pair[0]);
-        if !ordered && !self.select_points(name, state, &axis) {
+        let decreasing = axis.windows(2).all(|pair| pair[1] < pair[0]);
+        if decreasing {
+            // One detector, or detectors without overlap: nothing to select.
+            if self.options.splices.is_none() {
+                return Some(());
+            }
+            self.sort_axis(state, &axis);
+        } else if !ordered && !self.select_points(name, state, &axis) {
             return None;
         }
         let splices = match &self.options.splices {
             Some(splices) => splices.clone(),
-            None if !ordered => {
+            None if !ordered && !decreasing => {
                 // Each detector after the first starts a kept range.
                 let kept = state.axis.clone().unwrap_or_default();
                 let keep: Vec<[usize; 2]> = self
@@ -1062,6 +1133,20 @@ impl<'a> Planner<'a> {
         Some(())
     }
 
+    /// Smallest and largest finite value of a signal, for questions only.
+    fn value_range(&self, name: &str) -> Option<[f64; 2]> {
+        let mut range: Option<[f64; 2]> = None;
+        for (_, signal) in self.holders(name) {
+            for value in signal.values.iter().filter(|value| value.is_finite()) {
+                range = Some(match range {
+                    Some([low, high]) => [low.min(*value), high.max(*value)],
+                    None => [*value, *value],
+                });
+            }
+        }
+        range
+    }
+
     /// Percent flag, asking for it when a step needs it.
     fn percent(&mut self, name: &str, state: &mut State) -> Option<bool> {
         if let Some(percent) = state.percent {
@@ -1073,14 +1158,20 @@ impl<'a> Planner<'a> {
                 state.percent
             }
             None => {
+                let observed = self
+                    .value_range(name)
+                    .map(|[low, high]| format!(" Its values run from {low:.4} to {high:.4}."))
+                    .unwrap_or_default();
                 self.ask(
                     "source_scale",
-                    format!("Is '{name}' stored in percent (0-100) or as a fraction (0-1)?",),
+                    format!(
+                        "Is '{name}' stored in percent (0-100) or as a fraction (0-1)?{observed}"
+                    ),
                     &[
                         ("percent", "Percent (0-100)"),
                         ("fraction", "Fraction (0-1)"),
                     ],
-                    "The file gives no unit. A wrong answer shifts absorbance by 2 (log10 of 100).",
+                    "The file does not state the scale. A wrong answer shifts absorbance by 2 (log10 of 100).",
                 );
                 None
             }
@@ -1093,6 +1184,8 @@ impl<'a> Planner<'a> {
         if from == *wanted {
             return self.fraction_if_required(name, state);
         }
+        // Every conversion below changes the unit of the values.
+        state.signal_unit = None;
         let to_absorbance = |planner: &mut Self, state: &mut State| -> Option<()> {
             let percent = planner.percent(name, state)?;
             let kind = state.signal_type.clone();
@@ -1237,6 +1330,7 @@ impl<'a> Planner<'a> {
         }
         if self.percent(name, state)? {
             state.percent = Some(false);
+            state.signal_unit = None;
             self.push(
                 "signal_conversion",
                 Some(PERCENT_TO_FRACTION),
@@ -1306,15 +1400,32 @@ impl<'a> Planner<'a> {
             );
             return false;
         }
-        if let Some(unit) = wanted_unit {
-            let raman = self.holders(name).any(|(record, signal)| {
-                technique(record, &signal.axis, &signal.signal_type) == Technique::Raman
-            });
-            if raman && (source_unit == "cm-1") != (unit == "cm-1") {
+        if let Some(unit) = wanted_unit.filter(|unit| (source_unit == "cm-1") != (*unit == "cm-1"))
+        {
+            let raman = self
+                .holders(name)
+                .any(|(record, signal)| raman_indicated(record, signal));
+            let optical = matches!(
+                state.signal_type,
+                SignalType::Absorbance
+                    | SignalType::Reflectance
+                    | SignalType::Transmittance
+                    | SignalType::KubelkaMunk
+                    | SignalType::SingleBeam
+            );
+            if raman {
                 self.refuse(
                     "raman_shift",
-                    format!("'{name}' is a Raman spectrum: its cm-1 axis is a shift from the laser line, not a wavenumber, so it has no wavelength"),
-                    "Pick a target that stores Raman shifts in cm-1 (JCAMP-DX, SPC, CSV, JSON).",
+                    format!("'{name}' comes from a Raman instrument: a Raman cm-1 axis is a shift from the laser line, not a wavenumber, so it has no {unit} equivalent"),
+                    "Pick a target that keeps the axis as it is (JCAMP-DX, SPC, CSV, JSON).",
+                );
+                return false;
+            }
+            if !optical {
+                self.refuse(
+                    "technique_not_established",
+                    format!("'{name}' is {} with an axis in {source_unit}; converting it to {unit} is only valid for absorption or reflection spectra (NIR, IR, UV-Vis), which the file does not establish", signal_label(&state.signal_type)),
+                    "Convert an absorbance, reflectance or transmittance signal, or keep the axis in its unit.",
                 );
                 return false;
             }
@@ -1326,16 +1437,7 @@ impl<'a> Planner<'a> {
                 let increasing = axis.windows(2).all(|pair| pair[1] > pair[0]);
                 let decreasing = axis.windows(2).all(|pair| pair[1] < pair[0]);
                 if decreasing && wanted_unit.is_none() {
-                    state.axis = Some(axis.iter().rev().copied().collect());
-                    self.push(
-                        "axis_unit_conversion",
-                        Some(AXIS_UNIT_CONVERSION),
-                        json!({ "source_unit": source_unit, "target_unit": source_unit, "spectral_density": false }),
-                        json!({ "axis": "measured" }),
-                        state,
-                        "Points are put in increasing axis order; values are unchanged.".to_string(),
-                        &[],
-                    );
+                    self.sort_axis(state, &axis);
                 } else if !increasing && !decreasing && !self.select_points(name, state, &axis) {
                     return false;
                 }
@@ -1358,7 +1460,8 @@ impl<'a> Planner<'a> {
                 "Wavelengths are vacuum wavelengths (nm = 10^7 / cm-1); no correction for air is applied.",
             ];
             if density {
-                notes.push("Values are a spectral density, so they are scaled by the derivative of the axis conversion.");
+                notes.push("Values are a spectral density, so they are scaled by the derivative of the axis conversion; their unit, per axis unit, changes and is no longer named.");
+                state.signal_unit = None;
             }
             self.push(
                 "axis_unit_conversion",
@@ -1372,6 +1475,21 @@ impl<'a> Planner<'a> {
         }
         self.plan.measured_range = Some(state.range);
         self.resample(state)
+    }
+
+    /// Put a decreasing axis in increasing order, values unchanged.
+    fn sort_axis(&mut self, state: &mut State, axis: &[f64]) {
+        let unit = state.unit;
+        state.axis = Some(axis.iter().rev().copied().collect());
+        self.push(
+            "axis_unit_conversion",
+            Some(AXIS_UNIT_CONVERSION),
+            json!({ "source_unit": unit, "target_unit": unit, "spectral_density": false }),
+            json!({ "axis": "current" }),
+            state,
+            "Points are put in increasing axis order; values are unchanged.".to_string(),
+            &[],
+        );
     }
 
     /// Keep the points that extend the axis: the earlier detector up to its
@@ -1432,6 +1550,17 @@ impl<'a> Planner<'a> {
         let grid_choice = self.options.grid.clone();
         let requirements = self.requirements;
         let tolerance = self.options.axis_tolerance;
+        if self.peak_table
+            && requirements
+                .is_some_and(|requirements| requirements.even_axis != EvenAxis::NotRequired)
+        {
+            self.refuse(
+                "peak_table",
+                "the signal is a peak table (positions and heights of bands), not a sampled spectrum, and this target needs a spectrum on an evenly spaced axis".to_string(),
+                "Export the peak table to a format that keeps points as they are (JCAMP-DX, CSV, JSON), or export the measured spectrum.",
+            );
+            return false;
+        }
         let measured_ok = |state: &State| -> bool {
             let Some(axis) = &state.axis else {
                 return requirements
@@ -1494,6 +1623,14 @@ impl<'a> Planner<'a> {
                 }
             }
         };
+        if self.peak_table {
+            self.refuse(
+                "peak_table",
+                "the signal is a peak table (positions and heights of bands), not a sampled spectrum; interpolating it onto a grid would invent a spectrum".to_string(),
+                "Export the peak table to a format that keeps points as they are (JCAMP-DX, CSV, JSON), or export the measured spectrum.",
+            );
+            return false;
+        }
         let method = self
             .options
             .interpolation
@@ -1501,8 +1638,9 @@ impl<'a> Planner<'a> {
             .unwrap_or_else(|| "linear".to_string());
         let mut notes =
             vec!["Values are never extrapolated: the grid lies within the measured range."];
-        if grid.points < state.points {
-            notes.push("The grid has fewer points than the spectrum: interpolation does not average neighbouring points, so narrow bands of high-resolution spectra (FTIR) can alias or be missed.");
+        let spacing = (state.range[1] - state.range[0]) / (state.points.max(2) - 1) as f64;
+        if grid.step > spacing * (1.0 + 1e-6) {
+            notes.push("The grid is coarser than the measured spacing: interpolation does not average neighbouring points, so narrow bands of high-resolution spectra (FTIR) can alias or be missed.");
         } else {
             notes.push("Interpolation adds no information; it smooths sharp features slightly.");
         }
@@ -1673,6 +1811,47 @@ impl<'a> Planner<'a> {
 /// Whether a grid lies within a measured range.
 fn fits(grid: &Grid, range: [f64; 2]) -> bool {
     grid.first >= range[0] && grid.last <= range[1]
+}
+
+/// Units that state a fraction (0-1); units that only name the signal type
+/// ("TRANSMITTANCE", "reflectance") do not.
+fn fraction_unit(unit: &str) -> bool {
+    matches!(
+        unit.trim().to_ascii_lowercase().as_str(),
+        "1" | "1.0" | "fraction" | "ratio" | "0-1"
+    )
+}
+
+/// Peak tables list band positions and heights; they are not sampled.
+fn is_peak_table(record: &SpectralRecord) -> bool {
+    record.metadata.contains_key("jcamp_peak_table")
+        || record
+            .metadata
+            .get("jcamp")
+            .and_then(|jcamp| jcamp.get("data_type"))
+            .and_then(Value::as_str)
+            .is_some_and(|kind| kind.to_ascii_uppercase().contains("PEAK"))
+}
+
+/// Raman instruments: the technique, the reader, or laser/excitation
+/// metadata tell. A Raman cm-1 axis is a shift, not a wavenumber.
+fn raman_indicated(record: &SpectralRecord, signal: &SpectralArray) -> bool {
+    let format = record.provenance.format.to_ascii_lowercase();
+    technique(record, &signal.axis, &signal.signal_type) == Technique::Raman
+        || [
+            "raman",
+            "horiba",
+            "renishaw",
+            "trivista",
+            "witec",
+            "openspecy",
+        ]
+        .iter()
+        .any(|name| format.contains(name))
+        || record.metadata.keys().any(|key| {
+            let key = key.to_ascii_lowercase();
+            key.contains("laser") || key.contains("excitation") || key.contains("raman")
+        })
 }
 
 /// Lower-case words of a signal's name and role.

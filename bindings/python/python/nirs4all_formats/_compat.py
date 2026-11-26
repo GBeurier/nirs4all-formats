@@ -206,8 +206,10 @@ def plan_conversion(
             plan the options alone.
         **options: ``signal``, ``signal_type``, ``axis_unit``, ``grid``,
             ``grid_step``, ``grid_min``, ``grid_max``, ``interpolation``,
-            ``source_scale``, ``assume_signal_type``, ``absorbance_origin`` and
-            ``axis_tolerance``.
+            ``source_scale``, ``assume_signal_type``, ``absorbance_origin``,
+            ``axis_tolerance`` and ``splices`` (the first axis value of each
+            following detector, for the splice correction of a ratio to
+            references).
 
     Returns:
         The plan: ``status``, ``steps``, ``questions``, ``refusals``,

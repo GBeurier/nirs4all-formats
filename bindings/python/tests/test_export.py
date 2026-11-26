@@ -62,3 +62,32 @@ def test_convert_path_never_overwrites_silently(source: Path, tmp_path: Path) ->
     with pytest.raises(FileExistsError):
         formats.convert_path(source, "xlsx", out)
     formats.convert_path(source, "xlsx", out, overwrite=True)
+
+
+def test_plans_name_the_methods_and_refuse_bad_options(source: Path) -> None:
+    targets = formats.export_targets()
+    winisi = next(item for item in targets["requirements"] if item["format"] == "foss-winisi-nir")
+    assert [grid["points"] for grid in winisi["grids"]] == [700, 1050]
+    records = formats.open_records(source)
+    plan = formats.plan_conversion(records, "csv", signal_type="reflectance")
+    assert plan["status"] == "ready"
+    assert plan["steps"][0]["method_id"] == "preprocessing.signal_conversion.from_absorbance"
+    asked = formats.plan_conversion(records, "csv", signal_type="kubelka_munk")
+    assert asked["questions"][0]["id"] == "absorbance_origin"
+    assert formats.plan_conversion(records, "csv")["status"] == "unchanged"
+    with pytest.raises(ValueError, match="grid_step"):
+        formats.plan_conversion(records, "winisi", grid="even", grid_step=-1)
+
+
+def test_applied_conversions_are_reported(source: Path) -> None:
+    record = formats.open_records(source)[0]
+    record["metadata"]["conversions"] = [
+        {
+            "step": "resample",
+            "method_id": "preprocessing.resampling.resampler",
+            "methods_version": "1.5.2",
+        }
+    ]
+    output = formats.write_records([record], "jcamp-dx")
+    assert output["conversions"][0]["step"] == "resample"
+    assert b"##$CONVERSION 1=resample" in output["files"][0]["bytes"]

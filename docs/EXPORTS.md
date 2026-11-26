@@ -157,11 +157,19 @@ counts; choose `signal` to recompute it. Options: `signal`, `signal_type`,
 (`percent`, `fraction`), `assume_signal_type`, `absorbance_origin`, `splices`
 and `axis_tolerance`.
 
+A ratio to references is transmittance when the measurement mode, the
+requested output or the vendor signals say so, otherwise reflectance with the
+assumption stated. Percent or fraction comes from units that state a scale
+(`%`, `1`, `fraction`); units that only name the signal (`TRANSMITTANCE`) or no
+unit lead to the `source_scale` question, which shows the observed value range.
+
 Refused: raw counts without references, ratios of raw counts measured with
 different integration times (normalized counts and radiance are accepted),
 derivatives and preprocessed signals, interferograms, references themselves,
-multidimensional signals, Raman shifts to wavelengths, grids outside the
-measured range and NSAS spectra that cover none of its axes.
+multidimensional signals, peak tables on any grid, cm-1 to wavelength for Raman
+instruments (technique, reader or laser metadata) and for signals not
+established as absorption or reflection spectra, grids outside the measured
+range and NSAS spectra that cover none of its axes.
 
 Limits: log 1/R is apparent absorbance; percent or fraction must be known (a
 wrong answer shifts absorbance by 2); nothing is extrapolated; interpolation

@@ -1448,7 +1448,7 @@ const CONVERT_LIMITS = [
   "Files written for vendor software have not been tested in that software yet.",
 ];
 const STEP_LABEL = {
-  reflectance_from_references: "Reflectance from references",
+  reflectance_from_references: "Ratio to references",
   declare_signal_type: "Declared signal type",
   signal_conversion: "Signal conversion",
   select_points: "Point selection",
@@ -1690,7 +1690,7 @@ function countIf(values, test) {
 }
 
 // One plan step on one record. Methods computes; this moves arrays.
-function runStep(step, record, axis, values, classes, summary) {
+function runStep(step, grid, record, axis, values, classes, summary) {
   const matrix = (v) => ({ data: Float64Array.from(v), rows: 1, cols: v.length });
   const inputs = step.inputs || {};
   if (step.step === "declare_signal_type") return { axis, values };
@@ -1719,7 +1719,6 @@ function runStep(step, record, axis, values, classes, summary) {
       nextAxis = Array.from(estimator.fitResult().axis.data);
       summary.axis = `${step.params.source_unit} → ${step.params.target_unit}, put in increasing order`;
     } else if (step.step === "resample") {
-      const grid = conv.plan.grid;
       nextAxis = Array.from({ length: grid.points }, (_, i) => grid.first + grid.step * i);
       summary.resampled = `${grid.label}, inside the measured ${fmtNum(Math.min(...axis), 6)}–${fmtNum(Math.max(...axis), 6)} ${prettyUnit(grid.unit)}`;
     }
@@ -1757,7 +1756,7 @@ async function runConversion() {
       const sig = record.signals && record.signals[source];
       if (!sig) return;
       let axis = Array.from(sig.axis.values), values = Array.from(sig.values);
-      for (const step of plan.steps) ({ axis, values } = runStep(step, record, axis, values, classes, summary));
+      for (const step of plan.steps) ({ axis, values } = runStep(step, plan.grid, record, axis, values, classes, summary));
       computed.push({ i, sig, axis, values });
     });
     for (const { i, sig, axis, values } of computed) {
